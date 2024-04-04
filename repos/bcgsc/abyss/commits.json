@@ -1,0 +1,1764 @@
+[
+  {
+    "sha": "6548e04546dfc2239faee5b52fdb01dd31ed7995",
+    "node_id": "C_kwDOADmFmdoAKDY1NDhlMDQ1NDZkZmMyMjM5ZmFlZTViNTJmZGIwMWRkMzFlZDc5OTU",
+    "commit": {
+      "author": {
+        "name": "Eli Schwartz",
+        "email": "eschwartz93@gmail.com",
+        "date": "2024-03-19T20:19:11Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-19T20:19:11Z"
+      },
+      "message": "configure: simplify check for GHC (#475)\n\nThis tool lookup and included AM_CONDITIIONAL was originally added in\r\ncommit 73b5e40098b56b982d45e491e149d22ae7f0099a, using the same logic\r\nintroduced in this commit. It was originally changed in commit\r\n95558c6472ea52573c3487229de5ef7e1ec979d6 to avoid checking whether GHC\r\nwas found, and instead check whether ghc-pkg claimed mmap was found.\r\n\r\nA long time later, the use of ghc-pkg was removed in commit\r\ne7a3741f455a9d6e3a4a6bddcb411097fe9e7036, and the check was restored to\r\n\"check if GHC exists\", which however did not restore the *mechanism*\r\nfor checking.\r\n\r\nInstead, it attempted to run GHC, whether it existed or not. Checking if\r\nit was found should be enough. But checking that it runs --version is\r\nnot particularly useful:\r\n- a command not found / permission denied error is produced if GHC was\r\n  not found, due to trying to execute \"\" as a command:\r\n\r\n  ./configure: 7028: : Permission denied\r\n\r\n- if it was found, the version output would be interspersed into\r\n  ./configure output\r\n\r\nSimilarly a couple lines below, pandoc is checked for and only its\r\npresence is cared about.",
+      "tree": {
+        "sha": "aa25d6877a6eb07f30d69992990c17df6d9d5d85",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/aa25d6877a6eb07f30d69992990c17df6d9d5d85"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/6548e04546dfc2239faee5b52fdb01dd31ed7995",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl+fM/CRC1aQ7uu5UhlAAATZ8QABC/owZI19plqX1ja42cu0jU\nNKR/3qdyfvAspilQnxKpPJtjc2ikmSXm+c+reuj0WsqgDuWtGd7uhxgdj/NatjDS\nnEHcaqkfVV7fGGTFy9eZ2yR5CWQj+ANrDxOkLrziZGJcXOZRINMSVsnF2IhcbsIv\n41bJySEr1cCv7aMtWIbNEoCfNuijGJcc6n0h3pTIlW62em2Clqmcym8MwARvTvHV\nZh0vlxwVp4d1xZmhqWhFj2z1eMMlPuQ72Nhs/vPyp+QQC4ORlmLXvfbYOswGLfE9\nACkJHrhh3i1aMSUurYhs96yOfGOWCeUH5YuRv3PoxyZqZzLBG6HJXQvtZHmcuFFI\n+afvlGH0qwn9TUnUeHiVI5hOMlNk7AqGZMxs/cFz3C9QKkqocMNuLTYv18cwFmTC\nhslItpP1933ht786RvLq2eee8llN9AqpVkcwVPXY42GEiVPz7m0+2g4vyFj4CJDN\n91UDjaBbHp6p+IrR6sa8QKgsknmPDFuaf9/vjWVpV/ttsgkqAwtOK1iZ8NL95bOj\nsSOyaca0GuvCiOKtgPsrNMOjk7BW1c3uO6ljQprPtGEklbypOVuiF4aL9YupzI7M\nnHzda4SqJRuTnImnmisJJ+atPwSDaLp+yV7YVsBLX6h/lntUkah142epU9ZtHhlR\nhDc7RAu/5FG7ml8crLY8\n=4EyG\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree aa25d6877a6eb07f30d69992990c17df6d9d5d85\nparent 2b42191b1e3510a2cc3a79f1052b5f975a0eb9bc\nauthor Eli Schwartz <eschwartz93@gmail.com> 1710879551 -0400\ncommitter GitHub <noreply@github.com> 1710879551 -0700\n\nconfigure: simplify check for GHC (#475)\n\nThis tool lookup and included AM_CONDITIIONAL was originally added in\r\ncommit 73b5e40098b56b982d45e491e149d22ae7f0099a, using the same logic\r\nintroduced in this commit. It was originally changed in commit\r\n95558c6472ea52573c3487229de5ef7e1ec979d6 to avoid checking whether GHC\r\nwas found, and instead check whether ghc-pkg claimed mmap was found.\r\n\r\nA long time later, the use of ghc-pkg was removed in commit\r\ne7a3741f455a9d6e3a4a6bddcb411097fe9e7036, and the check was restored to\r\n\"check if GHC exists\", which however did not restore the *mechanism*\r\nfor checking.\r\n\r\nInstead, it attempted to run GHC, whether it existed or not. Checking if\r\nit was found should be enough. But checking that it runs --version is\r\nnot particularly useful:\r\n- a command not found / permission denied error is produced if GHC was\r\n  not found, due to trying to execute \"\" as a command:\r\n\r\n  ./configure: 7028: : Permission denied\r\n\r\n- if it was found, the version output would be interspersed into\r\n  ./configure output\r\n\r\nSimilarly a couple lines below, pandoc is checked for and only its\r\npresence is cared about."
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/6548e04546dfc2239faee5b52fdb01dd31ed7995",
+    "html_url": "https://github.com/bcgsc/abyss/commit/6548e04546dfc2239faee5b52fdb01dd31ed7995",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/6548e04546dfc2239faee5b52fdb01dd31ed7995/comments",
+    "author": {
+      "login": "eli-schwartz",
+      "id": 6551424,
+      "node_id": "MDQ6VXNlcjY1NTE0MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6551424?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/eli-schwartz",
+      "html_url": "https://github.com/eli-schwartz",
+      "followers_url": "https://api.github.com/users/eli-schwartz/followers",
+      "following_url": "https://api.github.com/users/eli-schwartz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/eli-schwartz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/eli-schwartz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/eli-schwartz/subscriptions",
+      "organizations_url": "https://api.github.com/users/eli-schwartz/orgs",
+      "repos_url": "https://api.github.com/users/eli-schwartz/repos",
+      "events_url": "https://api.github.com/users/eli-schwartz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/eli-schwartz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2b42191b1e3510a2cc3a79f1052b5f975a0eb9bc",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/2b42191b1e3510a2cc3a79f1052b5f975a0eb9bc",
+        "html_url": "https://github.com/bcgsc/abyss/commit/2b42191b1e3510a2cc3a79f1052b5f975a0eb9bc"
+      }
+    ]
+  },
+  {
+    "sha": "2b42191b1e3510a2cc3a79f1052b5f975a0eb9bc",
+    "node_id": "C_kwDOADmFmdoAKDJiNDIxOTFiMWUzNTEwYTJjYzNhNzlmMTA1MmI1Zjk3NWEwZWI5YmM",
+    "commit": {
+      "author": {
+        "name": "Lauren Coombe",
+        "email": "lauren.e.coombe@gmail.com",
+        "date": "2024-03-19T16:43:31Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-19T16:43:31Z"
+      },
+      "message": "Fix CI (#476)\n\n* Update btllib version, remove 2to3 for brew, compile btllib from source for mac_latest-compilers-clang\r\n\r\n* Another fix for brew installs, add meson/ninja installs\r\n\r\n* Remove outdated test, update conda installs\r\n\r\n* Update btllib\r\n\r\n* Ignoring dangling-reference",
+      "tree": {
+        "sha": "35fa8e4353236023c8fa6370931166e77fb0436e",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/35fa8e4353236023c8fa6370931166e77fb0436e"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/2b42191b1e3510a2cc3a79f1052b5f975a0eb9bc",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl+cCzCRC1aQ7uu5UhlAAA35YQAApB/G4efyGtB8P6rE6PqoBc\n0sV4D5R76yCC4/NIaPXKF64rGIsZimoTmHqvgp3M+HtqV0ulu1SbDAFFWHCVV8eZ\nvgBXaSQJStxM53GU42pVrTC4+MOP3+vmtF/r9sORxPXnelA8UXFwQPCpJXM4j5dD\nDXJIUcAA2ZO5zyhZwwe5pKKytD1OB0Zxx8P1bdJ3JcjBesCcSWqJEpXI+6gPY1Ze\nPo/gVnRG4rCjCQef+1PeenhoU0AupKNPtnExSXqfp79L4ywoLp08fb4xMdqfM5GT\n6FiCMxm/b1leot1pCbnMhdjFdIsYlvJs+PlMl57s0oGz/XCxrRXQH71HgBeiBKgR\ne6KmHUbpEJ1Cfbm5uQJqq3BcTCJP5wkyAlU804ez/qJx1mn5WrD0Qv5WhCjzxysn\niM3y5spkASqKxYlqhPL4go+W87CI1p8+kDG1Mo1FqlTOqd7ptYwMqcIymdWcxkbW\n+KXkk0TJ6lLa9fRqn3evFD8w1H0VMXOwMLct10dZuubk79+Vl2xcXyaV08caAmOn\ns/U2gHNwg4/xJw3xfQR9bTbDHBSU7MqZGTFCOdcjfFq0bByg5TaUqik1JxvbdMwf\nREKomphdN95fPfnVQKUbf2Q7RHF9eI6m6E1fWFB/I/41c6kXbV4t1uKzryLve49g\n5Rd0qH1LlLP6T4gOjiI6\n=d0nI\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 35fa8e4353236023c8fa6370931166e77fb0436e\nparent b23abfc3db51bf7eca5feea4dd2ec110a74489ea\nauthor Lauren Coombe <lauren.e.coombe@gmail.com> 1710866611 -0700\ncommitter GitHub <noreply@github.com> 1710866611 -0700\n\nFix CI (#476)\n\n* Update btllib version, remove 2to3 for brew, compile btllib from source for mac_latest-compilers-clang\r\n\r\n* Another fix for brew installs, add meson/ninja installs\r\n\r\n* Remove outdated test, update conda installs\r\n\r\n* Update btllib\r\n\r\n* Ignoring dangling-reference\r\n"
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/2b42191b1e3510a2cc3a79f1052b5f975a0eb9bc",
+    "html_url": "https://github.com/bcgsc/abyss/commit/2b42191b1e3510a2cc3a79f1052b5f975a0eb9bc",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/2b42191b1e3510a2cc3a79f1052b5f975a0eb9bc/comments",
+    "author": {
+      "login": "lcoombe",
+      "id": 11697335,
+      "node_id": "MDQ6VXNlcjExNjk3MzM1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11697335?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lcoombe",
+      "html_url": "https://github.com/lcoombe",
+      "followers_url": "https://api.github.com/users/lcoombe/followers",
+      "following_url": "https://api.github.com/users/lcoombe/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lcoombe/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lcoombe/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lcoombe/subscriptions",
+      "organizations_url": "https://api.github.com/users/lcoombe/orgs",
+      "repos_url": "https://api.github.com/users/lcoombe/repos",
+      "events_url": "https://api.github.com/users/lcoombe/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lcoombe/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b23abfc3db51bf7eca5feea4dd2ec110a74489ea",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/b23abfc3db51bf7eca5feea4dd2ec110a74489ea",
+        "html_url": "https://github.com/bcgsc/abyss/commit/b23abfc3db51bf7eca5feea4dd2ec110a74489ea"
+      }
+    ]
+  },
+  {
+    "sha": "b23abfc3db51bf7eca5feea4dd2ec110a74489ea",
+    "node_id": "C_kwDOADmFmdoAKGIyM2FiZmMzZGI1MWJmN2VjYTVmZWVhNGRkMmVjMTEwYTc0NDg5ZWE",
+    "commit": {
+      "author": {
+        "name": "Lauren Coombe",
+        "email": "lauren.e.coombe@gmail.com",
+        "date": "2023-09-01T22:25:25Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-09-01T22:25:25Z"
+      },
+      "message": "Update README.md (#471)\n\n* Update README.md\r\n\r\nWe've noticed locally some issues can come up if conda-forge isn't part of the channel list\r\nJust adding it in the conda install command in case\r\n\r\n* CI Fixes",
+      "tree": {
+        "sha": "8229b626d705cd68ccb8e1c6d6283824b43f084b",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/8229b626d705cd68ccb8e1c6d6283824b43f084b"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/b23abfc3db51bf7eca5feea4dd2ec110a74489ea",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJk8mTVCRBK7hj4Ov3rIwAA39cIABj9XWWZiVgVo0VhW9zybOOw\nHBnJAuvmevQ13UrkfqbYS9CmIdAlR+caCINF3f8L7fpK/cbZZt7RP+1i9K4hhgS3\nD97fEPIyZUHIwoNGFKsun5fxiFp2tNEAbZBNQkONB9Pny26TlP9xMqYpggayCfhy\nRA/LM0yYgcrfWuag4+x06BlxmAjzhzzxKxkxPcSYQG1aJK8NSfgHHWuMDkWYp6px\ntI3SbiHY3SMFZnK/qNTgUKqhjXJFzmIuJg/FgnTq/IaSJDrOc7N/DtcDahtszXK/\nVCDF+sFoNPZjrkZu3cPqXCeZBMfkYwuwRn5P2xUUFI1Lo3aVAq7so80cK+VHW2k=\n=kXYd\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 8229b626d705cd68ccb8e1c6d6283824b43f084b\nparent 42bb25076d2890076362dff441f34bae587f70be\nauthor Lauren Coombe <lauren.e.coombe@gmail.com> 1693607125 -0700\ncommitter GitHub <noreply@github.com> 1693607125 -0700\n\nUpdate README.md (#471)\n\n* Update README.md\r\n\r\nWe've noticed locally some issues can come up if conda-forge isn't part of the channel list\r\nJust adding it in the conda install command in case\r\n\r\n* CI Fixes"
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/b23abfc3db51bf7eca5feea4dd2ec110a74489ea",
+    "html_url": "https://github.com/bcgsc/abyss/commit/b23abfc3db51bf7eca5feea4dd2ec110a74489ea",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/b23abfc3db51bf7eca5feea4dd2ec110a74489ea/comments",
+    "author": {
+      "login": "lcoombe",
+      "id": 11697335,
+      "node_id": "MDQ6VXNlcjExNjk3MzM1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11697335?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lcoombe",
+      "html_url": "https://github.com/lcoombe",
+      "followers_url": "https://api.github.com/users/lcoombe/followers",
+      "following_url": "https://api.github.com/users/lcoombe/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lcoombe/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lcoombe/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lcoombe/subscriptions",
+      "organizations_url": "https://api.github.com/users/lcoombe/orgs",
+      "repos_url": "https://api.github.com/users/lcoombe/repos",
+      "events_url": "https://api.github.com/users/lcoombe/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lcoombe/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "42bb25076d2890076362dff441f34bae587f70be",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/42bb25076d2890076362dff441f34bae587f70be",
+        "html_url": "https://github.com/bcgsc/abyss/commit/42bb25076d2890076362dff441f34bae587f70be"
+      }
+    ]
+  },
+  {
+    "sha": "42bb25076d2890076362dff441f34bae587f70be",
+    "node_id": "C_kwDOADmFmdoAKDQyYmIyNTA3NmQyODkwMDc2MzYyZGZmNDQxZjM0YmFlNTg3ZjcwYmU",
+    "commit": {
+      "author": {
+        "name": "Lauren Coombe",
+        "email": "lauren.e.coombe@gmail.com",
+        "date": "2023-05-16T22:53:03Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-05-16T22:53:03Z"
+      },
+      "message": "Prepare for release v2.3.7 (#469)",
+      "tree": {
+        "sha": "10e15be499ac4d4cf89a016d8316958d860ccac2",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/10e15be499ac4d4cf89a016d8316958d860ccac2"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/42bb25076d2890076362dff441f34bae587f70be",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkZAlPCRBK7hj4Ov3rIwAA2xgIAKep+eCbMXaJbeUO5PITbRIs\nZsI4ykVrKDPDw50mwxnUKlQbaHYhA32GAEX/iCb9F1f3L/9mYASXgnx03sbUKX7i\npI2IL51vyUf+1aI2wgj2u9+jWym6QwYXnWPmPDX6Q9sQE+Kr42DIBaOKv+bqkMNW\neOufDjk34TMGWnOTyDyJst5l3UzOzi4ZEPBb5awIEc/8LvRuF5iHy1LdjrzMCn79\nP/L0ugQgraZ7HVjfG0E1t/GsMa/J42+T1BpqA408k9dtOA9Su7sdULMwYPkxRTV5\nz/EMfV90QN2WfbM7KPxm1OgFea51iTNC/XAxw32+ToGiVCDLjJK2FAUJQMaipw0=\n=Bhxb\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 10e15be499ac4d4cf89a016d8316958d860ccac2\nparent d512770b41794656a542eb66ad6943fbe91f51d1\nauthor Lauren Coombe <lauren.e.coombe@gmail.com> 1684277583 -0700\ncommitter GitHub <noreply@github.com> 1684277583 -0700\n\nPrepare for release v2.3.7 (#469)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/42bb25076d2890076362dff441f34bae587f70be",
+    "html_url": "https://github.com/bcgsc/abyss/commit/42bb25076d2890076362dff441f34bae587f70be",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/42bb25076d2890076362dff441f34bae587f70be/comments",
+    "author": {
+      "login": "lcoombe",
+      "id": 11697335,
+      "node_id": "MDQ6VXNlcjExNjk3MzM1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11697335?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lcoombe",
+      "html_url": "https://github.com/lcoombe",
+      "followers_url": "https://api.github.com/users/lcoombe/followers",
+      "following_url": "https://api.github.com/users/lcoombe/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lcoombe/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lcoombe/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lcoombe/subscriptions",
+      "organizations_url": "https://api.github.com/users/lcoombe/orgs",
+      "repos_url": "https://api.github.com/users/lcoombe/repos",
+      "events_url": "https://api.github.com/users/lcoombe/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lcoombe/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d512770b41794656a542eb66ad6943fbe91f51d1",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/d512770b41794656a542eb66ad6943fbe91f51d1",
+        "html_url": "https://github.com/bcgsc/abyss/commit/d512770b41794656a542eb66ad6943fbe91f51d1"
+      }
+    ]
+  },
+  {
+    "sha": "d512770b41794656a542eb66ad6943fbe91f51d1",
+    "node_id": "C_kwDOADmFmdoAKGQ1MTI3NzBiNDE3OTQ2NTZhNTQyZWI2NmFkNjk0M2ZiZTkxZjUxZDE",
+    "commit": {
+      "author": {
+        "name": "Parham Kazemi",
+        "email": "pkazemi3@gmail.com",
+        "date": "2023-05-16T22:09:22Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-05-16T22:09:22Z"
+      },
+      "message": "Fix build failure on macOS 12 and 13 (#468)\n\n* Replace nested .a files with wildcards\n\n* Add GCC on macOS-latest to azure-pipelines.yml\n\n* Fix gtest uninitialized warning\n\n* Fix gtest macOS warning\n\n* Fix library paths",
+      "tree": {
+        "sha": "d3d81ba1fe473d1d07ed28cc27033c8cb6a0f741",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/d3d81ba1fe473d1d07ed28cc27033c8cb6a0f741"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/d512770b41794656a542eb66ad6943fbe91f51d1",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkY/8SCRBK7hj4Ov3rIwAAL44IAI327Uh5ZCzyVNqnmEfToruL\n9FA+xqESQt28r4FdRoavXt/NLOrpyyEhVrjyE0ktQDhadXXPtlpPpTF6QlRpkdGo\nZqglT78dn/X/FS2u1AxBpNlr0L1PtcuziXNIx76KIOSE4hcl6NpYv20AyWJ7hZTy\nH3+h80wTFpX3GioCtd2u/MN26nq6LCN7J4AvTXEZg7OzSdADXq89OKS4kIwpnSH9\n9y5xfb6kLF6t6Hbh1yhFvGZePQ4pzmMhVF3Qvm/7hFEBf1lcRn7PaO8fkdcYSG/j\nGhGiqOyRWz/Cn9rhbHYzOnL7MURmyZmG+jZy9iNW6VbzXIQPJCAc95aI5WKoxBY=\n=REe0\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree d3d81ba1fe473d1d07ed28cc27033c8cb6a0f741\nparent f88beae3e7809d15907daff1ee774fa95e5b9684\nauthor Parham Kazemi <pkazemi3@gmail.com> 1684274962 -0700\ncommitter GitHub <noreply@github.com> 1684274962 -0700\n\nFix build failure on macOS 12 and 13 (#468)\n\n* Replace nested .a files with wildcards\n\n* Add GCC on macOS-latest to azure-pipelines.yml\n\n* Fix gtest uninitialized warning\n\n* Fix gtest macOS warning\n\n* Fix library paths"
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/d512770b41794656a542eb66ad6943fbe91f51d1",
+    "html_url": "https://github.com/bcgsc/abyss/commit/d512770b41794656a542eb66ad6943fbe91f51d1",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/d512770b41794656a542eb66ad6943fbe91f51d1/comments",
+    "author": {
+      "login": "parham-k",
+      "id": 24221468,
+      "node_id": "MDQ6VXNlcjI0MjIxNDY4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/24221468?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/parham-k",
+      "html_url": "https://github.com/parham-k",
+      "followers_url": "https://api.github.com/users/parham-k/followers",
+      "following_url": "https://api.github.com/users/parham-k/following{/other_user}",
+      "gists_url": "https://api.github.com/users/parham-k/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/parham-k/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/parham-k/subscriptions",
+      "organizations_url": "https://api.github.com/users/parham-k/orgs",
+      "repos_url": "https://api.github.com/users/parham-k/repos",
+      "events_url": "https://api.github.com/users/parham-k/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/parham-k/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f88beae3e7809d15907daff1ee774fa95e5b9684",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/f88beae3e7809d15907daff1ee774fa95e5b9684",
+        "html_url": "https://github.com/bcgsc/abyss/commit/f88beae3e7809d15907daff1ee774fa95e5b9684"
+      }
+    ]
+  },
+  {
+    "sha": "f88beae3e7809d15907daff1ee774fa95e5b9684",
+    "node_id": "C_kwDOADmFmdoAKGY4OGJlYWUzZTc4MDlkMTU5MDdkYWZmMWVlNzc0ZmE5NWU1Yjk2ODQ",
+    "commit": {
+      "author": {
+        "name": "Lauren Coombe",
+        "email": "lauren.e.coombe@gmail.com",
+        "date": "2023-05-03T18:08:50Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-05-03T18:08:50Z"
+      },
+      "message": "Prepare for release v2.3.6 (#465)\n\n* Prepare for release v2.3.6\r\n\r\n* Update gcc version for mac_gcc test to be consistent with current brew bottle\r\n\r\n* brew install gcc@12",
+      "tree": {
+        "sha": "cea505f7ad37d59df7ab59abc007dcc42a6a7261",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/cea505f7ad37d59df7ab59abc007dcc42a6a7261"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/f88beae3e7809d15907daff1ee774fa95e5b9684",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkUqMyCRBK7hj4Ov3rIwAAr3AIAIOBRXhqyU2HVQqmAzi1Io7R\nGDI9Bzmu0b0c6zczytTzwrsZWHqZ4a5adzrZ4YmaPScNbtqW6wPku0fgZd3j23pV\nXQlKTwbYc4cvwOPsZfryxiKEh726GXD2RR13ZU4Vv1OI86ZTbV+nUO1ZadaUxdrC\njhFsodyCaWXvEIPyPnqon12fb5Dfsnsx00LeVIo21E/x5gel9Pn02q8N49Hu5mfV\nRWkLD3kVbC4YpEBEL85N1M3GXiEoHI6Es9KH8z8PF/1wHAAH3XnHidMvYO52eWPt\nA98zyW8t/eWzXtHvDm7R8lqWVzQOBl5zK/jq/felWPFNFMy5wzJNruiao8MJXbY=\n=cFSd\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree cea505f7ad37d59df7ab59abc007dcc42a6a7261\nparent d8ff33f4784c0c9a377d9a5aaf7ce5166c82969a\nauthor Lauren Coombe <lauren.e.coombe@gmail.com> 1683137330 -0700\ncommitter GitHub <noreply@github.com> 1683137330 -0700\n\nPrepare for release v2.3.6 (#465)\n\n* Prepare for release v2.3.6\r\n\r\n* Update gcc version for mac_gcc test to be consistent with current brew bottle\r\n\r\n* brew install gcc@12"
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/f88beae3e7809d15907daff1ee774fa95e5b9684",
+    "html_url": "https://github.com/bcgsc/abyss/commit/f88beae3e7809d15907daff1ee774fa95e5b9684",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/f88beae3e7809d15907daff1ee774fa95e5b9684/comments",
+    "author": {
+      "login": "lcoombe",
+      "id": 11697335,
+      "node_id": "MDQ6VXNlcjExNjk3MzM1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11697335?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lcoombe",
+      "html_url": "https://github.com/lcoombe",
+      "followers_url": "https://api.github.com/users/lcoombe/followers",
+      "following_url": "https://api.github.com/users/lcoombe/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lcoombe/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lcoombe/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lcoombe/subscriptions",
+      "organizations_url": "https://api.github.com/users/lcoombe/orgs",
+      "repos_url": "https://api.github.com/users/lcoombe/repos",
+      "events_url": "https://api.github.com/users/lcoombe/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lcoombe/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d8ff33f4784c0c9a377d9a5aaf7ce5166c82969a",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/d8ff33f4784c0c9a377d9a5aaf7ce5166c82969a",
+        "html_url": "https://github.com/bcgsc/abyss/commit/d8ff33f4784c0c9a377d9a5aaf7ce5166c82969a"
+      }
+    ]
+  },
+  {
+    "sha": "d8ff33f4784c0c9a377d9a5aaf7ce5166c82969a",
+    "node_id": "C_kwDOADmFmdoAKGQ4ZmYzM2Y0Nzg0YzBjOWEzNzdkOWE1YWFmN2NlNTE2NmM4Mjk2OWE",
+    "commit": {
+      "author": {
+        "name": "Lauren Coombe",
+        "email": "lauren.e.coombe@gmail.com",
+        "date": "2023-04-28T22:20:09Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-04-28T22:20:09Z"
+      },
+      "message": "Make btllib an external dependency (#464)\n\n* remove btllib header files\r\n\r\n* RAlgorithmsShort.cpp: use ssytem btllib\r\n\r\n* RResolver/Makefile.am: compiled with system btllib\r\n\r\n* configure.ac: set up btllib compile\r\n\r\n* azure: use conda to compile\r\n\r\n* gtest-1.7.0/Makefile.am: disable specific warning\r\n\r\n* azure: download and compile btllib on the fly\r\n\r\n* azure: remove ninja\r\n\r\n* azure: remove security\r\n\r\n* azure: old install\r\n\r\n* azure: use full btllib path\r\n\r\n* azure: export dist check fig\r\n\r\n* azure: compile btllib with specific version of gxx\r\n\r\n* azure: set up env variable for btllib\r\n\r\n* azure: export gxx variable\r\n\r\n* azure: compile with non-deprecated gxx\r\n\r\n* azure: macOS with default clang and gxx\r\n\r\n* azure: update btllib path for macOS\r\n\r\n* azure: install via brew\r\n\r\n* azure: use container\r\n\r\n* azure: remove pool for gcc-12\r\n\r\n* azure: change job parameter\r\n\r\n* azure: try unbuntu 22.04\r\n\r\n* azure: install via apt\r\n\r\n* azure: install ABySS with clang\r\n\r\n* azure: add cmake to installation\r\n\r\n* azure: export cmake flags\r\n\r\n* azure: fix export syntax\r\n\r\n* azure: correct export statement\r\n\r\n* azure: install llvm\r\n\r\n* azure: install libs\r\n\r\n* azure: build libcxx\r\n\r\n* azure: fix spacing\r\n\r\n* azure: try clang on macOS\r\n\r\n* azure: remove btllib from brew install\r\n\r\n* Azure: remove clang suffix\r\n\r\n* azure: try brew paths\r\n\r\n* azure: use clang14\r\n\r\n* azure: try calling clang with subversion\r\n\r\n* azure: check install dir\r\n\r\n* azure: use keg path\r\n\r\n* azure: compile with different clang\r\n\r\n* azure: try libc++ flag\r\n\r\n* azure: test\r\n\r\n* azure: dont use extra flags\r\n\r\n* azure: test\r\n\r\n* azure: test installation\r\n\r\n* makefile.am: disable deprecated declaration\r\n\r\n* Test updates\r\n\r\n* Try installing btllib from source for clang12\r\n\r\n* Bugfix\r\n\r\n* azure: include all tests\r\n\r\n* Change bionic to focal, VMs for mac\r\n\r\n* Remove gcc-7 test\r\n\r\n- As per documentation, the charcov header now in btllib is only supported by gcc-8+\r\n\r\n* Troubleshooting\r\n\r\n* Update flags, add clang-format, update path to llvm\r\n\r\n* Add dependencies for compilers-12 and macos_default_clang\r\n\r\n* Fix naming for compilers-12 and macos_default_clang dependencies\r\n\r\n* compilers-12 - activate conda environment\r\n\r\n* Add CXXFLAG for ubuntu-latest, print message for macos_default_clang\r\n\r\n* Try btllib brew install for macos_default_clang, add libomp to macos_def_gcc\r\n\r\n* tap brewsci/bio\r\n\r\n* Organize and only retain needed/important tests\r\n\r\n* For mac, move away from using brew for most tests\r\n\r\n* Formatting fixes\r\n\r\n* Move clang-format to gcc-10, add paths to mac_gcc install\r\n\r\n* Troubleshooting mac gcc\r\n\r\n* Fix for sparsehash\r\n\r\n* See if btllib path is wrong\r\n\r\n* Fix path to btllib install\r\n\r\n* Add DISTCHECK flags\r\n\r\n* Change VM image for mac\r\n\r\n* Clean-up azure-pipelines.yml, remove circleCI tests, update README.md\r\n\r\n---------\r\n\r\nCo-authored-by: Johnathan Wong <jowong@jowong07.phage.bcgsc.ca>\r\nCo-authored-by: Johnathan Wong <34543031+jowong4@users.noreply.github.com>\r\nCo-authored-by: JW <34543031+jwcodee@users.noreply.github.com>",
+      "tree": {
+        "sha": "df5ac2b92107f0fba7ddbb41407acfb7ece25f10",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/df5ac2b92107f0fba7ddbb41407acfb7ece25f10"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/d8ff33f4784c0c9a377d9a5aaf7ce5166c82969a",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkTEaZCRBK7hj4Ov3rIwAApw4IABlfQAI0YsR9081myFQdRCX2\n501ai+gvSr3G4o4uE+uYFe2+gs3SvZ7Rw+SXTHzL1kzOsqcJdmb4tZeckfhygopc\n23pbYk6jJFY/x4ba/3OeVFP440vaeL/Tjj150wzYBTICPXb0xCBCw3ABZxyyRGAN\nMIegmVKK/aTB4dTW0qLAzzhgJy3RIDWxYEfy0ShRRyZEiEIbQvagYA1eXyx7fOLm\niVmTop8OLFpGrGIRgcDCZm+s5tSsU8ETZP1XT/fyK7jbbG0t7dJaUCng0aeja8o4\n8a66/wZWVwz3qD9UULyoyLkr4gyiYxH7yEVaF56YqRKi8URz9xofICaIA4yTBWo=\n=Pnzb\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree df5ac2b92107f0fba7ddbb41407acfb7ece25f10\nparent 30cdbc118fbf40a46f411e7ec67e606dbedd82e8\nauthor Lauren Coombe <lauren.e.coombe@gmail.com> 1682720409 -0700\ncommitter GitHub <noreply@github.com> 1682720409 -0700\n\nMake btllib an external dependency (#464)\n\n* remove btllib header files\r\n\r\n* RAlgorithmsShort.cpp: use ssytem btllib\r\n\r\n* RResolver/Makefile.am: compiled with system btllib\r\n\r\n* configure.ac: set up btllib compile\r\n\r\n* azure: use conda to compile\r\n\r\n* gtest-1.7.0/Makefile.am: disable specific warning\r\n\r\n* azure: download and compile btllib on the fly\r\n\r\n* azure: remove ninja\r\n\r\n* azure: remove security\r\n\r\n* azure: old install\r\n\r\n* azure: use full btllib path\r\n\r\n* azure: export dist check fig\r\n\r\n* azure: compile btllib with specific version of gxx\r\n\r\n* azure: set up env variable for btllib\r\n\r\n* azure: export gxx variable\r\n\r\n* azure: compile with non-deprecated gxx\r\n\r\n* azure: macOS with default clang and gxx\r\n\r\n* azure: update btllib path for macOS\r\n\r\n* azure: install via brew\r\n\r\n* azure: use container\r\n\r\n* azure: remove pool for gcc-12\r\n\r\n* azure: change job parameter\r\n\r\n* azure: try unbuntu 22.04\r\n\r\n* azure: install via apt\r\n\r\n* azure: install ABySS with clang\r\n\r\n* azure: add cmake to installation\r\n\r\n* azure: export cmake flags\r\n\r\n* azure: fix export syntax\r\n\r\n* azure: correct export statement\r\n\r\n* azure: install llvm\r\n\r\n* azure: install libs\r\n\r\n* azure: build libcxx\r\n\r\n* azure: fix spacing\r\n\r\n* azure: try clang on macOS\r\n\r\n* azure: remove btllib from brew install\r\n\r\n* Azure: remove clang suffix\r\n\r\n* azure: try brew paths\r\n\r\n* azure: use clang14\r\n\r\n* azure: try calling clang with subversion\r\n\r\n* azure: check install dir\r\n\r\n* azure: use keg path\r\n\r\n* azure: compile with different clang\r\n\r\n* azure: try libc++ flag\r\n\r\n* azure: test\r\n\r\n* azure: dont use extra flags\r\n\r\n* azure: test\r\n\r\n* azure: test installation\r\n\r\n* makefile.am: disable deprecated declaration\r\n\r\n* Test updates\r\n\r\n* Try installing btllib from source for clang12\r\n\r\n* Bugfix\r\n\r\n* azure: include all tests\r\n\r\n* Change bionic to focal, VMs for mac\r\n\r\n* Remove gcc-7 test\r\n\r\n- As per documentation, the charcov header now in btllib is only supported by gcc-8+\r\n\r\n* Troubleshooting\r\n\r\n* Update flags, add clang-format, update path to llvm\r\n\r\n* Add dependencies for compilers-12 and macos_default_clang\r\n\r\n* Fix naming for compilers-12 and macos_default_clang dependencies\r\n\r\n* compilers-12 - activate conda environment\r\n\r\n* Add CXXFLAG for ubuntu-latest, print message for macos_default_clang\r\n\r\n* Try btllib brew install for macos_default_clang, add libomp to macos_def_gcc\r\n\r\n* tap brewsci/bio\r\n\r\n* Organize and only retain needed/important tests\r\n\r\n* For mac, move away from using brew for most tests\r\n\r\n* Formatting fixes\r\n\r\n* Move clang-format to gcc-10, add paths to mac_gcc install\r\n\r\n* Troubleshooting mac gcc\r\n\r\n* Fix for sparsehash\r\n\r\n* See if btllib path is wrong\r\n\r\n* Fix path to btllib install\r\n\r\n* Add DISTCHECK flags\r\n\r\n* Change VM image for mac\r\n\r\n* Clean-up azure-pipelines.yml, remove circleCI tests, update README.md\r\n\r\n---------\r\n\r\nCo-authored-by: Johnathan Wong <jowong@jowong07.phage.bcgsc.ca>\r\nCo-authored-by: Johnathan Wong <34543031+jowong4@users.noreply.github.com>\r\nCo-authored-by: JW <34543031+jwcodee@users.noreply.github.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/d8ff33f4784c0c9a377d9a5aaf7ce5166c82969a",
+    "html_url": "https://github.com/bcgsc/abyss/commit/d8ff33f4784c0c9a377d9a5aaf7ce5166c82969a",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/d8ff33f4784c0c9a377d9a5aaf7ce5166c82969a/comments",
+    "author": {
+      "login": "lcoombe",
+      "id": 11697335,
+      "node_id": "MDQ6VXNlcjExNjk3MzM1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11697335?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lcoombe",
+      "html_url": "https://github.com/lcoombe",
+      "followers_url": "https://api.github.com/users/lcoombe/followers",
+      "following_url": "https://api.github.com/users/lcoombe/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lcoombe/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lcoombe/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lcoombe/subscriptions",
+      "organizations_url": "https://api.github.com/users/lcoombe/orgs",
+      "repos_url": "https://api.github.com/users/lcoombe/repos",
+      "events_url": "https://api.github.com/users/lcoombe/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lcoombe/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "30cdbc118fbf40a46f411e7ec67e606dbedd82e8",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/30cdbc118fbf40a46f411e7ec67e606dbedd82e8",
+        "html_url": "https://github.com/bcgsc/abyss/commit/30cdbc118fbf40a46f411e7ec67e606dbedd82e8"
+      }
+    ]
+  },
+  {
+    "sha": "30cdbc118fbf40a46f411e7ec67e606dbedd82e8",
+    "node_id": "C_kwDOADmFmdoAKDMwY2RiYzExOGZiZjQwYTQ2ZjQxMWU3ZWM2N2U2MDZkYmVkZDgyZTg",
+    "commit": {
+      "author": {
+        "name": "Lauren Coombe",
+        "email": "lauren.e.coombe@gmail.com",
+        "date": "2023-04-27T19:08:37Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-04-27T19:08:37Z"
+      },
+      "message": "Update README.md (#463)",
+      "tree": {
+        "sha": "7bbe88e2ef77c5baa2328fc879b93740b7910169",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/7bbe88e2ef77c5baa2328fc879b93740b7910169"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/30cdbc118fbf40a46f411e7ec67e606dbedd82e8",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkSsg1CRBK7hj4Ov3rIwAA/4gIABgPOO7BXKtpZVKa/2CtOVq1\n6dTEwXMEg2Td9A6Af5lzMiso6K1oEN6KC9QygGTWQvYLa+YnlcSchjtew0VlQgi+\nshhQiNH7b/zmWL9SOhGH/B0VWRZ5NsCm4wDamhZMQIqkE2yv6IJcuPVI3fVfMfon\nrvjEHX+rKByQhYtA0haIBofl2bBYryJmWmyCeLvslDQ4n82r5FgPi6CXzdS9AQC5\nCO/v2FNs0heYzSH52oxGE08v6z9YjM3S9/JohM3jI1tPvWtHhmIjcWFWTUweBR3v\np7CH6VJCrx8NpP40+uUBh6eL2fmGms0FoZX0EW4IDgMZC6hO19QJe+KTP/NQifU=\n=2516\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 7bbe88e2ef77c5baa2328fc879b93740b7910169\nparent 419dfcd5df07f1f1477a812c9e7a38097de7ceba\nauthor Lauren Coombe <lauren.e.coombe@gmail.com> 1682622517 -0700\ncommitter GitHub <noreply@github.com> 1682622517 -0700\n\nUpdate README.md (#463)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/30cdbc118fbf40a46f411e7ec67e606dbedd82e8",
+    "html_url": "https://github.com/bcgsc/abyss/commit/30cdbc118fbf40a46f411e7ec67e606dbedd82e8",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/30cdbc118fbf40a46f411e7ec67e606dbedd82e8/comments",
+    "author": {
+      "login": "lcoombe",
+      "id": 11697335,
+      "node_id": "MDQ6VXNlcjExNjk3MzM1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11697335?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lcoombe",
+      "html_url": "https://github.com/lcoombe",
+      "followers_url": "https://api.github.com/users/lcoombe/followers",
+      "following_url": "https://api.github.com/users/lcoombe/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lcoombe/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lcoombe/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lcoombe/subscriptions",
+      "organizations_url": "https://api.github.com/users/lcoombe/orgs",
+      "repos_url": "https://api.github.com/users/lcoombe/repos",
+      "events_url": "https://api.github.com/users/lcoombe/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lcoombe/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "419dfcd5df07f1f1477a812c9e7a38097de7ceba",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/419dfcd5df07f1f1477a812c9e7a38097de7ceba",
+        "html_url": "https://github.com/bcgsc/abyss/commit/419dfcd5df07f1f1477a812c9e7a38097de7ceba"
+      }
+    ]
+  },
+  {
+    "sha": "419dfcd5df07f1f1477a812c9e7a38097de7ceba",
+    "node_id": "C_kwDOADmFmdoAKDQxOWRmY2Q1ZGYwN2YxZjE0NzdhODEyYzllN2EzODA5N2RlN2NlYmE",
+    "commit": {
+      "author": {
+        "name": "Lauren Coombe",
+        "email": "lauren.e.coombe@gmail.com",
+        "date": "2023-01-28T01:05:42Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-01-28T01:05:42Z"
+      },
+      "message": "Update README.md (#459)",
+      "tree": {
+        "sha": "0c833e1f62fd86f862bd10800366b4fe124b40d8",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/0c833e1f62fd86f862bd10800366b4fe124b40d8"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/419dfcd5df07f1f1477a812c9e7a38097de7ceba",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJj1HTmCRBK7hj4Ov3rIwAAgUwIAE9cCBG/dHs+t3aPotW0M1RV\nrL6RLSD969lQsiphOSer+RtkYCsfRFwtP9u/k8ce6guJFomfuv+C7bB/XpI+iywG\n4M6gOX+Sm62GhcN8hgiSkDLMVynvyFHADC83H5VlJ1FCJh+YKf4rjcMvs1RzHw2R\ngbtwCMBHVwtS/v1MMZqNaXNEwcO/FX+tlihIqUyrg84yNgymBf8FhFxlZmh4R41/\nUXtvy/kzTsfmLoM6sTNQW1sc6BtPmfcAWkDO5LDbZ6tgrh70vQnFYdh6BOErAtiH\nrP2JQTyhexp1/hdPXb+HH9tFvl5eEBbd/6/vxXObYpoY4R7REfpwXy1FySbxQWo=\n=yKCk\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 0c833e1f62fd86f862bd10800366b4fe124b40d8\nparent 308f4edb749c5ae75edf0d2426172be34515f317\nauthor Lauren Coombe <lauren.e.coombe@gmail.com> 1674867942 -0800\ncommitter GitHub <noreply@github.com> 1674867942 -0800\n\nUpdate README.md (#459)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/419dfcd5df07f1f1477a812c9e7a38097de7ceba",
+    "html_url": "https://github.com/bcgsc/abyss/commit/419dfcd5df07f1f1477a812c9e7a38097de7ceba",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/419dfcd5df07f1f1477a812c9e7a38097de7ceba/comments",
+    "author": {
+      "login": "lcoombe",
+      "id": 11697335,
+      "node_id": "MDQ6VXNlcjExNjk3MzM1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11697335?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lcoombe",
+      "html_url": "https://github.com/lcoombe",
+      "followers_url": "https://api.github.com/users/lcoombe/followers",
+      "following_url": "https://api.github.com/users/lcoombe/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lcoombe/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lcoombe/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lcoombe/subscriptions",
+      "organizations_url": "https://api.github.com/users/lcoombe/orgs",
+      "repos_url": "https://api.github.com/users/lcoombe/repos",
+      "events_url": "https://api.github.com/users/lcoombe/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lcoombe/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "308f4edb749c5ae75edf0d2426172be34515f317",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/308f4edb749c5ae75edf0d2426172be34515f317",
+        "html_url": "https://github.com/bcgsc/abyss/commit/308f4edb749c5ae75edf0d2426172be34515f317"
+      }
+    ]
+  },
+  {
+    "sha": "308f4edb749c5ae75edf0d2426172be34515f317",
+    "node_id": "C_kwDOADmFmdoAKDMwOGY0ZWRiNzQ5YzVhZTc1ZWRmMGQyNDI2MTcyYmUzNDUxNWYzMTc",
+    "commit": {
+      "author": {
+        "name": "Lauren Coombe",
+        "email": "lauren.e.coombe@gmail.com",
+        "date": "2023-01-27T03:39:11Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-01-27T03:39:11Z"
+      },
+      "message": "Fix CI (#460)\n\n* Change to ubuntu-20.04\r\n\r\n* Test focal fix\r\n\r\n* Test focal\r\n\r\n* Try additional focals, arm fix test\r\n\r\n* Fixes for gcc-6 and macOS_default_clang\r\n\r\n* Fixes for clang-format and macOS-default-clang\r\n\r\n* Add focal for clang\r\n\r\n* clang-6 and clang-7 ubuntu-20.04, macOS-default-clang  test\r\n\r\n* Test\r\n\r\n* Try llvm re-install\r\n\r\n* Test path for brew\r\n\r\n* Test\r\n\r\n* Try llvm dependencies separately\r\n\r\n* Try with llvm uninstall\r\n\r\n* Try macOS-11\r\n\r\n* Try macOS-11 for both jobs\r\n\r\n* Put all fixes together\r\n\r\n* Fix to macos-clang brew installs\r\n\r\n* Clean-up",
+      "tree": {
+        "sha": "31015355795cc3d0cd7548a5ec56589100d2dab7",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/31015355795cc3d0cd7548a5ec56589100d2dab7"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/308f4edb749c5ae75edf0d2426172be34515f317",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJj00dfCRBK7hj4Ov3rIwAAllkIAAzGP+dLc4TXRjiAeeaXC9AE\nMqufUSVf0SYpp2ep11xfEUejZXp07O+M7rLezDE4yUYq4cGfAG+0TzJZ9+SIven2\nId1MSo1L4s2NPeCkmyHTyKVm9t56XPo/OygxjnhlzKb7+XyZXXOSJfE5ShzU7Xax\nC0NR+QqjPsgDZl5xPXGgxfdmggS2DS7cOCR//uvOj6UET/efBluvm/c/qI/a6r81\nNjLuFDaqqfmyRrM/8gw3bHqPhT2m0QgdSHLsNvHRsxWPaL4Pgik9DnKjj0gzFQar\nMh9jAV3k8fViAT0ZkgmAX5engB5KuHoEBKB3aI/gF0iJknUPWFgXyPnR6Xxbqbw=\n=SDjb\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 31015355795cc3d0cd7548a5ec56589100d2dab7\nparent efceaeadc8d449775cf2a2c64404847c93dfdea1\nauthor Lauren Coombe <lauren.e.coombe@gmail.com> 1674790751 -0800\ncommitter GitHub <noreply@github.com> 1674790751 -0800\n\nFix CI (#460)\n\n* Change to ubuntu-20.04\r\n\r\n* Test focal fix\r\n\r\n* Test focal\r\n\r\n* Try additional focals, arm fix test\r\n\r\n* Fixes for gcc-6 and macOS_default_clang\r\n\r\n* Fixes for clang-format and macOS-default-clang\r\n\r\n* Add focal for clang\r\n\r\n* clang-6 and clang-7 ubuntu-20.04, macOS-default-clang  test\r\n\r\n* Test\r\n\r\n* Try llvm re-install\r\n\r\n* Test path for brew\r\n\r\n* Test\r\n\r\n* Try llvm dependencies separately\r\n\r\n* Try with llvm uninstall\r\n\r\n* Try macOS-11\r\n\r\n* Try macOS-11 for both jobs\r\n\r\n* Put all fixes together\r\n\r\n* Fix to macos-clang brew installs\r\n\r\n* Clean-up"
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/308f4edb749c5ae75edf0d2426172be34515f317",
+    "html_url": "https://github.com/bcgsc/abyss/commit/308f4edb749c5ae75edf0d2426172be34515f317",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/308f4edb749c5ae75edf0d2426172be34515f317/comments",
+    "author": {
+      "login": "lcoombe",
+      "id": 11697335,
+      "node_id": "MDQ6VXNlcjExNjk3MzM1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11697335?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lcoombe",
+      "html_url": "https://github.com/lcoombe",
+      "followers_url": "https://api.github.com/users/lcoombe/followers",
+      "following_url": "https://api.github.com/users/lcoombe/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lcoombe/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lcoombe/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lcoombe/subscriptions",
+      "organizations_url": "https://api.github.com/users/lcoombe/orgs",
+      "repos_url": "https://api.github.com/users/lcoombe/repos",
+      "events_url": "https://api.github.com/users/lcoombe/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lcoombe/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "efceaeadc8d449775cf2a2c64404847c93dfdea1",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/efceaeadc8d449775cf2a2c64404847c93dfdea1",
+        "html_url": "https://github.com/bcgsc/abyss/commit/efceaeadc8d449775cf2a2c64404847c93dfdea1"
+      }
+    ]
+  },
+  {
+    "sha": "efceaeadc8d449775cf2a2c64404847c93dfdea1",
+    "node_id": "C_kwDOADmFmdoAKGVmY2VhZWFkYzhkNDQ5Nzc1Y2YyYTJjNjQ0MDQ4NDdjOTNkZmRlYTE",
+    "commit": {
+      "author": {
+        "name": "Lauren Coombe",
+        "email": "lauren.e.coombe@gmail.com",
+        "date": "2022-11-01T23:00:25Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2022-11-01T23:00:25Z"
+      },
+      "message": "Update README.md (#458)",
+      "tree": {
+        "sha": "996ee3cb7a30fe28deef2cd7e105abff4c25d128",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/996ee3cb7a30fe28deef2cd7e105abff4c25d128"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/efceaeadc8d449775cf2a2c64404847c93dfdea1",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJjYaUJCRBK7hj4Ov3rIwAAMWIIAKDzud1j+9KLbJ2arfi86QdO\nbuCMWe4prqSjrpn9ib3WgdD2N7uB0/LvWMQWx9viBVDrGGiNHUJt4b3yVs4bIPU7\n7FLsog+MQZAOR1YUwvmI6burZ3I/39jfDZHDuS0BDPTuhPQooSNaq0LvsP9wckd1\nJL4PNcUDjhulXAv6AQvFoCOYloKe1Oeac/PijLssGnL+HbjRRTSH4GIc56TZt+1K\n1VEwJbDYFn24nSk8bZYgQDgE1HcUxxqI36pb/ITmv9uUFsAAwQYCQdgqr5Qkb2Wi\n6vmLNEG6gn+VJlkJY2+FE/bCAj0nZuE+DB9hKMLc4zdF7SBxJDqx/Ggcl9MaQo0=\n=KflV\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 996ee3cb7a30fe28deef2cd7e105abff4c25d128\nparent c911944597db07180e5c50b37af3eaebadd5b588\nauthor Lauren Coombe <lauren.e.coombe@gmail.com> 1667343625 -0700\ncommitter GitHub <noreply@github.com> 1667343625 -0700\n\nUpdate README.md (#458)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/efceaeadc8d449775cf2a2c64404847c93dfdea1",
+    "html_url": "https://github.com/bcgsc/abyss/commit/efceaeadc8d449775cf2a2c64404847c93dfdea1",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/efceaeadc8d449775cf2a2c64404847c93dfdea1/comments",
+    "author": {
+      "login": "lcoombe",
+      "id": 11697335,
+      "node_id": "MDQ6VXNlcjExNjk3MzM1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11697335?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lcoombe",
+      "html_url": "https://github.com/lcoombe",
+      "followers_url": "https://api.github.com/users/lcoombe/followers",
+      "following_url": "https://api.github.com/users/lcoombe/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lcoombe/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lcoombe/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lcoombe/subscriptions",
+      "organizations_url": "https://api.github.com/users/lcoombe/orgs",
+      "repos_url": "https://api.github.com/users/lcoombe/repos",
+      "events_url": "https://api.github.com/users/lcoombe/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lcoombe/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c911944597db07180e5c50b37af3eaebadd5b588",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/c911944597db07180e5c50b37af3eaebadd5b588",
+        "html_url": "https://github.com/bcgsc/abyss/commit/c911944597db07180e5c50b37af3eaebadd5b588"
+      }
+    ]
+  },
+  {
+    "sha": "c911944597db07180e5c50b37af3eaebadd5b588",
+    "node_id": "C_kwDOADmFmdoAKGM5MTE5NDQ1OTdkYjA3MTgwZTVjNTBiMzdhZjNlYWViYWRkNWI1ODg",
+    "commit": {
+      "author": {
+        "name": "Lauren Coombe",
+        "email": "lauren.e.coombe@gmail.com",
+        "date": "2022-11-01T22:25:29Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2022-11-01T22:25:29Z"
+      },
+      "message": "Update news section with RP posting (#457)\n\n* Update news section with RP posting\r\n\r\n* Add ssh, git installation to circle ci\r\n\r\n* Update install",
+      "tree": {
+        "sha": "70917ed37776ad7dfc1a45e34871b6108eeeb158",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/70917ed37776ad7dfc1a45e34871b6108eeeb158"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/c911944597db07180e5c50b37af3eaebadd5b588",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJjYZzZCRBK7hj4Ov3rIwAAIzUIAAF31DF4Rj2ORntsKUAGX3TA\nSVHRTbaKRs8ZXilM8KG8ZHuW/4a9dH/o0RuJgOjvqpRujXK5jc0e6jYM7CVHAqdU\n+re49Zm5mkLWyJE2NvaSjz4yvsq1tvUYAW/D0sdPNRVX9CtYeWFs0aoZgGnrO7ih\nRfqkF/6BAehJCJEr4o3PH9Ayco1zEorKkF4JYTEAxJd55fA+7CFT0Ynkl54pt1wK\n0LpBydvlQFtb6QoJ0chvVVcK8tnNcpZ5LKIKLMYnbcq4HX8eQ5u7aVv0i7Dp1yEt\np+EAkcyiZECStg76ygpuyU4gFDSj21BBmU+fxumH6Nm63Qyl9d8/E6leDgLgUmI=\n=rSg7\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 70917ed37776ad7dfc1a45e34871b6108eeeb158\nparent 8ac8f384a8e88efa86f2617ced87da453a88659c\nauthor Lauren Coombe <lauren.e.coombe@gmail.com> 1667341529 -0700\ncommitter GitHub <noreply@github.com> 1667341529 -0700\n\nUpdate news section with RP posting (#457)\n\n* Update news section with RP posting\r\n\r\n* Add ssh, git installation to circle ci\r\n\r\n* Update install"
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/c911944597db07180e5c50b37af3eaebadd5b588",
+    "html_url": "https://github.com/bcgsc/abyss/commit/c911944597db07180e5c50b37af3eaebadd5b588",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/c911944597db07180e5c50b37af3eaebadd5b588/comments",
+    "author": {
+      "login": "lcoombe",
+      "id": 11697335,
+      "node_id": "MDQ6VXNlcjExNjk3MzM1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11697335?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lcoombe",
+      "html_url": "https://github.com/lcoombe",
+      "followers_url": "https://api.github.com/users/lcoombe/followers",
+      "following_url": "https://api.github.com/users/lcoombe/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lcoombe/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lcoombe/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lcoombe/subscriptions",
+      "organizations_url": "https://api.github.com/users/lcoombe/orgs",
+      "repos_url": "https://api.github.com/users/lcoombe/repos",
+      "events_url": "https://api.github.com/users/lcoombe/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lcoombe/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8ac8f384a8e88efa86f2617ced87da453a88659c",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/8ac8f384a8e88efa86f2617ced87da453a88659c",
+        "html_url": "https://github.com/bcgsc/abyss/commit/8ac8f384a8e88efa86f2617ced87da453a88659c"
+      }
+    ]
+  },
+  {
+    "sha": "8ac8f384a8e88efa86f2617ced87da453a88659c",
+    "node_id": "C_kwDOADmFmdoAKDhhYzhmMzg0YThlODhlZmE4NmYyNjE3Y2VkODdkYTQ1M2E4ODY1OWM",
+    "commit": {
+      "author": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2022-06-22T16:49:10Z"
+      },
+      "committer": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2022-06-22T16:49:10Z"
+      },
+      "message": "Add RResolver publication",
+      "tree": {
+        "sha": "148a7441431194184b9d2d42c0af99080d532142",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/148a7441431194184b9d2d42c0af99080d532142"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/8ac8f384a8e88efa86f2617ced87da453a88659c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/8ac8f384a8e88efa86f2617ced87da453a88659c",
+    "html_url": "https://github.com/bcgsc/abyss/commit/8ac8f384a8e88efa86f2617ced87da453a88659c",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/8ac8f384a8e88efa86f2617ced87da453a88659c/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "fd32e67865bfe575296f78c014e3423ec0fa2262",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/fd32e67865bfe575296f78c014e3423ec0fa2262",
+        "html_url": "https://github.com/bcgsc/abyss/commit/fd32e67865bfe575296f78c014e3423ec0fa2262"
+      }
+    ]
+  },
+  {
+    "sha": "fd32e67865bfe575296f78c014e3423ec0fa2262",
+    "node_id": "C_kwDOADmFmdoAKGZkMzJlNjc4NjViZmU1NzUyOTZmNzhjMDE0ZTM0MjNlYzBmYTIyNjI",
+    "commit": {
+      "author": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2022-05-12T23:54:30Z"
+      },
+      "committer": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2022-05-12T23:54:30Z"
+      },
+      "message": "Fix README formatting",
+      "tree": {
+        "sha": "57993dc9b11486ea04e6392b8821208d9287608b",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/57993dc9b11486ea04e6392b8821208d9287608b"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/fd32e67865bfe575296f78c014e3423ec0fa2262",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/fd32e67865bfe575296f78c014e3423ec0fa2262",
+    "html_url": "https://github.com/bcgsc/abyss/commit/fd32e67865bfe575296f78c014e3423ec0fa2262",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/fd32e67865bfe575296f78c014e3423ec0fa2262/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "85bbde696d4907a67faa553f5457c8b07790036c",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/85bbde696d4907a67faa553f5457c8b07790036c",
+        "html_url": "https://github.com/bcgsc/abyss/commit/85bbde696d4907a67faa553f5457c8b07790036c"
+      }
+    ]
+  },
+  {
+    "sha": "85bbde696d4907a67faa553f5457c8b07790036c",
+    "node_id": "C_kwDOADmFmdoAKDg1YmJkZTY5NmQ0OTA3YTY3ZmFhNTUzZjU0NTdjOGIwNzc5MDAzNmM",
+    "commit": {
+      "author": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2022-05-12T23:53:17Z"
+      },
+      "committer": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2022-05-12T23:53:17Z"
+      },
+      "message": "Update README",
+      "tree": {
+        "sha": "8412867f32fa94428e02130e38913e495f75cd07",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/8412867f32fa94428e02130e38913e495f75cd07"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/85bbde696d4907a67faa553f5457c8b07790036c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/85bbde696d4907a67faa553f5457c8b07790036c",
+    "html_url": "https://github.com/bcgsc/abyss/commit/85bbde696d4907a67faa553f5457c8b07790036c",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/85bbde696d4907a67faa553f5457c8b07790036c/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "35e0a8474bb542259c96164450f0de329d397940",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/35e0a8474bb542259c96164450f0de329d397940",
+        "html_url": "https://github.com/bcgsc/abyss/commit/35e0a8474bb542259c96164450f0de329d397940"
+      }
+    ]
+  },
+  {
+    "sha": "35e0a8474bb542259c96164450f0de329d397940",
+    "node_id": "C_kwDOADmFmdoAKDM1ZTBhODQ3NGJiNTQyMjU5Yzk2MTY0NDUwZjBkZTMyOWQzOTc5NDA",
+    "commit": {
+      "author": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2022-05-11T22:23:32Z"
+      },
+      "committer": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2022-05-11T22:23:32Z"
+      },
+      "message": "Update ChangeLog",
+      "tree": {
+        "sha": "c5bd65db22750add53618d46eaea47a57a6032a0",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/c5bd65db22750add53618d46eaea47a57a6032a0"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/35e0a8474bb542259c96164450f0de329d397940",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/35e0a8474bb542259c96164450f0de329d397940",
+    "html_url": "https://github.com/bcgsc/abyss/commit/35e0a8474bb542259c96164450f0de329d397940",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/35e0a8474bb542259c96164450f0de329d397940/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "16eabb26dfa0d09df5385be585e53f91597350dc",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/16eabb26dfa0d09df5385be585e53f91597350dc",
+        "html_url": "https://github.com/bcgsc/abyss/commit/16eabb26dfa0d09df5385be585e53f91597350dc"
+      }
+    ]
+  },
+  {
+    "sha": "16eabb26dfa0d09df5385be585e53f91597350dc",
+    "node_id": "C_kwDOADmFmdoAKDE2ZWFiYjI2ZGZhMGQwOWRmNTM4NWJlNTg1ZTUzZjkxNTk3MzUwZGM",
+    "commit": {
+      "author": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2022-05-11T22:20:54Z"
+      },
+      "committer": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2022-05-11T22:20:54Z"
+      },
+      "message": "Remove deprecated feature usage",
+      "tree": {
+        "sha": "932983f430e4b35eec084c87d77c217f3fcc5d9b",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/932983f430e4b35eec084c87d77c217f3fcc5d9b"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/16eabb26dfa0d09df5385be585e53f91597350dc",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/16eabb26dfa0d09df5385be585e53f91597350dc",
+    "html_url": "https://github.com/bcgsc/abyss/commit/16eabb26dfa0d09df5385be585e53f91597350dc",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/16eabb26dfa0d09df5385be585e53f91597350dc/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "525f5b38916866dd5d744ccdef78e4b8f0b31aa4",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/525f5b38916866dd5d744ccdef78e4b8f0b31aa4",
+        "html_url": "https://github.com/bcgsc/abyss/commit/525f5b38916866dd5d744ccdef78e4b8f0b31aa4"
+      }
+    ]
+  },
+  {
+    "sha": "525f5b38916866dd5d744ccdef78e4b8f0b31aa4",
+    "node_id": "C_kwDOADmFmdoAKDUyNWY1YjM4OTE2ODY2ZGQ1ZDc0NGNjZGVmNzhlNGI4ZjBiMzFhYTQ",
+    "commit": {
+      "author": {
+        "name": "Vladimir",
+        "email": "vnikolic@bcgsc.ca",
+        "date": "2022-01-12T19:23:20Z"
+      },
+      "committer": {
+        "name": "Vladimir",
+        "email": "vnikolic@bcgsc.ca",
+        "date": "2022-01-12T19:23:20Z"
+      },
+      "message": "Fix compile errors when -DNDEBUG is enabled",
+      "tree": {
+        "sha": "7c0d7f83249560dd0c71a3247b0392220d2f2db8",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/7c0d7f83249560dd0c71a3247b0392220d2f2db8"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/525f5b38916866dd5d744ccdef78e4b8f0b31aa4",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/525f5b38916866dd5d744ccdef78e4b8f0b31aa4",
+    "html_url": "https://github.com/bcgsc/abyss/commit/525f5b38916866dd5d744ccdef78e4b8f0b31aa4",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/525f5b38916866dd5d744ccdef78e4b8f0b31aa4/comments",
+    "author": {
+      "login": "vlad0x00",
+      "id": 9122294,
+      "node_id": "MDQ6VXNlcjkxMjIyOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9122294?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vlad0x00",
+      "html_url": "https://github.com/vlad0x00",
+      "followers_url": "https://api.github.com/users/vlad0x00/followers",
+      "following_url": "https://api.github.com/users/vlad0x00/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vlad0x00/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vlad0x00/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vlad0x00/subscriptions",
+      "organizations_url": "https://api.github.com/users/vlad0x00/orgs",
+      "repos_url": "https://api.github.com/users/vlad0x00/repos",
+      "events_url": "https://api.github.com/users/vlad0x00/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vlad0x00/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vlad0x00",
+      "id": 9122294,
+      "node_id": "MDQ6VXNlcjkxMjIyOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9122294?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vlad0x00",
+      "html_url": "https://github.com/vlad0x00",
+      "followers_url": "https://api.github.com/users/vlad0x00/followers",
+      "following_url": "https://api.github.com/users/vlad0x00/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vlad0x00/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vlad0x00/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vlad0x00/subscriptions",
+      "organizations_url": "https://api.github.com/users/vlad0x00/orgs",
+      "repos_url": "https://api.github.com/users/vlad0x00/repos",
+      "events_url": "https://api.github.com/users/vlad0x00/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vlad0x00/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1bb8b301122e773d27ef0e0705738e71c4a65577",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/1bb8b301122e773d27ef0e0705738e71c4a65577",
+        "html_url": "https://github.com/bcgsc/abyss/commit/1bb8b301122e773d27ef0e0705738e71c4a65577"
+      }
+    ]
+  },
+  {
+    "sha": "1bb8b301122e773d27ef0e0705738e71c4a65577",
+    "node_id": "C_kwDOADmFmdoAKDFiYjhiMzAxMTIyZTc3M2QyN2VmMGUwNzA1NzM4ZTcxYzRhNjU1Nzc",
+    "commit": {
+      "author": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2021-12-20T19:46:37Z"
+      },
+      "committer": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2021-12-20T19:46:37Z"
+      },
+      "message": "Allow deprecated vfork",
+      "tree": {
+        "sha": "fc3acd3657dec6821fdb396fffe90da995d9cac3",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/fc3acd3657dec6821fdb396fffe90da995d9cac3"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/1bb8b301122e773d27ef0e0705738e71c4a65577",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/1bb8b301122e773d27ef0e0705738e71c4a65577",
+    "html_url": "https://github.com/bcgsc/abyss/commit/1bb8b301122e773d27ef0e0705738e71c4a65577",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/1bb8b301122e773d27ef0e0705738e71c4a65577/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "23a6e4f4925dd0895b0238bb3fa63864b5433171",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/23a6e4f4925dd0895b0238bb3fa63864b5433171",
+        "html_url": "https://github.com/bcgsc/abyss/commit/23a6e4f4925dd0895b0238bb3fa63864b5433171"
+      }
+    ]
+  },
+  {
+    "sha": "23a6e4f4925dd0895b0238bb3fa63864b5433171",
+    "node_id": "C_kwDOADmFmdoAKDIzYTZlNGY0OTI1ZGQwODk1YjAyMzhiYjNmYTYzODY0YjU0MzMxNzE",
+    "commit": {
+      "author": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2021-12-20T19:04:35Z"
+      },
+      "committer": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2021-12-20T19:04:35Z"
+      },
+      "message": "Update version and drop gcc5 support",
+      "tree": {
+        "sha": "ab5e915f0173f80550cdd431bebf6ee336fdf997",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/ab5e915f0173f80550cdd431bebf6ee336fdf997"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/23a6e4f4925dd0895b0238bb3fa63864b5433171",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/23a6e4f4925dd0895b0238bb3fa63864b5433171",
+    "html_url": "https://github.com/bcgsc/abyss/commit/23a6e4f4925dd0895b0238bb3fa63864b5433171",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/23a6e4f4925dd0895b0238bb3fa63864b5433171/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "ead5be40cc2dec15e0da4167f8c956406c98ec64",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/ead5be40cc2dec15e0da4167f8c956406c98ec64",
+        "html_url": "https://github.com/bcgsc/abyss/commit/ead5be40cc2dec15e0da4167f8c956406c98ec64"
+      }
+    ]
+  },
+  {
+    "sha": "ead5be40cc2dec15e0da4167f8c956406c98ec64",
+    "node_id": "C_kwDOADmFmdoAKGVhZDViZTQwY2MyZGVjMTVlMGRhNDE2N2Y4Yzk1NjQwNmM5OGVjNjQ",
+    "commit": {
+      "author": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2021-12-20T18:35:49Z"
+      },
+      "committer": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2021-12-20T18:35:49Z"
+      },
+      "message": "Use references with strings",
+      "tree": {
+        "sha": "20469e863f1a5ab683db781ea813327ad39af3d7",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/20469e863f1a5ab683db781ea813327ad39af3d7"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/ead5be40cc2dec15e0da4167f8c956406c98ec64",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/ead5be40cc2dec15e0da4167f8c956406c98ec64",
+    "html_url": "https://github.com/bcgsc/abyss/commit/ead5be40cc2dec15e0da4167f8c956406c98ec64",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/ead5be40cc2dec15e0da4167f8c956406c98ec64/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "bac357c7095719ed006411a4c9a3a9357b574799",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/bac357c7095719ed006411a4c9a3a9357b574799",
+        "html_url": "https://github.com/bcgsc/abyss/commit/bac357c7095719ed006411a4c9a3a9357b574799"
+      }
+    ]
+  },
+  {
+    "sha": "bac357c7095719ed006411a4c9a3a9357b574799",
+    "node_id": "C_kwDOADmFmdoAKGJhYzM1N2M3MDk1NzE5ZWQwMDY0MTFhNGM5YTNhOTM1N2I1NzQ3OTk",
+    "commit": {
+      "author": {
+        "name": "Vladimir",
+        "email": "vnikolic@bcgsc.ca",
+        "date": "2021-12-20T18:24:22Z"
+      },
+      "committer": {
+        "name": "Vladimir",
+        "email": "vnikolic@bcgsc.ca",
+        "date": "2021-12-20T18:24:22Z"
+      },
+      "message": "RResolver: use smaller bf, better read size proportion calculation",
+      "tree": {
+        "sha": "0b386e82750c09d807b0e37b6ade0a4958186b2a",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/0b386e82750c09d807b0e37b6ade0a4958186b2a"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/bac357c7095719ed006411a4c9a3a9357b574799",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/bac357c7095719ed006411a4c9a3a9357b574799",
+    "html_url": "https://github.com/bcgsc/abyss/commit/bac357c7095719ed006411a4c9a3a9357b574799",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/bac357c7095719ed006411a4c9a3a9357b574799/comments",
+    "author": {
+      "login": "vlad0x00",
+      "id": 9122294,
+      "node_id": "MDQ6VXNlcjkxMjIyOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9122294?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vlad0x00",
+      "html_url": "https://github.com/vlad0x00",
+      "followers_url": "https://api.github.com/users/vlad0x00/followers",
+      "following_url": "https://api.github.com/users/vlad0x00/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vlad0x00/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vlad0x00/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vlad0x00/subscriptions",
+      "organizations_url": "https://api.github.com/users/vlad0x00/orgs",
+      "repos_url": "https://api.github.com/users/vlad0x00/repos",
+      "events_url": "https://api.github.com/users/vlad0x00/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vlad0x00/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vlad0x00",
+      "id": 9122294,
+      "node_id": "MDQ6VXNlcjkxMjIyOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9122294?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vlad0x00",
+      "html_url": "https://github.com/vlad0x00",
+      "followers_url": "https://api.github.com/users/vlad0x00/followers",
+      "following_url": "https://api.github.com/users/vlad0x00/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vlad0x00/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vlad0x00/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vlad0x00/subscriptions",
+      "organizations_url": "https://api.github.com/users/vlad0x00/orgs",
+      "repos_url": "https://api.github.com/users/vlad0x00/repos",
+      "events_url": "https://api.github.com/users/vlad0x00/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vlad0x00/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2c37069902befee426165e8fa3711d5658a2a96f",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/2c37069902befee426165e8fa3711d5658a2a96f",
+        "html_url": "https://github.com/bcgsc/abyss/commit/2c37069902befee426165e8fa3711d5658a2a96f"
+      }
+    ]
+  },
+  {
+    "sha": "2c37069902befee426165e8fa3711d5658a2a96f",
+    "node_id": "C_kwDOADmFmdoAKDJjMzcwNjk5MDJiZWZlZTQyNjE2NWU4ZmEzNzExZDU2NThhMmE5NmY",
+    "commit": {
+      "author": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2021-11-10T21:08:19Z"
+      },
+      "committer": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2021-11-10T21:08:19Z"
+      },
+      "message": "Update outdated macros",
+      "tree": {
+        "sha": "4f06d08d323032df3cbc015a9e5a467f3c4b3f74",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/4f06d08d323032df3cbc015a9e5a467f3c4b3f74"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/2c37069902befee426165e8fa3711d5658a2a96f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/2c37069902befee426165e8fa3711d5658a2a96f",
+    "html_url": "https://github.com/bcgsc/abyss/commit/2c37069902befee426165e8fa3711d5658a2a96f",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/2c37069902befee426165e8fa3711d5658a2a96f/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "a8763313bc2f13904e6ae6795b92863de51007e1",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/a8763313bc2f13904e6ae6795b92863de51007e1",
+        "html_url": "https://github.com/bcgsc/abyss/commit/a8763313bc2f13904e6ae6795b92863de51007e1"
+      }
+    ]
+  },
+  {
+    "sha": "a8763313bc2f13904e6ae6795b92863de51007e1",
+    "node_id": "C_kwDOADmFmdoAKGE4NzYzMzEzYmMyZjEzOTA0ZTZhZTY3OTViOTI4NjNkZTUxMDA3ZTE",
+    "commit": {
+      "author": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2021-11-10T20:22:38Z"
+      },
+      "committer": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2021-11-10T20:22:38Z"
+      },
+      "message": "Update version",
+      "tree": {
+        "sha": "706ea620922ed9ecbdc6ceaec852deb5c177904b",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/706ea620922ed9ecbdc6ceaec852deb5c177904b"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/a8763313bc2f13904e6ae6795b92863de51007e1",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/a8763313bc2f13904e6ae6795b92863de51007e1",
+    "html_url": "https://github.com/bcgsc/abyss/commit/a8763313bc2f13904e6ae6795b92863de51007e1",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/a8763313bc2f13904e6ae6795b92863de51007e1/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "af4de8166b92206d53bd924053874a3fa78509a2",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/af4de8166b92206d53bd924053874a3fa78509a2",
+        "html_url": "https://github.com/bcgsc/abyss/commit/af4de8166b92206d53bd924053874a3fa78509a2"
+      }
+    ]
+  },
+  {
+    "sha": "af4de8166b92206d53bd924053874a3fa78509a2",
+    "node_id": "C_kwDOADmFmdoAKGFmNGRlODE2NmI5MjIwNmQ1M2JkOTI0MDUzODc0YTNmYTc4NTA5YTI",
+    "commit": {
+      "author": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2021-11-10T20:12:44Z"
+      },
+      "committer": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2021-11-10T20:12:44Z"
+      },
+      "message": "Change default num of min/max tests for RResolver",
+      "tree": {
+        "sha": "8197c357896aa65246b8fea12ce998db9885d1d4",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/8197c357896aa65246b8fea12ce998db9885d1d4"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/af4de8166b92206d53bd924053874a3fa78509a2",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/af4de8166b92206d53bd924053874a3fa78509a2",
+    "html_url": "https://github.com/bcgsc/abyss/commit/af4de8166b92206d53bd924053874a3fa78509a2",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/af4de8166b92206d53bd924053874a3fa78509a2/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "0a97fe4b84daa861a73d5df58f6bb5d507392f0f",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/0a97fe4b84daa861a73d5df58f6bb5d507392f0f",
+        "html_url": "https://github.com/bcgsc/abyss/commit/0a97fe4b84daa861a73d5df58f6bb5d507392f0f"
+      }
+    ]
+  },
+  {
+    "sha": "0a97fe4b84daa861a73d5df58f6bb5d507392f0f",
+    "node_id": "C_kwDOADmFmdoAKDBhOTdmZTRiODRkYWE4NjFhNzNkNWRmNThmNmJiNWQ1MDczOTJmMGY",
+    "commit": {
+      "author": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2021-11-09T19:36:10Z"
+      },
+      "committer": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2021-11-09T19:36:10Z"
+      },
+      "message": "Minor logic improvement",
+      "tree": {
+        "sha": "39a2d2c3542b9863bff1816c793a3339b0b48d8b",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/39a2d2c3542b9863bff1816c793a3339b0b48d8b"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/0a97fe4b84daa861a73d5df58f6bb5d507392f0f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/0a97fe4b84daa861a73d5df58f6bb5d507392f0f",
+    "html_url": "https://github.com/bcgsc/abyss/commit/0a97fe4b84daa861a73d5df58f6bb5d507392f0f",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/0a97fe4b84daa861a73d5df58f6bb5d507392f0f/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "6fada182820959bba26d011e248633022cebcbb9",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/6fada182820959bba26d011e248633022cebcbb9",
+        "html_url": "https://github.com/bcgsc/abyss/commit/6fada182820959bba26d011e248633022cebcbb9"
+      }
+    ]
+  },
+  {
+    "sha": "6fada182820959bba26d011e248633022cebcbb9",
+    "node_id": "C_kwDOADmFmdoAKDZmYWRhMTgyODIwOTU5YmJhMjZkMDExZTI0ODYzMzAyMmNlYmNiYjk",
+    "commit": {
+      "author": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2021-11-09T17:56:29Z"
+      },
+      "committer": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2021-11-09T17:56:29Z"
+      },
+      "message": "Update RResolver tests formula",
+      "tree": {
+        "sha": "3d9237dfe66dcf368680e1c0faf82aab19934fc8",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/3d9237dfe66dcf368680e1c0faf82aab19934fc8"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/6fada182820959bba26d011e248633022cebcbb9",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/6fada182820959bba26d011e248633022cebcbb9",
+    "html_url": "https://github.com/bcgsc/abyss/commit/6fada182820959bba26d011e248633022cebcbb9",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/6fada182820959bba26d011e248633022cebcbb9/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "1b976f1f1c9d421f2ecf7052513753644b4d7764",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/1b976f1f1c9d421f2ecf7052513753644b4d7764",
+        "html_url": "https://github.com/bcgsc/abyss/commit/1b976f1f1c9d421f2ecf7052513753644b4d7764"
+      }
+    ]
+  },
+  {
+    "sha": "1b976f1f1c9d421f2ecf7052513753644b4d7764",
+    "node_id": "C_kwDOADmFmdoAKDFiOTc2ZjFmMWM5ZDQyMWYyZWNmNzA1MjUxMzc1MzY0NGI0ZDc3NjQ",
+    "commit": {
+      "author": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2021-11-08T19:21:07Z"
+      },
+      "committer": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2021-11-08T19:21:07Z"
+      },
+      "message": "Limit read size merges for RResolver",
+      "tree": {
+        "sha": "49a76913661dc3e17101f50d924468fee8bed6d5",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/49a76913661dc3e17101f50d924468fee8bed6d5"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/1b976f1f1c9d421f2ecf7052513753644b4d7764",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/1b976f1f1c9d421f2ecf7052513753644b4d7764",
+    "html_url": "https://github.com/bcgsc/abyss/commit/1b976f1f1c9d421f2ecf7052513753644b4d7764",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/1b976f1f1c9d421f2ecf7052513753644b4d7764/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "230da91d49644df8748794c3132ac3f952fe4684",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/230da91d49644df8748794c3132ac3f952fe4684",
+        "html_url": "https://github.com/bcgsc/abyss/commit/230da91d49644df8748794c3132ac3f952fe4684"
+      }
+    ]
+  },
+  {
+    "sha": "230da91d49644df8748794c3132ac3f952fe4684",
+    "node_id": "C_kwDOADmFmdoAKDIzMGRhOTFkNDk2NDRkZjg3NDg3OTRjMzEzMmFjM2Y5NTJmZTQ2ODQ",
+    "commit": {
+      "author": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2021-11-08T19:10:14Z"
+      },
+      "committer": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2021-11-08T19:10:14Z"
+      },
+      "message": "Fix a bug where the RResolver step is skipped",
+      "tree": {
+        "sha": "d1fc71c3f54797cddd86e5405bbc84b566725550",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/d1fc71c3f54797cddd86e5405bbc84b566725550"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/230da91d49644df8748794c3132ac3f952fe4684",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/230da91d49644df8748794c3132ac3f952fe4684",
+    "html_url": "https://github.com/bcgsc/abyss/commit/230da91d49644df8748794c3132ac3f952fe4684",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/230da91d49644df8748794c3132ac3f952fe4684/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "fd6680323a04114da22948f2f7339377e9918d70",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/fd6680323a04114da22948f2f7339377e9918d70",
+        "html_url": "https://github.com/bcgsc/abyss/commit/fd6680323a04114da22948f2f7339377e9918d70"
+      }
+    ]
+  },
+  {
+    "sha": "fd6680323a04114da22948f2f7339377e9918d70",
+    "node_id": "C_kwDOADmFmdoAKGZkNjY4MDMyM2EwNDExNGRhMjI5NDhmMmY3MzM5Mzc3ZTk5MThkNzA",
+    "commit": {
+      "author": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2021-11-06T02:08:17Z"
+      },
+      "committer": {
+        "name": "vlad0x00",
+        "email": "vladlich@protonmail.com",
+        "date": "2021-11-06T02:08:17Z"
+      },
+      "message": "Remove redundant space",
+      "tree": {
+        "sha": "9d64d5b4a5caccb7e0cd5dc197c9b3b924a1367d",
+        "url": "https://api.github.com/repos/bcgsc/abyss/git/trees/9d64d5b4a5caccb7e0cd5dc197c9b3b924a1367d"
+      },
+      "url": "https://api.github.com/repos/bcgsc/abyss/git/commits/fd6680323a04114da22948f2f7339377e9918d70",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/bcgsc/abyss/commits/fd6680323a04114da22948f2f7339377e9918d70",
+    "html_url": "https://github.com/bcgsc/abyss/commit/fd6680323a04114da22948f2f7339377e9918d70",
+    "comments_url": "https://api.github.com/repos/bcgsc/abyss/commits/fd6680323a04114da22948f2f7339377e9918d70/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "cb8c4f20a83889217b1a5809b1b8979563fb02cd",
+        "url": "https://api.github.com/repos/bcgsc/abyss/commits/cb8c4f20a83889217b1a5809b1b8979563fb02cd",
+        "html_url": "https://github.com/bcgsc/abyss/commit/cb8c4f20a83889217b1a5809b1b8979563fb02cd"
+      }
+    ]
+  }
+]

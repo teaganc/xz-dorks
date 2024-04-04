@@ -1,0 +1,2239 @@
+[
+  {
+    "sha": "d4ada84120d61e81353d9f1dd26063c7ccad15c0",
+    "node_id": "C_kwDOBJUiRNoAKGQ0YWRhODQxMjBkNjFlODEzNTNkOWYxZGQyNjA2M2M3Y2NhZDE1YzA",
+    "commit": {
+      "author": {
+        "name": "Austin Shafer",
+        "email": "ashafer@badland.io",
+        "date": "2024-02-21T15:46:02Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@gmail.com",
+        "date": "2024-03-20T17:09:31Z"
+      },
+      "message": "egl-wayland: implement linux-drm-syncobj-v1\n\nThis implements the explicit sync linux-drm-syncobj-v1 protocol for EGL.\n\nMost of this change involves wayland-protocol handling boilerplate. The\nprotocol works by allowing the creation of timelines (i.e. DRM syncobjs)\nand per-surface states. We can then specify acquire and release points\nduring our surface state configuration which will tell the compositor\nwhen it can access the buffer or notify us when it is finished accessing\nthe buffer.\n\nSync point signaling takes place during acquire_surface_image. We choose\nour two release point values and send them to the compositor.  In the\nacquire case, the EGLSync will be created first and will be populated\nwith a fence representing the GPU work. We can extract its syncfd and\nimport it at the acquire point. We choose the release point during\nimage acquisition, but don't actually create an EGLSync for it until\nlater when the compositor has added a fence to the release point. We\ncheck if this has taken place after every surface commit.\n\nSeparate timelines are used for the acquire and release points. Each\nstream image will have its own timeline, otherwise our signaling of\nacquire points would implicitly signal the still-pending release points.",
+      "tree": {
+        "sha": "8ad86267b1e04a8b7e05a963edec53f66bd1345a",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/8ad86267b1e04a8b7e05a963edec53f66bd1345a"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/d4ada84120d61e81353d9f1dd26063c7ccad15c0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/d4ada84120d61e81353d9f1dd26063c7ccad15c0",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/d4ada84120d61e81353d9f1dd26063c7ccad15c0",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/d4ada84120d61e81353d9f1dd26063c7ccad15c0/comments",
+    "author": {
+      "login": "amshafer",
+      "id": 6434216,
+      "node_id": "MDQ6VXNlcjY0MzQyMTY=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6434216?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/amshafer",
+      "html_url": "https://github.com/amshafer",
+      "followers_url": "https://api.github.com/users/amshafer/followers",
+      "following_url": "https://api.github.com/users/amshafer/following{/other_user}",
+      "gists_url": "https://api.github.com/users/amshafer/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/amshafer/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/amshafer/subscriptions",
+      "organizations_url": "https://api.github.com/users/amshafer/orgs",
+      "repos_url": "https://api.github.com/users/amshafer/repos",
+      "events_url": "https://api.github.com/users/amshafer/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/amshafer/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "369b3372ba94c2bb097c93585a18b1b2f82d3421",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/369b3372ba94c2bb097c93585a18b1b2f82d3421",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/369b3372ba94c2bb097c93585a18b1b2f82d3421"
+      }
+    ]
+  },
+  {
+    "sha": "369b3372ba94c2bb097c93585a18b1b2f82d3421",
+    "node_id": "C_kwDOBJUiRNoAKDM2OWIzMzcyYmE5NGMyYmIwOTdjOTM1ODVhMThiMWIyZjgyZDM0MjE",
+    "commit": {
+      "author": {
+        "name": "Robin Ebert",
+        "email": "ebertrobin2002@gmail.com",
+        "date": "2024-01-15T09:26:44Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@gmail.com",
+        "date": "2024-01-19T03:47:09Z"
+      },
+      "message": "egl-wayland: Fix potential null-pointer dereference",
+      "tree": {
+        "sha": "d59acda1761651c93bf7a729f34fbe75566883ca",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/d59acda1761651c93bf7a729f34fbe75566883ca"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/369b3372ba94c2bb097c93585a18b1b2f82d3421",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/369b3372ba94c2bb097c93585a18b1b2f82d3421",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/369b3372ba94c2bb097c93585a18b1b2f82d3421",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/369b3372ba94c2bb097c93585a18b1b2f82d3421/comments",
+    "author": {
+      "login": "Molytho",
+      "id": 58165360,
+      "node_id": "MDQ6VXNlcjU4MTY1MzYw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/58165360?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Molytho",
+      "html_url": "https://github.com/Molytho",
+      "followers_url": "https://api.github.com/users/Molytho/followers",
+      "following_url": "https://api.github.com/users/Molytho/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Molytho/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Molytho/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Molytho/subscriptions",
+      "organizations_url": "https://api.github.com/users/Molytho/orgs",
+      "repos_url": "https://api.github.com/users/Molytho/repos",
+      "events_url": "https://api.github.com/users/Molytho/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Molytho/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "11386ccd5cb82c245f194abbfe63ab2dffc9f810",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/11386ccd5cb82c245f194abbfe63ab2dffc9f810",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/11386ccd5cb82c245f194abbfe63ab2dffc9f810"
+      }
+    ]
+  },
+  {
+    "sha": "11386ccd5cb82c245f194abbfe63ab2dffc9f810",
+    "node_id": "C_kwDOBJUiRNoAKDExMzg2Y2NkNWNiODJjMjQ1ZjE5NGFiYmZlNjNhYjJkZmZjOWY4MTA",
+    "commit": {
+      "author": {
+        "name": "Robin Ebert",
+        "email": "ebertrobin2002@gmail.com",
+        "date": "2024-01-12T13:52:57Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@gmail.com",
+        "date": "2024-01-19T03:47:09Z"
+      },
+      "message": "egl-wayland: Read compositor device from zwp_linux_dmabuf_v1\n\nCompositors start dropping support for wl_drm because it is replaced by linux-dmabuf.\nSee https://gitlab.freedesktop.org/wlroots/wlroots/-/commit/2f2a55ebd3c5a950f1bf8c280edf0838721363da.\nTry reading compositors main device from linux-dmabuf v4 if supported and otherwise fallback to wl_drm.",
+      "tree": {
+        "sha": "2cc0eb0c862010102a5fc4980163e3372147aff9",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/2cc0eb0c862010102a5fc4980163e3372147aff9"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/11386ccd5cb82c245f194abbfe63ab2dffc9f810",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/11386ccd5cb82c245f194abbfe63ab2dffc9f810",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/11386ccd5cb82c245f194abbfe63ab2dffc9f810",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/11386ccd5cb82c245f194abbfe63ab2dffc9f810/comments",
+    "author": {
+      "login": "Molytho",
+      "id": 58165360,
+      "node_id": "MDQ6VXNlcjU4MTY1MzYw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/58165360?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Molytho",
+      "html_url": "https://github.com/Molytho",
+      "followers_url": "https://api.github.com/users/Molytho/followers",
+      "following_url": "https://api.github.com/users/Molytho/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Molytho/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Molytho/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Molytho/subscriptions",
+      "organizations_url": "https://api.github.com/users/Molytho/orgs",
+      "repos_url": "https://api.github.com/users/Molytho/repos",
+      "events_url": "https://api.github.com/users/Molytho/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Molytho/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "69ae9cf07bbec3b00a682918bf0dc845e9896771",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/69ae9cf07bbec3b00a682918bf0dc845e9896771",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/69ae9cf07bbec3b00a682918bf0dc845e9896771"
+      }
+    ]
+  },
+  {
+    "sha": "69ae9cf07bbec3b00a682918bf0dc845e9896771",
+    "node_id": "C_kwDOBJUiRNoAKDY5YWU5Y2YwN2JiZWMzYjAwYTY4MjkxOGJmMGRjODQ1ZTk4OTY3NzE",
+    "commit": {
+      "author": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2023-10-18T18:00:18Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2023-10-18T18:00:18Z"
+      },
+      "message": "bump version to 1.1.13",
+      "tree": {
+        "sha": "e8d07132b916fc01219a8edbebe9dc520d1abe29",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/e8d07132b916fc01219a8edbebe9dc520d1abe29"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/69ae9cf07bbec3b00a682918bf0dc845e9896771",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/69ae9cf07bbec3b00a682918bf0dc845e9896771",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/69ae9cf07bbec3b00a682918bf0dc845e9896771",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/69ae9cf07bbec3b00a682918bf0dc845e9896771/comments",
+    "author": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ea62b689eb56ac8203150cc42d300e9a1c27b496",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/ea62b689eb56ac8203150cc42d300e9a1c27b496",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/ea62b689eb56ac8203150cc42d300e9a1c27b496"
+      }
+    ]
+  },
+  {
+    "sha": "ea62b689eb56ac8203150cc42d300e9a1c27b496",
+    "node_id": "C_kwDOBJUiRNoAKGVhNjJiNjg5ZWI1NmFjODIwMzE1MGNjNDJkMzAwZTlhMWMyN2I0OTY",
+    "commit": {
+      "author": {
+        "name": "Kyle Brenneman",
+        "email": "kbrenneman@nvidia.com",
+        "date": "2023-10-18T00:11:00Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2023-10-18T17:59:15Z"
+      },
+      "message": "egl-wayland: Make sure that the EGLDevice search matches the right device node\n\nIn checkNvidiaDrmDevice, while we've got the device open, call\ndrmGetDevice and make sure that wlEglGetPlatformDisplayExport is\nmatching the render node, regardless of whether the server sends back\nthe render or primary node.",
+      "tree": {
+        "sha": "f63d64f5dd761dc80d919d079e336aa4668a3b65",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/f63d64f5dd761dc80d919d079e336aa4668a3b65"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/ea62b689eb56ac8203150cc42d300e9a1c27b496",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/ea62b689eb56ac8203150cc42d300e9a1c27b496",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/ea62b689eb56ac8203150cc42d300e9a1c27b496",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/ea62b689eb56ac8203150cc42d300e9a1c27b496/comments",
+    "author": {
+      "login": "kbrenneman",
+      "id": 4998757,
+      "node_id": "MDQ6VXNlcjQ5OTg3NTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4998757?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/kbrenneman",
+      "html_url": "https://github.com/kbrenneman",
+      "followers_url": "https://api.github.com/users/kbrenneman/followers",
+      "following_url": "https://api.github.com/users/kbrenneman/following{/other_user}",
+      "gists_url": "https://api.github.com/users/kbrenneman/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/kbrenneman/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/kbrenneman/subscriptions",
+      "organizations_url": "https://api.github.com/users/kbrenneman/orgs",
+      "repos_url": "https://api.github.com/users/kbrenneman/repos",
+      "events_url": "https://api.github.com/users/kbrenneman/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/kbrenneman/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ba6c38ad74cf0ef6ec4d7934f68c17a7a2d460ca",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/ba6c38ad74cf0ef6ec4d7934f68c17a7a2d460ca",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/ba6c38ad74cf0ef6ec4d7934f68c17a7a2d460ca"
+      }
+    ]
+  },
+  {
+    "sha": "ba6c38ad74cf0ef6ec4d7934f68c17a7a2d460ca",
+    "node_id": "C_kwDOBJUiRNoAKGJhNmMzOGFkNzRjZjBlZjZlYzRkNzkzNGY2OGMxN2E3YTJkNDYwY2E",
+    "commit": {
+      "author": {
+        "name": "Kyle Brenneman",
+        "email": "kbrenneman@nvidia.com",
+        "date": "2023-10-18T00:10:41Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2023-10-18T17:58:49Z"
+      },
+      "message": "egl-wayland: Exit early from eglGetPlatformDisplay for non-NV devices\n\nIn wlEglGetPlatformDisplayExport, after we get the DRM device node from\nthe server, call drmGetDevice to check if it points to an NVIDIA device.\n\nIf it's not an NVIDIA device, then return early before calling\neglQueryDevicesEXT.\n\nIf the display is configured to use GPU offloading (either with\nEGL_EXT_explicit_device or if __NV_PRIME_RENDER_OFFLOAD is set), then it\nwill still continue and look for a matching/NVIDIA device regardless of\nwhat the server is running.\n\nOn multi-GPU systems, calling eglQueryDevicesEXT can cause it to power\nthe GPU's on, which can take a very long time.",
+      "tree": {
+        "sha": "18f14a74d26a092fada7f225c75f4c627dec0988",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/18f14a74d26a092fada7f225c75f4c627dec0988"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/ba6c38ad74cf0ef6ec4d7934f68c17a7a2d460ca",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/ba6c38ad74cf0ef6ec4d7934f68c17a7a2d460ca",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/ba6c38ad74cf0ef6ec4d7934f68c17a7a2d460ca",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/ba6c38ad74cf0ef6ec4d7934f68c17a7a2d460ca/comments",
+    "author": {
+      "login": "kbrenneman",
+      "id": 4998757,
+      "node_id": "MDQ6VXNlcjQ5OTg3NTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4998757?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/kbrenneman",
+      "html_url": "https://github.com/kbrenneman",
+      "followers_url": "https://api.github.com/users/kbrenneman/followers",
+      "following_url": "https://api.github.com/users/kbrenneman/following{/other_user}",
+      "gists_url": "https://api.github.com/users/kbrenneman/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/kbrenneman/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/kbrenneman/subscriptions",
+      "organizations_url": "https://api.github.com/users/kbrenneman/orgs",
+      "repos_url": "https://api.github.com/users/kbrenneman/repos",
+      "events_url": "https://api.github.com/users/kbrenneman/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/kbrenneman/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "bea8ccb1af7a7b810f66049996bdfbda1c689e42",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/bea8ccb1af7a7b810f66049996bdfbda1c689e42",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/bea8ccb1af7a7b810f66049996bdfbda1c689e42"
+      }
+    ]
+  },
+  {
+    "sha": "bea8ccb1af7a7b810f66049996bdfbda1c689e42",
+    "node_id": "C_kwDOBJUiRNoAKGJlYThjY2IxYWY3YTdiODEwZjY2MDQ5OTk2YmRmYmRhMWM2ODllNDI",
+    "commit": {
+      "author": {
+        "name": "Kyle Brenneman",
+        "email": "kbrenneman@nvidia.com",
+        "date": "2023-10-09T18:43:41Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2023-10-18T17:57:43Z"
+      },
+      "message": "egl-wayland: Include internal header files in \"make dist\".\n\nFor the autotools build, add the various internal header files to\nlibnvidia_egl_wayland_la_SOURCES so that \"make dist\" include them in the\narchive.",
+      "tree": {
+        "sha": "6d092e2a8d56138189e187d64973f65d2ae5573e",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/6d092e2a8d56138189e187d64973f65d2ae5573e"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/bea8ccb1af7a7b810f66049996bdfbda1c689e42",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/bea8ccb1af7a7b810f66049996bdfbda1c689e42",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/bea8ccb1af7a7b810f66049996bdfbda1c689e42",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/bea8ccb1af7a7b810f66049996bdfbda1c689e42/comments",
+    "author": {
+      "login": "kbrenneman",
+      "id": 4998757,
+      "node_id": "MDQ6VXNlcjQ5OTg3NTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4998757?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/kbrenneman",
+      "html_url": "https://github.com/kbrenneman",
+      "followers_url": "https://api.github.com/users/kbrenneman/followers",
+      "following_url": "https://api.github.com/users/kbrenneman/following{/other_user}",
+      "gists_url": "https://api.github.com/users/kbrenneman/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/kbrenneman/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/kbrenneman/subscriptions",
+      "organizations_url": "https://api.github.com/users/kbrenneman/orgs",
+      "repos_url": "https://api.github.com/users/kbrenneman/repos",
+      "events_url": "https://api.github.com/users/kbrenneman/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/kbrenneman/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3f9889c35e4a159da3b6008303957ab109863f0b",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/3f9889c35e4a159da3b6008303957ab109863f0b",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/3f9889c35e4a159da3b6008303957ab109863f0b"
+      }
+    ]
+  },
+  {
+    "sha": "3f9889c35e4a159da3b6008303957ab109863f0b",
+    "node_id": "C_kwDOBJUiRNoAKDNmOTg4OWMzNWU0YTE1OWRhM2I2MDA4MzAzOTU3YWIxMDk4NjNmMGI",
+    "commit": {
+      "author": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2023-09-21T18:25:11Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2023-09-21T18:25:11Z"
+      },
+      "message": "egl-wayland: receive dmabuf v4 feedback events on surface queues\n\nCurrently, egl-wayland receives dmabuf v4 feedback events on it's\nper-EGLDisplay queue. These events are dispatched after a new EGLSurface is\ncreated or an existing surface is reallocated. The former is fine because\nthe compositor will always send the initial feedback immediately after\nsurface creation. However, if the feedback changes in response to the\nsurface being resized (e.g. if it is made full-screen and becomes eligible\nfor direct scan-out) then the new feedback will not be sent until a buffer\nwith the new size is attached. This doesn't happen until the next\neglSwapBuffers call. Therefore we won't actually receive the new batch of\nfeedback events, they will just sit in the queue.\n\nNot only does this entirely defeat the purpose of supporting the dmabuf v4\nprotocol, if a surface is destroyed those pending events may still be\ndispatched afterwards, leading to a use-after-free.\n\nTo fix this, instead of receiving dmabuf v4 feedback events on the display\nqueue, we will instead receive them on the surface queue. Since this queue\ngets dispatched every frame, we will be guaranteed to always have an\nup-to-date set of tranches.",
+      "tree": {
+        "sha": "d2bf044fb60d5fe7c20e74842d0c7c48c6f97333",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/d2bf044fb60d5fe7c20e74842d0c7c48c6f97333"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/3f9889c35e4a159da3b6008303957ab109863f0b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/3f9889c35e4a159da3b6008303957ab109863f0b",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/3f9889c35e4a159da3b6008303957ab109863f0b",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/3f9889c35e4a159da3b6008303957ab109863f0b/comments",
+    "author": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ea70449fd94b5f866ea6189bf4f41f7c230cccfa",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/ea70449fd94b5f866ea6189bf4f41f7c230cccfa",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/ea70449fd94b5f866ea6189bf4f41f7c230cccfa"
+      }
+    ]
+  },
+  {
+    "sha": "ea70449fd94b5f866ea6189bf4f41f7c230cccfa",
+    "node_id": "C_kwDOBJUiRNoAKGVhNzA0NDlmZDk0YjVmODY2ZWE2MTg5YmY0ZjQxZjdjMjMwY2NjZmE",
+    "commit": {
+      "author": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2023-07-14T20:43:43Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2023-07-18T18:46:06Z"
+      },
+      "message": "egl-wayland: handle multiple tranches for the same device\n\nTo determine the set of format modifiers to use when creating a surface\nwe will find the first tranche for our DRM device, or else the\ncompositor's main device, and then look for our DRM format in that\ntranche's list of formats to find the modifier list. If our format is\nnot in the list, then we won't use explicit modifiers when creating the\nsurface.\n\nHowever, some compositors will advertise multiple tranches for a given\nDRM device with a different set of formats in each one. Kwin is one\nexample. In that case, the tranche we select above might not contain our\nformat, but it could still be in one of the other tranches for the same\ndevice.\n\nInstead of simply picking the first tranche for the desired device, with\nthis change we will loop over the format list of each of that device's\ntranches until we find a tranche that contains the format we want.",
+      "tree": {
+        "sha": "4107fda8550fa34f2549e884b06b0bd2d36b9c06",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/4107fda8550fa34f2549e884b06b0bd2d36b9c06"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/ea70449fd94b5f866ea6189bf4f41f7c230cccfa",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/ea70449fd94b5f866ea6189bf4f41f7c230cccfa",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/ea70449fd94b5f866ea6189bf4f41f7c230cccfa",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/ea70449fd94b5f866ea6189bf4f41f7c230cccfa/comments",
+    "author": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3ead05d4587991b75dc704444b1b1365c08af5ce",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/3ead05d4587991b75dc704444b1b1365c08af5ce",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/3ead05d4587991b75dc704444b1b1365c08af5ce"
+      }
+    ]
+  },
+  {
+    "sha": "3ead05d4587991b75dc704444b1b1365c08af5ce",
+    "node_id": "C_kwDOBJUiRNoAKDNlYWQwNWQ0NTg3OTkxYjc1ZGM3MDQ0NDRiMWIxMzY1YzA4YWY1Y2U",
+    "commit": {
+      "author": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2023-07-14T21:07:25Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2023-07-18T18:46:02Z"
+      },
+      "message": "egl-wayland: destroy all proxies before destroying their queues\n\nThe latest version of libwayland-client.so will print a warning if a\nqueue is destroyed while a proxy is still assigned to it. This warning\nis triggered during EGL termination by our linux_dmabuf object and the\ndefault dmabuf feedback object for the display. It is also triggered\nduring EGLSurface destruction by the surface's dmabuf feedback object.\nThat last object never gets destroyed at all, in fact.\n\nThis change ensures that the above objects are all destroyed *before*\ntheir queues.",
+      "tree": {
+        "sha": "93745fd7904070a399b6374508520bf1513a35f0",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/93745fd7904070a399b6374508520bf1513a35f0"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/3ead05d4587991b75dc704444b1b1365c08af5ce",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/3ead05d4587991b75dc704444b1b1365c08af5ce",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/3ead05d4587991b75dc704444b1b1365c08af5ce",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/3ead05d4587991b75dc704444b1b1365c08af5ce/comments",
+    "author": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e3b2240f97a640f288c19ced8a32e22d88ca84f5",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/e3b2240f97a640f288c19ced8a32e22d88ca84f5",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/e3b2240f97a640f288c19ced8a32e22d88ca84f5"
+      }
+    ]
+  },
+  {
+    "sha": "e3b2240f97a640f288c19ced8a32e22d88ca84f5",
+    "node_id": "C_kwDOBJUiRNoAKGUzYjIyNDBmOTdhNjQwZjI4OGMxOWNlZDhhMzJlMjJkODhjYTg0ZjU",
+    "commit": {
+      "author": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2023-06-01T23:27:32Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2023-06-01T23:27:32Z"
+      },
+      "message": "bump version to 1.1.12",
+      "tree": {
+        "sha": "0030e252dd8af81accd58509f926554828999615",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/0030e252dd8af81accd58509f926554828999615"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/e3b2240f97a640f288c19ced8a32e22d88ca84f5",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/e3b2240f97a640f288c19ced8a32e22d88ca84f5",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/e3b2240f97a640f288c19ced8a32e22d88ca84f5",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/e3b2240f97a640f288c19ced8a32e22d88ca84f5/comments",
+    "author": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f2dc786cf7ae20b39fc91f04cec8ecbb2d1f935f",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/f2dc786cf7ae20b39fc91f04cec8ecbb2d1f935f",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/f2dc786cf7ae20b39fc91f04cec8ecbb2d1f935f"
+      }
+    ]
+  },
+  {
+    "sha": "f2dc786cf7ae20b39fc91f04cec8ecbb2d1f935f",
+    "node_id": "C_kwDOBJUiRNoAKGYyZGM3ODZjZjdhZTIwYjM5ZmM5MWYwNGNlYzhlY2JiMmQxZjkzNWY",
+    "commit": {
+      "author": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2023-05-09T18:42:53Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2023-05-09T18:48:01Z"
+      },
+      "message": "egl-wayland: set unprocessedFeedback flag\n\nA prior commit added logic to reallocate window surfaces after receiving\na new dma-buf feedback from the compositor. This keys off of the\nunprocessedFeedback flag, however currently that flag never actually\ngets set. This change sets the flag after receiving a new feedback, so\nthat we will reallocate the surface on the next eglSwapBuffers call.",
+      "tree": {
+        "sha": "9ffddc1396f8eb8de666d09a77369cc6671fbf79",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/9ffddc1396f8eb8de666d09a77369cc6671fbf79"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/f2dc786cf7ae20b39fc91f04cec8ecbb2d1f935f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/f2dc786cf7ae20b39fc91f04cec8ecbb2d1f935f",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/f2dc786cf7ae20b39fc91f04cec8ecbb2d1f935f",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/f2dc786cf7ae20b39fc91f04cec8ecbb2d1f935f/comments",
+    "author": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1c87fc017139f5c5fa81863977b8de915b9968d7",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/1c87fc017139f5c5fa81863977b8de915b9968d7",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/1c87fc017139f5c5fa81863977b8de915b9968d7"
+      }
+    ]
+  },
+  {
+    "sha": "1c87fc017139f5c5fa81863977b8de915b9968d7",
+    "node_id": "C_kwDOBJUiRNoAKDFjODdmYzAxNzEzOWY1YzVmYTgxODYzOTc3YjhkZTkxNWI5OTY4ZDc",
+    "commit": {
+      "author": {
+        "name": "Austin Shafer",
+        "email": "ashafer@nvidia.com",
+        "date": "2023-02-14T18:26:33Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2023-05-09T18:46:54Z"
+      },
+      "message": "wayland: Use linear modifier for prime when appropriate\n\nOriginally we removed forcing the linear modifier when running prime\nsince we could count on finding the linear modifier somewhere in the\nlist of intel/AMD modifiers. However with dmabuf v4 we will look for\na tranche of modifiers for a specific device (the NV one) and use the\nmodifiers for that. A non-fullscreen app in a wayland prime setup may\nonly get one tranche for the main device, meaning it finds no modifiers\nto initialize the consumer with.\n\nThis change goes back to explicitly specifying the linear modifier for\nprime. This happens with prime enabled and when:\n1. We are on an older protocol version (< 4). This is done just to be\n   explicit.\n2. We could not find a format set for this device.",
+      "tree": {
+        "sha": "03921e5873748d002133bfd060b3b830131084c6",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/03921e5873748d002133bfd060b3b830131084c6"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/1c87fc017139f5c5fa81863977b8de915b9968d7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/1c87fc017139f5c5fa81863977b8de915b9968d7",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/1c87fc017139f5c5fa81863977b8de915b9968d7",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/1c87fc017139f5c5fa81863977b8de915b9968d7/comments",
+    "author": null,
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "13737c6af4c0a7cfef5ec9013a4382bbeb7b495c",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/13737c6af4c0a7cfef5ec9013a4382bbeb7b495c",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/13737c6af4c0a7cfef5ec9013a4382bbeb7b495c"
+      }
+    ]
+  },
+  {
+    "sha": "13737c6af4c0a7cfef5ec9013a4382bbeb7b495c",
+    "node_id": "C_kwDOBJUiRNoAKDEzNzM3YzZhZjRjMGE3Y2ZlZjVlYzkwMTNhNDM4MmJiZWI3YjQ5NWM",
+    "commit": {
+      "author": {
+        "name": "q234rty",
+        "email": "q23456yuiop@gmail.com",
+        "date": "2023-04-07T10:08:03Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@gmail.com",
+        "date": "2023-04-19T17:15:06Z"
+      },
+      "message": "Fix wrong destruction order for event queue",
+      "tree": {
+        "sha": "b06756b4cbf44ea61e276587120d0bf610cc1c0c",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/b06756b4cbf44ea61e276587120d0bf610cc1c0c"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/13737c6af4c0a7cfef5ec9013a4382bbeb7b495c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/13737c6af4c0a7cfef5ec9013a4382bbeb7b495c",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/13737c6af4c0a7cfef5ec9013a4382bbeb7b495c",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/13737c6af4c0a7cfef5ec9013a4382bbeb7b495c/comments",
+    "author": {
+      "login": "q234rty",
+      "id": 11485439,
+      "node_id": "MDQ6VXNlcjExNDg1NDM5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11485439?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/q234rty",
+      "html_url": "https://github.com/q234rty",
+      "followers_url": "https://api.github.com/users/q234rty/followers",
+      "following_url": "https://api.github.com/users/q234rty/following{/other_user}",
+      "gists_url": "https://api.github.com/users/q234rty/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/q234rty/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/q234rty/subscriptions",
+      "organizations_url": "https://api.github.com/users/q234rty/orgs",
+      "repos_url": "https://api.github.com/users/q234rty/repos",
+      "events_url": "https://api.github.com/users/q234rty/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/q234rty/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "30c5a951a849f835acc9f11ea4ca4e1d3380b7eb",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/30c5a951a849f835acc9f11ea4ca4e1d3380b7eb",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/30c5a951a849f835acc9f11ea4ca4e1d3380b7eb"
+      }
+    ]
+  },
+  {
+    "sha": "30c5a951a849f835acc9f11ea4ca4e1d3380b7eb",
+    "node_id": "C_kwDOBJUiRNoAKDMwYzVhOTUxYTg0OWY4MzVhY2M5ZjExZWE0Y2E0ZTFkMzM4MGI3ZWI",
+    "commit": {
+      "author": {
+        "name": "Robin Ebert",
+        "email": "ebertrobin2002@gmail.com",
+        "date": "2023-01-25T16:31:46Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@gmail.com",
+        "date": "2023-02-02T15:26:59Z"
+      },
+      "message": "Destroy all created wayland object in terminateDisplay",
+      "tree": {
+        "sha": "9aa6bd5abcd4d818813f14f5bd1f2b435ed986bb",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/9aa6bd5abcd4d818813f14f5bd1f2b435ed986bb"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/30c5a951a849f835acc9f11ea4ca4e1d3380b7eb",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/30c5a951a849f835acc9f11ea4ca4e1d3380b7eb",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/30c5a951a849f835acc9f11ea4ca4e1d3380b7eb",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/30c5a951a849f835acc9f11ea4ca4e1d3380b7eb/comments",
+    "author": {
+      "login": "Molytho",
+      "id": 58165360,
+      "node_id": "MDQ6VXNlcjU4MTY1MzYw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/58165360?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Molytho",
+      "html_url": "https://github.com/Molytho",
+      "followers_url": "https://api.github.com/users/Molytho/followers",
+      "following_url": "https://api.github.com/users/Molytho/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Molytho/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Molytho/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Molytho/subscriptions",
+      "organizations_url": "https://api.github.com/users/Molytho/orgs",
+      "repos_url": "https://api.github.com/users/Molytho/repos",
+      "events_url": "https://api.github.com/users/Molytho/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Molytho/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9038e29be3524366a595622d4acef73ca535c945",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/9038e29be3524366a595622d4acef73ca535c945",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/9038e29be3524366a595622d4acef73ca535c945"
+      }
+    ]
+  },
+  {
+    "sha": "9038e29be3524366a595622d4acef73ca535c945",
+    "node_id": "C_kwDOBJUiRNoAKDkwMzhlMjliZTM1MjQzNjZhNTk1NjIyZDRhY2VmNzNjYTUzNWM5NDU",
+    "commit": {
+      "author": {
+        "name": "Dogukan Korkmazturk",
+        "email": "dkorkmazturk@nvidia.com",
+        "date": "2023-01-19T20:37:19Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2023-02-01T20:44:52Z"
+      },
+      "message": "egl-wayland: Fix indentation problems\n\nThis change fixes the indentation problems introduced by CL 31917963.",
+      "tree": {
+        "sha": "0b6370a19b7d81b6ba116019ef8cd87e2be43621",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/0b6370a19b7d81b6ba116019ef8cd87e2be43621"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/9038e29be3524366a595622d4acef73ca535c945",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/9038e29be3524366a595622d4acef73ca535c945",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/9038e29be3524366a595622d4acef73ca535c945",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/9038e29be3524366a595622d4acef73ca535c945/comments",
+    "author": {
+      "login": "dkorkmazturk",
+      "id": 5155177,
+      "node_id": "MDQ6VXNlcjUxNTUxNzc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5155177?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dkorkmazturk",
+      "html_url": "https://github.com/dkorkmazturk",
+      "followers_url": "https://api.github.com/users/dkorkmazturk/followers",
+      "following_url": "https://api.github.com/users/dkorkmazturk/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dkorkmazturk/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dkorkmazturk/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dkorkmazturk/subscriptions",
+      "organizations_url": "https://api.github.com/users/dkorkmazturk/orgs",
+      "repos_url": "https://api.github.com/users/dkorkmazturk/repos",
+      "events_url": "https://api.github.com/users/dkorkmazturk/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dkorkmazturk/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4d4164ceba81baa249a4b2a205977d49ed60daf6",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/4d4164ceba81baa249a4b2a205977d49ed60daf6",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/4d4164ceba81baa249a4b2a205977d49ed60daf6"
+      }
+    ]
+  },
+  {
+    "sha": "4d4164ceba81baa249a4b2a205977d49ed60daf6",
+    "node_id": "C_kwDOBJUiRNoAKDRkNDE2NGNlYmE4MWJhYTI0OWE0YjJhMjA1OTc3ZDQ5ZWQ2MGRhZjY",
+    "commit": {
+      "author": {
+        "name": "Austin Shafer",
+        "email": "ashafer@nvidia.com",
+        "date": "2023-01-18T14:12:01Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2023-02-01T20:44:38Z"
+      },
+      "message": "wayland: Only search dmabuf format sets if surface has an eglConfig\n\nThis fixes a vulkan wsi regression on wayland introduced by CL 32234950.\nVulkan surfaces will not have a defined eglConfig, and therefore we\ncannot check what format they would like to use.\n\nEventually we need to fix this and plumb modifier selection through on\nvulkan, however given the way we currently sit vulkan on top of EGL this\nwill not be a simple fix. This change is intended as a short-term\nbandaid to fix the regression while allowing GL/EGL to continue using\ndmabuf v4.",
+      "tree": {
+        "sha": "54e03bc1939efbf8399d3cdb08bc4b653a57b485",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/54e03bc1939efbf8399d3cdb08bc4b653a57b485"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/4d4164ceba81baa249a4b2a205977d49ed60daf6",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/4d4164ceba81baa249a4b2a205977d49ed60daf6",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/4d4164ceba81baa249a4b2a205977d49ed60daf6",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/4d4164ceba81baa249a4b2a205977d49ed60daf6/comments",
+    "author": null,
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5c6b59b2f93ba4e6bdf367ecebcc8259c79459d1",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/5c6b59b2f93ba4e6bdf367ecebcc8259c79459d1",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/5c6b59b2f93ba4e6bdf367ecebcc8259c79459d1"
+      }
+    ]
+  },
+  {
+    "sha": "5c6b59b2f93ba4e6bdf367ecebcc8259c79459d1",
+    "node_id": "C_kwDOBJUiRNoAKDVjNmI1OWIyZjkzYmE0ZTZiZGYzNjdlY2ViY2M4MjU5Yzc5NDU5ZDE",
+    "commit": {
+      "author": {
+        "name": "Austin Shafer",
+        "email": "ashafer@nvidia.com",
+        "date": "2023-01-13T21:10:20Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2023-02-01T20:44:30Z"
+      },
+      "message": "wayland: Register per-surface feedback\n\nThis adds the final piece of dynamic modifier renegotiation on wayland.\nThis change gets a feedback object for the surface that the compositor\nwill use to send us updates on supported formats/modifiers.\n\nThis is important for enabling features such as direct dGPU scanout\non wayland. Currently we use a linear modifier when running in PRIME, but\nwith this change we can also react to the compositor sending us dGPU\nscanout modifiers if we are fullscreened.",
+      "tree": {
+        "sha": "d10dadbb52460835b3d0efd2c5561da8f604375f",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/d10dadbb52460835b3d0efd2c5561da8f604375f"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/5c6b59b2f93ba4e6bdf367ecebcc8259c79459d1",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/5c6b59b2f93ba4e6bdf367ecebcc8259c79459d1",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/5c6b59b2f93ba4e6bdf367ecebcc8259c79459d1",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/5c6b59b2f93ba4e6bdf367ecebcc8259c79459d1/comments",
+    "author": null,
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "62bec3da27cd4673d80f181d17418b9d5d1eaa2f",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/62bec3da27cd4673d80f181d17418b9d5d1eaa2f",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/62bec3da27cd4673d80f181d17418b9d5d1eaa2f"
+      }
+    ]
+  },
+  {
+    "sha": "62bec3da27cd4673d80f181d17418b9d5d1eaa2f",
+    "node_id": "C_kwDOBJUiRNoAKDYyYmVjM2RhMjdjZDQ2NzNkODBmMTgxZDE3NDE4YjlkNWQxZWFhMmY",
+    "commit": {
+      "author": {
+        "name": "Austin Shafer",
+        "email": "ashafer@nvidia.com",
+        "date": "2023-01-13T18:11:25Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2023-02-01T20:44:24Z"
+      },
+      "message": "wayland: Realloc surface if the compositor sends updated feedback\n\nIn the case of on-the-fly negotiation with a compositor that supports\ndmabuf v4, we may get an updated set of modifiers that we need to\nreact to. This turns wlEglResizeSurfaceIfRequired into\nwlEglReallocSurfaceIfRequired, which checks if we need to reallocate\nthe surface and does so.\n\nNote that this functionality is really for per-surface feedback objects,\nwhere the compositor can resend scanout tranches if the surface is\nfullscreen. This CL adds the ability to realloc before we enable\nper-surface feedback, since per-surface feedback tells the compositor\nwe support dynamically reallocating the surface to follow what it\nsends.",
+      "tree": {
+        "sha": "a676f84b416c3ed2fb11ae188c999aae79494709",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/a676f84b416c3ed2fb11ae188c999aae79494709"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/62bec3da27cd4673d80f181d17418b9d5d1eaa2f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/62bec3da27cd4673d80f181d17418b9d5d1eaa2f",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/62bec3da27cd4673d80f181d17418b9d5d1eaa2f",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/62bec3da27cd4673d80f181d17418b9d5d1eaa2f/comments",
+    "author": null,
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b42f7ee48a67bb5129b12c111973ef627fc2dba7",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/b42f7ee48a67bb5129b12c111973ef627fc2dba7",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/b42f7ee48a67bb5129b12c111973ef627fc2dba7"
+      }
+    ]
+  },
+  {
+    "sha": "b42f7ee48a67bb5129b12c111973ef627fc2dba7",
+    "node_id": "C_kwDOBJUiRNoAKGI0MmY3ZWU0OGE2N2JiNTEyOWIxMmMxMTE5NzNlZjYyN2ZjMmRiYTc",
+    "commit": {
+      "author": {
+        "name": "Austin Shafer",
+        "email": "ashafer@nvidia.com",
+        "date": "2023-01-12T19:56:40Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2023-02-01T20:44:19Z"
+      },
+      "message": "wayland: Implement linux_dmabuf protocol v4\n\nThis adds basic support for the dmabuf v4 protocol implementation,\nwhich adds compositor feedback objects to get hints about what modifiers\nto use when allocating surfaces. This is only a basic implementation,\nwith the fancy per-surface and reallocation bits coming in following\nchanges.\n\nThis also adds all of the structs we will use to handle feedback. A feedback\nobject holds a list of tranches sent by the compositor. Each tranche has\na dev_t device and a set of format/modifiers supported for that device.",
+      "tree": {
+        "sha": "e10ad48f59b19fd25526e9bbb46a095786b277c4",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/e10ad48f59b19fd25526e9bbb46a095786b277c4"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/b42f7ee48a67bb5129b12c111973ef627fc2dba7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/b42f7ee48a67bb5129b12c111973ef627fc2dba7",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/b42f7ee48a67bb5129b12c111973ef627fc2dba7",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/b42f7ee48a67bb5129b12c111973ef627fc2dba7/comments",
+    "author": null,
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d194d142392a3ff5f81fa8bf9325b4baf7a10da2",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/d194d142392a3ff5f81fa8bf9325b4baf7a10da2",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/d194d142392a3ff5f81fa8bf9325b4baf7a10da2"
+      }
+    ]
+  },
+  {
+    "sha": "d194d142392a3ff5f81fa8bf9325b4baf7a10da2",
+    "node_id": "C_kwDOBJUiRNoAKGQxOTRkMTQyMzkyYTNmZjVmODFmYThiZjkzMjViNGJhZjdhMTBkYTI",
+    "commit": {
+      "author": {
+        "name": "Austin Shafer",
+        "email": "ashafer@nvidia.com",
+        "date": "2022-12-27T21:19:19Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2023-02-01T20:44:13Z"
+      },
+      "message": "wayland: Add dmabuf format set\n\nThis adds helper functions for handling sets of dmabuf formats and\ntheir associated modifiers. This will be needed for later dmabuf\nv4 feedback structs, where we have multiple places to handle lists\nof formats and want to be able to share code.\n\nThis adds the WlEglDmaBufFormatSet struct, and a couple functions\nfor easily interacting with it. This is mostly all existing\nfunctionality from our current dmabuf protocol implementation, just\nwrapped up in a reusable struct.",
+      "tree": {
+        "sha": "ea91c7f7c78b62448f26f3433884eda3ca862353",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/ea91c7f7c78b62448f26f3433884eda3ca862353"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/d194d142392a3ff5f81fa8bf9325b4baf7a10da2",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/d194d142392a3ff5f81fa8bf9325b4baf7a10da2",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/d194d142392a3ff5f81fa8bf9325b4baf7a10da2",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/d194d142392a3ff5f81fa8bf9325b4baf7a10da2/comments",
+    "author": null,
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7af7082eac2170da66990edda2ca73a221e2086e",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/7af7082eac2170da66990edda2ca73a221e2086e",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/7af7082eac2170da66990edda2ca73a221e2086e"
+      }
+    ]
+  },
+  {
+    "sha": "7af7082eac2170da66990edda2ca73a221e2086e",
+    "node_id": "C_kwDOBJUiRNoAKDdhZjcwODJlYWMyMTcwZGE2Njk5MGVkZGEyY2E3M2EyMjFlMjA4NmU",
+    "commit": {
+      "author": {
+        "name": "Austin Shafer",
+        "email": "ashafer@nvidia.com",
+        "date": "2022-12-27T18:24:52Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2023-02-01T20:44:01Z"
+      },
+      "message": "wayland: Fix dmabuf protocol registration\n\nCurrently we are registering our listener for the dmabuf protocol\nin dmabuf_set_interface. This is called when we make a new registry\non a wl_proxy wrapper for our wl_display in wlEglInitializeHook.\n\nThe issue is that dmabuf_handle_modifier is never called. The\ncompositor will send the event, but the client library will never\ndeliver it to us even though we have bound the protocol and registered\na listener. I'm not sure exactly why this is, but it has something\nto do with the proxy wrapper we are using. Other handlers, such as\nfor eglstreams, bind the registry but defer adding a listener until\nafter we have finished dealing with the wrapper.\n\nThis change makes linux_dmabuf add a listener after the registry\nglobals have been enumerated. This makes dmabuf_handle_modifier\nfinally start getting called and populating our drm format list.\n\nIt also actually passes the modifiers we received from the compositor\nto streamImageConsumerConnect. This is needed for future work on\ndynamic modifier renegotiation.",
+      "tree": {
+        "sha": "f5031bfba0be290be0da8a3e68b4b6bfe6730016",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/f5031bfba0be290be0da8a3e68b4b6bfe6730016"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/7af7082eac2170da66990edda2ca73a221e2086e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/7af7082eac2170da66990edda2ca73a221e2086e",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/7af7082eac2170da66990edda2ca73a221e2086e",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/7af7082eac2170da66990edda2ca73a221e2086e/comments",
+    "author": null,
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "97189eef964959345acdbcd7bb91873ec7f68e98",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/97189eef964959345acdbcd7bb91873ec7f68e98",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/97189eef964959345acdbcd7bb91873ec7f68e98"
+      }
+    ]
+  },
+  {
+    "sha": "97189eef964959345acdbcd7bb91873ec7f68e98",
+    "node_id": "C_kwDOBJUiRNoAKDk3MTg5ZWVmOTY0OTU5MzQ1YWNkYmNkN2JiOTE4NzNlYzdmNjhlOTg",
+    "commit": {
+      "author": {
+        "name": "Dogukan Korkmazturk",
+        "email": "dkorkmazturk@nvidia.com",
+        "date": "2022-10-12T18:35:06Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2022-10-21T22:49:19Z"
+      },
+      "message": "egl-wayland: Merge two identical if-statements\n\nTwo if-statements with identical conditions in wlEglDestroySurface()\nfunction are merged into one.",
+      "tree": {
+        "sha": "a863a5701ba79eecf402c2a64de52e16f9d0e02d",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/a863a5701ba79eecf402c2a64de52e16f9d0e02d"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/97189eef964959345acdbcd7bb91873ec7f68e98",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/97189eef964959345acdbcd7bb91873ec7f68e98",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/97189eef964959345acdbcd7bb91873ec7f68e98",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/97189eef964959345acdbcd7bb91873ec7f68e98/comments",
+    "author": {
+      "login": "dkorkmazturk",
+      "id": 5155177,
+      "node_id": "MDQ6VXNlcjUxNTUxNzc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5155177?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dkorkmazturk",
+      "html_url": "https://github.com/dkorkmazturk",
+      "followers_url": "https://api.github.com/users/dkorkmazturk/followers",
+      "following_url": "https://api.github.com/users/dkorkmazturk/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dkorkmazturk/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dkorkmazturk/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dkorkmazturk/subscriptions",
+      "organizations_url": "https://api.github.com/users/dkorkmazturk/orgs",
+      "repos_url": "https://api.github.com/users/dkorkmazturk/repos",
+      "events_url": "https://api.github.com/users/dkorkmazturk/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dkorkmazturk/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "dbb678f1bdfa3e73297181bf9a97a4870bba2eea",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/dbb678f1bdfa3e73297181bf9a97a4870bba2eea",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/dbb678f1bdfa3e73297181bf9a97a4870bba2eea"
+      }
+    ]
+  },
+  {
+    "sha": "dbb678f1bdfa3e73297181bf9a97a4870bba2eea",
+    "node_id": "C_kwDOBJUiRNoAKGRiYjY3OGYxYmRmYTNlNzMyOTcxODFiZjlhOTdhNDg3MGJiYTJlZWE",
+    "commit": {
+      "author": {
+        "name": "Dogukan Korkmazturk",
+        "email": "dkorkmazturk@nvidia.com",
+        "date": "2022-10-11T22:06:15Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2022-10-21T22:48:38Z"
+      },
+      "message": "egl-wayland: Expose the functionality of the presentation-time protocol\n\nThe following functions are added and exposed to the users of this\nlibrary:\n\nwlEglPostPresentExport2: An updated version of wlEglPostPresentExport\nthat expects a pointer to a __GLNVpresentEventInfoRec structure. If the\npointer is not NULL and the compositor supports the presentation-time\nextension, a presentation-time feedback request is sent along with the\npresentation request and the pointer is passed as a parameter to the\ncallback functions that process the feedback events. In the callback\nfunctions, the status field of these structures are updated to indicate\nthat the requested presentation has been performed.\n\nwlEglProcessPresentationFeedbacksExport: A non-blocking function to\ndispatch all received presentation feedback events on demand. Returns\nthe number of updated presentation event information structures.\n\nwlEglWaitAllPresentationFeedbacksExport: A blocking function that waits\nfor all events corresponding to the sent feedback requests to be\nreceived. Designed to be explicitly called before destroying\nWlEglSurface objects to prevent events to be placed to a destroyed event\nqueue. There are several reasons for this operation to be implemented as\na separate function that is exposed to the users:\n  * It is possible for the clients of this library to destroy the\n    resources passed to wlEglPostPresentExport2 function before they\n    destroy the corresponding WlEglSurface.\n  * Clients of this library could use a counter that counts the number\n    of presentation requests sent and the return value of the\n    wlEglProcessPresentationFeedbacksExport function to wait for all in\n    flight presentation feedback requests. However, they are allowed to\n    change the number of presentation requests they expect by choosing to\n    ignore some results, creating a disparity between the number of in\n    flight requests and expected number of updates.",
+      "tree": {
+        "sha": "bc3f523e118528042bc21e0dad3f84452160cc90",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/bc3f523e118528042bc21e0dad3f84452160cc90"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/dbb678f1bdfa3e73297181bf9a97a4870bba2eea",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/dbb678f1bdfa3e73297181bf9a97a4870bba2eea",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/dbb678f1bdfa3e73297181bf9a97a4870bba2eea",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/dbb678f1bdfa3e73297181bf9a97a4870bba2eea/comments",
+    "author": {
+      "login": "dkorkmazturk",
+      "id": 5155177,
+      "node_id": "MDQ6VXNlcjUxNTUxNzc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5155177?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dkorkmazturk",
+      "html_url": "https://github.com/dkorkmazturk",
+      "followers_url": "https://api.github.com/users/dkorkmazturk/followers",
+      "following_url": "https://api.github.com/users/dkorkmazturk/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dkorkmazturk/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dkorkmazturk/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dkorkmazturk/subscriptions",
+      "organizations_url": "https://api.github.com/users/dkorkmazturk/orgs",
+      "repos_url": "https://api.github.com/users/dkorkmazturk/repos",
+      "events_url": "https://api.github.com/users/dkorkmazturk/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dkorkmazturk/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "24e1091cfc43e4cf26d653409fd1a52c94f110c2",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/24e1091cfc43e4cf26d653409fd1a52c94f110c2",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/24e1091cfc43e4cf26d653409fd1a52c94f110c2"
+      }
+    ]
+  },
+  {
+    "sha": "24e1091cfc43e4cf26d653409fd1a52c94f110c2",
+    "node_id": "C_kwDOBJUiRNoAKDI0ZTEwOTFjZmM0M2U0Y2YyNmQ2NTM0MDlmZDFhNTJjOTRmMTEwYzI",
+    "commit": {
+      "author": {
+        "name": "Dogukan Korkmazturk",
+        "email": "dkorkmazturk@nvidia.com",
+        "date": "2022-10-11T16:55:22Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2022-10-21T22:48:10Z"
+      },
+      "message": "egl-wayland: Add presentation-time protocol files\n\nWayland's presentation-time protocol is used to receive presentation\ntiming information from a compositor that supports it. This change adds\nthe client side header file and the glue code used by this protocol to\nlet egl-wayland to employ this protocol.",
+      "tree": {
+        "sha": "eb6e75174cbeb96a10ffb940fbcef7abc3b0bc35",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/eb6e75174cbeb96a10ffb940fbcef7abc3b0bc35"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/24e1091cfc43e4cf26d653409fd1a52c94f110c2",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/24e1091cfc43e4cf26d653409fd1a52c94f110c2",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/24e1091cfc43e4cf26d653409fd1a52c94f110c2",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/24e1091cfc43e4cf26d653409fd1a52c94f110c2/comments",
+    "author": {
+      "login": "dkorkmazturk",
+      "id": 5155177,
+      "node_id": "MDQ6VXNlcjUxNTUxNzc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5155177?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dkorkmazturk",
+      "html_url": "https://github.com/dkorkmazturk",
+      "followers_url": "https://api.github.com/users/dkorkmazturk/followers",
+      "following_url": "https://api.github.com/users/dkorkmazturk/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dkorkmazturk/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dkorkmazturk/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dkorkmazturk/subscriptions",
+      "organizations_url": "https://api.github.com/users/dkorkmazturk/orgs",
+      "repos_url": "https://api.github.com/users/dkorkmazturk/repos",
+      "events_url": "https://api.github.com/users/dkorkmazturk/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dkorkmazturk/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5d0194dcc7f4c334e0e71e8b5ec1b85311d72779",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/5d0194dcc7f4c334e0e71e8b5ec1b85311d72779",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/5d0194dcc7f4c334e0e71e8b5ec1b85311d72779"
+      }
+    ]
+  },
+  {
+    "sha": "5d0194dcc7f4c334e0e71e8b5ec1b85311d72779",
+    "node_id": "C_kwDOBJUiRNoAKDVkMDE5NGRjYzdmNGMzMzRlMGU3MWU4YjVlYzFiODUzMTFkNzI3Nzk",
+    "commit": {
+      "author": {
+        "name": "Dogukan Korkmazturk",
+        "email": "dkorkmazturk@nvidia.com",
+        "date": "2022-09-07T11:44:48Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2022-10-21T22:46:10Z"
+      },
+      "message": "egl-wayland: Add wlEglCreateSurfaceExport2 function\n\nSince there is a need to create a surface with specific attributes and\nthe existing wlEglCreateSurfaceExport() function does not take an\nattribute list as a parameter, a new version of this function is created\nthat takes an attribute list to keep the API/ABI compatibility.",
+      "tree": {
+        "sha": "53041643d051835c8dbe17ea4f147960a0e160e5",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/53041643d051835c8dbe17ea4f147960a0e160e5"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/5d0194dcc7f4c334e0e71e8b5ec1b85311d72779",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/5d0194dcc7f4c334e0e71e8b5ec1b85311d72779",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/5d0194dcc7f4c334e0e71e8b5ec1b85311d72779",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/5d0194dcc7f4c334e0e71e8b5ec1b85311d72779/comments",
+    "author": {
+      "login": "dkorkmazturk",
+      "id": 5155177,
+      "node_id": "MDQ6VXNlcjUxNTUxNzc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5155177?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dkorkmazturk",
+      "html_url": "https://github.com/dkorkmazturk",
+      "followers_url": "https://api.github.com/users/dkorkmazturk/followers",
+      "following_url": "https://api.github.com/users/dkorkmazturk/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dkorkmazturk/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dkorkmazturk/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dkorkmazturk/subscriptions",
+      "organizations_url": "https://api.github.com/users/dkorkmazturk/orgs",
+      "repos_url": "https://api.github.com/users/dkorkmazturk/repos",
+      "events_url": "https://api.github.com/users/dkorkmazturk/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dkorkmazturk/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2980e57d161b87be013b2deb9de93336d287daf9",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/2980e57d161b87be013b2deb9de93336d287daf9",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/2980e57d161b87be013b2deb9de93336d287daf9"
+      }
+    ]
+  },
+  {
+    "sha": "2980e57d161b87be013b2deb9de93336d287daf9",
+    "node_id": "C_kwDOBJUiRNoAKDI5ODBlNTdkMTYxYjg3YmUwMTNiMmRlYjlkZTkzMzM2ZDI4N2RhZjk",
+    "commit": {
+      "author": {
+        "name": "Kyle Brenneman",
+        "email": "kbrenneman@nvidia.com",
+        "date": "2022-09-19T21:39:22Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2022-10-21T22:46:10Z"
+      },
+      "message": "EGL/Wayland: Disable NV -> NV offloading with EGL_EXT_explicit_device\n\nDisallow offloading between NVIDIA devices for Wayland, because it's\ncurrently broken in both Weston and Mutter.\n\nWith Weston, it doesn't work because Weston will try to use the image\nfor overlay or scanout, which doesn't work with a pitch linear sysmem\nimage due to bug 3770050.\n\nMutter doesn't correctly handle external-only images, so it'll try to\nimport the EGLImage into a GL_TEXTURE_2D texture, which also fails.",
+      "tree": {
+        "sha": "8dd3506e9225ecf862fa25d64230c94790d1046d",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/8dd3506e9225ecf862fa25d64230c94790d1046d"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/2980e57d161b87be013b2deb9de93336d287daf9",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/2980e57d161b87be013b2deb9de93336d287daf9",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/2980e57d161b87be013b2deb9de93336d287daf9",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/2980e57d161b87be013b2deb9de93336d287daf9/comments",
+    "author": {
+      "login": "kbrenneman",
+      "id": 4998757,
+      "node_id": "MDQ6VXNlcjQ5OTg3NTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4998757?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/kbrenneman",
+      "html_url": "https://github.com/kbrenneman",
+      "followers_url": "https://api.github.com/users/kbrenneman/followers",
+      "following_url": "https://api.github.com/users/kbrenneman/following{/other_user}",
+      "gists_url": "https://api.github.com/users/kbrenneman/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/kbrenneman/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/kbrenneman/subscriptions",
+      "organizations_url": "https://api.github.com/users/kbrenneman/orgs",
+      "repos_url": "https://api.github.com/users/kbrenneman/repos",
+      "events_url": "https://api.github.com/users/kbrenneman/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/kbrenneman/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "819b07730984bbced51ed02b11a04479ee404035",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/819b07730984bbced51ed02b11a04479ee404035",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/819b07730984bbced51ed02b11a04479ee404035"
+      }
+    ]
+  },
+  {
+    "sha": "819b07730984bbced51ed02b11a04479ee404035",
+    "node_id": "C_kwDOBJUiRNoAKDgxOWIwNzczMDk4NGJiY2VkNTFlZDAyYjExYTA0NDc5ZWU0MDQwMzU",
+    "commit": {
+      "author": {
+        "name": "Kyle Brenneman",
+        "email": "kbrenneman@nvidia.com",
+        "date": "2022-08-15T18:43:34Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2022-10-21T22:46:10Z"
+      },
+      "message": "EGL/Wayland: Fix matching EGL_DEVICE_EXT attributes in existing displays\n\nIn the EGL Wayland library, record the EGL_DEVICE_EXT attribute in the\nWlEglDisplayRec struct.\n\nIn wlEglGetPlatformDisplayExport, record the EGL_DEVICE_EXT attribute in\na new WlEglDisplayRec::requestedDevice field, and check that the device\nmatches when searching for an existing EGLDisplay.\n\nPreviously, two calls to eglGetPlatformDisplay with the same wl_display\npointer but different EGL_DEVICE_EXT attributes would use return the\nsame EGLDisplay.",
+      "tree": {
+        "sha": "b2a731043a14312aee13a39ca317f2641ae0c926",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/b2a731043a14312aee13a39ca317f2641ae0c926"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/819b07730984bbced51ed02b11a04479ee404035",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/819b07730984bbced51ed02b11a04479ee404035",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/819b07730984bbced51ed02b11a04479ee404035",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/819b07730984bbced51ed02b11a04479ee404035/comments",
+    "author": {
+      "login": "kbrenneman",
+      "id": 4998757,
+      "node_id": "MDQ6VXNlcjQ5OTg3NTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4998757?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/kbrenneman",
+      "html_url": "https://github.com/kbrenneman",
+      "followers_url": "https://api.github.com/users/kbrenneman/followers",
+      "following_url": "https://api.github.com/users/kbrenneman/following{/other_user}",
+      "gists_url": "https://api.github.com/users/kbrenneman/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/kbrenneman/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/kbrenneman/subscriptions",
+      "organizations_url": "https://api.github.com/users/kbrenneman/orgs",
+      "repos_url": "https://api.github.com/users/kbrenneman/repos",
+      "events_url": "https://api.github.com/users/kbrenneman/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/kbrenneman/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3ed0df9c01234259e139e43ac08e1c639ad24d56",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/3ed0df9c01234259e139e43ac08e1c639ad24d56",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/3ed0df9c01234259e139e43ac08e1c639ad24d56"
+      }
+    ]
+  },
+  {
+    "sha": "3ed0df9c01234259e139e43ac08e1c639ad24d56",
+    "node_id": "C_kwDOBJUiRNoAKDNlZDBkZjljMDEyMzQyNTllMTM5ZTQzYWMwOGUxYzYzOWFkMjRkNTY",
+    "commit": {
+      "author": {
+        "name": "Kyle Brenneman",
+        "email": "kbrenneman@nvidia.com",
+        "date": "2022-08-03T20:42:23Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2022-10-21T22:46:10Z"
+      },
+      "message": "EGL/Wayland: Implement EGL_EXT_explicit_device\n\nUpdate the wayland platform library to handle EGL_EXT_explicit_device.\n\nIf the caller passes in an EGL_DEVICE_EXT attribute to\neglGetPlatformDisplay, then wlEglGetPlatformDisplayExport will now try\nto use that device.\n\nReworked how __NV_PRIME_RENDER_OFFLOAD is handled. Now, if\n__NV_PRIME_RENDER_OFFLOAD is set, and it didn't already select an\nEGLDeviceEXT handle to use for rendering (either using wl_drm or an\nEGL_DEVICE_EXT attribute), then it will pick an NVIDIA device instead of\nfailing.\n\nIf __NV_PRIME_RENDER_OFFLOAD is set, then it will now prefer the device\nfrom the EGL_DEVICE_EXT attribute, then the server device, then whatever\ndevice shows up first.\n\nIn addition, if __NV_PRIME_RENDER_OFFLOAD is set, but it ends up using\nthe same device as the compositor anyway, then it will no longer try to\nuse the rendering offloading path.",
+      "tree": {
+        "sha": "9d06f2dd77d0c86527fb85e9bcaba1965bb24d00",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/9d06f2dd77d0c86527fb85e9bcaba1965bb24d00"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/3ed0df9c01234259e139e43ac08e1c639ad24d56",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/3ed0df9c01234259e139e43ac08e1c639ad24d56",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/3ed0df9c01234259e139e43ac08e1c639ad24d56",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/3ed0df9c01234259e139e43ac08e1c639ad24d56/comments",
+    "author": {
+      "login": "kbrenneman",
+      "id": 4998757,
+      "node_id": "MDQ6VXNlcjQ5OTg3NTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4998757?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/kbrenneman",
+      "html_url": "https://github.com/kbrenneman",
+      "followers_url": "https://api.github.com/users/kbrenneman/followers",
+      "following_url": "https://api.github.com/users/kbrenneman/following{/other_user}",
+      "gists_url": "https://api.github.com/users/kbrenneman/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/kbrenneman/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/kbrenneman/subscriptions",
+      "organizations_url": "https://api.github.com/users/kbrenneman/orgs",
+      "repos_url": "https://api.github.com/users/kbrenneman/repos",
+      "events_url": "https://api.github.com/users/kbrenneman/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/kbrenneman/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1bac4260aa89c4938246798f3a141500ed9daa10",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/1bac4260aa89c4938246798f3a141500ed9daa10",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/1bac4260aa89c4938246798f3a141500ed9daa10"
+      }
+    ]
+  },
+  {
+    "sha": "1bac4260aa89c4938246798f3a141500ed9daa10",
+    "node_id": "C_kwDOBJUiRNoAKDFiYWM0MjYwYWE4OWM0OTM4MjQ2Nzk4ZjNhMTQxNTAwZWQ5ZGFhMTA",
+    "commit": {
+      "author": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2022-06-21T20:13:35Z"
+      },
+      "committer": {
+        "name": "Erik Kurzinger",
+        "email": "ekurzinger@nvidia.com",
+        "date": "2022-08-05T23:54:11Z"
+      },
+      "message": "bump version to 1.1.11",
+      "tree": {
+        "sha": "864c9a22825c9b45917f18cfec306168e000094e",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/trees/864c9a22825c9b45917f18cfec306168e000094e"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/egl-wayland/git/commits/1bac4260aa89c4938246798f3a141500ed9daa10",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/1bac4260aa89c4938246798f3a141500ed9daa10",
+    "html_url": "https://github.com/NVIDIA/egl-wayland/commit/1bac4260aa89c4938246798f3a141500ed9daa10",
+    "comments_url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/1bac4260aa89c4938246798f3a141500ed9daa10/comments",
+    "author": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "erik-kz",
+      "id": 3630991,
+      "node_id": "MDQ6VXNlcjM2MzA5OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3630991?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/erik-kz",
+      "html_url": "https://github.com/erik-kz",
+      "followers_url": "https://api.github.com/users/erik-kz/followers",
+      "following_url": "https://api.github.com/users/erik-kz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/erik-kz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/erik-kz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/erik-kz/subscriptions",
+      "organizations_url": "https://api.github.com/users/erik-kz/orgs",
+      "repos_url": "https://api.github.com/users/erik-kz/repos",
+      "events_url": "https://api.github.com/users/erik-kz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/erik-kz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "885f0a5e91fe9cfbfbcd98ff01f6b83503decef3",
+        "url": "https://api.github.com/repos/NVIDIA/egl-wayland/commits/885f0a5e91fe9cfbfbcd98ff01f6b83503decef3",
+        "html_url": "https://github.com/NVIDIA/egl-wayland/commit/885f0a5e91fe9cfbfbcd98ff01f6b83503decef3"
+      }
+    ]
+  }
+]

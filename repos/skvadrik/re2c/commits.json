@@ -1,0 +1,2372 @@
+[
+  {
+    "sha": "75fa3dbef8f05bff7cf5a174eb08c0ca28288a21",
+    "node_id": "C_kwDOAO9KeNoAKDc1ZmEzZGJlZjhmMDViZmY3Y2Y1YTE3NGViMDhjMGNhMjgyODhhMjE",
+    "commit": {
+      "author": {
+        "name": "Stephen Wassell",
+        "email": "stephen.wassell@sophos.com",
+        "date": "2024-03-04T17:59:27Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2024-03-04T21:47:53Z"
+      },
+      "message": "Correct definition of stub CLOSE macro",
+      "tree": {
+        "sha": "27faf24cda424f77d1c571e9b79c692648a7c5b9",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/27faf24cda424f77d1c571e9b79c692648a7c5b9"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/75fa3dbef8f05bff7cf5a174eb08c0ca28288a21",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/75fa3dbef8f05bff7cf5a174eb08c0ca28288a21",
+    "html_url": "https://github.com/skvadrik/re2c/commit/75fa3dbef8f05bff7cf5a174eb08c0ca28288a21",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/75fa3dbef8f05bff7cf5a174eb08c0ca28288a21/comments",
+    "author": {
+      "login": "StephenWassellSophos",
+      "id": 106101708,
+      "node_id": "U_kgDOBlL7zA",
+      "avatar_url": "https://avatars.githubusercontent.com/u/106101708?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/StephenWassellSophos",
+      "html_url": "https://github.com/StephenWassellSophos",
+      "followers_url": "https://api.github.com/users/StephenWassellSophos/followers",
+      "following_url": "https://api.github.com/users/StephenWassellSophos/following{/other_user}",
+      "gists_url": "https://api.github.com/users/StephenWassellSophos/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/StephenWassellSophos/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/StephenWassellSophos/subscriptions",
+      "organizations_url": "https://api.github.com/users/StephenWassellSophos/orgs",
+      "repos_url": "https://api.github.com/users/StephenWassellSophos/repos",
+      "events_url": "https://api.github.com/users/StephenWassellSophos/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/StephenWassellSophos/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "08d414b8b284a64c3f2de149ae1b5425591625aa",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/08d414b8b284a64c3f2de149ae1b5425591625aa",
+        "html_url": "https://github.com/skvadrik/re2c/commit/08d414b8b284a64c3f2de149ae1b5425591625aa"
+      }
+    ]
+  },
+  {
+    "sha": "08d414b8b284a64c3f2de149ae1b5425591625aa",
+    "node_id": "C_kwDOAO9KeNoAKDA4ZDQxNGI4YjI4NGE2NGMzZjJkZTE0OWFlMWI1NDI1NTkxNjI1YWE",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2024-02-26T10:58:39Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2024-02-26T12:53:19Z"
+      },
+      "message": "Fix undefined behaviour in Rust examples.\n\nThis addresses bug https://github.com/skvadrik/re2c/issues/471\n\"Examples in re2rust manual have undefined behavior\".\n\nIn Rust, it is UB to call `get_unchecked` on a slice that may be empty,\nand many examples had functions that did just that (when invoked on\nincorrect input data, since they use some form of sentinel method to\nhandle the end of input, which relies on the input being sentinel-\nterminated).\n\nThe introductory example has been fixed to avoid UB and use simple\nindexing with bounds checks instead of `get_unchecked`. Other examples\nthat had UB are now annotated with `assert` that checks conditions under\nwhich the functions are safe to invoke.\n\nAlso, eof/02_bounds_checks.re example now uses a more efficient way to\nconstruct YYMAXFILL-padded input string.",
+      "tree": {
+        "sha": "5ef3e71609b016829d09a0a3995aaf368301237c",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/5ef3e71609b016829d09a0a3995aaf368301237c"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/08d414b8b284a64c3f2de149ae1b5425591625aa",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/08d414b8b284a64c3f2de149ae1b5425591625aa",
+    "html_url": "https://github.com/skvadrik/re2c/commit/08d414b8b284a64c3f2de149ae1b5425591625aa",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/08d414b8b284a64c3f2de149ae1b5425591625aa/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0fe50b3165c7a9415e46c2c13c296389cf16090d",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/0fe50b3165c7a9415e46c2c13c296389cf16090d",
+        "html_url": "https://github.com/skvadrik/re2c/commit/0fe50b3165c7a9415e46c2c13c296389cf16090d"
+      }
+    ]
+  },
+  {
+    "sha": "0fe50b3165c7a9415e46c2c13c296389cf16090d",
+    "node_id": "C_kwDOAO9KeNoAKDBmZTUwYjMxNjVjN2E5NDE1ZTQ2YzJjMTNjMjk2Mzg5Y2YxNjA5MGQ",
+    "commit": {
+      "author": {
+        "name": "Sergei Trofimovich",
+        "email": "slyich@gmail.com",
+        "date": "2024-02-25T23:16:38Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2024-02-26T07:11:34Z"
+      },
+      "message": "IDEAS.md: fix typo s/inforamtion/information/",
+      "tree": {
+        "sha": "dd3138a8087447ac437ebea06772257581795d87",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/dd3138a8087447ac437ebea06772257581795d87"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/0fe50b3165c7a9415e46c2c13c296389cf16090d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/0fe50b3165c7a9415e46c2c13c296389cf16090d",
+    "html_url": "https://github.com/skvadrik/re2c/commit/0fe50b3165c7a9415e46c2c13c296389cf16090d",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/0fe50b3165c7a9415e46c2c13c296389cf16090d/comments",
+    "author": {
+      "login": "trofi",
+      "id": 226650,
+      "node_id": "MDQ6VXNlcjIyNjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/226650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/trofi",
+      "html_url": "https://github.com/trofi",
+      "followers_url": "https://api.github.com/users/trofi/followers",
+      "following_url": "https://api.github.com/users/trofi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/trofi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/trofi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/trofi/subscriptions",
+      "organizations_url": "https://api.github.com/users/trofi/orgs",
+      "repos_url": "https://api.github.com/users/trofi/repos",
+      "events_url": "https://api.github.com/users/trofi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/trofi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "15f503c97f61bc7f7dfc1ca57ede17028f642b5d",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/15f503c97f61bc7f7dfc1ca57ede17028f642b5d",
+        "html_url": "https://github.com/skvadrik/re2c/commit/15f503c97f61bc7f7dfc1ca57ede17028f642b5d"
+      }
+    ]
+  },
+  {
+    "sha": "15f503c97f61bc7f7dfc1ca57ede17028f642b5d",
+    "node_id": "C_kwDOAO9KeNoAKDE1ZjUwM2M5N2Y2MWJjN2Y3ZGZjMWNhNTdlZGUxNzAyOGY2NDJiNWQ",
+    "commit": {
+      "author": {
+        "name": "Ivan Egorov",
+        "email": "me@egori.ch",
+        "date": "2024-02-22T09:27:42Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2024-02-22T17:20:19Z"
+      },
+      "message": "[bazel] Fix _re2c_impl\n\nMainly `[err_file]` is an undefined variable.\n\nProbably some tl&c would be worth it, converting to bazel module,\nbut that's for another day.",
+      "tree": {
+        "sha": "53a4a66fa7e067c4dacd1aee56959b8bebba3b2d",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/53a4a66fa7e067c4dacd1aee56959b8bebba3b2d"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/15f503c97f61bc7f7dfc1ca57ede17028f642b5d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/15f503c97f61bc7f7dfc1ca57ede17028f642b5d",
+    "html_url": "https://github.com/skvadrik/re2c/commit/15f503c97f61bc7f7dfc1ca57ede17028f642b5d",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/15f503c97f61bc7f7dfc1ca57ede17028f642b5d/comments",
+    "author": {
+      "login": "egorich239",
+      "id": 100489,
+      "node_id": "MDQ6VXNlcjEwMDQ4OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/100489?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/egorich239",
+      "html_url": "https://github.com/egorich239",
+      "followers_url": "https://api.github.com/users/egorich239/followers",
+      "following_url": "https://api.github.com/users/egorich239/following{/other_user}",
+      "gists_url": "https://api.github.com/users/egorich239/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/egorich239/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/egorich239/subscriptions",
+      "organizations_url": "https://api.github.com/users/egorich239/orgs",
+      "repos_url": "https://api.github.com/users/egorich239/repos",
+      "events_url": "https://api.github.com/users/egorich239/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/egorich239/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9885ee7119c6cf00bfeb9c466e4b34bdfa4eb88f",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/9885ee7119c6cf00bfeb9c466e4b34bdfa4eb88f",
+        "html_url": "https://github.com/skvadrik/re2c/commit/9885ee7119c6cf00bfeb9c466e4b34bdfa4eb88f"
+      }
+    ]
+  },
+  {
+    "sha": "9885ee7119c6cf00bfeb9c466e4b34bdfa4eb88f",
+    "node_id": "C_kwDOAO9KeNoAKDk4ODVlZTcxMTljNmNmMDBiZmViOWM0NjZlNGIzNGJkZmE0ZWI4OGY",
+    "commit": {
+      "author": {
+        "name": "Sergei Trofimovich",
+        "email": "slyich@gmail.com",
+        "date": "2024-01-31T20:48:19Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2024-01-31T21:47:43Z"
+      },
+      "message": ".github/workflows/ci-cmake.yml: avoid `pwd` and use `${{ github.workspace }}`\n\nIt loks like at least in `windows` `actions/upload-artifact@v4` CI step\nfails to collect files at `${{ steps.build-info.outputs.BUILD_DIR }}/test_[0-9]*`\n\nMy theory is that `glob` is not able to match paths like\n\n    `D:/a/re2c/re2c/install-2`\n\nagainst theit unix-like form of\n\n    `/d/a/re2c/re2c/install-2`\n\nI suspect that `pwd` returns us the second form while\n`${{ github.workspace }}` might keep an original form.",
+      "tree": {
+        "sha": "c149b99e2303afa3e0879948dc3b990e233154ca",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/c149b99e2303afa3e0879948dc3b990e233154ca"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/9885ee7119c6cf00bfeb9c466e4b34bdfa4eb88f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/9885ee7119c6cf00bfeb9c466e4b34bdfa4eb88f",
+    "html_url": "https://github.com/skvadrik/re2c/commit/9885ee7119c6cf00bfeb9c466e4b34bdfa4eb88f",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/9885ee7119c6cf00bfeb9c466e4b34bdfa4eb88f/comments",
+    "author": {
+      "login": "trofi",
+      "id": 226650,
+      "node_id": "MDQ6VXNlcjIyNjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/226650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/trofi",
+      "html_url": "https://github.com/trofi",
+      "followers_url": "https://api.github.com/users/trofi/followers",
+      "following_url": "https://api.github.com/users/trofi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/trofi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/trofi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/trofi/subscriptions",
+      "organizations_url": "https://api.github.com/users/trofi/orgs",
+      "repos_url": "https://api.github.com/users/trofi/repos",
+      "events_url": "https://api.github.com/users/trofi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/trofi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1655c7f9a3f746f552635598a48d51f9b71a6d18",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/1655c7f9a3f746f552635598a48d51f9b71a6d18",
+        "html_url": "https://github.com/skvadrik/re2c/commit/1655c7f9a3f746f552635598a48d51f9b71a6d18"
+      }
+    ]
+  },
+  {
+    "sha": "1655c7f9a3f746f552635598a48d51f9b71a6d18",
+    "node_id": "C_kwDOAO9KeNoAKDE2NTVjN2Y5YTNmNzQ2ZjU1MjYzNTU5OGE0OGQ1MWY5YjcxYTZkMTg",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2024-01-31T07:08:11Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2024-01-31T10:43:56Z"
+      },
+      "message": "GitHub Actions: update versions of dependency actions.",
+      "tree": {
+        "sha": "16b67a1ea2f229c13f339040046d9217cadb2869",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/16b67a1ea2f229c13f339040046d9217cadb2869"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/1655c7f9a3f746f552635598a48d51f9b71a6d18",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/1655c7f9a3f746f552635598a48d51f9b71a6d18",
+    "html_url": "https://github.com/skvadrik/re2c/commit/1655c7f9a3f746f552635598a48d51f9b71a6d18",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/1655c7f9a3f746f552635598a48d51f9b71a6d18/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1630149d14f151506b3615d8938b7bb6a7b1d49e",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/1630149d14f151506b3615d8938b7bb6a7b1d49e",
+        "html_url": "https://github.com/skvadrik/re2c/commit/1630149d14f151506b3615d8938b7bb6a7b1d49e"
+      }
+    ]
+  },
+  {
+    "sha": "1630149d14f151506b3615d8938b7bb6a7b1d49e",
+    "node_id": "C_kwDOAO9KeNoAKDE2MzAxNDlkMTRmMTUxNTA2YjM2MTVkODkzOGI3YmI2YTdiMWQ0OWU",
+    "commit": {
+      "author": {
+        "name": "Sergei Trofimovich",
+        "email": "slyich@gmail.com",
+        "date": "2024-01-31T10:19:03Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2024-01-31T10:40:18Z"
+      },
+      "message": ".github/dependabot.yml: add basic plumbing to auto-update used actions",
+      "tree": {
+        "sha": "9a873d5323a9037bf6996333248db3b1d6346355",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/9a873d5323a9037bf6996333248db3b1d6346355"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/1630149d14f151506b3615d8938b7bb6a7b1d49e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/1630149d14f151506b3615d8938b7bb6a7b1d49e",
+    "html_url": "https://github.com/skvadrik/re2c/commit/1630149d14f151506b3615d8938b7bb6a7b1d49e",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/1630149d14f151506b3615d8938b7bb6a7b1d49e/comments",
+    "author": {
+      "login": "trofi",
+      "id": 226650,
+      "node_id": "MDQ6VXNlcjIyNjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/226650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/trofi",
+      "html_url": "https://github.com/trofi",
+      "followers_url": "https://api.github.com/users/trofi/followers",
+      "following_url": "https://api.github.com/users/trofi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/trofi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/trofi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/trofi/subscriptions",
+      "organizations_url": "https://api.github.com/users/trofi/orgs",
+      "repos_url": "https://api.github.com/users/trofi/repos",
+      "events_url": "https://api.github.com/users/trofi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/trofi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "bfa77bc4717ab8d374c13b3d09a18fa30d1ae9ea",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/bfa77bc4717ab8d374c13b3d09a18fa30d1ae9ea",
+        "html_url": "https://github.com/skvadrik/re2c/commit/bfa77bc4717ab8d374c13b3d09a18fa30d1ae9ea"
+      }
+    ]
+  },
+  {
+    "sha": "bfa77bc4717ab8d374c13b3d09a18fa30d1ae9ea",
+    "node_id": "C_kwDOAO9KeNoAKGJmYTc3YmM0NzE3YWI4ZDM3NGMxM2IzZDA5YTE4ZmEzMGQxYWU5ZWE",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-12-16T14:43:26Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-12-16T14:52:54Z"
+      },
+      "message": "Rewrite lexer of string/char literals in code blocks.\n\nLex char literals properly as single characters or escape sequences\nrather than lexing them as single-quoted strings. Add syntax rules from\nC/C++, Go and Rust (they are similar and do not contradict).\n\nAdd a Go test for string and character literals (prior to this patch it\ncaused a syntax error).\n\nNote that the same lexer method is used for indented code blocks and\ncode blocks in curly braces.",
+      "tree": {
+        "sha": "c053998e948610a232cf96f45f04339e70dedad1",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/c053998e948610a232cf96f45f04339e70dedad1"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/bfa77bc4717ab8d374c13b3d09a18fa30d1ae9ea",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/bfa77bc4717ab8d374c13b3d09a18fa30d1ae9ea",
+    "html_url": "https://github.com/skvadrik/re2c/commit/bfa77bc4717ab8d374c13b3d09a18fa30d1ae9ea",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/bfa77bc4717ab8d374c13b3d09a18fa30d1ae9ea/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0ea38276d519fcc3bcfdc9dc0b884aa1d1791cc1",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/0ea38276d519fcc3bcfdc9dc0b884aa1d1791cc1",
+        "html_url": "https://github.com/skvadrik/re2c/commit/0ea38276d519fcc3bcfdc9dc0b884aa1d1791cc1"
+      }
+    ]
+  },
+  {
+    "sha": "0ea38276d519fcc3bcfdc9dc0b884aa1d1791cc1",
+    "node_id": "C_kwDOAO9KeNoAKDBlYTM4Mjc2ZDUxOWZjYzNiY2ZkYzlkYzBiODg0YWExZDE3OTFjYzE",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-12-06T21:46:37Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-12-06T21:51:35Z"
+      },
+      "message": "Wrap lexer body in braces only if there're local variable declarations.\n\nThis is a revert of commit 77714fce9463abfe4420af93e27bb8ac4c24719c.\n\nWhile it is easier to always generate braces, in some languages (Go) it\nis a compilation error to jump into the wrapped block (a scenario that\nhappens if there is an outer state switch generated with `getstate:re2c`\ndirective.\n\nThis regression was found because one of the examples for Go didn't\ncompile (examples/state/push.go). Now it does.",
+      "tree": {
+        "sha": "9300f388ed8bfdd1ac5260e4d0e9c7148e6bb86a",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/9300f388ed8bfdd1ac5260e4d0e9c7148e6bb86a"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/0ea38276d519fcc3bcfdc9dc0b884aa1d1791cc1",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/0ea38276d519fcc3bcfdc9dc0b884aa1d1791cc1",
+    "html_url": "https://github.com/skvadrik/re2c/commit/0ea38276d519fcc3bcfdc9dc0b884aa1d1791cc1",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/0ea38276d519fcc3bcfdc9dc0b884aa1d1791cc1/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "22721f0b0e87eaae54c8ae4445dd582620cd70f5",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/22721f0b0e87eaae54c8ae4445dd582620cd70f5",
+        "html_url": "https://github.com/skvadrik/re2c/commit/22721f0b0e87eaae54c8ae4445dd582620cd70f5"
+      }
+    ]
+  },
+  {
+    "sha": "22721f0b0e87eaae54c8ae4445dd582620cd70f5",
+    "node_id": "C_kwDOAO9KeNoAKDIyNzIxZjBiMGU4N2VhYWU1NGM4YWU0NDQ1ZGQ1ODI2MjBjZDcwZjU",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-12-06T21:45:34Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-12-06T21:45:34Z"
+      },
+      "message": "release.sh: check that examples work.",
+      "tree": {
+        "sha": "1995401395d82e6d208ccccebdbb953edf7feff4",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/1995401395d82e6d208ccccebdbb953edf7feff4"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/22721f0b0e87eaae54c8ae4445dd582620cd70f5",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/22721f0b0e87eaae54c8ae4445dd582620cd70f5",
+    "html_url": "https://github.com/skvadrik/re2c/commit/22721f0b0e87eaae54c8ae4445dd582620cd70f5",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/22721f0b0e87eaae54c8ae4445dd582620cd70f5/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0b6d0b510ec4e1a551aca08b9de5c02d63a11ce7",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/0b6d0b510ec4e1a551aca08b9de5c02d63a11ce7",
+        "html_url": "https://github.com/skvadrik/re2c/commit/0b6d0b510ec4e1a551aca08b9de5c02d63a11ce7"
+      }
+    ]
+  },
+  {
+    "sha": "0b6d0b510ec4e1a551aca08b9de5c02d63a11ce7",
+    "node_id": "C_kwDOAO9KeNoAKDBiNmQwYjUxMGVjNGUxYTU1MWFjYTA4YjlkZTVjMDJkNjNhMTFjZTc",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-23T06:44:50Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-25T06:10:51Z"
+      },
+      "message": "CMake: set C++17 standard for benchmarks that use re2.",
+      "tree": {
+        "sha": "65b7113f69d8783c49de12939adabf92791150a2",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/65b7113f69d8783c49de12939adabf92791150a2"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/0b6d0b510ec4e1a551aca08b9de5c02d63a11ce7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/0b6d0b510ec4e1a551aca08b9de5c02d63a11ce7",
+    "html_url": "https://github.com/skvadrik/re2c/commit/0b6d0b510ec4e1a551aca08b9de5c02d63a11ce7",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/0b6d0b510ec4e1a551aca08b9de5c02d63a11ce7/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "96104a652622c63ca2cc0b1d2b1d3dad8c34aae6",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/96104a652622c63ca2cc0b1d2b1d3dad8c34aae6",
+        "html_url": "https://github.com/skvadrik/re2c/commit/96104a652622c63ca2cc0b1d2b1d3dad8c34aae6"
+      }
+    ]
+  },
+  {
+    "sha": "96104a652622c63ca2cc0b1d2b1d3dad8c34aae6",
+    "node_id": "C_kwDOAO9KeNoAKDk2MTA0YTY1MjYyMmM2M2NhMmNjMGIxZDJiMWQzZGFkOGMzNGFhZTY",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-21T21:23:56Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-21T21:29:45Z"
+      },
+      "message": "CMakeLists.txt: make C++11 standard required (not optional).\n\nThis fixes https://github.com/skvadrik/re2c/issues/455 \"Test for C++11\ncompiler at configure time\".",
+      "tree": {
+        "sha": "e7f4c25dc251fd6b74efa7014c3d271724536797",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/e7f4c25dc251fd6b74efa7014c3d271724536797"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/96104a652622c63ca2cc0b1d2b1d3dad8c34aae6",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/96104a652622c63ca2cc0b1d2b1d3dad8c34aae6",
+    "html_url": "https://github.com/skvadrik/re2c/commit/96104a652622c63ca2cc0b1d2b1d3dad8c34aae6",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/96104a652622c63ca2cc0b1d2b1d3dad8c34aae6/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "59c56044b9de7a01c04e941f4c6c55238764d873",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/59c56044b9de7a01c04e941f4c6c55238764d873",
+        "html_url": "https://github.com/skvadrik/re2c/commit/59c56044b9de7a01c04e941f4c6c55238764d873"
+      }
+    ]
+  },
+  {
+    "sha": "59c56044b9de7a01c04e941f4c6c55238764d873",
+    "node_id": "C_kwDOAO9KeNoAKDU5YzU2MDQ0YjlkZTdhMDFjMDRlOTQxZjRjNmM1NTIzODc2NGQ4NzM",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-21T21:06:14Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-21T21:15:34Z"
+      },
+      "message": "configure.ac: make C++ compiler flag -std=c++11 required (not optional).\n\nThis fixes https://github.com/skvadrik/re2c/issues/455 \"Test for C++11\ncompiler at configure time\".",
+      "tree": {
+        "sha": "fc93f8ea922cab811789c230dd9c5560879a0685",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/fc93f8ea922cab811789c230dd9c5560879a0685"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/59c56044b9de7a01c04e941f4c6c55238764d873",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/59c56044b9de7a01c04e941f4c6c55238764d873",
+    "html_url": "https://github.com/skvadrik/re2c/commit/59c56044b9de7a01c04e941f4c6c55238764d873",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/59c56044b9de7a01c04e941f4c6c55238764d873/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3841e83f8511123bf9fac0b1f6dedd24ce6c7de7",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/3841e83f8511123bf9fac0b1f6dedd24ce6c7de7",
+        "html_url": "https://github.com/skvadrik/re2c/commit/3841e83f8511123bf9fac0b1f6dedd24ce6c7de7"
+      }
+    ]
+  },
+  {
+    "sha": "3841e83f8511123bf9fac0b1f6dedd24ce6c7de7",
+    "node_id": "C_kwDOAO9KeNoAKDM4NDFlODNmODUxMTEyM2JmOWZhYzBiMWY2ZGVkZDI0Y2U2YzdkZTc",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-21T20:34:01Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-21T20:42:54Z"
+      },
+      "message": "Makefile.am: add missing files to distribution.\n\nThis fixes https://github.com/skvadrik/re2c/issues/454 \"BUILD.md not\npresent in tarball\".",
+      "tree": {
+        "sha": "87e53d4400ae272377367022330f4d8914adc8de",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/87e53d4400ae272377367022330f4d8914adc8de"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/3841e83f8511123bf9fac0b1f6dedd24ce6c7de7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/3841e83f8511123bf9fac0b1f6dedd24ce6c7de7",
+    "html_url": "https://github.com/skvadrik/re2c/commit/3841e83f8511123bf9fac0b1f6dedd24ce6c7de7",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/3841e83f8511123bf9fac0b1f6dedd24ce6c7de7/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7d6641778cd10fcdc9b5d32f7319ece7aadc95c0",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/7d6641778cd10fcdc9b5d32f7319ece7aadc95c0",
+        "html_url": "https://github.com/skvadrik/re2c/commit/7d6641778cd10fcdc9b5d32f7319ece7aadc95c0"
+      }
+    ]
+  },
+  {
+    "sha": "7d6641778cd10fcdc9b5d32f7319ece7aadc95c0",
+    "node_id": "C_kwDOAO9KeNoAKDdkNjY0MTc3OGNkMTBmY2RjOWI1ZDMyZjczMTllY2U3YWFkYzk1YzA",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-21T20:25:27Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-21T20:32:51Z"
+      },
+      "message": "BUILD.md: document C++11 requirement.\n\nThis fixes https://github.com/skvadrik/re2c/issues/453 \"Document C++11\ncompiler requirement in BUILD.md\".",
+      "tree": {
+        "sha": "5293fc137e35bb4fda798e1eeaf552b354f3a48e",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/5293fc137e35bb4fda798e1eeaf552b354f3a48e"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/7d6641778cd10fcdc9b5d32f7319ece7aadc95c0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/7d6641778cd10fcdc9b5d32f7319ece7aadc95c0",
+    "html_url": "https://github.com/skvadrik/re2c/commit/7d6641778cd10fcdc9b5d32f7319ece7aadc95c0",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/7d6641778cd10fcdc9b5d32f7319ece7aadc95c0/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ece4bb76e39db7071d5dd374d166008d5f982c3f",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/ece4bb76e39db7071d5dd374d166008d5f982c3f",
+        "html_url": "https://github.com/skvadrik/re2c/commit/ece4bb76e39db7071d5dd374d166008d5f982c3f"
+      }
+    ]
+  },
+  {
+    "sha": "ece4bb76e39db7071d5dd374d166008d5f982c3f",
+    "node_id": "C_kwDOAO9KeNoAKGVjZTRiYjc2ZTM5ZGI3MDcxZDVkZDM3NGQxNjYwMDhkNWY5ODJjM2Y",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-19T21:50:22Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-19T21:50:22Z"
+      },
+      "message": "Release 3.1.",
+      "tree": {
+        "sha": "7cd6c581e46fcbe64859f1e78ace124c928021bb",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/7cd6c581e46fcbe64859f1e78ace124c928021bb"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/ece4bb76e39db7071d5dd374d166008d5f982c3f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/ece4bb76e39db7071d5dd374d166008d5f982c3f",
+    "html_url": "https://github.com/skvadrik/re2c/commit/ece4bb76e39db7071d5dd374d166008d5f982c3f",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/ece4bb76e39db7071d5dd374d166008d5f982c3f/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c3f267b2487c0bf7334e5314338cfa4e9739b179",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/c3f267b2487c0bf7334e5314338cfa4e9739b179",
+        "html_url": "https://github.com/skvadrik/re2c/commit/c3f267b2487c0bf7334e5314338cfa4e9739b179"
+      }
+    ]
+  },
+  {
+    "sha": "c3f267b2487c0bf7334e5314338cfa4e9739b179",
+    "node_id": "C_kwDOAO9KeNoAKGMzZjI2N2IyNDg3YzBiZjczMzRlNTMxNDMzOGNmYTRlOTczOWIxNzk",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-19T21:42:25Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-19T21:42:25Z"
+      },
+      "message": "release.sh: make the script NixOS-friendly, fix quoting in echo command.",
+      "tree": {
+        "sha": "55cf2ef18b1f062c2185029537df42afbafb034f",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/55cf2ef18b1f062c2185029537df42afbafb034f"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/c3f267b2487c0bf7334e5314338cfa4e9739b179",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/c3f267b2487c0bf7334e5314338cfa4e9739b179",
+    "html_url": "https://github.com/skvadrik/re2c/commit/c3f267b2487c0bf7334e5314338cfa4e9739b179",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/c3f267b2487c0bf7334e5314338cfa4e9739b179/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "60b40d94bdbc3b7cc5bfcd090bea34676410fea9",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/60b40d94bdbc3b7cc5bfcd090bea34676410fea9",
+        "html_url": "https://github.com/skvadrik/re2c/commit/60b40d94bdbc3b7cc5bfcd090bea34676410fea9"
+      }
+    ]
+  },
+  {
+    "sha": "60b40d94bdbc3b7cc5bfcd090bea34676410fea9",
+    "node_id": "C_kwDOAO9KeNoAKDYwYjQwZDk0YmRiYzNiN2NjNWJmY2QwOTBiZWEzNDY3NjQxMGZlYTk",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-19T20:47:14Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-19T20:47:14Z"
+      },
+      "message": "Makefile.lib.am: remove nonexistent header from the list.",
+      "tree": {
+        "sha": "0adbcbe3d78150415bb7d4b78bfcd0b894ecea03",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/0adbcbe3d78150415bb7d4b78bfcd0b894ecea03"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/60b40d94bdbc3b7cc5bfcd090bea34676410fea9",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/60b40d94bdbc3b7cc5bfcd090bea34676410fea9",
+    "html_url": "https://github.com/skvadrik/re2c/commit/60b40d94bdbc3b7cc5bfcd090bea34676410fea9",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/60b40d94bdbc3b7cc5bfcd090bea34676410fea9/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5abc35226b455d02a9fc7939bd1f871d1aec0118",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/5abc35226b455d02a9fc7939bd1f871d1aec0118",
+        "html_url": "https://github.com/skvadrik/re2c/commit/5abc35226b455d02a9fc7939bd1f871d1aec0118"
+      }
+    ]
+  },
+  {
+    "sha": "5abc35226b455d02a9fc7939bd1f871d1aec0118",
+    "node_id": "C_kwDOAO9KeNoAKDVhYmMzNTIyNmI0NTVkMDJhOWZjNzkzOWJkMWY4NzFkMWFlYzAxMTg",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-18T21:50:31Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-18T21:56:45Z"
+      },
+      "message": "Update CHANGELOG.",
+      "tree": {
+        "sha": "5dba3ed11e813d6fd9abe18c7f4eaf4685eb2a1f",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/5dba3ed11e813d6fd9abe18c7f4eaf4685eb2a1f"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/5abc35226b455d02a9fc7939bd1f871d1aec0118",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/5abc35226b455d02a9fc7939bd1f871d1aec0118",
+    "html_url": "https://github.com/skvadrik/re2c/commit/5abc35226b455d02a9fc7939bd1f871d1aec0118",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/5abc35226b455d02a9fc7939bd1f871d1aec0118/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e868cc58b9dfeabec814cc38221da89c12feda97",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/e868cc58b9dfeabec814cc38221da89c12feda97",
+        "html_url": "https://github.com/skvadrik/re2c/commit/e868cc58b9dfeabec814cc38221da89c12feda97"
+      }
+    ]
+  },
+  {
+    "sha": "e868cc58b9dfeabec814cc38221da89c12feda97",
+    "node_id": "C_kwDOAO9KeNoAKGU4NjhjYzU4YjlkZmVhYmVjODE0Y2MzODIyMWRhODljMTJmZWRhOTc",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-13T22:18:00Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-13T22:22:55Z"
+      },
+      "message": "Document configure option --enable-parsers in BUILD.md.",
+      "tree": {
+        "sha": "645eb6614bec73f143da06093ffb6197b7312507",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/645eb6614bec73f143da06093ffb6197b7312507"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/e868cc58b9dfeabec814cc38221da89c12feda97",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/e868cc58b9dfeabec814cc38221da89c12feda97",
+    "html_url": "https://github.com/skvadrik/re2c/commit/e868cc58b9dfeabec814cc38221da89c12feda97",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/e868cc58b9dfeabec814cc38221da89c12feda97/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c633d5de3ea4996993afd4ef96f7ad10719999ad",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/c633d5de3ea4996993afd4ef96f7ad10719999ad",
+        "html_url": "https://github.com/skvadrik/re2c/commit/c633d5de3ea4996993afd4ef96f7ad10719999ad"
+      }
+    ]
+  },
+  {
+    "sha": "c633d5de3ea4996993afd4ef96f7ad10719999ad",
+    "node_id": "C_kwDOAO9KeNoAKGM2MzNkNWRlM2VhNDk5Njk5M2FmZDRlZjk2ZjdhZDEwNzE5OTk5YWQ",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-13T21:59:47Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-13T21:59:47Z"
+      },
+      "message": "Update documentation for capturing and non-capturing groups.\n\nDocument the following options:\n    --leftomost-captures\n    --invert-captures\n\nAnd the following configurations:\n    re2c:leftmost-captures\n    re2c:invert-captures\n\nAnd the new `(! ...)` syntax.",
+      "tree": {
+        "sha": "714e0b2142086a987fb8eaee8ef57710e47dc2c2",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/714e0b2142086a987fb8eaee8ef57710e47dc2c2"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/c633d5de3ea4996993afd4ef96f7ad10719999ad",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/c633d5de3ea4996993afd4ef96f7ad10719999ad",
+    "html_url": "https://github.com/skvadrik/re2c/commit/c633d5de3ea4996993afd4ef96f7ad10719999ad",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/c633d5de3ea4996993afd4ef96f7ad10719999ad/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c86a8bcf5d576b456236d0d069c7996df15ba9b0",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/c86a8bcf5d576b456236d0d069c7996df15ba9b0",
+        "html_url": "https://github.com/skvadrik/re2c/commit/c86a8bcf5d576b456236d0d069c7996df15ba9b0"
+      }
+    ]
+  },
+  {
+    "sha": "c86a8bcf5d576b456236d0d069c7996df15ba9b0",
+    "node_id": "C_kwDOAO9KeNoAKGM4NmE4YmNmNWQ1NzZiNDU2MjM2ZDBkMDY5Yzc5OTZkZjE1YmE5YjA",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-13T21:27:13Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-13T21:27:13Z"
+      },
+      "message": "Add tests for `re2c:leftmost-captures` and `re2c:posix-captures`.",
+      "tree": {
+        "sha": "1540c5ab49a08c7b112e44086fee1dba3ba320fa",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/1540c5ab49a08c7b112e44086fee1dba3ba320fa"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/c86a8bcf5d576b456236d0d069c7996df15ba9b0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/c86a8bcf5d576b456236d0d069c7996df15ba9b0",
+    "html_url": "https://github.com/skvadrik/re2c/commit/c86a8bcf5d576b456236d0d069c7996df15ba9b0",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/c86a8bcf5d576b456236d0d069c7996df15ba9b0/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3a98b5436368b0f19dbe31d35af7499f67d3cfb9",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/3a98b5436368b0f19dbe31d35af7499f67d3cfb9",
+        "html_url": "https://github.com/skvadrik/re2c/commit/3a98b5436368b0f19dbe31d35af7499f67d3cfb9"
+      }
+    ]
+  },
+  {
+    "sha": "3a98b5436368b0f19dbe31d35af7499f67d3cfb9",
+    "node_id": "C_kwDOAO9KeNoAKDNhOThiNTQzNjM2OGIwZjE5ZGJlMzFkMzVhZjc0OTlmNjdkM2NmYjk",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-13T21:16:37Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-13T21:16:37Z"
+      },
+      "message": "Add configuration `re2c:leftmost-captures`.\n\nIt has the same meaning as the --leftmost-captures option.",
+      "tree": {
+        "sha": "5cf3e3754aec55fcedfc8d22688a784c4a0d7ab2",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/5cf3e3754aec55fcedfc8d22688a784c4a0d7ab2"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/3a98b5436368b0f19dbe31d35af7499f67d3cfb9",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/3a98b5436368b0f19dbe31d35af7499f67d3cfb9",
+    "html_url": "https://github.com/skvadrik/re2c/commit/3a98b5436368b0f19dbe31d35af7499f67d3cfb9",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/3a98b5436368b0f19dbe31d35af7499f67d3cfb9/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0384cffd9f7dcc9e1f2997929440cb0273f47a92",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/0384cffd9f7dcc9e1f2997929440cb0273f47a92",
+        "html_url": "https://github.com/skvadrik/re2c/commit/0384cffd9f7dcc9e1f2997929440cb0273f47a92"
+      }
+    ]
+  },
+  {
+    "sha": "0384cffd9f7dcc9e1f2997929440cb0273f47a92",
+    "node_id": "C_kwDOAO9KeNoAKDAzODRjZmZkOWY3ZGNjOWUxZjI5OTc5Mjk0NDBjYjAyNzNmNDdhOTI",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-13T07:06:00Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-13T07:06:00Z"
+      },
+      "message": "Fix build scripts for Wine to run on NixOS.\n\nWine cannot find DLLs by their absolute paths on NixOS, so find and copy\nthem before running re2c.exe.",
+      "tree": {
+        "sha": "69ea76bb34dee2b4d3ba604a0d8a064382213ea3",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/69ea76bb34dee2b4d3ba604a0d8a064382213ea3"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/0384cffd9f7dcc9e1f2997929440cb0273f47a92",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/0384cffd9f7dcc9e1f2997929440cb0273f47a92",
+    "html_url": "https://github.com/skvadrik/re2c/commit/0384cffd9f7dcc9e1f2997929440cb0273f47a92",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/0384cffd9f7dcc9e1f2997929440cb0273f47a92/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a303a8500d285cf95c7cc96db46d73daa2a15ad4",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/a303a8500d285cf95c7cc96db46d73daa2a15ad4",
+        "html_url": "https://github.com/skvadrik/re2c/commit/a303a8500d285cf95c7cc96db46d73daa2a15ad4"
+      }
+    ]
+  },
+  {
+    "sha": "a303a8500d285cf95c7cc96db46d73daa2a15ad4",
+    "node_id": "C_kwDOAO9KeNoAKGEzMDNhODUwMGQyODVjZjk1YzdjYzk2ZGI0NmQ3M2RhYTJhMTVhZDQ",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-13T05:22:48Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-13T05:22:48Z"
+      },
+      "message": "Add missing header include to make src/codegen/code.h self-contained.",
+      "tree": {
+        "sha": "ae709a99937a88765cb1de34f594125dd65e457b",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/ae709a99937a88765cb1de34f594125dd65e457b"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/a303a8500d285cf95c7cc96db46d73daa2a15ad4",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/a303a8500d285cf95c7cc96db46d73daa2a15ad4",
+    "html_url": "https://github.com/skvadrik/re2c/commit/a303a8500d285cf95c7cc96db46d73daa2a15ad4",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/a303a8500d285cf95c7cc96db46d73daa2a15ad4/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8c2127d42036ebd0ee633aa8fa86c56cf5a6b770",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/8c2127d42036ebd0ee633aa8fa86c56cf5a6b770",
+        "html_url": "https://github.com/skvadrik/re2c/commit/8c2127d42036ebd0ee633aa8fa86c56cf5a6b770"
+      }
+    ]
+  },
+  {
+    "sha": "8c2127d42036ebd0ee633aa8fa86c56cf5a6b770",
+    "node_id": "C_kwDOAO9KeNoAKDhjMjEyN2Q0MjAzNmViZDBlZTYzM2FhOGZhODZjNTZjZjVhNmI3NzA",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-12T21:48:57Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-12T21:48:57Z"
+      },
+      "message": "Replace `enum GorPass` with uint32_t as it is used in a bitfield.\n\nIt cannot be a `enum class` because it's used in a bitfield and this\ntriggers compiler warnings and errors on some toolchains (see\nhttps://github.com/skvadrik/re2c/issues/446 for details).\n\nIt cannot be a plain `enum` defaulting to `int` as well because of\n-Wsigned-enum-bitfield warning (noticed when testing on OpenBSD with\nclang-13).",
+      "tree": {
+        "sha": "73aae3eb32ea7b1de1821b8ea4a4718f58d7c58b",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/73aae3eb32ea7b1de1821b8ea4a4718f58d7c58b"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/8c2127d42036ebd0ee633aa8fa86c56cf5a6b770",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/8c2127d42036ebd0ee633aa8fa86c56cf5a6b770",
+    "html_url": "https://github.com/skvadrik/re2c/commit/8c2127d42036ebd0ee633aa8fa86c56cf5a6b770",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/8c2127d42036ebd0ee633aa8fa86c56cf5a6b770/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "54ffc584404bb6d6e8b2fa6363360767a3cb9fee",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/54ffc584404bb6d6e8b2fa6363360767a3cb9fee",
+        "html_url": "https://github.com/skvadrik/re2c/commit/54ffc584404bb6d6e8b2fa6363360767a3cb9fee"
+      }
+    ]
+  },
+  {
+    "sha": "54ffc584404bb6d6e8b2fa6363360767a3cb9fee",
+    "node_id": "C_kwDOAO9KeNoAKDU0ZmZjNTg0NDA0YmI2ZDZlOGIyZmE2MzYzMzYwNzY3YTNjYjlmZWU",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-12T21:19:09Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-12T21:19:09Z"
+      },
+      "message": "Make function `static` as it is used in one file.",
+      "tree": {
+        "sha": "157cac21c4b0c67a43429430164cc2ac7ffcdb4b",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/157cac21c4b0c67a43429430164cc2ac7ffcdb4b"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/54ffc584404bb6d6e8b2fa6363360767a3cb9fee",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/54ffc584404bb6d6e8b2fa6363360767a3cb9fee",
+    "html_url": "https://github.com/skvadrik/re2c/commit/54ffc584404bb6d6e8b2fa6363360767a3cb9fee",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/54ffc584404bb6d6e8b2fa6363360767a3cb9fee/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "00cbfe90afd40bbd7decb990600bdbeff57e4c4e",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/00cbfe90afd40bbd7decb990600bdbeff57e4c4e",
+        "html_url": "https://github.com/skvadrik/re2c/commit/00cbfe90afd40bbd7decb990600bdbeff57e4c4e"
+      }
+    ]
+  },
+  {
+    "sha": "00cbfe90afd40bbd7decb990600bdbeff57e4c4e",
+    "node_id": "C_kwDOAO9KeNoAKDAwY2JmZTkwYWZkNDBiYmQ3ZGVjYjk5MDYwMGJkYmVmZjU3ZTRjNGU",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-11T21:22:51Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-11T22:34:53Z"
+      },
+      "message": "Drop _POSIX_SOURCE, enable -std=gnu++11 for CMake.\n\nOn Unix systems, re2c uses POSIX functions (e.g. fdopen). Certain\nsystems, such as Cygwin and NetBSD, enable these funtions conditionally\nbased on certain preprocessor definitions.\n\nPreviously https://github.com/skvadrik/re2c/pull/376 fixed the build on\nCygwin by setting _POSIX_SOURCE. However, this broke the build on\nFreeBSD which was fixed by commit\n\nThis worked for Autotools build system which uses -std=c++11 due to the\nuse of AC_USE_SYSTEM_EXTENSIONS, but it didn't work for CMake that used\n-std=c++11 and disabled extensions with `set(CMAKE_CXX_EXTENSIONS OFF)`.\n\nThis commit drops `set(CMAKE_CXX_EXTENSIONS OFF)`, which effectively\nenables -std=gnu++11 instead of -std=c++11 for CMake builds. This allows\nus to get rid of the problematic _POSIX_SOURCE that breaks the build on\nNetBSD.\n\nThis was tested on NetBSD-9.3, FreeBSD-13.2 and Cygwin with both\nAutotools and CMake.",
+      "tree": {
+        "sha": "3ad306abe6644760d585890cdbd769e0b9da7506",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/3ad306abe6644760d585890cdbd769e0b9da7506"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/00cbfe90afd40bbd7decb990600bdbeff57e4c4e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/00cbfe90afd40bbd7decb990600bdbeff57e4c4e",
+    "html_url": "https://github.com/skvadrik/re2c/commit/00cbfe90afd40bbd7decb990600bdbeff57e4c4e",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/00cbfe90afd40bbd7decb990600bdbeff57e4c4e/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "bb143b980c6a19a39172efb49b87c579673cd0d9",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/bb143b980c6a19a39172efb49b87c579673cd0d9",
+        "html_url": "https://github.com/skvadrik/re2c/commit/bb143b980c6a19a39172efb49b87c579673cd0d9"
+      }
+    ]
+  },
+  {
+    "sha": "bb143b980c6a19a39172efb49b87c579673cd0d9",
+    "node_id": "C_kwDOAO9KeNoAKGJiMTQzYjk4MGM2YTE5YTM5MTcyZWZiNDliODdjNTc5NjczY2QwZDk",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-08T14:02:40Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-08T14:02:40Z"
+      },
+      "message": "libre2c: omit redundant semicolon after namespace.\n\nThis gets rid of compiler warnings on some older toolchains (e.g. GCC-10\nemits pedantic diagnostic about it, which was fixed in\nhttps://gcc.gnu.org/bugzilla/show_bug.cgi?id=96068).",
+      "tree": {
+        "sha": "1afee33c216d20d17a812ef7320bf4851b279457",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/1afee33c216d20d17a812ef7320bf4851b279457"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/bb143b980c6a19a39172efb49b87c579673cd0d9",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/bb143b980c6a19a39172efb49b87c579673cd0d9",
+    "html_url": "https://github.com/skvadrik/re2c/commit/bb143b980c6a19a39172efb49b87c579673cd0d9",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/bb143b980c6a19a39172efb49b87c579673cd0d9/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "fce87b493fdb81823050c2994671adcd1c4cee24",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/fce87b493fdb81823050c2994671adcd1c4cee24",
+        "html_url": "https://github.com/skvadrik/re2c/commit/fce87b493fdb81823050c2994671adcd1c4cee24"
+      }
+    ]
+  },
+  {
+    "sha": "fce87b493fdb81823050c2994671adcd1c4cee24",
+    "node_id": "C_kwDOAO9KeNoAKGZjZTg3YjQ5M2ZkYjgxODIzMDUwYzI5OTQ2NzFhZGNkMWM0Y2VlMjQ",
+    "commit": {
+      "author": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-08T13:16:49Z"
+      },
+      "committer": {
+        "name": "Ulya Trofimovich",
+        "email": "skvadrik@gmail.com",
+        "date": "2023-07-08T13:17:31Z"
+      },
+      "message": "Omit redundant semicolon after namespace.\n\nThis gets rid of compiler warnings on some older toolchains (e.g. GCC-10\nemits pedantic diagnostic about it, which was fixed in\nhttps://gcc.gnu.org/bugzilla/show_bug.cgi?id=96068).",
+      "tree": {
+        "sha": "f6bb1b96c567ee9d6f5b52b8001434f04e6cfb8e",
+        "url": "https://api.github.com/repos/skvadrik/re2c/git/trees/f6bb1b96c567ee9d6f5b52b8001434f04e6cfb8e"
+      },
+      "url": "https://api.github.com/repos/skvadrik/re2c/git/commits/fce87b493fdb81823050c2994671adcd1c4cee24",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/skvadrik/re2c/commits/fce87b493fdb81823050c2994671adcd1c4cee24",
+    "html_url": "https://github.com/skvadrik/re2c/commit/fce87b493fdb81823050c2994671adcd1c4cee24",
+    "comments_url": "https://api.github.com/repos/skvadrik/re2c/commits/fce87b493fdb81823050c2994671adcd1c4cee24/comments",
+    "author": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "skvadrik",
+      "id": 1125030,
+      "node_id": "MDQ6VXNlcjExMjUwMzA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1125030?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skvadrik",
+      "html_url": "https://github.com/skvadrik",
+      "followers_url": "https://api.github.com/users/skvadrik/followers",
+      "following_url": "https://api.github.com/users/skvadrik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skvadrik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skvadrik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skvadrik/subscriptions",
+      "organizations_url": "https://api.github.com/users/skvadrik/orgs",
+      "repos_url": "https://api.github.com/users/skvadrik/repos",
+      "events_url": "https://api.github.com/users/skvadrik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skvadrik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d87f86ed7152321de94dc5d5f20cf202b90aba03",
+        "url": "https://api.github.com/repos/skvadrik/re2c/commits/d87f86ed7152321de94dc5d5f20cf202b90aba03",
+        "html_url": "https://github.com/skvadrik/re2c/commit/d87f86ed7152321de94dc5d5f20cf202b90aba03"
+      }
+    ]
+  }
+]

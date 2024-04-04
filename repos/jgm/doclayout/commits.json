@@ -1,0 +1,2372 @@
+[
+  {
+    "sha": "ca2e2bd0f7454f8a1c8377e384f627505a143893",
+    "node_id": "C_kwDOC-fdudoAKGNhMmUyYmQwZjc0NTRmOGExYzgzNzdlMzg0ZjYyNzUwNWExNDM4OTM",
+    "commit": {
+      "author": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2024-03-23T04:51:31Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2024-03-23T04:51:31Z"
+      },
+      "message": "Deprecate unfoldD.",
+      "tree": {
+        "sha": "ce0f30c1594dd4d08665dcd0ddfc107ac231969f",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/ce0f30c1594dd4d08665dcd0ddfc107ac231969f"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/ca2e2bd0f7454f8a1c8377e384f627505a143893",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/ca2e2bd0f7454f8a1c8377e384f627505a143893",
+    "html_url": "https://github.com/jgm/doclayout/commit/ca2e2bd0f7454f8a1c8377e384f627505a143893",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/ca2e2bd0f7454f8a1c8377e384f627505a143893/comments",
+    "author": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "fc29e457456b66d7e8d7fcd98170ddef51bef4f4",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/fc29e457456b66d7e8d7fcd98170ddef51bef4f4",
+        "html_url": "https://github.com/jgm/doclayout/commit/fc29e457456b66d7e8d7fcd98170ddef51bef4f4"
+      }
+    ]
+  },
+  {
+    "sha": "fc29e457456b66d7e8d7fcd98170ddef51bef4f4",
+    "node_id": "C_kwDOC-fdudoAKGZjMjllNDU3NDU2YjY2ZDdlOGQ3ZmNkOTgxNzBkZGVmNTFiZWY0ZjQ",
+    "commit": {
+      "author": {
+        "name": "Evan Silberman",
+        "email": "evan@jklol.net",
+        "date": "2024-03-18T03:24:48Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2024-03-22T23:48:46Z"
+      },
+      "message": "Introduce FlatDocs and use them for rendering\n\nDoc was previously pulling double-duty as the data structure constructed\nby clients using the smart constructor/combinator functions (or\ndirectly) and as the elements of the flattened structure rendered by\nrenderList. While this saved on duplication (FlatDoc looks a lot like\nDoc!), it meant that renderList had to account for Doc constructors that\nweren't meant to occur after calling unfoldD by throwing a runtime\nerror. The situation became more complicated with the introduction of\nANSI styling: we neglected at first to account for Styled and Linked\ndocs with inner Concats in unfoldD, which ultimately broke line-breaking\nin some situations when styled text appeared at the end of the line.\nUnfolding one Styled Concat into many Styled documents in the result was\nsomewhat plausible, but unaesthetic and seemed like it would be hard to\nmake correct.\n\nNow we have FlatDoc, which is in effect an \"intermediate representation\"\nfor the Doc \"interpreter\". The general design is that any Doc can be\nturned into a list of FlatDocs that carry equivalent information. Doc\nconstructors without an \"inner\" Doc that they modify have more or less\ndirect equivalents.  There's no FlatDoc Empty or Concat constructors,\nbecause these things are going to live in a list. The equivalents to the\nconstructors that have inner Docs instead have a NonEmpty of FlatDocs.\nSo really these FlatDocs aren't completely flat, they're just flat\nenough for our purposes.\n\nThe main _actual_ point of doing this is to replace the nested Styled\nand Linked Docs, which form a more complicated tree structure than\npreviously existed in DocLayout, with FStyleOpen/FStyleClose and\nFLinkOpen/FLinkClose pairs, surrounding their flattened inner contents.\nThis makes it much simpler to measure the next printable non-space span\nthat follows a breaking space when that span happens to be styled.\n\nSince FlatDocs aren't completely flat, just mostly flat, there's still\nsome contrived situations that can be measured incorrectly, which have\nalways existed, for example:\n\n    ghci> let p = \"hi\" <+> (prefixed \"x\" \"mom\")\n    ghci> render (Just 2) p\n    \"hi\\nxmom\"\n    ghci> render (Just 3) p\n    \"hi mom\"\n\nThis is an arbitrary outcome, and the rendering of Docs that don't\nreally make sense is not a design goal of the library. Thus FlatDoc\ndoesn't completely unfold Prefixed, BeforeNonBlank, or Flush docs using\na tag-like idea, so we can keep refactoring of the rendering\nimplementation to a minimum and because it's not necessary to get the\nfix we need for styled text.",
+      "tree": {
+        "sha": "1e5d4d8dc10e355bef03c1d583500dff4a95ed09",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/1e5d4d8dc10e355bef03c1d583500dff4a95ed09"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/fc29e457456b66d7e8d7fcd98170ddef51bef4f4",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/fc29e457456b66d7e8d7fcd98170ddef51bef4f4",
+    "html_url": "https://github.com/jgm/doclayout/commit/fc29e457456b66d7e8d7fcd98170ddef51bef4f4",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/fc29e457456b66d7e8d7fcd98170ddef51bef4f4/comments",
+    "author": {
+      "login": "silby",
+      "id": 18741,
+      "node_id": "MDQ6VXNlcjE4NzQx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18741?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/silby",
+      "html_url": "https://github.com/silby",
+      "followers_url": "https://api.github.com/users/silby/followers",
+      "following_url": "https://api.github.com/users/silby/following{/other_user}",
+      "gists_url": "https://api.github.com/users/silby/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/silby/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/silby/subscriptions",
+      "organizations_url": "https://api.github.com/users/silby/orgs",
+      "repos_url": "https://api.github.com/users/silby/repos",
+      "events_url": "https://api.github.com/users/silby/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/silby/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6e185ef18e81a543612d1b9d943c6064724d6260",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/6e185ef18e81a543612d1b9d943c6064724d6260",
+        "html_url": "https://github.com/jgm/doclayout/commit/6e185ef18e81a543612d1b9d943c6064724d6260"
+      }
+    ]
+  },
+  {
+    "sha": "6e185ef18e81a543612d1b9d943c6064724d6260",
+    "node_id": "C_kwDOC-fdudoAKDZlMTg1ZWYxOGU4MWE1NDM2MTJkMWI5ZDk0M2M2MDY0NzI0ZDYyNjA",
+    "commit": {
+      "author": {
+        "name": "Evan Silberman",
+        "email": "evan@jklol.net",
+        "date": "2024-03-22T17:32:41Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2024-03-22T23:48:46Z"
+      },
+      "message": "Add test for breaking space in styled text",
+      "tree": {
+        "sha": "9dfba254f48fe0fe628448a0d32d7ee00c68ed43",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/9dfba254f48fe0fe628448a0d32d7ee00c68ed43"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/6e185ef18e81a543612d1b9d943c6064724d6260",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/6e185ef18e81a543612d1b9d943c6064724d6260",
+    "html_url": "https://github.com/jgm/doclayout/commit/6e185ef18e81a543612d1b9d943c6064724d6260",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/6e185ef18e81a543612d1b9d943c6064724d6260/comments",
+    "author": {
+      "login": "silby",
+      "id": 18741,
+      "node_id": "MDQ6VXNlcjE4NzQx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18741?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/silby",
+      "html_url": "https://github.com/silby",
+      "followers_url": "https://api.github.com/users/silby/followers",
+      "following_url": "https://api.github.com/users/silby/following{/other_user}",
+      "gists_url": "https://api.github.com/users/silby/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/silby/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/silby/subscriptions",
+      "organizations_url": "https://api.github.com/users/silby/orgs",
+      "repos_url": "https://api.github.com/users/silby/repos",
+      "events_url": "https://api.github.com/users/silby/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/silby/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "796c5c8cb5bb5af51fdd718bac3caba1e9084699",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/796c5c8cb5bb5af51fdd718bac3caba1e9084699",
+        "html_url": "https://github.com/jgm/doclayout/commit/796c5c8cb5bb5af51fdd718bac3caba1e9084699"
+      }
+    ]
+  },
+  {
+    "sha": "796c5c8cb5bb5af51fdd718bac3caba1e9084699",
+    "node_id": "C_kwDOC-fdudoAKDc5NmM1YzhjYjViYjVhZjUxZmRkNzE4YmFjM2NhYmExZTkwODQ2OTk",
+    "commit": {
+      "author": {
+        "name": "Evan Silberman",
+        "email": "evan@jklol.net",
+        "date": "2024-03-12T18:00:55Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2024-03-16T17:21:22Z"
+      },
+      "message": "Add strikeout support",
+      "tree": {
+        "sha": "bf0311f166d0457eeaee4cb7f563b2d59964392f",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/bf0311f166d0457eeaee4cb7f563b2d59964392f"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/796c5c8cb5bb5af51fdd718bac3caba1e9084699",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/796c5c8cb5bb5af51fdd718bac3caba1e9084699",
+    "html_url": "https://github.com/jgm/doclayout/commit/796c5c8cb5bb5af51fdd718bac3caba1e9084699",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/796c5c8cb5bb5af51fdd718bac3caba1e9084699/comments",
+    "author": {
+      "login": "silby",
+      "id": 18741,
+      "node_id": "MDQ6VXNlcjE4NzQx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18741?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/silby",
+      "html_url": "https://github.com/silby",
+      "followers_url": "https://api.github.com/users/silby/followers",
+      "following_url": "https://api.github.com/users/silby/following{/other_user}",
+      "gists_url": "https://api.github.com/users/silby/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/silby/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/silby/subscriptions",
+      "organizations_url": "https://api.github.com/users/silby/orgs",
+      "repos_url": "https://api.github.com/users/silby/repos",
+      "events_url": "https://api.github.com/users/silby/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/silby/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "86e9e9ddd3a554534c29a1ea9acbc878da6cf87a",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/86e9e9ddd3a554534c29a1ea9acbc878da6cf87a",
+        "html_url": "https://github.com/jgm/doclayout/commit/86e9e9ddd3a554534c29a1ea9acbc878da6cf87a"
+      }
+    ]
+  },
+  {
+    "sha": "86e9e9ddd3a554534c29a1ea9acbc878da6cf87a",
+    "node_id": "C_kwDOC-fdudoAKDg2ZTllOWRkZDNhNTU0NTM0YzI5YTFlYTlhY2JjODc4ZGE2Y2Y4N2E",
+    "commit": {
+      "author": {
+        "name": "Evan Silberman",
+        "email": "evan@jklol.net",
+        "date": "2024-03-12T17:11:11Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2024-03-16T17:21:22Z"
+      },
+      "message": "Introduce ANSI link support\n\nThe `Attr` constructor grows a field for a link target, which is just a\n`Maybe Text` for the time being. We deem nested links to be illegal,\nlike HTML, and so the rendering state only has to keep track of one link\nat a time. When rendering to ANSI, we use OSC8 to include the link in\nthe output.\n\nOSC8 links support an \"id\" parameter which tells terminals to treat\ndiscontiguous linked text spans as being \"the same\" link, for mouseover\npurposes. Our code could grow to support this.",
+      "tree": {
+        "sha": "39cbd7e4934b599ec367d682121f68b5b5fe7039",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/39cbd7e4934b599ec367d682121f68b5b5fe7039"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/86e9e9ddd3a554534c29a1ea9acbc878da6cf87a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/86e9e9ddd3a554534c29a1ea9acbc878da6cf87a",
+    "html_url": "https://github.com/jgm/doclayout/commit/86e9e9ddd3a554534c29a1ea9acbc878da6cf87a",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/86e9e9ddd3a554534c29a1ea9acbc878da6cf87a/comments",
+    "author": {
+      "login": "silby",
+      "id": 18741,
+      "node_id": "MDQ6VXNlcjE4NzQx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18741?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/silby",
+      "html_url": "https://github.com/silby",
+      "followers_url": "https://api.github.com/users/silby/followers",
+      "following_url": "https://api.github.com/users/silby/following{/other_user}",
+      "gists_url": "https://api.github.com/users/silby/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/silby/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/silby/subscriptions",
+      "organizations_url": "https://api.github.com/users/silby/orgs",
+      "repos_url": "https://api.github.com/users/silby/repos",
+      "events_url": "https://api.github.com/users/silby/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/silby/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3d063469b130f92ac0835bd3fac12edcd5e56cde",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/3d063469b130f92ac0835bd3fac12edcd5e56cde",
+        "html_url": "https://github.com/jgm/doclayout/commit/3d063469b130f92ac0835bd3fac12edcd5e56cde"
+      }
+    ]
+  },
+  {
+    "sha": "3d063469b130f92ac0835bd3fac12edcd5e56cde",
+    "node_id": "C_kwDOC-fdudoAKDNkMDYzNDY5YjEzMGY5MmFjMDgzNWJkM2ZhYzEyZWRjZDVlNTZjZGU",
+    "commit": {
+      "author": {
+        "name": "Evan Silberman",
+        "email": "evan@jklol.net",
+        "date": "2024-03-11T22:34:13Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2024-03-16T17:21:22Z"
+      },
+      "message": "Add initial external API for colored docs",
+      "tree": {
+        "sha": "091dbb2e4eef423aa8330c66f745077ef553635e",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/091dbb2e4eef423aa8330c66f745077ef553635e"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/3d063469b130f92ac0835bd3fac12edcd5e56cde",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/3d063469b130f92ac0835bd3fac12edcd5e56cde",
+    "html_url": "https://github.com/jgm/doclayout/commit/3d063469b130f92ac0835bd3fac12edcd5e56cde",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/3d063469b130f92ac0835bd3fac12edcd5e56cde/comments",
+    "author": {
+      "login": "silby",
+      "id": 18741,
+      "node_id": "MDQ6VXNlcjE4NzQx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18741?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/silby",
+      "html_url": "https://github.com/silby",
+      "followers_url": "https://api.github.com/users/silby/followers",
+      "following_url": "https://api.github.com/users/silby/following{/other_user}",
+      "gists_url": "https://api.github.com/users/silby/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/silby/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/silby/subscriptions",
+      "organizations_url": "https://api.github.com/users/silby/orgs",
+      "repos_url": "https://api.github.com/users/silby/repos",
+      "events_url": "https://api.github.com/users/silby/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/silby/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "625482fc6af57d7a47ddf1793cc347ba64b57289",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/625482fc6af57d7a47ddf1793cc347ba64b57289",
+        "html_url": "https://github.com/jgm/doclayout/commit/625482fc6af57d7a47ddf1793cc347ba64b57289"
+      }
+    ]
+  },
+  {
+    "sha": "625482fc6af57d7a47ddf1793cc347ba64b57289",
+    "node_id": "C_kwDOC-fdudoAKDYyNTQ4MmZjNmFmNTdkN2E0N2RkZjE3OTNjYzM0N2JhNjRiNTcyODk",
+    "commit": {
+      "author": {
+        "name": "silby",
+        "email": "18741+silby@users.noreply.github.com",
+        "date": "2024-03-14T02:48:58Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-14T02:48:58Z"
+      },
+      "message": "Use Data.Text.Lazy.Builder in ANSI rendering (#29)\n\nWe have to smush a bunch of strings together in a fold with auxiliary\r\ndata and hit a quadratic time blowup. This change means we return a lazy\r\nText from renderANSI instead of whatever the contents of `Doc a` were\r\nbut in the relevant contexts I don't think anyone will mind.\r\n\r\nAPI change: added a `build` method to the signature of HasChars.\r\nThis has a default definition, and is only needed with the ANSI\r\nrenderer, so existing users should not need to add anything to\r\ntheir HasChars instances.",
+      "tree": {
+        "sha": "fea4eda45eb4f9b141edf38fd2aef3a741009a17",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/fea4eda45eb4f9b141edf38fd2aef3a741009a17"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/625482fc6af57d7a47ddf1793cc347ba64b57289",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl8mWaCRC1aQ7uu5UhlAAAkWwQAE+Nv1ej7ghR5q/p1ICJn11I\nCdv0XHfMMK1iBXN15erD53okRsLYkZhim8BFno9OT0icyB4O1bC2HQlWgLhD75PS\nbYBqYLgVm3oUAREBZiO4q6nw5FMYaAYX435ECOaKPJO75sfdLQObKpw2DeUYng1C\nNbAJdkbCYHvRLZ3bBbI9q0IOpNhwO05UqB3LLLfHeDl4qcn/e51KgCGpPUvBtAVt\n6STMCtWWnExJda0IWTaBMvlPsZhKFIYJeKvk4Jkutd0k6hU+x1swajwcj9SPt8vU\nIxITkgbfwqPMHTsB0fw/gwtkGcRZUX15wBL5W37fr19jVGRvThDdyfmp6AOFBl/I\n8afQYzu2XMkXeLf6yOpsWlJIzFaAKhYS3IME9EvQqcTyni1u+PsYx5jr88GGv3rP\nIS2ovmeVH8W2zNStGBmPfPv/FGiOy1iW/W143GNVis45Fyvu4r7EOmN9FGfq5vuK\np7fLnCU3O22js3fo5uZkuug9Em5Eiq6LQAw1mGVgaj6gPe/mbBLMLCNq4vVxUxHw\nbd14w8Ig6YvbbJONNBYLxpQNqf5xUqdReJxtofi68c1J9l+48sLbDu2yvnEIgrJV\nIGPdIYVLta5y3NTqZUZYnK1xUfc6/mmj04911pckoi/cDpdKXM320r/1BVyBjjK+\nzEgIUfsa7f4cngeYOol4\n=+ruA\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree fea4eda45eb4f9b141edf38fd2aef3a741009a17\nparent af6563972de73ead9f37de44ccca1c86b09a7cec\nauthor silby <18741+silby@users.noreply.github.com> 1710384538 -0700\ncommitter GitHub <noreply@github.com> 1710384538 -0700\n\nUse Data.Text.Lazy.Builder in ANSI rendering (#29)\n\nWe have to smush a bunch of strings together in a fold with auxiliary\r\ndata and hit a quadratic time blowup. This change means we return a lazy\r\nText from renderANSI instead of whatever the contents of `Doc a` were\r\nbut in the relevant contexts I don't think anyone will mind.\r\n\r\nAPI change: added a `build` method to the signature of HasChars.\r\nThis has a default definition, and is only needed with the ANSI\r\nrenderer, so existing users should not need to add anything to\r\ntheir HasChars instances.\r\n"
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/625482fc6af57d7a47ddf1793cc347ba64b57289",
+    "html_url": "https://github.com/jgm/doclayout/commit/625482fc6af57d7a47ddf1793cc347ba64b57289",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/625482fc6af57d7a47ddf1793cc347ba64b57289/comments",
+    "author": {
+      "login": "silby",
+      "id": 18741,
+      "node_id": "MDQ6VXNlcjE4NzQx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18741?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/silby",
+      "html_url": "https://github.com/silby",
+      "followers_url": "https://api.github.com/users/silby/followers",
+      "following_url": "https://api.github.com/users/silby/following{/other_user}",
+      "gists_url": "https://api.github.com/users/silby/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/silby/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/silby/subscriptions",
+      "organizations_url": "https://api.github.com/users/silby/orgs",
+      "repos_url": "https://api.github.com/users/silby/repos",
+      "events_url": "https://api.github.com/users/silby/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/silby/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "af6563972de73ead9f37de44ccca1c86b09a7cec",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/af6563972de73ead9f37de44ccca1c86b09a7cec",
+        "html_url": "https://github.com/jgm/doclayout/commit/af6563972de73ead9f37de44ccca1c86b09a7cec"
+      }
+    ]
+  },
+  {
+    "sha": "af6563972de73ead9f37de44ccca1c86b09a7cec",
+    "node_id": "C_kwDOC-fdudoAKGFmNjU2Mzk3MmRlNzNlYWQ5ZjM3ZGU0NGNjY2ExYzg2YjA5YTdjZWM",
+    "commit": {
+      "author": {
+        "name": "Evan Silberman",
+        "email": "evan@jklol.net",
+        "date": "2024-03-07T03:42:35Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2024-03-07T07:40:06Z"
+      },
+      "message": "Don't print out excessive ANSI codes\n\nThe ANSI renderer was printing out astonishing quantities of SGR 0s,\nwhich don't hurt anything but has bad code aesthetics. Fix it to only\nprint out font requests when the font changes.\n\nbefore:\n\n```\n♪ pandoc$ cabal exec -- pandoc -t ansi doc/customizing-pandoc.md  | wc -c\n   17986\n```\n\nafter:\n\n```\n♪ pandoc$ cabal exec -- pandoc -t ansi doc/customizing-pandoc.md  | wc -c\n    5297\n```",
+      "tree": {
+        "sha": "02739806bda0d74e2f10d721e6e58bf6ceb5b9ff",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/02739806bda0d74e2f10d721e6e58bf6ceb5b9ff"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/af6563972de73ead9f37de44ccca1c86b09a7cec",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/af6563972de73ead9f37de44ccca1c86b09a7cec",
+    "html_url": "https://github.com/jgm/doclayout/commit/af6563972de73ead9f37de44ccca1c86b09a7cec",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/af6563972de73ead9f37de44ccca1c86b09a7cec/comments",
+    "author": {
+      "login": "silby",
+      "id": 18741,
+      "node_id": "MDQ6VXNlcjE4NzQx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18741?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/silby",
+      "html_url": "https://github.com/silby",
+      "followers_url": "https://api.github.com/users/silby/followers",
+      "following_url": "https://api.github.com/users/silby/following{/other_user}",
+      "gists_url": "https://api.github.com/users/silby/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/silby/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/silby/subscriptions",
+      "organizations_url": "https://api.github.com/users/silby/orgs",
+      "repos_url": "https://api.github.com/users/silby/repos",
+      "events_url": "https://api.github.com/users/silby/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/silby/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6a65ff0540e730c98239681c30d6d97ca55b4ea1",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/6a65ff0540e730c98239681c30d6d97ca55b4ea1",
+        "html_url": "https://github.com/jgm/doclayout/commit/6a65ff0540e730c98239681c30d6d97ca55b4ea1"
+      }
+    ]
+  },
+  {
+    "sha": "6a65ff0540e730c98239681c30d6d97ca55b4ea1",
+    "node_id": "C_kwDOC-fdudoAKDZhNjVmZjA1NDBlNzMwYzk4MjM5NjgxYzMwZDZkOTdjYTU1YjRlYTE",
+    "commit": {
+      "author": {
+        "name": "Evan Silberman",
+        "email": "evan@jklol.net",
+        "date": "2024-03-06T06:33:25Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2024-03-07T00:38:44Z"
+      },
+      "message": "Improve Attributed string performance\n\nReplaces the naïve implementation of `Attributed a` as a cons-based data\nstructure with a `Seq` of inner `Attr` elements. This eliminates the\nexcessive recursion when calling `attrRender` and `attrStrip` to render\nthe attributed string output to the printable output in my previous\niteration.\n\nBenchmarks\n==========\n\nTimings from an M2 Max Mac Studio for the \"reflow\" and \"tabular\"\nbenchmarks here and some representative writer benchmarks from Pandoc.\nI added the contents of `tables.markdown` to `testsuite.txt` for these\nruns in hopes that it would give a little extra exercise to `cblock`\netc.\n\n(I didn't run the pandoc benchmarks with the previous slow\nimplementation.)\n\nThe `Seq` column is timings using this commit. The list column is from a\nversion where the `Attributed a` is a `[Attr a]` rather than a `Seq\n(Attr a)`, which I compared just to smell-test my choice of data\nstructure. The list version performed slightly better than the `Seq`\nversion on the tabular benchmarks, which heavily exercise DocLayout's\n`Block` support, which employs prerendering. However it performs worse\non the reflow benchmarks and on the pandoc writers, where the present\ncommit actually shows a slight performance improvement over baseline.\n\nNone of the pandoc writers seem to employ extravagant uses of `lblock`,\n`vfill`, and friends. It's possible that nested tables (are those even\nsupported?) in a source document could hit the slow behavior shown by\nthe tabular benchmarks, but I think they might basically be unrealistic\nas to common interactive Pandoc usage.\n\nI don't really know whether using `[Attr a]` or `Seq (Attr a)` is\nultimately \"better\" for our purposes. As long as the thing you get when\nyou unwrap `Attributed` is a `Foldable` of `Attr` there should be no\nfurther need to fiddle with the rendering functions if anyone wanted to\nexperiment more with other implementations.\n\n| Benchmark           | Before ANSI | cons     | `Seq`    | list     |\n|---------------------|-------------|----------|----------|----------|\n| reflow English      | 110 µs      | 244 µs   | 109 µs   | 142 µs   |\n| reflow Greek        | 98 µs       | 321 µs   | 100 µs   | 126 µs   |\n| tabular English     | 1.347 ms    | 4.751 ms | 2.623 ms | 1.911 ms |\n| tabular Greek       | 1.711 ms    | 6.462 ms | 2.893 ms | 2.283 ms |\n| asciidoctor writer  | 2.83 ms     | -        | 2.77 ms  | 2.85 ms  |\n| docbook5 writer     | 2.91 ms     | -        | 2.75 ms  | 2.93 ms  |\n| opendocument writer | 7.00 ms     | -        | 6.71 ms  | 7.08 ms  |",
+      "tree": {
+        "sha": "5eec299c37ac13cc6f692f8e9de9b4898b03774a",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/5eec299c37ac13cc6f692f8e9de9b4898b03774a"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/6a65ff0540e730c98239681c30d6d97ca55b4ea1",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/6a65ff0540e730c98239681c30d6d97ca55b4ea1",
+    "html_url": "https://github.com/jgm/doclayout/commit/6a65ff0540e730c98239681c30d6d97ca55b4ea1",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/6a65ff0540e730c98239681c30d6d97ca55b4ea1/comments",
+    "author": {
+      "login": "silby",
+      "id": 18741,
+      "node_id": "MDQ6VXNlcjE4NzQx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18741?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/silby",
+      "html_url": "https://github.com/silby",
+      "followers_url": "https://api.github.com/users/silby/followers",
+      "following_url": "https://api.github.com/users/silby/following{/other_user}",
+      "gists_url": "https://api.github.com/users/silby/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/silby/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/silby/subscriptions",
+      "organizations_url": "https://api.github.com/users/silby/orgs",
+      "repos_url": "https://api.github.com/users/silby/repos",
+      "events_url": "https://api.github.com/users/silby/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/silby/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "68d918030b2f3c2453d8461d33cadfb2d7bc70e3",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/68d918030b2f3c2453d8461d33cadfb2d7bc70e3",
+        "html_url": "https://github.com/jgm/doclayout/commit/68d918030b2f3c2453d8461d33cadfb2d7bc70e3"
+      }
+    ]
+  },
+  {
+    "sha": "68d918030b2f3c2453d8461d33cadfb2d7bc70e3",
+    "node_id": "C_kwDOC-fdudoAKDY4ZDkxODAzMGIyZjNjMjQ1M2Q4NDYxZDMzY2FkZmIyZDdiYzcwZTM",
+    "commit": {
+      "author": {
+        "name": "Evan Silberman",
+        "email": "evan@jklol.net",
+        "date": "2024-03-06T16:47:57Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2024-03-07T00:38:44Z"
+      },
+      "message": "Remove unused copy-pasted LANGUAGE pragmas",
+      "tree": {
+        "sha": "48a90374e11a839855f37e1402837a842b86040f",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/48a90374e11a839855f37e1402837a842b86040f"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/68d918030b2f3c2453d8461d33cadfb2d7bc70e3",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/68d918030b2f3c2453d8461d33cadfb2d7bc70e3",
+    "html_url": "https://github.com/jgm/doclayout/commit/68d918030b2f3c2453d8461d33cadfb2d7bc70e3",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/68d918030b2f3c2453d8461d33cadfb2d7bc70e3/comments",
+    "author": {
+      "login": "silby",
+      "id": 18741,
+      "node_id": "MDQ6VXNlcjE4NzQx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18741?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/silby",
+      "html_url": "https://github.com/silby",
+      "followers_url": "https://api.github.com/users/silby/followers",
+      "following_url": "https://api.github.com/users/silby/following{/other_user}",
+      "gists_url": "https://api.github.com/users/silby/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/silby/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/silby/subscriptions",
+      "organizations_url": "https://api.github.com/users/silby/orgs",
+      "repos_url": "https://api.github.com/users/silby/repos",
+      "events_url": "https://api.github.com/users/silby/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/silby/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6bd5b8346be4319c42aace29c5d7e9cd298a47c6",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/6bd5b8346be4319c42aace29c5d7e9cd298a47c6",
+        "html_url": "https://github.com/jgm/doclayout/commit/6bd5b8346be4319c42aace29c5d7e9cd298a47c6"
+      }
+    ]
+  },
+  {
+    "sha": "6bd5b8346be4319c42aace29c5d7e9cd298a47c6",
+    "node_id": "C_kwDOC-fdudoAKDZiZDViODM0NmJlNDMxOWM0MmFhY2UyOWM1ZDdlOWNkMjk4YTQ3YzY",
+    "commit": {
+      "author": {
+        "name": "Evan Silberman",
+        "email": "evan@jklol.net",
+        "date": "2024-03-05T19:27:48Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2024-03-06T03:50:08Z"
+      },
+      "message": "Introduce support for ANSI-styled output\n\nThis commit introduces support for styling and rendering Docs with ANSI\nterminal control codes. The public interface uses smart constructors\nlike \"bold\", \"italic\", and \"underlined\" to apply font styling to inner\nDocs. The implementation grows multiple new concepts to deal with this\nwhile still supporting the prerendering of Block elements.\n\nANSIFont\n========\n\nThe ANSIFont module introduces ADTs for various text properties that are\nsupported by terminals, and for Fonts that indicate all the properties\nthat should apply to a particular span of text. New fonts can be\nconstructed by applying a StyleReq to an existing font, which replaces\nthe requested property in the original font with the requested value.\n\nAttributed\n==========\n\nThe Attributed model introduces Attributed strings, which carry a Font\nalong with an inner string type. It instantiates the HasChars class so\nthat various features of the existing DocLayout code can somewhat\nseamlessly support rendering styled text.\n\nBuilding and rendering styled documents\n=======================================\n\nImplementation outline:\n\n1. Consumers add a smart constructor like `bold` to style a Doc. The\n   inner doc gets wrapped in Doc's `Styled` constructor, indicating the\n   text style requested for that block.\n2. The renderer maintains a stack of `Font`s. When a `Styled` element is\n   encountered, its `StyleReq` is applied to the `Font` on the top of\n   the stack and pushed, the inner document is rendered, and then the\n   font is popped and rendering continues.\n3. The `Attributed a` returned by `prerender` can be rendered to `a`\n   using `renderPlain`, which ignores all the font requests, or\n   `renderANSI`, which adds the requisite control sequences to set the\n   font every time the font changes.\n\nConceptually, the renderer from `Doc a` to `Attributed a` turns the\nnested styling requests into a linear structure where every span of text\ncarries the full set of font attributes it should be rendered with.\n\nThe most interesting wrinkle to this implementation is that the contents\nof `Block` elements need to be prerendered by the `block` helper so they\ncan be broken up into lines and filled, but we want to defer the\ndecision of rendering plain text or ANSI-styled text until the final\ndocument is rendered. To support this, the `Block` constructor for a\n`Doc a` now carries an `Attributed a` in its lines field. Once the next\nrendering pass merges blocks together, instead of using `literal` to\nconstruct `Text` elements carring an `a` to render, it uses `cook` to\nconstruct `Cooked` elements with an `Attributed a` to be copied directly\nto the output stream _without looking at the font stack_. This means\nthat the contents of a block are only ever styled by style requests that\nwere made in the inner document of the block: the contents of `bold $\ncblock n $ literal \"x\"` will be printed in plain text, whereas the\ncontents of `cblock n $ bold $ literal \"x\"` will be bold.",
+      "tree": {
+        "sha": "2b91ffa8a50e0bb7f5c1c8880d3e719a66049842",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/2b91ffa8a50e0bb7f5c1c8880d3e719a66049842"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/6bd5b8346be4319c42aace29c5d7e9cd298a47c6",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/6bd5b8346be4319c42aace29c5d7e9cd298a47c6",
+    "html_url": "https://github.com/jgm/doclayout/commit/6bd5b8346be4319c42aace29c5d7e9cd298a47c6",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/6bd5b8346be4319c42aace29c5d7e9cd298a47c6/comments",
+    "author": {
+      "login": "silby",
+      "id": 18741,
+      "node_id": "MDQ6VXNlcjE4NzQx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18741?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/silby",
+      "html_url": "https://github.com/silby",
+      "followers_url": "https://api.github.com/users/silby/followers",
+      "following_url": "https://api.github.com/users/silby/following{/other_user}",
+      "gists_url": "https://api.github.com/users/silby/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/silby/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/silby/subscriptions",
+      "organizations_url": "https://api.github.com/users/silby/orgs",
+      "repos_url": "https://api.github.com/users/silby/repos",
+      "events_url": "https://api.github.com/users/silby/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/silby/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "54101c9ef9d86bcfab2937199486f2c79f8a9fe1",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/54101c9ef9d86bcfab2937199486f2c79f8a9fe1",
+        "html_url": "https://github.com/jgm/doclayout/commit/54101c9ef9d86bcfab2937199486f2c79f8a9fe1"
+      }
+    ]
+  },
+  {
+    "sha": "54101c9ef9d86bcfab2937199486f2c79f8a9fe1",
+    "node_id": "C_kwDOC-fdudoAKDU0MTAxYzllZjlkODZiY2ZhYjI5MzcxOTk0ODZmMmM3OWY4YTlmZTE",
+    "commit": {
+      "author": {
+        "name": "Evan Silberman",
+        "email": "evan@jklol.net",
+        "date": "2024-03-05T19:22:08Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2024-03-06T03:50:08Z"
+      },
+      "message": "Extract HasChars module",
+      "tree": {
+        "sha": "f15a16c2108243e1bc00ccb4ad35a73afc8659b3",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/f15a16c2108243e1bc00ccb4ad35a73afc8659b3"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/54101c9ef9d86bcfab2937199486f2c79f8a9fe1",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/54101c9ef9d86bcfab2937199486f2c79f8a9fe1",
+    "html_url": "https://github.com/jgm/doclayout/commit/54101c9ef9d86bcfab2937199486f2c79f8a9fe1",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/54101c9ef9d86bcfab2937199486f2c79f8a9fe1/comments",
+    "author": {
+      "login": "silby",
+      "id": 18741,
+      "node_id": "MDQ6VXNlcjE4NzQx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18741?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/silby",
+      "html_url": "https://github.com/silby",
+      "followers_url": "https://api.github.com/users/silby/followers",
+      "following_url": "https://api.github.com/users/silby/following{/other_user}",
+      "gists_url": "https://api.github.com/users/silby/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/silby/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/silby/subscriptions",
+      "organizations_url": "https://api.github.com/users/silby/orgs",
+      "repos_url": "https://api.github.com/users/silby/repos",
+      "events_url": "https://api.github.com/users/silby/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/silby/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b121dbd798586b673e16de30eee68e7f81ed2616",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/b121dbd798586b673e16de30eee68e7f81ed2616",
+        "html_url": "https://github.com/jgm/doclayout/commit/b121dbd798586b673e16de30eee68e7f81ed2616"
+      }
+    ]
+  },
+  {
+    "sha": "b121dbd798586b673e16de30eee68e7f81ed2616",
+    "node_id": "C_kwDOC-fdudoAKGIxMjFkYmQ3OTg1ODZiNjczZTE2ZGUzMGVlZTY4ZTdmODFlZDI2MTY",
+    "commit": {
+      "author": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2023-10-17T06:48:32Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2023-10-17T06:48:32Z"
+      },
+      "message": "Revert \"Fix charWidth for combining characters.\"\n\nThis reverts commit 01d52b45611fc5cdbc49a7dde936f90faf8ce6f3.",
+      "tree": {
+        "sha": "00c8f508032a67d6012a888955b04a93d0871af1",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/00c8f508032a67d6012a888955b04a93d0871af1"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/b121dbd798586b673e16de30eee68e7f81ed2616",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/b121dbd798586b673e16de30eee68e7f81ed2616",
+    "html_url": "https://github.com/jgm/doclayout/commit/b121dbd798586b673e16de30eee68e7f81ed2616",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/b121dbd798586b673e16de30eee68e7f81ed2616/comments",
+    "author": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "01d52b45611fc5cdbc49a7dde936f90faf8ce6f3",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/01d52b45611fc5cdbc49a7dde936f90faf8ce6f3",
+        "html_url": "https://github.com/jgm/doclayout/commit/01d52b45611fc5cdbc49a7dde936f90faf8ce6f3"
+      }
+    ]
+  },
+  {
+    "sha": "01d52b45611fc5cdbc49a7dde936f90faf8ce6f3",
+    "node_id": "C_kwDOC-fdudoAKDAxZDUyYjQ1NjExZmM1Y2RiYzQ5YTdkZGU5MzZmOTBmYWY4Y2U2ZjM",
+    "commit": {
+      "author": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2023-10-17T06:39:35Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2023-10-17T06:39:35Z"
+      },
+      "message": "Fix charWidth for combining characters.\n\nCloses #23.",
+      "tree": {
+        "sha": "35d5f3ca30381128b2482839ea36d8372f570cd2",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/35d5f3ca30381128b2482839ea36d8372f570cd2"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/01d52b45611fc5cdbc49a7dde936f90faf8ce6f3",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/01d52b45611fc5cdbc49a7dde936f90faf8ce6f3",
+    "html_url": "https://github.com/jgm/doclayout/commit/01d52b45611fc5cdbc49a7dde936f90faf8ce6f3",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/01d52b45611fc5cdbc49a7dde936f90faf8ce6f3/comments",
+    "author": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "668e37499d66a496b45ad33dbfddc99a890317aa",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/668e37499d66a496b45ad33dbfddc99a890317aa",
+        "html_url": "https://github.com/jgm/doclayout/commit/668e37499d66a496b45ad33dbfddc99a890317aa"
+      }
+    ]
+  },
+  {
+    "sha": "668e37499d66a496b45ad33dbfddc99a890317aa",
+    "node_id": "C_kwDOC-fdudoAKDY2OGUzNzQ5OWQ2NmE0OTZiNDVhZDMzZGJmZGRjOTlhODkwMzE3YWE",
+    "commit": {
+      "author": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2023-10-17T06:39:18Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2023-10-17T06:39:18Z"
+      },
+      "message": "Makefile - use cabal.",
+      "tree": {
+        "sha": "00c8f508032a67d6012a888955b04a93d0871af1",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/00c8f508032a67d6012a888955b04a93d0871af1"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/668e37499d66a496b45ad33dbfddc99a890317aa",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/668e37499d66a496b45ad33dbfddc99a890317aa",
+    "html_url": "https://github.com/jgm/doclayout/commit/668e37499d66a496b45ad33dbfddc99a890317aa",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/668e37499d66a496b45ad33dbfddc99a890317aa/comments",
+    "author": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1d801a336fc8d7ffb4d0d58e01880ebfe8e3a7f6",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/1d801a336fc8d7ffb4d0d58e01880ebfe8e3a7f6",
+        "html_url": "https://github.com/jgm/doclayout/commit/1d801a336fc8d7ffb4d0d58e01880ebfe8e3a7f6"
+      }
+    ]
+  },
+  {
+    "sha": "1d801a336fc8d7ffb4d0d58e01880ebfe8e3a7f6",
+    "node_id": "C_kwDOC-fdudoAKDFkODAxYTMzNmZjOGQ3ZmZiNGQwZDU4ZTAxODgwZWJmZThlM2E3ZjY",
+    "commit": {
+      "author": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2023-03-26T03:30:38Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2023-03-26T03:30:38Z"
+      },
+      "message": "Add CI testing with ghc 9.4",
+      "tree": {
+        "sha": "7eb46605d2104d8b58535f613852e858e3be28d1",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/7eb46605d2104d8b58535f613852e858e3be28d1"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/1d801a336fc8d7ffb4d0d58e01880ebfe8e3a7f6",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/1d801a336fc8d7ffb4d0d58e01880ebfe8e3a7f6",
+    "html_url": "https://github.com/jgm/doclayout/commit/1d801a336fc8d7ffb4d0d58e01880ebfe8e3a7f6",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/1d801a336fc8d7ffb4d0d58e01880ebfe8e3a7f6/comments",
+    "author": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "fe3b153feae7676864a4e05eab32fe7b0aa71223",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/fe3b153feae7676864a4e05eab32fe7b0aa71223",
+        "html_url": "https://github.com/jgm/doclayout/commit/fe3b153feae7676864a4e05eab32fe7b0aa71223"
+      }
+    ]
+  },
+  {
+    "sha": "fe3b153feae7676864a4e05eab32fe7b0aa71223",
+    "node_id": "C_kwDOC-fdudoAKGZlM2IxNTNmZWFlNzY3Njg2NGE0ZTA1ZWFiMzJmZTdiMGFhNzEyMjM",
+    "commit": {
+      "author": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2023-03-26T03:26:02Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2023-03-26T03:26:02Z"
+      },
+      "message": "Bump to 0.4.0.1, update changelog.",
+      "tree": {
+        "sha": "b150afe2e655264c2fa5976ccf2f37f6c0772f47",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/b150afe2e655264c2fa5976ccf2f37f6c0772f47"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/fe3b153feae7676864a4e05eab32fe7b0aa71223",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/fe3b153feae7676864a4e05eab32fe7b0aa71223",
+    "html_url": "https://github.com/jgm/doclayout/commit/fe3b153feae7676864a4e05eab32fe7b0aa71223",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/fe3b153feae7676864a4e05eab32fe7b0aa71223/comments",
+    "author": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3381903404167a9035d756fd90962ac3d7b85960",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/3381903404167a9035d756fd90962ac3d7b85960",
+        "html_url": "https://github.com/jgm/doclayout/commit/3381903404167a9035d756fd90962ac3d7b85960"
+      }
+    ]
+  },
+  {
+    "sha": "3381903404167a9035d756fd90962ac3d7b85960",
+    "node_id": "C_kwDOC-fdudoAKDMzODE5MDM0MDQxNjdhOTAzNWQ3NTZmZDkwOTYyYWMzZDdiODU5NjA",
+    "commit": {
+      "author": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2023-03-20T22:04:32Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2023-03-20T22:04:32Z"
+      },
+      "message": "Add clause for Empty to renderList.\n\nFixes #22.\nSee jgm/pandoc#8711.",
+      "tree": {
+        "sha": "d442ce20a684dcc47ed2d32a9225157de6112126",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/d442ce20a684dcc47ed2d32a9225157de6112126"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/3381903404167a9035d756fd90962ac3d7b85960",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/3381903404167a9035d756fd90962ac3d7b85960",
+    "html_url": "https://github.com/jgm/doclayout/commit/3381903404167a9035d756fd90962ac3d7b85960",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/3381903404167a9035d756fd90962ac3d7b85960/comments",
+    "author": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a37d565e3299989df917ce51709b5d236b9c4ba9",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/a37d565e3299989df917ce51709b5d236b9c4ba9",
+        "html_url": "https://github.com/jgm/doclayout/commit/a37d565e3299989df917ce51709b5d236b9c4ba9"
+      }
+    ]
+  },
+  {
+    "sha": "a37d565e3299989df917ce51709b5d236b9c4ba9",
+    "node_id": "C_kwDOC-fdudoAKGEzN2Q1NjVlMzI5OTk4OWRmOTE3Y2U1MTcwOWI1ZDIzNmI5YzRiYTk",
+    "commit": {
+      "author": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2023-03-20T22:03:19Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2023-03-20T22:03:19Z"
+      },
+      "message": "Add test for #8711",
+      "tree": {
+        "sha": "a24c0e4d43ec866f8db72f460bcd888a99bfabcb",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/a24c0e4d43ec866f8db72f460bcd888a99bfabcb"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/a37d565e3299989df917ce51709b5d236b9c4ba9",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/a37d565e3299989df917ce51709b5d236b9c4ba9",
+    "html_url": "https://github.com/jgm/doclayout/commit/a37d565e3299989df917ce51709b5d236b9c4ba9",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/a37d565e3299989df917ce51709b5d236b9c4ba9/comments",
+    "author": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d06ada0849a3984eb9f1fb77ad8f35a6e1d855fd",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/d06ada0849a3984eb9f1fb77ad8f35a6e1d855fd",
+        "html_url": "https://github.com/jgm/doclayout/commit/d06ada0849a3984eb9f1fb77ad8f35a6e1d855fd"
+      }
+    ]
+  },
+  {
+    "sha": "d06ada0849a3984eb9f1fb77ad8f35a6e1d855fd",
+    "node_id": "C_kwDOC-fdudoAKGQwNmFkYTA4NDlhMzk4NGViOWYxZmI3N2FkOGYzNWE2ZTFkODU1ZmQ",
+    "commit": {
+      "author": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2023-03-20T22:00:13Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2023-03-20T22:00:13Z"
+      },
+      "message": "Test: fix compiler warning.",
+      "tree": {
+        "sha": "96bc9a67ee2acff2b30002ac335b8b9e0eee3662",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/96bc9a67ee2acff2b30002ac335b8b9e0eee3662"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/d06ada0849a3984eb9f1fb77ad8f35a6e1d855fd",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/d06ada0849a3984eb9f1fb77ad8f35a6e1d855fd",
+    "html_url": "https://github.com/jgm/doclayout/commit/d06ada0849a3984eb9f1fb77ad8f35a6e1d855fd",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/d06ada0849a3984eb9f1fb77ad8f35a6e1d855fd/comments",
+    "author": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "621dcce9daa744cd7a7e30d96f3abc3ad28ccadd",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/621dcce9daa744cd7a7e30d96f3abc3ad28ccadd",
+        "html_url": "https://github.com/jgm/doclayout/commit/621dcce9daa744cd7a7e30d96f3abc3ad28ccadd"
+      }
+    ]
+  },
+  {
+    "sha": "621dcce9daa744cd7a7e30d96f3abc3ad28ccadd",
+    "node_id": "C_kwDOC-fdudoAKDYyMWRjY2U5ZGFhNzQ0Y2Q3YTdlMzBkOTZmM2FiYzNhZDI4Y2NhZGQ",
+    "commit": {
+      "author": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2022-08-13T17:41:14Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2022-08-13T17:41:14Z"
+      },
+      "message": "Remove upper bound for criterion",
+      "tree": {
+        "sha": "4c29a44aee8d05516b7638d3c0b80591701ad818",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/4c29a44aee8d05516b7638d3c0b80591701ad818"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/621dcce9daa744cd7a7e30d96f3abc3ad28ccadd",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/621dcce9daa744cd7a7e30d96f3abc3ad28ccadd",
+    "html_url": "https://github.com/jgm/doclayout/commit/621dcce9daa744cd7a7e30d96f3abc3ad28ccadd",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/621dcce9daa744cd7a7e30d96f3abc3ad28ccadd/comments",
+    "author": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "159683f36b358de6300e3e77ec6f826385e511ed",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/159683f36b358de6300e3e77ec6f826385e511ed",
+        "html_url": "https://github.com/jgm/doclayout/commit/159683f36b358de6300e3e77ec6f826385e511ed"
+      }
+    ]
+  },
+  {
+    "sha": "159683f36b358de6300e3e77ec6f826385e511ed",
+    "node_id": "C_kwDOC-fdudoAKDE1OTY4M2YzNmIzNThkZTYzMDBlM2U3N2VjNmY4MjYzODVlNTExZWQ",
+    "commit": {
+      "author": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2022-04-02T22:17:48Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2022-04-02T22:17:48Z"
+      },
+      "message": "Revert \"Add type annotation to avoid warning on test.hs.\"\n\nThis reverts commit 8a76a839ff6910a33f05bc6ec3357df7c880e5c7.",
+      "tree": {
+        "sha": "3b02a9ac5f445fd68b1f6a9110646629fbab466f",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/3b02a9ac5f445fd68b1f6a9110646629fbab466f"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/159683f36b358de6300e3e77ec6f826385e511ed",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/159683f36b358de6300e3e77ec6f826385e511ed",
+    "html_url": "https://github.com/jgm/doclayout/commit/159683f36b358de6300e3e77ec6f826385e511ed",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/159683f36b358de6300e3e77ec6f826385e511ed/comments",
+    "author": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8a76a839ff6910a33f05bc6ec3357df7c880e5c7",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/8a76a839ff6910a33f05bc6ec3357df7c880e5c7",
+        "html_url": "https://github.com/jgm/doclayout/commit/8a76a839ff6910a33f05bc6ec3357df7c880e5c7"
+      }
+    ]
+  },
+  {
+    "sha": "8a76a839ff6910a33f05bc6ec3357df7c880e5c7",
+    "node_id": "C_kwDOC-fdudoAKDhhNzZhODM5ZmY2OTEwYTMzZjA1YmM2ZWMzMzU3ZGY3Yzg4MGU1Yzc",
+    "commit": {
+      "author": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2022-04-02T22:08:07Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2022-04-02T22:08:07Z"
+      },
+      "message": "Add type annotation to avoid warning on test.hs.",
+      "tree": {
+        "sha": "5764024e90ead1df82c16a61205dd162d00d65f4",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/5764024e90ead1df82c16a61205dd162d00d65f4"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/8a76a839ff6910a33f05bc6ec3357df7c880e5c7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/8a76a839ff6910a33f05bc6ec3357df7c880e5c7",
+    "html_url": "https://github.com/jgm/doclayout/commit/8a76a839ff6910a33f05bc6ec3357df7c880e5c7",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/8a76a839ff6910a33f05bc6ec3357df7c880e5c7/comments",
+    "author": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "716560b0f61025b63eef56cd22fa9b314fa715f4",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/716560b0f61025b63eef56cd22fa9b314fa715f4",
+        "html_url": "https://github.com/jgm/doclayout/commit/716560b0f61025b63eef56cd22fa9b314fa715f4"
+      }
+    ]
+  },
+  {
+    "sha": "716560b0f61025b63eef56cd22fa9b314fa715f4",
+    "node_id": "C_kwDOC-fdudoAKDcxNjU2MGIwZjYxMDI1YjYzZWVmNTZjZDIyZmE5YjMxNGZhNzE1ZjQ",
+    "commit": {
+      "author": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2022-04-02T21:31:35Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2022-04-02T21:31:35Z"
+      },
+      "message": "Reduce iterations for shortcut property test to 10k.",
+      "tree": {
+        "sha": "3b02a9ac5f445fd68b1f6a9110646629fbab466f",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/3b02a9ac5f445fd68b1f6a9110646629fbab466f"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/716560b0f61025b63eef56cd22fa9b314fa715f4",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/716560b0f61025b63eef56cd22fa9b314fa715f4",
+    "html_url": "https://github.com/jgm/doclayout/commit/716560b0f61025b63eef56cd22fa9b314fa715f4",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/716560b0f61025b63eef56cd22fa9b314fa715f4/comments",
+    "author": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ec0cdddeb828a71f8a78aedc8b2fff530534ef54",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/ec0cdddeb828a71f8a78aedc8b2fff530534ef54",
+        "html_url": "https://github.com/jgm/doclayout/commit/ec0cdddeb828a71f8a78aedc8b2fff530534ef54"
+      }
+    ]
+  },
+  {
+    "sha": "ec0cdddeb828a71f8a78aedc8b2fff530534ef54",
+    "node_id": "C_kwDOC-fdudoAKGVjMGNkZGRlYjgyOGE3MWY4YTc4YWVkYzhiMmZmZjUzMDUzNGVmNTQ",
+    "commit": {
+      "author": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2022-04-02T21:30:03Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2022-04-02T21:30:03Z"
+      },
+      "message": "Revert \"Inline the realLength... functions exported just for testing.\"\n\nThis reverts commit d7e0f4e22288f2a4cadb040623507839cb401a96.",
+      "tree": {
+        "sha": "2e654410e423add686af614474de293005fc0615",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/2e654410e423add686af614474de293005fc0615"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/ec0cdddeb828a71f8a78aedc8b2fff530534ef54",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/ec0cdddeb828a71f8a78aedc8b2fff530534ef54",
+    "html_url": "https://github.com/jgm/doclayout/commit/ec0cdddeb828a71f8a78aedc8b2fff530534ef54",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/ec0cdddeb828a71f8a78aedc8b2fff530534ef54/comments",
+    "author": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d7e0f4e22288f2a4cadb040623507839cb401a96",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/d7e0f4e22288f2a4cadb040623507839cb401a96",
+        "html_url": "https://github.com/jgm/doclayout/commit/d7e0f4e22288f2a4cadb040623507839cb401a96"
+      }
+    ]
+  },
+  {
+    "sha": "d7e0f4e22288f2a4cadb040623507839cb401a96",
+    "node_id": "C_kwDOC-fdudoAKGQ3ZTBmNGUyMjI4OGYyYTRjYWRiMDQwNjIzNTA3ODM5Y2I0MDFhOTY",
+    "commit": {
+      "author": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2022-04-02T21:00:35Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2022-04-02T21:00:35Z"
+      },
+      "message": "Inline the realLength... functions exported just for testing.",
+      "tree": {
+        "sha": "1ebd731b34e8835230e44b0acd7399f18dba9518",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/1ebd731b34e8835230e44b0acd7399f18dba9518"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/d7e0f4e22288f2a4cadb040623507839cb401a96",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/d7e0f4e22288f2a4cadb040623507839cb401a96",
+    "html_url": "https://github.com/jgm/doclayout/commit/d7e0f4e22288f2a4cadb040623507839cb401a96",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/d7e0f4e22288f2a4cadb040623507839cb401a96/comments",
+    "author": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "70bd11da2fb8e5ec96b30772e45ab7cdce4835d0",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/70bd11da2fb8e5ec96b30772e45ab7cdce4835d0",
+        "html_url": "https://github.com/jgm/doclayout/commit/70bd11da2fb8e5ec96b30772e45ab7cdce4835d0"
+      }
+    ]
+  },
+  {
+    "sha": "70bd11da2fb8e5ec96b30772e45ab7cdce4835d0",
+    "node_id": "C_kwDOC-fdudoAKDcwYmQxMWRhMmZiOGU1ZWM5NmIzMDc3MmU0NWFiN2NkY2U0ODM1ZDA",
+    "commit": {
+      "author": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2022-04-02T20:57:17Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2022-04-02T20:57:17Z"
+      },
+      "message": "8 min timeout on tests",
+      "tree": {
+        "sha": "2e654410e423add686af614474de293005fc0615",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/2e654410e423add686af614474de293005fc0615"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/70bd11da2fb8e5ec96b30772e45ab7cdce4835d0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/70bd11da2fb8e5ec96b30772e45ab7cdce4835d0",
+    "html_url": "https://github.com/jgm/doclayout/commit/70bd11da2fb8e5ec96b30772e45ab7cdce4835d0",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/70bd11da2fb8e5ec96b30772e45ab7cdce4835d0/comments",
+    "author": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c2d5678b7d8bc25afb0bde8690166afc3465b198",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/c2d5678b7d8bc25afb0bde8690166afc3465b198",
+        "html_url": "https://github.com/jgm/doclayout/commit/c2d5678b7d8bc25afb0bde8690166afc3465b198"
+      }
+    ]
+  },
+  {
+    "sha": "c2d5678b7d8bc25afb0bde8690166afc3465b198",
+    "node_id": "C_kwDOC-fdudoAKGMyZDU2NzhiN2Q4YmMyNWFmYjBiZGU4NjkwMTY2YWZjMzQ2NWIxOTg",
+    "commit": {
+      "author": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2022-04-02T20:39:43Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2022-04-02T20:39:43Z"
+      },
+      "message": "Reduce number of iterations on property tests.",
+      "tree": {
+        "sha": "915c48a4b47628ea6119b60743ad908a07eb9652",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/915c48a4b47628ea6119b60743ad908a07eb9652"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/c2d5678b7d8bc25afb0bde8690166afc3465b198",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/c2d5678b7d8bc25afb0bde8690166afc3465b198",
+    "html_url": "https://github.com/jgm/doclayout/commit/c2d5678b7d8bc25afb0bde8690166afc3465b198",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/c2d5678b7d8bc25afb0bde8690166afc3465b198/comments",
+    "author": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8bd959a19bc12526892ccbd8a202bf0704e0a2dd",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/8bd959a19bc12526892ccbd8a202bf0704e0a2dd",
+        "html_url": "https://github.com/jgm/doclayout/commit/8bd959a19bc12526892ccbd8a202bf0704e0a2dd"
+      }
+    ]
+  },
+  {
+    "sha": "8bd959a19bc12526892ccbd8a202bf0704e0a2dd",
+    "node_id": "C_kwDOC-fdudoAKDhiZDk1OWExOWJjMTI1MjY4OTJjY2JkOGEyMDJiZjA3MDRlMGEyZGQ",
+    "commit": {
+      "author": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2022-04-02T18:19:07Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2022-04-02T18:19:07Z"
+      },
+      "message": "Put 60s timeout on tests.",
+      "tree": {
+        "sha": "47ef5436201b74e350bce88f4e225ad6747c57a0",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/47ef5436201b74e350bce88f4e225ad6747c57a0"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/8bd959a19bc12526892ccbd8a202bf0704e0a2dd",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/8bd959a19bc12526892ccbd8a202bf0704e0a2dd",
+    "html_url": "https://github.com/jgm/doclayout/commit/8bd959a19bc12526892ccbd8a202bf0704e0a2dd",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/8bd959a19bc12526892ccbd8a202bf0704e0a2dd/comments",
+    "author": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "77de82c51249a79dd169dfc911adb98d8b56e195",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/77de82c51249a79dd169dfc911adb98d8b56e195",
+        "html_url": "https://github.com/jgm/doclayout/commit/77de82c51249a79dd169dfc911adb98d8b56e195"
+      }
+    ]
+  },
+  {
+    "sha": "77de82c51249a79dd169dfc911adb98d8b56e195",
+    "node_id": "C_kwDOC-fdudoAKDc3ZGU4MmM1MTI0OWE3OWRkMTY5ZGZjOTExYWRiOThkOGI1NmUxOTU",
+    "commit": {
+      "author": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2022-04-02T17:41:37Z"
+      },
+      "committer": {
+        "name": "John MacFarlane",
+        "email": "jgm@berkeley.edu",
+        "date": "2022-04-02T17:41:37Z"
+      },
+      "message": "CI: separate build and test phases.",
+      "tree": {
+        "sha": "f887a5efda5f344ebe6857489b6b084c19cf9420",
+        "url": "https://api.github.com/repos/jgm/doclayout/git/trees/f887a5efda5f344ebe6857489b6b084c19cf9420"
+      },
+      "url": "https://api.github.com/repos/jgm/doclayout/git/commits/77de82c51249a79dd169dfc911adb98d8b56e195",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jgm/doclayout/commits/77de82c51249a79dd169dfc911adb98d8b56e195",
+    "html_url": "https://github.com/jgm/doclayout/commit/77de82c51249a79dd169dfc911adb98d8b56e195",
+    "comments_url": "https://api.github.com/repos/jgm/doclayout/commits/77de82c51249a79dd169dfc911adb98d8b56e195/comments",
+    "author": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jgm",
+      "id": 3044,
+      "node_id": "MDQ6VXNlcjMwNDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3044?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jgm",
+      "html_url": "https://github.com/jgm",
+      "followers_url": "https://api.github.com/users/jgm/followers",
+      "following_url": "https://api.github.com/users/jgm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jgm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jgm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jgm/subscriptions",
+      "organizations_url": "https://api.github.com/users/jgm/orgs",
+      "repos_url": "https://api.github.com/users/jgm/repos",
+      "events_url": "https://api.github.com/users/jgm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jgm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a2b757827694e0ad8a69858383e30bfccd44de49",
+        "url": "https://api.github.com/repos/jgm/doclayout/commits/a2b757827694e0ad8a69858383e30bfccd44de49",
+        "html_url": "https://github.com/jgm/doclayout/commit/a2b757827694e0ad8a69858383e30bfccd44de49"
+      }
+    ]
+  }
+]

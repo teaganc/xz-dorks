@@ -1,0 +1,2372 @@
+[
+  {
+    "sha": "f7133c533c59cedd05a584fa3cd0c70efd3653d8",
+    "node_id": "C_kwDOEC_BhNoAKGY3MTMzYzUzM2M1OWNlZGQwNWE1ODRmYTNjZDBjNzBlZmQzNjUzZDg",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-04-03T19:18:30Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-04-03T21:47:10Z"
+      },
+      "message": "Fix overflow problem in brace expansion of ranges with increment\n\nExample reproducer:\n\n    $ echo {1696512000..1696512000..300} | wc -w\n       47722\n\nExpected output: 1. Only 1 number (1696512000) should be generated.\n\nAnalysis: The issue is a 32-bit integer overflow in\npath_generate():\n\n    src/cmd/ksh93/sh/expand.c:\n    250: int first = 0, last = 0, incr = 0, count = 0;\n    [...]\n    408: if(incr*(first+incr) > last*incr)\n\nLine 408 has an inherent overflow problem due to the multiplication\nby incr. In the reproducer, 1696512000 * 300 well exceeds INT_MAX.\n\nThis bug has been present since the range feature was introduced\nin ksh 93q+ 2005-05-22 and survives in every ksh version since.\n\nYou'd think that line 408 can be simplified to:\n    if(first+incr > last)\nHowever, that doesn't work because incr may be negative. With the\ntoo-clever-by-half multiplication eliminated, the comparison\noperator (>) will now also need to adapt to the negativity of incr.\n\nsrc/cmd/ksh93/sh/expand.c: path_generate():\n- Fix range brace expansion to check first + incr < last if incr <\n  0, or first + incr > last otherwise.\n\nsrc/cmd/ksh93/sh.1:\n- Formatting fixes.\n- Document that n1, n2 and n3 are limited to INT_MIN...INT_MAX and\n  that exceeding this range produces undefined behaviour.\n\nThanks to Robert W. Mills (@rwmills) for the bug report.\nResolves: https://github.com/ksh93/ksh/issues/738",
+      "tree": {
+        "sha": "d8f328062030b5cc32c9621e80b3c465af4aff3c",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/d8f328062030b5cc32c9621e80b3c465af4aff3c"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/f7133c533c59cedd05a584fa3cd0c70efd3653d8",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/f7133c533c59cedd05a584fa3cd0c70efd3653d8",
+    "html_url": "https://github.com/ksh93/ksh/commit/f7133c533c59cedd05a584fa3cd0c70efd3653d8",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/f7133c533c59cedd05a584fa3cd0c70efd3653d8/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d68f78dbcb4e7af24afb99908100ff8b1a57b820",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/d68f78dbcb4e7af24afb99908100ff8b1a57b820",
+        "html_url": "https://github.com/ksh93/ksh/commit/d68f78dbcb4e7af24afb99908100ff8b1a57b820"
+      }
+    ]
+  },
+  {
+    "sha": "d68f78dbcb4e7af24afb99908100ff8b1a57b820",
+    "node_id": "C_kwDOEC_BhNoAKGQ2OGY3OGRiY2I0ZTdhZjI0YWZiOTk5MDgxMDBmZjhiMWE1N2I4MjA",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-04-02T22:23:41Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-04-02T22:35:42Z"
+      },
+      "message": "Revert dynamic linking of mamake for now (re: 2e849e67)\n\nIt somehow conflicts with System Integrity Protection on macOS\n13.6.6 (even though it's fine on macOS 12.6.7). Since I have no way\nto test it on 13.6.6 and find a workaround, I'm simply reverting it\nfor now. Dynamically linking mamake against libast is useful as a\ntest case for dynamic linking, but non-essential.\n\nsrc/lib/libast/Mamfile:\n- Revert.\n\nbin/package:\n- When rebuilding mamake, remove both versionslinked agaisnt libast\n  (static and dymamic) to avoid them found in PATH.\n\nsrc/cmd/INIT/mamake.c:\n- Version date bump to trigger rebuild (and thus removal of\n  dynamically linked version as per above change).\n\nResolves: https://github.com/ksh93/ksh/issues/735",
+      "tree": {
+        "sha": "177eceb7fb587d96c71543aee3ed116d98fa95df",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/177eceb7fb587d96c71543aee3ed116d98fa95df"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/d68f78dbcb4e7af24afb99908100ff8b1a57b820",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/d68f78dbcb4e7af24afb99908100ff8b1a57b820",
+    "html_url": "https://github.com/ksh93/ksh/commit/d68f78dbcb4e7af24afb99908100ff8b1a57b820",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/d68f78dbcb4e7af24afb99908100ff8b1a57b820/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e0218fc36ee3b2f1e2559a68e5aa64051ee36636",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/e0218fc36ee3b2f1e2559a68e5aa64051ee36636",
+        "html_url": "https://github.com/ksh93/ksh/commit/e0218fc36ee3b2f1e2559a68e5aa64051ee36636"
+      }
+    ]
+  },
+  {
+    "sha": "e0218fc36ee3b2f1e2559a68e5aa64051ee36636",
+    "node_id": "C_kwDOEC_BhNoAKGUwMjE4ZmMzNmVlM2IyZjFlMjU1OWE2OGU1YWE2NDA1MWVlMzY2MzY",
+    "commit": {
+      "author": {
+        "name": "Phi",
+        "email": "phi.debian@gmail.com",
+        "date": "2024-03-30T13:07:46Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-30T13:15:38Z"
+      },
+      "message": "printf %T: Fix \"th\" as ordinal specifier (re: 1a9d8ada) (#734)\n\nReproducers:\n\n    $ printf '%(%F)T\\n' '4th tuesday in march 2016'\n    2016-04-09\n    $ printf '%(%F)T\\n' '4nd tuesday in march 2016'\n    2016-03-08\n\nExpected, in both cases: 2016-03-22\n\nIt was a left over, while I reworked these things some time ago, I\nnormalised the 'f' variable usage (specially the +1 -1 usage), and\nthe cryptic TM_ORDINAL case was kinda magical and I left it\nuntouched.\n\nNow thanx @stephane-chazelas, I got a test case and can understand\nit. I added a test case to catch any regression in this area if one\ntry to make printf better :-)\n\nsrc/lib/libast/tm/tmxdate.c:\n- tmxdate(): While normalising the 'f' variable usage into\n  tmxdate(), also handle the TM_ORDINAL case, which had been\n  overlooked.\n\nThanks to @stephane-chazelas for the bug report.\nResolves: https://github.com/ksh93/ksh/issues/733",
+      "tree": {
+        "sha": "7021197ac8f621b12191ec9e0000958fbc8386c6",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/7021197ac8f621b12191ec9e0000958fbc8386c6"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/e0218fc36ee3b2f1e2559a68e5aa64051ee36636",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/e0218fc36ee3b2f1e2559a68e5aa64051ee36636",
+    "html_url": "https://github.com/ksh93/ksh/commit/e0218fc36ee3b2f1e2559a68e5aa64051ee36636",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/e0218fc36ee3b2f1e2559a68e5aa64051ee36636/comments",
+    "author": {
+      "login": "phidebian",
+      "id": 25255435,
+      "node_id": "MDQ6VXNlcjI1MjU1NDM1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25255435?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/phidebian",
+      "html_url": "https://github.com/phidebian",
+      "followers_url": "https://api.github.com/users/phidebian/followers",
+      "following_url": "https://api.github.com/users/phidebian/following{/other_user}",
+      "gists_url": "https://api.github.com/users/phidebian/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/phidebian/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/phidebian/subscriptions",
+      "organizations_url": "https://api.github.com/users/phidebian/orgs",
+      "repos_url": "https://api.github.com/users/phidebian/repos",
+      "events_url": "https://api.github.com/users/phidebian/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/phidebian/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2e849e677f54fa0adb84046c7f34af322122ee08",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/2e849e677f54fa0adb84046c7f34af322122ee08",
+        "html_url": "https://github.com/ksh93/ksh/commit/2e849e677f54fa0adb84046c7f34af322122ee08"
+      }
+    ]
+  },
+  {
+    "sha": "2e849e677f54fa0adb84046c7f34af322122ee08",
+    "node_id": "C_kwDOEC_BhNoAKDJlODQ5ZTY3N2Y1NGZhMGFkYjg0MDQ2YzdmMzRhZjMyMjEyMmVlMDg",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-26T15:22:11Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-26T15:22:11Z"
+      },
+      "message": "libast/Mamfile: also dynamically link mamake (re: f2bc1f45)",
+      "tree": {
+        "sha": "b257a3212dcc5c31a39230baa5b16a3a0ee2487e",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/b257a3212dcc5c31a39230baa5b16a3a0ee2487e"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/2e849e677f54fa0adb84046c7f34af322122ee08",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/2e849e677f54fa0adb84046c7f34af322122ee08",
+    "html_url": "https://github.com/ksh93/ksh/commit/2e849e677f54fa0adb84046c7f34af322122ee08",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/2e849e677f54fa0adb84046c7f34af322122ee08/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f2bc1f450814b2a6f65acf82d1ce09857ab4d317",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/f2bc1f450814b2a6f65acf82d1ce09857ab4d317",
+        "html_url": "https://github.com/ksh93/ksh/commit/f2bc1f450814b2a6f65acf82d1ce09857ab4d317"
+      }
+    ]
+  },
+  {
+    "sha": "f2bc1f450814b2a6f65acf82d1ce09857ab4d317",
+    "node_id": "C_kwDOEC_BhNoAKGYyYmMxZjQ1MDgxNGIyYTZmNjVhY2Y4MmQxY2UwOTg1N2FiNGQzMTc",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-24T03:12:44Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-24T03:12:44Z"
+      },
+      "message": "Build dynamic libraries (#357)\n\nThis commit re-adds support for building a dynamically linked ksh\r\nwith libast, libdll, libcmd, and libshell available as dynamic\r\nlibraries for other applications to use. Previously, this required\r\nnmake; as of this commit, we use a helper script dylink.sh instead,\r\nwhich does all the necessary platform-specific things and can be\r\neasily extended to add support for new platforms. Currently tested\r\nand supported platforms are Linux, Android, macOS, FreeBSD, NetBSD,\r\nOpenBSD, and illumos/Solaris.\r\n\r\nSummary of important changes:\r\n\r\nsrc/cmd/ksh93/SHOPT.sh:\r\n- Enable SHOPT_DYNAMIC by default. This enables the '-f' option to\r\n  the 'builtin' command, making it possible to load builtins from\r\n  dynamic/shared libraries. This mostly makes sense for a\r\n  dynamically linked ksh, as that is needed to allow ksh and\r\n  builtins to share the same libraries such as libast.\r\n\r\nsrc/cmd/INIT/dylink.sh:\r\n- Added. This is a dynamic linking tool to invoke from Mamfiles.\r\n- Disable dynamic libraries if AST_NO_DYLIB is exported.\r\n- Disable dynamic libraries on untested systems unless\r\n  AST_DYLIB_TEST is exported.\r\n\r\nbin/package:\r\n- Add support for $INSTALLROOT/dyn subdirectory.\r\n- Set LD_LIBRARY_PATH, etc. to point to dyn/lib.\r\n- Prefix dyn/bin to $PATH.\r\n- do_install():\r\n  - Prefer dynamically linked versions for installing, if they\r\n    have been built.\r\n  - If dyn/lib exists, install not only the dynamic libraries but\r\n    also the dev stuff: AST headers and section 3 manual pages.\r\n- Remove generation of .paths file. It causes regression test\r\n  failures because of how built-ins are bound to different paths\r\n  when found via a .paths file. This functionality is deprecated\r\n  and may be removed from ksh 93u+m/1.1 and up.\r\n\r\nbin/shtests:\r\n- Relaunch self via 'bin/package use' to pull in the necessary\r\n  environment stuff to make the pre-installed dynamically linked\r\n  binaries work.\r\n\r\nsrc/cmd/INIT/make.probe:\r\n- Add probe for the --as-needed and --no-as-needed linker options.\r\n  To make dynamic libraries work on Linux arm64, we need to pass\r\n  --no-as-needed to the linker on Linux to avoid glibc interfering\r\n  with libast in identically named functions like AST regcomp(3).\r\n  Linux systems vary as to whether --as-needed is on by default.\r\n  Thanks to Lukáš Zaoral at Red Hat for finding the key to the fix.\r\n\r\nsrc/cmd/INIT/mamprobe.sh:\r\n- Update version number. This change causes mamake to redo the\r\n  probe (it checks for a change in mamprobe but not in make.probe;\r\n  I should probably fix that at some point). We need mamake to redo\r\n  the probe for the --no-as-needed addition to take effect.\r\n\r\n**/Mamfile:\r\n- Use the --no-as-needed probe result (either -Wl,-no-as-needed or\r\n  empty) from ${mam_cc_LD_NOASNEEDED} whenever linking anything;\r\n  add it to LDFLAGS before invoking dylink.\r\n- ksh and shcomp also need the results of the existing\r\n  --export-dynamic probe; this option is needed on Linux as without\r\n  it ksh fails to export symbols to loadable builtins. See:\r\n  https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=821806\r\n  Thanks to Johnothan King.\r\n\r\nsrc/lib/libast/features/map.c, src/lib/libast/regex/regexec.c,\r\nsrc/lib/libast/regex/regnexec.c, src/lib/libast/regex/regrexec.c,\r\nsrc/lib/libast/regex/regsubexec.c:\r\n- Map regcomp and all the other AST regex functions via macros so\r\n  they get an _ast_ prefix. This allows a functional dynamically\r\n  linked executable to exist under ASan because the regcomp\r\n  function gets overriden by ASan, despite linking with\r\n  --no-as-needed. Thanks to Johnothan King.\r\n\r\nsrc/lib/libast/comp/errno.c:\r\n- Make one trivial change (copyright year) to force libast to\r\n  relink -- which then triggers a relink of everything else.\r\n\r\nCo-authored-by: Johnothan King <johnothanking@protonmail.com>\r\nCo-authored-by: Lukáš Zaoral <lzaoral@redhat.com>",
+      "tree": {
+        "sha": "91d51fb3c87b3422edbe03d4945feb861506ac63",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/91d51fb3c87b3422edbe03d4945feb861506ac63"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/f2bc1f450814b2a6f65acf82d1ce09857ab4d317",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl/5osCRC1aQ7uu5UhlAAAJi8QAHq3rxojcjasPPfWF+3wgqwR\n96H+iaSWC6zkNl5Z9nC8GbGpDJmkAOsFPuhg+LbuNYr2gEjfFpOFH3DoOlJAV6Bf\niFRpQGxl0g5VINx3V3pA9wfqjtKJKJvU71l2fQ/TMZLp81aSeM8xZKhYZM9mliTE\nj3LJA6g8L7vS8u0gUpCEGtEa4frl9A/zIKRi+q6i682lqNsijy2g0Y43AYLBZAvc\nflAZXK0MUuzwE5z1ng9DghfqSRb8WNvNBSGwXAaaodxJ9xA5Tgl4fztogzERjZV7\npUZQKMAMf5HwQ6t8sptmTLp4/mKQ7+MpdGfQYd6HojGBTKnFRq8BbaG5xTZSIIz7\na84kxOXxe9/ohsth9AwimyCljL+Y7It3bTfItK+gfu/mtF6Td46NQOEQ2I8/pkP0\nrhn5lm5ipNxAh/thWRm2d60oHH/V7wWzI3Rb+z1EAQ1qqPsnbxD837g2cafHtwcy\nlyDdb19/oD0PZMXJAjpFc+HYr7mGaJiOz1bjDtK0SGzZCUh9TYfqNX5UxwzbYd9s\nj/HlJozYyWojrP4jfwLJVrpF/b7RvNqmI4zyihdutifRgfuO52H5kXDMmnVmgQGP\n0zr1a66YlcO3VyvIvJn1PWKRj8xQECHmfeNMmLae+LwqUEVb9vK3DvF2NK8gbmwh\n6fRRL9GOpfslYmco0pqi\n=J6ZP\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 91d51fb3c87b3422edbe03d4945feb861506ac63\nparent a2fbf5445d25556e4b5487dfbe9d9a5d6f781098\nauthor Martijn Dekker <martijn@inlv.org> 1711249964 +0000\ncommitter GitHub <noreply@github.com> 1711249964 +0000\n\nBuild dynamic libraries (#357)\n\nThis commit re-adds support for building a dynamically linked ksh\r\nwith libast, libdll, libcmd, and libshell available as dynamic\r\nlibraries for other applications to use. Previously, this required\r\nnmake; as of this commit, we use a helper script dylink.sh instead,\r\nwhich does all the necessary platform-specific things and can be\r\neasily extended to add support for new platforms. Currently tested\r\nand supported platforms are Linux, Android, macOS, FreeBSD, NetBSD,\r\nOpenBSD, and illumos/Solaris.\r\n\r\nSummary of important changes:\r\n\r\nsrc/cmd/ksh93/SHOPT.sh:\r\n- Enable SHOPT_DYNAMIC by default. This enables the '-f' option to\r\n  the 'builtin' command, making it possible to load builtins from\r\n  dynamic/shared libraries. This mostly makes sense for a\r\n  dynamically linked ksh, as that is needed to allow ksh and\r\n  builtins to share the same libraries such as libast.\r\n\r\nsrc/cmd/INIT/dylink.sh:\r\n- Added. This is a dynamic linking tool to invoke from Mamfiles.\r\n- Disable dynamic libraries if AST_NO_DYLIB is exported.\r\n- Disable dynamic libraries on untested systems unless\r\n  AST_DYLIB_TEST is exported.\r\n\r\nbin/package:\r\n- Add support for $INSTALLROOT/dyn subdirectory.\r\n- Set LD_LIBRARY_PATH, etc. to point to dyn/lib.\r\n- Prefix dyn/bin to $PATH.\r\n- do_install():\r\n  - Prefer dynamically linked versions for installing, if they\r\n    have been built.\r\n  - If dyn/lib exists, install not only the dynamic libraries but\r\n    also the dev stuff: AST headers and section 3 manual pages.\r\n- Remove generation of .paths file. It causes regression test\r\n  failures because of how built-ins are bound to different paths\r\n  when found via a .paths file. This functionality is deprecated\r\n  and may be removed from ksh 93u+m/1.1 and up.\r\n\r\nbin/shtests:\r\n- Relaunch self via 'bin/package use' to pull in the necessary\r\n  environment stuff to make the pre-installed dynamically linked\r\n  binaries work.\r\n\r\nsrc/cmd/INIT/make.probe:\r\n- Add probe for the --as-needed and --no-as-needed linker options.\r\n  To make dynamic libraries work on Linux arm64, we need to pass\r\n  --no-as-needed to the linker on Linux to avoid glibc interfering\r\n  with libast in identically named functions like AST regcomp(3).\r\n  Linux systems vary as to whether --as-needed is on by default.\r\n  Thanks to Lukáš Zaoral at Red Hat for finding the key to the fix.\r\n\r\nsrc/cmd/INIT/mamprobe.sh:\r\n- Update version number. This change causes mamake to redo the\r\n  probe (it checks for a change in mamprobe but not in make.probe;\r\n  I should probably fix that at some point). We need mamake to redo\r\n  the probe for the --no-as-needed addition to take effect.\r\n\r\n**/Mamfile:\r\n- Use the --no-as-needed probe result (either -Wl,-no-as-needed or\r\n  empty) from ${mam_cc_LD_NOASNEEDED} whenever linking anything;\r\n  add it to LDFLAGS before invoking dylink.\r\n- ksh and shcomp also need the results of the existing\r\n  --export-dynamic probe; this option is needed on Linux as without\r\n  it ksh fails to export symbols to loadable builtins. See:\r\n  https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=821806\r\n  Thanks to Johnothan King.\r\n\r\nsrc/lib/libast/features/map.c, src/lib/libast/regex/regexec.c,\r\nsrc/lib/libast/regex/regnexec.c, src/lib/libast/regex/regrexec.c,\r\nsrc/lib/libast/regex/regsubexec.c:\r\n- Map regcomp and all the other AST regex functions via macros so\r\n  they get an _ast_ prefix. This allows a functional dynamically\r\n  linked executable to exist under ASan because the regcomp\r\n  function gets overriden by ASan, despite linking with\r\n  --no-as-needed. Thanks to Johnothan King.\r\n\r\nsrc/lib/libast/comp/errno.c:\r\n- Make one trivial change (copyright year) to force libast to\r\n  relink -- which then triggers a relink of everything else.\r\n\r\nCo-authored-by: Johnothan King <johnothanking@protonmail.com>\r\nCo-authored-by: Lukáš Zaoral <lzaoral@redhat.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/f2bc1f450814b2a6f65acf82d1ce09857ab4d317",
+    "html_url": "https://github.com/ksh93/ksh/commit/f2bc1f450814b2a6f65acf82d1ce09857ab4d317",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/f2bc1f450814b2a6f65acf82d1ce09857ab4d317/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a2fbf5445d25556e4b5487dfbe9d9a5d6f781098",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/a2fbf5445d25556e4b5487dfbe9d9a5d6f781098",
+        "html_url": "https://github.com/ksh93/ksh/commit/a2fbf5445d25556e4b5487dfbe9d9a5d6f781098"
+      }
+    ]
+  },
+  {
+    "sha": "a2fbf5445d25556e4b5487dfbe9d9a5d6f781098",
+    "node_id": "C_kwDOEC_BhNoAKGEyZmJmNTQ0NWQyNTU1NmU0YjU0ODdkZmJlOWQ5YTVkNmY3ODEwOTg",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-23T19:54:32Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-23T19:54:32Z"
+      },
+      "message": "re-add typecasts to rm warnings on discarding const (re: 97e6a528)",
+      "tree": {
+        "sha": "e9f16cb489162c1b197d40d75ca168adf77dabb6",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/e9f16cb489162c1b197d40d75ca168adf77dabb6"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/a2fbf5445d25556e4b5487dfbe9d9a5d6f781098",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/a2fbf5445d25556e4b5487dfbe9d9a5d6f781098",
+    "html_url": "https://github.com/ksh93/ksh/commit/a2fbf5445d25556e4b5487dfbe9d9a5d6f781098",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/a2fbf5445d25556e4b5487dfbe9d9a5d6f781098/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "97e6a52825b60836f198b1eccca6873224c98895",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/97e6a52825b60836f198b1eccca6873224c98895",
+        "html_url": "https://github.com/ksh93/ksh/commit/97e6a52825b60836f198b1eccca6873224c98895"
+      }
+    ]
+  },
+  {
+    "sha": "97e6a52825b60836f198b1eccca6873224c98895",
+    "node_id": "C_kwDOEC_BhNoAKDk3ZTZhNTI4MjViNjA4MzZmMTk4YjFlY2NjYTY4NzMyMjRjOTg4OTU",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-23T15:10:11Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-23T15:10:11Z"
+      },
+      "message": "another round of minor tweaks and cleanups\n\nNotable changes:\n\nMany files:\n- Eliminate redundant typecasts in free(3) calls\n\nsrc/lib/libast/cdt/dttree.c:\n- Remove unused Dttree global variable\n\nsrc/lib/libast/features/lib:\n- Remove unused tests for catopen(3), catclose(3), catgets(3)",
+      "tree": {
+        "sha": "d30d209786a4f951614a873a631050568a3df257",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/d30d209786a4f951614a873a631050568a3df257"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/97e6a52825b60836f198b1eccca6873224c98895",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/97e6a52825b60836f198b1eccca6873224c98895",
+    "html_url": "https://github.com/ksh93/ksh/commit/97e6a52825b60836f198b1eccca6873224c98895",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/97e6a52825b60836f198b1eccca6873224c98895/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d3fdc450d96d0790b2ac4b01cae59ab5c962d2b3",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/d3fdc450d96d0790b2ac4b01cae59ab5c962d2b3",
+        "html_url": "https://github.com/ksh93/ksh/commit/d3fdc450d96d0790b2ac4b01cae59ab5c962d2b3"
+      }
+    ]
+  },
+  {
+    "sha": "d3fdc450d96d0790b2ac4b01cae59ab5c962d2b3",
+    "node_id": "C_kwDOEC_BhNoAKGQzZmRjNDUwZDk2ZDA3OTBiMmFjNGIwMWNhZTU5YWI1Yzk2MmQyYjM",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-23T14:16:16Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-23T14:20:25Z"
+      },
+      "message": "lib{dll,sum}/Mamfile: Fix build fail (re: 1dc39bca)\n\nThe build was failing due to an erroneous backslash line\ncontinuation within single shell quotess. Sorry about that,\neveryone; a case of too much cafeine and not enough sleep.",
+      "tree": {
+        "sha": "6a077f0a4dcb427a9c66cd908d490c2d08ddbf0e",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/6a077f0a4dcb427a9c66cd908d490c2d08ddbf0e"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/d3fdc450d96d0790b2ac4b01cae59ab5c962d2b3",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/d3fdc450d96d0790b2ac4b01cae59ab5c962d2b3",
+    "html_url": "https://github.com/ksh93/ksh/commit/d3fdc450d96d0790b2ac4b01cae59ab5c962d2b3",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/d3fdc450d96d0790b2ac4b01cae59ab5c962d2b3/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1dc39bca18cb11aa83f616469ccba8ee537de937",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/1dc39bca18cb11aa83f616469ccba8ee537de937",
+        "html_url": "https://github.com/ksh93/ksh/commit/1dc39bca18cb11aa83f616469ccba8ee537de937"
+      }
+    ]
+  },
+  {
+    "sha": "1dc39bca18cb11aa83f616469ccba8ee537de937",
+    "node_id": "C_kwDOEC_BhNoAKDFkYzM5YmNhMThjYjExYWE4M2Y2MTY0NjljY2JhOGVlNTM3ZGU5Mzc",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-23T03:51:41Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-23T03:51:41Z"
+      },
+      "message": "Fix -fno-strict-aliasing when passing optim. flags (re: 27ece9f4)\n\n-fno-strict-aliasing is a flag that turns off a specific compiler\noptimisation. Passing this through ${mam_cc_FLAGS} is only\neffective as long as no compiler optimisation flags are passed\nthrough ${CCFLAGS}, because the latter follows the former.\n\nThere is only one way to be sure: add ${mam_cc_NOSTRICTALIASING}\nseparately to each compiler invocation.",
+      "tree": {
+        "sha": "4e9ba76c365f0256a9929edec3c52071e465d255",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/4e9ba76c365f0256a9929edec3c52071e465d255"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/1dc39bca18cb11aa83f616469ccba8ee537de937",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/1dc39bca18cb11aa83f616469ccba8ee537de937",
+    "html_url": "https://github.com/ksh93/ksh/commit/1dc39bca18cb11aa83f616469ccba8ee537de937",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/1dc39bca18cb11aa83f616469ccba8ee537de937/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "27ece9f470d4d418e764db91d69f6ba0c7dfe95b",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/27ece9f470d4d418e764db91d69f6ba0c7dfe95b",
+        "html_url": "https://github.com/ksh93/ksh/commit/27ece9f470d4d418e764db91d69f6ba0c7dfe95b"
+      }
+    ]
+  },
+  {
+    "sha": "27ece9f470d4d418e764db91d69f6ba0c7dfe95b",
+    "node_id": "C_kwDOEC_BhNoAKDI3ZWNlOWY0NzBkNGQ0MThlNzY0ZGI5MWQ2OWY2YmEwYzdkZmU5NWI",
+    "commit": {
+      "author": {
+        "name": "Johnothan King",
+        "email": "johnothanking@protonmail.com",
+        "date": "2024-03-23T03:10:30Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-23T03:29:33Z"
+      },
+      "message": "Always pass -fno-strict-aliasing during compilation (#714)\n\nThe ksh93 codebase is incompatible with strict aliasing, yet\ncurrently the default flags enable -fstrict-aliasing via the -Os\noptimization flag. Additionally, manually passing a higher level\noptimization flag via CCFLAGS (e.g. -O3) will result in strict\naliasing becoming inadvertently enabled unless -fno-strict-aliasing\nis explicitly passed to disable it (cf. the Fedora and OpenSUSE\nbuild scripts for ksh[*]).\n\nThis commit implements a probe that will detect the existence of\n-fno-strict-aliasing and use it via ${mam_cc_FLAGS}, bypassing\nCCFLAGS.\n\n[*]: https://src.fedoraproject.org/rpms/ksh/blob/rawhide/f/ksh.spec#_49\n     https://build.opensuse.org/package/view_file/shells/ksh/ksh.spec?expand=1",
+      "tree": {
+        "sha": "3c2c36e25ab783bdd0bcd24e714cb29a23ff4bfe",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/3c2c36e25ab783bdd0bcd24e714cb29a23ff4bfe"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/27ece9f470d4d418e764db91d69f6ba0c7dfe95b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/27ece9f470d4d418e764db91d69f6ba0c7dfe95b",
+    "html_url": "https://github.com/ksh93/ksh/commit/27ece9f470d4d418e764db91d69f6ba0c7dfe95b",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/27ece9f470d4d418e764db91d69f6ba0c7dfe95b/comments",
+    "author": {
+      "login": "JohnoKing",
+      "id": 22019468,
+      "node_id": "MDQ6VXNlcjIyMDE5NDY4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22019468?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/JohnoKing",
+      "html_url": "https://github.com/JohnoKing",
+      "followers_url": "https://api.github.com/users/JohnoKing/followers",
+      "following_url": "https://api.github.com/users/JohnoKing/following{/other_user}",
+      "gists_url": "https://api.github.com/users/JohnoKing/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/JohnoKing/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/JohnoKing/subscriptions",
+      "organizations_url": "https://api.github.com/users/JohnoKing/orgs",
+      "repos_url": "https://api.github.com/users/JohnoKing/repos",
+      "events_url": "https://api.github.com/users/JohnoKing/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/JohnoKing/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5e3a169785139809f1f733314f5660769c86d10c",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/5e3a169785139809f1f733314f5660769c86d10c",
+        "html_url": "https://github.com/ksh93/ksh/commit/5e3a169785139809f1f733314f5660769c86d10c"
+      }
+    ]
+  },
+  {
+    "sha": "5e3a169785139809f1f733314f5660769c86d10c",
+    "node_id": "C_kwDOEC_BhNoAKDVlM2ExNjk3ODUxMzk4MDlmMWY3MzMzMTRmNTY2MDc2OWM4NmQxMGM",
+    "commit": {
+      "author": {
+        "name": "Johnothan King",
+        "email": "johnothanking@protonmail.com",
+        "date": "2024-03-23T01:13:43Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-23T01:13:43Z"
+      },
+      "message": "Re-add fixed versions of pty tests (re: 2a29856c, 430e4781) (#726)\n\nsrc/cmd/ksh93/tests/pty.sh:\r\n- Fix test for #722 by checking for 'Exit status 0' with 'u'. As\r\n  far as I can tell this fixes the CI failure while still catching\r\n  the crash on bugged commits.\r\n- Add a fixed version of the previously unused regression test from\r\n  #356. Avoiding the CPU hungry lockup only requires spawning a\r\n  child interactive shell for the crash to occur inside of. (This\r\n  doesn't fix the underlying bug in pty, but merely works around\r\n  it.)",
+      "tree": {
+        "sha": "daca53c554160bab052e8a8a7cf693d265f1fa02",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/daca53c554160bab052e8a8a7cf693d265f1fa02"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/5e3a169785139809f1f733314f5660769c86d10c",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl/izHCRC1aQ7uu5UhlAAAsV8QABYCbfqeVSFQ1/rza2a1mYoA\nYRYe56vlCBliJ4WDHLAQTgxvnpqy/nKfkCVIZnWktaFW0o1Gqtb78S62x7zyGo99\ngz3tnPzmwQWLxGZU0N9izoRjr9Ajh1JwXFRcCX0LCRbX5pZ9K5/zpLQHrhIfSD+c\n97+D7kDtKs9GiXmRhk8yg7UZlnUsRrsQRZ3kUf4yQ19Yb/dqRTe+1XqMbNJ/AQ7/\n7p7FlB7ZzovdduCi2fMsQgrXVD6Q/PAGSHaIWGr1gqW1Pa+FASYUfB50sFOUUekC\ntdGKN4rSujrY69YtIj3aWz8vKoKE8pKhHIjCD9yVFJcFhg6v64EUFxoUy15yaCHv\nkAA+U5hA/sYGGU22gJslN82MR6wjD9LEiJpvdA40ebLJKLA4iAWw4NWr7QW5z1oy\ncDT4isdo7quEvUb+A7ABV25xWI1L/tEcR6SuBNjtD0yjMJ/vn39DfWdWL5WG2H36\nWrbRhHaJ51ErAAfiHjsxxZj3PEE+jQuUA9DUwmEjZO2X/BSAaWKU4LsTCfQhDxbB\n8pHdQWNQxxcM+jjrR5qI21EgX09WveOI2Y41IuDxjjL1woU3CfM3Xr5VK9+D+06R\nRVD3v3I2x4W3YWiGGb39sdwgxotHzrtMmYoweMIE/O12MyyU6auAj/y+wY+vK7XT\neQ6O7yy77xr2Cx3O7Gzq\n=/YTb\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree daca53c554160bab052e8a8a7cf693d265f1fa02\nparent abba180841012cfbfb861940ee4ca793d8c25362\nauthor Johnothan King <johnothanking@protonmail.com> 1711156423 -0700\ncommitter GitHub <noreply@github.com> 1711156423 +0000\n\nRe-add fixed versions of pty tests (re: 2a29856c, 430e4781) (#726)\n\nsrc/cmd/ksh93/tests/pty.sh:\r\n- Fix test for #722 by checking for 'Exit status 0' with 'u'. As\r\n  far as I can tell this fixes the CI failure while still catching\r\n  the crash on bugged commits.\r\n- Add a fixed version of the previously unused regression test from\r\n  #356. Avoiding the CPU hungry lockup only requires spawning a\r\n  child interactive shell for the crash to occur inside of. (This\r\n  doesn't fix the underlying bug in pty, but merely works around\r\n  it.)\r\n"
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/5e3a169785139809f1f733314f5660769c86d10c",
+    "html_url": "https://github.com/ksh93/ksh/commit/5e3a169785139809f1f733314f5660769c86d10c",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/5e3a169785139809f1f733314f5660769c86d10c/comments",
+    "author": {
+      "login": "JohnoKing",
+      "id": 22019468,
+      "node_id": "MDQ6VXNlcjIyMDE5NDY4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22019468?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/JohnoKing",
+      "html_url": "https://github.com/JohnoKing",
+      "followers_url": "https://api.github.com/users/JohnoKing/followers",
+      "following_url": "https://api.github.com/users/JohnoKing/following{/other_user}",
+      "gists_url": "https://api.github.com/users/JohnoKing/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/JohnoKing/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/JohnoKing/subscriptions",
+      "organizations_url": "https://api.github.com/users/JohnoKing/orgs",
+      "repos_url": "https://api.github.com/users/JohnoKing/repos",
+      "events_url": "https://api.github.com/users/JohnoKing/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/JohnoKing/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "abba180841012cfbfb861940ee4ca793d8c25362",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/abba180841012cfbfb861940ee4ca793d8c25362",
+        "html_url": "https://github.com/ksh93/ksh/commit/abba180841012cfbfb861940ee4ca793d8c25362"
+      }
+    ]
+  },
+  {
+    "sha": "abba180841012cfbfb861940ee4ca793d8c25362",
+    "node_id": "C_kwDOEC_BhNoAKGFiYmExODA4NDEwMTJjZmJmYjg2MTk0MGVlNGNhNzkzZDhjMjUzNjI",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-22T02:36:49Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-22T02:36:49Z"
+      },
+      "message": "Add iswpunct(3) breakage workaround for Android\n\nOn Android 14.0 with Termux 0.118.0, one regression test failure\nremains, in src/cmd/ksh93/tests/sh_match.sh: the '$' character does\nnot match the [[:punct:]] character class, which is incorrect.\n\nThis character class queries the system's iswpunct(3) function via\nsrc/lib/libast/regex/regclass.c, even for plain single-byte ASCII\ncharacters; it should be equivalent to ispunct(3) in that case.\n\nTurns out iswpunct(3) is simply broken on Android. Nine of the\nexpected ASCII characters are not recognised, whereas ispunct(3) is\nfine. A test program shows:\n\n    ispunct('!')==16; iswpunct('!')==1\n    ispunct('\"')==16; iswpunct('\"')==1\n    ispunct('#')==16; iswpunct('#')==1\n    ispunct('$')==16; iswpunct('$')==0\n    ispunct('%')==16; iswpunct('%')==1\n    ispunct('&')==16; iswpunct('&')==1\n    ispunct(''')==16; iswpunct(''')==1\n    ispunct('(')==16; iswpunct('(')==1\n    ispunct(')')==16; iswpunct(')')==1\n    ispunct('*')==16; iswpunct('*')==1\n    ispunct('+')==16; iswpunct('+')==0\n    ispunct(',')==16; iswpunct(',')==1\n    ispunct('-')==16; iswpunct('-')==1\n    ispunct('.')==16; iswpunct('.')==1\n    ispunct('/')==16; iswpunct('/')==1\n    ispunct(':')==16; iswpunct(':')==1\n    ispunct(';')==16; iswpunct(';')==1\n    ispunct('<')==16; iswpunct('<')==0\n    ispunct('=')==16; iswpunct('=')==0\n    ispunct('>')==16; iswpunct('>')==0\n    ispunct('?')==16; iswpunct('?')==1\n    ispunct('@')==16; iswpunct('@')==1\n    ispunct('[')==16; iswpunct('[')==1\n    ispunct('\\')==16; iswpunct('\\')==1\n    ispunct(']')==16; iswpunct(']')==1\n    ispunct('^')==16; iswpunct('^')==0\n    ispunct('_')==16; iswpunct('_')==1\n    ispunct('`')==16; iswpunct('`')==0\n    ispunct('{')==16; iswpunct('{')==1\n    ispunct('|')==16; iswpunct('|')==0\n    ispunct('}')==16; iswpunct('}')==1\n    ispunct('~')==16; iswpunct('~')==0\n\nIt's broken for multibyte UTF-8 characters as well; at least £ and\n€ are not recognised as punctuation. But there's nothing we can\nrealistically do about that. But we can at least fix the ASCII\ncharacters as those are important for portability.",
+      "tree": {
+        "sha": "48665af8851fa408554ca5751e0703dbf93c19f8",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/48665af8851fa408554ca5751e0703dbf93c19f8"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/abba180841012cfbfb861940ee4ca793d8c25362",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/abba180841012cfbfb861940ee4ca793d8c25362",
+    "html_url": "https://github.com/ksh93/ksh/commit/abba180841012cfbfb861940ee4ca793d8c25362",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/abba180841012cfbfb861940ee4ca793d8c25362/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0af4dc9583c5afb34def008df9d9f19cf2f1394c",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/0af4dc9583c5afb34def008df9d9f19cf2f1394c",
+        "html_url": "https://github.com/ksh93/ksh/commit/0af4dc9583c5afb34def008df9d9f19cf2f1394c"
+      }
+    ]
+  },
+  {
+    "sha": "0af4dc9583c5afb34def008df9d9f19cf2f1394c",
+    "node_id": "C_kwDOEC_BhNoAKDBhZjRkYzk1ODNjNWFmYjM0ZGVmMDA4ZGY5ZDlmMTljZjJmMTM5NGM",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-22T00:55:16Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-22T00:55:16Z"
+      },
+      "message": "package: DEFPATH fix for Android/Termux (re: 0a0a32c3)\n\nThe standard utilities directory on Android is actually /bin (a\nsymlink to /system/bin). There lives sh (which is dash) and the\ncore utilities (from Toybox). In DEFPATH these should take\nprecedence over whatever is added by termux -- if only because /bin\nis read-only and therefore more secure; termux utilities are\ninstalled by and can be overwrittem by the regular user.",
+      "tree": {
+        "sha": "ce019de2b5e30edb25ecc831acf8ec015ef2d964",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/ce019de2b5e30edb25ecc831acf8ec015ef2d964"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/0af4dc9583c5afb34def008df9d9f19cf2f1394c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/0af4dc9583c5afb34def008df9d9f19cf2f1394c",
+    "html_url": "https://github.com/ksh93/ksh/commit/0af4dc9583c5afb34def008df9d9f19cf2f1394c",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/0af4dc9583c5afb34def008df9d9f19cf2f1394c/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2818dcc9f95ba19333f8835bbe5653b6c68021e3",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/2818dcc9f95ba19333f8835bbe5653b6c68021e3",
+        "html_url": "https://github.com/ksh93/ksh/commit/2818dcc9f95ba19333f8835bbe5653b6c68021e3"
+      }
+    ]
+  },
+  {
+    "sha": "2818dcc9f95ba19333f8835bbe5653b6c68021e3",
+    "node_id": "C_kwDOEC_BhNoAKDI4MThkY2M5Zjk1YmExOTMzM2Y4ODM1YmJlNTY1M2I2YzY4MDIxZTM",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-21T23:44:24Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-22T00:11:32Z"
+      },
+      "message": "getconf: fix fallback to external (re: 0a0a32c3, 519bb082, 66e1d446)\n\nThe previous commit exposed a bug in libcmd's getconf(1) built-in\ncommand. First, note that the 'builtin' built-in command can bind\na libcmd built-in command to any path: for example, 'builtin\n/foo/bar/getconf' works. As of 519bb082, path-bound built-ins can\nbe invoked using their canonical path, not just the command name,\nso invoking a command by its path no longer guarantees that an\nexternal command is run. Consequently, if the built-in is bound to\nthe same path that conf.sh detected for the external command, there\nis an infinite recursion ending in a C stack overflow: b_getconf()\nin src/lib/libcmd/getconf.c keeps invoking itself via sh_run().\n\nsrc/lib/libcmd/getconf.c:\n- b_getconf(): Use 'command -x' to invoke the fallback getconf\n  command to guarantee that no path-bound built-in is run.\n\nsrc/lib/libast/port/astconf.c:\n- Fix another bug found in lookup() while I was tracing the above\n  one with ASan: an off-by-one error caused a out-of-bounds access\n  just beyond the conf array when looking up certain names. The\n  last element is lo + conf_elements - 1, not lo + conf_elements.\n- Also fix the confusing way in which these variables are declared.",
+      "tree": {
+        "sha": "5dfe7259781c552e4c1bc24622edc0b18b4f6ca9",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/5dfe7259781c552e4c1bc24622edc0b18b4f6ca9"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/2818dcc9f95ba19333f8835bbe5653b6c68021e3",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/2818dcc9f95ba19333f8835bbe5653b6c68021e3",
+    "html_url": "https://github.com/ksh93/ksh/commit/2818dcc9f95ba19333f8835bbe5653b6c68021e3",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/2818dcc9f95ba19333f8835bbe5653b6c68021e3/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0a0a32c35b33a73bf6354e4085d24244abfcd857",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/0a0a32c35b33a73bf6354e4085d24244abfcd857",
+        "html_url": "https://github.com/ksh93/ksh/commit/0a0a32c35b33a73bf6354e4085d24244abfcd857"
+      }
+    ]
+  },
+  {
+    "sha": "0a0a32c35b33a73bf6354e4085d24244abfcd857",
+    "node_id": "C_kwDOEC_BhNoAKDBhMGEzMmMzNWIzM2E3M2JmNjM1NGU0MDg1ZDI0MjQ0YWJmY2Q4NTc",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-20T18:54:38Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-20T20:45:26Z"
+      },
+      "message": "Add support for Android/Termux\n\nAs of this commit, ksh supports the Termux environment on Android.\nThere were several challenges to solve to make it build. Termux is\nbased on the typical Linux environment but with important changes,\nand there is no attempt at POSIX compliance. This commit adds the\nnecessary workarounds to deal with this system's quirks.\n\nThis commit was tested on Android 14.0 arm64 with Termux 0.118.0 on\nthe Android emulator provided by Android Studio on macOS.\n\nTo build correctly, you need the clang, binutils, and getconf\npackages. At runtime, the getconf package is needed for AST\ngetconf(1) fallbacks to function, and ncurses-utils packages\n(specifically, tput(1)) is needed to enable multiline editing.\n\nbin/package:\n- Since Termux does not have 'getconf PATH' (since it lacks POSIX\n  confstr(3)): move the DEFPATH/PATH code and add two fallbacks for\n  'getconf PATH' that require a compiler: one that tries confstr(),\n  currently expected to fail on Termux, and another one that tries\n  the non-standard _PATH_DEFPATH macro, which exist on most (all?)\n  Linux and BSD systems including Android. (re: 78b1a845)\n- Export DEFPATH to the environment so we can eliminate repetitive\n  code to determine it in iffe and mamprobe.\n- hostinfo(): Use 'android' and not 'linux' as the host type base\n  name on Android/Termux; this will allow us to implement necessary\n  special-casing in make.probe (see below).\n\nsrc/cmd/INIT/iffe.sh, src/cmd/INIT/mamprobe.sh,\nsrc/lib/libast/comp/conf.sh, src/lib/libast/comp/conf.tab:\n- Require DEFPATH in the environment (see above).\n- Use it instead of the code to determine default system path.\n\nsrc/cmd/INIT/make.probe, **/Mamfile:\n- On Termux we need API version 26 for the system headers to\n  declare a couple of functions we depend on, including catopen(3).\n  This is done by adding --target=aarch64-linux-android26 to the\n  compiler command line. Add a CC.TARGET variable (which becomes\n  mam_cc_TARGET in the Mamfiles) to contain this flag.\n\nsrc/lib/libast/features/standards:\n- Add support for Android. After the make.probe change above we can\n  treat it the same as GNU, as the Android headers also recognise\n  _GNU_SOURCE for some things.\n\nsrc/lib/libast/comp/omitted.c:\n- On Android, bzero(3) is a macro that expands to __bionic_bzero(),\n  so iffe doesn't detect bzero() as a library function. Check for\n  both the iffe result _lib_bzero and the presence of bzero as a\n  macro to avoid a build error.\n\nsrc/lib/libast/comp/strtold.c:\n- Avoid another build failure: work around Android system header\n  incompatibilities with the AST headers by not including stdlib.h\n  from ast_sys.h in this case. This is done by temporarily defining\n  _STDLIB_H so the Android stdlib.h code gets skipped.\n\nsrc/lib/libast/sfio/sfcvt.c:\n- Work around another build failure by not relying on the _lib_isnan\n  iffe test result on Android.\n\nsrc/lib/libast/vmalloc/vmhdr.h:\n- Include <sig.h> here to avoid yet another build failure on\n  Android (undeclared function '_ast_signal').\n\nsrc/lib/libcmd/fds.c:\n- Since Android declares ntohs(3) in sys/endian.h and not in the\n  POSIX standard location arpa/inet.h, include the former on\n  Android.\n\nsrc/cmd/ksh93/tests/*.sh:\n- Since Android does not have /tmp, avoid using it. For testing cd,\n  /dev is a good alternative.\n- Android don't allow inheriting stdout in closed state. Disable\n  the tests that rely on this on systems that don't allow this.",
+      "tree": {
+        "sha": "93892fc9610dc6dc68853d56cd6e6bad56723584",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/93892fc9610dc6dc68853d56cd6e6bad56723584"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/0a0a32c35b33a73bf6354e4085d24244abfcd857",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/0a0a32c35b33a73bf6354e4085d24244abfcd857",
+    "html_url": "https://github.com/ksh93/ksh/commit/0a0a32c35b33a73bf6354e4085d24244abfcd857",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/0a0a32c35b33a73bf6354e4085d24244abfcd857/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "eeab3e53268a9b233d22c3dee1a2fecea7ca4502",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/eeab3e53268a9b233d22c3dee1a2fecea7ca4502",
+        "html_url": "https://github.com/ksh93/ksh/commit/eeab3e53268a9b233d22c3dee1a2fecea7ca4502"
+      }
+    ]
+  },
+  {
+    "sha": "eeab3e53268a9b233d22c3dee1a2fecea7ca4502",
+    "node_id": "C_kwDOEC_BhNoAKGVlYWIzZTUzMjY4YTliMjMzZDIyYzNkZWUxYTJmZWNlYTdjYTQ1MDI",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-20T18:12:33Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-20T18:53:14Z"
+      },
+      "message": "mamake: execute(): switch from system(3) to fork(2)/execl(3)\n\nWhen compiling ksh on Android/Termux (another commit is coming up\nto make that possible), mamake mysteriously stopped working once it\nwas re-linked against libast in libast/Mamfile (see 4edfa45e).\n\nThe culprit is the system(3) library function, which simply fails\nquietly on that system when mamake is linked against libast -- not\neven errno is set, though there is a return status of 1.\n\nI don't know why that is, but never mind: system(3) is deprecated\nanyway, and the rest of this code base now very much requires\nfork(2), so we might as well use it. (re: 7b0e0776, e7ed6790,\n6605c68f, 2d674bb1, 976adfc0, ef9a5c76)\n\nThis commit switches the execute() function, which executes shell\nactions, over to the standard Unix fork/exec routine.\n\nIt's even slightly more efficient this way, as system(3) invokes\neverything via /bin/sh, so now we are no longer invoking our own\n$SHELL via another shell.\n\nThe execl(3) call sets argv[0] to \"sh\" regardless of the actual\npath of the shell. This put some shells, including ksh 93u+m, bash,\nyash, and zsh, in POSIX compatibility mode. It should make it\npossible to use zsh as the $SHELL.",
+      "tree": {
+        "sha": "cbdead6f9105d1dc42c3b1b123531effe374fa93",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/cbdead6f9105d1dc42c3b1b123531effe374fa93"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/eeab3e53268a9b233d22c3dee1a2fecea7ca4502",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/eeab3e53268a9b233d22c3dee1a2fecea7ca4502",
+    "html_url": "https://github.com/ksh93/ksh/commit/eeab3e53268a9b233d22c3dee1a2fecea7ca4502",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/eeab3e53268a9b233d22c3dee1a2fecea7ca4502/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "72c534a98da7435fa3116130d69f206cb70b1217",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/72c534a98da7435fa3116130d69f206cb70b1217",
+        "html_url": "https://github.com/ksh93/ksh/commit/72c534a98da7435fa3116130d69f206cb70b1217"
+      }
+    ]
+  },
+  {
+    "sha": "72c534a98da7435fa3116130d69f206cb70b1217",
+    "node_id": "C_kwDOEC_BhNoAKDcyYzUzNGE5OGRhNzQzNWZhMzExNjEzMGQ2OWYyMDZjYjcwYjEyMTc",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-20T17:14:56Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-20T17:14:56Z"
+      },
+      "message": "math.tab: correct return type for finite()\n\nTrying to build ksh on Android/Termux produced an error regarding\nan incompatible library declaration of the finite(3) function. This\nis declared in math.tab as a function returning a floating point\nvalue, which is not correct; the non-standardised finite(3) returns\nan integer value of 0 or 1 on every system where it exists.\nChanging the return type from 'f' to 'i' fixes the build error.",
+      "tree": {
+        "sha": "c7bd3d1e9f9a46b1429bcda277db83875e2849d3",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/c7bd3d1e9f9a46b1429bcda277db83875e2849d3"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/72c534a98da7435fa3116130d69f206cb70b1217",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/72c534a98da7435fa3116130d69f206cb70b1217",
+    "html_url": "https://github.com/ksh93/ksh/commit/72c534a98da7435fa3116130d69f206cb70b1217",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/72c534a98da7435fa3116130d69f206cb70b1217/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "33e73fd9811810c32fb0a3ddd521238931cc5943",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/33e73fd9811810c32fb0a3ddd521238931cc5943",
+        "html_url": "https://github.com/ksh93/ksh/commit/33e73fd9811810c32fb0a3ddd521238931cc5943"
+      }
+    ]
+  },
+  {
+    "sha": "33e73fd9811810c32fb0a3ddd521238931cc5943",
+    "node_id": "C_kwDOEC_BhNoAKDMzZTczZmQ5ODExODEwYzMyZmIwYTNkZGQ1MjEyMzg5MzFjYzU5NDM",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-20T13:32:34Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-20T13:32:34Z"
+      },
+      "message": "nvdisc.c: avoid potential crash when unsetting table_disc variable\n\nThis commit fixes a regression test crash in tests/namespace.sh and\ntests/path.sh on Android/Termux. The crash happened as sh_reinit()\nwas unsetting variables with '.' in the name (which use the\ntable_disc discipline in nvdisc.c) after forking in preparation for\nrunning a #!-less script (see db227904).\n\nsrc/cmd/ksh93/sh/nvdisc.c:\n- put_table(): When closing/freeing the subtree, make sure\n  sh.last_root does not keep pointing to it; this was causing a\n  crash while unsetting a subsequent variable.",
+      "tree": {
+        "sha": "1c8699c163066604c8bb9061e5456495f05af8bb",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/1c8699c163066604c8bb9061e5456495f05af8bb"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/33e73fd9811810c32fb0a3ddd521238931cc5943",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/33e73fd9811810c32fb0a3ddd521238931cc5943",
+    "html_url": "https://github.com/ksh93/ksh/commit/33e73fd9811810c32fb0a3ddd521238931cc5943",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/33e73fd9811810c32fb0a3ddd521238931cc5943/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "70c992e36a3f7740643feeac4c27a853e6d04ed0",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/70c992e36a3f7740643feeac4c27a853e6d04ed0",
+        "html_url": "https://github.com/ksh93/ksh/commit/70c992e36a3f7740643feeac4c27a853e6d04ed0"
+      }
+    ]
+  },
+  {
+    "sha": "70c992e36a3f7740643feeac4c27a853e6d04ed0",
+    "node_id": "C_kwDOEC_BhNoAKDcwYzk5MmUzNmEzZjc3NDA2NDNmZWVhYzRjMjdhODUzZTZkMDRlZDA",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-20T02:27:04Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-20T02:36:42Z"
+      },
+      "message": "Fix pathicase(3) on Linux (re: 725eef35)\n\npathicase(3), and hence ksh's globcasedetect option, was broken on\nLinux for FAT32 (DOS/Windows) file systems.\n\nCause: sys/ioctl.h was not detected correctly. features/lib\ncontained a 'hdr sys/ioctl' test, which defines _hdr_sys_ioctl.\nThis should have changed to 'sys ioctl' in the referenced commit,\nwhich defines _sys_ioctl. The latter is the common idiom so we use\nthis for consistency.\n\nsrc/lib/libast/features/lib:\n- Correct the sys/ioctl.h test as per above, fixing the bug.\n\nsrc/lib/libast/features/tty:\n- Remove redundant 'sys ioctl' test; anything that includes\n  features/tty also incluces features/lib, which now has it.\n- Include ast_lib.h, the result of features/lib, to make sure that\n  result is available. This is probably unnecessary right now, but\n  would be needed now if FEATURE/tty or ast_tty.h is ever included\n  without including ast.h first.\n\nThanks to @JohnoKing for reporting the bug.\nDiscussion: https://github.com/ksh93/ksh/pull/731",
+      "tree": {
+        "sha": "a3f4c37d57b18f7f9d60839f51708eecb9fdb1af",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/a3f4c37d57b18f7f9d60839f51708eecb9fdb1af"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/70c992e36a3f7740643feeac4c27a853e6d04ed0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/70c992e36a3f7740643feeac4c27a853e6d04ed0",
+    "html_url": "https://github.com/ksh93/ksh/commit/70c992e36a3f7740643feeac4c27a853e6d04ed0",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/70c992e36a3f7740643feeac4c27a853e6d04ed0/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5a587dd19771506bbae906eba0be7123a4edf502",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/5a587dd19771506bbae906eba0be7123a4edf502",
+        "html_url": "https://github.com/ksh93/ksh/commit/5a587dd19771506bbae906eba0be7123a4edf502"
+      }
+    ]
+  },
+  {
+    "sha": "5a587dd19771506bbae906eba0be7123a4edf502",
+    "node_id": "C_kwDOEC_BhNoAKDVhNTg3ZGQxOTc3MTUwNmJiYWU5MDZlYmEwYmU3MTIzYTRlZGY1MDI",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-15T08:02:36Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-15T20:04:38Z"
+      },
+      "message": "struct comnod: turn .comarg into a union\n\nThe comarg member of struct comnod is declared as a pointer of type\nstruct argnod, but (as the code in sh_argbuild() and parse.c shows)\nthis only applies before arguments are expanded (when tretyp has\nthe COMSCAN bit set). After expansion or for unexpandable arguments\n(no COMSCAN bit set), that pointer actually points to a list of\ntype struct dolnod, a data structure also used for positional\nparameters. So the code contains a fair bit of typecasting on comarg\nto cope with this.\n\nUnions are in C for this sort of situation. So this commit turns\ncomarg into a union with members ap (struct argnod) and dp (struct\ndolnod). It allows us to get rid of quite a few typecasts and\nslightly de-obfuscate the code, as we can now easily document the\nfunction of comarg.ap and comarg.dp in the comments in argnod.h.\n\nAlso, in two places, the initialisation to zero of individual\ncomarg struct members is changed to a memset(3) call. This is more\nfuture-proof as any new members will automatically be initialised.\n\nThis commit should cause no change in behaviour and no change in the\nbinary representation of struct argnod.",
+      "tree": {
+        "sha": "c7dcb95bc3af895ec91e3c62d96b18bc72d1af20",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/c7dcb95bc3af895ec91e3c62d96b18bc72d1af20"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/5a587dd19771506bbae906eba0be7123a4edf502",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/5a587dd19771506bbae906eba0be7123a4edf502",
+    "html_url": "https://github.com/ksh93/ksh/commit/5a587dd19771506bbae906eba0be7123a4edf502",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/5a587dd19771506bbae906eba0be7123a4edf502/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7b29101dd69868edb53a404fc96f0f92fd191832",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/7b29101dd69868edb53a404fc96f0f92fd191832",
+        "html_url": "https://github.com/ksh93/ksh/commit/7b29101dd69868edb53a404fc96f0f92fd191832"
+      }
+    ]
+  },
+  {
+    "sha": "7b29101dd69868edb53a404fc96f0f92fd191832",
+    "node_id": "C_kwDOEC_BhNoAKDdiMjkxMDFkZDY5ODY4ZWRiNTNhNDA0ZmM5NmYwZjkyZmQxOTE4MzI",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-14T07:46:20Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-14T10:36:08Z"
+      },
+      "message": "[v1.1] break/continue optimization: fix # args check (re: 2e1e47d6)\n\nUsing argchn.len to check for the number of command arguments was\ncompletely bogus; in fact, that union member of struct argnod was\nunused. It worked on 64-bit systems but that is purely accidental.\n\nStudying sh_argbuild() in args.c shows us how to do this correctly.\nWhen a command has no expansions (so the COMSCAN bit is not set),\nthe argument takes the form of 'struct dolnod' values even if\nthough is pointed to by a pointer of tupe 'struct argnod'. The\ndolnum member contains the number of arguments, starting at 1 for\nthe command name.\n\nThe reason argchn.len in struct argnod accidentally worked on\n64-bit systems is that its offset in struct argnod (where it\nfollows two 32-bit ints) happens to be equal to the offset of\ndolnum in struct dolnod (where it follows one 64-bit pointer).\nOf course that is not the case on systems where pointers are\nnot 64 bits long.\n\nThe argchn.len union member is unused as of 66b6ce4e and is now\nremoved to avoid future confusion.",
+      "tree": {
+        "sha": "b683eacf7456f459628cc0e8fea7636af1cbebf1",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/b683eacf7456f459628cc0e8fea7636af1cbebf1"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/7b29101dd69868edb53a404fc96f0f92fd191832",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/7b29101dd69868edb53a404fc96f0f92fd191832",
+    "html_url": "https://github.com/ksh93/ksh/commit/7b29101dd69868edb53a404fc96f0f92fd191832",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/7b29101dd69868edb53a404fc96f0f92fd191832/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "587c6dd773420b1cc0fb84cf4addf6ae66340961",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/587c6dd773420b1cc0fb84cf4addf6ae66340961",
+        "html_url": "https://github.com/ksh93/ksh/commit/587c6dd773420b1cc0fb84cf4addf6ae66340961"
+      }
+    ]
+  },
+  {
+    "sha": "587c6dd773420b1cc0fb84cf4addf6ae66340961",
+    "node_id": "C_kwDOEC_BhNoAKDU4N2M2ZGQ3NzM0MjBiMWNjMGZiODRjZjRhZGRmNmFlNjYzNDA5NjE",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-12T18:50:06Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-12T19:29:16Z"
+      },
+      "message": "printf: fix regression: '\\0'/'%Z' skips input string (re: 87480ec2)\n\n@dicktyr reports:\n> null character(s) in the format string cause subsequent\n> argument(s) to be skipped\n>\n> one null skips even arguments\n>\n>     % printf '%s\\0' 1 2 3 4 5 6 7\n>     1357\n>\n> two nulls skips two arguments\n>\n>     % printf '%s\\0\\0' 1 2 3 4 5 6 7\n>     147\n>\n> /usr/bin/printf binary behaves as expected\n>\n>     % /usr/bin/printf '%s\\0' 1 2 3 4 5 6 7\n>     1234567\n\nMartijn's initial analysis:\n\nThe reload function in printf.c gets called with an incorrect argn\nvalue; with reproducers that don't contain \\0 the value is 1, but\nfor the first reproducer above (printf '%s\\0' 1 2 3 4 5 6 7) it's\n2, and for the second (printf '%s\\0\\0' 1 2 3 4 5 6 7) it's 3. When\n\\0 is changed to something else in those reproducers, like \\1, then\nargn is 1 in both cases. Since the output is correct then, argn==1\nmust be the correct value.\n\nreload() gets called on sfvprintf.c line 1376 with nargs+1, so the\nvalue of nargs is 2 there where it should be 0.\n\n1373:\tif(ft && ft->reloadf) /* fix nargs %.., %5$s i.e. skip argv[] */\n1374:\t{\tif(xargs > nargs)\n1375:\t\t\tnargs = xargs;\n1376:\t\t(*ft->reloadf)(nargs+1, 0, NULL, ft);\n1377:\t}\n\nThe value of xargs is -1 there, so that's not what causes the\nincorrect nargs value. Instead, the bug is caused by this nargs\nincrease being executed multiple times, where it should be executed\nonce:\n\n517:\tif(argp < 0)\n518:\t\targp = ++nargs;\n\nInteresting: \\0 gets treated specially, as is somehow internally\nconverted to %Z. So it causes a totally different code path to be\nfollowed than \\1.\n\n@phidebian continues:\n\n> First of all regarding the reproducer, it all boils down to %Z, I\n> got to admit that I was a bit puzzled with this kind of internal\n> %Z that seems to emit a \\0\n>\n> So basically\n>\n>     printf '%s\\0' 1 2 3 4 5 6 7\n>\n> is equivalent to\n>\n>     printf '%s%Z' 1 2 3 4 5 6 7\n>\n> The whole jazz about format string massaging seems to be\n> replacing \\0 in format string into %Z\n>\n> Then spotted this is in sfvprintf.c:\n> we can see the format string scan\n>\n> 207:\tswitch((fmt = *form++) )\n> 208:\t{\n> 209:\tcase '\\0':\n> 210:\t\tSFputc(f,'%');\n> 211:\t\tgoto pop_fmt;\n> 212:\tcase '%' :\n> 213:\t\tSFputc(f,'%');\n> 214:\t\tcontinue;\n> 215:\tcase 'Z' : // <===== try add this ====\n> 216:\t\tSFputc(f,0);\n> 217:\t\tcontinue;\n>\n> It look odd to my that since we are processing %Z the 'Z' is not\n> captured, may be Kiem was flying high...\n>\n> I guess adding that would cure, xing fingers it doesn't break\n> anything else.\n\nsrc/lib/libast/sfio/sfvprintf.c:\n- Add suggested special-casing of 'Z', which causes '%Z' (including\n  when it's converted from '\\0') to avoid the rest of the loop\n  interation code, including the incorrect increase of nargs.\n\nResolves: https://github.com/ksh93/ksh/issues/725",
+      "tree": {
+        "sha": "8466fe1ce9dae3c365834189d7b0aa0f06db0758",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/8466fe1ce9dae3c365834189d7b0aa0f06db0758"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/587c6dd773420b1cc0fb84cf4addf6ae66340961",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/587c6dd773420b1cc0fb84cf4addf6ae66340961",
+    "html_url": "https://github.com/ksh93/ksh/commit/587c6dd773420b1cc0fb84cf4addf6ae66340961",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/587c6dd773420b1cc0fb84cf4addf6ae66340961/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "601acd9bb96e9c34129c9b455bb6dedfbb4c1434",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/601acd9bb96e9c34129c9b455bb6dedfbb4c1434",
+        "html_url": "https://github.com/ksh93/ksh/commit/601acd9bb96e9c34129c9b455bb6dedfbb4c1434"
+      }
+    ]
+  },
+  {
+    "sha": "601acd9bb96e9c34129c9b455bb6dedfbb4c1434",
+    "node_id": "C_kwDOEC_BhNoAKDYwMWFjZDliYjk2ZTljMzQxMjljOWI0NTViYjZkZWRmYmI0YzE0MzQ",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-11T02:41:21Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-11T02:41:21Z"
+      },
+      "message": "Fix handling of env vars in namespaces (re: 0ea4e559)\n\nThis commit fixes corner case breakage of univese handling in the\n'echo' command: it breaks when used in a namespace block before\nbeing used anywhere else, and only if _AST_FEATURES is not exported\nfirst. The bug causes _AST_FEATURES to be incorrectly placed in\nthat namespace.\n\n  $ (unset _AST_FEATURES; ksh -c 'namespace foo { echo test; }')\n  ksh: echo: _AST_FEATURES=UNIVERSE - ucb: is not an identifier\n\nThe specific code change in the referenced commit that triggers the\nbug is the change from dtinsert to dtinstall in nv_search(). Change\nthat back to dtinsert and the reproducer works again.\n\nsrc/lib/libast/man/cdt.3 says:\n|  OBJECT OPERATIONS\n|    void* dtinsert(Dt_t* dt, void* obj)\n|    void* dtinstall(Dt_t* dt, void* obj)\n|    void* dtappend(Dt_t* dt, void* obj)\n|      These functions add an object prototyped by obj into dt.\n|      See Dtdisc_t.makef for object construction. dtinsert() and\n|      dtappend() perform the same function for all methods except\n|      for Dtlist (see Dtlist for details). For Dtset, Dtrhset or\n|      Dtoset, if there is an object in dt matching obj, dtinsert()\n|      and dtappend() will not insert a new object, whereas\n|      dtinstall() will remove such a matching object before\n|      inserting the new object.\n\nI don't know exactly why this change from dtinsert to dtinstall\ntriggers the bug, but I don't think there is anything wrong with\nit; the node was not found, a new one is created, so if there is an\nold matching node after all (for whatever reason), it *should* be\nremoved or we have a memory leak.\n\nThe real problem, exposed by that commit, is in the shell intercept\nfunctions of getenv(3), putenv(3) and setenviron(3): they fail to\nunset the namespace. libast calls AST setenviron(3) to set the\n_AST_FEATURES variable. (See src/lib/libast/man/setenviron.3) Those\nfunctions are intercepted so that environment variables set by\nlibast immediately become available as shell variables.\n\nsrc/cmd/ksh93/sh/name.c:\n- Fix the getenv(3), putenv(3) and setenviron(3) shell overrides\n  to not only temporarily deactivate the prefix for compound\n  assignment, but to do the same for the active namespace as well.\n\nThanks to @stephane-chazelas for the report.\nResolves: https://github.com/ksh93/ksh/issues/727",
+      "tree": {
+        "sha": "e361a5884b585cf8a20826a31d1373904244ddb1",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/e361a5884b585cf8a20826a31d1373904244ddb1"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/601acd9bb96e9c34129c9b455bb6dedfbb4c1434",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/601acd9bb96e9c34129c9b455bb6dedfbb4c1434",
+    "html_url": "https://github.com/ksh93/ksh/commit/601acd9bb96e9c34129c9b455bb6dedfbb4c1434",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/601acd9bb96e9c34129c9b455bb6dedfbb4c1434/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "03583b1535d470ce9b304ed297242c06f206918f",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/03583b1535d470ce9b304ed297242c06f206918f",
+        "html_url": "https://github.com/ksh93/ksh/commit/03583b1535d470ce9b304ed297242c06f206918f"
+      }
+    ]
+  },
+  {
+    "sha": "03583b1535d470ce9b304ed297242c06f206918f",
+    "node_id": "C_kwDOEC_BhNoAKDAzNTgzYjE1MzVkNDcwY2U5YjMwNGVkMjk3MjQyYzA2ZjIwNjkxOGY",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-11T01:40:00Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-11T02:05:07Z"
+      },
+      "message": "libast: remove unused LC_XLITERATE locale keyword\n\nLC_XLITERATE was an abortive attempt to standardize transliteration\ninformation in locales. Googling LC_XLITERATE gives very few\nresults, most of which are arguments of why it was a bad idea\n(short version: transliteration is far too complex a problem to\nhardcode a method in a locale). See, e.g., \"Objection #32\" at:\nhttps://www.open-std.org/jtc1/sc22/WG20/docs/n883r-doc-dtr-14652.htm\n\nSearching ast-open-archive shows that there has never been any\nAST code that actually used this category, so it's just been\npointlessly taking up a little memory. This commit removes it.\n\nAll the other AST locale categories are either POSIX standard or\nare supported as extensions by GNU libc, so they are good to have.",
+      "tree": {
+        "sha": "a9bb14de170a4e9839f6b78a166e212fa3f2d72b",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/a9bb14de170a4e9839f6b78a166e212fa3f2d72b"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/03583b1535d470ce9b304ed297242c06f206918f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/03583b1535d470ce9b304ed297242c06f206918f",
+    "html_url": "https://github.com/ksh93/ksh/commit/03583b1535d470ce9b304ed297242c06f206918f",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/03583b1535d470ce9b304ed297242c06f206918f/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "244b96bf459e6d3dd4a1e7d2f47d872deaa78d5c",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/244b96bf459e6d3dd4a1e7d2f47d872deaa78d5c",
+        "html_url": "https://github.com/ksh93/ksh/commit/244b96bf459e6d3dd4a1e7d2f47d872deaa78d5c"
+      }
+    ]
+  },
+  {
+    "sha": "244b96bf459e6d3dd4a1e7d2f47d872deaa78d5c",
+    "node_id": "C_kwDOEC_BhNoAKDI0NGI5NmJmNDU5ZTZkM2RkNGExZTdkMmY0N2Q4NzJkZWFhNzhkNWM",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-10T23:34:27Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-11T00:03:51Z"
+      },
+      "message": "Fix crash on redefining array in subshell (re: 92f65cb8)\n\nThe referenced commit left one test unexecuted because it crashes.\n\nMinimal reproducer:\n\n  typeset -a arr=((a b c) 1)\n  got=$( typeset -a arr=( ( ((a b c)1))) )\n\nThe crash occurs when the array is redefined in a subshell.\n\nHere are abridged ASan stack traces for the crash, for the use\nafter free, and for when it was freed:\n\n=================================================================\n==73147==ERROR: AddressSanitizer: heap-use-after-free [snippage]\nREAD of size 8 at 0x000107403eb0 thread T0\n    #0 0x104fded40 in nv_search nvdisc.c:1007\n    #1 0x104fbeb1c in nv_create name.c:860\n    #2 0x104fb8b9c in nv_open name.c:1440\n    #3 0x104fb1edc in nv_setlist name.c:309\n    #4 0x104fb4a30 in nv_setlist name.c:475\n    #5 0x105055b58 in sh_exec xec.c:1079\n    #6 0x105045cd4 in sh_subshell subshell.c:654\n    #7 0x104f92c1c in comsubst macro.c:2266\n[snippage]\n\n0x000107403eb0 is located 0 bytes inside of 80-byte region [snippage]\nfreed by thread T0 here:\n    #0 0x105c5ade4 in wrap_free+0x98 (libclang_rt.asan_osx_dynamic.dylib:arm64e+0x3ede4)\n    #1 0x105261da0 in dtclose dtclose.c:52\n    #2 0x104f178cc in array_putval array.c:671\n    #3 0x104fd7f4c in nv_putv nvdisc.c:144\n    #4 0x104fbc5f0 in _nv_unset name.c:2435\n    #5 0x104fb3250 in nv_setlist name.c:364\n    #6 0x105055b58 in sh_exec xec.c:1079\n    #7 0x105045cd4 in sh_subshell subshell.c:654\n    #8 0x104f92c1c in comsubst macro.c:2266\n[snippage]\n\nSo the crash is caused because array_putval (array.c:671) calls\ndtclose, freeing ap->table, which is then reused after a recursive\nnv_setlist call via nv_open() -> nv_create() -> nv_search().\nThis only happens whwn we're in a virtual subshell.\n\nsrc/cmd/ksh93/sh/array.c:\n- array_putval(): When redefining an array in a virtual subshell,\n  do not free the old ap->table; it will be needed by the parent\n  shell environment.",
+      "tree": {
+        "sha": "56d08ca133ae0f6fceb0f17af396e3f61c8ad015",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/56d08ca133ae0f6fceb0f17af396e3f61c8ad015"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/244b96bf459e6d3dd4a1e7d2f47d872deaa78d5c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/244b96bf459e6d3dd4a1e7d2f47d872deaa78d5c",
+    "html_url": "https://github.com/ksh93/ksh/commit/244b96bf459e6d3dd4a1e7d2f47d872deaa78d5c",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/244b96bf459e6d3dd4a1e7d2f47d872deaa78d5c/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "50c1b796ab942e9e6275b784f5bd7c2031b5533c",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/50c1b796ab942e9e6275b784f5bd7c2031b5533c",
+        "html_url": "https://github.com/ksh93/ksh/commit/50c1b796ab942e9e6275b784f5bd7c2031b5533c"
+      }
+    ]
+  },
+  {
+    "sha": "50c1b796ab942e9e6275b784f5bd7c2031b5533c",
+    "node_id": "C_kwDOEC_BhNoAKDUwYzFiNzk2YWI5NDJlOWU2Mjc1Yjc4NGY1YmQ3YzIwMzFiNTUzM2M",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-10T21:36:35Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-10T21:36:35Z"
+      },
+      "message": "Fix default justification width for non-printable/non-ASCII chars\n\nReproducer:\n\n    unset s\n    s='コーンシェル'\n    echo ${#s}\n    typeset -L s\n    typeset -p s\n    echo ${#s}\n\nOutput:\n\n    6\n    typeset -L 18 s='コーンシェル      '\n    12\n\nExpected output:\n\n    6\n    typeset -L 12 s=コーンシェル\n    6\n\nNote that the typeset -L, -R or -Z option-argument values do not\nrepresent numbers of characters or bytes. Their purpose is to\njustify. They count horizontal terminal positions. Double-width\ncharacters, like Japanese, occupy two horizontal terminal positions\neach, instead of one, and ksh takes this into account. Thus, the\njustification width above is 12 though the string length in\ncharacters is 6, becasue each character occupies two terminal\npositions.\n\nAlso, control characters have no width and do not count. This is\nsimilarly broken.\n\nsrc/cmd/ksh93/sh/name.c:\n- nv_newattr(): The default justification width was calculated based\n  on strlen(), which counts bytes, not terminal positions. Use a loop\n  with mbchar() and mbwidth() (see ast.h) to calculate the correct\n  default width in terminal positions.\n\nResolves: https://github.com/ksh93/ksh/issues/189",
+      "tree": {
+        "sha": "aec05f23a373f13a976f8c11cef62dad965bedc6",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/aec05f23a373f13a976f8c11cef62dad965bedc6"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/50c1b796ab942e9e6275b784f5bd7c2031b5533c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/50c1b796ab942e9e6275b784f5bd7c2031b5533c",
+    "html_url": "https://github.com/ksh93/ksh/commit/50c1b796ab942e9e6275b784f5bd7c2031b5533c",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/50c1b796ab942e9e6275b784f5bd7c2031b5533c/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8a89414fc5bb758908d959d567b63ebcc0ca5cca",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/8a89414fc5bb758908d959d567b63ebcc0ca5cca",
+        "html_url": "https://github.com/ksh93/ksh/commit/8a89414fc5bb758908d959d567b63ebcc0ca5cca"
+      }
+    ]
+  },
+  {
+    "sha": "8a89414fc5bb758908d959d567b63ebcc0ca5cca",
+    "node_id": "C_kwDOEC_BhNoAKDhhODk0MTRmYzViYjc1ODkwOGQ5NTlkNTY3YjYzZWJjYzBjYTVjY2E",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-09T15:55:00Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-09T15:55:00Z"
+      },
+      "message": "ast.h: mb2wc() macro: add safety parentheses",
+      "tree": {
+        "sha": "e99125decd32515e05acd78ab52d437a49fca6fb",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/e99125decd32515e05acd78ab52d437a49fca6fb"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/8a89414fc5bb758908d959d567b63ebcc0ca5cca",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/8a89414fc5bb758908d959d567b63ebcc0ca5cca",
+    "html_url": "https://github.com/ksh93/ksh/commit/8a89414fc5bb758908d959d567b63ebcc0ca5cca",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/8a89414fc5bb758908d959d567b63ebcc0ca5cca/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "625ab85449db2cfc9369945aa5cb603650c902a8",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/625ab85449db2cfc9369945aa5cb603650c902a8",
+        "html_url": "https://github.com/ksh93/ksh/commit/625ab85449db2cfc9369945aa5cb603650c902a8"
+      }
+    ]
+  },
+  {
+    "sha": "625ab85449db2cfc9369945aa5cb603650c902a8",
+    "node_id": "C_kwDOEC_BhNoAKDYyNWFiODU0NDlkYjJjZmM5MzY5OTQ1YWE1Y2I2MDM2NTBjOTAyYTg",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-09T05:24:54Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-09T05:56:12Z"
+      },
+      "message": "a few script tweaks\n\nsrc/cmd/ksh93/kshrc.sh:\n- Remove ENV from the environment after ksh initialises. Things\n  horribly break on NetBSD otherwise (e.g. man(1) drops you in a\n  child shell instead of showing a man page) because on that system\n  the default shells run $ENV on init even for scripts!\n\nsrc/cmd/ksh93/fun/man:\n- builtin_has_selfdoc(): Suppress possible error message from the\n  second 'unset -f' by redirecting stderr to /dev/null for the\n  whole function.\n\nsrc/cmd/ksh93/tests/shtests:\n- Fix SHOPT_MULTIBYTE detection. Ignore the value from shopt.h as\n  it is not necessarily what's compiled. This fixes the locale.sh\n  regression tests after compiling with -D AST_NOMULTIBYTE.\n  (re: 7577f389)\n\nbin/package:\n- Just 'rm' in traps, do not 'exec rm'; this will replace the shell\n  before it can set the exit status correctly.",
+      "tree": {
+        "sha": "38fb48691583674de1d4154335545aa3b9b240ea",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/38fb48691583674de1d4154335545aa3b9b240ea"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/625ab85449db2cfc9369945aa5cb603650c902a8",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/625ab85449db2cfc9369945aa5cb603650c902a8",
+    "html_url": "https://github.com/ksh93/ksh/commit/625ab85449db2cfc9369945aa5cb603650c902a8",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/625ab85449db2cfc9369945aa5cb603650c902a8/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9a48c61e1e5cc0881d7126fe818fe32c429b4a0b",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/9a48c61e1e5cc0881d7126fe818fe32c429b4a0b",
+        "html_url": "https://github.com/ksh93/ksh/commit/9a48c61e1e5cc0881d7126fe818fe32c429b4a0b"
+      }
+    ]
+  },
+  {
+    "sha": "9a48c61e1e5cc0881d7126fe818fe32c429b4a0b",
+    "node_id": "C_kwDOEC_BhNoAKDlhNDhjNjFlMWU1Y2MwODgxZDcxMjZmZTgxOGZlMzJjNDI5YjRhMGI",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-09T01:51:25Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-09T01:51:25Z"
+      },
+      "message": "ed_putchar(): fix remaining potential overflow (re: 3cf71e8c)\n\nRereading ed_putchar() made it obvious there is still a potential\nbuffer overflow: there is no bounds check while writing the bytes\nof a multibyte character. The bounds check at the end of the\nfunctoin is designed for writing one byte at a time.\n\nsrc/cmd/ksh93/edit/edit.c:\n- Split ed_putchar() into ed_putbyte() and a new ed_putchar(). The\n  former is the old non-multibyte aware version. The latter has the\n  multibyte stuff, then calls ed_putbyte() for each byte. This may\n  cause the buffer to be flushed in the middle of a multibyte\n  character, but that should not be a problem as everything should\n  be written to the terminal in the correct order in the end.\n- If SHOPT_MULTIBYTE is disabled, simply rename ed_putbyte() back\n  to ed_putchar() and do not compile the new ed_putchar().\n\nThis approach is (obviously) not performance-optimised, but neither\nis that necessary: it is only used to output small strings in line\neditors that spend 99.999999% of their time waiting for user input.",
+      "tree": {
+        "sha": "f1b6b0c6c7589ffdba03f587176a52c290a4cae2",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/f1b6b0c6c7589ffdba03f587176a52c290a4cae2"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/9a48c61e1e5cc0881d7126fe818fe32c429b4a0b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/9a48c61e1e5cc0881d7126fe818fe32c429b4a0b",
+    "html_url": "https://github.com/ksh93/ksh/commit/9a48c61e1e5cc0881d7126fe818fe32c429b4a0b",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/9a48c61e1e5cc0881d7126fe818fe32c429b4a0b/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "26b0550d1690ed7b551d1fa6bf3b950457c9828b",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/26b0550d1690ed7b551d1fa6bf3b950457c9828b",
+        "html_url": "https://github.com/ksh93/ksh/commit/26b0550d1690ed7b551d1fa6bf3b950457c9828b"
+      }
+    ]
+  },
+  {
+    "sha": "26b0550d1690ed7b551d1fa6bf3b950457c9828b",
+    "node_id": "C_kwDOEC_BhNoAKDI2YjA1NTBkMTY5MGVkN2I1NTFkMWZhNmJmM2I5NTA0NTdjOTgyOGI",
+    "commit": {
+      "author": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-08T23:28:24Z"
+      },
+      "committer": {
+        "name": "Martijn Dekker",
+        "email": "martijn@inlv.org",
+        "date": "2024-03-09T00:08:30Z"
+      },
+      "message": "mamake: cosmetic tweaks\n\nThis makes the style of variable declarations involving pointers\nconsistent. I don't like the original author's style (no, the '*'\nis not part of the type) and this makes it the same as in ksh93.",
+      "tree": {
+        "sha": "18bd655fed1f41c25ae04acc2d0415ee0d9dbcd6",
+        "url": "https://api.github.com/repos/ksh93/ksh/git/trees/18bd655fed1f41c25ae04acc2d0415ee0d9dbcd6"
+      },
+      "url": "https://api.github.com/repos/ksh93/ksh/git/commits/26b0550d1690ed7b551d1fa6bf3b950457c9828b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/ksh93/ksh/commits/26b0550d1690ed7b551d1fa6bf3b950457c9828b",
+    "html_url": "https://github.com/ksh93/ksh/commit/26b0550d1690ed7b551d1fa6bf3b950457c9828b",
+    "comments_url": "https://api.github.com/repos/ksh93/ksh/commits/26b0550d1690ed7b551d1fa6bf3b950457c9828b/comments",
+    "author": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "McDutchie",
+      "id": 7469524,
+      "node_id": "MDQ6VXNlcjc0Njk1MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7469524?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/McDutchie",
+      "html_url": "https://github.com/McDutchie",
+      "followers_url": "https://api.github.com/users/McDutchie/followers",
+      "following_url": "https://api.github.com/users/McDutchie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/McDutchie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/McDutchie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/McDutchie/subscriptions",
+      "organizations_url": "https://api.github.com/users/McDutchie/orgs",
+      "repos_url": "https://api.github.com/users/McDutchie/repos",
+      "events_url": "https://api.github.com/users/McDutchie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/McDutchie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "931e6fa10d1d54cd7d2906f8037140b45f771b7f",
+        "url": "https://api.github.com/repos/ksh93/ksh/commits/931e6fa10d1d54cd7d2906f8037140b45f771b7f",
+        "html_url": "https://github.com/ksh93/ksh/commit/931e6fa10d1d54cd7d2906f8037140b45f771b7f"
+      }
+    ]
+  }
+]

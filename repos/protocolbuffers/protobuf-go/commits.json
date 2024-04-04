@@ -1,0 +1,2372 @@
+[
+  {
+    "sha": "8a744307e30256ea8e3481625a89b436656a96fd",
+    "node_id": "C_kwDOCpfoZ9oAKDhhNzQ0MzA3ZTMwMjU2ZWE4ZTM0ODE2MjVhODliNDM2NjU2YTk2ZmQ",
+    "commit": {
+      "author": {
+        "name": "Nicolas Hillegeer",
+        "email": "aktau@google.com",
+        "date": "2024-04-01T21:06:18Z"
+      },
+      "committer": {
+        "name": "Gopher Robot",
+        "email": "gobot@golang.org",
+        "date": "2024-04-02T14:35:14Z"
+      },
+      "message": "internal/cmd/generate-types: manual CSE of m.messageInfo()\n\nmessageInfo() looks like this:\n\n    func (ms *messageState) messageInfo() *MessageInfo {\n    \tmi := ms.LoadMessageInfo()\n    \tif mi == nil {\n    \t\tpanic(\"invalid nil message info; this suggests memory corruption due to a race or shallow copy on the message struct\")\n    \t}\n    \treturn mi\n    }\n\n    func (ms *messageState) LoadMessageInfo() *MessageInfo {\n    \treturn (*MessageInfo)(atomic.LoadPointer((*unsafe.Pointer)(unsafe.Pointer(&ms.atomicMessageInfo))))\n    }\n\nWhich is an atomic load and a predictable branch. On x86, this 64-bit\nload is just a MOV. On other platforms, like ARM64, there's actual\natomics involved (LDAR).\n\nMeaning, it's cheap, but not free. Eliminate redundant copies of this\n(Common Subexpression Elimination).\n\nThe newly added benchmarks improve by (geomean) 2.5%:\n\n    $ benchstat pre post | head -10\n    goarch: amd64\n    cpu: AMD Ryzen Threadripper PRO 3995WX 64-Cores\n                          │     pre     │                post                │\n                          │   sec/op    │   sec/op     vs base               │\n    Extension/Has/None-12   106.4n ± 2%   104.0n ± 2%  -2.21% (p=0.020 n=10)\n    Extension/Has/Set-12    116.4n ± 1%   114.4n ± 2%  -1.76% (p=0.017 n=10)\n    Extension/Get/None-12   184.2n ± 1%   181.0n ± 1%  -1.68% (p=0.003 n=10)\n    Extension/Get/Set-12    144.5n ± 3%   140.7n ± 2%  -2.63% (p=0.041 n=10)\n    Extension/Set-12        227.2n ± 2%   218.6n ± 2%  -3.81% (p=0.000 n=10)\n    geomean                 149.6n        145.9n       -2.42%\n\nI didn't test on ARM64, but the difference should be larger due to the\nreduced atomics.\n\nChange-Id: I8eebeb6f753425b743368a7f5c7be4d48537e5c3\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/575036\nReviewed-by: Michael Stapelberg <stapelberg@google.com>\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Damien Neil <dneil@google.com>\nCommit-Queue: Nicolas Hillegeer <aktau@google.com>\nAuto-Submit: Nicolas Hillegeer <aktau@google.com>",
+      "tree": {
+        "sha": "007a7bf9ced8a3579c80741fe60ca3ac9206b37f",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/007a7bf9ced8a3579c80741fe60ca3ac9206b37f"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/8a744307e30256ea8e3481625a89b436656a96fd",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/8a744307e30256ea8e3481625a89b436656a96fd",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/8a744307e30256ea8e3481625a89b436656a96fd",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/8a744307e30256ea8e3481625a89b436656a96fd/comments",
+    "author": {
+      "login": "aktau",
+      "id": 189413,
+      "node_id": "MDQ6VXNlcjE4OTQxMw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/189413?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/aktau",
+      "html_url": "https://github.com/aktau",
+      "followers_url": "https://api.github.com/users/aktau/followers",
+      "following_url": "https://api.github.com/users/aktau/following{/other_user}",
+      "gists_url": "https://api.github.com/users/aktau/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/aktau/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/aktau/subscriptions",
+      "organizations_url": "https://api.github.com/users/aktau/orgs",
+      "repos_url": "https://api.github.com/users/aktau/repos",
+      "events_url": "https://api.github.com/users/aktau/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/aktau/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "gopherbot",
+      "id": 8566911,
+      "node_id": "MDQ6VXNlcjg1NjY5MTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8566911?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gopherbot",
+      "html_url": "https://github.com/gopherbot",
+      "followers_url": "https://api.github.com/users/gopherbot/followers",
+      "following_url": "https://api.github.com/users/gopherbot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gopherbot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gopherbot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gopherbot/subscriptions",
+      "organizations_url": "https://api.github.com/users/gopherbot/orgs",
+      "repos_url": "https://api.github.com/users/gopherbot/repos",
+      "events_url": "https://api.github.com/users/gopherbot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gopherbot/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "55891d73cfbc5359b84c30625c37144e54c9da36",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/55891d73cfbc5359b84c30625c37144e54c9da36",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/55891d73cfbc5359b84c30625c37144e54c9da36"
+      }
+    ]
+  },
+  {
+    "sha": "55891d73cfbc5359b84c30625c37144e54c9da36",
+    "node_id": "C_kwDOCpfoZ9oAKDU1ODkxZDczY2ZiYzUzNTliODRjMzA2MjVjMzcxNDRlNTRjOWRhMzY",
+    "commit": {
+      "author": {
+        "name": "Michael Stapelberg",
+        "email": "stapelberg@golang.org",
+        "date": "2024-03-25T14:45:37Z"
+      },
+      "committer": {
+        "name": "Gopher Robot",
+        "email": "gobot@golang.org",
+        "date": "2024-04-02T08:46:54Z"
+      },
+      "message": "proto: add examples for Size, MarshalAppend (regarding allocations)\n\nHopefully this gives users a better understanding of the MarshalAppend\nentrypoint and what it can be used for, as well as the typical Size usage.\n\nChange-Id: I26c9705c3d1dbfea5f30820d41ccabbb88fbb772\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/573361\nReviewed-by: Lasse Folger <lassefolger@google.com>\nAuto-Submit: Michael Stapelberg <stapelberg@google.com>\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Cassondra Foesch <cfoesch@gmail.com>\nReviewed-by: Damien Neil <dneil@google.com>",
+      "tree": {
+        "sha": "1d1903f53fd8f2a953db5374ccae593cdefc91b6",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/1d1903f53fd8f2a953db5374ccae593cdefc91b6"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/55891d73cfbc5359b84c30625c37144e54c9da36",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/55891d73cfbc5359b84c30625c37144e54c9da36",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/55891d73cfbc5359b84c30625c37144e54c9da36",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/55891d73cfbc5359b84c30625c37144e54c9da36/comments",
+    "author": {
+      "login": "stapelberg",
+      "id": 55506,
+      "node_id": "MDQ6VXNlcjU1NTA2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/55506?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/stapelberg",
+      "html_url": "https://github.com/stapelberg",
+      "followers_url": "https://api.github.com/users/stapelberg/followers",
+      "following_url": "https://api.github.com/users/stapelberg/following{/other_user}",
+      "gists_url": "https://api.github.com/users/stapelberg/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/stapelberg/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/stapelberg/subscriptions",
+      "organizations_url": "https://api.github.com/users/stapelberg/orgs",
+      "repos_url": "https://api.github.com/users/stapelberg/repos",
+      "events_url": "https://api.github.com/users/stapelberg/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/stapelberg/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "gopherbot",
+      "id": 8566911,
+      "node_id": "MDQ6VXNlcjg1NjY5MTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8566911?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gopherbot",
+      "html_url": "https://github.com/gopherbot",
+      "followers_url": "https://api.github.com/users/gopherbot/followers",
+      "following_url": "https://api.github.com/users/gopherbot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gopherbot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gopherbot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gopherbot/subscriptions",
+      "organizations_url": "https://api.github.com/users/gopherbot/orgs",
+      "repos_url": "https://api.github.com/users/gopherbot/repos",
+      "events_url": "https://api.github.com/users/gopherbot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gopherbot/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "87fded5d2a1215165991a86ae377b4361518a6e2",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/87fded5d2a1215165991a86ae377b4361518a6e2",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/87fded5d2a1215165991a86ae377b4361518a6e2"
+      }
+    ]
+  },
+  {
+    "sha": "87fded5d2a1215165991a86ae377b4361518a6e2",
+    "node_id": "C_kwDOCpfoZ9oAKDg3ZmRlZDVkMmExMjE1MTY1OTkxYTg2YWUzNzdiNDM2MTUxOGE2ZTI",
+    "commit": {
+      "author": {
+        "name": "Nicolas Hillegeer",
+        "email": "aktau@google.com",
+        "date": "2024-03-28T10:57:57Z"
+      },
+      "committer": {
+        "name": "Gopher Robot",
+        "email": "gobot@golang.org",
+        "date": "2024-03-28T16:31:28Z"
+      },
+      "message": "internal/impl: ensure proto.HasExtension does not allocate\n\nExtensions are unmarshaled lazily if protolegacy is true. The current\nimplementation of proto.HasExtension forces this unmarshaling to happen.\nChange that.\n\nLazy message extensions are unmarshaled on first access, see\n(*ExtensionField).Value. This leads to an (expensive) unmarshal\noperation even if the user only wanted to know whether the extension is\npresent.\n\nGranted, in most cases a HasExtension returning true will be followed by\na GetExtension. Due to memoization (see (*ExtensionField).lazyInit), the\ncost will just shift from HasExtension to GetExtension. But, this CL\nallows building cheaper functionality that only needs to know about\nextension existence.\n\nWhy can this validation be removed?\n\n - All tests pass.\n - This check was added in CL 229558. The author (Joe Tsai) noted:\n\n> Technically this shouldn't be needed, but I couldn't adequately reason\n> whether a nil message value would ever be set through non-reflection\n> means.\n\nLike the author, I believe it's not needed:\n\n - `proto.SetExtension` does not allow setting invalid messages (see\n   proto/extension.go).\n - Likewise, (*extensionMap).Set panics when attempting to set an\n   invalid value.\n - Unmarshaling does not produce submessages for which `IsValid` is\n   false.\n\nThe added test fails without the fix:\n\n    $ go test -tags=protolegacy -test.v -test.run=TestHasExtensionNoAlloc proto/extension_test.go\n    === RUN   TestHasExtensionNoAlloc\n    === RUN   TestHasExtensionNoAlloc/Nil\n    === RUN   TestHasExtensionNoAlloc/Eager\n    === RUN   TestHasExtensionNoAlloc/Lazy\n        extension_test.go:156: proto.HasExtension should not allocate, but allocated 3.00B per run\n    --- FAIL: TestHasExtensionNoAlloc (0.00s)\n        --- PASS: TestHasExtensionNoAlloc/Nil (0.00s)\n        --- PASS: TestHasExtensionNoAlloc/Eager (0.00s)\n        --- FAIL: TestHasExtensionNoAlloc/Lazy (0.00s)\n    FAIL\n    FAIL    command-line-arguments  0.018s\n\nThe tests are disabled in race mode because the race instrumentation for\nclosures et al. always allocates. The protolegacy tests were previously\nonly run in race mode. I added a non-race variant in\nintegration_test.go.\n\nChange-Id: Idbc67c1cf0aea8833a2735ca7bfc8d2466ceaf44\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/575035\nReviewed-by: Nicolas Hillegeer <aktau@google.com>\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Damien Neil <dneil@google.com>\nReviewed-by: Lasse Folger <lassefolger@google.com>\nAuto-Submit: Nicolas Hillegeer <aktau@google.com>",
+      "tree": {
+        "sha": "2a374069768db90ecaf130756136574bfd349fcb",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/2a374069768db90ecaf130756136574bfd349fcb"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/87fded5d2a1215165991a86ae377b4361518a6e2",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/87fded5d2a1215165991a86ae377b4361518a6e2",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/87fded5d2a1215165991a86ae377b4361518a6e2",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/87fded5d2a1215165991a86ae377b4361518a6e2/comments",
+    "author": {
+      "login": "aktau",
+      "id": 189413,
+      "node_id": "MDQ6VXNlcjE4OTQxMw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/189413?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/aktau",
+      "html_url": "https://github.com/aktau",
+      "followers_url": "https://api.github.com/users/aktau/followers",
+      "following_url": "https://api.github.com/users/aktau/following{/other_user}",
+      "gists_url": "https://api.github.com/users/aktau/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/aktau/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/aktau/subscriptions",
+      "organizations_url": "https://api.github.com/users/aktau/orgs",
+      "repos_url": "https://api.github.com/users/aktau/repos",
+      "events_url": "https://api.github.com/users/aktau/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/aktau/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "gopherbot",
+      "id": 8566911,
+      "node_id": "MDQ6VXNlcjg1NjY5MTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8566911?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gopherbot",
+      "html_url": "https://github.com/gopherbot",
+      "followers_url": "https://api.github.com/users/gopherbot/followers",
+      "following_url": "https://api.github.com/users/gopherbot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gopherbot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gopherbot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gopherbot/subscriptions",
+      "organizations_url": "https://api.github.com/users/gopherbot/orgs",
+      "repos_url": "https://api.github.com/users/gopherbot/repos",
+      "events_url": "https://api.github.com/users/gopherbot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gopherbot/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3797f00bcfc61561b221d1dd709cd439da574695",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/3797f00bcfc61561b221d1dd709cd439da574695",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/3797f00bcfc61561b221d1dd709cd439da574695"
+      }
+    ]
+  },
+  {
+    "sha": "3797f00bcfc61561b221d1dd709cd439da574695",
+    "node_id": "C_kwDOCpfoZ9oAKDM3OTdmMDBiY2ZjNjE1NjFiMjIxZDFkZDcwOWNkNDM5ZGE1NzQ2OTU",
+    "commit": {
+      "author": {
+        "name": "Clement Jean",
+        "email": "Clementjean13@gmail.com",
+        "date": "2024-03-28T01:05:24Z"
+      },
+      "committer": {
+        "name": "Gopher Robot",
+        "email": "gobot@golang.org",
+        "date": "2024-03-28T08:30:47Z"
+      },
+      "message": "protogen: update Options documentation. protogen.Run doesn't exist.\n\nChange-Id: Iff653cd5b6a7d98ce7e3ead0877cba7b996e9c13\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/574836\nReviewed-by: Lasse Folger <lassefolger@google.com>\nAuto-Submit: Michael Stapelberg <stapelberg@google.com>\nReviewed-by: Michael Stapelberg <stapelberg@google.com>\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+      "tree": {
+        "sha": "214f9744e5e675b6df6514b411f33fcf407fed57",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/214f9744e5e675b6df6514b411f33fcf407fed57"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/3797f00bcfc61561b221d1dd709cd439da574695",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/3797f00bcfc61561b221d1dd709cd439da574695",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/3797f00bcfc61561b221d1dd709cd439da574695",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/3797f00bcfc61561b221d1dd709cd439da574695/comments",
+    "author": {
+      "login": "Clement-Jean",
+      "id": 16657553,
+      "node_id": "MDQ6VXNlcjE2NjU3NTUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16657553?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Clement-Jean",
+      "html_url": "https://github.com/Clement-Jean",
+      "followers_url": "https://api.github.com/users/Clement-Jean/followers",
+      "following_url": "https://api.github.com/users/Clement-Jean/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Clement-Jean/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Clement-Jean/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Clement-Jean/subscriptions",
+      "organizations_url": "https://api.github.com/users/Clement-Jean/orgs",
+      "repos_url": "https://api.github.com/users/Clement-Jean/repos",
+      "events_url": "https://api.github.com/users/Clement-Jean/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Clement-Jean/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "gopherbot",
+      "id": 8566911,
+      "node_id": "MDQ6VXNlcjg1NjY5MTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8566911?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gopherbot",
+      "html_url": "https://github.com/gopherbot",
+      "followers_url": "https://api.github.com/users/gopherbot/followers",
+      "following_url": "https://api.github.com/users/gopherbot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gopherbot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gopherbot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gopherbot/subscriptions",
+      "organizations_url": "https://api.github.com/users/gopherbot/orgs",
+      "repos_url": "https://api.github.com/users/gopherbot/repos",
+      "events_url": "https://api.github.com/users/gopherbot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gopherbot/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4fd828fdbf4719ded75c6f44681aea87a10968c2",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/4fd828fdbf4719ded75c6f44681aea87a10968c2",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/4fd828fdbf4719ded75c6f44681aea87a10968c2"
+      }
+    ]
+  },
+  {
+    "sha": "4fd828fdbf4719ded75c6f44681aea87a10968c2",
+    "node_id": "C_kwDOCpfoZ9oAKDRmZDgyOGZkYmY0NzE5ZGVkNzVjNmY0NDY4MWFlYTg3YTEwOTY4YzI",
+    "commit": {
+      "author": {
+        "name": "Michael Stapelberg",
+        "email": "stapelberg@golang.org",
+        "date": "2024-03-27T09:26:55Z"
+      },
+      "committer": {
+        "name": "Michael Stapelberg",
+        "email": "stapelberg@golang.org",
+        "date": "2024-03-28T08:17:19Z"
+      },
+      "message": "proto: extend Unmarshal documentation, include an example\n\nThis example uses the same protobuf and wire format encoding\nas the corresponding Marshal example added in commit\nhttps://go.googlesource.com/protobuf/+/c69658e23457d4e09\n\nChange-Id: Ifd64a93a14589595cbe9b218235b57fb15d423c2\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/574635\nReviewed-by: Lasse Folger <lassefolger@google.com>\nReviewed-by: Damien Neil <dneil@google.com>\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+      "tree": {
+        "sha": "f18bba402f7e69253b7293e41a4ed25e33699ef1",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/f18bba402f7e69253b7293e41a4ed25e33699ef1"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/4fd828fdbf4719ded75c6f44681aea87a10968c2",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/4fd828fdbf4719ded75c6f44681aea87a10968c2",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/4fd828fdbf4719ded75c6f44681aea87a10968c2",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/4fd828fdbf4719ded75c6f44681aea87a10968c2/comments",
+    "author": {
+      "login": "stapelberg",
+      "id": 55506,
+      "node_id": "MDQ6VXNlcjU1NTA2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/55506?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/stapelberg",
+      "html_url": "https://github.com/stapelberg",
+      "followers_url": "https://api.github.com/users/stapelberg/followers",
+      "following_url": "https://api.github.com/users/stapelberg/following{/other_user}",
+      "gists_url": "https://api.github.com/users/stapelberg/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/stapelberg/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/stapelberg/subscriptions",
+      "organizations_url": "https://api.github.com/users/stapelberg/orgs",
+      "repos_url": "https://api.github.com/users/stapelberg/repos",
+      "events_url": "https://api.github.com/users/stapelberg/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/stapelberg/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "stapelberg",
+      "id": 55506,
+      "node_id": "MDQ6VXNlcjU1NTA2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/55506?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/stapelberg",
+      "html_url": "https://github.com/stapelberg",
+      "followers_url": "https://api.github.com/users/stapelberg/followers",
+      "following_url": "https://api.github.com/users/stapelberg/following{/other_user}",
+      "gists_url": "https://api.github.com/users/stapelberg/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/stapelberg/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/stapelberg/subscriptions",
+      "organizations_url": "https://api.github.com/users/stapelberg/orgs",
+      "repos_url": "https://api.github.com/users/stapelberg/repos",
+      "events_url": "https://api.github.com/users/stapelberg/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/stapelberg/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c69658e23457d4e09bce7adc4920817aac8bb4ce",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/c69658e23457d4e09bce7adc4920817aac8bb4ce",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/c69658e23457d4e09bce7adc4920817aac8bb4ce"
+      }
+    ]
+  },
+  {
+    "sha": "c69658e23457d4e09bce7adc4920817aac8bb4ce",
+    "node_id": "C_kwDOCpfoZ9oAKGM2OTY1OGUyMzQ1N2Q0ZTA5YmNlN2FkYzQ5MjA4MTdhYWM4YmI0Y2U",
+    "commit": {
+      "author": {
+        "name": "Michael Stapelberg",
+        "email": "stapelberg@golang.org",
+        "date": "2024-03-26T15:31:25Z"
+      },
+      "committer": {
+        "name": "Michael Stapelberg",
+        "email": "stapelberg@golang.org",
+        "date": "2024-03-27T09:10:56Z"
+      },
+      "message": "proto: extend Marshal documentation, include an example\n\nThe example has been written so that it can be run, meaning it only uses\npackages that are included in the protobuf module (durationpb specifically).\n\nI included an Output: comment in the example so that pkgsite displays the\nprogram output even without having to run it (but running it is of course\npossible).\n\nI added a brief tip to protoscope, which is often mentioned in the protobuf.dev\ndocs for illustrative purposes, and I think it really makes much clearer to the\nreader how the protobuf wire format looks like and what information survives the\nencoding process (field numbers and their values, but not field names like in\nJSON).\n\nThe struct literal contains only one field so that we don’t need to marshal this\nmessage deterministically for stable wire format, which is not the point of the\nexample and would be distracting.\n\nThe value was chosen such that the wire format hex representation contains at\nleast one byte that is clearly identifiable as hexadecimal, to avoid confusion.\n\nChange-Id: I86103abfd7d5b3f654aca3bfbb452f8ef7e49828\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/574455\nReviewed-by: Damien Neil <dneil@google.com>\nReviewed-by: Lasse Folger <lassefolger@google.com>\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+      "tree": {
+        "sha": "71406bdcb0674ce4b4ce11a25c367d3a02ab1f8a",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/71406bdcb0674ce4b4ce11a25c367d3a02ab1f8a"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/c69658e23457d4e09bce7adc4920817aac8bb4ce",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/c69658e23457d4e09bce7adc4920817aac8bb4ce",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/c69658e23457d4e09bce7adc4920817aac8bb4ce",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/c69658e23457d4e09bce7adc4920817aac8bb4ce/comments",
+    "author": {
+      "login": "stapelberg",
+      "id": 55506,
+      "node_id": "MDQ6VXNlcjU1NTA2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/55506?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/stapelberg",
+      "html_url": "https://github.com/stapelberg",
+      "followers_url": "https://api.github.com/users/stapelberg/followers",
+      "following_url": "https://api.github.com/users/stapelberg/following{/other_user}",
+      "gists_url": "https://api.github.com/users/stapelberg/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/stapelberg/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/stapelberg/subscriptions",
+      "organizations_url": "https://api.github.com/users/stapelberg/orgs",
+      "repos_url": "https://api.github.com/users/stapelberg/repos",
+      "events_url": "https://api.github.com/users/stapelberg/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/stapelberg/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "stapelberg",
+      "id": 55506,
+      "node_id": "MDQ6VXNlcjU1NTA2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/55506?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/stapelberg",
+      "html_url": "https://github.com/stapelberg",
+      "followers_url": "https://api.github.com/users/stapelberg/followers",
+      "following_url": "https://api.github.com/users/stapelberg/following{/other_user}",
+      "gists_url": "https://api.github.com/users/stapelberg/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/stapelberg/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/stapelberg/subscriptions",
+      "organizations_url": "https://api.github.com/users/stapelberg/orgs",
+      "repos_url": "https://api.github.com/users/stapelberg/repos",
+      "events_url": "https://api.github.com/users/stapelberg/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/stapelberg/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3ebf7dd8a5331895cd3ffd849d6ebd313c509e0f",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/3ebf7dd8a5331895cd3ffd849d6ebd313c509e0f",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/3ebf7dd8a5331895cd3ffd849d6ebd313c509e0f"
+      }
+    ]
+  },
+  {
+    "sha": "3ebf7dd8a5331895cd3ffd849d6ebd313c509e0f",
+    "node_id": "C_kwDOCpfoZ9oAKDNlYmY3ZGQ4YTUzMzE4OTVjZDNmZmQ4NDlkNmViZDMxM2M1MDllMGY",
+    "commit": {
+      "author": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-03-26T08:19:07Z"
+      },
+      "committer": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-03-26T09:28:59Z"
+      },
+      "message": "proto: fix HasPresence for extensions and missing plugin response\n\nChange-Id: I9ee81f7a88cf91f3041e89936cb03511bd224603\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/574375\nAuto-Submit: Lasse Folger <lassefolger@google.com>\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Michael Stapelberg <stapelberg@google.com>",
+      "tree": {
+        "sha": "b9541993aac80aca9c8f3f590e7a2d981368ae95",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/b9541993aac80aca9c8f3f590e7a2d981368ae95"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/3ebf7dd8a5331895cd3ffd849d6ebd313c509e0f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/3ebf7dd8a5331895cd3ffd849d6ebd313c509e0f",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/3ebf7dd8a5331895cd3ffd849d6ebd313c509e0f",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/3ebf7dd8a5331895cd3ffd849d6ebd313c509e0f/comments",
+    "author": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "dea00b5e2afefeb92e99793818fa8ff95df6b198",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/dea00b5e2afefeb92e99793818fa8ff95df6b198",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/dea00b5e2afefeb92e99793818fa8ff95df6b198"
+      }
+    ]
+  },
+  {
+    "sha": "dea00b5e2afefeb92e99793818fa8ff95df6b198",
+    "node_id": "C_kwDOCpfoZ9oAKGRlYTAwYjVlMmFmZWZlYjkyZTk5NzkzODE4ZmE4ZmY5NWRmNmIxOTg",
+    "commit": {
+      "author": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-03-21T13:26:52Z"
+      },
+      "committer": {
+        "name": "Gopher Robot",
+        "email": "gobot@golang.org",
+        "date": "2024-03-22T09:09:14Z"
+      },
+      "message": "all: enable editions support\n\nChange-Id: I30e08a1610e11187a7632a409bd001f3bff1ba4a\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/573355\nAuto-Submit: Lasse Folger <lassefolger@google.com>\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Michael Stapelberg <stapelberg@google.com>",
+      "tree": {
+        "sha": "c28a29504a716914eccf9631405d610290824716",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/c28a29504a716914eccf9631405d610290824716"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/dea00b5e2afefeb92e99793818fa8ff95df6b198",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/dea00b5e2afefeb92e99793818fa8ff95df6b198",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/dea00b5e2afefeb92e99793818fa8ff95df6b198",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/dea00b5e2afefeb92e99793818fa8ff95df6b198/comments",
+    "author": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "gopherbot",
+      "id": 8566911,
+      "node_id": "MDQ6VXNlcjg1NjY5MTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8566911?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gopherbot",
+      "html_url": "https://github.com/gopherbot",
+      "followers_url": "https://api.github.com/users/gopherbot/followers",
+      "following_url": "https://api.github.com/users/gopherbot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gopherbot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gopherbot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gopherbot/subscriptions",
+      "organizations_url": "https://api.github.com/users/gopherbot/orgs",
+      "repos_url": "https://api.github.com/users/gopherbot/repos",
+      "events_url": "https://api.github.com/users/gopherbot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gopherbot/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "59034d830f736221121ff7590cd95bf40161e931",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/59034d830f736221121ff7590cd95bf40161e931",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/59034d830f736221121ff7590cd95bf40161e931"
+      }
+    ]
+  },
+  {
+    "sha": "59034d830f736221121ff7590cd95bf40161e931",
+    "node_id": "C_kwDOCpfoZ9oAKDU5MDM0ZDgzMGY3MzYyMjExMjFmZjc1OTBjZDk1YmY0MDE2MWU5MzE",
+    "commit": {
+      "author": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-03-20T12:23:30Z"
+      },
+      "committer": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-03-21T13:45:49Z"
+      },
+      "message": "reflect/protodesc: restore edition in protodesc.ToDescriptorProto\n\nI have choosen to implement this via interace assertion so that\nother implementers of protoreflect.FileDescriptor can implement\nthis as well.\n\nChange-Id: Ib907895044e89bdba1009cc09129d3dd1224561f\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/573055\nReviewed-by: Michael Stapelberg <stapelberg@google.com>\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+      "tree": {
+        "sha": "789960fa286d99a20d5b1710549bff976dbb8ce7",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/789960fa286d99a20d5b1710549bff976dbb8ce7"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/59034d830f736221121ff7590cd95bf40161e931",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/59034d830f736221121ff7590cd95bf40161e931",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/59034d830f736221121ff7590cd95bf40161e931",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/59034d830f736221121ff7590cd95bf40161e931/comments",
+    "author": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3039476726e4d5c3b2d7a946b1a5612b278b4525",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/3039476726e4d5c3b2d7a946b1a5612b278b4525",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/3039476726e4d5c3b2d7a946b1a5612b278b4525"
+      }
+    ]
+  },
+  {
+    "sha": "3039476726e4d5c3b2d7a946b1a5612b278b4525",
+    "node_id": "C_kwDOCpfoZ9oAKDMwMzk0NzY3MjZlNGQ1YzNiMmQ3YTk0NmIxYTU2MTJiMjc4YjQ1MjU",
+    "commit": {
+      "author": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-03-19T08:14:46Z"
+      },
+      "committer": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-03-19T12:54:36Z"
+      },
+      "message": "all: implement proto2/proto3 as editions [2/2]\n\nThis change removes the remaining usages of Syntax() from Go Protobuf\nand uses edition features instead.\n\nIt also adds a new function to the EnumDescriptor interface checking if\nthe enum is using a Closed semantics.\n\nAll of these changes were tested on the Google corpus.\n\nChange-Id: I7a8110f6f3b6ed24bf7ece500b4942371302c56c\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/572695\nReviewed-by: Michael Stapelberg <stapelberg@google.com>\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+      "tree": {
+        "sha": "1dd315167d8685401b44e2e983d32df5af16e71c",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/1dd315167d8685401b44e2e983d32df5af16e71c"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/3039476726e4d5c3b2d7a946b1a5612b278b4525",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/3039476726e4d5c3b2d7a946b1a5612b278b4525",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/3039476726e4d5c3b2d7a946b1a5612b278b4525",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/3039476726e4d5c3b2d7a946b1a5612b278b4525/comments",
+    "author": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7259b467734a1d1adab45105fdef3afc89d61e7c",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/7259b467734a1d1adab45105fdef3afc89d61e7c",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/7259b467734a1d1adab45105fdef3afc89d61e7c"
+      }
+    ]
+  },
+  {
+    "sha": "7259b467734a1d1adab45105fdef3afc89d61e7c",
+    "node_id": "C_kwDOCpfoZ9oAKDcyNTliNDY3NzM0YTFkMWFkYWI0NTEwNWZkZWYzYWZjODlkNjFlN2M",
+    "commit": {
+      "author": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-03-18T14:58:47Z"
+      },
+      "committer": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-03-19T09:40:08Z"
+      },
+      "message": "all: implement proto2/proto3 as editions [1/2]\n\nThis change removes most usages of Syntax() from the repository and uses\nedition features for instead. The appropriate edition feature defaults are\nloaded for proto2/proto3 when the initialization of the descriptors\nstart.\n\nAll of these changes were tested on the Google corpus.\n\nChange-Id: Ieca076a2b38ca8e50e084cd32e725b7b3dcb4171\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/572435\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Michael Stapelberg <stapelberg@google.com>",
+      "tree": {
+        "sha": "6f482f4f8944b252843c291f2c7ef106e47ed984",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/6f482f4f8944b252843c291f2c7ef106e47ed984"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/7259b467734a1d1adab45105fdef3afc89d61e7c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/7259b467734a1d1adab45105fdef3afc89d61e7c",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/7259b467734a1d1adab45105fdef3afc89d61e7c",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/7259b467734a1d1adab45105fdef3afc89d61e7c/comments",
+    "author": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f56368575a2d93d120f68c550720afd5fd39c8c0",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/f56368575a2d93d120f68c550720afd5fd39c8c0",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/f56368575a2d93d120f68c550720afd5fd39c8c0"
+      }
+    ]
+  },
+  {
+    "sha": "f56368575a2d93d120f68c550720afd5fd39c8c0",
+    "node_id": "C_kwDOCpfoZ9oAKGY1NjM2ODU3NWEyZDkzZDEyMGY2OGM1NTA3MjBhZmQ1ZmQzOWM4YzA",
+    "commit": {
+      "author": {
+        "name": "Michael Stapelberg",
+        "email": "stapelberg@golang.org",
+        "date": "2024-03-07T14:50:23Z"
+      },
+      "committer": {
+        "name": "Gopher Robot",
+        "email": "gobot@golang.org",
+        "date": "2024-03-07T15:21:11Z"
+      },
+      "message": "all: use subtests to identify the message type\n\nThis makes it a little easier to track down test failures.\n\nAlso add a note to TestMarshalAppendAllocations to explain what it tests.\n\nChange-Id: Ie35f3ddd7c7d5cb300294f0fe665c6711d45d186\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/569775\nAuto-Submit: Michael Stapelberg <stapelberg@google.com>\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Lasse Folger <lassefolger@google.com>",
+      "tree": {
+        "sha": "7ac29773c918693b9c995b01df39ef93e7ce6229",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/7ac29773c918693b9c995b01df39ef93e7ce6229"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/f56368575a2d93d120f68c550720afd5fd39c8c0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/f56368575a2d93d120f68c550720afd5fd39c8c0",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/f56368575a2d93d120f68c550720afd5fd39c8c0",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/f56368575a2d93d120f68c550720afd5fd39c8c0/comments",
+    "author": {
+      "login": "stapelberg",
+      "id": 55506,
+      "node_id": "MDQ6VXNlcjU1NTA2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/55506?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/stapelberg",
+      "html_url": "https://github.com/stapelberg",
+      "followers_url": "https://api.github.com/users/stapelberg/followers",
+      "following_url": "https://api.github.com/users/stapelberg/following{/other_user}",
+      "gists_url": "https://api.github.com/users/stapelberg/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/stapelberg/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/stapelberg/subscriptions",
+      "organizations_url": "https://api.github.com/users/stapelberg/orgs",
+      "repos_url": "https://api.github.com/users/stapelberg/repos",
+      "events_url": "https://api.github.com/users/stapelberg/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/stapelberg/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "gopherbot",
+      "id": 8566911,
+      "node_id": "MDQ6VXNlcjg1NjY5MTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8566911?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gopherbot",
+      "html_url": "https://github.com/gopherbot",
+      "followers_url": "https://api.github.com/users/gopherbot/followers",
+      "following_url": "https://api.github.com/users/gopherbot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gopherbot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gopherbot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gopherbot/subscriptions",
+      "organizations_url": "https://api.github.com/users/gopherbot/orgs",
+      "repos_url": "https://api.github.com/users/gopherbot/repos",
+      "events_url": "https://api.github.com/users/gopherbot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gopherbot/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e21680754648204d20794b87e73ec378caefd110",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/e21680754648204d20794b87e73ec378caefd110",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/e21680754648204d20794b87e73ec378caefd110"
+      }
+    ]
+  },
+  {
+    "sha": "e21680754648204d20794b87e73ec378caefd110",
+    "node_id": "C_kwDOCpfoZ9oAKGUyMTY4MDc1NDY0ODIwNGQyMDc5NGI4N2U3M2VjMzc4Y2FlZmQxMTA",
+    "commit": {
+      "author": {
+        "name": "Damien Neil",
+        "email": "dneil@google.com",
+        "date": "2024-03-05T18:10:43Z"
+      },
+      "committer": {
+        "name": "Damien Neil",
+        "email": "dneil@google.com",
+        "date": "2024-03-05T19:00:36Z"
+      },
+      "message": "all: start v1.33.0-devel\n\nChange-Id: I56d6444809d27fd3f0c1dd633ce8b9bb3555523e\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/569358\nReviewed-by: Roland Shoemaker <roland@golang.org>\nTryBot-Bypass: Damien Neil <dneil@google.com>\nCommit-Queue: Damien Neil <dneil@google.com>",
+      "tree": {
+        "sha": "5925d4cb2e6e0ae3cf3058d8ec9b6720f7b81e90",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/5925d4cb2e6e0ae3cf3058d8ec9b6720f7b81e90"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/e21680754648204d20794b87e73ec378caefd110",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/e21680754648204d20794b87e73ec378caefd110",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/e21680754648204d20794b87e73ec378caefd110",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/e21680754648204d20794b87e73ec378caefd110/comments",
+    "author": {
+      "login": "neild",
+      "id": 52544,
+      "node_id": "MDQ6VXNlcjUyNTQ0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52544?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/neild",
+      "html_url": "https://github.com/neild",
+      "followers_url": "https://api.github.com/users/neild/followers",
+      "following_url": "https://api.github.com/users/neild/following{/other_user}",
+      "gists_url": "https://api.github.com/users/neild/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/neild/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/neild/subscriptions",
+      "organizations_url": "https://api.github.com/users/neild/orgs",
+      "repos_url": "https://api.github.com/users/neild/repos",
+      "events_url": "https://api.github.com/users/neild/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/neild/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "neild",
+      "id": 52544,
+      "node_id": "MDQ6VXNlcjUyNTQ0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52544?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/neild",
+      "html_url": "https://github.com/neild",
+      "followers_url": "https://api.github.com/users/neild/followers",
+      "following_url": "https://api.github.com/users/neild/following{/other_user}",
+      "gists_url": "https://api.github.com/users/neild/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/neild/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/neild/subscriptions",
+      "organizations_url": "https://api.github.com/users/neild/orgs",
+      "repos_url": "https://api.github.com/users/neild/repos",
+      "events_url": "https://api.github.com/users/neild/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/neild/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ec47fd138f9221b19a2afd6570b3c39ede9df3dc",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/ec47fd138f9221b19a2afd6570b3c39ede9df3dc",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/ec47fd138f9221b19a2afd6570b3c39ede9df3dc"
+      }
+    ]
+  },
+  {
+    "sha": "ec47fd138f9221b19a2afd6570b3c39ede9df3dc",
+    "node_id": "C_kwDOCpfoZ9oAKGVjNDdmZDEzOGY5MjIxYjE5YTJhZmQ2NTcwYjNjMzllZGU5ZGYzZGM",
+    "commit": {
+      "author": {
+        "name": "Damien Neil",
+        "email": "dneil@google.com",
+        "date": "2024-03-05T18:10:15Z"
+      },
+      "committer": {
+        "name": "Damien Neil",
+        "email": "dneil@google.com",
+        "date": "2024-03-05T19:00:20Z"
+      },
+      "message": "all: release v1.33.0\n\nChange-Id: Idcadb6ae9ae24489ce613c0783ae2a8aeddffa17\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/569357\nTryBot-Bypass: Damien Neil <dneil@google.com>\nCommit-Queue: Damien Neil <dneil@google.com>\nReviewed-by: Roland Shoemaker <roland@golang.org>",
+      "tree": {
+        "sha": "33c45af908ce90c693a869092028992db7f7ff09",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/33c45af908ce90c693a869092028992db7f7ff09"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/ec47fd138f9221b19a2afd6570b3c39ede9df3dc",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/ec47fd138f9221b19a2afd6570b3c39ede9df3dc",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/ec47fd138f9221b19a2afd6570b3c39ede9df3dc",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/ec47fd138f9221b19a2afd6570b3c39ede9df3dc/comments",
+    "author": {
+      "login": "neild",
+      "id": 52544,
+      "node_id": "MDQ6VXNlcjUyNTQ0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52544?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/neild",
+      "html_url": "https://github.com/neild",
+      "followers_url": "https://api.github.com/users/neild/followers",
+      "following_url": "https://api.github.com/users/neild/following{/other_user}",
+      "gists_url": "https://api.github.com/users/neild/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/neild/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/neild/subscriptions",
+      "organizations_url": "https://api.github.com/users/neild/orgs",
+      "repos_url": "https://api.github.com/users/neild/repos",
+      "events_url": "https://api.github.com/users/neild/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/neild/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "neild",
+      "id": 52544,
+      "node_id": "MDQ6VXNlcjUyNTQ0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52544?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/neild",
+      "html_url": "https://github.com/neild",
+      "followers_url": "https://api.github.com/users/neild/followers",
+      "following_url": "https://api.github.com/users/neild/following{/other_user}",
+      "gists_url": "https://api.github.com/users/neild/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/neild/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/neild/subscriptions",
+      "organizations_url": "https://api.github.com/users/neild/orgs",
+      "repos_url": "https://api.github.com/users/neild/repos",
+      "events_url": "https://api.github.com/users/neild/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/neild/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f01a588e5810b90996452eec4a28f22a0afae023",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/f01a588e5810b90996452eec4a28f22a0afae023",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/f01a588e5810b90996452eec4a28f22a0afae023"
+      }
+    ]
+  },
+  {
+    "sha": "f01a588e5810b90996452eec4a28f22a0afae023",
+    "node_id": "C_kwDOCpfoZ9oAKGYwMWE1ODhlNTgxMGI5MDk5NjQ1MmVlYzRhMjhmMjJhMGFmYWUwMjM",
+    "commit": {
+      "author": {
+        "name": "Damien Neil",
+        "email": "dneil@google.com",
+        "date": "2024-03-05T16:54:24Z"
+      },
+      "committer": {
+        "name": "Damien Neil",
+        "email": "dneil@google.com",
+        "date": "2024-03-05T19:00:02Z"
+      },
+      "message": "encoding/protojson, internal/encoding/json: handle missing object values\n\nIn internal/encoding/json, report an error when encountering a }\nwhen we are expecting an object field value. For example, the input\n`{\"\":}` now correctly results in an error at the closing } token.\n\nIn encoding/protojson, check for an unexpected EOF token in\nskipJSONValue. This is redundant with the check in internal/encoding/json,\nbut adds a bit more defense against any other similar bugs that\nmight exist.\n\nFixes CVE-2024-24786\n\nChange-Id: I03d52512acb5091c8549e31ca74541d57e56c99d\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/569356\nTryBot-Bypass: Damien Neil <dneil@google.com>\nReviewed-by: Roland Shoemaker <roland@golang.org>\nCommit-Queue: Damien Neil <dneil@google.com>",
+      "tree": {
+        "sha": "8ba1de4f7ab9c759b583892ac17b019385c97fe7",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/8ba1de4f7ab9c759b583892ac17b019385c97fe7"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/f01a588e5810b90996452eec4a28f22a0afae023",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/f01a588e5810b90996452eec4a28f22a0afae023",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/f01a588e5810b90996452eec4a28f22a0afae023",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/f01a588e5810b90996452eec4a28f22a0afae023/comments",
+    "author": {
+      "login": "neild",
+      "id": 52544,
+      "node_id": "MDQ6VXNlcjUyNTQ0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52544?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/neild",
+      "html_url": "https://github.com/neild",
+      "followers_url": "https://api.github.com/users/neild/followers",
+      "following_url": "https://api.github.com/users/neild/following{/other_user}",
+      "gists_url": "https://api.github.com/users/neild/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/neild/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/neild/subscriptions",
+      "organizations_url": "https://api.github.com/users/neild/orgs",
+      "repos_url": "https://api.github.com/users/neild/repos",
+      "events_url": "https://api.github.com/users/neild/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/neild/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "neild",
+      "id": 52544,
+      "node_id": "MDQ6VXNlcjUyNTQ0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52544?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/neild",
+      "html_url": "https://github.com/neild",
+      "followers_url": "https://api.github.com/users/neild/followers",
+      "following_url": "https://api.github.com/users/neild/following{/other_user}",
+      "gists_url": "https://api.github.com/users/neild/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/neild/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/neild/subscriptions",
+      "organizations_url": "https://api.github.com/users/neild/orgs",
+      "repos_url": "https://api.github.com/users/neild/repos",
+      "events_url": "https://api.github.com/users/neild/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/neild/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "235ef28b758bbbfb6f91d69e661abb7a0c37427c",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/235ef28b758bbbfb6f91d69e661abb7a0c37427c",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/235ef28b758bbbfb6f91d69e661abb7a0c37427c"
+      }
+    ]
+  },
+  {
+    "sha": "235ef28b758bbbfb6f91d69e661abb7a0c37427c",
+    "node_id": "C_kwDOCpfoZ9oAKDIzNWVmMjhiNzU4YmJiZmI2ZjkxZDY5ZTY2MWFiYjdhMGMzNzQyN2M",
+    "commit": {
+      "author": {
+        "name": "Damien Neil",
+        "email": "dneil@google.com",
+        "date": "2024-03-05T17:54:28Z"
+      },
+      "committer": {
+        "name": "Damien Neil",
+        "email": "dneil@google.com",
+        "date": "2024-03-05T18:53:41Z"
+      },
+      "message": "all: fix integration test on macOS\n\nNewer protobuf versions won't build on macOS unless you pass\n--macos_minimum_os=(something recentish) to bazel.\n\nChange-Id: I9e8f47eae708023400e15e5ca43d79caf2f62825\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/569355\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Roland Shoemaker <roland@golang.org>",
+      "tree": {
+        "sha": "ba9fa06b54571dffaa1548731032468d8be6bb4e",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/ba9fa06b54571dffaa1548731032468d8be6bb4e"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/235ef28b758bbbfb6f91d69e661abb7a0c37427c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/235ef28b758bbbfb6f91d69e661abb7a0c37427c",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/235ef28b758bbbfb6f91d69e661abb7a0c37427c",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/235ef28b758bbbfb6f91d69e661abb7a0c37427c/comments",
+    "author": {
+      "login": "neild",
+      "id": 52544,
+      "node_id": "MDQ6VXNlcjUyNTQ0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52544?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/neild",
+      "html_url": "https://github.com/neild",
+      "followers_url": "https://api.github.com/users/neild/followers",
+      "following_url": "https://api.github.com/users/neild/following{/other_user}",
+      "gists_url": "https://api.github.com/users/neild/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/neild/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/neild/subscriptions",
+      "organizations_url": "https://api.github.com/users/neild/orgs",
+      "repos_url": "https://api.github.com/users/neild/repos",
+      "events_url": "https://api.github.com/users/neild/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/neild/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "neild",
+      "id": 52544,
+      "node_id": "MDQ6VXNlcjUyNTQ0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52544?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/neild",
+      "html_url": "https://github.com/neild",
+      "followers_url": "https://api.github.com/users/neild/followers",
+      "following_url": "https://api.github.com/users/neild/following{/other_user}",
+      "gists_url": "https://api.github.com/users/neild/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/neild/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/neild/subscriptions",
+      "organizations_url": "https://api.github.com/users/neild/orgs",
+      "repos_url": "https://api.github.com/users/neild/repos",
+      "events_url": "https://api.github.com/users/neild/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/neild/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "fe89159266221158721dc66a13722a9f012d286d",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/fe89159266221158721dc66a13722a9f012d286d",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/fe89159266221158721dc66a13722a9f012d286d"
+      }
+    ]
+  },
+  {
+    "sha": "fe89159266221158721dc66a13722a9f012d286d",
+    "node_id": "C_kwDOCpfoZ9oAKGZlODkxNTkyNjYyMjExNTg3MjFkYzY2YTEzNzIyYTlmMDEyZDI4NmQ",
+    "commit": {
+      "author": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-03-04T08:16:51Z"
+      },
+      "committer": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-03-04T08:49:27Z"
+      },
+      "message": "internal/filedesc: make descriptor initialization goroutine-safe\n\nBefore this change there was a data race if you initialized the\ndescriptor of a message in parallel to the descriptor of any extension of\nthat message because the extendees feature set is read during the\ninitialization of the extension.\n\nChange-Id: Id896b9fbf848209fce7dae8a7f40e2d61a3b2825\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/568695\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Michael Stapelberg <stapelberg@google.com>",
+      "tree": {
+        "sha": "a202021f6ad01e3f3d4470a921c64aec069a3240",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/a202021f6ad01e3f3d4470a921c64aec069a3240"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/fe89159266221158721dc66a13722a9f012d286d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/fe89159266221158721dc66a13722a9f012d286d",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/fe89159266221158721dc66a13722a9f012d286d",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/fe89159266221158721dc66a13722a9f012d286d/comments",
+    "author": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6bec1ef16eb06f8ce937476e908ea31f2f6028f5",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/6bec1ef16eb06f8ce937476e908ea31f2f6028f5",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/6bec1ef16eb06f8ce937476e908ea31f2f6028f5"
+      }
+    ]
+  },
+  {
+    "sha": "6bec1ef16eb06f8ce937476e908ea31f2f6028f5",
+    "node_id": "C_kwDOCpfoZ9oAKDZiZWMxZWYxNmViMDZmOGNlOTM3NDc2ZTkwOGVhMzFmMmY2MDI4ZjU",
+    "commit": {
+      "author": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-02-28T15:05:57Z"
+      },
+      "committer": {
+        "name": "Gopher Robot",
+        "email": "gobot@golang.org",
+        "date": "2024-02-28T15:54:53Z"
+      },
+      "message": "proto: move explicit test as a seed into the fuzz test\n\nfuzztest seeds are executed as part of `go test` so there is no need for\nan explicit test and having this as a seed in the fuzztest is sufficient\nto get test coverage for this case.\n\nChange-Id: Ia4a2d721e544e1a1ad0ad3ef9aa9d0af6bfe2db8\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/567755\nAuto-Submit: Lasse Folger <lassefolger@google.com>\nReviewed-by: Michael Stapelberg <stapelberg@google.com>\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+      "tree": {
+        "sha": "b93573353694491c7ab7a725aca3136ed1b30c7d",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/b93573353694491c7ab7a725aca3136ed1b30c7d"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/6bec1ef16eb06f8ce937476e908ea31f2f6028f5",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/6bec1ef16eb06f8ce937476e908ea31f2f6028f5",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/6bec1ef16eb06f8ce937476e908ea31f2f6028f5",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/6bec1ef16eb06f8ce937476e908ea31f2f6028f5/comments",
+    "author": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "gopherbot",
+      "id": 8566911,
+      "node_id": "MDQ6VXNlcjg1NjY5MTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8566911?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gopherbot",
+      "html_url": "https://github.com/gopherbot",
+      "followers_url": "https://api.github.com/users/gopherbot/followers",
+      "following_url": "https://api.github.com/users/gopherbot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gopherbot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gopherbot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gopherbot/subscriptions",
+      "organizations_url": "https://api.github.com/users/gopherbot/orgs",
+      "repos_url": "https://api.github.com/users/gopherbot/repos",
+      "events_url": "https://api.github.com/users/gopherbot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gopherbot/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "02e13d2dc7bc2250d8241e3e85f20e3131a245ad",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/02e13d2dc7bc2250d8241e3e85f20e3131a245ad",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/02e13d2dc7bc2250d8241e3e85f20e3131a245ad"
+      }
+    ]
+  },
+  {
+    "sha": "02e13d2dc7bc2250d8241e3e85f20e3131a245ad",
+    "node_id": "C_kwDOCpfoZ9oAKDAyZTEzZDJkYzdiYzIyNTBkODI0MWUzZTg1ZjIwZTMxMzFhMjQ1YWQ",
+    "commit": {
+      "author": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-02-27T10:00:04Z"
+      },
+      "committer": {
+        "name": "Gopher Robot",
+        "email": "gobot@golang.org",
+        "date": "2024-02-27T10:26:08Z"
+      },
+      "message": "internal/filedesc: align editions and non-editions HasPresence()\n\nChange-Id: I1a581d82133b1684d81425fa91c4dc4057d92900\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/566399\nReviewed-by: Michael Stapelberg <stapelberg@google.com>\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nAuto-Submit: Lasse Folger <lassefolger@google.com>",
+      "tree": {
+        "sha": "1dcd07fd225c8a0497f9a38d457dc691c9fabb5b",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/1dcd07fd225c8a0497f9a38d457dc691c9fabb5b"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/02e13d2dc7bc2250d8241e3e85f20e3131a245ad",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/02e13d2dc7bc2250d8241e3e85f20e3131a245ad",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/02e13d2dc7bc2250d8241e3e85f20e3131a245ad",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/02e13d2dc7bc2250d8241e3e85f20e3131a245ad/comments",
+    "author": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "gopherbot",
+      "id": 8566911,
+      "node_id": "MDQ6VXNlcjg1NjY5MTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8566911?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gopherbot",
+      "html_url": "https://github.com/gopherbot",
+      "followers_url": "https://api.github.com/users/gopherbot/followers",
+      "following_url": "https://api.github.com/users/gopherbot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gopherbot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gopherbot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gopherbot/subscriptions",
+      "organizations_url": "https://api.github.com/users/gopherbot/orgs",
+      "repos_url": "https://api.github.com/users/gopherbot/repos",
+      "events_url": "https://api.github.com/users/gopherbot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gopherbot/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "416d517afaa028e3a81bcba1185d967d933b2631",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/416d517afaa028e3a81bcba1185d967d933b2631",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/416d517afaa028e3a81bcba1185d967d933b2631"
+      }
+    ]
+  },
+  {
+    "sha": "416d517afaa028e3a81bcba1185d967d933b2631",
+    "node_id": "C_kwDOCpfoZ9oAKDQxNmQ1MTdhZmFhMDI4ZTNhODFiY2JhMTE4NWQ5NjdkOTMzYjI2MzE",
+    "commit": {
+      "author": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-02-23T15:19:47Z"
+      },
+      "committer": {
+        "name": "Gopher Robot",
+        "email": "gobot@golang.org",
+        "date": "2024-02-26T08:14:29Z"
+      },
+      "message": "internal/conformance: make conformance tests work with editions\n\nIn scope of this change, I had to fix the `IsPacked()` implementation\nfor field descriptors because it was not returning the correct values\nfor edition protos.\n\nChange-Id: Ic1ba9d0b3552ddf16360a80336c14632f2ce6f16\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/566039\nAuto-Submit: Lasse Folger <lassefolger@google.com>\nReviewed-by: Michael Stapelberg <stapelberg@google.com>\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+      "tree": {
+        "sha": "4b83af8affc4540a78b9b02438dff710145a852a",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/4b83af8affc4540a78b9b02438dff710145a852a"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/416d517afaa028e3a81bcba1185d967d933b2631",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/416d517afaa028e3a81bcba1185d967d933b2631",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/416d517afaa028e3a81bcba1185d967d933b2631",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/416d517afaa028e3a81bcba1185d967d933b2631/comments",
+    "author": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "gopherbot",
+      "id": 8566911,
+      "node_id": "MDQ6VXNlcjg1NjY5MTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8566911?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gopherbot",
+      "html_url": "https://github.com/gopherbot",
+      "followers_url": "https://api.github.com/users/gopherbot/followers",
+      "following_url": "https://api.github.com/users/gopherbot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gopherbot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gopherbot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gopherbot/subscriptions",
+      "organizations_url": "https://api.github.com/users/gopherbot/orgs",
+      "repos_url": "https://api.github.com/users/gopherbot/repos",
+      "events_url": "https://api.github.com/users/gopherbot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gopherbot/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "055c812a4fe33b982b9eef9c56b9a3696c762494",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/055c812a4fe33b982b9eef9c56b9a3696c762494",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/055c812a4fe33b982b9eef9c56b9a3696c762494"
+      }
+    ]
+  },
+  {
+    "sha": "055c812a4fe33b982b9eef9c56b9a3696c762494",
+    "node_id": "C_kwDOCpfoZ9oAKDA1NWM4MTJhNGZlMzNiOTgyYjllZWY5YzU2YjlhMzY5NmM3NjI0OTQ",
+    "commit": {
+      "author": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-02-23T12:03:15Z"
+      },
+      "committer": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-02-23T12:14:08Z"
+      },
+      "message": "encoding/prototext: add proto editions and fuzz tests\n\nChange-Id: I2afc5ae83bf68600def3568e1d3ad51ef00e7671\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/566395\nAuto-Submit: Lasse Folger <lassefolger@google.com>\nReviewed-by: Michael Stapelberg <stapelberg@google.com>\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+      "tree": {
+        "sha": "d044d57e7892f5e0240308c330c39bc6086c8350",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/d044d57e7892f5e0240308c330c39bc6086c8350"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/055c812a4fe33b982b9eef9c56b9a3696c762494",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/055c812a4fe33b982b9eef9c56b9a3696c762494",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/055c812a4fe33b982b9eef9c56b9a3696c762494",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/055c812a4fe33b982b9eef9c56b9a3696c762494/comments",
+    "author": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2caa6b02a251bb9ecf06332a52bebf0435b319aa",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/2caa6b02a251bb9ecf06332a52bebf0435b319aa",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/2caa6b02a251bb9ecf06332a52bebf0435b319aa"
+      }
+    ]
+  },
+  {
+    "sha": "2caa6b02a251bb9ecf06332a52bebf0435b319aa",
+    "node_id": "C_kwDOCpfoZ9oAKDJjYWE2YjAyYTI1MWJiOWVjZjA2MzMyYTUyYmViZjA0MzViMzE5YWE",
+    "commit": {
+      "author": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-02-23T07:27:12Z"
+      },
+      "committer": {
+        "name": "Gopher Robot",
+        "email": "gobot@golang.org",
+        "date": "2024-02-23T09:30:28Z"
+      },
+      "message": "all: format all .proto files\n\nChange-Id: Ied684945de38ab1895c3ce8afaa1d84cda1e24f9\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/566037\nAuto-Submit: Lasse Folger <lassefolger@google.com>\nReviewed-by: Michael Stapelberg <stapelberg@google.com>\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+      "tree": {
+        "sha": "49dfa83b2211b0a7dee39bf2cb2ddaabbaba69f4",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/49dfa83b2211b0a7dee39bf2cb2ddaabbaba69f4"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/2caa6b02a251bb9ecf06332a52bebf0435b319aa",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/2caa6b02a251bb9ecf06332a52bebf0435b319aa",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/2caa6b02a251bb9ecf06332a52bebf0435b319aa",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/2caa6b02a251bb9ecf06332a52bebf0435b319aa/comments",
+    "author": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "gopherbot",
+      "id": 8566911,
+      "node_id": "MDQ6VXNlcjg1NjY5MTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8566911?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gopherbot",
+      "html_url": "https://github.com/gopherbot",
+      "followers_url": "https://api.github.com/users/gopherbot/followers",
+      "following_url": "https://api.github.com/users/gopherbot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gopherbot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gopherbot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gopherbot/subscriptions",
+      "organizations_url": "https://api.github.com/users/gopherbot/orgs",
+      "repos_url": "https://api.github.com/users/gopherbot/repos",
+      "events_url": "https://api.github.com/users/gopherbot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gopherbot/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f2cb7f136ef0240710725d0945f3e8482a909992",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/f2cb7f136ef0240710725d0945f3e8482a909992",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/f2cb7f136ef0240710725d0945f3e8482a909992"
+      }
+    ]
+  },
+  {
+    "sha": "f2cb7f136ef0240710725d0945f3e8482a909992",
+    "node_id": "C_kwDOCpfoZ9oAKGYyY2I3ZjEzNmVmMDI0MDcxMDcyNWQwOTQ1ZjNlODQ4MmE5MDk5OTI",
+    "commit": {
+      "author": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-02-22T14:11:57Z"
+      },
+      "committer": {
+        "name": "Gopher Robot",
+        "email": "gobot@golang.org",
+        "date": "2024-02-23T08:35:31Z"
+      },
+      "message": "encoding/protojson: add protojson editions tests including fuzztests\n\nChange-Id: I478bf6a945cb2c86c71fd20b64dedb4b2e585f1d\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/566035\nReviewed-by: Michael Stapelberg <stapelberg@google.com>\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nAuto-Submit: Lasse Folger <lassefolger@google.com>",
+      "tree": {
+        "sha": "e19ba64b15b964658198123718b20820d24cb022",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/e19ba64b15b964658198123718b20820d24cb022"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/f2cb7f136ef0240710725d0945f3e8482a909992",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/f2cb7f136ef0240710725d0945f3e8482a909992",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/f2cb7f136ef0240710725d0945f3e8482a909992",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/f2cb7f136ef0240710725d0945f3e8482a909992/comments",
+    "author": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "gopherbot",
+      "id": 8566911,
+      "node_id": "MDQ6VXNlcjg1NjY5MTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8566911?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gopherbot",
+      "html_url": "https://github.com/gopherbot",
+      "followers_url": "https://api.github.com/users/gopherbot/followers",
+      "following_url": "https://api.github.com/users/gopherbot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gopherbot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gopherbot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gopherbot/subscriptions",
+      "organizations_url": "https://api.github.com/users/gopherbot/orgs",
+      "repos_url": "https://api.github.com/users/gopherbot/repos",
+      "events_url": "https://api.github.com/users/gopherbot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gopherbot/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "08a11b3649e4843afab203d2663a98081813d66e",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/08a11b3649e4843afab203d2663a98081813d66e",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/08a11b3649e4843afab203d2663a98081813d66e"
+      }
+    ]
+  },
+  {
+    "sha": "08a11b3649e4843afab203d2663a98081813d66e",
+    "node_id": "C_kwDOCpfoZ9oAKDA4YTExYjM2NDllNDg0M2FmYWIyMDNkMjY2M2E5ODA4MTgxM2Q2NmU",
+    "commit": {
+      "author": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-02-22T09:30:08Z"
+      },
+      "committer": {
+        "name": "Gopher Robot",
+        "email": "gobot@golang.org",
+        "date": "2024-02-22T15:08:22Z"
+      },
+      "message": "testing/prototest: add extension and required editions messages\n\nChange-Id: I4abe9f7f8ac511845cecf4ab377b2441639dba90\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/565976\nReviewed-by: Michael Stapelberg <stapelberg@google.com>\nAuto-Submit: Lasse Folger <lassefolger@google.com>\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+      "tree": {
+        "sha": "238ccb94bdd6f84554eb00569f52d80ac0aa9914",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/238ccb94bdd6f84554eb00569f52d80ac0aa9914"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/08a11b3649e4843afab203d2663a98081813d66e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/08a11b3649e4843afab203d2663a98081813d66e",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/08a11b3649e4843afab203d2663a98081813d66e",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/08a11b3649e4843afab203d2663a98081813d66e/comments",
+    "author": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "gopherbot",
+      "id": 8566911,
+      "node_id": "MDQ6VXNlcjg1NjY5MTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8566911?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gopherbot",
+      "html_url": "https://github.com/gopherbot",
+      "followers_url": "https://api.github.com/users/gopherbot/followers",
+      "following_url": "https://api.github.com/users/gopherbot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gopherbot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gopherbot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gopherbot/subscriptions",
+      "organizations_url": "https://api.github.com/users/gopherbot/orgs",
+      "repos_url": "https://api.github.com/users/gopherbot/repos",
+      "events_url": "https://api.github.com/users/gopherbot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gopherbot/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "da0e6634fb60911516d2300af9bebb0c8b02eed0",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/da0e6634fb60911516d2300af9bebb0c8b02eed0",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/da0e6634fb60911516d2300af9bebb0c8b02eed0"
+      }
+    ]
+  },
+  {
+    "sha": "da0e6634fb60911516d2300af9bebb0c8b02eed0",
+    "node_id": "C_kwDOCpfoZ9oAKGRhMGU2NjM0ZmI2MDkxMTUxNmQyMzAwYWY5YmViYjBjOGIwMmVlZDA",
+    "commit": {
+      "author": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-02-22T08:47:13Z"
+      },
+      "committer": {
+        "name": "Gopher Robot",
+        "email": "gobot@golang.org",
+        "date": "2024-02-22T08:59:49Z"
+      },
+      "message": "proto: add editions tests for invalid messages\n\nChange-Id: I97dff474afa7465ffbf1ac554cad8127bd4717bf\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/565975\nReviewed-by: Michael Stapelberg <stapelberg@google.com>\nAuto-Submit: Lasse Folger <lassefolger@google.com>\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+      "tree": {
+        "sha": "3cf65b606a46a9dea818a394c9ad0cc7818786ab",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/3cf65b606a46a9dea818a394c9ad0cc7818786ab"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/da0e6634fb60911516d2300af9bebb0c8b02eed0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/da0e6634fb60911516d2300af9bebb0c8b02eed0",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/da0e6634fb60911516d2300af9bebb0c8b02eed0",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/da0e6634fb60911516d2300af9bebb0c8b02eed0/comments",
+    "author": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "gopherbot",
+      "id": 8566911,
+      "node_id": "MDQ6VXNlcjg1NjY5MTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8566911?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gopherbot",
+      "html_url": "https://github.com/gopherbot",
+      "followers_url": "https://api.github.com/users/gopherbot/followers",
+      "following_url": "https://api.github.com/users/gopherbot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gopherbot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gopherbot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gopherbot/subscriptions",
+      "organizations_url": "https://api.github.com/users/gopherbot/orgs",
+      "repos_url": "https://api.github.com/users/gopherbot/repos",
+      "events_url": "https://api.github.com/users/gopherbot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gopherbot/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f9eb6c71e7808c2d6437357782f21e05cef6c7df",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/f9eb6c71e7808c2d6437357782f21e05cef6c7df",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/f9eb6c71e7808c2d6437357782f21e05cef6c7df"
+      }
+    ]
+  },
+  {
+    "sha": "f9eb6c71e7808c2d6437357782f21e05cef6c7df",
+    "node_id": "C_kwDOCpfoZ9oAKGY5ZWI2YzcxZTc4MDhjMmQ2NDM3MzU3NzgyZjIxZTA1Y2VmNmM3ZGY",
+    "commit": {
+      "author": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-02-22T07:53:55Z"
+      },
+      "committer": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-02-22T08:56:15Z"
+      },
+      "message": "go_features.proto: move .proto file next to generated .pb.go file\n\nChange-Id: Ia24ca1ad2186bcc95681081d2719ee834b385728\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/565955\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nAuto-Submit: Lasse Folger <lassefolger@google.com>\nReviewed-by: Michael Stapelberg <stapelberg@google.com>",
+      "tree": {
+        "sha": "6b73668744b3154bb15f1d4cda5f4cb48283ced8",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/6b73668744b3154bb15f1d4cda5f4cb48283ced8"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/f9eb6c71e7808c2d6437357782f21e05cef6c7df",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/f9eb6c71e7808c2d6437357782f21e05cef6c7df",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/f9eb6c71e7808c2d6437357782f21e05cef6c7df",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/f9eb6c71e7808c2d6437357782f21e05cef6c7df/comments",
+    "author": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "11de0a6409ecb25bad49b04f22492d71c756ecce",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/11de0a6409ecb25bad49b04f22492d71c756ecce",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/11de0a6409ecb25bad49b04f22492d71c756ecce"
+      }
+    ]
+  },
+  {
+    "sha": "11de0a6409ecb25bad49b04f22492d71c756ecce",
+    "node_id": "C_kwDOCpfoZ9oAKDExZGUwYTY0MDllY2IyNWJhZDQ5YjA0ZjIyNDkyZDcxYzc1NmVjY2U",
+    "commit": {
+      "author": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-02-21T15:09:10Z"
+      },
+      "committer": {
+        "name": "Gopher Robot",
+        "email": "gobot@golang.org",
+        "date": "2024-02-22T08:53:07Z"
+      },
+      "message": "all: add editions support for extensions\n\nBefore this change the implementation would ignore editions options set on\nextension declarations.\nThis change also add much more coverage for valid messages.\n\nChange-Id: I0e7029b1430a39859cdd4a93667ac20c7e0ff20e\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/565396\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Michael Stapelberg <stapelberg@google.com>\nAuto-Submit: Lasse Folger <lassefolger@google.com>",
+      "tree": {
+        "sha": "5e81139a6f41b9877f455ac3a74b4e2ea99dd998",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/5e81139a6f41b9877f455ac3a74b4e2ea99dd998"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/11de0a6409ecb25bad49b04f22492d71c756ecce",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/11de0a6409ecb25bad49b04f22492d71c756ecce",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/11de0a6409ecb25bad49b04f22492d71c756ecce",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/11de0a6409ecb25bad49b04f22492d71c756ecce/comments",
+    "author": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "gopherbot",
+      "id": 8566911,
+      "node_id": "MDQ6VXNlcjg1NjY5MTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8566911?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gopherbot",
+      "html_url": "https://github.com/gopherbot",
+      "followers_url": "https://api.github.com/users/gopherbot/followers",
+      "following_url": "https://api.github.com/users/gopherbot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gopherbot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gopherbot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gopherbot/subscriptions",
+      "organizations_url": "https://api.github.com/users/gopherbot/orgs",
+      "repos_url": "https://api.github.com/users/gopherbot/repos",
+      "events_url": "https://api.github.com/users/gopherbot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gopherbot/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7d98b0e8ab1022af6c053bc0face233c11eea6a8",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/7d98b0e8ab1022af6c053bc0face233c11eea6a8",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/7d98b0e8ab1022af6c053bc0face233c11eea6a8"
+      }
+    ]
+  },
+  {
+    "sha": "7d98b0e8ab1022af6c053bc0face233c11eea6a8",
+    "node_id": "C_kwDOCpfoZ9oAKDdkOThiMGU4YWIxMDIyYWY2YzA1M2JjMGZhY2UyMzNjMTFlZWE2YTg",
+    "commit": {
+      "author": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-02-21T10:45:45Z"
+      },
+      "committer": {
+        "name": "Gopher Robot",
+        "email": "gobot@golang.org",
+        "date": "2024-02-21T14:39:44Z"
+      },
+      "message": "all: implement `features.field_presence = LEGACY_REQUIRED` support\n\nChange-Id: Iaba3f4b81ac1b73f7542397a479642d081152c39\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/565656\nAuto-Submit: Lasse Folger <lassefolger@google.com>\nReviewed-by: Michael Stapelberg <stapelberg@google.com>\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>",
+      "tree": {
+        "sha": "ec38631b328866b435fc25e84927fa1ebd493d08",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/ec38631b328866b435fc25e84927fa1ebd493d08"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/7d98b0e8ab1022af6c053bc0face233c11eea6a8",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/7d98b0e8ab1022af6c053bc0face233c11eea6a8",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/7d98b0e8ab1022af6c053bc0face233c11eea6a8",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/7d98b0e8ab1022af6c053bc0face233c11eea6a8/comments",
+    "author": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "gopherbot",
+      "id": 8566911,
+      "node_id": "MDQ6VXNlcjg1NjY5MTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8566911?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gopherbot",
+      "html_url": "https://github.com/gopherbot",
+      "followers_url": "https://api.github.com/users/gopherbot/followers",
+      "following_url": "https://api.github.com/users/gopherbot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gopherbot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gopherbot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gopherbot/subscriptions",
+      "organizations_url": "https://api.github.com/users/gopherbot/orgs",
+      "repos_url": "https://api.github.com/users/gopherbot/repos",
+      "events_url": "https://api.github.com/users/gopherbot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gopherbot/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6e0d73fd79bc75ca0a79838afa4120432318cabe",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/6e0d73fd79bc75ca0a79838afa4120432318cabe",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/6e0d73fd79bc75ca0a79838afa4120432318cabe"
+      }
+    ]
+  },
+  {
+    "sha": "6e0d73fd79bc75ca0a79838afa4120432318cabe",
+    "node_id": "C_kwDOCpfoZ9oAKDZlMGQ3M2ZkNzliYzc1Y2EwYTc5ODM4YWZhNDEyMDQzMjMxOGNhYmU",
+    "commit": {
+      "author": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-02-21T09:08:47Z"
+      },
+      "committer": {
+        "name": "Gopher Robot",
+        "email": "gobot@golang.org",
+        "date": "2024-02-21T09:19:43Z"
+      },
+      "message": "proto: add extension tests for editions protos\n\nChange-Id: Ib3a00d8bf6fbf4841959ad9099fdc7b0d59ee0d3\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/565655\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nAuto-Submit: Lasse Folger <lassefolger@google.com>\nReviewed-by: Michael Stapelberg <stapelberg@google.com>",
+      "tree": {
+        "sha": "01958ab663da0edc6027a2f15bcfbdd64c76b46f",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/01958ab663da0edc6027a2f15bcfbdd64c76b46f"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/6e0d73fd79bc75ca0a79838afa4120432318cabe",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/6e0d73fd79bc75ca0a79838afa4120432318cabe",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/6e0d73fd79bc75ca0a79838afa4120432318cabe",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/6e0d73fd79bc75ca0a79838afa4120432318cabe/comments",
+    "author": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "gopherbot",
+      "id": 8566911,
+      "node_id": "MDQ6VXNlcjg1NjY5MTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8566911?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gopherbot",
+      "html_url": "https://github.com/gopherbot",
+      "followers_url": "https://api.github.com/users/gopherbot/followers",
+      "following_url": "https://api.github.com/users/gopherbot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gopherbot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gopherbot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gopherbot/subscriptions",
+      "organizations_url": "https://api.github.com/users/gopherbot/orgs",
+      "repos_url": "https://api.github.com/users/gopherbot/repos",
+      "events_url": "https://api.github.com/users/gopherbot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gopherbot/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "194457763e88999409023be3ee30b148eeb4ca47",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/194457763e88999409023be3ee30b148eeb4ca47",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/194457763e88999409023be3ee30b148eeb4ca47"
+      }
+    ]
+  },
+  {
+    "sha": "194457763e88999409023be3ee30b148eeb4ca47",
+    "node_id": "C_kwDOCpfoZ9oAKDE5NDQ1Nzc2M2U4ODk5OTQwOTAyM2JlM2VlMzBiMTQ4ZWViNGNhNDc",
+    "commit": {
+      "author": {
+        "name": "Lasse Folger",
+        "email": "lassefolger@google.com",
+        "date": "2024-02-20T15:52:39Z"
+      },
+      "committer": {
+        "name": "Gopher Robot",
+        "email": "gobot@golang.org",
+        "date": "2024-02-21T08:36:29Z"
+      },
+      "message": "proto: add more editions tests for proto.Size and proto.Equal\n\nChange-Id: I8c7065d413b3a8d90ef25a2f5b9b9868c18906ec\nReviewed-on: https://go-review.googlesource.com/c/protobuf/+/565395\nAuto-Submit: Lasse Folger <lassefolger@google.com>\nLUCI-TryBot-Result: Go LUCI <golang-scoped@luci-project-accounts.iam.gserviceaccount.com>\nReviewed-by: Michael Stapelberg <stapelberg@google.com>",
+      "tree": {
+        "sha": "b9d1760f785d094c465be380d3ae9f70d1f3adc6",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/trees/b9d1760f785d094c465be380d3ae9f70d1f3adc6"
+      },
+      "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/git/commits/194457763e88999409023be3ee30b148eeb4ca47",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/194457763e88999409023be3ee30b148eeb4ca47",
+    "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/194457763e88999409023be3ee30b148eeb4ca47",
+    "comments_url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/194457763e88999409023be3ee30b148eeb4ca47/comments",
+    "author": {
+      "login": "lfolger",
+      "id": 86653453,
+      "node_id": "MDQ6VXNlcjg2NjUzNDUz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86653453?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lfolger",
+      "html_url": "https://github.com/lfolger",
+      "followers_url": "https://api.github.com/users/lfolger/followers",
+      "following_url": "https://api.github.com/users/lfolger/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lfolger/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lfolger/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lfolger/subscriptions",
+      "organizations_url": "https://api.github.com/users/lfolger/orgs",
+      "repos_url": "https://api.github.com/users/lfolger/repos",
+      "events_url": "https://api.github.com/users/lfolger/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lfolger/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "gopherbot",
+      "id": 8566911,
+      "node_id": "MDQ6VXNlcjg1NjY5MTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8566911?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gopherbot",
+      "html_url": "https://github.com/gopherbot",
+      "followers_url": "https://api.github.com/users/gopherbot/followers",
+      "following_url": "https://api.github.com/users/gopherbot/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gopherbot/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gopherbot/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gopherbot/subscriptions",
+      "organizations_url": "https://api.github.com/users/gopherbot/orgs",
+      "repos_url": "https://api.github.com/users/gopherbot/repos",
+      "events_url": "https://api.github.com/users/gopherbot/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gopherbot/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5e8da9414946bbfc6337916c4ee1ce1ef8b95e86",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-go/commits/5e8da9414946bbfc6337916c4ee1ce1ef8b95e86",
+        "html_url": "https://github.com/protocolbuffers/protobuf-go/commit/5e8da9414946bbfc6337916c4ee1ce1ef8b95e86"
+      }
+    ]
+  }
+]

@@ -1,0 +1,1992 @@
+[
+  {
+    "sha": "ce47cb8dabb56c88e2d753026a9fdc83f83a5f5d",
+    "node_id": "C_kwDOAPkhFdoAKGNlNDdjYjhkYWJiNTZjODhlMmQ3NTMwMjZhOWZkYzgzZjgzYTVmNWQ",
+    "commit": {
+      "author": {
+        "name": "Lianbo Jiang",
+        "email": "lijiang@redhat.com",
+        "date": "2024-03-19T07:59:31Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-03-28T05:27:21Z"
+      },
+      "message": "x86_64: Fix for \"bt\" command incorrectly printing \"bogus exception frame\" warning\n\nThe \"bogus exception frame\" warning was observed again on a specific\nvmcore, and the remaining frame was truncated on x86_64 machine, when\nexecuting the \"bt\" command as below:\n\n  crash> bt 0 -c 8\n  PID: 0        TASK: ffff9948c08f5640  CPU: 8    COMMAND: \"swapper/8\"\n   #0 [fffffe1788788e58] crash_nmi_callback at ffffffff972672bb\n   #1 [fffffe1788788e68] nmi_handle at ffffffff9722eb8e\n   #2 [fffffe1788788eb0] default_do_nmi at ffffffff97e51cd0\n   #3 [fffffe1788788ed0] exc_nmi at ffffffff97e51ee1\n   #4 [fffffe1788788ef0] end_repeat_nmi at ffffffff980015f9\n      [exception RIP: __update_load_avg_se+13]\n      RIP: ffffffff9736b16d  RSP: ffffbec3c08acc78  RFLAGS: 00000046\n      RAX: 0000000000000000  RBX: ffff994c2f2b1a40  RCX: ffffbec3c08acdc0\n      RDX: ffff9948e4fe1d80  RSI: ffff994c2f2b1a40  RDI: 0000001d7ad7d55d\n      RBP: ffffbec3c08acc88   R8: 0000001d921fca6f   R9: ffff994c2f2b1328\n      R10: 00000000fffd0010  R11: ffffffff98e060c0  R12: 0000001d7ad7d55d\n      R13: 0000000000000005  R14: ffff994c2f2b19c0  R15: 0000000000000001\n      ORIG_RAX: ffffffffffffffff  CS: 0010  SS: 0018\n  --- <NMI exception stack> ---\n   #5 [ffffbec3c08acc78] __update_load_avg_se at ffffffff9736b16d\n   #6 [ffffbec3c08acce0] enqueue_entity at ffffffff9735c9ab\n   #7 [ffffbec3c08acd28] enqueue_task_fair at ffffffff9735cef8\n  ...\n  #18 [ffffbec3c08acf90] blk_complete_reqs at ffffffff977978d0\n  #19 [ffffbec3c08acfa0] __do_softirq at ffffffff97e66f7a\n  #20 [ffffbec3c08acff0] do_softirq at ffffffff9730f6ef\n  --- <IRQ stack> ---\n  #21 [ffffbec3c022ff18] do_idle at ffffffff97368288\n      [exception RIP: unknown or invalid address]\n      RIP: 0000000000000000  RSP: 0000000000000000  RFLAGS: 00000000\n      RAX: 0000000000000000  RBX: 000000089726a2d0  RCX: 0000000000000000\n      RDX: 0000000000000000  RSI: 0000000000000000  RDI: 0000000000000000\n      RBP: ffffffff9726a3dd   R8: 0000000000000000   R9: 0000000000000000\n      R10: ffffffff9720015a  R11: e48885e126bc1600  R12: 0000000000000000\n      R13: ffffffff973684a9  R14: 0000000000000094  R15: 0000000040000000\n      ORIG_RAX: 0000000000000000  CS: 0000  SS: 0000\n  bt: WARNING: possibly bogus exception frame\n  crash>\n\nActually there is no exception frame, when called from do_softirq().\nWith the patch:\n\n  crash> bt 0 -c 8\n  ...\n  #18 [ffffbec3c08acf90] blk_complete_reqs at ffffffff977978d0\n  #19 [ffffbec3c08acfa0] __do_softirq at ffffffff97e66f7a\n  #20 [ffffbec3c08acff0] do_softirq at ffffffff9730f6ef\n  --- <IRQ stack> ---\n  #21 [ffffbec3c022ff28] cpu_startup_entry at ffffffff973684a9\n  #22 [ffffbec3c022ff38] start_secondary at ffffffff9726a3dd\n  #23 [ffffbec3c022ff50] secondary_startup_64_no_verify at ffffffff9720015a\n  crash>\n\nReported-by: Jie Li <jieli@redhat.com>\nSigned-off-by: Lianbo Jiang <lijiang@redhat.com>",
+      "tree": {
+        "sha": "449a33413590e81ebaa6b34864188d7b3c24de73",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/449a33413590e81ebaa6b34864188d7b3c24de73"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/ce47cb8dabb56c88e2d753026a9fdc83f83a5f5d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/ce47cb8dabb56c88e2d753026a9fdc83f83a5f5d",
+    "html_url": "https://github.com/crash-utility/crash/commit/ce47cb8dabb56c88e2d753026a9fdc83f83a5f5d",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/ce47cb8dabb56c88e2d753026a9fdc83f83a5f5d/comments",
+    "author": {
+      "login": "lian-bo",
+      "id": 37111043,
+      "node_id": "MDQ6VXNlcjM3MTExMDQz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/37111043?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lian-bo",
+      "html_url": "https://github.com/lian-bo",
+      "followers_url": "https://api.github.com/users/lian-bo/followers",
+      "following_url": "https://api.github.com/users/lian-bo/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lian-bo/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lian-bo/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lian-bo/subscriptions",
+      "organizations_url": "https://api.github.com/users/lian-bo/orgs",
+      "repos_url": "https://api.github.com/users/lian-bo/repos",
+      "events_url": "https://api.github.com/users/lian-bo/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lian-bo/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5b24e363a8980dd4f878b0494cf78d24559a7a67",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/5b24e363a8980dd4f878b0494cf78d24559a7a67",
+        "html_url": "https://github.com/crash-utility/crash/commit/5b24e363a8980dd4f878b0494cf78d24559a7a67"
+      }
+    ]
+  },
+  {
+    "sha": "5b24e363a8980dd4f878b0494cf78d24559a7a67",
+    "node_id": "C_kwDOAPkhFdoAKDViMjRlMzYzYTg5ODBkZDRmODc4YjA0OTRjZjc4ZDI0NTU5YTdhNjc",
+    "commit": {
+      "author": {
+        "name": "Aditya Gupta",
+        "email": "adityag@linux.ibm.com",
+        "date": "2024-03-01T07:02:54Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-03-19T07:41:40Z"
+      },
+      "message": "get vmalloc start address from vmcoreinfo\n\nBelow error is noticed when running crash on vmcore collected from a linux-next\nkernel crash (linux-next tag next-20240121):\n\n  # crash /boot/vmlinuz-6.8.0-rc5-next-20240221 ./vmcore\n  ...\n  For help, type \"help\".\n  Type \"apropos word\" to search for commands related to \"word\"...\n\n  crash: page excluded: kernel virtual address: c00000000219a2c0  type: \"vmlist\"\n\nThis occured since getting the vmalloc area base address doesn't work in\ncrash now, due to 'vmap_area_list' being removed in the linux kernel\n6.9-rc1 with below commit:\n\n    commit 55c49fee57af99f3c663e69dedc5b85e691bbe50\n         mm/vmalloc: remove vmap_area_list\n\nAs an alternative, the commit introduced 'VMALLOC_START' in vmcoreinfo to\nget base address of vmalloc area, use it to return vmallow start address\ninstead of depending on vmap_area_list and vmlist.\n\nReported-by: Sachin Sant <sachinp@linux.ibm.com>\nSigned-off-by: Aditya Gupta <adityag@linux.ibm.com>\nTested-by: Sachin Sant <sachinp@linux.ibm.com>\nAcked-by: Hari Bathini <hbathini@linux.ibm.com>",
+      "tree": {
+        "sha": "a274a7fe3493159147ea48af4c3d1deedfb58a72",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/a274a7fe3493159147ea48af4c3d1deedfb58a72"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/5b24e363a8980dd4f878b0494cf78d24559a7a67",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/5b24e363a8980dd4f878b0494cf78d24559a7a67",
+    "html_url": "https://github.com/crash-utility/crash/commit/5b24e363a8980dd4f878b0494cf78d24559a7a67",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/5b24e363a8980dd4f878b0494cf78d24559a7a67/comments",
+    "author": {
+      "login": "adi-g15-ibm",
+      "id": 135099846,
+      "node_id": "U_kgDOCA11xg",
+      "avatar_url": "https://avatars.githubusercontent.com/u/135099846?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/adi-g15-ibm",
+      "html_url": "https://github.com/adi-g15-ibm",
+      "followers_url": "https://api.github.com/users/adi-g15-ibm/followers",
+      "following_url": "https://api.github.com/users/adi-g15-ibm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/adi-g15-ibm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/adi-g15-ibm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/adi-g15-ibm/subscriptions",
+      "organizations_url": "https://api.github.com/users/adi-g15-ibm/orgs",
+      "repos_url": "https://api.github.com/users/adi-g15-ibm/repos",
+      "events_url": "https://api.github.com/users/adi-g15-ibm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/adi-g15-ibm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "18bf18cf2e6bcd84e22c3c5a285fafbc84d0655c",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/18bf18cf2e6bcd84e22c3c5a285fafbc84d0655c",
+        "html_url": "https://github.com/crash-utility/crash/commit/18bf18cf2e6bcd84e22c3c5a285fafbc84d0655c"
+      }
+    ]
+  },
+  {
+    "sha": "18bf18cf2e6bcd84e22c3c5a285fafbc84d0655c",
+    "node_id": "C_kwDOAPkhFdoAKDE4YmYxOGNmMmU2YmNkODRlMjJjM2M1YTI4NWZhZmJjODRkMDY1NWM",
+    "commit": {
+      "author": {
+        "name": "Huang Shijie",
+        "email": "shijie@os.amperecomputing.com",
+        "date": "2023-12-18T15:01:40Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-03-19T04:45:41Z"
+      },
+      "message": "arm64: Add support for vmemmap symbol in vmcoreinfo\n\nWith kernel commit d3246b6ee42a (\"crash_core: export vmemmap when\nCONFIG_SPARSEMEM_VMEMMAP is enabled\") in Linux 6.9-rc1 and later, we can\nuse the vmemmap symbol in vmcoreinfo to optimize machdep->is_page_ptr.\nvmemmap is just an array of struct page after all.\n\nThis patch tries to:\n  1.) Get the \"vmemmap\" from the vmcore file.  If it's available,\n      arm64_vmemmap_is_page_ptr is set to machdep->is_page_ptr.\n  2.) Implement the fast page_to_pfn code in arm64_vmemmap_is_page_ptr.\n  3.) Dump it in \"help -m\".\n\nWith the patch, \"files -p\" command for the inode of 441M vmlinux takes\nonly 3 seconds, while 185 seconds without the patch.\n\nSigned-off-by: Huang Shijie <shijie@os.amperecomputing.com>",
+      "tree": {
+        "sha": "4d6fbe5896ba97c77dc62a4fc91431a069300700",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/4d6fbe5896ba97c77dc62a4fc91431a069300700"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/18bf18cf2e6bcd84e22c3c5a285fafbc84d0655c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/18bf18cf2e6bcd84e22c3c5a285fafbc84d0655c",
+    "html_url": "https://github.com/crash-utility/crash/commit/18bf18cf2e6bcd84e22c3c5a285fafbc84d0655c",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/18bf18cf2e6bcd84e22c3c5a285fafbc84d0655c/comments",
+    "author": {
+      "login": "HuangShijie2024",
+      "id": 136413060,
+      "node_id": "U_kgDOCCF_hA",
+      "avatar_url": "https://avatars.githubusercontent.com/u/136413060?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/HuangShijie2024",
+      "html_url": "https://github.com/HuangShijie2024",
+      "followers_url": "https://api.github.com/users/HuangShijie2024/followers",
+      "following_url": "https://api.github.com/users/HuangShijie2024/following{/other_user}",
+      "gists_url": "https://api.github.com/users/HuangShijie2024/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/HuangShijie2024/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/HuangShijie2024/subscriptions",
+      "organizations_url": "https://api.github.com/users/HuangShijie2024/orgs",
+      "repos_url": "https://api.github.com/users/HuangShijie2024/repos",
+      "events_url": "https://api.github.com/users/HuangShijie2024/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/HuangShijie2024/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3f205d1d4af5a1246bc91465bbbcee441ab79ebd",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/3f205d1d4af5a1246bc91465bbbcee441ab79ebd",
+        "html_url": "https://github.com/crash-utility/crash/commit/3f205d1d4af5a1246bc91465bbbcee441ab79ebd"
+      }
+    ]
+  },
+  {
+    "sha": "3f205d1d4af5a1246bc91465bbbcee441ab79ebd",
+    "node_id": "C_kwDOAPkhFdoAKDNmMjA1ZDFkNGFmNWExMjQ2YmM5MTQ2NWJiYmNlZTQ0MWFiNzllYmQ",
+    "commit": {
+      "author": {
+        "name": "Ming Wang",
+        "email": "wangming01@loongson.cn",
+        "date": "2024-03-08T03:18:53Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-03-14T06:32:57Z"
+      },
+      "message": "LoongArch64: Fixed link errors when build on LOONGARCH64 machine\n\nThe following link error exists when building with LOONGARCH64\nmachine:\n\n/usr/bin/ld: proc-service.o: in function `.LVL71':\nproc-service.c:(.text+0x324): undefined reference to `fill_gregset ...\n/usr/bin/ld: proc-service.o: in function `.LVL77':\nproc-service.c:(.text+0x364): undefined reference to `supply_gregset ...\n/usr/bin/ld: proc-service.o: in function `.LVL87':\nproc-service.c:(.text+0x3c4): undefined reference to `fill_fpregset ...\n/usr/bin/ld: proc-service.o: in function `.LVL93':\nproc-service.c:(.text+0x404): undefined reference to `supply_fpregset\ncollect2: error: ld returned 1 exit status\n\nThe cause of the error is that the definition of a function such as\nfill_gregset is not implemented. This patch is used to fix this error.\n\n[ kh: added rm command for gdb files added and modified multiple times. ]\n\nReported-by: Xiujie Jiang <jiangxiujie@kylinos.cn>\nSigned-off-by: Ming Wang <wangming01@loongson.cn>\nSigned-off-by: Kazuhito Hagio <k-hagio-ab@nec.com>",
+      "tree": {
+        "sha": "f2505f71fd9cb19a92a7a23638065f5ac6e31e78",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/f2505f71fd9cb19a92a7a23638065f5ac6e31e78"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/3f205d1d4af5a1246bc91465bbbcee441ab79ebd",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/3f205d1d4af5a1246bc91465bbbcee441ab79ebd",
+    "html_url": "https://github.com/crash-utility/crash/commit/3f205d1d4af5a1246bc91465bbbcee441ab79ebd",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/3f205d1d4af5a1246bc91465bbbcee441ab79ebd/comments",
+    "author": null,
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "cc3049044a724969ee0b48886d4a1d66f125aefc",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/cc3049044a724969ee0b48886d4a1d66f125aefc",
+        "html_url": "https://github.com/crash-utility/crash/commit/cc3049044a724969ee0b48886d4a1d66f125aefc"
+      }
+    ]
+  },
+  {
+    "sha": "cc3049044a724969ee0b48886d4a1d66f125aefc",
+    "node_id": "C_kwDOAPkhFdoAKGNjMzA0OTA0NGE3MjQ5NjllZTBiNDg4ODZkNGExZDY2ZjEyNWFlZmM",
+    "commit": {
+      "author": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-03-13T06:43:20Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-03-14T06:32:57Z"
+      },
+      "message": "gdb-10.2.patch: Fix duplicated code by re-applying patch\n\nWhen adding a patch to gdb-10.2.patch, a LOONGARCH64 build will fail\nwith the following redefinition errors.  There is need to remove the\ngdb-10.2 directory before rebuilding.  It's because the patch command\ncannot detect previously applied patches for newly created loongarch\nfiles and those files get duplicated code.\n\n  $ git am /tmp/0001-LoongArch64-Fixed-link-errors-when-build-on-LOO.patch\n  Applying: LoongArch64: Fixed link errors when build on LOONGARCH64 machine\n  $ make -j 16 warn target=LOONGARCH64\n  ...\n  patching file gdb-10.2/bfd/configure.ac\n  Reversed (or previously applied) patch detected!  Skipping patch.\n  1 out of 1 hunk ignored\n  patching file gdb-10.2/bfd/cpu-loongarch.c   <<-- cannot detect previously applied patch\n  patching file gdb-10.2/bfd/elf-bfd.h\n  patching file gdb-10.2/bfd/elf.c\n  ...\n  libtool: compile:  gcc -DHAVE_CONFIG_H -I. -DBINDIR=\\\"/usr/local/bin\\\" ...\n  cpu-loongarch.c:86:33: error: redefinition of 'bfd_loongarch32_arch'\n     static const bfd_arch_info_type bfd_loongarch32_arch =\n                                     ^~~~~~~~~~~~~~~~~~~~\n  ...\n  make: *** [Makefile:254: all] Error 2\n\nTo fix this, change the file path of newly created files from \"*.orig\"\nto \"/dev/null\" so that patch command can detect previously applied\npatches.\n\nSigned-off-by: Kazuhito Hagio <k-hagio-ab@nec.com>",
+      "tree": {
+        "sha": "eb54a188064e104e4c57d9684ef5123276a333bc",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/eb54a188064e104e4c57d9684ef5123276a333bc"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/cc3049044a724969ee0b48886d4a1d66f125aefc",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/cc3049044a724969ee0b48886d4a1d66f125aefc",
+    "html_url": "https://github.com/crash-utility/crash/commit/cc3049044a724969ee0b48886d4a1d66f125aefc",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/cc3049044a724969ee0b48886d4a1d66f125aefc/comments",
+    "author": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5977936c0a91b89e48d026867e6a2f8261ba0c2d",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/5977936c0a91b89e48d026867e6a2f8261ba0c2d",
+        "html_url": "https://github.com/crash-utility/crash/commit/5977936c0a91b89e48d026867e6a2f8261ba0c2d"
+      }
+    ]
+  },
+  {
+    "sha": "5977936c0a91b89e48d026867e6a2f8261ba0c2d",
+    "node_id": "C_kwDOAPkhFdoAKDU5Nzc5MzZjMGE5MWI4OWU0OGQwMjY4NjdlNmEyZjgyNjFiYTBjMmQ",
+    "commit": {
+      "author": {
+        "name": "Edward Chron",
+        "email": "echron@arista.com",
+        "date": "2024-01-21T18:31:51Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-01-31T02:48:18Z"
+      },
+      "message": "Add \"log -c\" option to display printk caller id\n\nAdd support so that dmesg entries include the optional Linux Kernel\ndebug CONFIG option PRINTK_CALLER which adds an optional dmesg field\nthat contains the Thread Id or CPU Id that is issuing the printk to\nadd the message to the kernel ring buffer. If enabled, this CONFIG\noption makes debugging simpler as dmesg entries for a specific\nthread or CPU can be recognized. The config option was introduced\nwith Linux 5.1 [1].\n\nSize of the PRINTK_CALLER field is determined by the maximum number\ntasks that can be run on the system which is limited by the value of\n/proc/sys/kernel/pid_max as pid values are from 0 to value - 1.\nThis value determines the number of id digits needed by the caller id.\nThe PRINTK_CALLER field is printed as T<id> for a Task Id or C<id>\nfor a CPU Id for a printk in CPU context. The values are left space\npadded and enclosed in parentheses such as:\n         [    T123]   or   [     C16]\n\nOur patch adds the PRINTK_CALLER field after the timestamp if the\nprintk caller log / dmesg option (-c) is selected:\n\n  crash> log -m -c\n  ...\n  [    0.014179] [     T1] <6>Secure boot disabled\n  [    0.014179] [    T29] <6>RAMDISK: [mem 0x3cf4f000-0x437bbfff]\n  ...\n\n[1] 15ff2069cb7f (\"printk: Add caller information to printk() output.\")\n\nResolves: https://github.com/crash-utility/crash/issues/164\nSigned-off-by: Ivan Delalande <colona@arista.com>\nSigned-off-by: Edward Chron <echron@arista.com>\nSigned-off-by: Kazuhito Hagio <k-hagio-ab@nec.com>",
+      "tree": {
+        "sha": "4a841d87279608d80c8c8156544a9b7e5ba57634",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/4a841d87279608d80c8c8156544a9b7e5ba57634"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/5977936c0a91b89e48d026867e6a2f8261ba0c2d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/5977936c0a91b89e48d026867e6a2f8261ba0c2d",
+    "html_url": "https://github.com/crash-utility/crash/commit/5977936c0a91b89e48d026867e6a2f8261ba0c2d",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/5977936c0a91b89e48d026867e6a2f8261ba0c2d/comments",
+    "author": null,
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3d60d9d40457239683a5f20b01437db94f964fb8",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/3d60d9d40457239683a5f20b01437db94f964fb8",
+        "html_url": "https://github.com/crash-utility/crash/commit/3d60d9d40457239683a5f20b01437db94f964fb8"
+      }
+    ]
+  },
+  {
+    "sha": "3d60d9d40457239683a5f20b01437db94f964fb8",
+    "node_id": "C_kwDOAPkhFdoAKDNkNjBkOWQ0MDQ1NzIzOTY4M2E1ZjIwYjAxNDM3ZGI5NGY5NjRmYjg",
+    "commit": {
+      "author": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-01-26T07:12:58Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-01-31T02:04:52Z"
+      },
+      "message": "Fix \"mount\" command failure on Linux 6.8-rc1 and later\n\nKernel commit 2eea9ce4310d (\"mounts: keep list of mounts in an rbtree\")\nchanged the structure that keeps the list of mounts to an rbtree.\nWithout the patch, \"mount\" command fails with the following error:\n\n  crash> mount\n\n  mount: invalid structure member offset: mnt_namespace_list\n         FILE: filesys.c  LINE: 1643  FUNCTION: get_mount_list()\n\nSigned-off-by: Kazuhito Hagio <k-hagio-ab@nec.com>",
+      "tree": {
+        "sha": "9f38c755b2e3f32caf08c62566abe1996ee09b43",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/9f38c755b2e3f32caf08c62566abe1996ee09b43"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/3d60d9d40457239683a5f20b01437db94f964fb8",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/3d60d9d40457239683a5f20b01437db94f964fb8",
+    "html_url": "https://github.com/crash-utility/crash/commit/3d60d9d40457239683a5f20b01437db94f964fb8",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/3d60d9d40457239683a5f20b01437db94f964fb8/comments",
+    "author": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e924f6d8a1d2245c4fa55c0f5af0fbb5e29503f2",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/e924f6d8a1d2245c4fa55c0f5af0fbb5e29503f2",
+        "html_url": "https://github.com/crash-utility/crash/commit/e924f6d8a1d2245c4fa55c0f5af0fbb5e29503f2"
+      }
+    ]
+  },
+  {
+    "sha": "e924f6d8a1d2245c4fa55c0f5af0fbb5e29503f2",
+    "node_id": "C_kwDOAPkhFdoAKGU5MjRmNmQ4YTFkMjI0NWM0ZmE1NWMwZjVhZjBmYmI1ZTI5NTAzZjI",
+    "commit": {
+      "author": {
+        "name": "Ming Wang",
+        "email": "wangming01@loongson.cn",
+        "date": "2023-12-28T11:46:34Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-01-26T04:47:17Z"
+      },
+      "message": "LoongArch64: Add LoongArch64 architecture support information\n\nAdd LoongArch64 architecture support information to the README and\nhelp.c files.\n\nCo-developed-by: Youling Tang <tangyouling@loongson.cn>\nSigned-off-by: Youling Tang <tangyouling@loongson.cn>\nSigned-off-by: Ming Wang <wangming01@loongson.cn>",
+      "tree": {
+        "sha": "e085177ecbc0bc99a963daf7a63e0211f44128d6",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/e085177ecbc0bc99a963daf7a63e0211f44128d6"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/e924f6d8a1d2245c4fa55c0f5af0fbb5e29503f2",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/e924f6d8a1d2245c4fa55c0f5af0fbb5e29503f2",
+    "html_url": "https://github.com/crash-utility/crash/commit/e924f6d8a1d2245c4fa55c0f5af0fbb5e29503f2",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/e924f6d8a1d2245c4fa55c0f5af0fbb5e29503f2/comments",
+    "author": null,
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c3939d2e1930677e6dad5a0e47ab1e695f54404b",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/c3939d2e1930677e6dad5a0e47ab1e695f54404b",
+        "html_url": "https://github.com/crash-utility/crash/commit/c3939d2e1930677e6dad5a0e47ab1e695f54404b"
+      }
+    ]
+  },
+  {
+    "sha": "c3939d2e1930677e6dad5a0e47ab1e695f54404b",
+    "node_id": "C_kwDOAPkhFdoAKGMzOTM5ZDJlMTkzMDY3N2U2ZGFkNWEwZTQ3YWIxZTY5NWY1NDQwNGI",
+    "commit": {
+      "author": {
+        "name": "Ming Wang",
+        "email": "wangming01@loongson.cn",
+        "date": "2023-12-28T11:46:33Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-01-26T04:47:17Z"
+      },
+      "message": "LoongArch64: Add \"--kaslr\" command line option support\n\nApply initial changes to support kernel address space layout\nrandomization (KASLR) for loongarch64.  This is the minimal patch\nrequired to process loongarch64 dumps for the kernels configured\nwith CONFIG_RANDOMIZE_BASE(CONFIG_RELOCATABLE), and to accept the\n\"--kaslr\" command line option. Only dumpfiles whose headers contain\nkernel VMCOREINFO data are supported.\n\nExample:\ncrash vmcore vmlinux --kaslr auto\n\nCo-developed-by: Youling Tang <tangyouling@loongson.cn>\nSigned-off-by: Youling Tang <tangyouling@loongson.cn>\nSigned-off-by: Ming Wang <wangming01@loongson.cn>",
+      "tree": {
+        "sha": "db54dfc9bcb8ddb2a3fd9e8630fcc1c8c28ef859",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/db54dfc9bcb8ddb2a3fd9e8630fcc1c8c28ef859"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/c3939d2e1930677e6dad5a0e47ab1e695f54404b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/c3939d2e1930677e6dad5a0e47ab1e695f54404b",
+    "html_url": "https://github.com/crash-utility/crash/commit/c3939d2e1930677e6dad5a0e47ab1e695f54404b",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/c3939d2e1930677e6dad5a0e47ab1e695f54404b/comments",
+    "author": null,
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0f34aa46cae9876542df77113d27b14a456c7f7e",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/0f34aa46cae9876542df77113d27b14a456c7f7e",
+        "html_url": "https://github.com/crash-utility/crash/commit/0f34aa46cae9876542df77113d27b14a456c7f7e"
+      }
+    ]
+  },
+  {
+    "sha": "0f34aa46cae9876542df77113d27b14a456c7f7e",
+    "node_id": "C_kwDOAPkhFdoAKDBmMzRhYTQ2Y2FlOTg3NjU0MmRmNzcxMTNkMjdiMTRhNDU2YzdmN2U",
+    "commit": {
+      "author": {
+        "name": "Ming Wang",
+        "email": "wangming01@loongson.cn",
+        "date": "2023-12-28T11:46:32Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-01-26T04:47:17Z"
+      },
+      "message": "LoongArch64: Add 'irq' command support\n\nAdded support for the 'irq' series of commands in the LoongArch64\narchitecture, except for the 'irq -d' command, others can be used.\n\nThe result of using the 'irq' command without this patch is as follows:\ncrash> irq\n IRQ   IRQ_DESC/_DATA      IRQACTION      NAME\n ...\n 16   9000000090423c00  9000000000f4c500\n 17   9000000090423e00  9000000000f4c500\n 18   9000000090495c00  9000000000f4c500\n 19   9000000090494a00  9000000000f4c500\n 20   9000000090496400  9000000090418480  \"IPI\"\n 21   9000000090496200  9000000090418500  \"timer\"\n 22   9000000090cb2600  9000000090d9c780  \"acpi\"\n 23   9000000090cb3c00      (unused)\n 24   9000000090cb1800      (unused)\n 25   9000000090cb0800  900000009117f580  \"loongson_i2c\"\n                        900000009117ee80  \"loongson_i2c\"\n                        900000009117cc00  \"loongson_i2c\"\n                        900000009117e800  \"loongson_i2c\"\n                        900000009117c780  \"loongson_i2c\"\n                        900000009117df00  \"loongson_i2c\"\n...\n\nCo-developed-by: Youling Tang <tangyouling@loongson.cn>\nSigned-off-by: Youling Tang <tangyouling@loongson.cn>\nSigned-off-by: Ming Wang <wangming01@loongson.cn>",
+      "tree": {
+        "sha": "4efbb0cce3f0726947a89253d20e569bc716e4b9",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/4efbb0cce3f0726947a89253d20e569bc716e4b9"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/0f34aa46cae9876542df77113d27b14a456c7f7e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/0f34aa46cae9876542df77113d27b14a456c7f7e",
+    "html_url": "https://github.com/crash-utility/crash/commit/0f34aa46cae9876542df77113d27b14a456c7f7e",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/0f34aa46cae9876542df77113d27b14a456c7f7e/comments",
+    "author": null,
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "be214379cdb9980d61849e4bb5bac555cb165017",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/be214379cdb9980d61849e4bb5bac555cb165017",
+        "html_url": "https://github.com/crash-utility/crash/commit/be214379cdb9980d61849e4bb5bac555cb165017"
+      }
+    ]
+  },
+  {
+    "sha": "be214379cdb9980d61849e4bb5bac555cb165017",
+    "node_id": "C_kwDOAPkhFdoAKGJlMjE0Mzc5Y2RiOTk4MGQ2MTg0OWU0YmI1YmFjNTU1Y2IxNjUwMTc",
+    "commit": {
+      "author": {
+        "name": "Ming Wang",
+        "email": "wangming01@loongson.cn",
+        "date": "2023-12-28T11:46:31Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-01-26T04:47:17Z"
+      },
+      "message": "LoongArch64: Add 'help -r' command support\n\nAdd support form printing out the registers from the dump file. We don't\ntake the registers directly from the ELF notes but instead use the version\nwe've saved into the machine_specific structure.  If we don't do this,\nwe'd get misleading output when the number of ELF notes don't match the\nnumber of online CPUs.\n\nE.g. Without this patch:\ncrash> help -r\nCPU 0:\n     R0: 0000000000000000   R1: 900000000026cd2c   R2: 90000000013e8000\n     R3: 90000000013ebdf0   R4: 9000000005923878   R5: 0000000000000000\n     R6: 0000000000000001   R7: 7fffffffffffffff   R8: 0000000000000003\n     R9: 9000000094f644a8  R10: ffffffffa9059289  R11: 0000000001167617\n    R12: 0000000000000000  R13: 0000000000000002  R14: 0000000000168d9a\n    R15: 90000000017fd358  R16: 90000000013fe000  R17: 000001383a11ae73\n    R18: fffffffffffffff7  R19: 0000000000000000  R20: 0000000000000954\n    R21: 90000000002c65cc  R22: 0000000000000000  R23: 90000000014168d0\n    R24: 0000000000000000  R25: 0000000000000004  R26: 90000000014169a8\n    R27: 0000000000000004  R28: 900000000150f596  R29: 9000000001257f18\n    R30: 0000000000000000  R31: 0000000000000000\n    CSR epc : 9000000005923878    CSR badv: 9000000000221620\n    CSR crmd: 000000b0            CSR prmd: 90000000014169a8\n    CSR ecfg: 00000000           CSR estat: 90000000014168d0\n    CSR eneu: 00000004\n...\n\nCo-developed-by: Youling Tang <tangyouling@loongson.cn>\nSigned-off-by: Youling Tang <tangyouling@loongson.cn>\nSigned-off-by: Ming Wang <wangming01@loongson.cn>",
+      "tree": {
+        "sha": "a12a672cb9c0459b6d36ea51d686075e8baa01ab",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/a12a672cb9c0459b6d36ea51d686075e8baa01ab"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/be214379cdb9980d61849e4bb5bac555cb165017",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/be214379cdb9980d61849e4bb5bac555cb165017",
+    "html_url": "https://github.com/crash-utility/crash/commit/be214379cdb9980d61849e4bb5bac555cb165017",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/be214379cdb9980d61849e4bb5bac555cb165017/comments",
+    "author": null,
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ab4c69f992ad778a23171e2a8a81e6180fabbe6b",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/ab4c69f992ad778a23171e2a8a81e6180fabbe6b",
+        "html_url": "https://github.com/crash-utility/crash/commit/ab4c69f992ad778a23171e2a8a81e6180fabbe6b"
+      }
+    ]
+  },
+  {
+    "sha": "ab4c69f992ad778a23171e2a8a81e6180fabbe6b",
+    "node_id": "C_kwDOAPkhFdoAKGFiNGM2OWY5OTJhZDc3OGEyMzE3MWUyYThhODFlNjE4MGZhYmJlNmI",
+    "commit": {
+      "author": {
+        "name": "Ming Wang",
+        "email": "wangming01@loongson.cn",
+        "date": "2023-12-28T11:46:30Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-01-26T04:47:17Z"
+      },
+      "message": "LoongArch64: Add 'help -m/M' command support\n\nAdd loongarch64_dump_machdep_table() implementation,\ndisplay machdep_table.\n\nE.g. With this patch:\ncrash> help -m\n              flags: 1 (KSYMS_START)\n             kvbase: 8000000000000000\n  identity_map_base: 8000000000000000\n           pagesize: 16384\n          pageshift: 14\n           pagemask: ffffffffffffc000\n         pageoffset: 3fff\n        pgdir_shift: 36\n       ptrs_per_pgd: 2048\n       ptrs_per_pte: 2048\n          stacksize: 16384\n                 hz: 250\n            memsize: 68689920000 (0xffe3d0000)\n               bits: 64\n         back_trace: loongarch64_back_trace_cmd()\n    processor_speed: loongarch64_processor_speed()\n...\n\nCo-developed-by: Youling Tang <tangyouling@loongson.cn>\nSigned-off-by: Youling Tang <tangyouling@loongson.cn>\nSigned-off-by: Ming Wang <wangming01@loongson.cn>",
+      "tree": {
+        "sha": "3037c61a0fa95d6ff2dadc85168b643834b115e8",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/3037c61a0fa95d6ff2dadc85168b643834b115e8"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/ab4c69f992ad778a23171e2a8a81e6180fabbe6b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/ab4c69f992ad778a23171e2a8a81e6180fabbe6b",
+    "html_url": "https://github.com/crash-utility/crash/commit/ab4c69f992ad778a23171e2a8a81e6180fabbe6b",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/ab4c69f992ad778a23171e2a8a81e6180fabbe6b/comments",
+    "author": null,
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "87f031ada9dfac6003658d2d89ede2886d92f83e",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/87f031ada9dfac6003658d2d89ede2886d92f83e",
+        "html_url": "https://github.com/crash-utility/crash/commit/87f031ada9dfac6003658d2d89ede2886d92f83e"
+      }
+    ]
+  },
+  {
+    "sha": "87f031ada9dfac6003658d2d89ede2886d92f83e",
+    "node_id": "C_kwDOAPkhFdoAKDg3ZjAzMWFkYTlkZmFjNjAwMzY1OGQyZDg5ZWRlMjg4NmQ5MmY4M2U",
+    "commit": {
+      "author": {
+        "name": "Ming Wang",
+        "email": "wangming01@loongson.cn",
+        "date": "2023-12-28T11:46:29Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-01-26T04:47:17Z"
+      },
+      "message": "LoongArch64: Add 'bt' command support\n\n- Add basic support for the 'bt' command.\n- LooongArch64: Add 'bt -f' command support\n- LoongArch64: Add 'bt -l' command support\n\nE.g. With this patch:\ncrash> bt\nPID: 1832     TASK: 900000009a552100  CPU: 11   COMMAND: \"bash\"\n #0 [900000009beffb60] __cpu_possible_mask at 90000000014168f0\n #1 [900000009beffb60] __crash_kexec at 90000000002e7660\n #2 [900000009beffcd0] panic at 9000000000f0ec28\n #3 [900000009beffd60] sysrq_handle_crash at 9000000000a2c188\n #4 [900000009beffd70] __handle_sysrq at 9000000000a2c85c\n #5 [900000009beffdc0] write_sysrq_trigger at 9000000000a2ce10\n #6 [900000009beffde0] proc_reg_write at 90000000004ce454\n #7 [900000009beffe00] vfs_write at 900000000043e838\n #8 [900000009beffe40] ksys_write at 900000000043eb58\n #9 [900000009beffe80] do_syscall at 9000000000f2da54\n #10 [900000009beffea0] handle_syscall at 9000000000221440\ncrash>\n...\n\nCo-developed-by: Youling Tang <tangyouling@loongson.cn>\nSigned-off-by: Youling Tang <tangyouling@loongson.cn>\nSigned-off-by: Ming Wang <wangming01@loongson.cn>",
+      "tree": {
+        "sha": "c96b3dee8971327c009f8f30d096d241a26187a0",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/c96b3dee8971327c009f8f30d096d241a26187a0"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/87f031ada9dfac6003658d2d89ede2886d92f83e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/87f031ada9dfac6003658d2d89ede2886d92f83e",
+    "html_url": "https://github.com/crash-utility/crash/commit/87f031ada9dfac6003658d2d89ede2886d92f83e",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/87f031ada9dfac6003658d2d89ede2886d92f83e/comments",
+    "author": null,
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "756158045183a01963f2e677786dac480453ced1",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/756158045183a01963f2e677786dac480453ced1",
+        "html_url": "https://github.com/crash-utility/crash/commit/756158045183a01963f2e677786dac480453ced1"
+      }
+    ]
+  },
+  {
+    "sha": "756158045183a01963f2e677786dac480453ced1",
+    "node_id": "C_kwDOAPkhFdoAKDc1NjE1ODA0NTE4M2EwMTk2M2YyZTY3Nzc4NmRhYzQ4MDQ1M2NlZDE",
+    "commit": {
+      "author": {
+        "name": "Ming Wang",
+        "email": "wangming01@loongson.cn",
+        "date": "2023-12-28T11:46:28Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-01-26T04:47:17Z"
+      },
+      "message": "LoongArch64: Add 'mach' command support\n\nThe 'mach' command can only get some basic machine state information, such\nas machine type, processor speed, etc.\n\nE.g. With this patch:\ncrash> mach\n       MACHINE TYPE: loongarch64\n        MEMORY SIZE: 64 GB\n               CPUS: 16\n    PROCESSOR SPEED: 2200 Mhz\n                 HZ: 250\n          PAGE SIZE: 16384\n  KERNEL STACK SIZE: 16384\n\nCo-developed-by: Youling Tang <tangyouling@loongson.cn>\nSigned-off-by: Youling Tang <tangyouling@loongson.cn>\nSigned-off-by: Ming Wang <wangming01@loongson.cn>",
+      "tree": {
+        "sha": "616dba20348da0bb287653f4575d4677a8229eb1",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/616dba20348da0bb287653f4575d4677a8229eb1"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/756158045183a01963f2e677786dac480453ced1",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/756158045183a01963f2e677786dac480453ced1",
+    "html_url": "https://github.com/crash-utility/crash/commit/756158045183a01963f2e677786dac480453ced1",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/756158045183a01963f2e677786dac480453ced1/comments",
+    "author": null,
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7b8db357511c4e1a1750ab9cb7b9da8d9cb12b66",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/7b8db357511c4e1a1750ab9cb7b9da8d9cb12b66",
+        "html_url": "https://github.com/crash-utility/crash/commit/7b8db357511c4e1a1750ab9cb7b9da8d9cb12b66"
+      }
+    ]
+  },
+  {
+    "sha": "7b8db357511c4e1a1750ab9cb7b9da8d9cb12b66",
+    "node_id": "C_kwDOAPkhFdoAKDdiOGRiMzU3NTExYzRlMWExNzUwYWI5Y2I3YjlkYThkOWNiMTJiNjY",
+    "commit": {
+      "author": {
+        "name": "Ming Wang",
+        "email": "wangming01@loongson.cn",
+        "date": "2023-12-28T11:46:27Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-01-26T04:47:17Z"
+      },
+      "message": "LoongArch64: Add 'pte' command support\n\nThe pte command converts the pte table entry into a physical address and\ndisplays the page flags. Also fixed the pte part in the vtop command.\n\nE.g. With this patch:\n...\ncrash> vtop fffb8bf772\nVIRTUAL           PHYSICAL\nfffb8bf772        40000001231bf772\n\nSEGMENT: xuvrange\nPAGE DIRECTORY: 9000000096d10000\n  PGD: 9000000096d10078 => 900000009665c000\n  PMD: 000000009665ffe8 => 9000000098894000\n  PTE: 0000000098897178 => 40000001231bc39f\n PAGE: 40000001231bc000\n\n      PTE             PHYSICAL      FLAGS\n40000001231bc39f  40000001231bc000  (VALID|DIRTY|PLV|PRESENT|WRITE|PROTNONE|NO_EXEC)\n\n      VMA              START             END        FLAGS FILE\n90000000a4927660       fffb89c000       fffb8c0000 100173\n\nCo-developed-by: Youling Tang <tangyouling@loongson.cn>\nSigned-off-by: Youling Tang <tangyouling@loongson.cn>\nSigned-off-by: Ming Wang <wangming01@loongson.cn>",
+      "tree": {
+        "sha": "9ac06fb120f96754ba3e56503f4bb7473b4a6a52",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/9ac06fb120f96754ba3e56503f4bb7473b4a6a52"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/7b8db357511c4e1a1750ab9cb7b9da8d9cb12b66",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/7b8db357511c4e1a1750ab9cb7b9da8d9cb12b66",
+    "html_url": "https://github.com/crash-utility/crash/commit/7b8db357511c4e1a1750ab9cb7b9da8d9cb12b66",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/7b8db357511c4e1a1750ab9cb7b9da8d9cb12b66/comments",
+    "author": null,
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "89ae0e226fa939457604cdeacc4dbd0f06f0b95b",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/89ae0e226fa939457604cdeacc4dbd0f06f0b95b",
+        "html_url": "https://github.com/crash-utility/crash/commit/89ae0e226fa939457604cdeacc4dbd0f06f0b95b"
+      }
+    ]
+  },
+  {
+    "sha": "89ae0e226fa939457604cdeacc4dbd0f06f0b95b",
+    "node_id": "C_kwDOAPkhFdoAKDg5YWUwZTIyNmZhOTM5NDU3NjA0Y2RlYWNjNGRiZDBmMDZmMGI5NWI",
+    "commit": {
+      "author": {
+        "name": "Ming Wang",
+        "email": "wangming01@loongson.cn",
+        "date": "2023-12-28T11:46:26Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-01-26T04:47:17Z"
+      },
+      "message": "LoongArch64: Make the crash tool successfully enter the crash command line\n\n1. Add loongarch64_init() implementation, do all necessary machine-specific setup,\nwhich will be called multiple times during initialization.\n\n2. Add the implementation of the vtop command, which is used to convert a\nvirtual address to a physical address. When entering the crash command line,\nthe corresponding symbols in the kernel will be read, and at the same time,\nthe conversion of virtual and real addresses will also be used, so the vtop\ncommand is a prerequisite for entering the crash command line.\n\n3. Add loongarch64_get_smp_cpus() implementation, get the number of online cpus.\n\n4. Add loongarch64_get_page_size() implementation, get page size.\n\n5. Add to get processor speed. Obtain the processor speed from the kernel\nsymbol \"cpu_clock_freq\".\n\n6. Add loongarch64_verify_symbol() implementation, accept or reject a symbol from\nthe kernel namelist.\n\nWith this patch, we can enter crash command line. Tested on Loongson-3C5000 platform.\n\nFor help, type \"help\".\nType \"apropos word\" to search for commands related to \"word\"...\n\n      KERNEL: /usr/lib/debug/lib/modules/5.10.0-60.103.0.130.oe2203.loongarch64/vmlinux\n    DUMPFILE: /proc/kcore\n        CPUS: 16\n        DATE: Mon Aug 21 14:33:19 CST 2023\n      UPTIME: 05:01:34\nLOAD AVERAGE: 0.43, 0.11, 0.17\n       TASKS: 265\n    NODENAME: localhost.localdomain\n     RELEASE: 5.10.0-60.103.0.130.oe2203.loongarch64\n     VERSION: #1 SMP Fri Jul 21 12:48:08 UTC 2023\n     MACHINE: loongarch64  (2200 Mhz)\n      MEMORY: 64 GB\n         PID: 114499\n     COMMAND: \"crash\"\n        TASK: 900000009676ff00  [THREAD_INFO: 90000000981a8000]\n         CPU: 12\n       STATE: TASK_RUNNING (ACTIVE)\n\nCo-developed-by: Youling Tang <tangyouling@loongson.cn>\nSigned-off-by: Youling Tang <tangyouling@loongson.cn>\nSigned-off-by: Ming Wang <wangming01@loongson.cn>",
+      "tree": {
+        "sha": "fcc04d7d9dc515419c27073142cbe4e3c44af75e",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/fcc04d7d9dc515419c27073142cbe4e3c44af75e"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/89ae0e226fa939457604cdeacc4dbd0f06f0b95b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/89ae0e226fa939457604cdeacc4dbd0f06f0b95b",
+    "html_url": "https://github.com/crash-utility/crash/commit/89ae0e226fa939457604cdeacc4dbd0f06f0b95b",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/89ae0e226fa939457604cdeacc4dbd0f06f0b95b/comments",
+    "author": null,
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "35a2472e7a30871049ebb98482929c09d8b445c4",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/35a2472e7a30871049ebb98482929c09d8b445c4",
+        "html_url": "https://github.com/crash-utility/crash/commit/35a2472e7a30871049ebb98482929c09d8b445c4"
+      }
+    ]
+  },
+  {
+    "sha": "35a2472e7a30871049ebb98482929c09d8b445c4",
+    "node_id": "C_kwDOAPkhFdoAKDM1YTI0NzJlN2EzMDg3MTA0OWViYjk4NDgyOTI5YzA5ZDhiNDQ1YzQ",
+    "commit": {
+      "author": {
+        "name": "Ming Wang",
+        "email": "wangming01@loongson.cn",
+        "date": "2023-12-28T11:46:25Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-01-26T04:47:17Z"
+      },
+      "message": "Add LoongArch64 framework code support\n\nMainly added some environment configurations, macro definitions, specific\narchitecture structures and some function declarations supported by the\nLoongArch64 architecture.\n\nCo-developed-by: Youling Tang <tangyouling@loongson.cn>\nSigned-off-by: Youling Tang <tangyouling@loongson.cn>\nSigned-off-by: Ming Wang <wangming01@loongson.cn>",
+      "tree": {
+        "sha": "856a42f95161bded405788e11ba9734e19b788b0",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/856a42f95161bded405788e11ba9734e19b788b0"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/35a2472e7a30871049ebb98482929c09d8b445c4",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/35a2472e7a30871049ebb98482929c09d8b445c4",
+    "html_url": "https://github.com/crash-utility/crash/commit/35a2472e7a30871049ebb98482929c09d8b445c4",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/35a2472e7a30871049ebb98482929c09d8b445c4/comments",
+    "author": null,
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "28891d1127542dbb2d5ba16c575e14e741ed73ef",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/28891d1127542dbb2d5ba16c575e14e741ed73ef",
+        "html_url": "https://github.com/crash-utility/crash/commit/28891d1127542dbb2d5ba16c575e14e741ed73ef"
+      }
+    ]
+  },
+  {
+    "sha": "28891d1127542dbb2d5ba16c575e14e741ed73ef",
+    "node_id": "C_kwDOAPkhFdoAKDI4ODkxZDExMjc1NDJkYmIyZDViYTE2YzU3NWUxNGU3NDFlZDczZWY",
+    "commit": {
+      "author": {
+        "name": "Tao Liu",
+        "email": "ltao@redhat.com",
+        "date": "2024-01-04T01:20:27Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-01-17T08:04:52Z"
+      },
+      "message": "symbols: skip the module if the given address is not within its address range\n\nPreviously, to find a module symbol and its offset by an arbitrary address,\nall symbols within the module will be iterated by address ascending order\nuntil the last symbol with a smaller address been noticed.\n\nHowever if the address is not within the module address range, e.g.\nthe address is higher than the module's last symbol's address, then\nthe module can be surely skipped, because its symbol iteration is\nunnecessary. This can speed up the kernel module symbols finding and improve\nthe overall performance.\n\nWithout the patch:\n  $ time echo \"bt 8993\" | ~/crash-dev/crash vmcore vmlinux\n  crash> bt 8993\n  PID: 8993     TASK: ffff927569cc2100  CPU: 2    COMMAND: \"WriterPool0\"\n   #0 [ffff927569cd76f0] __schedule at ffffffffb3db78d8\n   #1 [ffff927569cd7758] schedule_preempt_disabled at ffffffffb3db8bf9\n   #2 [ffff927569cd7768] __mutex_lock_slowpath at ffffffffb3db6ca7\n   #3 [ffff927569cd77c0] mutex_lock at ffffffffb3db602f\n   #4 [ffff927569cd77d8] ucache_retrieve at ffffffffc0cf4409 [secfs2]\n   ...snip the stacktrace of the same module...\n   #11 [ffff927569cd7ba0] cskal_path_vfs_getattr_nosec at ffffffffc05cae76 [falcon_kal]\n   ...snip...\n   #13 [ffff927569cd7c40] _ZdlPv at ffffffffc086e751 [falcon_lsm_serviceable]\n   ...snip...\n   #20 [ffff927569cd7ef8] unload_network_ops_symbols at ffffffffc06f11c0 [falcon_lsm_pinned_14713]\n   #21 [ffff927569cd7f50] system_call_fastpath at ffffffffb3dc539a\n      RIP: 00007f2b28ed4023  RSP: 00007f2a45fe7f80  RFLAGS: 00000206\n      RAX: 0000000000000012  RBX: 00007f2a68302e00  RCX: 00007f2a682546d8\n      RDX: 0000000000000826  RSI: 00007eb57ea6a000  RDI: 00000000000000e3\n      RBP: 00007eb57ea6a000   R8: 0000000000000826   R9: 00000002670bdfd2\n      R10: 00000002670bdfd2  R11: 0000000000000293  R12: 00000002670bdfd2\n      R13: 00007f29d501a480  R14: 0000000000000826  R15: 00000002670bdfd2\n      ORIG_RAX: 0000000000000012  CS: 0033  SS: 002b\n  crash>\n  real\t7m14.826s\n  user\t7m12.502s\n  sys\t0m1.091s\n\nWith the patch:\n  $ time echo \"bt 8993\" | ~/crash-dev/crash vmcore vmlinux\n  crash> bt 8993\n  PID: 8993     TASK: ffff927569cc2100  CPU: 2    COMMAND: \"WriterPool0\"\n   #0 [ffff927569cd76f0] __schedule at ffffffffb3db78d8\n   #1 [ffff927569cd7758] schedule_preempt_disabled at ffffffffb3db8bf9\n   ...snip the same output...\n  crash>\n  real\t0m8.827s\n  user\t0m7.896s\n  sys\t0m0.938s\n\nSigned-off-by: Tao Liu <ltao@redhat.com>",
+      "tree": {
+        "sha": "61d7a53a2f972b7ea0943f589c7d955d6fb59640",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/61d7a53a2f972b7ea0943f589c7d955d6fb59640"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/28891d1127542dbb2d5ba16c575e14e741ed73ef",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/28891d1127542dbb2d5ba16c575e14e741ed73ef",
+    "html_url": "https://github.com/crash-utility/crash/commit/28891d1127542dbb2d5ba16c575e14e741ed73ef",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/28891d1127542dbb2d5ba16c575e14e741ed73ef/comments",
+    "author": {
+      "login": "liutgnu",
+      "id": 16302926,
+      "node_id": "MDQ6VXNlcjE2MzAyOTI2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16302926?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/liutgnu",
+      "html_url": "https://github.com/liutgnu",
+      "followers_url": "https://api.github.com/users/liutgnu/followers",
+      "following_url": "https://api.github.com/users/liutgnu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/liutgnu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/liutgnu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/liutgnu/subscriptions",
+      "organizations_url": "https://api.github.com/users/liutgnu/orgs",
+      "repos_url": "https://api.github.com/users/liutgnu/repos",
+      "events_url": "https://api.github.com/users/liutgnu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/liutgnu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "aed1b7d3a064112d5c34eff81fa9ca0c50c5c782",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/aed1b7d3a064112d5c34eff81fa9ca0c50c5c782",
+        "html_url": "https://github.com/crash-utility/crash/commit/aed1b7d3a064112d5c34eff81fa9ca0c50c5c782"
+      }
+    ]
+  },
+  {
+    "sha": "aed1b7d3a064112d5c34eff81fa9ca0c50c5c782",
+    "node_id": "C_kwDOAPkhFdoAKGFlZDFiN2QzYTA2NDExMmQ1YzM0ZWZmODFmYTljYTBjNTBjNWM3ODI",
+    "commit": {
+      "author": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-01-16T08:00:48Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-01-16T08:41:51Z"
+      },
+      "message": "x86_64: Fix \"bt\" command not printing stack trace enough\n\nOn recent x86_64 kernels, the check of caller function (BT_CHECK_CALLER)\ndoes not work correctly due to inappropriate direct_call_targets.  As a\nresult, the correct frame is ignored and the remaining frames will be\ntruncated.\n\nSkip the caller check if ORC unwinder is available, as the check is not\nnecessary with it.\n\nWithout the patch:\n  crash> bt 493113\n  PID: 493113   TASK: ff2e34ecbd3ca2c0  CPU: 27   COMMAND: \"sriov_fec_daemo\"\n   #0 [ff77abc4e81cfb08] __schedule at ffffffff81b239cb\n   #1 [ff77abc4e81cfb70] schedule at ffffffff81b23e2d\n   #2 [ff77abc4e81cfb88] schedule_timeout at ffffffff81b2c9e8\n      RIP: 000000000047cdbb  RSP: 000000c0000975a8  RFLAGS: 00000216\n      ...\n\nWith the patch:\n  crash> bt 493113\n  PID: 493113   TASK: ff2e34ecbd3ca2c0  CPU: 27   COMMAND: \"sriov_fec_daemo\"\n   #0 [ff77abc4e81cfb08] __schedule at ffffffff81b239cb\n   #1 [ff77abc4e81cfb70] schedule at ffffffff81b23e2d\n   #2 [ff77abc4e81cfb88] schedule_timeout at ffffffff81b2c9e8\n   #3 [ff77abc4e81cfbf0] __wait_for_common at ffffffff81b24abb\n   #4 [ff77abc4e81cfc68] vfio_unregister_group_dev at ffffffffc10e76ae [vfio]\n   #5 [ff77abc4e81cfca8] vfio_pci_core_unregister_device at ffffffffc11bb599 [vfio_pci_core]\n   #6 [ff77abc4e81cfcc0] vfio_pci_remove at ffffffffc103e045 [vfio_pci]\n   #7 [ff77abc4e81cfcd0] pci_device_remove at ffffffff815d7513\n   ...\n\nReported-by: Crystal Wood <crwood@redhat.com>\nSigned-off-by: Kazuhito Hagio <k-hagio-ab@nec.com>",
+      "tree": {
+        "sha": "75bd4a63b672c5d835a9d84bd400d529cc8f4c2a",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/75bd4a63b672c5d835a9d84bd400d529cc8f4c2a"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/aed1b7d3a064112d5c34eff81fa9ca0c50c5c782",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/aed1b7d3a064112d5c34eff81fa9ca0c50c5c782",
+    "html_url": "https://github.com/crash-utility/crash/commit/aed1b7d3a064112d5c34eff81fa9ca0c50c5c782",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/aed1b7d3a064112d5c34eff81fa9ca0c50c5c782/comments",
+    "author": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a69496279133705f095f790a9b3425266f88b1d4",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/a69496279133705f095f790a9b3425266f88b1d4",
+        "html_url": "https://github.com/crash-utility/crash/commit/a69496279133705f095f790a9b3425266f88b1d4"
+      }
+    ]
+  },
+  {
+    "sha": "a69496279133705f095f790a9b3425266f88b1d4",
+    "node_id": "C_kwDOAPkhFdoAKGE2OTQ5NjI3OTEzMzcwNWYwOTVmNzkwYTliMzQyNTI2NmY4OGIxZDQ",
+    "commit": {
+      "author": {
+        "name": "Song Shuai",
+        "email": "songshuaishuai@tinylab.org",
+        "date": "2023-12-13T09:45:08Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-01-11T04:47:25Z"
+      },
+      "message": "RISCV64: Add per-cpu overflow stacks support\n\nThe patch introduces per-cpu overflow stacks for RISCV64 to let\n\"bt\" do backtrace on it and the 'help -m' command dispalys the\naddresss of each per-cpu overflow stack.\n\nTEST: a lkdtm DIRECT EXHAUST_STACK vmcore\n\n  crash> bt\n  PID: 1        TASK: ff600000000d8000  CPU: 1    COMMAND: \"sh\"\n   #0 [ff6000001fc501c0] riscv_crash_save_regs at ffffffff8000a1dc\n   #1 [ff6000001fc50320] panic at ffffffff808773ec\n   #2 [ff6000001fc50380] walk_stackframe at ffffffff800056da\n       PC: ffffffff80876a34  [memset+96]\n       RA: ffffffff80563dc0  [recursive_loop+68]\n       SP: ff2000000000fd50  CAUSE: 000000000000000f\n  epc : ffffffff80876a34 ra : ffffffff80563dc0 sp : ff2000000000fd50\n   gp : ffffffff81515d38 tp : 0000000000000000 t0 : ff2000000000fd58\n   t1 : ff600000000d88c8 t2 : 6143203a6d74646b s0 : ff20000000010190\n   s1 : 0000000000000012 a0 : ff2000000000fd58 a1 : 1212121212121212\n   a2 : 0000000000000400 a3 : ff20000000010158 a4 : 0000000000000000\n   a5 : 725bedba92260900 a6 : 000000000130e0f0 a7 : 0000000000000000\n   s2 : ff2000000000fd58 s3 : ffffffff815170d8 s4 : ff20000000013e60\n   s5 : 000000000000000e s6 : ff20000000013e60 s7 : 0000000000000000\n   s8 : ff60000000861000 s9 : 00007fffc3641694 s10: 00007fffc3641690\n   s11: 00005555796ed240 t3 : 0000000000010297 t4 : ffffffff80c17810\n   t5 : ffffffff8195e7b8 t6 : ff20000000013b18\n   status: 0000000200000120 badaddr: ff2000000000fd58\n    cause: 000000000000000f orig_a0: 0000000000000000\n  --- <OVERFLOW stack> ---\n   #3 [ff2000000000fd50] memset at ffffffff80876a34\n   #4 [ff20000000010190] recursive_loop at ffffffff80563e16\n   #5 [ff200000000105d0] recursive_loop at ffffffff80563e16\n   < recursive_loop ...>\n   #16 [ff20000000013490] recursive_loop at ffffffff80563e16\n   #17 [ff200000000138d0] recursive_loop at ffffffff80563e16\n   #18 [ff20000000013d10] lkdtm_EXHAUST_STACK at ffffffff8088005e\n   #19 [ff20000000013d30] lkdtm_do_action at ffffffff80563292\n   #20 [ff20000000013d40] direct_entry at ffffffff80563474\n   #21 [ff20000000013d70] full_proxy_write at ffffffff8032fb3a\n   #22 [ff20000000013db0] vfs_write at ffffffff801d6414\n   #23 [ff20000000013e60] ksys_write at ffffffff801d67b8\n   #24 [ff20000000013eb0] __riscv_sys_write at ffffffff801d6832\n   #25 [ff20000000013ec0] do_trap_ecall_u at ffffffff80884a20\n  crash>\n\n  crash> help -m\n  <snip>\n          irq_stack_size: 16384\n           irq_stacks[0]: ff20000000000000\n           irq_stacks[1]: ff20000000008000\n          overflow_stack_size: 4096\n           overflow_stacks[0]: ff6000001fa7a510\n           overflow_stacks[1]: ff6000001fc4f510\n  crash>\n\nSigned-off-by: Song Shuai <songshuaishuai@tinylab.org>",
+      "tree": {
+        "sha": "da3382d89b8462caf498da607d17e5238ea59c95",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/da3382d89b8462caf498da607d17e5238ea59c95"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/a69496279133705f095f790a9b3425266f88b1d4",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/a69496279133705f095f790a9b3425266f88b1d4",
+    "html_url": "https://github.com/crash-utility/crash/commit/a69496279133705f095f790a9b3425266f88b1d4",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/a69496279133705f095f790a9b3425266f88b1d4/comments",
+    "author": null,
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "12fbed3280a147a40e572808b660aa838f3ca372",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/12fbed3280a147a40e572808b660aa838f3ca372",
+        "html_url": "https://github.com/crash-utility/crash/commit/12fbed3280a147a40e572808b660aa838f3ca372"
+      }
+    ]
+  },
+  {
+    "sha": "12fbed3280a147a40e572808b660aa838f3ca372",
+    "node_id": "C_kwDOAPkhFdoAKDEyZmJlZDMyODBhMTQ3YTQwZTU3MjgwOGI2NjBhYTgzOGYzY2EzNzI",
+    "commit": {
+      "author": {
+        "name": "Song Shuai",
+        "email": "songshuaishuai@tinylab.org",
+        "date": "2023-12-13T09:45:07Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-01-11T04:47:25Z"
+      },
+      "message": "RISCV64: Add per-cpu IRQ stacks support\n\nThis patch introduces per-cpu IRQ stacks for RISCV64 to let\n\"bt\" do backtrace on it and 'bt -E' search eframes on it,\nand the 'help -m' command displays the addresses of each\nper-cpu IRQ stack.\n\nTEST: a vmcore dumped via hacking the handle_irq_event_percpu()\n( Why not using lkdtm INT_HW_IRQ_EN EXCEPTION ?\n  There is a deadlock[1] in crash_kexec path if use that)\n\n  crash> bt\n  PID: 0        TASK: ffffffff8140db00  CPU: 0    COMMAND: \"swapper/0\"\n   #0 [ff20000000003e60] __handle_irq_event_percpu at ffffffff8006462e\n   #1 [ff20000000003ed0] handle_irq_event_percpu at ffffffff80064702\n   #2 [ff20000000003ef0] handle_irq_event at ffffffff8006477c\n   #3 [ff20000000003f20] handle_fasteoi_irq at ffffffff80068664\n   #4 [ff20000000003f50] generic_handle_domain_irq at ffffffff80063988\n   #5 [ff20000000003f60] plic_handle_irq at ffffffff8046633e\n   #6 [ff20000000003fb0] generic_handle_domain_irq at ffffffff80063988\n   #7 [ff20000000003fc0] riscv_intc_irq at ffffffff80465f8e\n   #8 [ff20000000003fd0] handle_riscv_irq at ffffffff808361e8\n       PC: ffffffff80837314  [default_idle_call+50]\n       RA: ffffffff80837310  [default_idle_call+46]\n       SP: ffffffff81403da0  CAUSE: 8000000000000009\n  epc : ffffffff80837314 ra : ffffffff80837310 sp : ffffffff81403da0\n   gp : ffffffff814ef848 tp : ffffffff8140db00 t0 : ff2000000004bb18\n   t1 : 0000000000032c73 t2 : ffffffff81200a48 s0 : ffffffff81403db0\n   s1 : 0000000000000000 a0 : 0000000000000004 a1 : 0000000000000000\n   a2 : ff6000009f1e7000 a3 : 0000000000002304 a4 : ffffffff80c1c2d8\n   a5 : 0000000000000000 a6 : ff6000001fe01958 a7 : 00002496ea89dbf1\n   s2 : ffffffff814f0220 s3 : 0000000000000001 s4 : 000000000000003f\n   s5 : ffffffff814f03d8 s6 : 0000000000000000 s7 : ffffffff814f00d0\n   s8 : ffffffff81526f10 s9 : ffffffff80c1d880 s10: 0000000000000000\n   s11: 0000000000000001 t3 : 0000000000003392 t4 : 0000000000000000\n   t5 : 0000000000000000 t6 : 0000000000000040\n   status: 0000000200000120 badaddr: 0000000000000000\n    cause: 8000000000000009 orig_a0: ffffffff80837310\n  --- <IRQ stack> ---\n   #9 [ffffffff81403da0] default_idle_call at ffffffff80837314\n   #10 [ffffffff81403db0] do_idle at ffffffff8004d0a0\n   #11 [ffffffff81403e40] cpu_startup_entry at ffffffff8004d21e\n   #12 [ffffffff81403e60] kernel_init at ffffffff8083746a\n   #13 [ffffffff81403e70] arch_post_acpi_subsys_init at ffffffff80a006d8\n   #14 [ffffffff81403e80] console_on_rootfs at ffffffff80a00c92\n  crash>\n\n  crash> bt -E\n  CPU 0 IRQ STACK:\n  KERNEL-MODE EXCEPTION FRAME AT: ff20000000003a48\n       PC: ffffffff8006462e  [__handle_irq_event_percpu+30]\n       RA: ffffffff80064702  [handle_irq_event_percpu+18]\n       SP: ff20000000003e60  CAUSE: 000000000000000d\n  epc : ffffffff8006462e ra : ffffffff80064702 sp : ff20000000003e60\n   gp : ffffffff814ef848 tp : ffffffff8140db00 t0 : 0000000000046600\n   t1 : ffffffff80836464 t2 : ffffffff81200a48 s0 : ff20000000003ed0\n   s1 : 0000000000000000 a0 : 0000000000000000 a1 : 0000000000000118\n   a2 : 0000000000000052 a3 : 0000000000000000 a4 : 0000000000000000\n   a5 : 0000000000010001 a6 : ff6000001fe01958 a7 : 00002496ea89dbf1\n   s2 : ff60000000941ab0 s3 : ffffffff814a0658 s4 : ff60000000089230\n   s5 : ffffffff814a0518 s6 : ffffffff814a0620 s7 : ffffffff80e5f0f8\n   s8 : ffffffff80fc50b0 s9 : ffffffff80c1d880 s10: 0000000000000000\n   s11: 0000000000000001 t3 : 0000000000003392 t4 : 0000000000000000\n   t5 : 0000000000000000 t6 : 0000000000000040\n   status: 0000000200000100 badaddr: 0000000000000078\n    cause: 000000000000000d orig_a0: ff20000000003ea0\n\n  CPU 1 IRQ STACK: (none found)\n\n  crash>\n\n  crash> help -m\n  <snip>\n             machspec: ced1e0\n          irq_stack_size: 16384\n           irq_stacks[0]: ff20000000000000\n           irq_stacks[1]: ff20000000008000\n  crash>\n\n[1]: https://lore.kernel.org/linux-riscv/20231208111015.173237-1-songshuaishuai@tinylab.org/\n\nSigned-off-by: Song Shuai <songshuaishuai@tinylab.org>",
+      "tree": {
+        "sha": "10b143e21701be565f74555951e042a093765764",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/10b143e21701be565f74555951e042a093765764"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/12fbed3280a147a40e572808b660aa838f3ca372",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/12fbed3280a147a40e572808b660aa838f3ca372",
+    "html_url": "https://github.com/crash-utility/crash/commit/12fbed3280a147a40e572808b660aa838f3ca372",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/12fbed3280a147a40e572808b660aa838f3ca372/comments",
+    "author": null,
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d86dc6901ce76a0fc29022ed448a4baa83a47dd7",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/d86dc6901ce76a0fc29022ed448a4baa83a47dd7",
+        "html_url": "https://github.com/crash-utility/crash/commit/d86dc6901ce76a0fc29022ed448a4baa83a47dd7"
+      }
+    ]
+  },
+  {
+    "sha": "d86dc6901ce76a0fc29022ed448a4baa83a47dd7",
+    "node_id": "C_kwDOAPkhFdoAKGQ4NmRjNjkwMWNlNzZhMGZjMjkwMjJlZDQ0OGE0YmFhODNhNDdkZDc",
+    "commit": {
+      "author": {
+        "name": "Song Shuai",
+        "email": "songshuaishuai@tinylab.org",
+        "date": "2023-12-13T09:45:06Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2024-01-11T04:47:25Z"
+      },
+      "message": "RISCV64: Add support for 'bt -e' option\n\nWith this patch we can search the stack for possible kernel and user\nmode exception frames via 'bt -e' command.\n\nTEST: a lkdtm DIRECT EXCEPTION vmcore\n\n  crash> bt -e\n  PID: 1        TASK: ff600000000e0000  CPU: 1    COMMAND: \"sh\"\n\n  KERNEL-MODE EXCEPTION FRAME AT: ff200000000138d8\n       PC: ffffffff805303c0  [lkdtm_EXCEPTION+6]\n       RA: ffffffff8052fe36  [lkdtm_do_action+16]\n       SP: ff20000000013cf0  CAUSE: 000000000000000f\n  epc : ffffffff805303c0 ra : ffffffff8052fe36 sp : ff20000000013cf0\n   gp : ffffffff814ef848 tp : ff600000000e0000 t0 : 6500000000000000\n   t1 : 000000000000006c t2 : 6550203a6d74646b s0 : ff20000000013d00\n   s1 : 000000000000000a a0 : ffffffff814aef40 a1 : c0000000ffffefff\n   a2 : 0000000000000010 a3 : 0000000000000001 a4 : 5d53ea10ca096e00\n   a5 : ffffffff805303ba a6 : 0000000000000008 a7 : 0000000000000038\n   s2 : ff60000001324000 s3 : ffffffff814aef40 s4 : ff20000000013e30\n   s5 : 000000000000000a s6 : ff20000000013e30 s7 : ff600000000ce000\n   s8 : 0000555560f0f8a8 s9 : 00007ffff497f6b4 s10: 00007ffff497f6b0\n   s11: 0000555560fa30e0 t3 : ffffffff81502197 t4 : ffffffff81502197\n   t5 : ffffffff81502198 t6 : ff20000000013b28\n   status: 0000000200000120 badaddr: 0000000000000000\n    cause: 000000000000000f orig_a0: 0000000000000000\n\n  USER-MODE EXCEPTION FRAME AT: ff20000000013ee0\n       PC: 007fff8780431aff   RA: 007fff877b168400   SP: 007ffff497f5b000\n       ORIG_A0: 0000000000000100   SYSCALLNO: 0000000000004000\n  epc : 007fff8780431aff ra : 007fff877b168400 sp : 007ffff497f5b000\n   gp : 00555560f5134800 tp : 007fff8774378000 t0 : 0000000000100000\n   t1 : 00555560e427bc00 t2 : 0000000000271000 s0 : 007ffff497f5e000\n   s1 : 0000000000000a00 a0 : 0000000000000100 a1 : 00555560faa68000\n   a2 : 0000000000000a00 a3 : 4000000000000000 a4 : 20000000000000a8\n   a5 : 0000000000000054 a6 : 0000000000000400 a7 : 0000000000004000\n   s2 : 00555560faa68000 s3 : 007fff878b33f800 s4 : 0000000000000a00\n   s5 : 00555560faa68000 s6 : 0000000000000a00 s7 : 00555560f5131400\n   s8 : 00555560f0f8a800 s9 : 007ffff497f6b400 s10: 007ffff497f6b000\n   s11: 00555560fa30e000 t3 : 007fff877af1fe00 t4 : 00555560fa6f2000\n   t5 : 0000000000000100 t6 : 9e1fea5bf8683300\n   status: 00000200004020b9 badaddr: 0000000000000000\n    cause: 0000000000000800 orig_a0: 0000000000000100\n  crash>\n\nSigned-off-by: Song Shuai <songshuaishuai@tinylab.org>",
+      "tree": {
+        "sha": "1bcff2309d9545defeb5093b4027018474917bdc",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/1bcff2309d9545defeb5093b4027018474917bdc"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/d86dc6901ce76a0fc29022ed448a4baa83a47dd7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/d86dc6901ce76a0fc29022ed448a4baa83a47dd7",
+    "html_url": "https://github.com/crash-utility/crash/commit/d86dc6901ce76a0fc29022ed448a4baa83a47dd7",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/d86dc6901ce76a0fc29022ed448a4baa83a47dd7/comments",
+    "author": null,
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "edb2bd52885ccc2fbe3e0825efe0ac55951a7710",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/edb2bd52885ccc2fbe3e0825efe0ac55951a7710",
+        "html_url": "https://github.com/crash-utility/crash/commit/edb2bd52885ccc2fbe3e0825efe0ac55951a7710"
+      }
+    ]
+  },
+  {
+    "sha": "edb2bd52885ccc2fbe3e0825efe0ac55951a7710",
+    "node_id": "C_kwDOAPkhFdoAKGVkYjJiZDUyODg1Y2NjMmZiZTNlMDgyNWVmZTBhYzU1OTUxYTc3MTA",
+    "commit": {
+      "author": {
+        "name": "qiwu.chen@transsion.com",
+        "email": "qiwu.chen@transsion.com",
+        "date": "2023-12-22T03:30:33Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2023-12-28T04:20:36Z"
+      },
+      "message": "arm64: support HW Tag-Based KASAN (MTE) mode\n\nKernel commit 2e903b914797 (\"kasan, arm64: implement HW_TAGS runtime\")\nintroduced Hardware Tag-Based KASAN (MTE) mode for ARMv8.5 and later\nCPUs, which uses the Top Byte Ignore (TBI) feature of arm64 CPUs to\nstore a pointer tag in the top byte of kernel pointers.\n\nCurrently, crash utility cannot load MTE ramdump due to access invalid\nHW Tag-Based kernel virtual addresses. Here's the example error message:\n\n  please wait... (gathering kmem slab cache data)\n  crash: invalid kernel virtual address: f1ffff80c000201c  type: \"kmem_cache objsize/object_size\"\n  please wait... (gathering task table data)\n  crash: invalid kernel virtual address: f9ffff8239c2cde0  type: \"xa_node shift\"\n\nThis patch replaces the orignal generic_is_kvaddr() with arm64_is_kvaddr(),\nwhich checks the validity for a HW Tag-Based kvaddr. mte_tag_reset() is\nused to convert a Tag-Based kvaddr to untaggged kvaddr in arm64_VTOP()\nand arm64_IS_VMALLOC_ADDR().\n\nSigned-off-by: chenqiwu <qiwu.chen@transsion.com>\nSigned-off-by: Kazuhito Hagio <k-hagio-ab@nec.com>",
+      "tree": {
+        "sha": "d3501e5eb12eef2c8ea83cec15650c9715c5eb97",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/d3501e5eb12eef2c8ea83cec15650c9715c5eb97"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/edb2bd52885ccc2fbe3e0825efe0ac55951a7710",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/edb2bd52885ccc2fbe3e0825efe0ac55951a7710",
+    "html_url": "https://github.com/crash-utility/crash/commit/edb2bd52885ccc2fbe3e0825efe0ac55951a7710",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/edb2bd52885ccc2fbe3e0825efe0ac55951a7710/comments",
+    "author": null,
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "53d2577cef98b76b122aade94349637a11e06138",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/53d2577cef98b76b122aade94349637a11e06138",
+        "html_url": "https://github.com/crash-utility/crash/commit/53d2577cef98b76b122aade94349637a11e06138"
+      }
+    ]
+  },
+  {
+    "sha": "53d2577cef98b76b122aade94349637a11e06138",
+    "node_id": "C_kwDOAPkhFdoAKDUzZDI1NzdjZWY5OGI3NmIxMjJhYWRlOTQzNDk2MzdhMTFlMDYxMzg",
+    "commit": {
+      "author": {
+        "name": "Tao Liu",
+        "email": "ltao@redhat.com",
+        "date": "2023-12-26T01:19:28Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2023-12-27T08:22:47Z"
+      },
+      "message": "x86_64: check bt->bptr before calculate framesize\n\nPreviously the value of bt->bptr is not checked, which may led to a\nwrong prev_sp and framesize. As a result, bt->stackbuf[] will be\naccessed out of range, and segfault.\n\nBefore:\n  crash> set debug 1\n  crash> bt\n  ...snip...\n  --- <NMI exception stack> ---\n   #8 [ffffffff9a603e10] __switch_to_asm at ffffffff99800214\n  rsp: ffffffff9a603e10 textaddr: ffffffff99800214 -> spo: 0 bpo: 0 spr: 0 bpr: 0 type: 0 end: 0\n   #9 [ffffffff9a603e40] __schedule at ffffffff9960dfb1\n  rsp: ffffffff9a603e40 textaddr: ffffffff9960dfb1 -> spo: 16 bpo: -16 spr: 4 bpr: 1 type: 0 end: 0\n  rsp: ffffffff9a603e40 rbp: ffffb9ca076e7ca8 prev_sp: ffffb9ca076e7cb8 framesize: 1829650024\n  Segmentation fault (core dumped)\n\n  (gdb) p/x bt->stackbase\n  $1 = 0xffffffff9a600000\n  (gdb) p/x bt->stacktop\n  $2 = 0xffffffff9a604000\n\nAfter:\n  crash> set debug 1\n  crash> bt\n  ...snip...\n  --- <NMI exception stack> ---\n   #8 [ffffffff9a603e10] __switch_to_asm at ffffffff99800214\n  rsp: ffffffff9a603e10 textaddr: ffffffff99800214 -> spo: 0 bpo: 0 spr: 0 bpr: 0 type: 0 end: 0\n   #9 [ffffffff9a603e40] __schedule at ffffffff9960dfb1\n  rsp: ffffffff9a603e40 textaddr: ffffffff9960dfb1 -> spo: 16 bpo: -16 spr: 4 bpr: 1 type: 0 end: 0\n   #10 [ffffffff9a603e98] schedule_idle at ffffffff9960e87c\n  rsp: ffffffff9a603e98 textaddr: ffffffff9960e87c -> spo: 8 bpo: 0 spr: 5 bpr: 0 type: 0 end: 0\n  rsp: ffffffff9a603e98 prev_sp: ffffffff9a603ea8 framesize: 0\n  ...snip...\n\nCheck bt->bptr value before calculate framesize. Only bt->bptr within\nthe range of bt->stackbase and bt->stacktop will be regarded as valid.\n\nSigned-off-by: Tao Liu <ltao@redhat.com>",
+      "tree": {
+        "sha": "f8d7f530997ef68dc81a43c6d28004723aa194ce",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/f8d7f530997ef68dc81a43c6d28004723aa194ce"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/53d2577cef98b76b122aade94349637a11e06138",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/53d2577cef98b76b122aade94349637a11e06138",
+    "html_url": "https://github.com/crash-utility/crash/commit/53d2577cef98b76b122aade94349637a11e06138",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/53d2577cef98b76b122aade94349637a11e06138/comments",
+    "author": {
+      "login": "liutgnu",
+      "id": 16302926,
+      "node_id": "MDQ6VXNlcjE2MzAyOTI2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16302926?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/liutgnu",
+      "html_url": "https://github.com/liutgnu",
+      "followers_url": "https://api.github.com/users/liutgnu/followers",
+      "following_url": "https://api.github.com/users/liutgnu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/liutgnu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/liutgnu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/liutgnu/subscriptions",
+      "organizations_url": "https://api.github.com/users/liutgnu/orgs",
+      "repos_url": "https://api.github.com/users/liutgnu/repos",
+      "events_url": "https://api.github.com/users/liutgnu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/liutgnu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "38435c3acec075b076353ca28f557a0dfe1341c3",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/38435c3acec075b076353ca28f557a0dfe1341c3",
+        "html_url": "https://github.com/crash-utility/crash/commit/38435c3acec075b076353ca28f557a0dfe1341c3"
+      }
+    ]
+  },
+  {
+    "sha": "38435c3acec075b076353ca28f557a0dfe1341c3",
+    "node_id": "C_kwDOAPkhFdoAKDM4NDM1YzNhY2VjMDc1YjA3NjM1M2NhMjhmNTU3YTBkZmUxMzQxYzM",
+    "commit": {
+      "author": {
+        "name": "Li Zhijian",
+        "email": "lizhijian@fujitsu.com",
+        "date": "2023-12-15T02:44:21Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2023-12-25T08:07:05Z"
+      },
+      "message": "help.c: Remove \"kmem -l\" help messages\n\n\"kmem -l\" option has existed when crash git project initialization, but\nits help message was not accurate (extra arguments a|i|ic|id was missing).\n\nIn addition, those symbols required by the -l option were for very old\nkernels, at least 2.6 kernels don't contain them.  Also, this option has\nnot been fixed for a long time.\n\nInstead of document this option, hide it from help messages.\n\nSigned-off-by: Li Zhijian <lizhijian@fujitsu.com>",
+      "tree": {
+        "sha": "29867f18937a169b4c765a0e34620087b9fef2b2",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/29867f18937a169b4c765a0e34620087b9fef2b2"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/38435c3acec075b076353ca28f557a0dfe1341c3",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/38435c3acec075b076353ca28f557a0dfe1341c3",
+    "html_url": "https://github.com/crash-utility/crash/commit/38435c3acec075b076353ca28f557a0dfe1341c3",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/38435c3acec075b076353ca28f557a0dfe1341c3/comments",
+    "author": {
+      "login": "zhijianli88",
+      "id": 2039087,
+      "node_id": "MDQ6VXNlcjIwMzkwODc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2039087?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/zhijianli88",
+      "html_url": "https://github.com/zhijianli88",
+      "followers_url": "https://api.github.com/users/zhijianli88/followers",
+      "following_url": "https://api.github.com/users/zhijianli88/following{/other_user}",
+      "gists_url": "https://api.github.com/users/zhijianli88/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/zhijianli88/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/zhijianli88/subscriptions",
+      "organizations_url": "https://api.github.com/users/zhijianli88/orgs",
+      "repos_url": "https://api.github.com/users/zhijianli88/repos",
+      "events_url": "https://api.github.com/users/zhijianli88/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/zhijianli88/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "19d3c56c9fca9dea49dced0414becc6d1b12e9fc",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/19d3c56c9fca9dea49dced0414becc6d1b12e9fc",
+        "html_url": "https://github.com/crash-utility/crash/commit/19d3c56c9fca9dea49dced0414becc6d1b12e9fc"
+      }
+    ]
+  },
+  {
+    "sha": "19d3c56c9fca9dea49dced0414becc6d1b12e9fc",
+    "node_id": "C_kwDOAPkhFdoAKDE5ZDNjNTZjOWZjYTlkZWE0OWRjZWQwNDE0YmVjYzZkMWIxMmU5ZmM",
+    "commit": {
+      "author": {
+        "name": "Huang Shijie",
+        "email": "shijie@os.amperecomputing.com",
+        "date": "2023-12-14T07:15:20Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2023-12-21T02:49:12Z"
+      },
+      "message": "arm64: rewrite the arm64_get_vmcoreinfo_ul to arm64_get_vmcoreinfo\n\nRewrite the arm64_get_vmcoreinfo_ul to arm64_get_vmcoreinfo,\nadd a new parameter \"base\" for it.\n\nAlso use it to simplify the arm64 code.\n\nSigned-off-by: Huang Shijie <shijie@os.amperecomputing.com>",
+      "tree": {
+        "sha": "92acf7625bbc962f97f590fa2fc832074d192c02",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/92acf7625bbc962f97f590fa2fc832074d192c02"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/19d3c56c9fca9dea49dced0414becc6d1b12e9fc",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/19d3c56c9fca9dea49dced0414becc6d1b12e9fc",
+    "html_url": "https://github.com/crash-utility/crash/commit/19d3c56c9fca9dea49dced0414becc6d1b12e9fc",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/19d3c56c9fca9dea49dced0414becc6d1b12e9fc/comments",
+    "author": {
+      "login": "HuangShijie2024",
+      "id": 136413060,
+      "node_id": "U_kgDOCCF_hA",
+      "avatar_url": "https://avatars.githubusercontent.com/u/136413060?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/HuangShijie2024",
+      "html_url": "https://github.com/HuangShijie2024",
+      "followers_url": "https://api.github.com/users/HuangShijie2024/followers",
+      "following_url": "https://api.github.com/users/HuangShijie2024/following{/other_user}",
+      "gists_url": "https://api.github.com/users/HuangShijie2024/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/HuangShijie2024/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/HuangShijie2024/subscriptions",
+      "organizations_url": "https://api.github.com/users/HuangShijie2024/orgs",
+      "repos_url": "https://api.github.com/users/HuangShijie2024/repos",
+      "events_url": "https://api.github.com/users/HuangShijie2024/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/HuangShijie2024/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9b69093e623f1d54c373b1e091900d40576c059b",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/9b69093e623f1d54c373b1e091900d40576c059b",
+        "html_url": "https://github.com/crash-utility/crash/commit/9b69093e623f1d54c373b1e091900d40576c059b"
+      }
+    ]
+  },
+  {
+    "sha": "9b69093e623f1d54c373b1e091900d40576c059b",
+    "node_id": "C_kwDOAPkhFdoAKDliNjkwOTNlNjIzZjFkNTRjMzczYjFlMDkxOTAwZDQwNTc2YzA1OWI",
+    "commit": {
+      "author": {
+        "name": "Song Shuai",
+        "email": "songshuaishuai@tinylab.org",
+        "date": "2023-12-12T10:20:51Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2023-12-21T02:35:16Z"
+      },
+      "message": "RISCV64: Fix 'bt' output when no ra on the stack top\n\nSame as the Linux commit f766f77a74f5 (\"riscv/stacktrace: Fix\nstack output without ra on the stack top\").\n\nWhen a function doesn't have a callee, then it will not\npush ra into the stack, such as lkdtm functions, so\ncorrect the FP of the second frame and use pt_regs to get\nthe right PC of the second frame.\n\nBefore this patch, the `bt -f` outputs only the first frame with\nthe wrong PC and FP of next frame:\n```\ncrash> bt -f\nPID: 1        TASK: ff600000000e0000  CPU: 1    COMMAND: \"sh\"\n #0 [ff20000000013cf0] lkdtm_EXCEPTION at ffffffff805303c0\n    [PC: ffffffff805303c0 RA: ff20000000013d10 SP: ff20000000013cf0 SIZE: 16] <- wrong next PC\n    ff20000000013cf0: 0000000000000001 ff20000000013d10 <- next FP\n    ff20000000013d00: ff20000000013d40\ncrash>\n```\nAfter this patch, the `bt` outputs the full frames:\n```\ncrash> bt\nPID: 1        TASK: ff600000000e0000  CPU: 1    COMMAND: \"sh\"\n #0 [ff20000000013cf0] lkdtm_EXCEPTION at ffffffff805303c0\n #1 [ff20000000013d00] lkdtm_do_action at ffffffff8052fe36\n #2 [ff20000000013d10] direct_entry at ffffffff80530018\n #3 [ff20000000013d40] full_proxy_write at ffffffff80305044\n #4 [ff20000000013d80] vfs_write at ffffffff801b68b4\n #5 [ff20000000013e30] ksys_write at ffffffff801b6c4a\n #6 [ff20000000013e80] __riscv_sys_write at ffffffff801b6cc4\n #7 [ff20000000013e90] do_trap_ecall_u at ffffffff80836798\ncrash>\n```\n\nAcked-by: Kazuhito Hagio <k-hagio-ab@nec.com>\nSigned-off-by: Song Shuai <songshuaishuai@tinylab.org>",
+      "tree": {
+        "sha": "c4e22c54b4cdc7fffe856a94bcc6b84fa6038d51",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/c4e22c54b4cdc7fffe856a94bcc6b84fa6038d51"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/9b69093e623f1d54c373b1e091900d40576c059b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/9b69093e623f1d54c373b1e091900d40576c059b",
+    "html_url": "https://github.com/crash-utility/crash/commit/9b69093e623f1d54c373b1e091900d40576c059b",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/9b69093e623f1d54c373b1e091900d40576c059b/comments",
+    "author": null,
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5187a0320cc54a9cb8b326cf012e69795950a716",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/5187a0320cc54a9cb8b326cf012e69795950a716",
+        "html_url": "https://github.com/crash-utility/crash/commit/5187a0320cc54a9cb8b326cf012e69795950a716"
+      }
+    ]
+  },
+  {
+    "sha": "5187a0320cc54a9cb8b326cf012e69795950a716",
+    "node_id": "C_kwDOAPkhFdoAKDUxODdhMDMyMGNjNTRhOWNiOGIzMjZjZjAxMmU2OTc5NTk1MGE3MTY",
+    "commit": {
+      "author": {
+        "name": "Song Shuai",
+        "email": "songshuaishuai@tinylab.org",
+        "date": "2023-12-12T10:20:50Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2023-12-21T02:35:16Z"
+      },
+      "message": "RISCV64: Dump NT_PRSTATUS in 'help -n'\n\nWith the patch we can get full dump of \"struct elf_prstatus\" in 'help -n':\n```\ncrash> help -n\n<snip>\nElf64_Nhdr:\n               n_namesz: 5 (\"CORE\")\n               n_descsz: 376\n                 n_type: 1 (NT_PRSTATUS)\n                         si.signo: 0  si.code: 0  si.errno: 0\n                         cursig: 0  sigpend: 0  sighold: 0\n                         pid: 1  ppid: 0  pgrp: 0  sid:0\n                         utime: 0.000000  stime: 0.000000\n                         cutime: 0.000000  cstime: 0.000000\n                         epc: ffffffff8000a1dc   ra: ffffffff800af958   sp: ff6000001fc501c0\n                          gp: ffffffff81515d38   tp: ff600000000d8000   t0: 6666666666663c5b\n                          t1: ff600000000d88c8   t2: 666666666666663c   s0: ff6000001fc50320\n                          s1: ffffffff815170d8   a0: ff6000001fc501c8   a1: c0000000ffffefff\n                          a2: 0000000000000000   a3: 0000000000000001   a4: 0000000000000000\n                          a5: ff60000001782c00   a6: 000000000130e0f0   a7: 0000000000000000\n                          s2: ffffffff81517820   s3: ff6000001fc501c8   s4: 000000000000000f\n                          s5: 0000000000000000   s6: ff20000000013e60   s7: 0000000000000000\n                          s8: ff60000000861000   s9: 00007fffc3641694  s10: 00007fffc3641690\n                         s11: 00005555796ed240   t3: 0000000000010297   t4: ffffffff80c17810\n                          t5: ffffffff8195e7b8   t6: ff6000001fc50048\n                         0000000000000000 0000000000000000\n                         0000000000000000 0000000000000000\n                         0000000000000001 0000000000000000\n                         0000000000000000 0000000000000000\n                         0000000000000000 0000000000000000\n                         0000000000000000 0000000000000000\n                         0000000000000000 0000000000000000\n                         ffffffff8000a1dc ffffffff800af958\n                         ff6000001fc501c0 ffffffff81515d38\n                         ff600000000d8000 6666666666663c5b\n<snip>\n```\n\nSigned-off-by: Song Shuai <songshuaishuai@tinylab.org>",
+      "tree": {
+        "sha": "ab204b968a6d76468d4ba6db117ea51395746292",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/ab204b968a6d76468d4ba6db117ea51395746292"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/5187a0320cc54a9cb8b326cf012e69795950a716",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/5187a0320cc54a9cb8b326cf012e69795950a716",
+    "html_url": "https://github.com/crash-utility/crash/commit/5187a0320cc54a9cb8b326cf012e69795950a716",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/5187a0320cc54a9cb8b326cf012e69795950a716/comments",
+    "author": null,
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d0164e7e480ad2ffd3fe73fe53c46087e5e137a6",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/d0164e7e480ad2ffd3fe73fe53c46087e5e137a6",
+        "html_url": "https://github.com/crash-utility/crash/commit/d0164e7e480ad2ffd3fe73fe53c46087e5e137a6"
+      }
+    ]
+  },
+  {
+    "sha": "d0164e7e480ad2ffd3fe73fe53c46087e5e137a6",
+    "node_id": "C_kwDOAPkhFdoAKGQwMTY0ZTdlNDgwYWQyZmZkM2ZlNzNmZTUzYzQ2MDg3ZTVlMTM3YTY",
+    "commit": {
+      "author": {
+        "name": "Alexander Gordeev",
+        "email": "agordeev@linux.ibm.com",
+        "date": "2023-12-07T15:54:06Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2023-12-12T02:33:32Z"
+      },
+      "message": "s390x: uncouple physical and virtual memory spaces\n\nRework VTOP and PTOV macros to reflect the future\nuncoupling of physical and virtual address spaces\nin kernel. Existing versions are not affected.\n\nSigned-off-by: Alexander Gordeev <agordeev@linux.ibm.com>",
+      "tree": {
+        "sha": "0862b8ed55fe1f79584049543d5560d73719eae3",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/0862b8ed55fe1f79584049543d5560d73719eae3"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/d0164e7e480ad2ffd3fe73fe53c46087e5e137a6",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/d0164e7e480ad2ffd3fe73fe53c46087e5e137a6",
+    "html_url": "https://github.com/crash-utility/crash/commit/d0164e7e480ad2ffd3fe73fe53c46087e5e137a6",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/d0164e7e480ad2ffd3fe73fe53c46087e5e137a6/comments",
+    "author": null,
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4c78eb4a9199631fe94845cb3fbd6376aae1251d",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/4c78eb4a9199631fe94845cb3fbd6376aae1251d",
+        "html_url": "https://github.com/crash-utility/crash/commit/4c78eb4a9199631fe94845cb3fbd6376aae1251d"
+      }
+    ]
+  },
+  {
+    "sha": "4c78eb4a9199631fe94845cb3fbd6376aae1251d",
+    "node_id": "C_kwDOAPkhFdoAKDRjNzhlYjRhOTE5OTYzMWZlOTQ4NDVjYjNmYmQ2Mzc2YWFlMTI1MWQ",
+    "commit": {
+      "author": {
+        "name": "Alexander Gordeev",
+        "email": "agordeev@linux.ibm.com",
+        "date": "2023-11-29T12:47:35Z"
+      },
+      "committer": {
+        "name": "Kazuhito Hagio",
+        "email": "k-hagio-ab@nec.com",
+        "date": "2023-12-12T02:33:32Z"
+      },
+      "message": "s390x: fix virtual vs physical address confusion\n\nPhysical and virtual addresses are the same on S390X.\nThat led to missing to use PTOV and VTOP macros where\nthey actually expected.\n\nSigned-off-by: Alexander Gordeev <agordeev@linux.ibm.com>",
+      "tree": {
+        "sha": "716d10f5a6f9ba1c8885ff094b79afa6fa4bad95",
+        "url": "https://api.github.com/repos/crash-utility/crash/git/trees/716d10f5a6f9ba1c8885ff094b79afa6fa4bad95"
+      },
+      "url": "https://api.github.com/repos/crash-utility/crash/git/commits/4c78eb4a9199631fe94845cb3fbd6376aae1251d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/crash-utility/crash/commits/4c78eb4a9199631fe94845cb3fbd6376aae1251d",
+    "html_url": "https://github.com/crash-utility/crash/commit/4c78eb4a9199631fe94845cb3fbd6376aae1251d",
+    "comments_url": "https://api.github.com/repos/crash-utility/crash/commits/4c78eb4a9199631fe94845cb3fbd6376aae1251d/comments",
+    "author": null,
+    "committer": {
+      "login": "k-hagio",
+      "id": 11580318,
+      "node_id": "MDQ6VXNlcjExNTgwMzE4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11580318?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/k-hagio",
+      "html_url": "https://github.com/k-hagio",
+      "followers_url": "https://api.github.com/users/k-hagio/followers",
+      "following_url": "https://api.github.com/users/k-hagio/following{/other_user}",
+      "gists_url": "https://api.github.com/users/k-hagio/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/k-hagio/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/k-hagio/subscriptions",
+      "organizations_url": "https://api.github.com/users/k-hagio/orgs",
+      "repos_url": "https://api.github.com/users/k-hagio/repos",
+      "events_url": "https://api.github.com/users/k-hagio/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/k-hagio/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2e513114e7d77fadc88011f186ef943ccf397d35",
+        "url": "https://api.github.com/repos/crash-utility/crash/commits/2e513114e7d77fadc88011f186ef943ccf397d35",
+        "html_url": "https://github.com/crash-utility/crash/commit/2e513114e7d77fadc88011f186ef943ccf397d35"
+      }
+    ]
+  }
+]

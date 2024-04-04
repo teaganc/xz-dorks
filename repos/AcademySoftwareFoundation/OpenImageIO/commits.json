@@ -1,0 +1,2372 @@
+[
+  {
+    "sha": "fc5a454a9c26714060e462bbd19b5db8174a353d",
+    "node_id": "C_kwDOABQtLNoAKGZjNWE0NTRhOWMyNjcxNDA2MGU0NjJiYmQxOWI1ZGI4MTc0YTM1M2Q",
+    "commit": {
+      "author": {
+        "name": "EmilDohne",
+        "email": "86836589+EmilDohne@users.noreply.github.com",
+        "date": "2024-04-02T16:59:29Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-02T16:59:29Z"
+      },
+      "message": "feat(psd): Add support for 16- and 32-bit Photoshop file reads (#4208)\n\nAs mentioned in #4205, #3900 and\r\nhttps://github.com/AcademySoftwareFoundation/OpenImageIO/discussions/3910#discussioncomment-8913737\r\nOpenImageIO previously did not support reading of 16- and 32-bit files\r\nbeyond their merged image data section. I have now implemented this by:\r\n\r\n1. Adding support for reading layer info from the \"Lr16\" and \"Lr32\"\r\nTagged Blocks as well as adding additional checks to the regular layer\r\ninfo section\r\n2. Implemented the Zip and ZipPrediction compression codec which is\r\nrequired to read these files as that is photoshops preferred compression\r\ncodec for those bitdepths\r\n\r\nDue to the way the Zip data is stored (per channel but not per scanline)\r\nthe current implementation reads the whole channel into a buffer which\r\nis then memcpy'd from by calls to `read_native_scanline()`. The buffer\r\ngets cleared on deletion of the `PSDInput` object\r\n\r\n---------\r\n\r\nSigned-off-by: EmilDohne <86836589+EmilDohne@users.noreply.github.com>\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>\r\nCo-authored-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "c2d6133e86f2067c73ad2fcc11c423f7b073c66a",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/c2d6133e86f2067c73ad2fcc11c423f7b073c66a"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/fc5a454a9c26714060e462bbd19b5db8174a353d",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDDlxCRC1aQ7uu5UhlAAAqS4QACyBPu7VuAUvfdDu7hr2Cq6G\nbBXllGzJGpwvU4juYPWAnnwVNQgXhBGwGG0PC6zdQtBtKY0sA+YCwh2MIw3z0Sro\nmGQUYmDJ/vQzcJqFRZAl9aLGIE6sDHl88xcxS+bZr4QM4Po8xmpDM8br61Mq5Vib\nf6HAfB2Ol/30ARaMuXDhiqifxGvvwlWDi2GQdCwE4vrdEYTNiuFgj6M1LNUNcvta\nVXqeqJMdQH/8z7y9sZSUAs1DxmtBauDqxNozVaqWR0nlKz9FtefV1l54ZAMnG2U4\nC/99+lonHbpa+qjku11PCFE5nOnViLy8jRVdUwtMvANCi9oj1oqTJW3edvZljHPl\nyCROeyMHi8UFMIoPGkV2JdzfxTD56xaOfhP69ENFwavrAbeXryXyUQItD0yZe0fE\nIVOcwqnykkFp7ZGEDK/7fI5uKkafuu1vFtFdqKNkylyKagSZnIqxGQpuRgGpTyOt\nPKPVt67RzkaHITsQ8FgYRFWNyyNlp+SIj/lAdSJwMs1SrKU4U+Ut8Du3SMbJhfJF\nvCESt6eoRXZ5lryTwXTuwY4JCvSwKCjebPYS/MBzrTBz6ygKuyNEYfIEccGUw1EC\neANqC5VeHqlNcyHRFFf4SozWB+MToOprgnA8A5XPAENEfDQLLoJqVYg5dcSTQkTC\nmhD4VRxzmbVR5uBHBxLn\n=xv2v\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree c2d6133e86f2067c73ad2fcc11c423f7b073c66a\nparent 2ba88a7c11adc459d8feff55b53669030a9d5283\nauthor EmilDohne <86836589+EmilDohne@users.noreply.github.com> 1712077169 +0200\ncommitter GitHub <noreply@github.com> 1712077169 -0700\n\nfeat(psd): Add support for 16- and 32-bit Photoshop file reads (#4208)\n\nAs mentioned in #4205, #3900 and\r\nhttps://github.com/AcademySoftwareFoundation/OpenImageIO/discussions/3910#discussioncomment-8913737\r\nOpenImageIO previously did not support reading of 16- and 32-bit files\r\nbeyond their merged image data section. I have now implemented this by:\r\n\r\n1. Adding support for reading layer info from the \"Lr16\" and \"Lr32\"\r\nTagged Blocks as well as adding additional checks to the regular layer\r\ninfo section\r\n2. Implemented the Zip and ZipPrediction compression codec which is\r\nrequired to read these files as that is photoshops preferred compression\r\ncodec for those bitdepths\r\n\r\nDue to the way the Zip data is stored (per channel but not per scanline)\r\nthe current implementation reads the whole channel into a buffer which\r\nis then memcpy'd from by calls to `read_native_scanline()`. The buffer\r\ngets cleared on deletion of the `PSDInput` object\r\n\r\n---------\r\n\r\nSigned-off-by: EmilDohne <86836589+EmilDohne@users.noreply.github.com>\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>\r\nCo-authored-by: Larry Gritz <lg@larrygritz.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/fc5a454a9c26714060e462bbd19b5db8174a353d",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/fc5a454a9c26714060e462bbd19b5db8174a353d",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/fc5a454a9c26714060e462bbd19b5db8174a353d/comments",
+    "author": {
+      "login": "EmilDohne",
+      "id": 86836589,
+      "node_id": "MDQ6VXNlcjg2ODM2NTg5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86836589?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/EmilDohne",
+      "html_url": "https://github.com/EmilDohne",
+      "followers_url": "https://api.github.com/users/EmilDohne/followers",
+      "following_url": "https://api.github.com/users/EmilDohne/following{/other_user}",
+      "gists_url": "https://api.github.com/users/EmilDohne/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/EmilDohne/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/EmilDohne/subscriptions",
+      "organizations_url": "https://api.github.com/users/EmilDohne/orgs",
+      "repos_url": "https://api.github.com/users/EmilDohne/repos",
+      "events_url": "https://api.github.com/users/EmilDohne/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/EmilDohne/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2ba88a7c11adc459d8feff55b53669030a9d5283",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/2ba88a7c11adc459d8feff55b53669030a9d5283",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/2ba88a7c11adc459d8feff55b53669030a9d5283"
+      }
+    ]
+  },
+  {
+    "sha": "2ba88a7c11adc459d8feff55b53669030a9d5283",
+    "node_id": "C_kwDOABQtLNoAKDJiYTg4YTdjMTFhZGM0NTlkOGZlZmY1NWI1MzY2OTAzMGE5ZDUyODM",
+    "commit": {
+      "author": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-04-02T01:20:10Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-02T01:20:10Z"
+      },
+      "message": "ci: Fix broken Windows CI by building our own libtiff (#4214)\n\nWindows CI was failing because it couldn't get a proper libtiff from\r\nVcPkg, which in turn is because lzma is a dependency of the libtiff\r\nbuild in VcPkg, and for the time being, it looks like VcPgk is failing\r\nto get lzma which is part of the big xz debacle of 2024.\r\n\r\nSo work around for now by just building our own libtiff rather than\r\nrelying on VcPkg. Seems to work fine.\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "042c72655703636d9877375b7c8f0ada59a2b45a",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/042c72655703636d9877375b7c8f0ada59a2b45a"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/2ba88a7c11adc459d8feff55b53669030a9d5283",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmC11KCRC1aQ7uu5UhlAAA72IQAB0APhWA921miYXYG+3jrMEG\n2ojv5uV0nquv1AMaqlfWuEyggEoX5Th/Xf+mPCOc2uz3BdDQLmh2WHZNnh3yP8ZP\nNqVz8thW6jTZ4QBpxJWFDipuSqfbgmWHoVB5Vy3Bv2vgiQRtrmKgVrCqxZnZhKeO\nCKZzaC6CbR2eVHCK5veen9sz/1sus+/mG3PCHTXFQFFLiuDyxYf8yS/7xQJKVNxc\nK+VJZ2I2yx+HLSMrl/v2JSP3nkOuJSqC09r89WH9xlE9oZAtixsazwa3/69lbwol\nyBZOkhKjiJihFQ80EAOnmhzoNNpXGwfxdq9Xq1ia/3N+EF8wRUdSOKH86hcqBdAw\n/vNh3e8yJRDr2CpunDCOBN3C40K35Tt/452ldFQyUOFS7G3Eye54tA2yAPr3hOqm\nTcr3ikrFh8OGsme5sS/1i1+DGkaQMGTpVPiLSSyBUuMMQdYfuQkzVz50bvTHL3PA\nDi3WkIRsEwiCrLrGDPF2EXZ0fG2ypQ6JKLIZTEiZZ4qQs8Xu7NjRo4vCzVHg900q\nsjqMapF/eLosgrk92EqGsjn8YQ8L7LUJdxBuTpINlqIrxXxEpmCiZZd4JX45ThOu\nSOsTjfP5f1ttDWqqGQuCgBP2DCaMpsD9IgxDH5UWroHEe+IdCygYA3DLHkamRO11\nIkngF2kW/OWpjoMyIFXq\n=YCNI\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 042c72655703636d9877375b7c8f0ada59a2b45a\nparent 7a06ba38c3c795ac0d9fa160c5458e6f896fd564\nauthor Larry Gritz <lg@larrygritz.com> 1712020810 -0700\ncommitter GitHub <noreply@github.com> 1712020810 -0700\n\nci: Fix broken Windows CI by building our own libtiff (#4214)\n\nWindows CI was failing because it couldn't get a proper libtiff from\r\nVcPkg, which in turn is because lzma is a dependency of the libtiff\r\nbuild in VcPkg, and for the time being, it looks like VcPgk is failing\r\nto get lzma which is part of the big xz debacle of 2024.\r\n\r\nSo work around for now by just building our own libtiff rather than\r\nrelying on VcPkg. Seems to work fine.\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/2ba88a7c11adc459d8feff55b53669030a9d5283",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/2ba88a7c11adc459d8feff55b53669030a9d5283",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/2ba88a7c11adc459d8feff55b53669030a9d5283/comments",
+    "author": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7a06ba38c3c795ac0d9fa160c5458e6f896fd564",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/7a06ba38c3c795ac0d9fa160c5458e6f896fd564",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/7a06ba38c3c795ac0d9fa160c5458e6f896fd564"
+      }
+    ]
+  },
+  {
+    "sha": "7a06ba38c3c795ac0d9fa160c5458e6f896fd564",
+    "node_id": "C_kwDOABQtLNoAKDdhMDZiYTM4YzNjNzk1YWMwZDlmYTE2MGM1NDU4ZTZmODk2ZmQ1NjQ",
+    "commit": {
+      "author": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-04-01T21:55:38Z"
+      },
+      "committer": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-04-01T21:55:38Z"
+      },
+      "message": "Update ABI reference commit\n\nSigned-off-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "2d3eed941f3c23a9bca39a625fa5a423e18456d6",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/2d3eed941f3c23a9bca39a625fa5a423e18456d6"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/7a06ba38c3c795ac0d9fa160c5458e6f896fd564",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/7a06ba38c3c795ac0d9fa160c5458e6f896fd564",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/7a06ba38c3c795ac0d9fa160c5458e6f896fd564",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/7a06ba38c3c795ac0d9fa160c5458e6f896fd564/comments",
+    "author": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0caf97bc5faeb239a7179a5e604ea5af86f304f0",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/0caf97bc5faeb239a7179a5e604ea5af86f304f0",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/0caf97bc5faeb239a7179a5e604ea5af86f304f0"
+      }
+    ]
+  },
+  {
+    "sha": "0caf97bc5faeb239a7179a5e604ea5af86f304f0",
+    "node_id": "C_kwDOABQtLNoAKDBjYWY5N2JjNWZhZWIyMzlhNzE3OWE1ZTYwNGVhNWFmODZmMzA0ZjA",
+    "commit": {
+      "author": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-04-01T19:46:10Z"
+      },
+      "committer": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-04-01T19:46:10Z"
+      },
+      "message": "Bump master version number to prepare for more compat-breaking changes\n\nSigned-off-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "8bbe26716b93d8e9d450f1bbc98f1e1477f07434",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/8bbe26716b93d8e9d450f1bbc98f1e1477f07434"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/0caf97bc5faeb239a7179a5e604ea5af86f304f0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/0caf97bc5faeb239a7179a5e604ea5af86f304f0",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/0caf97bc5faeb239a7179a5e604ea5af86f304f0",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/0caf97bc5faeb239a7179a5e604ea5af86f304f0/comments",
+    "author": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2fd4c92ed6ea6d121076f6a16d4011a5602f8044",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/2fd4c92ed6ea6d121076f6a16d4011a5602f8044",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/2fd4c92ed6ea6d121076f6a16d4011a5602f8044"
+      }
+    ]
+  },
+  {
+    "sha": "2fd4c92ed6ea6d121076f6a16d4011a5602f8044",
+    "node_id": "C_kwDOABQtLNoAKDJmZDRjOTJlZDZlYTZkMTIxMDc2ZjZhMTZkNDAxMWE1NjAyZjgwNDQ",
+    "commit": {
+      "author": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-04-01T19:16:22Z"
+      },
+      "committer": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-04-01T19:16:24Z"
+      },
+      "message": "CHANGES\n\nSigned-off-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "df8f84df42e3d4524aa4a0d04979663439b61cbb",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/df8f84df42e3d4524aa4a0d04979663439b61cbb"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/2fd4c92ed6ea6d121076f6a16d4011a5602f8044",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/2fd4c92ed6ea6d121076f6a16d4011a5602f8044",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/2fd4c92ed6ea6d121076f6a16d4011a5602f8044",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/2fd4c92ed6ea6d121076f6a16d4011a5602f8044/comments",
+    "author": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "004a04fc1d5f5a949598b18978f8f960fc604d1b",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/004a04fc1d5f5a949598b18978f8f960fc604d1b",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/004a04fc1d5f5a949598b18978f8f960fc604d1b"
+      }
+    ]
+  },
+  {
+    "sha": "004a04fc1d5f5a949598b18978f8f960fc604d1b",
+    "node_id": "C_kwDOABQtLNoAKDAwNGEwNGZjMWQ1ZjVhOTQ5NTk4YjE4OTc4ZjhmOTYwZmM2MDRkMWI",
+    "commit": {
+      "author": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-03-31T03:32:19Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-31T03:32:19Z"
+      },
+      "message": "fix: Restore internals of strhash to compile on 32 bit architectures (#4213)\n\nFixes #4212\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "4e29d97ceef37bd3260a19e69768daa20d7f0c8e",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/4e29d97ceef37bd3260a19e69768daa20d7f0c8e"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/004a04fc1d5f5a949598b18978f8f960fc604d1b",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmCNlDCRC1aQ7uu5UhlAAA79MQAG57lBF+cfDlzPCEp8AWGH7I\nIMNMZrCSlhwYC5VZnUVCLpz/dFmnW7TshHct3VwSE917bWq/bSNvtp2421JdFsh7\n/MZg21IpzWlA+GdeTy9pywST1+VZg+PbtMN5h5YeuKWRAsq2LrNJfZw+jaIZQtub\nlba2hQJ4E643uhJHCbGPUPMhivrTgX1B8q0nI2jKZLxouenT39s2wYhaxVNpVJvf\nTHg5dqlAGhTYx3qgdBxz1lRvyoP2NNjiCW3Gtd88s8TxSBLB4oYkYe2NbYP3Abe/\nXkNwGFBuOtfn4fQHh2cOaw7FAXpnmn0WASjQ+VeqadHRWdswJAnhZlNTivBYtXZd\nyv9LcEAAb+uK8L0UyrvBOOgIq2Z2mK5FnGlpoY0G0p4G6vNsSPmqInJfIQu/i2nl\nH4BEi9CuhyKXYaW9+0UmYe2VGroZqPAjSnoCu1k0FK6RGMjyMdsUQKZQnkeR9Jd1\n31rWn8lnw7h39g7wgeen5dkmxR/o6w7+DrXNqPTk6VDCW8cSLyZbELmt3DZAp6JX\n69mK5b7d1JLHcTpO4NTIjx6hMjSnQPd/6Q+prIZgZHPNrFuItAILbJiVoENqpyuc\ndWAAgHRtypy6uv8fPEcrJZRQZ0odzTA1mZ3qyVVMhx9WAgxPF+/qN9eWOJFZgvIO\n82VwgnNbmF02/WkkUu42\n=+C5M\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 4e29d97ceef37bd3260a19e69768daa20d7f0c8e\nparent 41eee61835f0705f239a9fef0a3ac4a3cd3b570e\nauthor Larry Gritz <lg@larrygritz.com> 1711855939 -0700\ncommitter GitHub <noreply@github.com> 1711855939 -0700\n\nfix: Restore internals of strhash to compile on 32 bit architectures (#4213)\n\nFixes #4212\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/004a04fc1d5f5a949598b18978f8f960fc604d1b",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/004a04fc1d5f5a949598b18978f8f960fc604d1b",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/004a04fc1d5f5a949598b18978f8f960fc604d1b/comments",
+    "author": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "41eee61835f0705f239a9fef0a3ac4a3cd3b570e",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/41eee61835f0705f239a9fef0a3ac4a3cd3b570e",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/41eee61835f0705f239a9fef0a3ac4a3cd3b570e"
+      }
+    ]
+  },
+  {
+    "sha": "41eee61835f0705f239a9fef0a3ac4a3cd3b570e",
+    "node_id": "C_kwDOABQtLNoAKDQxZWVlNjE4MzVmMDcwNWYyMzlhOWZlZjBhM2FjNGEzY2QzYjU3MGU",
+    "commit": {
+      "author": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-03-30T15:22:00Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-30T15:22:00Z"
+      },
+      "message": "Fix: repair bug in Filesystem::unique_path on Windows (#4211)\n\nFixes #4210\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "2e86941e029615a6bb08dc374b736686527b82c2",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/2e86941e029615a6bb08dc374b736686527b82c2"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/41eee61835f0705f239a9fef0a3ac4a3cd3b570e",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmCC4YCRC1aQ7uu5UhlAAAANsQAD2XVIzFtvK1MWMMGbeNJA/V\nwTP1ExdxVNbpjHxcUYHt8xs36H1tV3vdBYNL6asPaqLEEQMsAy1QWk4CM4Ls2LeV\nbCSd9x1izHncF3dOkRa/55lOyQChgBrpURqi257lRgSh/I9Wmo07S9VZCqdA0GcV\njwp2Wf8wPYlkdt6HBEYg0qX/IeavotFp5ZsGH/yHm8aeqnZYF6qz8LAhQrwiaRkZ\nfobTwsmky669HgJilam6ntpIfjf9P2uPoMV7LhHXwZCoKfAzbFO9qTroY6D0ywMt\nGxGYsdSMpGMh/HWQSYVErHjosD/b0+X+Igg8RM7Md1+tpHlU6jrNAuHL6Odg7O+I\nfeUNRK/SeMI+MnYRcCJe5Z5Fes/6PRUarxVGzKSfr5XlSp4j9gNf168/HH1kb+Gp\n8o4vlp6JfzHrO5LgukiESo9TstrrDT7k9UwR0wI8RO8jrJY0ZAPdVpE0dEIvtOZ8\nd3MOEpjhGdDbOGgRpOOKsyE4UnKSZLDGDbI1pwl4ytc5llQS/Sc6KJsBaF1eowCc\ns8c7tyhnk2begdNkQrfLqFQEiowK8Fs7xnZpx7wHuKplTHnQiSlf677xQkE8JPVO\nUH27Os1bUeH8Mz/OFvucQt9DzvuEiXkhWBYUVpIs6cKE6QnigA25xczvrulWFwbl\n0PjLdBkC52nP37R0uKvk\n=yPrN\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 2e86941e029615a6bb08dc374b736686527b82c2\nparent dd9eb9b6b836d5e2967c222158c865ecaf7b9266\nauthor Larry Gritz <lg@larrygritz.com> 1711812120 -0700\ncommitter GitHub <noreply@github.com> 1711812120 -0700\n\nFix: repair bug in Filesystem::unique_path on Windows (#4211)\n\nFixes #4210\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/41eee61835f0705f239a9fef0a3ac4a3cd3b570e",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/41eee61835f0705f239a9fef0a3ac4a3cd3b570e",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/41eee61835f0705f239a9fef0a3ac4a3cd3b570e/comments",
+    "author": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "dd9eb9b6b836d5e2967c222158c865ecaf7b9266",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/dd9eb9b6b836d5e2967c222158c865ecaf7b9266",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/dd9eb9b6b836d5e2967c222158c865ecaf7b9266"
+      }
+    ]
+  },
+  {
+    "sha": "dd9eb9b6b836d5e2967c222158c865ecaf7b9266",
+    "node_id": "C_kwDOABQtLNoAKGRkOWViOWI2YjgzNmQ1ZTI5NjdjMjIyMTU4Yzg2NWVjYWY3YjkyNjY",
+    "commit": {
+      "author": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-03-29T17:04:00Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-29T17:04:00Z"
+      },
+      "message": "build: have checked_find_package accept CONFIG, fix DCMTK (#4209)\n\nAdd another optional flag to our checked_find_package cmake function --\r\nCONFIG means only accept a config for the package, never use a\r\nFindBlah.cmake module.\r\n\r\n(Reminder: this is in contrast to the existing PREFER_CONFIG option,\r\nwhich tries a config first, then if that fails, will try the module, and\r\nalso different from the default if neither is used, which is to prefer\r\nthe module over the exported config.)\r\n\r\nAnd rig our search for DCMTK to use the new CONFIG option. There is a\r\nFindDCMTK.cmake modules that comes with cmake, and for at least some\r\nversions of cmake, it seems subtly broken in such a way that actually\r\nwrecks our finding of other packages properly.\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "7bcc3212f8899fae5c7393ef552dc059cc82c660",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/7bcc3212f8899fae5c7393ef552dc059cc82c660"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/dd9eb9b6b836d5e2967c222158c865ecaf7b9266",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmBvSACRC1aQ7uu5UhlAAAa1QQAGIi1344ux2PntioFvXoEabS\nZRMgBkVoxOl6GrKj/RIeihGtf4oDp3D+mlyq+VgRnaWs2dTcp7Xue755EpF0C9ek\n/FJuXOj2K8mWv1yjAyXa4ycRR1zsyQMEXdrDUipOFC0p7S2hWvrOUrRCS+wryvkY\ntAwrtO3+kvZV3RGHb/xVAOs9Uq2bQrbhj5xE8cfITLvzT8WJWXUZ95md8+3G+cpK\nraEH71AwxzUpWWE31Mt3TMhE8AfZfiV28lCGU2Da5DN/DY+aROvQDOYAvQyQ0AhJ\n/py9kccASOkAQLm7uB38qX/vLpq7ZUvQm0US3S8hEiNi61323t+vxRgZht7lp/3+\nraa5CPohMpnGo4Xkf78fiWvCshYcuk4W90xA27rxwAh4e5Kv/QvqNFwYrCx72grS\nMizE9tQEFSrJ8lfzs17o+ZHWhYKGYMTeNS54E6iD0cAB8lICJIlG9hDfyqMMrDhx\n04aMtzSXvuxpu3DRpeGfrQ9C8Z5aiQeQyzqpQnvSCzfmo5c/lGIDYyFCP8UyLM/i\n+wGfymhSbC4o0yKSAQktddBNse4SDOoFUpvm2KIAr33FDljBDFho5Pl3Xp5eT+gg\n+jpSEuZhdMy/WyE6gMeSAB2MjRoh+A0OrDISyuaQJHkaX8N9g+snnEgU34280hcX\nzaotewRn17d20+wBL/g2\n=8OOm\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 7bcc3212f8899fae5c7393ef552dc059cc82c660\nparent 617965842f06e4df138f37c0e55765f33df7484e\nauthor Larry Gritz <lg@larrygritz.com> 1711731840 -0700\ncommitter GitHub <noreply@github.com> 1711731840 -0700\n\nbuild: have checked_find_package accept CONFIG, fix DCMTK (#4209)\n\nAdd another optional flag to our checked_find_package cmake function --\r\nCONFIG means only accept a config for the package, never use a\r\nFindBlah.cmake module.\r\n\r\n(Reminder: this is in contrast to the existing PREFER_CONFIG option,\r\nwhich tries a config first, then if that fails, will try the module, and\r\nalso different from the default if neither is used, which is to prefer\r\nthe module over the exported config.)\r\n\r\nAnd rig our search for DCMTK to use the new CONFIG option. There is a\r\nFindDCMTK.cmake modules that comes with cmake, and for at least some\r\nversions of cmake, it seems subtly broken in such a way that actually\r\nwrecks our finding of other packages properly.\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/dd9eb9b6b836d5e2967c222158c865ecaf7b9266",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/dd9eb9b6b836d5e2967c222158c865ecaf7b9266",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/dd9eb9b6b836d5e2967c222158c865ecaf7b9266/comments",
+    "author": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "617965842f06e4df138f37c0e55765f33df7484e",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/617965842f06e4df138f37c0e55765f33df7484e",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/617965842f06e4df138f37c0e55765f33df7484e"
+      }
+    ]
+  },
+  {
+    "sha": "617965842f06e4df138f37c0e55765f33df7484e",
+    "node_id": "C_kwDOABQtLNoAKDYxNzk2NTg0MmYwNmU0ZGYxMzhmMzdjMGU1NTc2NWYzM2RmNzQ4NGU",
+    "commit": {
+      "author": {
+        "name": "Chris Hellmuth",
+        "email": "chellmuth@gmail.com",
+        "date": "2024-03-28T18:39:05Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-28T18:39:05Z"
+      },
+      "message": "texture.h: Overload decode_wrapmode to support ustringhash (#4207)\n\nFor OSL, we want to be able to decode a wrapmode directly from a\r\nustringhash without having to expensively convert it to ustring.\r\n\r\nSigned-off-by: Chris Hellmuth <chellmuth@gmail.com>",
+      "tree": {
+        "sha": "5e0ae099040b1957b945b1df9d80ad1b20bc8304",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/5e0ae099040b1957b945b1df9d80ad1b20bc8304"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/617965842f06e4df138f37c0e55765f33df7484e",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmBblJCRC1aQ7uu5UhlAAATAQQAFWBXhXbhpRznzjoX9tdt2oQ\nSeI51ngTkaq9y2WaoAzMKEJQuT0O0/NHm8Od0icRMbnXB7LnEzulJDnTK5hgZtkj\nInEtfXDmgSdw9wBvZcHwI8J2E+Ka7om32niLf3uQHZGN5QDCy/b9rkWviW0mJZZd\nmBj2Xlnxnvshf7q8weN/Dsmg+aZU7/2WgyOXtjUMrs5DfQhAMzP4IhoHuLWy8Rzz\n4bt0dFublvrEM8eItCh1otGhUwkMfn2Geb1V0xAfWHsApJpDtgRZ+NXSRVrsA2rs\nPxlQ9nmu1S/n7/jjUGPgAKTMRWOSYcIrHzz+cg1xOoc8N3FjpJPNuUXX8tsRYFEd\n4nhmEKNU+O35D971HFFx1qznPnAshxEiguxbHXlk5anBNL8EbygNTN7Ezncn7sxY\n5NerlO3jMxfdGcnqz6Dlk8w1Gy9vdwP2IgfcXWiYPYhZdMwE9FHuYmXTO/ELf3zs\npW6s0qU98sgM4YK1BP5KMh1p+r0IneMlCmG7KxyVoKUswHqGUuFix733L2HiLrbq\nTMOyfC/cvipeLUqQwbMhTjJz8J/H7fFhojQjbi66rq5uHANh/7bRLtIhRc4vhD3L\n2+ipxz9U+MZvXIczekc7fDFSujL5uyzKw4YeZug0/i2hprZf+DCoDUgUBg8RHJt4\nto6qXFqTehcNidfsVfda\n=7BSY\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 5e0ae099040b1957b945b1df9d80ad1b20bc8304\nparent 22ef9b2887f13ffab1109573925182aeaf0e4f10\nauthor Chris Hellmuth <chellmuth@gmail.com> 1711651145 -0700\ncommitter GitHub <noreply@github.com> 1711651145 -0700\n\ntexture.h: Overload decode_wrapmode to support ustringhash (#4207)\n\nFor OSL, we want to be able to decode a wrapmode directly from a\r\nustringhash without having to expensively convert it to ustring.\r\n\r\nSigned-off-by: Chris Hellmuth <chellmuth@gmail.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/617965842f06e4df138f37c0e55765f33df7484e",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/617965842f06e4df138f37c0e55765f33df7484e",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/617965842f06e4df138f37c0e55765f33df7484e/comments",
+    "author": {
+      "login": "chellmuth",
+      "id": 23771,
+      "node_id": "MDQ6VXNlcjIzNzcx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/23771?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/chellmuth",
+      "html_url": "https://github.com/chellmuth",
+      "followers_url": "https://api.github.com/users/chellmuth/followers",
+      "following_url": "https://api.github.com/users/chellmuth/following{/other_user}",
+      "gists_url": "https://api.github.com/users/chellmuth/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/chellmuth/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/chellmuth/subscriptions",
+      "organizations_url": "https://api.github.com/users/chellmuth/orgs",
+      "repos_url": "https://api.github.com/users/chellmuth/repos",
+      "events_url": "https://api.github.com/users/chellmuth/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/chellmuth/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "22ef9b2887f13ffab1109573925182aeaf0e4f10",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/22ef9b2887f13ffab1109573925182aeaf0e4f10",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/22ef9b2887f13ffab1109573925182aeaf0e4f10"
+      }
+    ]
+  },
+  {
+    "sha": "22ef9b2887f13ffab1109573925182aeaf0e4f10",
+    "node_id": "C_kwDOABQtLNoAKDIyZWY5YjI4ODdmMTNmZmFiMTEwOTU3MzkyNTE4MmFlYWYwZTRmMTA",
+    "commit": {
+      "author": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-03-27T16:47:51Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-27T16:47:51Z"
+      },
+      "message": "fix: Filesystem::unique_path wasn't using the unicode rectified string (#4203)\n\nSigned-off-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "97c00b8c31e863925ed10f074129593d1d49b590",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/97c00b8c31e863925ed10f074129593d1d49b590"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/22ef9b2887f13ffab1109573925182aeaf0e4f10",
+      "comment_count": 1,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmBE23CRC1aQ7uu5UhlAAAitwQABBMqIUw8ZZM30IucLRtOLRH\nVxEW0OQGCK1UoPL31VKmQaHVIYGcbts+zy8SIY8agO2kz/avPPgKd9XwDfjx4xGQ\n68HqQ5GDO2jbknMMVgyngsjO6FlOeOI9wt8QuqHEXrH8E+jrZN5vCPmCYSVF7MJh\nvJd0+vLNDGzmzoe35eRuA3o5U+BrUHfJq7Ymn42UYyzHmCT4IjbffY40/YjqS5Jj\nJG/m1QOrtZdulq3JE1+F86bBDqT8AcwHlwNP8UaSFwdMC6Pw2pU+zI4gA1olv8+K\nR4JhTBXFYSC4IB9vRwBLBkESfBlewM6dlrAAw0eroZILxfaq6f3WJdQ+NFGl3KN1\nDfpEIy66SPHyawngqYuHpMkXog5/oV8f4bojdJY5aSvJuoDvtIyCZe/TB/vLx0ob\nWYdGnuNuPA82ZCDBCO1dq37vMxOCGrHbZ4NF0xUZVbEBBW6A2cKRw8S1MiiavioJ\nfvdtbzpzXa7M9MIEcENDf1RpAcdaHJJIidlVn/f6VK2+m5+eJc2LH/COPV/OLHHF\nRrWSSQ0QSUNcOo4jyjnwVBpwrCCGxiddi+beWM80kWRcAnpv/3TWepoCOR0fldK2\nm/BDz3Qd2wmfwSgb0iJAZeZO+0kwrkVlxfdWwpkHxyfntmqXKTmlvYKuu95D3BdU\nX6M1Ca9afFtwG/yn6V17\n=FZOf\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 97c00b8c31e863925ed10f074129593d1d49b590\nparent 45a91c927ff31aa645aaa72aee7722c7272f488e\nauthor Larry Gritz <lg@larrygritz.com> 1711558071 -0700\ncommitter GitHub <noreply@github.com> 1711558071 -0700\n\nfix: Filesystem::unique_path wasn't using the unicode rectified string (#4203)\n\nSigned-off-by: Larry Gritz <lg@larrygritz.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/22ef9b2887f13ffab1109573925182aeaf0e4f10",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/22ef9b2887f13ffab1109573925182aeaf0e4f10",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/22ef9b2887f13ffab1109573925182aeaf0e4f10/comments",
+    "author": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "45a91c927ff31aa645aaa72aee7722c7272f488e",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/45a91c927ff31aa645aaa72aee7722c7272f488e",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/45a91c927ff31aa645aaa72aee7722c7272f488e"
+      }
+    ]
+  },
+  {
+    "sha": "45a91c927ff31aa645aaa72aee7722c7272f488e",
+    "node_id": "C_kwDOABQtLNoAKDQ1YTkxYzkyN2ZmMzFhYTY0NWFhYTcyYWVlNzcyMmM3MjcyZjQ4OGU",
+    "commit": {
+      "author": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-03-26T20:22:43Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-26T20:22:43Z"
+      },
+      "message": "build: switch to target-based definitions (#4193)\n\nWe had lots of stray usage of add_defintions, add_compile_options,\r\netc.  In modern cmake, this is considered bad form, since it makes\r\nsubprojects pollute the global option lists. A better way is to add\r\nall these to specific targets, so now that's what we do in this PR.\r\nThis should make all the definitions and options we want to set for\r\ncompilng OIIO's code not have any interference with subprojects, or\r\nwith higher-level surrounding projects.\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "6e85f3a4befefe57bc6f63703099a340d00156ef",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/6e85f3a4befefe57bc6f63703099a340d00156ef"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/45a91c927ff31aa645aaa72aee7722c7272f488e",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmAy6TCRC1aQ7uu5UhlAAAOOgQAIykENt67k3OcceIr/7wPPZS\nOhUS3kKZwqB3c6cnDQk6SOzyXV9+xDoxcum3GMQODhKdYGm6mvTIA2y4RbxvQXde\nxf3i/1Eh7u08ODMY6rmyxMOP1iSFRqBZGOnJwU5oSNCq4wwcONag7TEESykP1N5s\n+hh2b5uEJ31x1foQDhzDMeyXI89hzA4eFiPsJceZVCNK+yGhibD2h7IrRKlJkw/a\nWs0Gz/t9Gx02uQPfZrJoynZen2HFVD1x5B7kCYM9KSqypfxRLXYpyV5PKw3yla+4\nghK2lIkXcdc391qrETWW65DNae7xHxCtf9XIhnIezYpaVFTk22KTgbFtFJGx4fK0\n13mi20ZI5l0ug/eh4pNn4TaotfQsbaRsx1adzuPuHbWANf9+V5ZL5DLKUXed8wQ/\nweiJU0IcWXpC43asZR0Mgy/Qgw1GPI/Y8dxDix2nGWv4vxfJinU8nrNsfY6cEbBq\no4sLf0Lp6Xgcp674umAglvYcrP3Q7SyKpoPZFO1XBw4W2cKSHA9FrYdal/N1/vCU\nNVWE3AGdN/hVO0UGwZtvL/xiaFyhYhXYB6UoxETClBXNCR6HcQPtYYVgfWYXcqgl\nQMldQr1ntfahXpkbXW9ZnCyZrTZnJj6TuWoFIHqahCVuzRUj2oBIVFEAVdHYYXO5\nPH4wbC3JtgFg1UB1Q1/W\n=DX0z\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 6e85f3a4befefe57bc6f63703099a340d00156ef\nparent 5217ca361077680964fd9a2e341a30c5b8f0ffba\nauthor Larry Gritz <lg@larrygritz.com> 1711484563 -0700\ncommitter GitHub <noreply@github.com> 1711484563 -0700\n\nbuild: switch to target-based definitions (#4193)\n\nWe had lots of stray usage of add_defintions, add_compile_options,\r\netc.  In modern cmake, this is considered bad form, since it makes\r\nsubprojects pollute the global option lists. A better way is to add\r\nall these to specific targets, so now that's what we do in this PR.\r\nThis should make all the definitions and options we want to set for\r\ncompilng OIIO's code not have any interference with subprojects, or\r\nwith higher-level surrounding projects.\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/45a91c927ff31aa645aaa72aee7722c7272f488e",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/45a91c927ff31aa645aaa72aee7722c7272f488e",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/45a91c927ff31aa645aaa72aee7722c7272f488e/comments",
+    "author": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5217ca361077680964fd9a2e341a30c5b8f0ffba",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/5217ca361077680964fd9a2e341a30c5b8f0ffba",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/5217ca361077680964fd9a2e341a30c5b8f0ffba"
+      }
+    ]
+  },
+  {
+    "sha": "5217ca361077680964fd9a2e341a30c5b8f0ffba",
+    "node_id": "C_kwDOABQtLNoAKDUyMTdjYTM2MTA3NzY4MDk2NGZkOWEyZTM0MWEzMGM1YjhmMGZmYmE",
+    "commit": {
+      "author": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-03-26T20:12:17Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-26T20:12:17Z"
+      },
+      "message": "build: FindOpenColorIO failed to properly set OpenColorIO_VERSION (#4196)\n\n... in the OCIO 1.x case where we relied on our own Find module rather\r\nthan an exported cmake config from OCIO itself. This is desired for\r\nuniformity of naming with the exported configs of the later versions.\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "c0a6a2ced526c97baf0aae4d855fc5d31a9a1a14",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/c0a6a2ced526c97baf0aae4d855fc5d31a9a1a14"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/5217ca361077680964fd9a2e341a30c5b8f0ffba",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmAywhCRC1aQ7uu5UhlAAARz8QAGJulMpIwLwsW9Z2FBcpYpqz\nfaToANqYB/DgyhYoxXtxvJnNjhl8y53OnB38z+kS9k0Wk2BoS1SInDFq6RKvHqVO\np/JMV+qCboclIpwjcSEoax+x1AIo+dwmkTE/KAEM7d/hfGIZd01WZ6I0oWhfV+Hj\nZxJ31iSIXs+ytdXRQr0jYTBD+gkj+j+gGgx+hu86PAf6k5ddPJAnVBp21+I2tyVQ\nEADGHTpPR+HkfrgkYYE+L4lelxFUqiWeT5LmFac4eZgXl9Mx+NPFtTdrjJoNvoFU\nbmk5B0DP+zVP16+Dv/eD3U7SZ1JDbcOK5AZ6juIj33nwXaUzdWqHMS8x9eH0MBQa\n19s3uSxNIh3jLJiLwYh5TEcIOrO0hoPJEcJYs4nO2c3d4D9+lIAzwVYwa04xuU0A\nbBDrOcQ5Fj78sS50wjnk1ibP7khSYFEN8lF2SVe3F6qwc5pI546Guwn4yApPkw9e\nMB2b/v+0fgQtg+Ml1RuG0+xbTKiOhyvEojiu+SIpDQvSLC622TemSPonaZOtGPB3\nHU9+N+8mKaECM4kBazWJtxOb13xJAxCUPV6kv3QVq54IYl9I4OhLgcV58NWFJCz6\naocU+RtWziyl4TIhAaAvT4SL0MbtOp6bKdvk8smU4kv+t728hVJ7vh03UAOA8pHm\n0dbOu8yjM29zLypIN4ER\n=45AN\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree c0a6a2ced526c97baf0aae4d855fc5d31a9a1a14\nparent 2166bba2e8c96f25d1a0993ab2538a4347b10649\nauthor Larry Gritz <lg@larrygritz.com> 1711483937 -0700\ncommitter GitHub <noreply@github.com> 1711483937 -0700\n\nbuild: FindOpenColorIO failed to properly set OpenColorIO_VERSION (#4196)\n\n... in the OCIO 1.x case where we relied on our own Find module rather\r\nthan an exported cmake config from OCIO itself. This is desired for\r\nuniformity of naming with the exported configs of the later versions.\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/5217ca361077680964fd9a2e341a30c5b8f0ffba",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/5217ca361077680964fd9a2e341a30c5b8f0ffba",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/5217ca361077680964fd9a2e341a30c5b8f0ffba/comments",
+    "author": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2166bba2e8c96f25d1a0993ab2538a4347b10649",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/2166bba2e8c96f25d1a0993ab2538a4347b10649",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/2166bba2e8c96f25d1a0993ab2538a4347b10649"
+      }
+    ]
+  },
+  {
+    "sha": "2166bba2e8c96f25d1a0993ab2538a4347b10649",
+    "node_id": "C_kwDOABQtLNoAKDIxNjZiYmEyZThjOTZmMjVkMWEwOTkzYWIyNTM4YTQzNDdiMTA2NDk",
+    "commit": {
+      "author": {
+        "name": "Vlad (Kuzmin) Erium",
+        "email": "libalias@gmail.com",
+        "date": "2024-03-25T16:46:17Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-25T16:46:17Z"
+      },
+      "message": "fix: iv build issues with glTexImage3D (#4202)\n\nglTexImage3D not in QOpenGLFunctions but in QOpenGLExtraFunctions\r\nhttps://github.com/AcademySoftwareFoundation/OpenImageIO/issues/4180\r\n\r\nSigned-off-by: ssh4net <libalias@gmail.com>",
+      "tree": {
+        "sha": "3d07eeefc0c58ee719664ae357cdd7dfdcb5adcf",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/3d07eeefc0c58ee719664ae357cdd7dfdcb5adcf"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/2166bba2e8c96f25d1a0993ab2538a4347b10649",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmAapZCRC1aQ7uu5UhlAAAxm8QACXRA+xjgOwcoqZ2BEvvKDmD\n0bys5E+pcU5cWINYpPLHmCocHIYcVDWTxu6WJcqIvH0Uqls8nw4P29nQ5nQOP3m2\ntJ9MuFmUPx/4Aj6ESJfy+QRIv/CyqFQcE58yjtBJ4YsI1m+iyfXcQBnXXOdIEheH\nocqF5X3o8Y2p6OjsXHv8YsmOQXT4hHEPhn/FLks4NFPEkxBMA4L2dI0ljybI3gPs\nrw7AixGZmUpJmXb/p9KsxN3IMjYh7stWuZ9wW1nyhd41bUze6d3HM7oU+rFxooHt\nJAvsBDcyJoDpFRjE+spEUKAsJ1AMQiB0tWx2fZKzI1gX6w3Yqfig83K/KGP7i3we\ny4K1UHGJhmlbKjsifIFDgLaqGEMsY5CGaapTtskP76O1XjqL7itq0RO/JBPfDyiq\n1lHBDhycwgLtvmkPfZ8YJ523ueUTjaIJvE1XLeJJ2joXPz05vkAgmEHKDlTayd0I\nRh6tNG9d6tX9jq1myMrT0+hvIktUjvu8Eb2wtnP3OD+5RTikjBM1lKQRnIV30Igg\nrZaB3INkOLufDhN+QSenUI+7X2JSKC/GtpR/fuU4zKQmjwMJioYtLbZT/m/aGeOU\nfN+ypxutFSvPOtzG6tuodLxXTEcVutaqWDfTYMu2aSgqlGBJNdqWHj+TI/z9uEpG\n9B0zO9Knt1Hqa6nSwE9B\n=6JzH\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 3d07eeefc0c58ee719664ae357cdd7dfdcb5adcf\nparent 77d2a533401db1e6d54a63c63b24c338b9294dfe\nauthor Vlad (Kuzmin) Erium <libalias@gmail.com> 1711385177 +0900\ncommitter GitHub <noreply@github.com> 1711385177 -0700\n\nfix: iv build issues with glTexImage3D (#4202)\n\nglTexImage3D not in QOpenGLFunctions but in QOpenGLExtraFunctions\r\nhttps://github.com/AcademySoftwareFoundation/OpenImageIO/issues/4180\r\n\r\nSigned-off-by: ssh4net <libalias@gmail.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/2166bba2e8c96f25d1a0993ab2538a4347b10649",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/2166bba2e8c96f25d1a0993ab2538a4347b10649",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/2166bba2e8c96f25d1a0993ab2538a4347b10649/comments",
+    "author": {
+      "login": "ssh4net",
+      "id": 3924000,
+      "node_id": "MDQ6VXNlcjM5MjQwMDA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3924000?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ssh4net",
+      "html_url": "https://github.com/ssh4net",
+      "followers_url": "https://api.github.com/users/ssh4net/followers",
+      "following_url": "https://api.github.com/users/ssh4net/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ssh4net/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ssh4net/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ssh4net/subscriptions",
+      "organizations_url": "https://api.github.com/users/ssh4net/orgs",
+      "repos_url": "https://api.github.com/users/ssh4net/repos",
+      "events_url": "https://api.github.com/users/ssh4net/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ssh4net/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "77d2a533401db1e6d54a63c63b24c338b9294dfe",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/77d2a533401db1e6d54a63c63b24c338b9294dfe",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/77d2a533401db1e6d54a63c63b24c338b9294dfe"
+      }
+    ]
+  },
+  {
+    "sha": "77d2a533401db1e6d54a63c63b24c338b9294dfe",
+    "node_id": "C_kwDOABQtLNoAKDc3ZDJhNTMzNDAxZGIxZTZkNTRhNjNjNjNiMjRjMzM4YjkyOTRkZmU",
+    "commit": {
+      "author": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-03-24T03:21:02Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-24T03:21:02Z"
+      },
+      "message": "chore: more convertion to new string formatting (#4189)\n\nIn this PR, we convert nearly all `sprintf` uses to `format`.\r\n\r\nIt should not change any behavior or compatibility. Nonetheless, I think\r\nthis is destined for master only and won't be backported, to reduce\r\nrisk.\r\n\r\nAlong the way, we add format_to and format_to_n to Strutil.\r\n\r\n---------\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "c8237970fa1667c0d49f01d899bbb8c50ab3355c",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/c8237970fa1667c0d49f01d899bbb8c50ab3355c"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/77d2a533401db1e6d54a63c63b24c338b9294dfe",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl/5weCRC1aQ7uu5UhlAAAYa8QABZigvfUT3rR1QTLKPJgLc9s\n0rvPJi3xyeblZFMdSKDg0Sbza8pbIWmyN6HQ2VHldaXcR7iXn52HznM0yPruz0K7\nS4Lx9vNMDdd9DJfOwX3UCIpW/Kx4ppzdPRJ6Z0gVZRkM2UUECvVBy1mVmB6Cqs1I\nYmX2zs5RLnBwU9puESjJpG8HPOI7SwUJNU580gz4Y6cOUdPJDxkf03IEtTPnR1Cm\nasL1VGYKl5nrIQ5pNjLaK3n/0b02m8gdO92zkz9vSR1h+KE0tnrYPimSYwgpTgqZ\nlXwDNnx3hXIX5bZBZhR+4vtbGhUXbDWGQds4G7sEDZ0TP5GTz+4ReO5Ff/pGxdlZ\n51KIpY6gO8biW0r5M5mmlNexXBH0mO53T7z/sxXWG9HPrwGruiBVK6fb5qpidJBg\nnwasvlZuiyqx5jN886ob0DMAJhFUCE2HnbzHkxZsiILc5UPTlM72eSQ3/BMUh40u\nGBiCCrgpaQJO4mxxH2NLm1r43Kvm2lkhJquGoIc4R+UtISR7XhSMQSPszsVoPrJT\njXdofDrc9NyDJ8TnnUdhAr0DfqWTbjW/VXKrlpUQApbbo1JyuuGlCCL3QlQbrMFf\ns+DeY26LyWX2vzQgth+d1yC9HjvbuZINQN9rUc5dCrbPOOmq0r90Q6qorRqsujiw\nMpNPk24Uj9u7d0/QJzy7\n=rURt\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree c8237970fa1667c0d49f01d899bbb8c50ab3355c\nparent e705c5da1bd18abab994ad81f640e5fe331965bc\nauthor Larry Gritz <lg@larrygritz.com> 1711250462 -0700\ncommitter GitHub <noreply@github.com> 1711250462 -0700\n\nchore: more convertion to new string formatting (#4189)\n\nIn this PR, we convert nearly all `sprintf` uses to `format`.\r\n\r\nIt should not change any behavior or compatibility. Nonetheless, I think\r\nthis is destined for master only and won't be backported, to reduce\r\nrisk.\r\n\r\nAlong the way, we add format_to and format_to_n to Strutil.\r\n\r\n---------\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/77d2a533401db1e6d54a63c63b24c338b9294dfe",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/77d2a533401db1e6d54a63c63b24c338b9294dfe",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/77d2a533401db1e6d54a63c63b24c338b9294dfe/comments",
+    "author": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e705c5da1bd18abab994ad81f640e5fe331965bc",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/e705c5da1bd18abab994ad81f640e5fe331965bc",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/e705c5da1bd18abab994ad81f640e5fe331965bc"
+      }
+    ]
+  },
+  {
+    "sha": "e705c5da1bd18abab994ad81f640e5fe331965bc",
+    "node_id": "C_kwDOABQtLNoAKGU3MDVjNWRhMWJkMThhYmFiOTk0YWQ4MWY2NDBlNWZlMzMxOTY1YmM",
+    "commit": {
+      "author": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-03-24T03:20:01Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-24T03:20:01Z"
+      },
+      "message": "ci: Update scrorecard workflow to fix breakage (#4201)\n\nAlso rename file so it matches what's listed in the file to trigger it.\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "6e49b995f54499aebce62b1d4045d768721d1a18",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/6e49b995f54499aebce62b1d4045d768721d1a18"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/e705c5da1bd18abab994ad81f640e5fe331965bc",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl/5vhCRC1aQ7uu5UhlAAAAssQAEv6CDNB7HMNglqpdNtSUqK4\nqU3Z2RB3FJlmkbKxUIj2tL9BSGcEgj7SHOEPp8CxVgn4brDUvitTca8h8NheNIuT\n6vLs2NUanXPz3w5draasobxc7NT+/QyxwHhfpGN9cYNOOS0LhNSUFXfVZh+08dkV\nua9DlwPyK2WV0OOTlAn0Kgyb/SadtE1F1XW9U3Ez8h659eKdlOqk7wpNrc+YBQEk\nnr1rkH5SxaBT08faSbfMKMbJfDizsmUsWQn6JchGd0kvanIbN/M5PLNNqN9uChVy\npsygF+MT3a5dZFZsUIlpvqtnYGlsN7+f8zV+v0QH27glti02M2BxKgbQej21oG4z\nM6hFHZnd7qqPbYz5l0Jnmr8+Hv1zqSYbXI8uuAu73NCc3luuosjRrNJM5Pahyp8N\nwiFlHQj7AoHgwYQxbg1T04T9QvXCk0qVSQTgLf1Pyk74MuqfUV6R84CxiGHbkhUJ\nayQWkRZE/lA+hhOaxukPp3Kfef5LgD7oMkmnZzIvUA3j/k8TXtZwGrer1I17ztA1\n8UsYROn+hM819Oa+I+EuVl2Z1l3q6fw3YtdLGDh32lxBLUJK2JkZSIyVhL5d9gWF\n7AWDI1eySAwq0aapa18eCgvdBnhC+D2+mI2WwzUpPwoSuSpjzXlXV+NpIH2yUqlV\nAs95wM4OzGlM/BicYZP7\n=+TQP\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 6e49b995f54499aebce62b1d4045d768721d1a18\nparent 4dc04a23cb24ea445408a2f7b78173018e04c0e3\nauthor Larry Gritz <lg@larrygritz.com> 1711250401 -0700\ncommitter GitHub <noreply@github.com> 1711250401 -0700\n\nci: Update scrorecard workflow to fix breakage (#4201)\n\nAlso rename file so it matches what's listed in the file to trigger it.\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/e705c5da1bd18abab994ad81f640e5fe331965bc",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/e705c5da1bd18abab994ad81f640e5fe331965bc",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/e705c5da1bd18abab994ad81f640e5fe331965bc/comments",
+    "author": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4dc04a23cb24ea445408a2f7b78173018e04c0e3",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/4dc04a23cb24ea445408a2f7b78173018e04c0e3",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/4dc04a23cb24ea445408a2f7b78173018e04c0e3"
+      }
+    ]
+  },
+  {
+    "sha": "4dc04a23cb24ea445408a2f7b78173018e04c0e3",
+    "node_id": "C_kwDOABQtLNoAKDRkYzA0YTIzY2IyNGVhNDQ1NDA4YTJmN2I3ODE3MzAxOGUwNGMwZTM",
+    "commit": {
+      "author": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-03-24T02:32:03Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-24T02:32:03Z"
+      },
+      "message": "refactor: Make span default ctr and assignment be `= default` (#4198)\n\nMinor simplification. Also add a few `noexcept` in some places that we\r\ndidn't have them already.\r\n\r\n---------\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "375f994ab877899db96fca5a7da29dfe69989692",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/375f994ab877899db96fca5a7da29dfe69989692"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/4dc04a23cb24ea445408a2f7b78173018e04c0e3",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl/5CjCRC1aQ7uu5UhlAAA09YQAAQfHOxyzpInSWTTWCkzrxeg\njZFKhjkGlRL1OE/8EAO6vpjLqDILGi/1IdF83nXGzfvGGTtvrCSe0gLs/+gmNEyT\nA4gSU7sLTWHV7tGugt4+vvpTwGG9R9ReU+b6HtCFfpGh8NtQoWkxD+XbMdrDBiaJ\nnGuspItFMiAEwRKJI5aDvHpyNvu2RlV1aoEfVTVgL9URsNLPLlkTo5cG7VfnZ/Cm\nlf5eCOUz94hUA0jmYngGdap07EQbaEgYwmMAnmhUgAozyRtsfKZ1xCqSivzVnlKG\nENfeJcWisNfmTD+trLCB6jJu5nSsFy9Ytn4ig1rZvIUOK7qJgiI2zklnDEclEtHS\n/c6K2QbOOP78OD/czckkGsMTtfnPCQkHiaeYIl7ZFBbAOS1ycZsp6pbUS/+SGC9m\nopareneJ9liYDmrAmPExY+xHBBLJyoaiJqqwbkbxWkK3fAKCU7DfkDk4efaHlNv7\ntvZAxw5K/nYk4wnr3O83erEZzQFhePendNVdN7bs0rJLSYHRpf95mI7wCvMt67uR\nF8rxpzjusHorHObdKHhUyVQG1QG6wjWPkGfUa8DmULODjDV3VdBx1c66YjiWrZfb\nh1NoBo4QRRd4FIs1rZDIGdNs6goY+WuiGyCHlj8fhc1sK3bfZtHClggKg/hoWt6a\nIpm9yAS8kuwvYC19QQLc\n=SBHn\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 375f994ab877899db96fca5a7da29dfe69989692\nparent d743c6152d29ca60892921c694f36e34d778a7ce\nauthor Larry Gritz <lg@larrygritz.com> 1711247523 -0700\ncommitter GitHub <noreply@github.com> 1711247523 -0700\n\nrefactor: Make span default ctr and assignment be `= default` (#4198)\n\nMinor simplification. Also add a few `noexcept` in some places that we\r\ndidn't have them already.\r\n\r\n---------\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/4dc04a23cb24ea445408a2f7b78173018e04c0e3",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/4dc04a23cb24ea445408a2f7b78173018e04c0e3",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/4dc04a23cb24ea445408a2f7b78173018e04c0e3/comments",
+    "author": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d743c6152d29ca60892921c694f36e34d778a7ce",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/d743c6152d29ca60892921c694f36e34d778a7ce",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/d743c6152d29ca60892921c694f36e34d778a7ce"
+      }
+    ]
+  },
+  {
+    "sha": "d743c6152d29ca60892921c694f36e34d778a7ce",
+    "node_id": "C_kwDOABQtLNoAKGQ3NDNjNjE1MmQyOWNhNjA4OTI5MjFjNjk0ZjM2ZTM0ZDc3OGE3Y2U",
+    "commit": {
+      "author": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-03-23T03:47:39Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-23T03:47:39Z"
+      },
+      "message": "build: make an OpenImageIO_Util_static library and target (#4190)\n\nAdd a `OpenImageIO_BUILD_STATIC_UTIL_LIBRARY` CMake variable that, if\r\nenabled, will build a separately named static version of the\r\nOpenImageIO_Util library, in addition to the dynamic one. It has a\r\nseparate name, libOpenImageIO_Util_static, and a separate exported cmake\r\ntarget, `OpenImgaeIO::OpenImageIO_Util_static.`\r\n\r\nThis can be a help to applications that only need OpenImageIO_Util, and\r\nnot the main OpenImageIO library, and furthermore would prefer a static\r\nlibrary so they don't need a runtime dependency on our dynamic\r\nlibraries.\r\n\r\nCavat emptor: Beware that there are singletons inside ustring, the oiio\r\nthread pool, and possibly others I'm not remembering at the moment. It\r\ncould be a bad thing to have an application that contains both the\r\nstatic and dynamic versions of libOpenImageIO_Util, or to have multiple\r\ncopies of the static library inside the same executable (including\r\ntransitively through dependency libraries that were built\r\nindependently). You have been warned!\r\n\r\nNote also that this is swimming upstream in cmake land. For reasons I\r\nnever quite understood, cmake assumes that a project wants to build\r\neither static or dynamic libraries, but provides little direct support\r\nfor doing both in the same build. So we're taking the matter into our\r\nown hands, perhaps. If somebody thinks the way I'm proposing is very\r\nwrong, please do speak up.\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "fea8f875f87d2e627f04cfac24ee3d1fbd101361",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/fea8f875f87d2e627f04cfac24ee3d1fbd101361"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/d743c6152d29ca60892921c694f36e34d778a7ce",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl/lDbCRC1aQ7uu5UhlAAAk4gQAK0JeH8MRQbktIBrikRfdfqh\nL6uawq1gi22qRl1lbaoV2Q4ElTH1NrIFFA6HQuvJJwSAfQlvAn4ZKrPc+WEfIihr\n8Lg1lPpD37IJtmn6m04H6Ly3MFuAP83AcM+3FOCz7J3P3X/y1gA2hV89HTXXvMzw\nat7szDSuhVvzRT5TSHx+9fpYUuM033fyy5PGXGpLW5CVZgMsGsmSrRDOvKdWldTG\nkbaKQbmYrvOH8JC0usD5najCM1bRL3jrASwV/k5mqfX2V0RYUiZ5UfYrIWpCkyKR\n2h1cT4DIOHxrMGKPFk70j+rvwhwQOAUV4CCSIdBvfUbZNdGnnifq2fbya3QiaGqD\nPUuduuDXRvQtWmFvY4jb8JET64Ze9KxTdwfE393zo/JiwvxkoRxUg3BI4gq7r488\naaLPGLDtCG8L0olgb/E1+NGVcn5HnC5P6wD8qt6mlJVd1HlMOjbEVVQwtDrzH0If\nQkS8oMqK4xGLMs++bXT55DO6OiR1OYCtRf5t1IMHQl4koWD4SldK46Zdz7ESOdZ0\nV/5NdL5Zt1FXXf/wrM/khl/iAz+kkK+i+WzLlBkHHyu9FoE3DyKqj6+WfV1Lq1y7\nTsthTy/ASDIR1mT5VbaZyRhP9gfmyb9jFSzDBxQqgFyMt9fEiO97E+h9g6CTGbK7\nNvwn32UnJ9tqHwseKW93\n=AXz/\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree fea8f875f87d2e627f04cfac24ee3d1fbd101361\nparent 3ec1c1de4b7e737ecb8af5d22a8112ab92456622\nauthor Larry Gritz <lg@larrygritz.com> 1711165659 -0700\ncommitter GitHub <noreply@github.com> 1711165659 -0700\n\nbuild: make an OpenImageIO_Util_static library and target (#4190)\n\nAdd a `OpenImageIO_BUILD_STATIC_UTIL_LIBRARY` CMake variable that, if\r\nenabled, will build a separately named static version of the\r\nOpenImageIO_Util library, in addition to the dynamic one. It has a\r\nseparate name, libOpenImageIO_Util_static, and a separate exported cmake\r\ntarget, `OpenImgaeIO::OpenImageIO_Util_static.`\r\n\r\nThis can be a help to applications that only need OpenImageIO_Util, and\r\nnot the main OpenImageIO library, and furthermore would prefer a static\r\nlibrary so they don't need a runtime dependency on our dynamic\r\nlibraries.\r\n\r\nCavat emptor: Beware that there are singletons inside ustring, the oiio\r\nthread pool, and possibly others I'm not remembering at the moment. It\r\ncould be a bad thing to have an application that contains both the\r\nstatic and dynamic versions of libOpenImageIO_Util, or to have multiple\r\ncopies of the static library inside the same executable (including\r\ntransitively through dependency libraries that were built\r\nindependently). You have been warned!\r\n\r\nNote also that this is swimming upstream in cmake land. For reasons I\r\nnever quite understood, cmake assumes that a project wants to build\r\neither static or dynamic libraries, but provides little direct support\r\nfor doing both in the same build. So we're taking the matter into our\r\nown hands, perhaps. If somebody thinks the way I'm proposing is very\r\nwrong, please do speak up.\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/d743c6152d29ca60892921c694f36e34d778a7ce",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/d743c6152d29ca60892921c694f36e34d778a7ce",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/d743c6152d29ca60892921c694f36e34d778a7ce/comments",
+    "author": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3ec1c1de4b7e737ecb8af5d22a8112ab92456622",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/3ec1c1de4b7e737ecb8af5d22a8112ab92456622",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/3ec1c1de4b7e737ecb8af5d22a8112ab92456622"
+      }
+    ]
+  },
+  {
+    "sha": "3ec1c1de4b7e737ecb8af5d22a8112ab92456622",
+    "node_id": "C_kwDOABQtLNoAKDNlYzFjMWRlNGI3ZTczN2VjYjhhZjVkMjJhODExMmFiOTI0NTY2MjI",
+    "commit": {
+      "author": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-03-22T17:38:55Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-22T17:38:55Z"
+      },
+      "message": "ci: Enable Windows 2022 CI tests (#4195)\n\nNeeded some fixups with its python version to get it fully working.\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "df7dfb0233c620308926ae5314614bf454453c61",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/df7dfb0233c620308926ae5314614bf454453c61"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/3ec1c1de4b7e737ecb8af5d22a8112ab92456622",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl/cIvCRC1aQ7uu5UhlAAA5YEQADdtF3blaSdJdZdV3Uu0z82R\nkIvxJAFMKCZHiS+8tOkiEOR050zTBzmG6q7cPf4xkAZ9JSmqw65VJd9A6i7V04Ij\nG68dAhC/W4+fKW3lgsbKKqUzsGIo7tJKpvzDQNpZskDC/v7cOWVOn1rkShSkMb+l\nXl/v6nww348GVw6GMK4x+NefWyuuvuKMGnoGtW3tZ+1p+0QjSMM4bzglJzOHGIAh\nY+cOcuTDoQ/6AaBFl66nZ+KLwCkvO93lHjumkA84Qlha7VFieV11754EPD6fAn/7\n2aHEqDaC1hJJPmVt4+Com8SIwVphWY8IkxgqEW7JL+bDbaPPTS3CODHcyJeP8UYF\nJ97AoTf7LMH4o7VYkCdB+LQb0y0L3NXmyLpuxfbMcqW4k9H3A9WHMxsRsXlZu2pp\nQ7O9bJ/JRkT0ZZDOehD2H8r5gvwTFpbkgSZZ4P3CZu1vKPUcZbLJgcJ/SuCDEHh3\nCI4uflD3RvsCkmkztqizxKeqgQbwVbB1x9ttAq8b5ht/yhv4Y8+fEjEZk27brFvt\nCP9NcN2IfqtRU12FNZoA7lHUERUXHbQcm+7fDMaKlF1SrfdZBAFu3B0DiFbFUrJN\n3TVm0AoD8n/nMzjb32PYDWrjEGyGvVEbf+9gEEt233kI5ALXEUFdaz8W12YjEXhj\nbRJT/cSJA3FRMB6Buj9U\n=Eo7z\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree df7dfb0233c620308926ae5314614bf454453c61\nparent 7409fdb301ce56f7b53e6234ca5e09ba41a2853d\nauthor Larry Gritz <lg@larrygritz.com> 1711129135 -0700\ncommitter GitHub <noreply@github.com> 1711129135 -0700\n\nci: Enable Windows 2022 CI tests (#4195)\n\nNeeded some fixups with its python version to get it fully working.\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/3ec1c1de4b7e737ecb8af5d22a8112ab92456622",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/3ec1c1de4b7e737ecb8af5d22a8112ab92456622",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/3ec1c1de4b7e737ecb8af5d22a8112ab92456622/comments",
+    "author": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7409fdb301ce56f7b53e6234ca5e09ba41a2853d",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/7409fdb301ce56f7b53e6234ca5e09ba41a2853d",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/7409fdb301ce56f7b53e6234ca5e09ba41a2853d"
+      }
+    ]
+  },
+  {
+    "sha": "7409fdb301ce56f7b53e6234ca5e09ba41a2853d",
+    "node_id": "C_kwDOABQtLNoAKDc0MDlmZGIzMDFjZTU2ZjdiNTNlNjIzNGNhNWUwOWJhNDFhMjg1M2Q",
+    "commit": {
+      "author": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-03-21T05:27:27Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-21T05:27:27Z"
+      },
+      "message": "build: need additional include (#4194)\n\nOn some platforms, for C++17 or higher, and we were missing one header we\r\nneeded in this module.\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "4b810f4b0875f8c38b398a7b1a5ba326325e394b",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/4b810f4b0875f8c38b398a7b1a5ba326325e394b"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/7409fdb301ce56f7b53e6234ca5e09ba41a2853d",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl+8U/CRC1aQ7uu5UhlAAAJ7wQACbj5k1sFwT3MsDS0jZ6Vkvn\nXHU9YA86yemjzoK6PIjVsTiFpUZu0xkRBelJXytq6ZPPfVMxutWo9j+O6S6jX64T\neAfYuVmCENyURldDePWDy0M/KNYqgwP53qYCtrZN5KqlZMIzON0tm1Ix1MlOevkA\nBFIhuV4y0/iFX8lC78NyN+lUBQp7L5fy/m8OTT5VI5p0FJrrH8b3okZLQX4VGj/m\nMn2vhYQPpToH4/v7sVtk5Ylco88kLvwUNkMp1xJgQHCBMwigkcKzomjBbTax46Hj\ngnO4B7L9hvxwsLzDhgRlwyzNEoU4/aYXfOiRXbf5mCfBBqsP79CQtUAPM60hh2JX\nTLrUH9jxDlJT99eAb7l8ZKaPmttVdAduiLiOgc15UQ2ZI3PQH0gt9CcCbzlnTiQr\n0xlLsAvgECNDe2KXbp/ITOiDz2PkpSOb8EPO2qcKv3J3sJapvOkePajhJHAoqM1r\nzLRBy4tNaJTU++bZ0g2IeojfWY66nzD5dKmJNfwdTLys62Ay6cfZQrDiAw8IC73o\nfVkiZbfH3ee4BRUvAaycbVjMANdP1Vd/aQ52pqW1TaQGDxe3+VaSYFiQaXuWds7X\n00+WgTmHLxPJpipy8GNg6WltH3yv1HoYbUBbVgs/ztaxqkG7cquVfwvGivTLvgSw\ny/LgjyLW7qzxN3ggMnzN\n=jFGS\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 4b810f4b0875f8c38b398a7b1a5ba326325e394b\nparent 87078819b68a24d50c769917514c0be6fea25772\nauthor Larry Gritz <lg@larrygritz.com> 1710998847 -0700\ncommitter GitHub <noreply@github.com> 1710998847 -0700\n\nbuild: need additional include (#4194)\n\nOn some platforms, for C++17 or higher, and we were missing one header we\r\nneeded in this module.\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/7409fdb301ce56f7b53e6234ca5e09ba41a2853d",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/7409fdb301ce56f7b53e6234ca5e09ba41a2853d",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/7409fdb301ce56f7b53e6234ca5e09ba41a2853d/comments",
+    "author": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "87078819b68a24d50c769917514c0be6fea25772",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/87078819b68a24d50c769917514c0be6fea25772",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/87078819b68a24d50c769917514c0be6fea25772"
+      }
+    ]
+  },
+  {
+    "sha": "87078819b68a24d50c769917514c0be6fea25772",
+    "node_id": "C_kwDOABQtLNoAKDg3MDc4ODE5YjY4YTI0ZDUwYzc2OTkxNzUxNGMwYmU2ZmVhMjU3NzI",
+    "commit": {
+      "author": {
+        "name": "Sergio Rojas",
+        "email": "48057303+hisergiorojas@users.noreply.github.com",
+        "date": "2024-03-20T04:36:52Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-20T04:36:52Z"
+      },
+      "message": "build: Fix buld_ninja.bash to make directories and download correctly (#4192)\n\n\r\nSigned-off-by: Sergio Rojas <sergiorojasava@gmail.com>",
+      "tree": {
+        "sha": "d37de7825e5b17d7638d88ce05308cf546466744",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/d37de7825e5b17d7638d88ce05308cf546466744"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/87078819b68a24d50c769917514c0be6fea25772",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl+mfkCRC1aQ7uu5UhlAAAuGkQAE4bT5KgSfgjYBFc6yN9gHc8\nWuIlbIJV2SoVsKsFyLXHQdudbzxMN9s2ONnKOyz/o1h4uBa6xU856zTuD5KAoqjp\nPzZ6WYrCkol8wV691n4G/PxWP2GwZh5P5OfPN2gVlkrWHrLn0wFmSqEAlNKoTXHB\nbdN4ROSIuqfZJy3U7BM5vdUvOhq13o21BoGAw8D0dZQXtQDeEnhqQoAzAk6TxNbk\nPk7lGayEjVYOIoWVDAD6r7IYy8+X0aiQvyzPaSClcIKXBw6ezi6fAubBYBWEsSrE\ntt3RlIFbkvqqwdc43UIZLmReXsUlzwSzatssB36sxok9aIPgIh2UtwUCJFLwyNMb\njBRtCnirskFsJ+Zv9laQQN1m82IyOvx0UGqC46uTYsleaeHuUxOraP54y6ymmE1G\nzlTSRteGVY+344APIEMTQDydH3eLMKgk3XVw+E6PtwZBwcBx/T3LbnSXcC62HT/9\n0p6A4zBw0hBo8nD1CrZSOYyQ95K+jG6yE6FdUufKrvNp/KFfy7ZOaZFNgzkBivjM\n8HQc4kdXEmjcTk8tl60pKpB4nTiufpI40GxDWQsamrjgD7XpMJlSrLE0fPOY7TBC\nDUJFjFo1KlB6og2vtJoV5xDz51/MGuE0+ky2kfFIK+mkBBhMhfWODYL2hZogQnSZ\n5eXTUp1ZKykEVMgp8tKf\n=3Aou\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree d37de7825e5b17d7638d88ce05308cf546466744\nparent e37edb336b38787d43a2b655f6254dd9f4d2402e\nauthor Sergio Rojas <48057303+hisergiorojas@users.noreply.github.com> 1710909412 -0700\ncommitter GitHub <noreply@github.com> 1710909412 -0700\n\nbuild: Fix buld_ninja.bash to make directories and download correctly (#4192)\n\n\r\nSigned-off-by: Sergio Rojas <sergiorojasava@gmail.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/87078819b68a24d50c769917514c0be6fea25772",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/87078819b68a24d50c769917514c0be6fea25772",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/87078819b68a24d50c769917514c0be6fea25772/comments",
+    "author": {
+      "login": "hisergiorojas",
+      "id": 48057303,
+      "node_id": "MDQ6VXNlcjQ4MDU3MzAz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/48057303?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/hisergiorojas",
+      "html_url": "https://github.com/hisergiorojas",
+      "followers_url": "https://api.github.com/users/hisergiorojas/followers",
+      "following_url": "https://api.github.com/users/hisergiorojas/following{/other_user}",
+      "gists_url": "https://api.github.com/users/hisergiorojas/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/hisergiorojas/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/hisergiorojas/subscriptions",
+      "organizations_url": "https://api.github.com/users/hisergiorojas/orgs",
+      "repos_url": "https://api.github.com/users/hisergiorojas/repos",
+      "events_url": "https://api.github.com/users/hisergiorojas/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/hisergiorojas/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e37edb336b38787d43a2b655f6254dd9f4d2402e",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/e37edb336b38787d43a2b655f6254dd9f4d2402e",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/e37edb336b38787d43a2b655f6254dd9f4d2402e"
+      }
+    ]
+  },
+  {
+    "sha": "e37edb336b38787d43a2b655f6254dd9f4d2402e",
+    "node_id": "C_kwDOABQtLNoAKGUzN2VkYjMzNmIzODc4N2Q0M2EyYjY1NWY2MjU0ZGQ5ZjRkMjQwMmU",
+    "commit": {
+      "author": {
+        "name": "Andy Chan",
+        "email": "andychancse@gmail.com",
+        "date": "2024-03-18T21:57:12Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-18T21:57:12Z"
+      },
+      "message": "feat: Implement copy_image for OpenEXR (#4004)\n\nBase on the [OIIO slack channel\r\ndiscussion](https://academysoftwarefdn.slack.com/archives/C05782U3806/p1689031780561469),\r\nthis PR implements the `copy_image` function for the OpenEXR format. The\r\nmain motivation of this PR was due to a recompression issue where\r\ncopying a lossy compressed EXR image (pixels are decoded and then\r\nencoded again), which can cause the image quality to downgrade on each\r\niteration.\r\n\r\n- `OpenEXROutput` is now a friend class of `OpenEXRInput`. Since\r\n`OpenEXROutput::copy_image()` needs to access some of the private\r\nmembers in `OpenEXRInput` (This approach is referencing the\r\nimplementation in `JpegInput` and `JpegOutput`).\r\n- The `OpenEXRInputStream` and `OpenEXRInput` class have been moved from\r\n`exrinput.cpp` to `exr_pvt.h`. As `OpenEXRInput` depends on\r\n`OpenEXRInputStream`, so both have to be moved together. Such relocation\r\nis necessary due to the above reason, i.e. `OpenEXROutput::copy_image()`\r\nneeds to access some of the private members in `OpenEXRInput`.\r\n- And the implementation itself, `OpenEXROutput::copy_image()` overrides\r\nthe base class method just like `JpegOutput` does.\r\n\r\nThe `OpenEXROutput::copy_image()` implementation took the advantages of\r\nthe existing OpenEXR function `Imf::OutputFile::copyPixels`, quoting the\r\ncomment from the function:\r\n>  //--------------------------------------------------------------\r\n    // Shortcut to copy all pixels from an InputFile into this file,\r\n    // without uncompressing and then recompressing the pixel data.\r\n    // This file's header must be compatible with the InputFile's\r\n    // header:  The two header's \"dataWindow\", \"compression\",\r\n    // \"lineOrder\" and \"channels\" attributes must be the same.\r\n    //--------------------------------------------------------------\r\n    IMF_EXPORT void copyPixels (InputFile &in);\r\n\r\nWhen the output image is copied from an input image, the pixel data can\r\nonly be located in one of the input parts. So it checks if both input\r\nand output part is initialized (non-null), then invoke the `copyPixels`\r\nfunction in place.\r\n\r\nAll the error handling is done within the OpenEXR `copyPixels` call.\r\nThere is a try-catch block in OIIO side that emits an error message and\r\nfallback to the default image copy routine, e.g.\r\n`ImageOutput::copy_image`.\r\n\r\nNote that currently, this doesn't do anything optimized for the\r\n\"core library\" code path.\r\n\r\n---------\r\n\r\nSigned-off-by: Andy Chan <andychancse@gmail.com>",
+      "tree": {
+        "sha": "e455526270e9ff5bc7ac2e4867643bf0d085bb51",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/e455526270e9ff5bc7ac2e4867643bf0d085bb51"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/e37edb336b38787d43a2b655f6254dd9f4d2402e",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl+Li4CRC1aQ7uu5UhlAAAfrMQAB04BElvWK/nhfj/ljo9D/nc\nlz2205oPDA/C/T5UaCb6PezjgT9UZbImjZy+CQn4HHEdJIg9EP9tv34jkyoNZoD+\nhWGS1OurO0n4CCw2lpeoTciB+BgjMM0vhg7d+kYxMWqkkfRKuK3IhsjhvHxbeWq6\nB1yaI+d20DISIA9jMsxJuoX3XUuQcOtvnKK3woyBL/Ai/mDi0/G1p5CSLN1KvHG8\nhyAJjjP7SGD3u4ORKx3KUJoXDX3k7Y3ErIxA4j1XqxMtLowfqs3X96QVUB5zA9dy\nPRLUO1BxAD0KhljprOLzu5qikM4efMBLdHWJz+9YI3DCRz10ydXGgQEBBUkfj6gg\nge8FaT8ZqxGStf9BbdYd/4RG4bilwuwff9/K3+VDA2cLAv4s15P5lHxgmlXamHHL\n6j2IZv0EN4/rXFterBlV2Uuz8cNaYaMJRuo0MuSwGXrRbU5F0BoCgYxpF5uyTU+I\naNF8H9FozhqpWUWbpOAcS/0ztm1MIrf2j1zLC/hf7GIdo7PVNMVXBOdZlRyIjsMx\nuqQU2fl1/DLrUvWiV6ZEdLeCxJDf4ju6XS9/HOeoz/e6C5OBPirvzZ4ozHWZghfl\nSpA0zz9HspIATj5Vh3q3d1gg3XqgZTVnqP3BlRLXjl/4fNEk1xXGMrnvl/fmeoOI\nKcllhqi/SuLOlk2J8h/T\n=ZVMt\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree e455526270e9ff5bc7ac2e4867643bf0d085bb51\nparent 41a26caa4f6412eae732403881204931dded3245\nauthor Andy Chan <andychancse@gmail.com> 1710799032 -0700\ncommitter GitHub <noreply@github.com> 1710799032 -0700\n\nfeat: Implement copy_image for OpenEXR (#4004)\n\nBase on the [OIIO slack channel\r\ndiscussion](https://academysoftwarefdn.slack.com/archives/C05782U3806/p1689031780561469),\r\nthis PR implements the `copy_image` function for the OpenEXR format. The\r\nmain motivation of this PR was due to a recompression issue where\r\ncopying a lossy compressed EXR image (pixels are decoded and then\r\nencoded again), which can cause the image quality to downgrade on each\r\niteration.\r\n\r\n- `OpenEXROutput` is now a friend class of `OpenEXRInput`. Since\r\n`OpenEXROutput::copy_image()` needs to access some of the private\r\nmembers in `OpenEXRInput` (This approach is referencing the\r\nimplementation in `JpegInput` and `JpegOutput`).\r\n- The `OpenEXRInputStream` and `OpenEXRInput` class have been moved from\r\n`exrinput.cpp` to `exr_pvt.h`. As `OpenEXRInput` depends on\r\n`OpenEXRInputStream`, so both have to be moved together. Such relocation\r\nis necessary due to the above reason, i.e. `OpenEXROutput::copy_image()`\r\nneeds to access some of the private members in `OpenEXRInput`.\r\n- And the implementation itself, `OpenEXROutput::copy_image()` overrides\r\nthe base class method just like `JpegOutput` does.\r\n\r\nThe `OpenEXROutput::copy_image()` implementation took the advantages of\r\nthe existing OpenEXR function `Imf::OutputFile::copyPixels`, quoting the\r\ncomment from the function:\r\n>  //--------------------------------------------------------------\r\n    // Shortcut to copy all pixels from an InputFile into this file,\r\n    // without uncompressing and then recompressing the pixel data.\r\n    // This file's header must be compatible with the InputFile's\r\n    // header:  The two header's \"dataWindow\", \"compression\",\r\n    // \"lineOrder\" and \"channels\" attributes must be the same.\r\n    //--------------------------------------------------------------\r\n    IMF_EXPORT void copyPixels (InputFile &in);\r\n\r\nWhen the output image is copied from an input image, the pixel data can\r\nonly be located in one of the input parts. So it checks if both input\r\nand output part is initialized (non-null), then invoke the `copyPixels`\r\nfunction in place.\r\n\r\nAll the error handling is done within the OpenEXR `copyPixels` call.\r\nThere is a try-catch block in OIIO side that emits an error message and\r\nfallback to the default image copy routine, e.g.\r\n`ImageOutput::copy_image`.\r\n\r\nNote that currently, this doesn't do anything optimized for the\r\n\"core library\" code path.\r\n\r\n---------\r\n\r\nSigned-off-by: Andy Chan <andychancse@gmail.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/e37edb336b38787d43a2b655f6254dd9f4d2402e",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/e37edb336b38787d43a2b655f6254dd9f4d2402e",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/e37edb336b38787d43a2b655f6254dd9f4d2402e/comments",
+    "author": {
+      "login": "tkchanat",
+      "id": 1866163,
+      "node_id": "MDQ6VXNlcjE4NjYxNjM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1866163?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tkchanat",
+      "html_url": "https://github.com/tkchanat",
+      "followers_url": "https://api.github.com/users/tkchanat/followers",
+      "following_url": "https://api.github.com/users/tkchanat/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tkchanat/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tkchanat/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tkchanat/subscriptions",
+      "organizations_url": "https://api.github.com/users/tkchanat/orgs",
+      "repos_url": "https://api.github.com/users/tkchanat/repos",
+      "events_url": "https://api.github.com/users/tkchanat/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tkchanat/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "41a26caa4f6412eae732403881204931dded3245",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/41a26caa4f6412eae732403881204931dded3245",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/41a26caa4f6412eae732403881204931dded3245"
+      }
+    ]
+  },
+  {
+    "sha": "41a26caa4f6412eae732403881204931dded3245",
+    "node_id": "C_kwDOABQtLNoAKDQxYTI2Y2FhNGY2NDEyZWFlNzMyNDAzODgxMjA0OTMxZGRlZDMyNDU",
+    "commit": {
+      "author": {
+        "name": "Peter Kovář",
+        "email": "software@reflexion.tv",
+        "date": "2024-03-16T22:15:52Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-16T22:15:52Z"
+      },
+      "message": "feat: Initial JPEG XL support for image input/output (#4055)\n\nPreliminary support for JPEG XL.\r\n\r\nA variety of additions are needed, but this is a good start.\r\nTop items on our to-do list (not necessarily in priority order):\r\n\r\n- [ ] Document in builtinformats.rst\r\n- [ ] Handle different pixel types -- right now, always reads/writes float.\r\n- [ ] Compression options\r\n- [ ] EXIF\r\n- [ ] Test cases in the testsuite\r\n\r\n---------\r\n\r\nSigned-off-by: Peter Kovář <peter.kovar@reflexion.tv>",
+      "tree": {
+        "sha": "95f54ffbb643c55cff1cf6874fdc5f595ab1393b",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/95f54ffbb643c55cff1cf6874fdc5f595ab1393b"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/41a26caa4f6412eae732403881204931dded3245",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl9hoYCRC1aQ7uu5UhlAAACkcQAKNKopmPh5SScnxZqX3LuyEK\n6c3PamCRzJ/rMsIRu1rA2x7f6dLOfrWQ57sO2BgGZioIo41vU+RPRTAtp6nQDdi6\nlzPVaiSgzi826wpzAkvbKhDU9eYEUFqR77lTuRils0jzSAh0+c/G43ZhrAUnjBqb\nCpMlJq6SmpBD7Br6UhcyDOggqOb3UMEOva8bUXP3Dkq5ZJbpE+19X/spKoGQotSD\nNPF5TK5V0vtuvWy/n37FXTthIDZH3K4N06JOvr54Bu+Z93d9A8/R736FKY/Sp6fN\nQHzJV7hu4J4sXNTDL2m8EW6ZigByEtk/xA5x0FgVcHFXslIGTfkOUJMw6n/GzU6e\nMYTCeX3KCRhwfAOARc19xCNem+RYhteWG6omFlMzb+D5FvQiYB5NzDxQ92sYhY1+\nduuy2/rBuzL4kt3HgWk2qALVNiSkAgmtpeXdU/RGNROUwnsOsiuwopyZ/Ly9fdBm\nbM2cEOx4/K0Cj+luhop81Abz5mSbfYrnKjHdN5A8XwYU6udBZrMwKMX5HCF/XGm9\nz+r+gNkDv056RGWuUA02aAw2yzmKIjExom18Al9ZjiZlrmZnkJaq1ycj3yH4alpx\nq+VvOMH+6mag9UzjTQFmg1dy3oxJcKfr+J5pNox49vN9x4GR6Y1yexmf78RxvbCb\ny1Zu+8cSBwro3HxC6rWC\n=lyeI\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 95f54ffbb643c55cff1cf6874fdc5f595ab1393b\nparent 3b9201183632dbb26e153be8d2527615c5d4023d\nauthor Peter Kovář <software@reflexion.tv> 1710627352 +0100\ncommitter GitHub <noreply@github.com> 1710627352 -0700\n\nfeat: Initial JPEG XL support for image input/output (#4055)\n\nPreliminary support for JPEG XL.\r\n\r\nA variety of additions are needed, but this is a good start.\r\nTop items on our to-do list (not necessarily in priority order):\r\n\r\n- [ ] Document in builtinformats.rst\r\n- [ ] Handle different pixel types -- right now, always reads/writes float.\r\n- [ ] Compression options\r\n- [ ] EXIF\r\n- [ ] Test cases in the testsuite\r\n\r\n---------\r\n\r\nSigned-off-by: Peter Kovář <peter.kovar@reflexion.tv>\r\n"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/41a26caa4f6412eae732403881204931dded3245",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/41a26caa4f6412eae732403881204931dded3245",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/41a26caa4f6412eae732403881204931dded3245/comments",
+    "author": {
+      "login": "1div0",
+      "id": 3098510,
+      "node_id": "MDQ6VXNlcjMwOTg1MTA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3098510?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/1div0",
+      "html_url": "https://github.com/1div0",
+      "followers_url": "https://api.github.com/users/1div0/followers",
+      "following_url": "https://api.github.com/users/1div0/following{/other_user}",
+      "gists_url": "https://api.github.com/users/1div0/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/1div0/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/1div0/subscriptions",
+      "organizations_url": "https://api.github.com/users/1div0/orgs",
+      "repos_url": "https://api.github.com/users/1div0/repos",
+      "events_url": "https://api.github.com/users/1div0/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/1div0/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3b9201183632dbb26e153be8d2527615c5d4023d",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/3b9201183632dbb26e153be8d2527615c5d4023d",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/3b9201183632dbb26e153be8d2527615c5d4023d"
+      }
+    ]
+  },
+  {
+    "sha": "3b9201183632dbb26e153be8d2527615c5d4023d",
+    "node_id": "C_kwDOABQtLNoAKDNiOTIwMTE4MzYzMmRiYjI2ZTE1M2JlOGQyNTI3NjE1YzVkNDAyM2Q",
+    "commit": {
+      "author": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-03-16T16:01:05Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-16T16:01:05Z"
+      },
+      "message": "ci: make one of the Mac tests build for avx2 (#4188)\n\nSigned-off-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "bb14108eaec21ec0df3c39ab340c6c0fec32ca66",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/bb14108eaec21ec0df3c39ab340c6c0fec32ca66"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/3b9201183632dbb26e153be8d2527615c5d4023d",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl9cJBCRC1aQ7uu5UhlAAAP3AQAD8BB7I/Xgm6juqObR/iC2PU\nW6ZVRmk9j3B5Aa0Uy7Wh4rgpmaOd9cc93Oo06sxhrwp+62eGTXQvScG+X8QV/Ad8\nsGxQeRZyo3/HtoldfjSYUnzjTsz3+78/n+9O+lVwaxlHg++jWaBSChSJCCPwECXQ\noLJLEEKi08mQ55+7nbPErH38+9MHyRn8OaPDLOvKUZkCeHBz0gukZmfgu/M+O0Sx\noxylZmuNlu1LQlFPSAA5v7zC5jcVtltlFpldFD796LfTRrui1qJH7JIDCzJxe3JZ\nvtMWK9UO9GOab6ejKoCcCQULWfDyVAQCKM/97Giit+xebhz8aa+yX2j2w5vK6lIl\nOYMPF/QwP5oxTU/v0BwbZdfAJbb777oGTPBBrlq8vZlR4d4+7QRrP4XBuPwIy7w2\nFVPaWHm58dBixn/T0omE5/T5JluM9YShTU3lBNHD1KhkeLyEAnkk0iOuKwQCA+Le\nKLXqR+DhSx7FtFGK0KQdABzV6QF/kf3SsUZdO39UeF66VjMum/Amuyg3OIZBsCTS\nyFPi2mWNgrpEqC8+h3FYgzSeqJ7cSkr2YmW7D1QEck2SHJLs1uPthhkAIDtF1nE5\nEtIkQKJfSspO4jsdV56q9/dXLM81K0h9VAoIG1h+kDctAA9PAFyd+qkPaD9KnnKZ\ngCxZM4mDR+X9xLZsrm9b\n=anZH\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree bb14108eaec21ec0df3c39ab340c6c0fec32ca66\nparent 68666db994d57fb118b7cd9b24ce29db2d257fb4\nauthor Larry Gritz <lg@larrygritz.com> 1710604865 -0700\ncommitter GitHub <noreply@github.com> 1710604865 -0700\n\nci: make one of the Mac tests build for avx2 (#4188)\n\nSigned-off-by: Larry Gritz <lg@larrygritz.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/3b9201183632dbb26e153be8d2527615c5d4023d",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/3b9201183632dbb26e153be8d2527615c5d4023d",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/3b9201183632dbb26e153be8d2527615c5d4023d/comments",
+    "author": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "68666db994d57fb118b7cd9b24ce29db2d257fb4",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/68666db994d57fb118b7cd9b24ce29db2d257fb4",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/68666db994d57fb118b7cd9b24ce29db2d257fb4"
+      }
+    ]
+  },
+  {
+    "sha": "68666db994d57fb118b7cd9b24ce29db2d257fb4",
+    "node_id": "C_kwDOABQtLNoAKDY4NjY2ZGI5OTRkNTdmYjExOGI3Y2Q5YjI0Y2UyOWRiMmQyNTdmYjQ",
+    "commit": {
+      "author": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-03-16T16:00:42Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-16T16:00:42Z"
+      },
+      "message": "refactor(simd.h): use default for ctrs and assignment where applicable (#4187)\n\nsimd.h improvements and refactorization for consistency:\r\n\r\n* Use `= default` for all the uninitialized constructors, copy\r\nconstructors, and assignment from the same type.\r\n* Fix the `operator=` to be more standard by returning a `vec&` instead\r\nof `const vec&`, which apparently is unusual.\r\n* Test that these all result in C++ understanding that these classes are\r\ntrivially copyable.\r\n\r\nThere is a bit of awkwardness where for the vint types, we have to\r\ndefine the copy constructors for the Intel icc compiler. It just seems\r\nto do the wrong thing for `=default` and fails lots of our tests. I\r\ndon't understand why, and I'm not inclined to investigate too deeply,\r\nsince it's a discontinued compiler we support only for legacy reasons,\r\nso it doesn't bother me too much that we special-case it. One reason I\r\nthink it's a compiler bug is that it has no problem with the floating\r\npoint vector types. It's confused about something with the simd ints.\r\n\r\nDisable SIMD acceleration of fast_exp2 when using MSVS prior to 2022.\r\nIt seems to sporadically generate bad code in this function and I\r\ncan't seem to restructure the function in a way that consistently is\r\ncorrect. Doesn't seem to happen with newer MSVS, nor on any other\r\nplatform or compiler. I'm assuming this is a compiler bug and it's not\r\nworth pursuing for an old version of one compiler, for this one\r\nfunction that isn't really used all that often or in\r\nperformance-critical paths.\r\n\r\nSome extra slosh in the simd fast_exp test.\r\n\r\nRewrite OIIO_CHECK_SIMD_EQUAL_THRESH to print the differences and use\r\nmore digits of precision when it fails.\r\n\r\n---------\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "31276590586407ce34b308f958ff001b0921987c",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/31276590586407ce34b308f958ff001b0921987c"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/68666db994d57fb118b7cd9b24ce29db2d257fb4",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl9cIqCRC1aQ7uu5UhlAAABjEQAIlo8gJo+G9AlfbEWoJk5oku\nZ7EtoyoDYsVe0iE8vUE2yB3XKadXWTeRK31J5Iwu1n1EjyUuSUyhkYRG91M3znPE\nLYjN/9fiQmnh75Q+lIkB3qSl2UVNnuduNcfEQJYwFjwR1JL84QgZFVr3hcSNoWEM\nUF5hZEhW7IMKO/15hYI2M+YTl+cScLjnvAvpD2z32MAcIbLinmgb/0kYZ15qVaJL\nNWUWPdnoicAeVU/B4bTSaJnaaEw8c3ARxFjVSn87N0ZBCfGt8DHI2yg92IIOlREF\nC88HVD469j6RjXdfSwL94RYWx9G5y5yng3hZAQXkeLJfqE69qio9UPc7/1Fcex7u\nWwRqw5LeXddk6n1c5/7lYk8yixQPRVxsiINh40E8O/rj4YFbmQhCctVYm7PVmHum\nK4vITQAYsm6B+Rq/XF8A5+stUPqS7RnfzG8OvhSlpdY86u3OlHjGHVvcHapg1SCc\nWKX4XMRDi6H0N04AWpYZ3S72qTyBPINhRtGD/QaByQY0anhY8mzHCk3bUsZKaZZ9\nlCAsXBCr/PAZjqu5XVxvYo/vBzJ32eM9hmzmBLEzWbmbc8nAA/oQGxg6d++JIeUs\nVTvGYnSdB9Ht8rNyl9Ge5t7OEenV/iVEkV0lWTY9LxLj3qxrMeXeJUghxgZ7ErzH\n7EKpYrxxn+toSi2G+6oF\n=hGZP\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 31276590586407ce34b308f958ff001b0921987c\nparent e41ac03c0b213467deff714a0f29ee6de1e41022\nauthor Larry Gritz <lg@larrygritz.com> 1710604842 -0700\ncommitter GitHub <noreply@github.com> 1710604842 -0700\n\nrefactor(simd.h): use default for ctrs and assignment where applicable (#4187)\n\nsimd.h improvements and refactorization for consistency:\r\n\r\n* Use `= default` for all the uninitialized constructors, copy\r\nconstructors, and assignment from the same type.\r\n* Fix the `operator=` to be more standard by returning a `vec&` instead\r\nof `const vec&`, which apparently is unusual.\r\n* Test that these all result in C++ understanding that these classes are\r\ntrivially copyable.\r\n\r\nThere is a bit of awkwardness where for the vint types, we have to\r\ndefine the copy constructors for the Intel icc compiler. It just seems\r\nto do the wrong thing for `=default` and fails lots of our tests. I\r\ndon't understand why, and I'm not inclined to investigate too deeply,\r\nsince it's a discontinued compiler we support only for legacy reasons,\r\nso it doesn't bother me too much that we special-case it. One reason I\r\nthink it's a compiler bug is that it has no problem with the floating\r\npoint vector types. It's confused about something with the simd ints.\r\n\r\nDisable SIMD acceleration of fast_exp2 when using MSVS prior to 2022.\r\nIt seems to sporadically generate bad code in this function and I\r\ncan't seem to restructure the function in a way that consistently is\r\ncorrect. Doesn't seem to happen with newer MSVS, nor on any other\r\nplatform or compiler. I'm assuming this is a compiler bug and it's not\r\nworth pursuing for an old version of one compiler, for this one\r\nfunction that isn't really used all that often or in\r\nperformance-critical paths.\r\n\r\nSome extra slosh in the simd fast_exp test.\r\n\r\nRewrite OIIO_CHECK_SIMD_EQUAL_THRESH to print the differences and use\r\nmore digits of precision when it fails.\r\n\r\n---------\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/68666db994d57fb118b7cd9b24ce29db2d257fb4",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/68666db994d57fb118b7cd9b24ce29db2d257fb4",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/68666db994d57fb118b7cd9b24ce29db2d257fb4/comments",
+    "author": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e41ac03c0b213467deff714a0f29ee6de1e41022",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/e41ac03c0b213467deff714a0f29ee6de1e41022",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/e41ac03c0b213467deff714a0f29ee6de1e41022"
+      }
+    ]
+  },
+  {
+    "sha": "e41ac03c0b213467deff714a0f29ee6de1e41022",
+    "node_id": "C_kwDOABQtLNoAKGU0MWFjMDNjMGIyMTM0NjdkZWZmNzE0YTBmMjllZTZkZTFlNDEwMjI",
+    "commit": {
+      "author": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-03-16T15:56:46Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-16T15:56:46Z"
+      },
+      "message": "fix(heif): Fixes to recent orientation support (#4184)\n\nWe inadvertently started using libheif functions that only became\r\navailable in their version 1.16.0. Guard against that and now we\r\nrecommend at least that version (but we aren't yet changing the minimum\r\nrequirement). This fixes a build break introduced in #4142 (but only\r\nbreaks for older libheif).\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "67b7ff99b3eab7a49c07b784cf3cd6b6dddc160c",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/67b7ff99b3eab7a49c07b784cf3cd6b6dddc160c"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/e41ac03c0b213467deff714a0f29ee6de1e41022",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl9cE+CRC1aQ7uu5UhlAAAEdAQAJYhfe4n+jBPsKsMGbipxvg8\nGSNWNjAovlMWLB/In6Mh+kJuEpFsQVuEDab2QJ+ekwg53gtyF42fpECizd77i8BA\npwQvbF9R49B6874dfMBhiyFO/eNrdpjnMlbbynQSn4kZ2ZGpMBCFfskLVNcz5OAu\nZ04zaKAFr0+LC8mHv0gSc5ZUum1NVUah+bswqBsReORQ8YiA6PPJKgkNz5iGnGuP\n1KzWY9y2lB3jrC1/CNCVXxrvd09HhpaF/WkRlZjuldxfbODmKlP84U9VAs/RYe7x\nxc8QHoSV++xBnOeiKV4+nxJKlu+4KO1zrxgRkvlfRkpBkRlAKYwpRxsZuSgXG5aD\nOj1phHzzBSPKdwcmLPMV5aO3iQyaxE/8+c76dFnr4AZoZ5VZMsyvR+G3DffDbL+H\nmW9C9d0M27BCBEmSGHYJekgY4wuUI6RDHSPoW5mGQqGeQLW0VqnpzETnaSVWts7+\nxIrkKwTolJ1Frq9egUgVnO2HrfdFs7pbCDukPzW/3tMqx06g7MMhD47WPLvAv8H4\nSymhvYUT7OT5P9KFgvONRLvfxJUMIuRzqaaWxUy0KXNRMbAZUk6NhNTKkIiBqfKa\n/FyO3CzFbbf6+GcOCeF5EPJYGYmvagPjF9lY27qdTx0FpFc8y/xZmPZr3IDkGC6+\noZKGqAhxbEIhlx0VdVCz\n=0Pay\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 67b7ff99b3eab7a49c07b784cf3cd6b6dddc160c\nparent f2ad2c771a22d1421449b5a4b966292db6cc934a\nauthor Larry Gritz <lg@larrygritz.com> 1710604606 -0700\ncommitter GitHub <noreply@github.com> 1710604606 -0700\n\nfix(heif): Fixes to recent orientation support (#4184)\n\nWe inadvertently started using libheif functions that only became\r\navailable in their version 1.16.0. Guard against that and now we\r\nrecommend at least that version (but we aren't yet changing the minimum\r\nrequirement). This fixes a build break introduced in #4142 (but only\r\nbreaks for older libheif).\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/e41ac03c0b213467deff714a0f29ee6de1e41022",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/e41ac03c0b213467deff714a0f29ee6de1e41022",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/e41ac03c0b213467deff714a0f29ee6de1e41022/comments",
+    "author": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f2ad2c771a22d1421449b5a4b966292db6cc934a",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/f2ad2c771a22d1421449b5a4b966292db6cc934a",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/f2ad2c771a22d1421449b5a4b966292db6cc934a"
+      }
+    ]
+  },
+  {
+    "sha": "f2ad2c771a22d1421449b5a4b966292db6cc934a",
+    "node_id": "C_kwDOABQtLNoAKGYyYWQyYzc3MWEyMmQxNDIxNDQ5YjVhNGI5NjYyOTJkYjZjYzkzNGE",
+    "commit": {
+      "author": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-03-14T05:50:08Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-14T05:50:08Z"
+      },
+      "message": "fix(simd.h): gather_mask was wrong for no-simd fallback (#4183)\n\nThe operation it's supposed to be performing is to merge in the gathered\r\nvalue where the mask is set, and leave mask=0 lanes unchanged. But for\r\nour \"no SIMD\" fallback (i.e., no AVX2 for 4- and 8-wide), we incorrectly\r\nimplemented it as setting the unmasked lanes to 0!\r\n\r\nThis was quite wrong, and unfortunately masked by the fact that our test\r\nof the function initialized a variable to 0. Change to a better number.\r\nThe best number.\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "7623bee08687fc0bd7d9d6c3f816e947a534349e",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/7623bee08687fc0bd7d9d6c3f816e947a534349e"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/f2ad2c771a22d1421449b5a4b966292db6cc934a",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl8pAQCRC1aQ7uu5UhlAAAIXoQACSgGyhigxA4veHdwh0DmFcK\neAYgHI090rTVdyRGkSLhTV0XLqtfEOfLWPYKVwJgjlbk8EbISzPpR87nO8tju9z7\nHY/Btmg7zWLSJplYpOPLL4zGqMGJS0Eg8WV4qVw9KFsakLo//608YJAbNg+dX01i\nzsZ/RcRdPsgvHWWqg91HOYJCWD+eH/ZZGbBLG5c/NZ4hi+PpIpaZUJGvvuCGxDxu\nVcSw71OW0dmX88y0nQA1EjkKWf8GvsOku61bkvnpI4yiZpI5OI0I6RniIa30lwmE\njL/K5EPNBEdPsIsqaj1c4d7vRDLYEh4c55sggLQxvbaW5vpoDIRj4SI+gs3Yq+GQ\nZAR8HwGImsSxGB3hc5Zug4s+XW3EMLdmlsn1gYUzfgaunQjuawHYwNA1X4jR/YkI\nuuTblB6JhbGNadnslh1nNZg4yOnEghvoiZG53HUlg7B7VKONt+zYiC/bWDw/mMrn\nV3hhcOyQTdpva51cLkH1CBuQHIjGjGQXlGpPnM5GA6QM9RVH5hVYMx9XHO/aeNu5\n6eGk6qSJA4emYdUlju7wzV7mv6VLNtIpxzeOGll5diQjjyj906vCrICxCqjZe9F4\nej+rnBTvibuC+ZATu7/in2M4C2HaS6eh4wi8XeUI8TNTj2Z1wpa6JCzb2HEUJGM5\nZ8rxb1+Qy+vT1i6vovaT\n=bm0T\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 7623bee08687fc0bd7d9d6c3f816e947a534349e\nparent 12be3e864b6b9accb18dab6ba90e11453c459c9d\nauthor Larry Gritz <lg@larrygritz.com> 1710395408 -0700\ncommitter GitHub <noreply@github.com> 1710395408 -0700\n\nfix(simd.h): gather_mask was wrong for no-simd fallback (#4183)\n\nThe operation it's supposed to be performing is to merge in the gathered\r\nvalue where the mask is set, and leave mask=0 lanes unchanged. But for\r\nour \"no SIMD\" fallback (i.e., no AVX2 for 4- and 8-wide), we incorrectly\r\nimplemented it as setting the unmasked lanes to 0!\r\n\r\nThis was quite wrong, and unfortunately masked by the fact that our test\r\nof the function initialized a variable to 0. Change to a better number.\r\nThe best number.\r\n\r\nSigned-off-by: Larry Gritz <lg@larrygritz.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/f2ad2c771a22d1421449b5a4b966292db6cc934a",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/f2ad2c771a22d1421449b5a4b966292db6cc934a",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/f2ad2c771a22d1421449b5a4b966292db6cc934a/comments",
+    "author": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "12be3e864b6b9accb18dab6ba90e11453c459c9d",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/12be3e864b6b9accb18dab6ba90e11453c459c9d",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/12be3e864b6b9accb18dab6ba90e11453c459c9d"
+      }
+    ]
+  },
+  {
+    "sha": "12be3e864b6b9accb18dab6ba90e11453c459c9d",
+    "node_id": "C_kwDOABQtLNoAKDEyYmUzZTg2NGI2YjlhY2NiMThkYWI2YmE5MGUxMTQ1M2M0NTljOWQ",
+    "commit": {
+      "author": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-03-11T20:36:32Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-11T20:36:32Z"
+      },
+      "message": "fix: Mismatched pragma push/pop in hash.h (#4182)\n\nSigned-off-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "d433668d4a8f1dcb1ac6f7c0973d034fa25a582c",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/d433668d4a8f1dcb1ac6f7c0973d034fa25a582c"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/12be3e864b6b9accb18dab6ba90e11453c459c9d",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl72tQCRC1aQ7uu5UhlAAADrIQAFcD9EaBVC8k4tHe9mWvChs6\nDS/NMkO4i9HWIBYqsM7jDb7gqmilPGDH/hVcMj/UIIF6imYS2Ts8veuDVzghQLl0\nF0CvxNXTAk7QM0uwS9hm1oC7ysJV1Hv2p47icBB14tac6PZRPRXJuNQZProJaYQD\n7Sm0VlDQyMdajusxVY8hE8R8bJNDCD24KyZQP7+8kX9lAQ/GMJy2WLt5mzcoN2bM\nD8flGzN0M8U20eBE8OuFURB/KoFcpB2SE+WUsKl7R/dCCiWPjfQs8SEIauN1vwwD\nCg/dvwIHdA/Ybidsw+FA2fnAIWXQcdE53OI189MnAatT6/D/a7dw1VDO1DSTiaGz\nlQpXkZhZE4YGdlnNVOoUlR1GwuBIh0bfrD+0NeP2NraFu9xV7szsFUfXg0+QdN5Q\nI/PUlRRfKFclPi4LFNN3KvbUq5KRLZcYrloW9ofCLBtRbY1IGh4PPY2p3e6uElFO\nZdWVjQlp3uRvcyj6Hxe/cgfdJNJgPdSMlx/s+RYKcQKBqateeplypibx2m1fWyVJ\ngSvjnFoC0scDYstjIFYH9DqopOUm6AMK149nZJVYEKk64hHO/Wvu0PN+DiIhbWie\n/UY9fZRQfPJRUebSqLu1wgllI5ulquWy697FeZdjp9TkxQ5uhhiBNPv13OpiAVhY\n/382SFS1d+maPzXk0nqV\n=jaXp\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree d433668d4a8f1dcb1ac6f7c0973d034fa25a582c\nparent bafee1a67d2574e764014f69036d016a326fe387\nauthor Larry Gritz <lg@larrygritz.com> 1710189392 -0700\ncommitter GitHub <noreply@github.com> 1710189392 -0700\n\nfix: Mismatched pragma push/pop in hash.h (#4182)\n\nSigned-off-by: Larry Gritz <lg@larrygritz.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/12be3e864b6b9accb18dab6ba90e11453c459c9d",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/12be3e864b6b9accb18dab6ba90e11453c459c9d",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/12be3e864b6b9accb18dab6ba90e11453c459c9d/comments",
+    "author": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "bafee1a67d2574e764014f69036d016a326fe387",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/bafee1a67d2574e764014f69036d016a326fe387",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/bafee1a67d2574e764014f69036d016a326fe387"
+      }
+    ]
+  },
+  {
+    "sha": "bafee1a67d2574e764014f69036d016a326fe387",
+    "node_id": "C_kwDOABQtLNoAKGJhZmVlMWE2N2QyNTc0ZTc2NDAxNGY2OTAzNmQwMTZhMzI2ZmUzODc",
+    "commit": {
+      "author": {
+        "name": "Jesse Yurkovich",
+        "email": "jesse.y@gmail.com",
+        "date": "2024-03-11T03:25:07Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-11T03:25:07Z"
+      },
+      "message": "build(deps): Remove boost from strutil.cpp (#4181)\n\nRemove boost from `Strutil`. Use existing mechanisms and STL features\r\ninstead.\r\n\r\nPartially addresses #4158\r\n\r\nSigned-off-by: Jesse Yurkovich <jesse.y@gmail.com>",
+      "tree": {
+        "sha": "b5ed9ad8afc7d0f253fbade3fcf332f22997b148",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/b5ed9ad8afc7d0f253fbade3fcf332f22997b148"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/bafee1a67d2574e764014f69036d016a326fe387",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl7nmTCRC1aQ7uu5UhlAAAoX4QAASaHvqwExTmzRTdx7n5PoGt\nzV+HiIm+bsgwlhr6aoSxbrHESGNS0xtjBwMc3JaTK1ZggdRTPvaJg7oPGzhkfHUC\n+7DeyEJw5b8wkCKUlF3zIcAUQPZMBUkj63lkEFfMToZhjIJyqgT8nnhkbWOEcm4/\nY6HbMrtK3080coqXMnJHp16O3a6IqCNvOYVL7+930tvH+xls5P5zNfpQYmYR4lUx\nSthYLJApnf5TL+nZyERFl182N7ZiLpKFmzjjp5Yvc6XoGO6RaKdKkIOZiimvni/z\nmhrPB+e1a2R2sBO31jpLgfLFrjGSKaEvw7SLrfGR1VYKeQMdzTk3ifLx5QAkp9GH\nSC1esetJhE8tIpBhvf+Gal2mUiaPPfZuKVdz9FXmUfiX354AAS/ykceKq4NTXtHH\nTa6xpu9IrnqCKwQoiW9K7z/azjA0wP6BZ5OVS+UrdpDua5Kblkn250dYhubjJ7lQ\n4hxAxzJkdRg+GjDe5x4MRxmnLYLiS2W58bZJd0nE2hXU8Mf0gXleHRtzBu82+rqe\nLemUWmbwgRQf71yWX7ny+B/YajRFHuVyPUMRFuDgBFhA+sQyeMGfh80xH7ZiQGbe\nMSd00WcXi0QD3FVXWpZ4L6uHgUTRxGIviefbunY6mBGu2FPPKhq4Ty0NQHlN5n60\n2XUQxleiTT0jA60gQVy4\n=6TTi\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree b5ed9ad8afc7d0f253fbade3fcf332f22997b148\nparent 33f7b453e5d2c8036d1a1e3342a8d57c77be9975\nauthor Jesse Yurkovich <jesse.y@gmail.com> 1710127507 -0700\ncommitter GitHub <noreply@github.com> 1710127507 -0700\n\nbuild(deps): Remove boost from strutil.cpp (#4181)\n\nRemove boost from `Strutil`. Use existing mechanisms and STL features\r\ninstead.\r\n\r\nPartially addresses #4158\r\n\r\nSigned-off-by: Jesse Yurkovich <jesse.y@gmail.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/bafee1a67d2574e764014f69036d016a326fe387",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/bafee1a67d2574e764014f69036d016a326fe387",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/bafee1a67d2574e764014f69036d016a326fe387/comments",
+    "author": {
+      "login": "jessey-git",
+      "id": 7989986,
+      "node_id": "MDQ6VXNlcjc5ODk5ODY=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7989986?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jessey-git",
+      "html_url": "https://github.com/jessey-git",
+      "followers_url": "https://api.github.com/users/jessey-git/followers",
+      "following_url": "https://api.github.com/users/jessey-git/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jessey-git/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jessey-git/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jessey-git/subscriptions",
+      "organizations_url": "https://api.github.com/users/jessey-git/orgs",
+      "repos_url": "https://api.github.com/users/jessey-git/repos",
+      "events_url": "https://api.github.com/users/jessey-git/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jessey-git/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "33f7b453e5d2c8036d1a1e3342a8d57c77be9975",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/33f7b453e5d2c8036d1a1e3342a8d57c77be9975",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/33f7b453e5d2c8036d1a1e3342a8d57c77be9975"
+      }
+    ]
+  },
+  {
+    "sha": "33f7b453e5d2c8036d1a1e3342a8d57c77be9975",
+    "node_id": "C_kwDOABQtLNoAKDMzZjdiNDUzZTVkMmM4MDM2ZDFhMWUzMzQyYThkNTdjNzdiZTk5NzU",
+    "commit": {
+      "author": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-03-11T03:20:02Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-11T03:20:02Z"
+      },
+      "message": "fix: format spec typos (#4172)\n\nSigned-off-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "d935270b144ce34354bffe4382871f8ece73c390",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/d935270b144ce34354bffe4382871f8ece73c390"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/33f7b453e5d2c8036d1a1e3342a8d57c77be9975",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl7nhiCRC1aQ7uu5UhlAAA3EYQAGtWklywcidJftxMZKss0s81\naFD53WhYlhBfiDhBmEZbD24UMCB+mwQkLgnta//lKAecZV/Ek+ESYw02384Da3qy\nqnr3IhgGPHnMYjujrTQNENTSizpLIEeLLualOp69ZxL2jjvmyTStNUvq7U8UfOJv\nYDZ86JvmAAObD8XuUsx+DFIxETJOL8f9V07x5SbQPOBIv1YnTf7iAjkC+rdTHOCE\n06tD22MJBaYcqz9YXOZ9P4r+L3F+8sDH6Q7nDOZ9c0ADl1BOjfBFBSabRJMIzulI\nayaCWOwoBNDm6G67hD0s5BtiuPb6zDja+Dgdc1egSP1gJIhpINNPB+qsF+ifZEcX\nq7/CmOyOM+xb1jGD0g9RENtNHqPuhQw64yJCmg20F9DjkuyFJNVxKL60fJa68cFM\nghEEDJP/LfqAzJyb2AiNFB5cNhQpn8Ej4MLjV9R39uFvItuX4nrlmhwGTwMFs3IX\nz+7ILVdQZQ1EdKXjsX/tKnniarfuBC0eyF42DedqL8EZYHHSrgrJGY2Z1MhSz88w\nXDcJjxND1NMmkzOIExVhSG2OvRSsvkx5I5X0xlPvBCsb47Cvnv0isSjaK4bUH9DV\niurhXR+Bv1A1LJhdv96/yHeZ2HTiHktEuDW4mP/1khiQf7Q0aOuKJVGFIhoxx7IC\nHlMny9b55+WB6kVM9b0r\n=dlpG\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree d935270b144ce34354bffe4382871f8ece73c390\nparent 7d8fbbd258e0aaddbbd50e951b189a61dcf44d79\nauthor Larry Gritz <lg@larrygritz.com> 1710127202 -0700\ncommitter GitHub <noreply@github.com> 1710127202 -0700\n\nfix: format spec typos (#4172)\n\nSigned-off-by: Larry Gritz <lg@larrygritz.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/33f7b453e5d2c8036d1a1e3342a8d57c77be9975",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/33f7b453e5d2c8036d1a1e3342a8d57c77be9975",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/33f7b453e5d2c8036d1a1e3342a8d57c77be9975/comments",
+    "author": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7d8fbbd258e0aaddbbd50e951b189a61dcf44d79",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/7d8fbbd258e0aaddbbd50e951b189a61dcf44d79",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/7d8fbbd258e0aaddbbd50e951b189a61dcf44d79"
+      }
+    ]
+  },
+  {
+    "sha": "7d8fbbd258e0aaddbbd50e951b189a61dcf44d79",
+    "node_id": "C_kwDOABQtLNoAKDdkOGZiYmQyNThlMGFhZGRiYmQ1MGU5NTFiMTg5YTYxZGNmNDRkNzk",
+    "commit": {
+      "author": {
+        "name": "Larry Gritz",
+        "email": "lg@larrygritz.com",
+        "date": "2024-03-09T06:44:18Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-09T06:44:18Z"
+      },
+      "message": "ci: Allow triggering CI workflow from web (#4178)\n\nSigned-off-by: Larry Gritz <lg@larrygritz.com>",
+      "tree": {
+        "sha": "432d7c4c1a701c11f418c9f1873f0f87ea6dc9bb",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/trees/432d7c4c1a701c11f418c9f1873f0f87ea6dc9bb"
+      },
+      "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/git/commits/7d8fbbd258e0aaddbbd50e951b189a61dcf44d79",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl7AVCCRC1aQ7uu5UhlAAAMkMQAG2YF1kOFUanLBZjkVzb7rex\nUs1emxLT8iEcAi3tdic6Ly1W0pZjjNS0diPwM5iey6pLvVLuNGV/vGtwttN2IMAr\nvqNULtKG+AZBhp0w6b2OurubBp3p9bDrUJiE57Sf3d2NQymEWXJh23ypZIqJT114\nu54S7gAQYxFr1Oc3fSplyyYE65KFV+SCPKKlAwcao0JeegcfTJHLjZQ8Ala7TCJi\nvfZI0ufXSh9LzInDwRUlvlLVO8c5Mb+sVVVanpyQlu1I4PM8KKO1J6rq2GmavXeN\nHOh9AZYxEGPczCcOBQhvxdtrY68elNcbTh7pnwhgiLgWsBb/MmE6A99IAj9UvWSC\nA4BCYQX6HfC+3vFvgAdzyeLz3DhQaX7MPCInrL6H6BzA+2fRX9J66g0qxhc8CyR4\nHCXafUrCfFRaVpHNW10t9v5v/nAAVMZHP6EnYfelStnHLmAbL6AQniku9dkxYd5C\n5+r7gnY6zbCfhJ5/WupVh6DG5dnFOYscsLOp57Xz2KkwiTy4w8TmnAOCWLdGdpPL\nLVCMUs+NuYDih57Vs2Ikr3cZjkpCh/MDKceaifIC5xNzpcJm6pX2kkEAxQbtYToW\nEcMGoe2kQumGg/E1wn3Zd7IzUbVJJ0YG2IldZAOmYq7Qkh7vOyuRBqprwbYWS53Q\nwAnWU+e6clqIoklraxrV\n=fCAg\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 432d7c4c1a701c11f418c9f1873f0f87ea6dc9bb\nparent 24c0c781b8ffa2d82651135937984e9bfb0e9ec8\nauthor Larry Gritz <lg@larrygritz.com> 1709966658 -0800\ncommitter GitHub <noreply@github.com> 1709966658 -0800\n\nci: Allow triggering CI workflow from web (#4178)\n\nSigned-off-by: Larry Gritz <lg@larrygritz.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/7d8fbbd258e0aaddbbd50e951b189a61dcf44d79",
+    "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/7d8fbbd258e0aaddbbd50e951b189a61dcf44d79",
+    "comments_url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/7d8fbbd258e0aaddbbd50e951b189a61dcf44d79/comments",
+    "author": {
+      "login": "lgritz",
+      "id": 504179,
+      "node_id": "MDQ6VXNlcjUwNDE3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504179?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lgritz",
+      "html_url": "https://github.com/lgritz",
+      "followers_url": "https://api.github.com/users/lgritz/followers",
+      "following_url": "https://api.github.com/users/lgritz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lgritz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lgritz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lgritz/subscriptions",
+      "organizations_url": "https://api.github.com/users/lgritz/orgs",
+      "repos_url": "https://api.github.com/users/lgritz/repos",
+      "events_url": "https://api.github.com/users/lgritz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lgritz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "24c0c781b8ffa2d82651135937984e9bfb0e9ec8",
+        "url": "https://api.github.com/repos/AcademySoftwareFoundation/OpenImageIO/commits/24c0c781b8ffa2d82651135937984e9bfb0e9ec8",
+        "html_url": "https://github.com/AcademySoftwareFoundation/OpenImageIO/commit/24c0c781b8ffa2d82651135937984e9bfb0e9ec8"
+      }
+    ]
+  }
+]

@@ -1,0 +1,2334 @@
+[
+  {
+    "sha": "af9bc9e88be17693d5841876e8f2f69a279c7ff7",
+    "node_id": "C_kwDOE8nkuNoAKGFmOWJjOWU4OGJlMTc2OTNkNTg0MTg3NmU4ZjJmNjlhMjc5YzdmZjc",
+    "commit": {
+      "author": {
+        "name": "James Y Knight",
+        "email": "foom@fuhm.net",
+        "date": "2024-04-02T19:56:48Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-02T19:56:48Z"
+      },
+      "message": "Address compilation failure with Clang -std=c++20. (#56)\n\nIn C++20, vector became constexpr. Somehow, this causes the calls to\r\n`sub_nodes.emplace_back` to trigger an error from the attempt to\r\nconvert `unique_ptr<MatmulNode>` (and others) to `unique_ptr<INode>`,\r\nwhen `MatmulNode` is an incomplete type.\r\n\r\nIt seems like that _should_ have been an error before as well, since\r\nthat conversion is only valid if `MatmulNode` is known to be a subtype\r\nof INode. But, I suppose previously it was deferred until after\r\n`matmul.h` had been included, and now due to constexpr the conversion\r\nattempt is triggered eagerly.\r\n\r\nTo resolve, put the definitions of the functions in the headers\r\nassociated with each type.\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>",
+      "tree": {
+        "sha": "3a11d8c606fc0dacb4b4aa4d65a956188d7a2ab6",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/3a11d8c606fc0dacb4b4aa4d65a956188d7a2ab6"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/af9bc9e88be17693d5841876e8f2f69a279c7ff7",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDGMACRC1aQ7uu5UhlAAAzwkQAKcis7y6YLVViUh7yftlRCsG\nckl/1PxMUZZJbAqBD9MxPNPQzDipd6l7KpbCNKRjCxFvVzaOu0iScTlND/tKYMNa\nJc4RmV0MK0ZmEc9deWgqcM/9aSVJmWzYyhUJ7/EV7tShaauK81AINlxdg1EAJ8nf\nAla+3toqsQVPZoaizYjP/nXqDjLcSqFagQg098SqksNb/7rs1j1gIbsZx6qgRVtE\n8XzunynwxQAeT4ObRQ4Yoy0CjVttg91T+oBgmEkk5TJ2qrLNt5xzNGufBVgq1hkN\nfI14eyD+1hjxF3dfbCmlMornpx9VmkB0bD67Mrh6dvEZ8px9oPLloyE6oblkrHYj\n70yd/eJwjGEDRN00WRMfHzX2I2BI8QBkA9zBghMqi63ibuRJZvsgMQ9Eq3Wk7tnK\nsS+1YPDN1FKA7Vpg2Jyed6PLX/kQrV3Y6CfFrzzPKFOdar5VB4hl4W8r7o/wAUDz\nhtQ+KSmJUky3b2g+8eErhKK8i+Vk9f6UwStBmtspT+kw95/XbgXwyzu2XmkxXWvY\n1gRs4JkI9m4R4P9WYiJ7ZOffJHSusPzDKD8VlvG12MD+Op/VBOwaeJnaVhtspOOL\nGOKFD5Xwm4cFrk3f2Dj6oc+CZpDOIsqTBcy4DuRtVBkI3CcgdlVPnEMu3dyx7EX4\ntFX1SN09uPINW1i9ZsQZ\n=R3Uu\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 3a11d8c606fc0dacb4b4aa4d65a956188d7a2ab6\nparent e5fb0edbf4d39145c1fbc3baec548f06e2b15d4c\nauthor James Y Knight <foom@fuhm.net> 1712087808 -0400\ncommitter GitHub <noreply@github.com> 1712087808 -0700\n\nAddress compilation failure with Clang -std=c++20. (#56)\n\nIn C++20, vector became constexpr. Somehow, this causes the calls to\r\n`sub_nodes.emplace_back` to trigger an error from the attempt to\r\nconvert `unique_ptr<MatmulNode>` (and others) to `unique_ptr<INode>`,\r\nwhen `MatmulNode` is an incomplete type.\r\n\r\nIt seems like that _should_ have been an error before as well, since\r\nthat conversion is only valid if `MatmulNode` is known to be a subtype\r\nof INode. But, I suppose previously it was deferred until after\r\n`matmul.h` had been included, and now due to constexpr the conversion\r\nattempt is triggered eagerly.\r\n\r\nTo resolve, put the definitions of the functions in the headers\r\nassociated with each type.\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/af9bc9e88be17693d5841876e8f2f69a279c7ff7",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/af9bc9e88be17693d5841876e8f2f69a279c7ff7",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/af9bc9e88be17693d5841876e8f2f69a279c7ff7/comments",
+    "author": {
+      "login": "jyknight",
+      "id": 873903,
+      "node_id": "MDQ6VXNlcjg3MzkwMw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/873903?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jyknight",
+      "html_url": "https://github.com/jyknight",
+      "followers_url": "https://api.github.com/users/jyknight/followers",
+      "following_url": "https://api.github.com/users/jyknight/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jyknight/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jyknight/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jyknight/subscriptions",
+      "organizations_url": "https://api.github.com/users/jyknight/orgs",
+      "repos_url": "https://api.github.com/users/jyknight/repos",
+      "events_url": "https://api.github.com/users/jyknight/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jyknight/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e5fb0edbf4d39145c1fbc3baec548f06e2b15d4c",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/e5fb0edbf4d39145c1fbc3baec548f06e2b15d4c",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/e5fb0edbf4d39145c1fbc3baec548f06e2b15d4c"
+      }
+    ]
+  },
+  {
+    "sha": "e5fb0edbf4d39145c1fbc3baec548f06e2b15d4c",
+    "node_id": "C_kwDOE8nkuNoAKGU1ZmIwZWRiZjRkMzkxNDVjMWZiYzNiYWVjNTQ4ZjA2ZTJiMTVkNGM",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "agopal@nvidia.com",
+        "date": "2024-03-20T03:01:57Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-20T03:01:57Z"
+      },
+      "message": "cudnn frontend v1.2.1 release notes. (#69)\n\n[Bug Fix] cudnn-frontend pip wheels will now dlopen the fully version\r\ntag first `libucdnn.so.8` or `libcudnn.so.9` first before trying to load\r\n`libcudnn.so`. This means the pip wheels in the RUN_PATH will be\r\nprioritized over system paths (default behavior of dlopen). This can be\r\noverridden by setting the `LD_LIBRARY_PATH`. Source installation will\r\nnow automatically look at cudnn in site packages before system path.\r\n\r\n[Documentation] Fixed the google-colab links in the jupyter notebooks.\r\n\r\n[Documentation] Added a jupyter notebook sample to go over the basics of\r\ncudnn FE graph API.  `00_introduction.ipynb`",
+      "tree": {
+        "sha": "97ccd3cacc1f23f07dfbf4d26fad3d86c3eb9b31",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/97ccd3cacc1f23f07dfbf4d26fad3d86c3eb9b31"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/e5fb0edbf4d39145c1fbc3baec548f06e2b15d4c",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl+lGlCRC1aQ7uu5UhlAAA4C4QAJJnKXJDnmFnfRUjQVItjDck\nTeniA+4IMMl+rWzRLZSGUHP4RLsvhxYnz64XELfpixeb90bWkc0ZXjUGSjwVoar5\nXOx0sJmGrpL/INJVHALztwPe/KBKfGdBPkBj3reksDnwgXka17NXpZzfUwCBOUqt\nb0fjMMIS+Xd4IGL0jt1RjxjCW9Q35gmlfqLI2PKHsu/WzEbMq6q7Fm4DvL6tlPbs\nVb7ky/jpV1je2Yp/SKE77THKSiWN61CT72+kGemF7z53Xm5WiQmMhY75r2HRF2yN\nssr7hoVSKdd8t8ZzjBMbfXNlgyfboZ/CtbnEc7mnpXrdmVvZnICmSyrl/gwe+EKu\nEu8oNzalxyOc0RJrVfFCuydJxV6qGFYkViTNEcLsILf0RwWi3uEAU6IgIPfibwtc\n6e/eOEIOH0g7LxmYVpr5WEH8ckhdvWBqrHIRb7Wmvv4ly+RBAui6xmvt2EUBZp68\n+JsB97njgvRyqXN9nMVmZFSghwu+rufORKrrBBlUfIXjU3f/o4jVfxqull/OtzqQ\nqlIPO+rRODxW4fuPQykAB+dvrWNjco+Sx4FNItxc6DExOgyBepV8g/JsJ2fSxgad\nuGrYRC9x6qmU+iywezPg/XuXnnbWcyNgEzf1mSt0dxq1vnMEn/C48drVLjtfDtPX\n/7/q19Tk9lNBpl/rYh5f\n=etXM\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 97ccd3cacc1f23f07dfbf4d26fad3d86c3eb9b31\nparent b780db851f3d4c4b678d1ac48331845bea61b8d9\nauthor Anerudhan Gopal <agopal@nvidia.com> 1710903717 +0000\ncommitter GitHub <noreply@github.com> 1710903717 -0700\n\ncudnn frontend v1.2.1 release notes. (#69)\n\n[Bug Fix] cudnn-frontend pip wheels will now dlopen the fully version\r\ntag first `libucdnn.so.8` or `libcudnn.so.9` first before trying to load\r\n`libcudnn.so`. This means the pip wheels in the RUN_PATH will be\r\nprioritized over system paths (default behavior of dlopen). This can be\r\noverridden by setting the `LD_LIBRARY_PATH`. Source installation will\r\nnow automatically look at cudnn in site packages before system path.\r\n\r\n[Documentation] Fixed the google-colab links in the jupyter notebooks.\r\n\r\n[Documentation] Added a jupyter notebook sample to go over the basics of\r\ncudnn FE graph API.  `00_introduction.ipynb`"
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/e5fb0edbf4d39145c1fbc3baec548f06e2b15d4c",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/e5fb0edbf4d39145c1fbc3baec548f06e2b15d4c",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/e5fb0edbf4d39145c1fbc3baec548f06e2b15d4c/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b780db851f3d4c4b678d1ac48331845bea61b8d9",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/b780db851f3d4c4b678d1ac48331845bea61b8d9",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/b780db851f3d4c4b678d1ac48331845bea61b8d9"
+      }
+    ]
+  },
+  {
+    "sha": "b780db851f3d4c4b678d1ac48331845bea61b8d9",
+    "node_id": "C_kwDOE8nkuNoAKGI3ODBkYjg1MWYzZDRjNGI2NzhkMWFjNDgzMzE4NDViZWE2MWI4ZDk",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "agopal@nvidia.com",
+        "date": "2024-03-12T19:21:31Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-12T19:21:31Z"
+      },
+      "message": "[New artifacts] Pre-built (alpha version) pip installable wheels for linux will be made available as part of this release. The pip wheels are compatible from python 3.8 through 3.12. The source builds will continue to work as expected. (#68)\n\n[New artifacts] Pre-built (alpha version) pip installable wheels for linux will be made available as part of this release. The pip wheels are compatible from python 3.8 through 3.12. The source builds will continue to work as expected.\r\n\r\n[Documentation] We are updating our contribution policy and will be accepting small PRs targetting improving the cudnn-frontend. For full contribution guide refer to our contribution policy.\r\n\r\n[API updates] [Python] The graph.execute function in python now takes an optional handle. This is to help user provide a custom handle to the execute function(and achieve parity with the C++ API).\r\n\r\n[API updates] Pointwise ops can now take scalars directly as an argument. This simplifies the graph creation process in general.  For eg.\r\n```\r\nauto C = graph.pointwise(A,\r\n        graph.tensor(5.0f),\r\n        fe::graph::Pointwise_attributes()\r\n        .set_mode(fe::PointwiseMode_t::ADD)\r\n        .set_compute_data_type(fe::DataType_t::FLOAT));\r\n```\r\n\r\n[Installation] Addresses RFE https://github.com/NVIDIA/cudnn-frontend/issues/64 to provide installation as `cmake install`\r\n\r\n[Installation] Addresses RFE https://github.com/NVIDIA/cudnn-frontend/issues/63 to provide custom installation of catch2. If catch2 is not found, cudnn frontend fetches it automatically from the upstream github repository.\r\n\r\n[Logging] Improved logging to print legible tensor names. We will be working on further improvements in future releases to make the logging more streamlined.\r\n\r\n[Samples] Add a sample for showcasing auto-tuning to select the best plan among the ones returned from heuristics.\r\n\r\n[Samples] As part of v1.2 release, we have created new Jupyter notebooks, showcasing the python API usage. At this point, these will work on A100 and H100 cards only as mentioned in the notebooks. With future releases, we plan to simplify the installation process and elaborate the API usage. Please refer to `samples/python` directory.\r\n\r\n[Bug fixes] Fixed issues related to auto-tuning when the always plan 0 was executed, even though a different plan was chosen as the best candidate.\r\n\r\n[Unit Tests] We are adding some unit tests which will provide a way for developers to test parts of the their code before submitting the pull requests. It is highly encouraged to add unit-tests and samples before submitting a pull request.",
+      "tree": {
+        "sha": "b02e05d6ff8b1c423cb2da06a0833feeb53e489f",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/b02e05d6ff8b1c423cb2da06a0833feeb53e489f"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/b780db851f3d4c4b678d1ac48331845bea61b8d9",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl8Ks7CRC1aQ7uu5UhlAAAY5gQACIKXkxctf6nA6TgfYhbI0De\n3Bq25cdKT80u9xspwFRSdK5pNbvn+DYcbAAqd1qQpJqldU84lFhE4jx1UMvozT0T\nav9NDUxV/8vnqum2mzrf5aqnbLBEewpD+CzPJLITCrPRQk98J5k4iMkBzZ3FbXd8\nxuABwVRY3CpKa2sdJFiTaqtWt9x9mXik15rZf6JgKvknOTugZ+embH+EnMBTITZg\n1o86PRPzg9yLK1F+xet3CInzhiGZ+SBGFYQMOcqg0MF6Q/oldb/wEqBqqwXkFyED\ngUlIx487wS8bw8dZjtOvCXSTzvf9/1NA+VY5yiqcixsDCtQEyobxO2P2QN9Lq8OL\neUh9e4pJZUbgqomVeIkIMc6S5xmg6p25Ojh/4Sgutw+Pm+ogiiwCMhmuU4JCc7Oe\ntvKpg8siR6Uz/984vXcuuifkkSEJdH+w+DtL1Mvy9K4aLxAM8PLoMhgsfXKGBQgH\n93suP24hLKBnePyB3UEiuKvJ2DYoMEzSffwMMzPCX1+JKHZHCIfbcObLNVMwyixO\nNuIQNGG+hUa4aCNtZ+acUCe3RM71kpy8l8jDlswtMm2oDSm6uGz+64fmmNZ1myp+\n2aOjzpSYiDDhMmW0+/G2POZy/Q51U/FxcVdnJ2E9P2xNqtWa1CKDs76bm/FDyg9H\n3+FR1LMMKW1oeqLCSZOE\n=hgAB\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree b02e05d6ff8b1c423cb2da06a0833feeb53e489f\nparent 150798fe976556078f443fdb059a1ff0361f58a2\nauthor Anerudhan Gopal <agopal@nvidia.com> 1710271291 +0000\ncommitter GitHub <noreply@github.com> 1710271291 -0700\n\n[New artifacts] Pre-built (alpha version) pip installable wheels for linux will be made available as part of this release. The pip wheels are compatible from python 3.8 through 3.12. The source builds will continue to work as expected. (#68)\n\n[New artifacts] Pre-built (alpha version) pip installable wheels for linux will be made available as part of this release. The pip wheels are compatible from python 3.8 through 3.12. The source builds will continue to work as expected.\r\n\r\n[Documentation] We are updating our contribution policy and will be accepting small PRs targetting improving the cudnn-frontend. For full contribution guide refer to our contribution policy.\r\n\r\n[API updates] [Python] The graph.execute function in python now takes an optional handle. This is to help user provide a custom handle to the execute function(and achieve parity with the C++ API).\r\n\r\n[API updates] Pointwise ops can now take scalars directly as an argument. This simplifies the graph creation process in general.  For eg.\r\n```\r\nauto C = graph.pointwise(A,\r\n        graph.tensor(5.0f),\r\n        fe::graph::Pointwise_attributes()\r\n        .set_mode(fe::PointwiseMode_t::ADD)\r\n        .set_compute_data_type(fe::DataType_t::FLOAT));\r\n```\r\n\r\n[Installation] Addresses RFE https://github.com/NVIDIA/cudnn-frontend/issues/64 to provide installation as `cmake install`\r\n\r\n[Installation] Addresses RFE https://github.com/NVIDIA/cudnn-frontend/issues/63 to provide custom installation of catch2. If catch2 is not found, cudnn frontend fetches it automatically from the upstream github repository.\r\n\r\n[Logging] Improved logging to print legible tensor names. We will be working on further improvements in future releases to make the logging more streamlined.\r\n\r\n[Samples] Add a sample for showcasing auto-tuning to select the best plan among the ones returned from heuristics.\r\n\r\n[Samples] As part of v1.2 release, we have created new Jupyter notebooks, showcasing the python API usage. At this point, these will work on A100 and H100 cards only as mentioned in the notebooks. With future releases, we plan to simplify the installation process and elaborate the API usage. Please refer to `samples/python` directory.\r\n\r\n[Bug fixes] Fixed issues related to auto-tuning when the always plan 0 was executed, even though a different plan was chosen as the best candidate.\r\n\r\n[Unit Tests] We are adding some unit tests which will provide a way for developers to test parts of the their code before submitting the pull requests. It is highly encouraged to add unit-tests and samples before submitting a pull request."
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/b780db851f3d4c4b678d1ac48331845bea61b8d9",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/b780db851f3d4c4b678d1ac48331845bea61b8d9",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/b780db851f3d4c4b678d1ac48331845bea61b8d9/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "150798fe976556078f443fdb059a1ff0361f58a2",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/150798fe976556078f443fdb059a1ff0361f58a2",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/150798fe976556078f443fdb059a1ff0361f58a2"
+      }
+    ]
+  },
+  {
+    "sha": "150798fe976556078f443fdb059a1ff0361f58a2",
+    "node_id": "C_kwDOE8nkuNoAKDE1MDc5OGZlOTc2NTU2MDc4ZjQ0M2ZkYjA1OWExZmYwMzYxZjU4YTI",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "agopal@nvidia.com",
+        "date": "2024-02-28T18:04:26Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-02-28T18:04:26Z"
+      },
+      "message": "1.1.2 release. (#65)\n\n[Bug fix] Fixed an issue where the heuristic, when returning 0 results\r\nwas throwing an error. This is considered a success as this can be\r\nappended with the fallback heuristics to build a valid plan.",
+      "tree": {
+        "sha": "a61453efece898c77f980b4fd2443e4f2a09c494",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/a61453efece898c77f980b4fd2443e4f2a09c494"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/150798fe976556078f443fdb059a1ff0361f58a2",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl33WqCRC1aQ7uu5UhlAAAxDYQAKszFOZTCM3rzkWXktFlkPA6\nwUowvY4sAXaq9/o+usGONpRIM//gJXqbwJnmazsXDZHfKplatFFvQSdBH8J3fEa1\nIRxIS/rEO42/aWI7svW4Cb4ySVDI2+G8ez4+ewzJmKCHTmc46dlPaKdeApH4Y5j8\nQ9qM08NCLGN0g6iZExVZ+97kwvxKRv+tzhZDW95QI/DFYppqc1WwJODzBqvBEwio\n8Y5cMBqNXXI/59IlJA29xMEmoiPTgK/39vV9iGl7+AxAjfGRxkHeJacdI9HPOEcD\nnLigXCw/v3VKbvO6m6oUcoKHNj69/ojOUio6WoanG3W/kxZIk8sYGFd3apywbJTL\nD2BxDbuF0Qpk1LmvWfX/COn6gs32G3SOJM3Y7mwNp47wFDwHJjQYJz7XTno1C+X4\nrXouJ30usWim3iO9D6NuhVgSbxG401CtnTQDOcXqty40w7ZhoxiLBC4o1A+Es+S0\naZf4igEloqP5RNSYbLDG7KxsVkiQOtl7Rbf+niIx7p8F5zI7QA9QPdsXWBFOmaj7\nQ5Ve8ZYR7eTRRMPlY87c74fEEbJu2WPBiGg8bHEHkM1n9xsUGZF0nHi/SzI0QK92\nodf5yGlIse5anuU3tt2cbIT+HjJVvENYhQcYMVQpbcT8SlG1wrUawvO1OHfUMgDH\n69tCtAtyhtcRfpK2lTpH\n=v5MT\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree a61453efece898c77f980b4fd2443e4f2a09c494\nparent fd27d7698f14f5f14039c61280b7d5bcf3d4ba75\nauthor Anerudhan Gopal <agopal@nvidia.com> 1709143466 +0000\ncommitter GitHub <noreply@github.com> 1709143466 -0800\n\n1.1.2 release. (#65)\n\n[Bug fix] Fixed an issue where the heuristic, when returning 0 results\r\nwas throwing an error. This is considered a success as this can be\r\nappended with the fallback heuristics to build a valid plan."
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/150798fe976556078f443fdb059a1ff0361f58a2",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/150798fe976556078f443fdb059a1ff0361f58a2",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/150798fe976556078f443fdb059a1ff0361f58a2/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "fd27d7698f14f5f14039c61280b7d5bcf3d4ba75",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/fd27d7698f14f5f14039c61280b7d5bcf3d4ba75",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/fd27d7698f14f5f14039c61280b7d5bcf3d4ba75"
+      }
+    ]
+  },
+  {
+    "sha": "fd27d7698f14f5f14039c61280b7d5bcf3d4ba75",
+    "node_id": "C_kwDOE8nkuNoAKGZkMjdkNzY5OGYxNGY1ZjE0MDM5YzYxMjgwYjdkNWJjZjNkNGJhNzU",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "agopal@nvidia.com",
+        "date": "2024-02-27T18:15:44Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-02-27T18:15:44Z"
+      },
+      "message": "v1.1.1 release (#61)\n\n[Bug Fix] Fixed an issue in older cudnn versions where heurisitcs would\r\nreturn SUCCESS even if the number of heuristics results were zero.",
+      "tree": {
+        "sha": "a054fd2c0caa3906205820490e145fd5ffe04570",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/a054fd2c0caa3906205820490e145fd5ffe04570"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/fd27d7698f14f5f14039c61280b7d5bcf3d4ba75",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl3ibQCRC1aQ7uu5UhlAAA9PcQAEBJ+jmPNDqnzlC9jk8W+TDk\nzza5Zoxn4wgmejZsjiHviFHZrQj2zLrk75cC/9dCK0NzDkPzm1sQip7uv8qMCVzA\nUD//zbr/tbdqQjkIV7BvaM4cAxeJqQFbvx1KeQJeSEsV9rdu/gcoINsIz9op3kqN\nfdiaFlqSLmUB6+O1qSwYcheHsQSyMnr7S0PckEBGrvZ4YUQ4lyJ/BtXYTgLHJfb2\no5u1QR3EIl0M91pjXghqD9f97pfKjFqJlO2E6p/CpdYqmallD0feeeoV6PfNZuDo\n0E2vav5YxiceZKzOwgVgbfNtJOxt9Z7UhtLyYxZOCQZxUcfhrOwIQRkTOOXeIz3T\nVIvS5byH2qjsvqG8jrq02pdYJETMjV0uYNhLH2GSO58RFyCSxDm/ZWt4lLj4llk0\n4CwviPoIBxiJ0qeEU+Pgc2z4KeF5zHgwQ2oyeCZArYArOza5WJ3sbG0j8xCsTY/1\niJ6gXJpTM9ZaSzneDsDcWywM/zVxV02+ev36Eyq/wOZEZZn7mtlXrQ6PJ3vs2cq1\nbE+Gcybg3lMvJpx765zR0aa07uVmGh/ug/sKAhVb0U4McZ7Ak+EwtypfBuSzXBa5\nIKrQlOl2IsIqlFqjLwMkiYUMuK2zW2wZJf7boDKVoUs9Woq63aBHchaby/uLOkPU\n82Dd1/zIlwDIA3plWdnI\n=v0Nr\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree a054fd2c0caa3906205820490e145fd5ffe04570\nparent c29d6097f32583e760872a3f3d8b3e42c39332df\nauthor Anerudhan Gopal <agopal@nvidia.com> 1709057744 +0000\ncommitter GitHub <noreply@github.com> 1709057744 -0800\n\nv1.1.1 release (#61)\n\n[Bug Fix] Fixed an issue in older cudnn versions where heurisitcs would\r\nreturn SUCCESS even if the number of heuristics results were zero."
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/fd27d7698f14f5f14039c61280b7d5bcf3d4ba75",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/fd27d7698f14f5f14039c61280b7d5bcf3d4ba75",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/fd27d7698f14f5f14039c61280b7d5bcf3d4ba75/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c29d6097f32583e760872a3f3d8b3e42c39332df",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/c29d6097f32583e760872a3f3d8b3e42c39332df",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/c29d6097f32583e760872a3f3d8b3e42c39332df"
+      }
+    ]
+  },
+  {
+    "sha": "c29d6097f32583e760872a3f3d8b3e42c39332df",
+    "node_id": "C_kwDOE8nkuNoAKGMyOWQ2MDk3ZjMyNTgzZTc2MDg3MmEzZjNkOGIzZTQyYzM5MzMyZGY",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "agopal@nvidia.com",
+        "date": "2024-02-07T18:38:29Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-02-07T18:38:29Z"
+      },
+      "message": "[New API] A new overloaded variant of execute has been added which allows the variant pack to be mentioned as pair of \"uid, device pointer\". In order to use this, the expectation is user will provide the uid for the tensors created. (#60)\n\n```\r\nerror_t\r\ncudnn_frontend::graph::Graph::execute(cudnnHandle_t handle,\r\n            std::unordered_map<int64_t, void*>& tensor_to_pointer_map, void *workspace) const;\r\n```\r\n\r\n[New API] Serialization: Graph class can now be serialized once the final plan is built. The corresponding deserialized plan requires the handle to be created on the same device the original graph was created with. Serialization is only supported on Runtime compiled engines. This support may be extended to other engines in future. New samples showcasing this have been added in `samples/cpp/serialization.cpp`\r\n\r\n```\r\nerror_t\r\ncudnn_frontend::graph::Graph::serialize(std::vector<uint8_t>& data) const;\r\n\r\nerror_t\r\ncudnn_frontend::graph::Graph::deserialize(cudnnHandle_t handle,\r\n                   std::vector<uint8_t> const& data);\r\n```\r\n\r\n[New API] Autotuning: If the graph allows multiple engine configs for a given topology, each of this can now be built and executed in parallel. The expected flow is user queries the number of plans present and spawns a new thread for each plan to be finalized in parallel. The set of APIs to support this are as follows:\r\n\r\n```\r\nint64_t\r\nGraph::get_execution_plan_count() const;\r\n\r\nerror_t\r\nGraph::build_plan_at_index(cudnnHandle_t const &handle, int64_t index);\r\n\r\nerror_t\r\nGraph::execute_plan_at_index(cudnnHandle_t const &handle,\r\n                         std::unordered_map<int64_t, void*>& ,\r\n                         void* workspace,\r\n                         int64_t plan_index) const;\r\n\r\nint64_t\r\nget_workspace_size_plan_at_index(int64_t plan_index) const;\r\n```\r\n\r\n[New feature] sdpa_node now allows ragged offset to be set in the input and output tensors.\r\n\r\n[Bug Fix] Certain parts of the FE code, used to throw excpetion even with `DISABLE_EXCEPTION` flag set. This has been cleaned up.\r\n\r\n[Bug Fix] For sdpa node, cudnn now correctly returns `NOT_SUPPORTED` when s_q is not a multiple of 64 and padding mask is on.\r\n\r\n[Bug Fix] For sdpa backward node, cudnn now correctly returns `NOT_SUPPORTED` when s_q is less than 64.\r\n\r\n[Bug Fix] Fixed an issue with pointwise Modulo operation.\r\n\r\n[Bug Fix] Fixed an issue in sdpa node, where the intermediate data types were wrong.\r\n\r\n[Samples] Added a sample to showcase matmul with int8 and FP8 precisions.\r\n\r\n[Cleanup] Python samples have moved from `samples/python` to `tests/python_fe`.\r\n\r\n[Cleanup] Removed the `cudnn_frontend::throw_if` function.",
+      "tree": {
+        "sha": "dd5f9f4b567525d44d6a0dcf77f66b311588c2d2",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/dd5f9f4b567525d44d6a0dcf77f66b311588c2d2"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/c29d6097f32583e760872a3f3d8b3e42c39332df",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJlw84lCRC1aQ7uu5UhlAAAAQIQALAb4m1GY4JePkXUk7jK5HPS\nI/KBHuAYPLoosjXm/7w9fik93dfaN1BE8h4fuAOmUsaUesmc+xBe/K/Xsm/1XFQY\n0IJxaq2ASte5+eS10fIyA3sTLN/BUchxR0pNRtJV6QC5dVi9gYKiGvpWvTaho9iZ\nqoqoAPQONPXlyYC/JKKWFusw4SjIr2MaNP5dsjqICQfvyqarT9KfZWNtNxhzf76l\nVrVjNagILG2o64jtq3/OYXF1ghJrcpnYEDurhF/PHoqv5pIwa2kU1o5SYhdVrd93\n52Hk+HdKQTdM9edlCOFmS0Hcuv2b1H7ik58/yy1hMa4dWer9DLHp618W8571RBtd\n8q8Gtbkub3ym1um5T+nApTmkQY+pA6FmMSIn9gHVf7zSzPJTDQLPIELlFG0qSGBw\nmwZq3+11jw0BOXYFCApQzMajHpogkcGdg6eKk89Hi9XpihGWNBKLV76o66+hYpp7\nALLUfOItHf5hCxVT5GqWYBXZ+aUyolmLcIoF7CUyaqdQpNd2qBsVRycJ8L3jzjNp\nOFG+DUl3i3StHklYPCPOlE1VxlFhHmIPPgDaZwcIe/+OyvbiMpBl53LEr0QBeZ5q\nC6+waGVIwZ7UmE/BWPrPZpJzbkHZ2we6NhiE44HUmIZG8uoI+d8TIAf+OUFfceEN\ncWzt8W78RJnlKW/IkTfG\n=VllW\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree dd5f9f4b567525d44d6a0dcf77f66b311588c2d2\nparent a86ad708db725e4d29919bb6fadf8e6cdfa5dc06\nauthor Anerudhan Gopal <agopal@nvidia.com> 1707331109 +0000\ncommitter GitHub <noreply@github.com> 1707331109 -0800\n\n[New API] A new overloaded variant of execute has been added which allows the variant pack to be mentioned as pair of \"uid, device pointer\". In order to use this, the expectation is user will provide the uid for the tensors created. (#60)\n\n```\r\nerror_t\r\ncudnn_frontend::graph::Graph::execute(cudnnHandle_t handle,\r\n            std::unordered_map<int64_t, void*>& tensor_to_pointer_map, void *workspace) const;\r\n```\r\n\r\n[New API] Serialization: Graph class can now be serialized once the final plan is built. The corresponding deserialized plan requires the handle to be created on the same device the original graph was created with. Serialization is only supported on Runtime compiled engines. This support may be extended to other engines in future. New samples showcasing this have been added in `samples/cpp/serialization.cpp`\r\n\r\n```\r\nerror_t\r\ncudnn_frontend::graph::Graph::serialize(std::vector<uint8_t>& data) const;\r\n\r\nerror_t\r\ncudnn_frontend::graph::Graph::deserialize(cudnnHandle_t handle,\r\n                   std::vector<uint8_t> const& data);\r\n```\r\n\r\n[New API] Autotuning: If the graph allows multiple engine configs for a given topology, each of this can now be built and executed in parallel. The expected flow is user queries the number of plans present and spawns a new thread for each plan to be finalized in parallel. The set of APIs to support this are as follows:\r\n\r\n```\r\nint64_t\r\nGraph::get_execution_plan_count() const;\r\n\r\nerror_t\r\nGraph::build_plan_at_index(cudnnHandle_t const &handle, int64_t index);\r\n\r\nerror_t\r\nGraph::execute_plan_at_index(cudnnHandle_t const &handle,\r\n                         std::unordered_map<int64_t, void*>& ,\r\n                         void* workspace,\r\n                         int64_t plan_index) const;\r\n\r\nint64_t\r\nget_workspace_size_plan_at_index(int64_t plan_index) const;\r\n```\r\n\r\n[New feature] sdpa_node now allows ragged offset to be set in the input and output tensors.\r\n\r\n[Bug Fix] Certain parts of the FE code, used to throw excpetion even with `DISABLE_EXCEPTION` flag set. This has been cleaned up.\r\n\r\n[Bug Fix] For sdpa node, cudnn now correctly returns `NOT_SUPPORTED` when s_q is not a multiple of 64 and padding mask is on.\r\n\r\n[Bug Fix] For sdpa backward node, cudnn now correctly returns `NOT_SUPPORTED` when s_q is less than 64.\r\n\r\n[Bug Fix] Fixed an issue with pointwise Modulo operation.\r\n\r\n[Bug Fix] Fixed an issue in sdpa node, where the intermediate data types were wrong.\r\n\r\n[Samples] Added a sample to showcase matmul with int8 and FP8 precisions.\r\n\r\n[Cleanup] Python samples have moved from `samples/python` to `tests/python_fe`.\r\n\r\n[Cleanup] Removed the `cudnn_frontend::throw_if` function."
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/c29d6097f32583e760872a3f3d8b3e42c39332df",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/c29d6097f32583e760872a3f3d8b3e42c39332df",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/c29d6097f32583e760872a3f3d8b3e42c39332df/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a86ad708db725e4d29919bb6fadf8e6cdfa5dc06",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/a86ad708db725e4d29919bb6fadf8e6cdfa5dc06",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/a86ad708db725e4d29919bb6fadf8e6cdfa5dc06"
+      }
+    ]
+  },
+  {
+    "sha": "a86ad708db725e4d29919bb6fadf8e6cdfa5dc06",
+    "node_id": "C_kwDOE8nkuNoAKGE4NmFkNzA4ZGI3MjVlNGQyOTkxOWJiNmZhZGY4ZTZjZGZhNWRjMDY",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "agopal@nvidia.com",
+        "date": "2024-01-31T20:35:46Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-01-31T20:35:46Z"
+      },
+      "message": "v1.0.3 release (#59)\n\n[Bug fix] Fixed an issue where in some cases with padding the stats of SDPA forward node where having NANs.\r\n\r\n[Bug fix] In some older cuda toolkits, eg. cuda 11.4, float to half conversion is not implicit. This was raised in [PR-57](<https://github.com/NVIDIA/cudnn-frontend/pull/57>). Thanks @drisspg for reporting this. A more correct fix has been implemented in this patch.\r\n\r\n[Enhancement] Accepting github [PR-55](<https://github.com/NVIDIA/cudnn-frontend/pull/55>). Thanks @r-barnes for the suggestion.",
+      "tree": {
+        "sha": "18e04b65cbac49b823cf94de35accd5073c03d21",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/18e04b65cbac49b823cf94de35accd5073c03d21"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/a86ad708db725e4d29919bb6fadf8e6cdfa5dc06",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJluq8iCRC1aQ7uu5UhlAAAPhsQABJzDFHMFLp3P3cL9zWmyAkD\n1Q4oUlCs0bNP8/T6/H0w6hzF0ixSqpRa36TtaIrzy7EWYRebag+kOPmKdJE0us5J\nc/3EooutDKJFdMNmnV6VkH+qgkP3r7M3bsjdmqV1pMbcjS7+x+2gfyveFLRSPIP2\nihjV8BSt4AzpIaFNgW78uqXHVKd2fu5MAXXmjDf4zXC8LffHwHPgZsLULGvwUwdn\ncucFzxqCQaPiw8qPdz3A02MiETpyfFDPwLkDCd9FXvd+jvYaWR2JpikSRi7MVQvl\nkqNVt8H6CYUk8901XA31wTI6+NCYxPvO4yKfkJekz+1Gi0y1teEHDYXok8Pk16Ql\n4APJJdRuHjxdC2J3WeH6H9FwIkdUZeV1bltLTp/Eqewq4fA7zrrL9V4hLtbr7C+s\nSigWziO30NNVL1PY40Wz59qsItI3c7QbETBV4BWoZfmpJKgo6WWZqtvyY9mFIZvi\n7ddYxsTvTEgtJPzO4kT7AaUPqeQGPD1WJruAyvOWTRiluyRpYMi5KZbFpzug4yCa\nstmJ2DdKn5WuyoFiIptRGML2RNazUMOHxTjGopoPiE+XkZIXO02xXYhYg+0TjVLA\nmKHduLYaOZXuLyQnZMpm2cHgP6P2AGqPDzRhFjhK0Z4Q2oq0HZihQwhRARI8BLgO\nqwe5T2JmhNGCaeighNJ/\n=TqyG\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 18e04b65cbac49b823cf94de35accd5073c03d21\nparent 9e1771636fceb096b05e0011a6104519de8ea109\nauthor Anerudhan Gopal <agopal@nvidia.com> 1706733346 +0000\ncommitter GitHub <noreply@github.com> 1706733346 -0800\n\nv1.0.3 release (#59)\n\n[Bug fix] Fixed an issue where in some cases with padding the stats of SDPA forward node where having NANs.\r\n\r\n[Bug fix] In some older cuda toolkits, eg. cuda 11.4, float to half conversion is not implicit. This was raised in [PR-57](<https://github.com/NVIDIA/cudnn-frontend/pull/57>). Thanks @drisspg for reporting this. A more correct fix has been implemented in this patch.\r\n\r\n[Enhancement] Accepting github [PR-55](<https://github.com/NVIDIA/cudnn-frontend/pull/55>). Thanks @r-barnes for the suggestion."
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/a86ad708db725e4d29919bb6fadf8e6cdfa5dc06",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/a86ad708db725e4d29919bb6fadf8e6cdfa5dc06",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/a86ad708db725e4d29919bb6fadf8e6cdfa5dc06/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9e1771636fceb096b05e0011a6104519de8ea109",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/9e1771636fceb096b05e0011a6104519de8ea109",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/9e1771636fceb096b05e0011a6104519de8ea109"
+      }
+    ]
+  },
+  {
+    "sha": "9e1771636fceb096b05e0011a6104519de8ea109",
+    "node_id": "C_kwDOE8nkuNoAKDllMTc3MTYzNmZjZWIwOTZiMDVlMDAxMWE2MTA0NTE5ZGU4ZWExMDk",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "ane1606@gmail.com",
+        "date": "2024-01-09T22:32:54Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-01-09T22:32:54Z"
+      },
+      "message": "cudnn Patch release 1.0.2 (#54)\n\n[Header change] Remove the `cudnn_backend.h` dependency, since the correct header is already included in cudnn.h",
+      "tree": {
+        "sha": "0be16bfdcd6ed8a6ee850f3ebffcaad3afbf2841",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/0be16bfdcd6ed8a6ee850f3ebffcaad3afbf2841"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/9e1771636fceb096b05e0011a6104519de8ea109",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlncmWCRBK7hj4Ov3rIwAArX8IAAfVzOq0U5PjxxgAR9Y5DCWy\n7lWJ1vAGWi2Ds9931avFGlQl18Ul8TnqfjkQwx6uV1wL9V26YIU09NahV5azAlyF\nhHm77vFCLUp1kzene32efDgQx6jkjYFzNVoN+YPyFVqJJ6G5CoLABaFSKeYNDD+R\nV3uQDKedtRwwJKQfRLOec/lQiYk+eFuu5+FO61Zx0rnMBRKNKcWMGA7CZZkUQywX\nybM5Kr4OYdsjHVap5eL9/YZeWyxenVa1powolaBX9zbbBsjFzhXpgHClffv8iFh9\ngSh6/lOfQA77BAOHvutXMwm+rzVAIIQ4HV2k4EBdfj1z3i9vfsrOz48BRCUuJEs=\n=RmmP\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 0be16bfdcd6ed8a6ee850f3ebffcaad3afbf2841\nparent f87101b47cf3826e6f823a0659c87c4770c4d10d\nauthor Anerudhan Gopal <ane1606@gmail.com> 1704839574 +0000\ncommitter GitHub <noreply@github.com> 1704839574 -0800\n\ncudnn Patch release 1.0.2 (#54)\n\n[Header change] Remove the `cudnn_backend.h` dependency, since the correct header is already included in cudnn.h"
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/9e1771636fceb096b05e0011a6104519de8ea109",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/9e1771636fceb096b05e0011a6104519de8ea109",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/9e1771636fceb096b05e0011a6104519de8ea109/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f87101b47cf3826e6f823a0659c87c4770c4d10d",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/f87101b47cf3826e6f823a0659c87c4770c4d10d",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/f87101b47cf3826e6f823a0659c87c4770c4d10d"
+      }
+    ]
+  },
+  {
+    "sha": "f87101b47cf3826e6f823a0659c87c4770c4d10d",
+    "node_id": "C_kwDOE8nkuNoAKGY4NzEwMWI0N2NmMzgyNmU2ZjgyM2EwNjU5Yzg3YzQ3NzBjNGQxMGQ",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "ane1606@gmail.com",
+        "date": "2024-01-04T19:02:49Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-01-04T19:02:49Z"
+      },
+      "message": "cudnn release 1.0.1 (#53)\n\n[Bug Fix] Added a padding mask like sub-graph in sdpa node when\r\nkv-sequence length is not a multiple of 64 and padding mask is not\r\nenabled. This allows graphs with kv- sequence length not a multiple of\r\n64 to be executed on cudnn version 8.9.5 onwards. cudnn versions prior\r\nto this now correctly return NOT_SUPPORTED as expected.\r\n\r\n[Bug Fix] Fixed an issue where creation of graph object leads to\r\ncompilation error in some compilers.\r\n\r\n[Bug Fix] cudnn frontend now correctly sets the stream to on the handle.\r\nThis affected only the python bindings.\r\n\r\n[Internal change] Streamlined includes of cudnn graph API header files\r\ninto `cudnn_frontend.h`.",
+      "tree": {
+        "sha": "7ed3a9480fdd38a1b5916464dac2e89e1d8592b3",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/7ed3a9480fdd38a1b5916464dac2e89e1d8592b3"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/f87101b47cf3826e6f823a0659c87c4770c4d10d",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJllwDZCRBK7hj4Ov3rIwAAzFcIACs8PqlaAN66HZ4kPAsfzcvO\nLFoLho7RL1eaIAH8dGPlwvnOEZpoXnAijikNQPUa6IymFzI8c7/9uDAfuF1knaMW\n2+hWYeASHPdTyyDnGjI3wsFP+VThtPPjp0MuMLM12SfHxJHI368t0nCveaNFGveC\nGrRxYaq5z6k0Sir1L1/Yl8TEjn7DxYxi6lXin1WxSy2E7yJn/MyC8hsjxwdaE7DR\nOTWQa8W0IlfiOOLuGCnMPSBY6L6ZM3HgOWI6u6JWl5AENPBnrvwe1ujjuOjWf+GK\n6dO5MRNOP5/swdkX/Tu0wrJSU5tHji5GAYmk271Z1EaePsPxq7NhtypoV5X7Uug=\n=gdpk\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 7ed3a9480fdd38a1b5916464dac2e89e1d8592b3\nparent 9f82dda5c029d15a5f371f0fe003dc0c74a0c987\nauthor Anerudhan Gopal <ane1606@gmail.com> 1704394969 +0000\ncommitter GitHub <noreply@github.com> 1704394969 -0800\n\ncudnn release 1.0.1 (#53)\n\n[Bug Fix] Added a padding mask like sub-graph in sdpa node when\r\nkv-sequence length is not a multiple of 64 and padding mask is not\r\nenabled. This allows graphs with kv- sequence length not a multiple of\r\n64 to be executed on cudnn version 8.9.5 onwards. cudnn versions prior\r\nto this now correctly return NOT_SUPPORTED as expected.\r\n\r\n[Bug Fix] Fixed an issue where creation of graph object leads to\r\ncompilation error in some compilers.\r\n\r\n[Bug Fix] cudnn frontend now correctly sets the stream to on the handle.\r\nThis affected only the python bindings.\r\n\r\n[Internal change] Streamlined includes of cudnn graph API header files\r\ninto `cudnn_frontend.h`."
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/f87101b47cf3826e6f823a0659c87c4770c4d10d",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/f87101b47cf3826e6f823a0659c87c4770c4d10d",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/f87101b47cf3826e6f823a0659c87c4770c4d10d/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9f82dda5c029d15a5f371f0fe003dc0c74a0c987",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/9f82dda5c029d15a5f371f0fe003dc0c74a0c987",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/9f82dda5c029d15a5f371f0fe003dc0c74a0c987"
+      }
+    ]
+  },
+  {
+    "sha": "9f82dda5c029d15a5f371f0fe003dc0c74a0c987",
+    "node_id": "C_kwDOE8nkuNoAKDlmODJkZGE1YzAyOWQxNWE1ZjM3MWYwZmUwMDNkYzBjNzRhMGM5ODc",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "agopal@nvidia.com",
+        "date": "2023-12-04T19:45:50Z"
+      },
+      "committer": {
+        "name": "Anerudhan Gopal",
+        "email": "agopal@nvidia.com",
+        "date": "2023-12-04T19:45:50Z"
+      },
+      "message": "cudnn_frontend v1.0 release introduces new API aimed to simplify graph construction.\n\n[New API] In FE v1.0 API, users can describe multiple operations that form subgraph through `cudnn_frontend::graph::Graph` object.\nUnlike the FE v0.x API, users dont need to worry about specifying shapes and sizes of the intermediate virtual tensors. See README.FE.1.0.md for\nmore details. For more information on historical 1.0 changes, pre-release release notes are [here](https://github.com/NVIDIA/cudnn-frontend/releases).\n\nGraph class consist of three types of API, viz.\n\n- APIs that return reference to the graph itself.\nThis is necessary for chaining.\nThese can be used for setting the global properties of the graph. Example,\n\n```text\ngraph.set_compute_data_type(...).set_io_data_type(...);\n```\n\n- APIs that return a shared pointer to the tensor. These are required to denote entry tensors or output of nodes which can be exit points of graph or inputs to other nodes. Example,\n\n```text\nX = graph.tensor(...);\nW = graph.tensor(...);\nY = graph.conv_frop(X,W, Conv_fprop_attributes(...));\n```\n\n- APIs that return a error type which is a combination of error code and error message. These APIs generally mutate the graph object, or are responsible for calling the cudnn backend API. Example,\n\n```text\nauto error = graph.validate();\nauto error = graph.build_operation_graph(handle);\n```\n\n[New Feature] Python bindings for the FE 1.0 API. See, Python API section in README.md for building the python bindings. Details of python\nAPI and its kw arguments are in the README.FE.1.0.md. Python API samples are in samples/python/*.py\n\n[New Feature] Added a compound SDPA op (both forward and back prop). More details in `docs/operations/Attention.md`\n\n[New Feature] Better error reporting, where in addition to error codes, we also provide error messages which provide more information on specific cause of failure.\n\n[Deprecation] v0.x API are now labelled deprecated and may be removed in v2.0. Consider moving to v1.0 API. If there are issues or missing features, please create a github issue.\n\nChanges over pre-release-5:\n\n[New Feature] Scaled_Dot_Product_Attention op now supports GQA in Fprop and bprop.\n\n[Breaking change] Output dim and strides of SDPA fprop and bprop outputs are now mandatory. Since, the inference of output shapes are non-deterministic.\n\n[Samples] Added samples to showcase,\n\n  - INT8 convolution  (`\"Conv with Int8 datatypes\"`)\n  - Mixed precision multiplication (`\"Mixed Precision Matmul\"`)\n  - Simple Convolutions, MatMuls and Matmuls with simple epilogues(`matmuls.cpp, wgrads.cpp, dgrads.cpp`)\n\n[Update] The default value of `cudnnNanPropagation_t` has been set to `CUDNN_PROPAGATE_NAN` instead of `CUDNN_NOT_PROPAGATE_NAN`.\n\n[Update] Have added a typedef for `scaled_dot_product_flash_attention` as `SDPA` as a convenience.\n\nMiscellaneous updates to v0.x API and the legacy samples:\n\n[Bug fix] Some tests were failing on Ampere GPUs because no plans with 0 size were available. This has been fixed.\n\n[Bug fix] Median of three sampling was incorrectly sorting the results, when cudnnFind was used. This has been fixed.\n\n[Bug fix] Thanks to @Riottomsk for pointing out the bug in port count of Pointwise mode `POW` in his [PR] (<https://github.com/NVIDIA/cudnn-frontend/pull/49>). This fix has been incorporated.\n\n[Bug fix] Have fixed a bug in resample backprop operation, where `CUDNN_ATTR_OPERATION_RESAMPLE_BWD_XDESC` and `CUDNN_ATTR_OPERATION_RESAMPLE_BWD_YDESC` were not set correctly.\n\n[Feature] Layer Norm API has been added. And can be used with the v0.x API.",
+      "tree": {
+        "sha": "c27ab20fbd806687d890bf58b2a67f102c06c0b8",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/c27ab20fbd806687d890bf58b2a67f102c06c0b8"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/9f82dda5c029d15a5f371f0fe003dc0c74a0c987",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/9f82dda5c029d15a5f371f0fe003dc0c74a0c987",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/9f82dda5c029d15a5f371f0fe003dc0c74a0c987",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/9f82dda5c029d15a5f371f0fe003dc0c74a0c987/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1c88f0f67e9b6e91dfcca437acd5242f54f4601b",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/1c88f0f67e9b6e91dfcca437acd5242f54f4601b",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/1c88f0f67e9b6e91dfcca437acd5242f54f4601b"
+      }
+    ]
+  },
+  {
+    "sha": "1c88f0f67e9b6e91dfcca437acd5242f54f4601b",
+    "node_id": "C_kwDOE8nkuNoAKDFjODhmMGY2N2U5YjZlOTFkZmNjYTQzN2FjZDUyNDJmNTRmNDYwMWI",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "agopal@nvidia.com",
+        "date": "2023-11-19T10:51:31Z"
+      },
+      "committer": {
+        "name": "Anerudhan Gopal",
+        "email": "agopal@nvidia.com",
+        "date": "2023-11-20T20:42:58Z"
+      },
+      "message": "[API change] Based on user feedback, we have removed distinction between the graph and plan objects. With the new API, plan remains embedded in the graph and all operations are performed on the graph object.\n\nPreviously,\n\n```\n    REQUIRE(graph.validate().is_good());\n    REQUIRE(graph.build_operation_graph(handle).is_good());\n    auto plans = graph.get_execution_plan_list({fe::HeurMode_t::A});\n    REQUIRE(plans.check_support(handle).is_good());\n    REQUIRE(graph.set_execution_plans(plans).is_good());\n```\n\nNow,\n\n```\n    REQUIRE(graph.validate().is_good());\n    REQUIRE(graph.build_operation_graph(handle).is_good());\n    REQUIRE(graph.create_execution_plans({fe::HeurMode_t::A}).is_good());\n    REQUIRE(graph.check_support(handle).is_good());\n    REQUIRE(graph.build_plans(handle).is_good());\n```\n\nAlso, with this change the following new API have been introduced on the graph class.\n\n```\nerror_t\nbuild_plans(cudnnHandle_t const &handle,\n            BuildPlanPolicy_t const policy     = BuildPlanPolicy_t::HEURISTICS_CHOICE,\n            bool const do_multithreaded_builds = false);\n\nGraph & deselect_workspace_greater_than(int64_t const workspace);\n\nGraph & deselect_behavior_notes(std::vector<BehaviorNote_t> const &notes);\n\nGraph & deselect_numeric_notes(std::vector<NumericalNote_t> const &notes);\n\nint64_t get_workspace_size() const\n\nint64_t get_autotune_workspace_size() const;\n\nerror_t autotune(cudnnHandle_t handle,\n             std::unordered_map<std::shared_ptr<Tensor_attributes>, void *> variants,\n             void *workspace,\n             void *user_impl = nullptr);\n\n```\n\n[API change] Removes the implicit `validate` call made in `build_operation_graph`. Now, the expectation is that the user explicitly calls `validate` on the graph before calling `build_operation_graph`. This helps the user distinguish errors between malformed graphs and error occuring due to lowering into cudnn.\n\n[API change] Return error codes from the graph API have now been marked `nodiscard`.\n\n[New API] Have added a new `graph::key() -> int64_t` as an API that returns a hash on the graph object. This can be used as key for graph caching. Eg. of this usage is shown in the samples.\n\n[New API] Have added new python API `create_handle`, `destroy_handle`, `set_stream`, `get_stream` to allow custom handle and stream management on the graph object.\n\n[New functionality] sdpa backward can now compute dbias if the fprop had a bias operation. This functionality was added in cudnn 8.9.6.\n\n[Enhancement] There is a extension in behavior of `CUDNN_FRONTEND_ATTN_DP_WORKSPACE_LIMIT`. This is documented in `docs/operation/Attention.md`\n\n[Enhancement] Have added better error checks to make sure all the tensors of the node have been created. This prevents unexpected segmentation faults seen earlier.\n\n[Bug Fix] Fix issues in instancenorm, which had caused invalid memory access earlier.\n\n[Enhancement] Have moved the v0.9 API samples to `samples/legacy_samples` folder for better organization.",
+      "tree": {
+        "sha": "fe98b2fa6a83718ae24e47d5a3cadbe016d1213b",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/fe98b2fa6a83718ae24e47d5a3cadbe016d1213b"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/1c88f0f67e9b6e91dfcca437acd5242f54f4601b",
+      "comment_count": 2,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/1c88f0f67e9b6e91dfcca437acd5242f54f4601b",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/1c88f0f67e9b6e91dfcca437acd5242f54f4601b",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/1c88f0f67e9b6e91dfcca437acd5242f54f4601b/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d337a3c5ac474c92a066b0e2dbdb18daa67b8f55",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/d337a3c5ac474c92a066b0e2dbdb18daa67b8f55",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/d337a3c5ac474c92a066b0e2dbdb18daa67b8f55"
+      }
+    ]
+  },
+  {
+    "sha": "d337a3c5ac474c92a066b0e2dbdb18daa67b8f55",
+    "node_id": "C_kwDOE8nkuNoAKGQzMzdhM2M1YWM0NzRjOTJhMDY2YjBlMmRiZGIxOGRhYTY3YjhmNTU",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "agopal@nvidia.com",
+        "date": "2023-10-19T02:57:49Z"
+      },
+      "committer": {
+        "name": "Anerudhan Gopal",
+        "email": "agopal@nvidia.com",
+        "date": "2023-10-19T02:57:49Z"
+      },
+      "message": "cudnn pre-release-4\n\n[API change] `Scaled_dot_product_flash_attention_attributes`,\n`Scaled_dot_product_flash_attention_backward_attributes` now accepts K,\nV tensors instead of K-transpose and V-transpose. This is a deviation\nfrom the backend API. This change is made based on multiple customer\nfeedback.\n\n[New API] Add `tensor_like` python API which accepts a DLPack-compstible\ntensor. This simplifies the cudnn tensor creation.\n\n[New Feature] Setting `CUDNN_FRONTEND_ATTN_DP_WORKSPACE_LIMIT`\nenvironment variable allows to choose between different optimized cudnn\nbackend kernels. See docs/operations/mha for more details.\n[New Feature] Add RMSNorm and InstanceNorm forward and backward\nimplementations.\n[New Feature] Add alibi, padding, layout support for attention bprop\nnode.\n[New Feature] Introduce python bindings for plans. Allows  validate\ngraph, filter plans.\n\n[Bug Fix] Fix relative includes of filenames in cudnn_frontend headers.\nThis resolves compilation issues in certain toolchains\n[Bug Fix] Fix Segfault when dropout was set for some scaled dot product\nflash attention nodes.\n\n[New samples] Add new samples for `apply_rope`, `layernorm forward and\nbackward`, `rmsnorm forward and backward`",
+      "tree": {
+        "sha": "970b39250695558cf81339b1a5452f7f3ebd5505",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/970b39250695558cf81339b1a5452f7f3ebd5505"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/d337a3c5ac474c92a066b0e2dbdb18daa67b8f55",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/d337a3c5ac474c92a066b0e2dbdb18daa67b8f55",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/d337a3c5ac474c92a066b0e2dbdb18daa67b8f55",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/d337a3c5ac474c92a066b0e2dbdb18daa67b8f55/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ea7f8b9820ac4a28729eddd10331423077e5ad61",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/ea7f8b9820ac4a28729eddd10331423077e5ad61",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/ea7f8b9820ac4a28729eddd10331423077e5ad61"
+      }
+    ]
+  },
+  {
+    "sha": "ea7f8b9820ac4a28729eddd10331423077e5ad61",
+    "node_id": "C_kwDOE8nkuNoAKGVhN2Y4Yjk4MjBhYzRhMjg3MjllZGRkMTAzMzE0MjMwNzdlNWFkNjE",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "agopal@nvidia.com",
+        "date": "2023-09-25T03:25:49Z"
+      },
+      "committer": {
+        "name": "Anerudhan Gopal",
+        "email": "agopal@nvidia.com",
+        "date": "2023-09-25T15:52:12Z"
+      },
+      "message": "cudnn prerelease_3:\n\nImprovements over prerelease 2:\n[Feature] Added SDPA flash attention backwward node.\n[Enhancement] Resolved an issue where the computed Alibi slopes were copied onto GPU memory on default stream instead of user specified stream in the handle.\n[Bug fix] Fix  windows compilation error when pedantic warnings are treated as error.\n[Bug fix] Fixed issue in causal padding where the masked values were `std::numeric_limits<float>::min()` instead of `std::numeric_limits<float>::lowest()`\n\nUnder investigation and development:\n- We are still working on additional features for SDPA back prop.\n- Better error messages and logging",
+      "tree": {
+        "sha": "65ec8a8cd353389147f770c222afe2dcbc4d844b",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/65ec8a8cd353389147f770c222afe2dcbc4d844b"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/ea7f8b9820ac4a28729eddd10331423077e5ad61",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/ea7f8b9820ac4a28729eddd10331423077e5ad61",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/ea7f8b9820ac4a28729eddd10331423077e5ad61",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/ea7f8b9820ac4a28729eddd10331423077e5ad61/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6e59c456f88dbd4b00eb606f0fa35be484ca9863",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/6e59c456f88dbd4b00eb606f0fa35be484ca9863",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/6e59c456f88dbd4b00eb606f0fa35be484ca9863"
+      }
+    ]
+  },
+  {
+    "sha": "6e59c456f88dbd4b00eb606f0fa35be484ca9863",
+    "node_id": "C_kwDOE8nkuNoAKDZlNTljNDU2Zjg4ZGJkNGIwMGViNjA2ZjBmYTM1YmU0ODRjYTk4NjM",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "agopal@nvidia.com",
+        "date": "2023-09-13T22:07:58Z"
+      },
+      "committer": {
+        "name": "Anerudhan Gopal",
+        "email": "agopal@nvidia.com",
+        "date": "2023-09-13T22:07:58Z"
+      },
+      "message": "cudnn prerelease_2:\n\nImprovements over prerelease 1:\n[Feature] Added missing python bindings for several pointwise ops.\n\n[Feature] SDPA flash attention feature parity with the backend API.\n\n[Bug fixes] Shape inferencing fixes for dgrad, wgrad where the output\ndimension cannot be computed deterministically.\n\nUnder investigation and development:\n- We are still working on additional features for SDPA back prop.\n- CPU overhead when using the python bindings are under investigation.\n- Better error messages and logging\n\nMiscelleanous updates to the v0.x API:\n\n[Bug fix] Some tests were failing on Ampere GPUs because no plans with 0\nsize were available. This has been fixed.\n\n[Bug fix] Median of three sampling was incorrectly sorting the results,\nwhen cudnnFind was used. This has been fixed.\n\n[Feature] Layer Norm API has been added. And can be used with the v0.x\nAPI.\n\nNote: This pre-release is experimental",
+      "tree": {
+        "sha": "cc358b83a4decef9fd01776cfd35caf8d060d052",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/cc358b83a4decef9fd01776cfd35caf8d060d052"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/6e59c456f88dbd4b00eb606f0fa35be484ca9863",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/6e59c456f88dbd4b00eb606f0fa35be484ca9863",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/6e59c456f88dbd4b00eb606f0fa35be484ca9863",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/6e59c456f88dbd4b00eb606f0fa35be484ca9863/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "12f35fa2be5994c1106367cac2fba21457b064f4",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/12f35fa2be5994c1106367cac2fba21457b064f4",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/12f35fa2be5994c1106367cac2fba21457b064f4"
+      }
+    ]
+  },
+  {
+    "sha": "12f35fa2be5994c1106367cac2fba21457b064f4",
+    "node_id": "C_kwDOE8nkuNoAKDEyZjM1ZmEyYmU1OTk0YzExMDYzNjdjYWMyZmJhMjE0NTdiMDY0ZjQ",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "ane1606@gmail.com",
+        "date": "2023-07-13T22:19:11Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-07-13T22:19:11Z"
+      },
+      "message": "v0.9.2 (#48)\n\n[Update] Updated the samples, so that it can build with cuda 12.2 TK.\r\n[Bug Fix] Fixed bugs in the MHA Bprop sample. This fixes a NOT_SUPPORTED\r\nfailure seen in cudnn v8.9.3",
+      "tree": {
+        "sha": "8699e4a5bb2cc5c88ffe8f9f481d278f76f26288",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/8699e4a5bb2cc5c88ffe8f9f481d278f76f26288"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/12f35fa2be5994c1106367cac2fba21457b064f4",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJksHhfCRBK7hj4Ov3rIwAAYqoIABQpOqU1BAinK5gBpPJwiCXh\nFkdUTd/WWP8t15dRm9vDLJ7vbqh2WnF+XsIFlAVmJmkLhs0kyDXXQ3UyvbVVxKHo\nTl12fgGu5l9itK9/9G3LZAj7m6eGINE2rV76gvA1GupVL1/EUj/m1DNC8u+9dtbk\nfbwvbOmWSaCFRlpdfmCegU486J2V+p8PM9gnN5T7W9DcGo1Shlir3reuSVOT+BIu\nPsPU+c+nZ0vhelWZQ6pJrB+/r5FVodswlJZHPFkAJxgrj9vXDw6F1L/RM8Gh4jlw\n/5QquAzRIxzW8mYqsQceMXU6p3/l0SNIr+v8enbHL96V99AciAnbAVgw383Mi/g=\n=3mzN\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 8699e4a5bb2cc5c88ffe8f9f481d278f76f26288\nparent a4f05c1edcef453f5fd52f96218c29c7d420e511\nauthor Anerudhan Gopal <ane1606@gmail.com> 1689286751 -0700\ncommitter GitHub <noreply@github.com> 1689286751 -0700\n\nv0.9.2 (#48)\n\n[Update] Updated the samples, so that it can build with cuda 12.2 TK.\r\n[Bug Fix] Fixed bugs in the MHA Bprop sample. This fixes a NOT_SUPPORTED\r\nfailure seen in cudnn v8.9.3"
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/12f35fa2be5994c1106367cac2fba21457b064f4",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/12f35fa2be5994c1106367cac2fba21457b064f4",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/12f35fa2be5994c1106367cac2fba21457b064f4/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a4f05c1edcef453f5fd52f96218c29c7d420e511",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/a4f05c1edcef453f5fd52f96218c29c7d420e511",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/a4f05c1edcef453f5fd52f96218c29c7d420e511"
+      }
+    ]
+  },
+  {
+    "sha": "a4f05c1edcef453f5fd52f96218c29c7d420e511",
+    "node_id": "C_kwDOE8nkuNoAKGE0ZjA1YzFlZGNlZjQ1M2Y1ZmQ1MmY5NjIxOGMyOWM3ZDQyMGU1MTE",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "ane1606@gmail.com",
+        "date": "2023-05-23T16:14:26Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-05-23T16:14:26Z"
+      },
+      "message": "v0.9.1 release (#46)\n\n[Bug Fix] Updated version numbers of the cudnn frontend release. \r\n[Update] Updated the documentation to reflect latest version numbers.\r\n[Update] Readme updated with cmake build instructions.\r\n\r\n[Samples] Added a new Batch Norm sample forward and backward example.\r\n\r\n\r\n[Acknowledgments]\r\nThanks to @malfet for pointing out the [version number mismatch.](https://github.com/NVIDIA/cudnn-frontend/pull/45)",
+      "tree": {
+        "sha": "da237698a5895dd89f10064dc4ebe9c96167831f",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/da237698a5895dd89f10064dc4ebe9c96167831f"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/a4f05c1edcef453f5fd52f96218c29c7d420e511",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkbOZiCRBK7hj4Ov3rIwAATW0IAB9poTnugjsYgBsB6yobO0OH\nnr/Rvc3Ce6/1NJuOy3xZN4F+nmiyK51EVvaLISqf9HSjXPuKH/1VSR+o+qILBXZw\n1QRY9FY+77YHhtxk4dfMKKhkwSOXScM8o2fjAxf9LGOQ/CWvDNtU0mkMKpNEX+x8\nVJIC2+Jl0SpkUr8bPF77zKeUXkI1KSky0U88QEqBZCmkGflaVj4j2vUFe6iIjrLK\nxWYV4hm5To6eQqrLTiGSDUeAtzZ0IF3ZZ0Cb9CsRXkYZLEkeceQnPlAvDLgkRnn4\nLek/qRCcUQZMrEy+2Hm+uAbbUtN+QB+9hYtfG7yL2AEndv9EcLMuIE8pEiWQJJk=\n=QeB5\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree da237698a5895dd89f10064dc4ebe9c96167831f\nparent e7f64390e9bb4a3db622ffe11c973834f572b609\nauthor Anerudhan Gopal <ane1606@gmail.com> 1684858466 -0700\ncommitter GitHub <noreply@github.com> 1684858466 -0700\n\nv0.9.1 release (#46)\n\n[Bug Fix] Updated version numbers of the cudnn frontend release. \r\n[Update] Updated the documentation to reflect latest version numbers.\r\n[Update] Readme updated with cmake build instructions.\r\n\r\n[Samples] Added a new Batch Norm sample forward and backward example.\r\n\r\n\r\n[Acknowledgments]\r\nThanks to @malfet for pointing out the [version number mismatch.](https://github.com/NVIDIA/cudnn-frontend/pull/45)"
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/a4f05c1edcef453f5fd52f96218c29c7d420e511",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/a4f05c1edcef453f5fd52f96218c29c7d420e511",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/a4f05c1edcef453f5fd52f96218c29c7d420e511/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e7f64390e9bb4a3db622ffe11c973834f572b609",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/e7f64390e9bb4a3db622ffe11c973834f572b609",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/e7f64390e9bb4a3db622ffe11c973834f572b609"
+      }
+    ]
+  },
+  {
+    "sha": "e7f64390e9bb4a3db622ffe11c973834f572b609",
+    "node_id": "C_kwDOE8nkuNoAKGU3ZjY0MzkwZTliYjRhM2RiNjIyZmZlMTFjOTczODM0ZjU3MmI2MDk",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "ane1606@gmail.com",
+        "date": "2023-04-18T17:40:41Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-04-18T17:40:41Z"
+      },
+      "message": "v0.9 release (#44)\n\n[Enhancement] Add ability to filter by shape of tensors to errata filter.\r\n[Enhancement] Adding ability to add feature vector to opGraph manually.\r\n[Enhancement] Added support for CUDNN_POINTWISE_RECIPROCAL pointwise operation.\r\n[Enhancement] Add anoption to limit the number of kernels benchmarked in find-plan.\r\n\r\n[Bug Fix] Fixed \"Scale Bias Conv BNGenstats\" test case where the sum and square sum channel dimensions were incorrect.\r\n[Bug Fix] Fixed a compiler error \"dereferencing type-punned pointer will break strict-aliasing rules\" seen in certain compiler while type-casting floating point alpha/beta to int64_t.\r\n[Bug Fix] Waived \"ConvScaleBiasAct_int8 sample\" for V100 because of lack of int8 support.\r\n\r\n[Samples] Updated the Fused MHA sample to use plan caching.\r\n[Samples] Added BF16/FP16/FP8 Flash Attention Fprop/Bprop samples.\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>",
+      "tree": {
+        "sha": "3f4a602368a55167a4b64afdd2ba6249b05cb570",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/3f4a602368a55167a4b64afdd2ba6249b05cb570"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/e7f64390e9bb4a3db622ffe11c973834f572b609",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkPtYZCRBK7hj4Ov3rIwAAjJAIAFaKmgkHfCzk/Kn6wBjsCdlz\nMe8T0+8962rLSJwdJcWwcVktvu+ui6rzznf8sUUd4l/ZNLlWVKbtpDv8KU1AXXy4\nSlmTZen1go8ckRktXmybPzxMp3cNCvYlJ9jIawVvN/s6bHkVfNgr5/xFK+oCjngP\nyCZSo4cqaK2irBhv++qpvSFROh5ayrBA1Oqs5aAqBQ5GurKv+xcv1AQjcTxcqEj5\nHuHJQt3d5P/g/Ro+6g8Ksu7EYjMHUiE688ImfkhQGyHy3Tz6RZ5MbxrVdqGIxKQQ\nXOFD+EqMvL31MWkStdfT3kdvSVKIzyO1gYalPPendPrw6f3vY7YXNrCDHjfgKG8=\n=/5li\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 3f4a602368a55167a4b64afdd2ba6249b05cb570\nparent 1e32f72ba88484d3313779a5b7ce72a86f60140d\nauthor Anerudhan Gopal <ane1606@gmail.com> 1681839641 -0700\ncommitter GitHub <noreply@github.com> 1681839641 -0700\n\nv0.9 release (#44)\n\n[Enhancement] Add ability to filter by shape of tensors to errata filter.\r\n[Enhancement] Adding ability to add feature vector to opGraph manually.\r\n[Enhancement] Added support for CUDNN_POINTWISE_RECIPROCAL pointwise operation.\r\n[Enhancement] Add anoption to limit the number of kernels benchmarked in find-plan.\r\n\r\n[Bug Fix] Fixed \"Scale Bias Conv BNGenstats\" test case where the sum and square sum channel dimensions were incorrect.\r\n[Bug Fix] Fixed a compiler error \"dereferencing type-punned pointer will break strict-aliasing rules\" seen in certain compiler while type-casting floating point alpha/beta to int64_t.\r\n[Bug Fix] Waived \"ConvScaleBiasAct_int8 sample\" for V100 because of lack of int8 support.\r\n\r\n[Samples] Updated the Fused MHA sample to use plan caching.\r\n[Samples] Added BF16/FP16/FP8 Flash Attention Fprop/Bprop samples.\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/e7f64390e9bb4a3db622ffe11c973834f572b609",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/e7f64390e9bb4a3db622ffe11c973834f572b609",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/e7f64390e9bb4a3db622ffe11c973834f572b609/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1e32f72ba88484d3313779a5b7ce72a86f60140d",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/1e32f72ba88484d3313779a5b7ce72a86f60140d",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/1e32f72ba88484d3313779a5b7ce72a86f60140d"
+      }
+    ]
+  },
+  {
+    "sha": "1e32f72ba88484d3313779a5b7ce72a86f60140d",
+    "node_id": "C_kwDOE8nkuNoAKDFlMzJmNzJiYTg4NDg0ZDMzMTM3NzlhNWI3Y2U3MmE4NmY2MDE0MGQ",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "ane1606@gmail.com",
+        "date": "2023-04-07T19:40:30Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-04-07T19:40:30Z"
+      },
+      "message": "v0.8.1 release (#43)\n\n[Minor Enhancement] Added missing enum handling code which allows forward compatibility to cudnn version.\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>",
+      "tree": {
+        "sha": "3ae00a62240fd6a0ea1a1ebddce6db41afbf0761",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/3ae00a62240fd6a0ea1a1ebddce6db41afbf0761"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/1e32f72ba88484d3313779a5b7ce72a86f60140d",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkMHGuCRBK7hj4Ov3rIwAAqVUIALMpGCRjjKe6E5ZK/rfFjAD3\nhf/eeO59m931T73gpl4FjLTlYA5zAIKK2JjgIefpJZXrWuj8+g5zqqhEyxF5gQdV\nJ2V46BwC/+Q4wtsuRKPJngApnX1bCCTpjBoj21FaWrC73jHGyODkWsNU+zYDSfB1\nHO/whyPjZIfMH/zBeYmqwuDXWOIQ01gPwaSu+Vy1mcGlyq0unBwlWD0PxFjhcOKo\nWXgknX+nN7fdrfBDlOPh/+4wyG6N9OlyhdhxSEzVYVfNYxmzsCFf20QswsIkDTZe\n0BVC6OdU3/3Hfkgpx1NAhffVfxWHhofIiGWhBnVUnMRG46COOC53WJy53ZqZG9c=\n=FSik\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 3ae00a62240fd6a0ea1a1ebddce6db41afbf0761\nparent 8f488bd41229aa0a3d5f7c0168f59e4d69c618ee\nauthor Anerudhan Gopal <ane1606@gmail.com> 1680896430 -0700\ncommitter GitHub <noreply@github.com> 1680896430 -0700\n\nv0.8.1 release (#43)\n\n[Minor Enhancement] Added missing enum handling code which allows forward compatibility to cudnn version.\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/1e32f72ba88484d3313779a5b7ce72a86f60140d",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/1e32f72ba88484d3313779a5b7ce72a86f60140d",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/1e32f72ba88484d3313779a5b7ce72a86f60140d/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8f488bd41229aa0a3d5f7c0168f59e4d69c618ee",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/8f488bd41229aa0a3d5f7c0168f59e4d69c618ee",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/8f488bd41229aa0a3d5f7c0168f59e4d69c618ee"
+      }
+    ]
+  },
+  {
+    "sha": "8f488bd41229aa0a3d5f7c0168f59e4d69c618ee",
+    "node_id": "C_kwDOE8nkuNoAKDhmNDg4YmQ0MTIyOWFhMGEzZDVmN2MwMTY4ZjU5ZTRkNjljNjE4ZWU",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "ane1606@gmail.com",
+        "date": "2023-02-16T07:44:54Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-02-16T07:44:54Z"
+      },
+      "message": "[New API] Added support for RNG operation. (#41)\n\n[New API] Added support for Reshape operation.\r\n[New API] Added support for DgradDreluBNBwdWeight operation\r\n\r\n[Minor Enhancement] Added cudnn frontend enums to simplify Resample operation creation.\r\n[Minor Enhancement] Added alpha and beta values as key for the plan caches.\r\n\r\n[Bug Fix] Fixed an error which was causing reference code to fail with segmentation fault.\r\n[Bug Fix] Fixed an issue where stride/padding and dilation values were incorrectly cached for 2d convolutions.\r\n[Bug Fix] Fixed issues where error statuses were not handled correctly during tensor creation.\r\n\r\n[Samples] Added a new sample to show case how fMHA graph can be programmed through FE API. This sample contains both fprop and backprop graphs.\r\n[Samples] Added a new sample to show case DgradDreluBNBwdWeight operation.\r\n\r\n[Samples] Added a modular block which models fprop of residual block resnet.\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>",
+      "tree": {
+        "sha": "87a02248fcd0ce76dae1e58111cf29a0324cc64b",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/87a02248fcd0ce76dae1e58111cf29a0324cc64b"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/8f488bd41229aa0a3d5f7c0168f59e4d69c618ee",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJj7d72CRBK7hj4Ov3rIwAAIuEIAJ+LppLN6WqgIc0FQDRp43t6\nCxqex6D0NAoLrjNMvqDYk8IT5aeTDXmMKW+bcpqVLeBYkKtuZ7ldM+c8YU5gtRCh\nyqDpsWwff1qhVgH0UGBvFuq3pGirijM7m2MbZ1v8vzcpU3ZslX7CGBo8hscUAghB\nNzWp57nQB982D4hbNFGk/Z/ozJ76TBvv+4dmPBCkp7tZ8j5z5Jy22TDoY5I4ansa\nGxI+jTq1sIeo296xgn8aSLJaNm3axL2shf2KuO+7Ks33mhCNoaPvjOqZlBzfvau/\nqlOkMy7+1C7MUM0WqHU9R/95HGgZAN7/ovrMCGP0vbSqv3p+l/TWVc+Qo/LI5pc=\n=nTh/\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 87a02248fcd0ce76dae1e58111cf29a0324cc64b\nparent 81a041a68245cd8f871c43bbbbd5b6b627979a30\nauthor Anerudhan Gopal <ane1606@gmail.com> 1676533494 -0800\ncommitter GitHub <noreply@github.com> 1676533494 -0800\n\n[New API] Added support for RNG operation. (#41)\n\n[New API] Added support for Reshape operation.\r\n[New API] Added support for DgradDreluBNBwdWeight operation\r\n\r\n[Minor Enhancement] Added cudnn frontend enums to simplify Resample operation creation.\r\n[Minor Enhancement] Added alpha and beta values as key for the plan caches.\r\n\r\n[Bug Fix] Fixed an error which was causing reference code to fail with segmentation fault.\r\n[Bug Fix] Fixed an issue where stride/padding and dilation values were incorrectly cached for 2d convolutions.\r\n[Bug Fix] Fixed issues where error statuses were not handled correctly during tensor creation.\r\n\r\n[Samples] Added a new sample to show case how fMHA graph can be programmed through FE API. This sample contains both fprop and backprop graphs.\r\n[Samples] Added a new sample to show case DgradDreluBNBwdWeight operation.\r\n\r\n[Samples] Added a modular block which models fprop of residual block resnet.\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/8f488bd41229aa0a3d5f7c0168f59e4d69c618ee",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/8f488bd41229aa0a3d5f7c0168f59e4d69c618ee",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/8f488bd41229aa0a3d5f7c0168f59e4d69c618ee/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "81a041a68245cd8f871c43bbbbd5b6b627979a30",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/81a041a68245cd8f871c43bbbbd5b6b627979a30",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/81a041a68245cd8f871c43bbbbd5b6b627979a30"
+      }
+    ]
+  },
+  {
+    "sha": "81a041a68245cd8f871c43bbbbd5b6b627979a30",
+    "node_id": "C_kwDOE8nkuNoAKDgxYTA0MWE2ODI0NWNkOGY4NzFjNDNiYmJiZDViNmI2Mjc5NzlhMzA",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "ane1606@gmail.com",
+        "date": "2022-10-28T03:35:42Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2022-10-28T03:35:42Z"
+      },
+      "message": "V0.7.3 rc (#38)\n\n* v0.7.2\r\n\r\n[Enhancement] Fixed issues in the code which caused warnings in MSVC and clang compilers.\r\n\r\n[Enhancement] Fixed errors in `get_heuristics_list` where for certain heuristics mode in older cuDNN versions, the heuristics list might be incorrect.\r\n\r\n[Bug fixes] Fixed several test cases failing on unsupported GPUs to exit gracefully.\r\n\r\n[Samples] Added a sample to showcase fp8 convolution forward in Nvidia Hopper GPUs. The sample also showcases post convolution book-keeping operations such as scaling and absolute maximum reduction.\r\n\r\n[Samples] Added a sample which converts fp16 tensor to fp8 and performs transpose and absolute maximum reduction.\r\n\r\n[Samples] Added a sample to demonstrate Max pooling operation including tensor index dump, necessary to speed up the backward pass.\r\n\r\n[Samples] Added a sample to showcase the backward pooling operation.\r\n\r\n* v0.7.3 release\r\n\r\n[Enhancement] Added `CUDNN_FRONTEND_VERSION` macro to track cudnn frontend version.\r\n[Enhancement] Added the `inline` keyword to the get_plan functions to enable inclusion in multiple compilation units.\r\n[Bug fix] Replace CUDNN with CUDNN_VERSION as the right macro names.\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>",
+      "tree": {
+        "sha": "4383464e0891a55f94ab1473fffeae43fcae87cd",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/4383464e0891a55f94ab1473fffeae43fcae87cd"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/81a041a68245cd8f871c43bbbbd5b6b627979a30",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJjW04OCRBK7hj4Ov3rIwAAdI8IAGgqQuf76/Ne19ZCzmPwPt0U\ne1ZT1xkVkigZXnzUNif0w1PnnXJ1Wh04qbIGAKN3zNC0g5OGm8C99u7U6+y904Bw\n9DjL3/9LNm2HiQgnF+MRuoLvEwNLMPXDLunxKBbxa7N9jeYLLVyTYuKRsFLOp40+\n9Z4z+T/JkTy6+byMIxcajjE9q7k4mkgrxYpRC3M9JPfXhLH15begkh3jyXGwHBHe\nq09Axhys/gKLQ8bYE5jYGiNlbS1DwJv23/TorYOjeCJp5v6z2YyEg9xvpN4I7C4e\nqSko64vqJqlFDUy7JidLJt2JKZ/hSm9PNPHp1w7bFPkbNJL2vsXBEBZCVseGzxg=\n=rOck\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 4383464e0891a55f94ab1473fffeae43fcae87cd\nparent d521ef18b3238f0ef6efe64f47c1180e9e443e7c\nauthor Anerudhan Gopal <ane1606@gmail.com> 1666928142 -0700\ncommitter GitHub <noreply@github.com> 1666928142 -0700\n\nV0.7.3 rc (#38)\n\n* v0.7.2\r\n\r\n[Enhancement] Fixed issues in the code which caused warnings in MSVC and clang compilers.\r\n\r\n[Enhancement] Fixed errors in `get_heuristics_list` where for certain heuristics mode in older cuDNN versions, the heuristics list might be incorrect.\r\n\r\n[Bug fixes] Fixed several test cases failing on unsupported GPUs to exit gracefully.\r\n\r\n[Samples] Added a sample to showcase fp8 convolution forward in Nvidia Hopper GPUs. The sample also showcases post convolution book-keeping operations such as scaling and absolute maximum reduction.\r\n\r\n[Samples] Added a sample which converts fp16 tensor to fp8 and performs transpose and absolute maximum reduction.\r\n\r\n[Samples] Added a sample to demonstrate Max pooling operation including tensor index dump, necessary to speed up the backward pass.\r\n\r\n[Samples] Added a sample to showcase the backward pooling operation.\r\n\r\n* v0.7.3 release\r\n\r\n[Enhancement] Added `CUDNN_FRONTEND_VERSION` macro to track cudnn frontend version.\r\n[Enhancement] Added the `inline` keyword to the get_plan functions to enable inclusion in multiple compilation units.\r\n[Bug fix] Replace CUDNN with CUDNN_VERSION as the right macro names.\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/81a041a68245cd8f871c43bbbbd5b6b627979a30",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/81a041a68245cd8f871c43bbbbd5b6b627979a30",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/81a041a68245cd8f871c43bbbbd5b6b627979a30/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d521ef18b3238f0ef6efe64f47c1180e9e443e7c",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/d521ef18b3238f0ef6efe64f47c1180e9e443e7c",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/d521ef18b3238f0ef6efe64f47c1180e9e443e7c"
+      }
+    ]
+  },
+  {
+    "sha": "d521ef18b3238f0ef6efe64f47c1180e9e443e7c",
+    "node_id": "C_kwDOE8nkuNoAKGQ1MjFlZjE4YjMyMzhmMGVmNmVmZTY0ZjQ3YzExODBlOWU0NDNlN2M",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "ane1606@gmail.com",
+        "date": "2022-10-27T00:19:32Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2022-10-27T00:19:32Z"
+      },
+      "message": "V0.7.3 rc (#37)\n\n* v0.7.3 release\r\n\r\n[Enhancement] Added `CUDNN_FRONTEND_VERSION` macro to track cudnn frontend version.\r\n[Enhancement] Added the `inline` keyword to the get_plan functions to enable inclusion in multiple compilation units.\r\n[Bug fix] Replace CUDNN with CUDNN_VERSION as the right macro names.\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>",
+      "tree": {
+        "sha": "1f04ced25f285293eb37b0add8fb1498d1448df7",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/1f04ced25f285293eb37b0add8fb1498d1448df7"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/d521ef18b3238f0ef6efe64f47c1180e9e443e7c",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJjWc6UCRBK7hj4Ov3rIwAAD7YIAHxtY6o9iB/UJr5zn0/qT/Ig\nO9J03wuB44JBp3ibGuSEfK3k0YBmUVPU1I3hB6Uf5fNAyEGFci5MbW4WbezJ8qfh\nCIVor7wZZt//uockkXzcbEval930cr1pf6YndeNuWO/n/GjPChnqvcsl7XwmExmk\npRltS2ng4hIxjGJbQZJXmO8BC4yfMGoXZQQIy1kxvr9FyQJsfWt2RcHP5G6F5Ci1\nl4MOdDyKDdaQ8imDRxopMbxWBVwnWjYEwOAhtrC/u1syzZkTrcs90eT5NoG8g6r9\nhl9dVJzl+iGdGkqfnyVqfR5T01SU3PFmVEs1Vzf9zflsHTy7T2WFvh/G7FIfTJ8=\n=UkAj\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 1f04ced25f285293eb37b0add8fb1498d1448df7\nparent 60496f42fdc7a4ccc059f5934e306e728a756755\nauthor Anerudhan Gopal <ane1606@gmail.com> 1666829972 -0700\ncommitter GitHub <noreply@github.com> 1666829972 -0700\n\nV0.7.3 rc (#37)\n\n* v0.7.3 release\r\n\r\n[Enhancement] Added `CUDNN_FRONTEND_VERSION` macro to track cudnn frontend version.\r\n[Enhancement] Added the `inline` keyword to the get_plan functions to enable inclusion in multiple compilation units.\r\n[Bug fix] Replace CUDNN with CUDNN_VERSION as the right macro names.\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/d521ef18b3238f0ef6efe64f47c1180e9e443e7c",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/d521ef18b3238f0ef6efe64f47c1180e9e443e7c",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/d521ef18b3238f0ef6efe64f47c1180e9e443e7c/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "60496f42fdc7a4ccc059f5934e306e728a756755",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/60496f42fdc7a4ccc059f5934e306e728a756755",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/60496f42fdc7a4ccc059f5934e306e728a756755"
+      }
+    ]
+  },
+  {
+    "sha": "60496f42fdc7a4ccc059f5934e306e728a756755",
+    "node_id": "C_kwDOE8nkuNoAKDYwNDk2ZjQyZmRjN2E0Y2NjMDU5ZjU5MzRlMzA2ZTcyOGE3NTY3NTU",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "ane1606@gmail.com",
+        "date": "2022-10-20T17:21:24Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2022-10-20T17:21:24Z"
+      },
+      "message": "v0.7.2 (#36)\n\n[Enhancement] Fixed issues in the code which caused warnings in MSVC and clang compilers.\r\n\r\n[Enhancement] Fixed errors in `get_heuristics_list` where for certain heuristics mode in older cuDNN versions, the heuristics list might be incorrect.\r\n\r\n[Bug fixes] Fixed several test cases failing on unsupported GPUs to exit gracefully.\r\n\r\n[Samples] Added a sample to showcase fp8 convolution forward in Nvidia Hopper GPUs. The sample also showcases post convolution book-keeping operations such as scaling and absolute maximum reduction.\r\n\r\n[Samples] Added a sample which converts fp16 tensor to fp8 and performs transpose and absolute maximum reduction.\r\n\r\n[Samples] Added a sample to demonstrate Max pooling operation including tensor index dump, necessary to speed up the backward pass.\r\n\r\n[Samples] Added a sample to showcase the backward pooling operation.\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>",
+      "tree": {
+        "sha": "844294155a54af22b905187860da46c3b52a81cd",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/844294155a54af22b905187860da46c3b52a81cd"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/60496f42fdc7a4ccc059f5934e306e728a756755",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJjUYOUCRBK7hj4Ov3rIwAA9PsIAFHjM5TISkLrNOAvjS6vzAjQ\nb7trxFFm2stMVo4zHJvJGegR80Jfe6xz+NjJQpGNIvetfjbCaK5EUv+J0mw8NTCq\n1/MsmtLMFkMAA1gYAjRM2BpIMqMlQpC1/l3rSkTSlH3ANfLnsjcOD7GhfGQxo526\nqiYUHD+ihMqnuRtJXjJxnYbdibDXC2AVS27TsNE42v9nToskHy048a2glpxaCnMd\n5ETA7aSofeFdsq165ejFI9FpSuTca28AkwMZAf2Q1FFCuDWcIWGBdMzdPk3Pknx5\naQocYlETj1EwF7LOUJDAkjie+yeg6cJKBkaqq3KxrEppp0fkit6HHW7tSsyrgxM=\n=kmnj\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 844294155a54af22b905187860da46c3b52a81cd\nparent 171a7a986f7fbd9ed71bd0cf3c7ad4f55843d6b3\nauthor Anerudhan Gopal <ane1606@gmail.com> 1666286484 -0700\ncommitter GitHub <noreply@github.com> 1666286484 -0700\n\nv0.7.2 (#36)\n\n[Enhancement] Fixed issues in the code which caused warnings in MSVC and clang compilers.\r\n\r\n[Enhancement] Fixed errors in `get_heuristics_list` where for certain heuristics mode in older cuDNN versions, the heuristics list might be incorrect.\r\n\r\n[Bug fixes] Fixed several test cases failing on unsupported GPUs to exit gracefully.\r\n\r\n[Samples] Added a sample to showcase fp8 convolution forward in Nvidia Hopper GPUs. The sample also showcases post convolution book-keeping operations such as scaling and absolute maximum reduction.\r\n\r\n[Samples] Added a sample which converts fp16 tensor to fp8 and performs transpose and absolute maximum reduction.\r\n\r\n[Samples] Added a sample to demonstrate Max pooling operation including tensor index dump, necessary to speed up the backward pass.\r\n\r\n[Samples] Added a sample to showcase the backward pooling operation.\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/60496f42fdc7a4ccc059f5934e306e728a756755",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/60496f42fdc7a4ccc059f5934e306e728a756755",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/60496f42fdc7a4ccc059f5934e306e728a756755/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "171a7a986f7fbd9ed71bd0cf3c7ad4f55843d6b3",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/171a7a986f7fbd9ed71bd0cf3c7ad4f55843d6b3",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/171a7a986f7fbd9ed71bd0cf3c7ad4f55843d6b3"
+      }
+    ]
+  },
+  {
+    "sha": "171a7a986f7fbd9ed71bd0cf3c7ad4f55843d6b3",
+    "node_id": "C_kwDOE8nkuNoAKDE3MWE3YTk4NmY3ZmJkOWVkNzFiZDBjZjNjN2FkNGY1NTg0M2Q2YjM",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "ane1606@gmail.com",
+        "date": "2022-08-27T04:01:08Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2022-08-27T04:01:08Z"
+      },
+      "message": "Additional commit to remove an extraneous include to cudnn_ops_infer.h (#35)\n\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>",
+      "tree": {
+        "sha": "3d971f7119d8a0733a3a8fb4fc84451bf673d73f",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/3d971f7119d8a0733a3a8fb4fc84451bf673d73f"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/171a7a986f7fbd9ed71bd0cf3c7ad4f55843d6b3",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJjCZcECRBK7hj4Ov3rIwAAdzkIAF6K0IjGb/vkxtbxMWTKpjt0\nz48FOpnPHBJn3tJmdWiH2t6CYCMnX2IHUxtC1YpRbgRKC3Jua7wa4yavZwaB2R+P\nqR5+FkKIDWySmkehB6WplwMiZmSAqcf/Twd8IjMxlGrJQ6HKJVrlLerdmnukc5B0\nkdrkKQI/AXAhSI6xuRKbgD+E6eM8YYzNWObHaKW4YsjBD5qKmB2WSkbxqQ1exKnO\n2Fs+41HzD757l/3Yb7+eT96fcoGTa0TXZVVymUZ8uiwFBsPaYoSeaUQ7kSoVhAXz\n0lpgNI6wO5ijycH183aX84Fwqkfpw5V3gmkCL43GeAmp42IrKfvenX0VTMabFLc=\n=cjuz\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 3d971f7119d8a0733a3a8fb4fc84451bf673d73f\nparent 581b915597ccb29586e4ed32be56a2a712a2ab57\nauthor Anerudhan Gopal <ane1606@gmail.com> 1661572868 -0700\ncommitter GitHub <noreply@github.com> 1661572868 -0700\n\nAdditional commit to remove an extraneous include to cudnn_ops_infer.h (#35)\n\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/171a7a986f7fbd9ed71bd0cf3c7ad4f55843d6b3",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/171a7a986f7fbd9ed71bd0cf3c7ad4f55843d6b3",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/171a7a986f7fbd9ed71bd0cf3c7ad4f55843d6b3/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "581b915597ccb29586e4ed32be56a2a712a2ab57",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/581b915597ccb29586e4ed32be56a2a712a2ab57",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/581b915597ccb29586e4ed32be56a2a712a2ab57"
+      }
+    ]
+  },
+  {
+    "sha": "581b915597ccb29586e4ed32be56a2a712a2ab57",
+    "node_id": "C_kwDOE8nkuNoAKDU4MWI5MTU1OTdjY2IyOTU4NmU0ZWQzMmJlNTZhMmE3MTJhMmFiNTc",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "ane1606@gmail.com",
+        "date": "2022-08-25T01:26:40Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2022-08-25T01:26:40Z"
+      },
+      "message": "cudnn Frontend changes for v0.7 release (#34)",
+      "tree": {
+        "sha": "99c2fc5214ee9e1f3b9f596a97721f60421ac506",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/99c2fc5214ee9e1f3b9f596a97721f60421ac506"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/581b915597ccb29586e4ed32be56a2a712a2ab57",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJjBs/QCRBK7hj4Ov3rIwAAOTcIAJ2NZkvBi5xvEvxWMnnAAX0p\nx8V4Zj3UG6uVuxQIjnZeqBmZTEb28MjTn6xajbwBqupijf/49aasWwplc8pBiV9V\nYtec5QoYLDYHaqmdHHauMKoG/v/Sc92pUTWahByjPcJ8ajQDmgBvkVih8RLidLyi\n3D5Mjytp2y6DzuzjWHD5DYRqo68BEsg5beT8r7+s2V1+CrIpEBD5fCdbaFTAP/X6\nS13zkzG5XSuaN4+X9rcVncKk8SSfyfxRiJ9I4EQcB4d7eE83woeCN066JBmeb8Mv\nqP3t8Y6r+EJ4y2D7QEdSpa2bGPIYIESQxwJrvRF29soMuJeJQrUSrDzSZf4NsPY=\n=e4nD\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 99c2fc5214ee9e1f3b9f596a97721f60421ac506\nparent 2ce479758fd3fe220e233fb68d047099cab9b33b\nauthor Anerudhan Gopal <ane1606@gmail.com> 1661390800 -0700\ncommitter GitHub <noreply@github.com> 1661390800 -0700\n\ncudnn Frontend changes for v0.7 release (#34)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/581b915597ccb29586e4ed32be56a2a712a2ab57",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/581b915597ccb29586e4ed32be56a2a712a2ab57",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/581b915597ccb29586e4ed32be56a2a712a2ab57/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2ce479758fd3fe220e233fb68d047099cab9b33b",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/2ce479758fd3fe220e233fb68d047099cab9b33b",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/2ce479758fd3fe220e233fb68d047099cab9b33b"
+      }
+    ]
+  },
+  {
+    "sha": "2ce479758fd3fe220e233fb68d047099cab9b33b",
+    "node_id": "C_kwDOE8nkuNoAKDJjZTQ3OTc1OGZkM2ZlMjIwZTIzM2ZiNjhkMDQ3MDk5Y2FiOWIzM2I",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "ane1606@gmail.com",
+        "date": "2022-07-12T17:13:41Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2022-07-12T17:13:41Z"
+      },
+      "message": "Merge v0.6.3 to main (#32)\n\nThe 0.6.3 release addresses the following issues:\r\n- During the heuristics query if the heur_mode_b fails it fallbacks to heur_mode_a(heur_mode_instant)\r\n- Addressed a bug to initiate the numerical notes and behavior notes to max values instead of 0.\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>",
+      "tree": {
+        "sha": "a73a56eeba12975943b969c0bf8b700fb48e743d",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/a73a56eeba12975943b969c0bf8b700fb48e743d"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/2ce479758fd3fe220e233fb68d047099cab9b33b",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJizavFCRBK7hj4Ov3rIwAAP7YIAKlHTWiMAfQom7MNZX0FPaBx\nMrbW6sBlV/53mektMFHD2u6akk765/m9WnPpQxitoKllP2+qOjBxOSmdn1FvDCUz\n9/X4YC6lSYML3f42LcDJWyEVC1llzTfj0rWermBaanV8gkx8/2EKn2MUxWvSTCGW\nKSNzP1Vkp2o+gGHS/5CGwPlbHfEz6fkvA59bCrBCwY2qfubQ1lYY5czXo49jFWpL\n604z0470E5ff+Wqhiq/oE7D0ZaAVPTOHoHtbEt53GNX0FsapifWkdRtUlNVJk6YU\nHCIdzi7PGeCbLqlk4OOuSQendKuSldgrd7Pz373qDkiWSQD++bPawP8XwQxJ9qQ=\n=eq1Z\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree a73a56eeba12975943b969c0bf8b700fb48e743d\nparent 43709ab96c47e26eebcdac72f93f946d44ceffa8\nauthor Anerudhan Gopal <ane1606@gmail.com> 1657646021 -0700\ncommitter GitHub <noreply@github.com> 1657646021 -0700\n\nMerge v0.6.3 to main (#32)\n\nThe 0.6.3 release addresses the following issues:\r\n- During the heuristics query if the heur_mode_b fails it fallbacks to heur_mode_a(heur_mode_instant)\r\n- Addressed a bug to initiate the numerical notes and behavior notes to max values instead of 0.\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/2ce479758fd3fe220e233fb68d047099cab9b33b",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/2ce479758fd3fe220e233fb68d047099cab9b33b",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/2ce479758fd3fe220e233fb68d047099cab9b33b/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "43709ab96c47e26eebcdac72f93f946d44ceffa8",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/43709ab96c47e26eebcdac72f93f946d44ceffa8",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/43709ab96c47e26eebcdac72f93f946d44ceffa8"
+      }
+    ]
+  },
+  {
+    "sha": "43709ab96c47e26eebcdac72f93f946d44ceffa8",
+    "node_id": "C_kwDOE8nkuNoAKDQzNzA5YWI5NmM0N2UyNmVlYmNkYWM3MmY5M2Y5NDZkNDRjZWZmYTg",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "ane1606@gmail.com",
+        "date": "2022-04-21T20:04:57Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2022-04-21T20:04:57Z"
+      },
+      "message": "V0.6.2 (#28)\n\n* - [New Feature] Serialization:\r\n    ## Execution Plan Serialization and Deserialization (Experimental)\r\n    cuDNN v8.4 and above provides exeuction plan serialization and deserialization to save the execution plan as a string in JSON format. The execution plan can be then restored from that string at a later point, and this also saves compilation time compared to rebuilding the plan from scratch. Currently, this is an experimental feature that only supports the runtime fusion engine. No forward/backward or cross-device compatibility guarantee is offered at this time.\r\n\r\n    ### API:\r\n        - std::string cudnn_frontend::ExecutionPlan_v8::getJsonRepresentation() : Serialize the execution plan into a string in JSON format.\r\n        - cudnn_frontend::ExecutionPlan_v8&& cudnn_frontend::ExecutionPlanBuilder_v8::loadFromJson(const std::string &json_plan) : Deserialize from a string containing the JSON representation of the execution plan.\r\n\r\n- [New API] Added a new API\r\n  ```\r\n  get_heuristics_list(std::array<std::string, SIZE> modes,\r\n    OperationGraph_v8 &opGraph,\r\n    std::function<bool(cudnnBackendDescriptor_t)> filter_fn,\r\n    EngineConfigList &filtered_configs,\r\n    bool evaluate_all = false)\r\n  ```\r\n  This function takes a paramter list of heuristics mode. \"heuristics_instant\", \"heuristic_fallback\", \"heuristic_mode_b\" and computes a list of engine config which do not satisfy the blocking condition in filter_fn. The function can be optionally set to keep going even if one of the mode fails.\r\n\r\n- [New Features] Added support for BN Finalize i.e. generation of mean and variance to perform batch normalization.\r\n- [New Features] Added support for BN Stats fusion pattern. This pattern covers Scale, Bias, Relu, Conv and generation of SUM and SQSUM for batch normalization.\r\n- [New Features] Added support for CUDNN_POINTWISE_GEN_INDEX and CUDNN_POINTWISE_BINARY_SELECT pointwise operations added in cuDNN 8.4.0.\r\n- [Cleanup] Fixed a bug when used CUDNN_HEUR_MODE_B is used in multiple threads leads to crash in certain conditions.\r\n- [Cleanup] Added the CUDNN_PATH in CMakeLists.txt allowing user to build with different cuDNN installation path.\r\n- [Cleanup] Made Engine_v8 constructor as default which prevents overwriting of the status during knob creation.\r\n- [Cleanup] Take UIDs of variant pack as a const pointer.\r\n- [Cleanup] When logging was enabled and if no plan returned by heuristics is finalizable, it lead to a crash. This is now fixed.\r\n- [Samples] Added a new sample to showcase CUDNN_POINTWISE_GEN_INDEX and CUDNN_POINTWISE_BINARY_SELECT pointwise operations.\r\n- [Samples] Modified MHA sample to show improved numerical stability. Investigation is still going on to further improve the MHA sample\r\n- [Samples] Added samples for fused operation graph for BN Stats generation and stats finalization.\r\n\r\n* Added missing return statements for operation.\r\n\r\n* v0.6.2\r\n- Added as warn-as-error to the Samples Makefile.\r\n- Addressed multiple compiler warning triggered by clang. \r\n\t- Unused variables.\r\n\t- Undefined destructor for class with virtual methods\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>",
+      "tree": {
+        "sha": "7cfc34b2e446e85be77f5d9d345e74bcd7eca37a",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/7cfc34b2e446e85be77f5d9d345e74bcd7eca37a"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/43709ab96c47e26eebcdac72f93f946d44ceffa8",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJiYbjpCRBK7hj4Ov3rIwAAojsIAH2A5b0y8sr9uIqZsDIR1Dbb\nC0iVF9GmjK+MlzeIdZDpQy5POz6LBzCcki2pfmGXS7p1hjsQCn9gOMBhtZ/MzXld\n+SNJ4mtGNddbsYSKq2MYi2Fss/cwcEDuf9waGHqTsfZYU96aLvzymOYJTmFaY3pZ\nwAXO1fEeE62BeOuaH+6vsIJzy/FE7rHXU9gUTk0BpvudeixJZ1XXiAIUKXoTffSb\neTIrvh1y2vVq/sJU/ANodmzyChS7Vrjf6adRu6o5weGPl2WXWDxMUMDFK0gOSW1E\nVrIWGk0eqYUH7tIaotGx8ofpYfe5U/dQHYMNraLsCd8WWDT+XIUDX2dWFWjns7U=\n=b4Ge\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 7cfc34b2e446e85be77f5d9d345e74bcd7eca37a\nparent fa611998a360cbabaa2dcc7c9859748144114fc0\nauthor Anerudhan Gopal <ane1606@gmail.com> 1650571497 -0700\ncommitter GitHub <noreply@github.com> 1650571497 -0700\n\nV0.6.2 (#28)\n\n* - [New Feature] Serialization:\r\n    ## Execution Plan Serialization and Deserialization (Experimental)\r\n    cuDNN v8.4 and above provides exeuction plan serialization and deserialization to save the execution plan as a string in JSON format. The execution plan can be then restored from that string at a later point, and this also saves compilation time compared to rebuilding the plan from scratch. Currently, this is an experimental feature that only supports the runtime fusion engine. No forward/backward or cross-device compatibility guarantee is offered at this time.\r\n\r\n    ### API:\r\n        - std::string cudnn_frontend::ExecutionPlan_v8::getJsonRepresentation() : Serialize the execution plan into a string in JSON format.\r\n        - cudnn_frontend::ExecutionPlan_v8&& cudnn_frontend::ExecutionPlanBuilder_v8::loadFromJson(const std::string &json_plan) : Deserialize from a string containing the JSON representation of the execution plan.\r\n\r\n- [New API] Added a new API\r\n  ```\r\n  get_heuristics_list(std::array<std::string, SIZE> modes,\r\n    OperationGraph_v8 &opGraph,\r\n    std::function<bool(cudnnBackendDescriptor_t)> filter_fn,\r\n    EngineConfigList &filtered_configs,\r\n    bool evaluate_all = false)\r\n  ```\r\n  This function takes a paramter list of heuristics mode. \"heuristics_instant\", \"heuristic_fallback\", \"heuristic_mode_b\" and computes a list of engine config which do not satisfy the blocking condition in filter_fn. The function can be optionally set to keep going even if one of the mode fails.\r\n\r\n- [New Features] Added support for BN Finalize i.e. generation of mean and variance to perform batch normalization.\r\n- [New Features] Added support for BN Stats fusion pattern. This pattern covers Scale, Bias, Relu, Conv and generation of SUM and SQSUM for batch normalization.\r\n- [New Features] Added support for CUDNN_POINTWISE_GEN_INDEX and CUDNN_POINTWISE_BINARY_SELECT pointwise operations added in cuDNN 8.4.0.\r\n- [Cleanup] Fixed a bug when used CUDNN_HEUR_MODE_B is used in multiple threads leads to crash in certain conditions.\r\n- [Cleanup] Added the CUDNN_PATH in CMakeLists.txt allowing user to build with different cuDNN installation path.\r\n- [Cleanup] Made Engine_v8 constructor as default which prevents overwriting of the status during knob creation.\r\n- [Cleanup] Take UIDs of variant pack as a const pointer.\r\n- [Cleanup] When logging was enabled and if no plan returned by heuristics is finalizable, it lead to a crash. This is now fixed.\r\n- [Samples] Added a new sample to showcase CUDNN_POINTWISE_GEN_INDEX and CUDNN_POINTWISE_BINARY_SELECT pointwise operations.\r\n- [Samples] Modified MHA sample to show improved numerical stability. Investigation is still going on to further improve the MHA sample\r\n- [Samples] Added samples for fused operation graph for BN Stats generation and stats finalization.\r\n\r\n* Added missing return statements for operation.\r\n\r\n* v0.6.2\r\n- Added as warn-as-error to the Samples Makefile.\r\n- Addressed multiple compiler warning triggered by clang. \r\n\t- Unused variables.\r\n\t- Undefined destructor for class with virtual methods\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/43709ab96c47e26eebcdac72f93f946d44ceffa8",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/43709ab96c47e26eebcdac72f93f946d44ceffa8",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/43709ab96c47e26eebcdac72f93f946d44ceffa8/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "fa611998a360cbabaa2dcc7c9859748144114fc0",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/fa611998a360cbabaa2dcc7c9859748144114fc0",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/fa611998a360cbabaa2dcc7c9859748144114fc0"
+      }
+    ]
+  },
+  {
+    "sha": "fa611998a360cbabaa2dcc7c9859748144114fc0",
+    "node_id": "C_kwDOE8nkuNoAKGZhNjExOTk4YTM2MGNiYWJhYTJkY2M3Yzk4NTk3NDgxNDQxMTRmYzA",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "ane1606@gmail.com",
+        "date": "2022-04-09T00:19:21Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2022-04-09T00:19:21Z"
+      },
+      "message": "V0.6.1 (#27)\n\n* - [New Feature] Serialization:\r\n    ## Execution Plan Serialization and Deserialization (Experimental)\r\n    cuDNN v8.4 and above provides exeuction plan serialization and deserialization to save the execution plan as a string in JSON format. The execution plan can be then restored from that string at a later point, and this also saves compilation time compared to rebuilding the plan from scratch. Currently, this is an experimental feature that only supports the runtime fusion engine. No forward/backward or cross-device compatibility guarantee is offered at this time.\r\n\r\n    ### API:\r\n        - std::string cudnn_frontend::ExecutionPlan_v8::getJsonRepresentation() : Serialize the execution plan into a string in JSON format.\r\n        - cudnn_frontend::ExecutionPlan_v8&& cudnn_frontend::ExecutionPlanBuilder_v8::loadFromJson(const std::string &json_plan) : Deserialize from a string containing the JSON representation of the execution plan.\r\n\r\n- [New API] Added a new API\r\n  ```\r\n  get_heuristics_list(std::array<std::string, SIZE> modes,\r\n    OperationGraph_v8 &opGraph,\r\n    std::function<bool(cudnnBackendDescriptor_t)> filter_fn,\r\n    EngineConfigList &filtered_configs,\r\n    bool evaluate_all = false)\r\n  ```\r\n  This function takes a paramter list of heuristics mode. \"heuristics_instant\", \"heuristic_fallback\", \"heuristic_mode_b\" and computes a list of engine config which do not satisfy the blocking condition in filter_fn. The function can be optionally set to keep going even if one of the mode fails.\r\n\r\n- [New Features] Added support for BN Finalize i.e. generation of mean and variance to perform batch normalization.\r\n- [New Features] Added support for BN Stats fusion pattern. This pattern covers Scale, Bias, Relu, Conv and generation of SUM and SQSUM for batch normalization.\r\n- [New Features] Added support for CUDNN_POINTWISE_GEN_INDEX and CUDNN_POINTWISE_BINARY_SELECT pointwise operations added in cuDNN 8.4.0.\r\n- [Cleanup] Fixed a bug when used CUDNN_HEUR_MODE_B is used in multiple threads leads to crash in certain conditions.\r\n- [Cleanup] Added the CUDNN_PATH in CMakeLists.txt allowing user to build with different cuDNN installation path.\r\n- [Cleanup] Made Engine_v8 constructor as default which prevents overwriting of the status during knob creation.\r\n- [Cleanup] Take UIDs of variant pack as a const pointer.\r\n- [Cleanup] When logging was enabled and if no plan returned by heuristics is finalizable, it lead to a crash. This is now fixed.\r\n- [Samples] Added a new sample to showcase CUDNN_POINTWISE_GEN_INDEX and CUDNN_POINTWISE_BINARY_SELECT pointwise operations.\r\n- [Samples] Modified MHA sample to show improved numerical stability. Investigation is still going on to further improve the MHA sample\r\n- [Samples] Added samples for fused operation graph for BN Stats generation and stats finalization.\r\n\r\n* Added missing return statements for operation.\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>",
+      "tree": {
+        "sha": "f3bc93b5dd5864f378266f99152e5c2105f0fe7e",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/f3bc93b5dd5864f378266f99152e5c2105f0fe7e"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/fa611998a360cbabaa2dcc7c9859748144114fc0",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJiUNEJCRBK7hj4Ov3rIwAAbkYIAJyuG2UB3zIc/Elnlaf1/iuK\nnh1Wl2xSyst7aJUDNzCjW7csH68rRAr59GB7kxRqD+7EkzSeS/+BBA5pMqVwCEs1\nZVAzA1SJCJKQ2aDTWhiByUYaZL1K+73R6I1pKiP/SeH1Iaj7LZHRimMUlK/HaB2E\n9+enahGH8bT30s7j8z4Q/AiZGXZi+cN+HvKY+7PzOKYeMnoV39OstO4wX0AGPOWE\nxWA3xA7FSh5lC5/7ET4KjtGj//mauV1xpJeQD6h/NahbUr1PI0slmJbnHgoP98Q1\nsuLScuuvTGsdQaEfIv1EEYSJSWZ3FWSJc/hz43YKrqtGDXs/C5Pj6na/6tkT9yk=\n=Y6kg\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree f3bc93b5dd5864f378266f99152e5c2105f0fe7e\nparent e8e186af7142049db96314b213bd748b8d891ff7\nauthor Anerudhan Gopal <ane1606@gmail.com> 1649463561 -0700\ncommitter GitHub <noreply@github.com> 1649463561 -0700\n\nV0.6.1 (#27)\n\n* - [New Feature] Serialization:\r\n    ## Execution Plan Serialization and Deserialization (Experimental)\r\n    cuDNN v8.4 and above provides exeuction plan serialization and deserialization to save the execution plan as a string in JSON format. The execution plan can be then restored from that string at a later point, and this also saves compilation time compared to rebuilding the plan from scratch. Currently, this is an experimental feature that only supports the runtime fusion engine. No forward/backward or cross-device compatibility guarantee is offered at this time.\r\n\r\n    ### API:\r\n        - std::string cudnn_frontend::ExecutionPlan_v8::getJsonRepresentation() : Serialize the execution plan into a string in JSON format.\r\n        - cudnn_frontend::ExecutionPlan_v8&& cudnn_frontend::ExecutionPlanBuilder_v8::loadFromJson(const std::string &json_plan) : Deserialize from a string containing the JSON representation of the execution plan.\r\n\r\n- [New API] Added a new API\r\n  ```\r\n  get_heuristics_list(std::array<std::string, SIZE> modes,\r\n    OperationGraph_v8 &opGraph,\r\n    std::function<bool(cudnnBackendDescriptor_t)> filter_fn,\r\n    EngineConfigList &filtered_configs,\r\n    bool evaluate_all = false)\r\n  ```\r\n  This function takes a paramter list of heuristics mode. \"heuristics_instant\", \"heuristic_fallback\", \"heuristic_mode_b\" and computes a list of engine config which do not satisfy the blocking condition in filter_fn. The function can be optionally set to keep going even if one of the mode fails.\r\n\r\n- [New Features] Added support for BN Finalize i.e. generation of mean and variance to perform batch normalization.\r\n- [New Features] Added support for BN Stats fusion pattern. This pattern covers Scale, Bias, Relu, Conv and generation of SUM and SQSUM for batch normalization.\r\n- [New Features] Added support for CUDNN_POINTWISE_GEN_INDEX and CUDNN_POINTWISE_BINARY_SELECT pointwise operations added in cuDNN 8.4.0.\r\n- [Cleanup] Fixed a bug when used CUDNN_HEUR_MODE_B is used in multiple threads leads to crash in certain conditions.\r\n- [Cleanup] Added the CUDNN_PATH in CMakeLists.txt allowing user to build with different cuDNN installation path.\r\n- [Cleanup] Made Engine_v8 constructor as default which prevents overwriting of the status during knob creation.\r\n- [Cleanup] Take UIDs of variant pack as a const pointer.\r\n- [Cleanup] When logging was enabled and if no plan returned by heuristics is finalizable, it lead to a crash. This is now fixed.\r\n- [Samples] Added a new sample to showcase CUDNN_POINTWISE_GEN_INDEX and CUDNN_POINTWISE_BINARY_SELECT pointwise operations.\r\n- [Samples] Modified MHA sample to show improved numerical stability. Investigation is still going on to further improve the MHA sample\r\n- [Samples] Added samples for fused operation graph for BN Stats generation and stats finalization.\r\n\r\n* Added missing return statements for operation.\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/fa611998a360cbabaa2dcc7c9859748144114fc0",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/fa611998a360cbabaa2dcc7c9859748144114fc0",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/fa611998a360cbabaa2dcc7c9859748144114fc0/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e8e186af7142049db96314b213bd748b8d891ff7",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/e8e186af7142049db96314b213bd748b8d891ff7",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/e8e186af7142049db96314b213bd748b8d891ff7"
+      }
+    ]
+  },
+  {
+    "sha": "e8e186af7142049db96314b213bd748b8d891ff7",
+    "node_id": "C_kwDOE8nkuNoAKGU4ZTE4NmFmNzE0MjA0OWRiOTYzMTRiMjEzYmQ3NDhiOGQ4OTFmZjc",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "ane1606@gmail.com",
+        "date": "2022-04-07T18:10:17Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2022-04-07T18:10:17Z"
+      },
+      "message": "cuDNN Frontend v0.6 release\n\n- [New Feature] Serialization: (#26)\r\n## Execution Plan Serialization and Deserialization (Experimental)\r\n    cuDNN v8.4 and above provides exeuction plan serialization and deserialization to save the execution plan as a string in JSON format. The execution plan can be then restored from that string at a later point, and this also saves compilation time compared to rebuilding the plan from scratch. Currently, this is an experimental feature that only supports the runtime fusion engine. No forward/backward or cross-device compatibility guarantee is offered at this time.\r\n\r\n    ### API:\r\n        - std::string cudnn_frontend::ExecutionPlan_v8::getJsonRepresentation() : Serialize the execution plan into a string in JSON format.\r\n        - cudnn_frontend::ExecutionPlan_v8&& cudnn_frontend::ExecutionPlanBuilder_v8::loadFromJson(const std::string &json_plan) : Deserialize from a string containing the JSON representation of the execution plan.\r\n\r\n- [New API] Added a new API\r\n  ```\r\n  get_heuristics_list(std::array<std::string, SIZE> modes,\r\n    OperationGraph_v8 &opGraph,\r\n    std::function<bool(cudnnBackendDescriptor_t)> filter_fn,\r\n    EngineConfigList &filtered_configs,\r\n    bool evaluate_all = false)\r\n  ```\r\n  This function takes a paramter list of heuristics mode. \"heuristics_instant\", \"heuristic_fallback\", \"heuristic_mode_b\" and computes a list of engine config which do not satisfy the blocking condition in filter_fn. The function can be optionally set to keep going even if one of the mode fails.\r\n\r\n- [New Features] Added support for BN Finalize i.e. generation of mean and variance to perform batch normalization.\r\n- [New Features] Added support for BN Stats fusion pattern. This pattern covers Scale, Bias, Relu, Conv and generation of SUM and SQSUM for batch normalization.\r\n- [New Features] Added support for CUDNN_POINTWISE_GEN_INDEX and CUDNN_POINTWISE_BINARY_SELECT pointwise operations added in cuDNN 8.4.0.\r\n- [Cleanup] Fixed a bug when used CUDNN_HEUR_MODE_B is used in multiple threads leads to crash in certain conditions.\r\n- [Cleanup] Added the CUDNN_PATH in CMakeLists.txt allowing user to build with different cuDNN installation path.\r\n- [Cleanup] Made Engine_v8 constructor as default which prevents overwriting of the status during knob creation.\r\n- [Cleanup] Take UIDs of variant pack as a const pointer.\r\n- [Cleanup] When logging was enabled and if no plan returned by heuristics is finalizable, it lead to a crash. This is now fixed.\r\n- [Samples] Added a new sample to showcase CUDNN_POINTWISE_GEN_INDEX and CUDNN_POINTWISE_BINARY_SELECT pointwise operations.\r\n- [Samples] Modified MHA sample to show improved numerical stability. Investigation is still going on to further improve the MHA sample\r\n- [Samples] Added samples for fused operation graph for BN Stats generation and stats finalization.\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>",
+      "tree": {
+        "sha": "550fdfeb0a330dd8cc7c31d255bb8b6f9c0608e0",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/550fdfeb0a330dd8cc7c31d255bb8b6f9c0608e0"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/e8e186af7142049db96314b213bd748b8d891ff7",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJiTykJCRBK7hj4Ov3rIwAAjKcIAGFWKYN0AELoyMTmNSF8aauS\nqZ7jMZ3ED8ZYJHZtfVR1+t/2J3/u8Z6NKJpwv+sZnIWTNYPPfAESxyr8K2qP7O94\nlNiNHLKZe9vVIwXCp3ErzqM4podzjafHW81ubxTVNmRxsoEPAhs3XzSbng5vCJfa\n7tt01UdhIofrOGu60qkBNce1hFJ9aR90weaIUryrJkjVLeV7m/C/Dd9KPJuZacLQ\n9xKXVxG9ovBR5OszDawJ9kziEPlvPvTTsb0omQMPoPHPwAvns7FqotuSRQ5Pd0O8\nHE+KVgAocf7j5yGdZU8Lvgo6KZix6Nfd0Cg9lK1CQNE/jlzViaV5PbMXIUdf0po=\n=/I89\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 550fdfeb0a330dd8cc7c31d255bb8b6f9c0608e0\nparent 7b83dba83fa31381aeca508d89aab94f4639ac6d\nauthor Anerudhan Gopal <ane1606@gmail.com> 1649355017 -0700\ncommitter GitHub <noreply@github.com> 1649355017 -0700\n\ncuDNN Frontend v0.6 release\n\n- [New Feature] Serialization: (#26)\r\n## Execution Plan Serialization and Deserialization (Experimental)\r\n    cuDNN v8.4 and above provides exeuction plan serialization and deserialization to save the execution plan as a string in JSON format. The execution plan can be then restored from that string at a later point, and this also saves compilation time compared to rebuilding the plan from scratch. Currently, this is an experimental feature that only supports the runtime fusion engine. No forward/backward or cross-device compatibility guarantee is offered at this time.\r\n\r\n    ### API:\r\n        - std::string cudnn_frontend::ExecutionPlan_v8::getJsonRepresentation() : Serialize the execution plan into a string in JSON format.\r\n        - cudnn_frontend::ExecutionPlan_v8&& cudnn_frontend::ExecutionPlanBuilder_v8::loadFromJson(const std::string &json_plan) : Deserialize from a string containing the JSON representation of the execution plan.\r\n\r\n- [New API] Added a new API\r\n  ```\r\n  get_heuristics_list(std::array<std::string, SIZE> modes,\r\n    OperationGraph_v8 &opGraph,\r\n    std::function<bool(cudnnBackendDescriptor_t)> filter_fn,\r\n    EngineConfigList &filtered_configs,\r\n    bool evaluate_all = false)\r\n  ```\r\n  This function takes a paramter list of heuristics mode. \"heuristics_instant\", \"heuristic_fallback\", \"heuristic_mode_b\" and computes a list of engine config which do not satisfy the blocking condition in filter_fn. The function can be optionally set to keep going even if one of the mode fails.\r\n\r\n- [New Features] Added support for BN Finalize i.e. generation of mean and variance to perform batch normalization.\r\n- [New Features] Added support for BN Stats fusion pattern. This pattern covers Scale, Bias, Relu, Conv and generation of SUM and SQSUM for batch normalization.\r\n- [New Features] Added support for CUDNN_POINTWISE_GEN_INDEX and CUDNN_POINTWISE_BINARY_SELECT pointwise operations added in cuDNN 8.4.0.\r\n- [Cleanup] Fixed a bug when used CUDNN_HEUR_MODE_B is used in multiple threads leads to crash in certain conditions.\r\n- [Cleanup] Added the CUDNN_PATH in CMakeLists.txt allowing user to build with different cuDNN installation path.\r\n- [Cleanup] Made Engine_v8 constructor as default which prevents overwriting of the status during knob creation.\r\n- [Cleanup] Take UIDs of variant pack as a const pointer.\r\n- [Cleanup] When logging was enabled and if no plan returned by heuristics is finalizable, it lead to a crash. This is now fixed.\r\n- [Samples] Added a new sample to showcase CUDNN_POINTWISE_GEN_INDEX and CUDNN_POINTWISE_BINARY_SELECT pointwise operations.\r\n- [Samples] Modified MHA sample to show improved numerical stability. Investigation is still going on to further improve the MHA sample\r\n- [Samples] Added samples for fused operation graph for BN Stats generation and stats finalization.\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/e8e186af7142049db96314b213bd748b8d891ff7",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/e8e186af7142049db96314b213bd748b8d891ff7",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/e8e186af7142049db96314b213bd748b8d891ff7/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7b83dba83fa31381aeca508d89aab94f4639ac6d",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/7b83dba83fa31381aeca508d89aab94f4639ac6d",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/7b83dba83fa31381aeca508d89aab94f4639ac6d"
+      }
+    ]
+  },
+  {
+    "sha": "7b83dba83fa31381aeca508d89aab94f4639ac6d",
+    "node_id": "C_kwDOE8nkuNoAKDdiODNkYmE4M2ZhMzEzODFhZWNhNTA4ZDg5YWFiOTRmNDYzOWFjNmQ",
+    "commit": {
+      "author": {
+        "name": "Anerudhan Gopal",
+        "email": "ane1606@gmail.com",
+        "date": "2022-01-25T04:34:10Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2022-01-25T04:34:10Z"
+      },
+      "message": "V0.5.1 patch (#24)\n\n* Update the timing code in the cudnn find plan to include the stream-ID on which it was launched.\r\n\r\n* Fix a typo in CMakelist.txt.\r\n\r\n* Fix compilation warnings in multiple files with latest GCC.\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>",
+      "tree": {
+        "sha": "7319c69a91cc0b3c68291cab50ead4b5325a2449",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/7319c69a91cc0b3c68291cab50ead4b5325a2449"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/7b83dba83fa31381aeca508d89aab94f4639ac6d",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJh733CCRBK7hj4Ov3rIwAAhFIIAKiiR7swWX7d32mtXRjnvPX1\nJyR/R5meSvdkGhce570v5OhzjY0i0AHwyXYuh3djSUbNjfeclzes6sQGznElAnVt\nBtLV+KF7HM80FdYOpcDZtVGcFt8NHf1RCqcO4uBy1wooO0N5PVlHGVsq0Aiern2J\nJMXYo9TbD+fQbkz09QQSjFP56/PT0ovETnIJ0F1IBuSR4gB+kKhpDd/RpoQr/3nO\nbaquN8hzVvMYP1foJ9uben9cBS1NCQkTW/bUMkbqnEDIkKex1MOzgsslIOYIpl/f\niNbQDk7/Kw5g8Of5eiAw/J4D7NGyMasKD/EB/q9rkfSwtgBXT331pejkr7kicEc=\n=GXCu\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 7319c69a91cc0b3c68291cab50ead4b5325a2449\nparent 704a61f7a3c16bcc52acfa9c4587b2df7703a29c\nauthor Anerudhan Gopal <ane1606@gmail.com> 1643085250 -0800\ncommitter GitHub <noreply@github.com> 1643085250 -0800\n\nV0.5.1 patch (#24)\n\n* Update the timing code in the cudnn find plan to include the stream-ID on which it was launched.\r\n\r\n* Fix a typo in CMakelist.txt.\r\n\r\n* Fix compilation warnings in multiple files with latest GCC.\r\n\r\nCo-authored-by: Anerudhan Gopal <agopal@nvidia.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/7b83dba83fa31381aeca508d89aab94f4639ac6d",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/7b83dba83fa31381aeca508d89aab94f4639ac6d",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/7b83dba83fa31381aeca508d89aab94f4639ac6d/comments",
+    "author": {
+      "login": "Anerudhan",
+      "id": 916946,
+      "node_id": "MDQ6VXNlcjkxNjk0Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/916946?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Anerudhan",
+      "html_url": "https://github.com/Anerudhan",
+      "followers_url": "https://api.github.com/users/Anerudhan/followers",
+      "following_url": "https://api.github.com/users/Anerudhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Anerudhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Anerudhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Anerudhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/Anerudhan/orgs",
+      "repos_url": "https://api.github.com/users/Anerudhan/repos",
+      "events_url": "https://api.github.com/users/Anerudhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Anerudhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "704a61f7a3c16bcc52acfa9c4587b2df7703a29c",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/704a61f7a3c16bcc52acfa9c4587b2df7703a29c",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/704a61f7a3c16bcc52acfa9c4587b2df7703a29c"
+      }
+    ]
+  },
+  {
+    "sha": "704a61f7a3c16bcc52acfa9c4587b2df7703a29c",
+    "node_id": "C_kwDOE8nkuNoAKDcwNGE2MWY3YTNjMTZiY2M1MmFjZmE5YzQ1ODdiMmRmNzcwM2EyOWM",
+    "commit": {
+      "author": {
+        "name": "agopal",
+        "email": "agopal@a.com",
+        "date": "2021-11-12T17:11:29Z"
+      },
+      "committer": {
+        "name": "agopal",
+        "email": "agopal@a.com",
+        "date": "2021-11-12T17:11:29Z"
+      },
+      "message": "Changes for v0.5 compilation with TensorFLow",
+      "tree": {
+        "sha": "5380f795f414997d776235ce1a56ef74ead6a65f",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/trees/5380f795f414997d776235ce1a56ef74ead6a65f"
+      },
+      "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/git/commits/704a61f7a3c16bcc52acfa9c4587b2df7703a29c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/704a61f7a3c16bcc52acfa9c4587b2df7703a29c",
+    "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/704a61f7a3c16bcc52acfa9c4587b2df7703a29c",
+    "comments_url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/704a61f7a3c16bcc52acfa9c4587b2df7703a29c/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "26cc6aa20d35acdad597be6701ff33e2fe95a516",
+        "url": "https://api.github.com/repos/NVIDIA/cudnn-frontend/commits/26cc6aa20d35acdad597be6701ff33e2fe95a516",
+        "html_url": "https://github.com/NVIDIA/cudnn-frontend/commit/26cc6aa20d35acdad597be6701ff33e2fe95a516"
+      }
+    ]
+  }
+]

@@ -1,0 +1,2372 @@
+[
+  {
+    "sha": "2e7dea3cedd3ef2f071dee82867c4147f17376dd",
+    "node_id": "C_kwDOAXYlM9oAKDJlN2RlYTNjZWRkM2VmMmYwNzFkZWU4Mjg2N2M0MTQ3ZjE3Mzc2ZGQ",
+    "commit": {
+      "author": {
+        "name": "Alex Rousskov",
+        "email": "rousskov@measurement-factory.com",
+        "date": "2024-04-02T20:37:31Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-04-03T07:04:46Z"
+      },
+      "message": "Do not blame cache_peer for CONNECT errors (#1772)\n\n    ERROR: Connection to [such-and-such-cache_peer] failed\n    TCP_TUNNEL/503 CONNECT nxdomain.test:443 FIRSTUP_PARENT\n\nSquid does not alert an admin about (and decrease health level of) a\ncache_peer that responded with an error to a GET request. Just like GET\nresponses from a cache_peer, CONNECT responses may (and often do!)\nreflect client or origin server failures. We should not penalize\ncache_peers (and alert admins) until we can distinguish these frequent\nclient/origin failures from (relatively rare) cache_peer problems. This\nchange absolves cache_peers of CONNECT problems, restoring parity with\nGETs and restoring v4 behavior changed (probably by accident) in v5.\n\nAlso removed Http::StatusCode parameter from failure notification\nfunctions because it became essentially unused after the primary\nHttp::Tunneler changes. Tunneler was the only source of status code\ninformation that (in some cases) used received HTTP response to compute\nthat status code. All other cases extracted that status code from\nSquid-generated errors. Those errors were arguably never meant to supply\nstatus code information for \"this failure is not our fault\" decision,\nand they do not supply 4xx status codes driving that decision.\n\n### Problem evolution\n\n2019 commit f5e1794 effectively started blaming cache_peer for all\nFwdState CONNECT errors. That functionality change was probably\naccidental, likely influenced by the names of noteConnectFailure() and\npeerConnectFailed() functions that abbreviated \"Connection\", making the\nfunctions look as applicable to CONNECT failures. Prior to that commit,\nthe functions were never used for CONNECT errors. After it, FwdState\nstarted calling peerConnectFailed() for all CONNECT failures.\n\nIn 2020 commit 25b0ce4, TunnelStateData started blaming cache_peers as\nwell (by moving that FwdState-only error handling code into Tunneler).\nThe same \"accidental functionality change\" speculations apply here.\n\nIn 2022 commit 022dbab, we made an exception for 4xx CONNECT errors as\nfolks deploying newer code started complaining about cache_peers getting\nblamed for client-caused errors (e.g., HTTP 403 Forbidden replies). We\ndid not realize that the blaming code itself was an unwanted accident.\n\nNow we are getting complaints about cache_peers getting blamed for 502\nand 503 CONNECT errors caused by, for example, domain names without IPs:\nAs these CONNECT error responses are propagated from parent to child\ncaches, every child cache in the chain logs ERRORs and every cache_peer\nin the chain gets its health counter decreased!",
+      "tree": {
+        "sha": "98add5ba90a0abf2b8c05452f96f64e533529db3",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/98add5ba90a0abf2b8c05452f96f64e533529db3"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/2e7dea3cedd3ef2f071dee82867c4147f17376dd",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/2e7dea3cedd3ef2f071dee82867c4147f17376dd",
+    "html_url": "https://github.com/squid-cache/squid/commit/2e7dea3cedd3ef2f071dee82867c4147f17376dd",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/2e7dea3cedd3ef2f071dee82867c4147f17376dd/comments",
+    "author": {
+      "login": "rousskov",
+      "id": 1084944,
+      "node_id": "MDQ6VXNlcjEwODQ5NDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1084944?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rousskov",
+      "html_url": "https://github.com/rousskov",
+      "followers_url": "https://api.github.com/users/rousskov/followers",
+      "following_url": "https://api.github.com/users/rousskov/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rousskov/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rousskov/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rousskov/subscriptions",
+      "organizations_url": "https://api.github.com/users/rousskov/orgs",
+      "repos_url": "https://api.github.com/users/rousskov/repos",
+      "events_url": "https://api.github.com/users/rousskov/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rousskov/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1891ce596237b45e0a675f75c49a5f6a1111840d",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/1891ce596237b45e0a675f75c49a5f6a1111840d",
+        "html_url": "https://github.com/squid-cache/squid/commit/1891ce596237b45e0a675f75c49a5f6a1111840d"
+      }
+    ]
+  },
+  {
+    "sha": "1891ce596237b45e0a675f75c49a5f6a1111840d",
+    "node_id": "C_kwDOAXYlM9oAKDE4OTFjZTU5NjIzN2I0NWUwYTY3NWY3NWM0OWE1ZjZhMTExMTg0MGQ",
+    "commit": {
+      "author": {
+        "name": "xiaoxiaoafeifei",
+        "email": "zhailiangliang@loongson.cn",
+        "date": "2024-04-02T07:04:31Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-04-02T15:50:33Z"
+      },
+      "message": "Fix heap buffer overead in ConfigParser::UnQuote() (#1763)\n\nDetected by using AddressSanitizer.",
+      "tree": {
+        "sha": "88bd997475fab9af19dd8b9a7f22bc4cb338d805",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/88bd997475fab9af19dd8b9a7f22bc4cb338d805"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/1891ce596237b45e0a675f75c49a5f6a1111840d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/1891ce596237b45e0a675f75c49a5f6a1111840d",
+    "html_url": "https://github.com/squid-cache/squid/commit/1891ce596237b45e0a675f75c49a5f6a1111840d",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/1891ce596237b45e0a675f75c49a5f6a1111840d/comments",
+    "author": {
+      "login": "xiaoxiaoafeifei",
+      "id": 20721416,
+      "node_id": "MDQ6VXNlcjIwNzIxNDE2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/20721416?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/xiaoxiaoafeifei",
+      "html_url": "https://github.com/xiaoxiaoafeifei",
+      "followers_url": "https://api.github.com/users/xiaoxiaoafeifei/followers",
+      "following_url": "https://api.github.com/users/xiaoxiaoafeifei/following{/other_user}",
+      "gists_url": "https://api.github.com/users/xiaoxiaoafeifei/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/xiaoxiaoafeifei/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/xiaoxiaoafeifei/subscriptions",
+      "organizations_url": "https://api.github.com/users/xiaoxiaoafeifei/orgs",
+      "repos_url": "https://api.github.com/users/xiaoxiaoafeifei/repos",
+      "events_url": "https://api.github.com/users/xiaoxiaoafeifei/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/xiaoxiaoafeifei/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8f4adbf753df8b8a56e07ee91938848a19a88d94",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/8f4adbf753df8b8a56e07ee91938848a19a88d94",
+        "html_url": "https://github.com/squid-cache/squid/commit/8f4adbf753df8b8a56e07ee91938848a19a88d94"
+      }
+    ]
+  },
+  {
+    "sha": "8f4adbf753df8b8a56e07ee91938848a19a88d94",
+    "node_id": "C_kwDOAXYlM9oAKDhmNGFkYmY3NTNkZjhiOGE1NmUwN2VlOTE5Mzg4NDhhMTlhODhkOTQ",
+    "commit": {
+      "author": {
+        "name": "Alex Rousskov",
+        "email": "rousskov@measurement-factory.com",
+        "date": "2024-04-01T19:43:21Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-04-02T03:04:39Z"
+      },
+      "message": "scripts/find-alive.pl: Auto-detect auto-added ctors/dtors names (#1769)\n\n    debugs(24, 9, \"constructed, this=\" << static_cast<void*>(this) ...\n\n    MemBlob.cc(54) MemBlob: constructed, this=0x557f06b3ef00 ...\n\nClass constructor and destructor sources should not manually duplicate\nclass names in debugs() statements. Many existing classes do the right\nthing, but find-alive.pl still insists on a manually added class name,\nforcing its users to add a colon: `find-alive.pl MemBlob:`.\n\nWe now accommodate both legacy/manual and modern/auto use cases.",
+      "tree": {
+        "sha": "1b7af8b85a2d10460a59d7d8f90e1bfc07ad2f6e",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/1b7af8b85a2d10460a59d7d8f90e1bfc07ad2f6e"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/8f4adbf753df8b8a56e07ee91938848a19a88d94",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/8f4adbf753df8b8a56e07ee91938848a19a88d94",
+    "html_url": "https://github.com/squid-cache/squid/commit/8f4adbf753df8b8a56e07ee91938848a19a88d94",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/8f4adbf753df8b8a56e07ee91938848a19a88d94/comments",
+    "author": {
+      "login": "rousskov",
+      "id": 1084944,
+      "node_id": "MDQ6VXNlcjEwODQ5NDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1084944?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rousskov",
+      "html_url": "https://github.com/rousskov",
+      "followers_url": "https://api.github.com/users/rousskov/followers",
+      "following_url": "https://api.github.com/users/rousskov/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rousskov/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rousskov/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rousskov/subscriptions",
+      "organizations_url": "https://api.github.com/users/rousskov/orgs",
+      "repos_url": "https://api.github.com/users/rousskov/repos",
+      "events_url": "https://api.github.com/users/rousskov/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rousskov/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "db8b598f02b6adbdf0acc26770b3ab34282dcdfa",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/db8b598f02b6adbdf0acc26770b3ab34282dcdfa",
+        "html_url": "https://github.com/squid-cache/squid/commit/db8b598f02b6adbdf0acc26770b3ab34282dcdfa"
+      }
+    ]
+  },
+  {
+    "sha": "db8b598f02b6adbdf0acc26770b3ab34282dcdfa",
+    "node_id": "C_kwDOAXYlM9oAKGRiOGI1OThmMDJiNmFkYmRmMGFjYzI2NzcwYjNhYjM0MjgyZGNkZmE",
+    "commit": {
+      "author": {
+        "name": "Alex Rousskov",
+        "email": "rousskov@measurement-factory.com",
+        "date": "2024-04-01T02:53:39Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-04-01T17:07:02Z"
+      },
+      "message": "Bug 5360: FwdState::noteDestinationsEnd() assertion \"err\" (#1767)\n\n    FATAL: assertion failed: FwdState.cc:660: \"err\"\n\nWhen FwdState decides to re-forward a request, it forgets the original\nresponse[^1] but does not create an error object. Since commit e2bbd3b,\nFwdState::noteDestinationsEnd() correctly assumed that we only idly wait\nfor additional destinations after encountering a problem, but\nincorrectly asserted that past problems imply error object existence.\n\nNow Squid generates an HTTP 502 (Bad Gateway) response while setting\n%err_code/%err_detail to ERR_CANNOT_FORWARD/REFORWARD_TO_NONE.\n\nTunnelStateData::noteDestinationsEnd() code is similar, but it probably\ndoes not suffer from the same bug because an error object is created\nbefore every retryOrBail() call, and there is no re-forwarding code that\nforgets an HTTP error response without creating an error. Those\ninvariants are not well tracked, and this change mimics FwdState changes\nin TunnelStateData just in case and to keep the two methods in sync. In\nthose hypothetical cases, ERR_CANNOT_FORWARD/RETRY_TO_NONE is logged.\n\n[^1]: Long-term we probably want to preserve that original response so\nthat we do not have to replace it with a generated error, but doing so\nrequires significant refactoring and is outside this minimal fix scope.",
+      "tree": {
+        "sha": "b42298cc931702b8d5087f6fca8b0708d18742d3",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/b42298cc931702b8d5087f6fca8b0708d18742d3"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/db8b598f02b6adbdf0acc26770b3ab34282dcdfa",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/db8b598f02b6adbdf0acc26770b3ab34282dcdfa",
+    "html_url": "https://github.com/squid-cache/squid/commit/db8b598f02b6adbdf0acc26770b3ab34282dcdfa",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/db8b598f02b6adbdf0acc26770b3ab34282dcdfa/comments",
+    "author": {
+      "login": "rousskov",
+      "id": 1084944,
+      "node_id": "MDQ6VXNlcjEwODQ5NDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1084944?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rousskov",
+      "html_url": "https://github.com/rousskov",
+      "followers_url": "https://api.github.com/users/rousskov/followers",
+      "following_url": "https://api.github.com/users/rousskov/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rousskov/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rousskov/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rousskov/subscriptions",
+      "organizations_url": "https://api.github.com/users/rousskov/orgs",
+      "repos_url": "https://api.github.com/users/rousskov/repos",
+      "events_url": "https://api.github.com/users/rousskov/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rousskov/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "984577acdcd448a8a6893e04070712cf27d58a3b",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/984577acdcd448a8a6893e04070712cf27d58a3b",
+        "html_url": "https://github.com/squid-cache/squid/commit/984577acdcd448a8a6893e04070712cf27d58a3b"
+      }
+    ]
+  },
+  {
+    "sha": "984577acdcd448a8a6893e04070712cf27d58a3b",
+    "node_id": "C_kwDOAXYlM9oAKDk4NDU3N2FjZGNkNDQ4YThhNjg5M2UwNDA3MDcxMmNmMjdkNThhM2I",
+    "commit": {
+      "author": {
+        "name": "Francesco Chemolli",
+        "email": "5175948+kinkie@users.noreply.github.com",
+        "date": "2024-03-28T23:02:14Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-28T23:02:18Z"
+      },
+      "message": "NoNewGlobals for Adaptation::Config::metaHeaders (#1747)\n\nDetected by Coverity. CID 1554662: Initialization or destruction\nordering is unspecified (GLOBAL_INIT_ORDER).",
+      "tree": {
+        "sha": "c0b876ec26afded5eefa53efc855ceda367b40f0",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/c0b876ec26afded5eefa53efc855ceda367b40f0"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/984577acdcd448a8a6893e04070712cf27d58a3b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/984577acdcd448a8a6893e04070712cf27d58a3b",
+    "html_url": "https://github.com/squid-cache/squid/commit/984577acdcd448a8a6893e04070712cf27d58a3b",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/984577acdcd448a8a6893e04070712cf27d58a3b/comments",
+    "author": {
+      "login": "kinkie",
+      "id": 5175948,
+      "node_id": "MDQ6VXNlcjUxNzU5NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5175948?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/kinkie",
+      "html_url": "https://github.com/kinkie",
+      "followers_url": "https://api.github.com/users/kinkie/followers",
+      "following_url": "https://api.github.com/users/kinkie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/kinkie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/kinkie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/kinkie/subscriptions",
+      "organizations_url": "https://api.github.com/users/kinkie/orgs",
+      "repos_url": "https://api.github.com/users/kinkie/repos",
+      "events_url": "https://api.github.com/users/kinkie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/kinkie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e949a7d6c270c43552e8696edaac7557473d0bcc",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/e949a7d6c270c43552e8696edaac7557473d0bcc",
+        "html_url": "https://github.com/squid-cache/squid/commit/e949a7d6c270c43552e8696edaac7557473d0bcc"
+      }
+    ]
+  },
+  {
+    "sha": "e949a7d6c270c43552e8696edaac7557473d0bcc",
+    "node_id": "C_kwDOAXYlM9oAKGU5NDlhN2Q2YzI3MGM0MzU1MmU4Njk2ZWRhYWM3NTU3NDczZDBiY2M",
+    "commit": {
+      "author": {
+        "name": "Alex Rousskov",
+        "email": "rousskov@measurement-factory.com",
+        "date": "2024-03-27T18:41:41Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-28T20:52:24Z"
+      },
+      "message": "CI: Require source-maintenance.sh application before merging PRs (#1760)\n\nBy default, fixing PR-introduced code formatting problems should be that\nPR responsibility. We did not enforced formatting because we did not\nhave CI automation to support that enforcement, and also because it was\ntedious even for core developer to maintain the right astyle version.\nNeither excuse remains valid these days.\n\nIn most development environments, it is not very difficult to install\nAstyle v3.1 (and other Squid source maintenance tools). Our GitHub\nActions configuration file (.github/default.yaml) has a recipe. In\nexceptional cases, including cases where a pull request was not\nformatted because a different astyle version was installed, other\ndevelopers can (re)format PR sources (proactively or at author request).\n\nAlso fixed wrong error message when running source-maintenance.sh fails.",
+      "tree": {
+        "sha": "001ea12891fb2c9a811e007a92b7c6640def195d",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/001ea12891fb2c9a811e007a92b7c6640def195d"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/e949a7d6c270c43552e8696edaac7557473d0bcc",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/e949a7d6c270c43552e8696edaac7557473d0bcc",
+    "html_url": "https://github.com/squid-cache/squid/commit/e949a7d6c270c43552e8696edaac7557473d0bcc",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/e949a7d6c270c43552e8696edaac7557473d0bcc/comments",
+    "author": {
+      "login": "rousskov",
+      "id": 1084944,
+      "node_id": "MDQ6VXNlcjEwODQ5NDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1084944?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rousskov",
+      "html_url": "https://github.com/rousskov",
+      "followers_url": "https://api.github.com/users/rousskov/followers",
+      "following_url": "https://api.github.com/users/rousskov/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rousskov/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rousskov/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rousskov/subscriptions",
+      "organizations_url": "https://api.github.com/users/rousskov/orgs",
+      "repos_url": "https://api.github.com/users/rousskov/repos",
+      "events_url": "https://api.github.com/users/rousskov/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rousskov/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3d0d2c1a6ba0efb2789710635a7d9f692e49b3b0",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/3d0d2c1a6ba0efb2789710635a7d9f692e49b3b0",
+        "html_url": "https://github.com/squid-cache/squid/commit/3d0d2c1a6ba0efb2789710635a7d9f692e49b3b0"
+      }
+    ]
+  },
+  {
+    "sha": "3d0d2c1a6ba0efb2789710635a7d9f692e49b3b0",
+    "node_id": "C_kwDOAXYlM9oAKDNkMGQyYzFhNmJhMGVmYjI3ODk3MTA2MzVhN2Q5ZjY5MmU0OWIzYjA",
+    "commit": {
+      "author": {
+        "name": "Amos Jeffries",
+        "email": "yadij@users.noreply.github.com",
+        "date": "2024-03-26T20:17:04Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-27T16:19:49Z"
+      },
+      "message": "Refactor portions of getCurrentTime() to use std::chrono (#1755)\n\nPOSIX.1-2008 marks gettimeofday() as obsolete.",
+      "tree": {
+        "sha": "0a301295eedc13f463a3a9a9ed015cc27a5e40f8",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/0a301295eedc13f463a3a9a9ed015cc27a5e40f8"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/3d0d2c1a6ba0efb2789710635a7d9f692e49b3b0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/3d0d2c1a6ba0efb2789710635a7d9f692e49b3b0",
+    "html_url": "https://github.com/squid-cache/squid/commit/3d0d2c1a6ba0efb2789710635a7d9f692e49b3b0",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/3d0d2c1a6ba0efb2789710635a7d9f692e49b3b0/comments",
+    "author": {
+      "login": "yadij",
+      "id": 9123754,
+      "node_id": "MDQ6VXNlcjkxMjM3NTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9123754?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/yadij",
+      "html_url": "https://github.com/yadij",
+      "followers_url": "https://api.github.com/users/yadij/followers",
+      "following_url": "https://api.github.com/users/yadij/following{/other_user}",
+      "gists_url": "https://api.github.com/users/yadij/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/yadij/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/yadij/subscriptions",
+      "organizations_url": "https://api.github.com/users/yadij/orgs",
+      "repos_url": "https://api.github.com/users/yadij/repos",
+      "events_url": "https://api.github.com/users/yadij/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/yadij/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "01be15327511b5192cd728f5ee798e2e27b2fba5",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/01be15327511b5192cd728f5ee798e2e27b2fba5",
+        "html_url": "https://github.com/squid-cache/squid/commit/01be15327511b5192cd728f5ee798e2e27b2fba5"
+      }
+    ]
+  },
+  {
+    "sha": "01be15327511b5192cd728f5ee798e2e27b2fba5",
+    "node_id": "C_kwDOAXYlM9oAKDAxYmUxNTMyNzUxMWI1MTkyY2Q3MjhmNWVlNzk4ZTJlMjdiMmZiYTU",
+    "commit": {
+      "author": {
+        "name": "Alex Rousskov",
+        "email": "rousskov@measurement-factory.com",
+        "date": "2024-03-26T17:58:07Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-26T17:58:12Z"
+      },
+      "message": "Source Format Enforcement (#1759)",
+      "tree": {
+        "sha": "286b231a06556e196bd24dd9f88607b71f072552",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/286b231a06556e196bd24dd9f88607b71f072552"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/01be15327511b5192cd728f5ee798e2e27b2fba5",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/01be15327511b5192cd728f5ee798e2e27b2fba5",
+    "html_url": "https://github.com/squid-cache/squid/commit/01be15327511b5192cd728f5ee798e2e27b2fba5",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/01be15327511b5192cd728f5ee798e2e27b2fba5/comments",
+    "author": {
+      "login": "rousskov",
+      "id": 1084944,
+      "node_id": "MDQ6VXNlcjEwODQ5NDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1084944?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rousskov",
+      "html_url": "https://github.com/rousskov",
+      "followers_url": "https://api.github.com/users/rousskov/followers",
+      "following_url": "https://api.github.com/users/rousskov/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rousskov/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rousskov/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rousskov/subscriptions",
+      "organizations_url": "https://api.github.com/users/rousskov/orgs",
+      "repos_url": "https://api.github.com/users/rousskov/repos",
+      "events_url": "https://api.github.com/users/rousskov/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rousskov/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "20dcd31391faa2a288d516b12630d1eecb83c74a",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/20dcd31391faa2a288d516b12630d1eecb83c74a",
+        "html_url": "https://github.com/squid-cache/squid/commit/20dcd31391faa2a288d516b12630d1eecb83c74a"
+      }
+    ]
+  },
+  {
+    "sha": "20dcd31391faa2a288d516b12630d1eecb83c74a",
+    "node_id": "C_kwDOAXYlM9oAKDIwZGNkMzEzOTFmYWEyYTI4OGQ1MTZiMTI2MzBkMWVlY2I4M2M3NGE",
+    "commit": {
+      "author": {
+        "name": "Alex Rousskov",
+        "email": "rousskov@measurement-factory.com",
+        "date": "2024-03-25T20:24:52Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-26T15:25:51Z"
+      },
+      "message": "Maintenance: Updated CONTRIBUTORS (#1758)\n\nThis change is a reference point for automated CONTRIBUTORS updates.",
+      "tree": {
+        "sha": "04bf9b12ed3c1d8de7204b1b7a3361ae8593914d",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/04bf9b12ed3c1d8de7204b1b7a3361ae8593914d"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/20dcd31391faa2a288d516b12630d1eecb83c74a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/20dcd31391faa2a288d516b12630d1eecb83c74a",
+    "html_url": "https://github.com/squid-cache/squid/commit/20dcd31391faa2a288d516b12630d1eecb83c74a",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/20dcd31391faa2a288d516b12630d1eecb83c74a/comments",
+    "author": {
+      "login": "rousskov",
+      "id": 1084944,
+      "node_id": "MDQ6VXNlcjEwODQ5NDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1084944?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rousskov",
+      "html_url": "https://github.com/rousskov",
+      "followers_url": "https://api.github.com/users/rousskov/followers",
+      "following_url": "https://api.github.com/users/rousskov/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rousskov/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rousskov/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rousskov/subscriptions",
+      "organizations_url": "https://api.github.com/users/rousskov/orgs",
+      "repos_url": "https://api.github.com/users/rousskov/repos",
+      "events_url": "https://api.github.com/users/rousskov/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rousskov/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "80a6a08a94a8c1029b907169e5803fe2e5e9a422",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/80a6a08a94a8c1029b907169e5803fe2e5e9a422",
+        "html_url": "https://github.com/squid-cache/squid/commit/80a6a08a94a8c1029b907169e5803fe2e5e9a422"
+      }
+    ]
+  },
+  {
+    "sha": "80a6a08a94a8c1029b907169e5803fe2e5e9a422",
+    "node_id": "C_kwDOAXYlM9oAKDgwYTZhMDhhOTRhOGMxMDI5YjkwNzE2OWU1ODAzZmUyZTVlOWE0MjI",
+    "commit": {
+      "author": {
+        "name": "Eduard Bagdasaryan",
+        "email": "eduard.bagdasaryan@measurement-factory.com",
+        "date": "2024-03-23T21:24:03Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-24T15:02:35Z"
+      },
+      "message": "HTTP: Protect just-parsed responses from accidental destruction (#1752)\n\nThe lack of HttpReply locking meant that we could not (safely) pass the\nfreshly created reply object to ACLFilledChecklist because the checklist\ndestructor would unwittingly destroy the object (by unlocking it). There\nis at least one applicable ACL check in handle1xx(), but we got lucky\nbecause that method adds the reply object to ALE, increasing its\nreference counter. This change stops relying on such \"external\" locks.\n\nThis change also protects from HttpReply memory leaks when an exception\nis thrown between HttpReply creation and a setVirginReply() call.\n\nTODO: Fix all cases where newly created HttpReply objects are remembered\nusing raw pointers (but may be passed to locking/unlocking code).",
+      "tree": {
+        "sha": "22ad9b24442ab9a78267c81d5afe976538a10d16",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/22ad9b24442ab9a78267c81d5afe976538a10d16"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/80a6a08a94a8c1029b907169e5803fe2e5e9a422",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/80a6a08a94a8c1029b907169e5803fe2e5e9a422",
+    "html_url": "https://github.com/squid-cache/squid/commit/80a6a08a94a8c1029b907169e5803fe2e5e9a422",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/80a6a08a94a8c1029b907169e5803fe2e5e9a422/comments",
+    "author": {
+      "login": "eduard-bagdasaryan",
+      "id": 13069213,
+      "node_id": "MDQ6VXNlcjEzMDY5MjEz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13069213?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/eduard-bagdasaryan",
+      "html_url": "https://github.com/eduard-bagdasaryan",
+      "followers_url": "https://api.github.com/users/eduard-bagdasaryan/followers",
+      "following_url": "https://api.github.com/users/eduard-bagdasaryan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/eduard-bagdasaryan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/eduard-bagdasaryan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/eduard-bagdasaryan/subscriptions",
+      "organizations_url": "https://api.github.com/users/eduard-bagdasaryan/orgs",
+      "repos_url": "https://api.github.com/users/eduard-bagdasaryan/repos",
+      "events_url": "https://api.github.com/users/eduard-bagdasaryan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/eduard-bagdasaryan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0c060c02e48a1fedfb5c163f8ec54b8aa7f68588",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/0c060c02e48a1fedfb5c163f8ec54b8aa7f68588",
+        "html_url": "https://github.com/squid-cache/squid/commit/0c060c02e48a1fedfb5c163f8ec54b8aa7f68588"
+      }
+    ]
+  },
+  {
+    "sha": "0c060c02e48a1fedfb5c163f8ec54b8aa7f68588",
+    "node_id": "C_kwDOAXYlM9oAKDBjMDYwYzAyZTQ4YTFmZWRmYjVjMTYzZjhlYzU0YjhhYTdmNjg1ODg",
+    "commit": {
+      "author": {
+        "name": "Francesco Chemolli",
+        "email": "5175948+kinkie@users.noreply.github.com",
+        "date": "2024-03-21T05:43:10Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-21T05:43:24Z"
+      },
+      "message": "Make BodyPipe::MaxCapacity constexpr (#1748)\n\nDetected by Coverity. CID 1554661: Initialization or destruction\nordering is unspecified (GLOBAL_INIT_ORDER).",
+      "tree": {
+        "sha": "38cbf3ab90e41dce459bc1ee9ba65b7c270e4734",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/38cbf3ab90e41dce459bc1ee9ba65b7c270e4734"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/0c060c02e48a1fedfb5c163f8ec54b8aa7f68588",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/0c060c02e48a1fedfb5c163f8ec54b8aa7f68588",
+    "html_url": "https://github.com/squid-cache/squid/commit/0c060c02e48a1fedfb5c163f8ec54b8aa7f68588",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/0c060c02e48a1fedfb5c163f8ec54b8aa7f68588/comments",
+    "author": {
+      "login": "kinkie",
+      "id": 5175948,
+      "node_id": "MDQ6VXNlcjUxNzU5NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5175948?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/kinkie",
+      "html_url": "https://github.com/kinkie",
+      "followers_url": "https://api.github.com/users/kinkie/followers",
+      "following_url": "https://api.github.com/users/kinkie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/kinkie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/kinkie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/kinkie/subscriptions",
+      "organizations_url": "https://api.github.com/users/kinkie/orgs",
+      "repos_url": "https://api.github.com/users/kinkie/repos",
+      "events_url": "https://api.github.com/users/kinkie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/kinkie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "87e6fe2c50e77f10dc1aab6d361894a30626179f",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/87e6fe2c50e77f10dc1aab6d361894a30626179f",
+        "html_url": "https://github.com/squid-cache/squid/commit/87e6fe2c50e77f10dc1aab6d361894a30626179f"
+      }
+    ]
+  },
+  {
+    "sha": "87e6fe2c50e77f10dc1aab6d361894a30626179f",
+    "node_id": "C_kwDOAXYlM9oAKDg3ZTZmZTJjNTBlNzdmMTBkYzFhYWI2ZDM2MTg5NGEzMDYyNjE3OWY",
+    "commit": {
+      "author": {
+        "name": "Francesco Chemolli",
+        "email": "5175948+kinkie@users.noreply.github.com",
+        "date": "2024-03-21T02:22:37Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-21T02:22:40Z"
+      },
+      "message": "NoNewGlobals for MapLabel (#1746)\n\nDetected by Coverity. CID 1554668: Initialization or destruction\nordering is unspecified (GLOBAL_INIT_ORDER).",
+      "tree": {
+        "sha": "f82b8b9e1a1bacae28e52a6a8d14367403725d05",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/f82b8b9e1a1bacae28e52a6a8d14367403725d05"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/87e6fe2c50e77f10dc1aab6d361894a30626179f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/87e6fe2c50e77f10dc1aab6d361894a30626179f",
+    "html_url": "https://github.com/squid-cache/squid/commit/87e6fe2c50e77f10dc1aab6d361894a30626179f",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/87e6fe2c50e77f10dc1aab6d361894a30626179f/comments",
+    "author": {
+      "login": "kinkie",
+      "id": 5175948,
+      "node_id": "MDQ6VXNlcjUxNzU5NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5175948?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/kinkie",
+      "html_url": "https://github.com/kinkie",
+      "followers_url": "https://api.github.com/users/kinkie/followers",
+      "following_url": "https://api.github.com/users/kinkie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/kinkie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/kinkie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/kinkie/subscriptions",
+      "organizations_url": "https://api.github.com/users/kinkie/orgs",
+      "repos_url": "https://api.github.com/users/kinkie/repos",
+      "events_url": "https://api.github.com/users/kinkie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/kinkie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "738f51a1b2be8e824dda030031175c0d47f452d6",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/738f51a1b2be8e824dda030031175c0d47f452d6",
+        "html_url": "https://github.com/squid-cache/squid/commit/738f51a1b2be8e824dda030031175c0d47f452d6"
+      }
+    ]
+  },
+  {
+    "sha": "738f51a1b2be8e824dda030031175c0d47f452d6",
+    "node_id": "C_kwDOAXYlM9oAKDczOGY1MWExYjJiZThlODI0ZGRhMDMwMDMxMTc1YzBkNDdmNDUyZDY",
+    "commit": {
+      "author": {
+        "name": "Francesco Chemolli",
+        "email": "5175948+kinkie@users.noreply.github.com",
+        "date": "2024-03-20T22:59:46Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-20T22:59:53Z"
+      },
+      "message": "NoNewGlobals for digestFieldsLookupTable (#1743)\n\nDetected by Coverity. CID 1554677: Initialization or destruction\nordering is unspecified (GLOBAL_INIT_ORDER).",
+      "tree": {
+        "sha": "95572b902554c701dfcf17aab5dcad2a547e3d8b",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/95572b902554c701dfcf17aab5dcad2a547e3d8b"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/738f51a1b2be8e824dda030031175c0d47f452d6",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/738f51a1b2be8e824dda030031175c0d47f452d6",
+    "html_url": "https://github.com/squid-cache/squid/commit/738f51a1b2be8e824dda030031175c0d47f452d6",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/738f51a1b2be8e824dda030031175c0d47f452d6/comments",
+    "author": {
+      "login": "kinkie",
+      "id": 5175948,
+      "node_id": "MDQ6VXNlcjUxNzU5NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5175948?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/kinkie",
+      "html_url": "https://github.com/kinkie",
+      "followers_url": "https://api.github.com/users/kinkie/followers",
+      "following_url": "https://api.github.com/users/kinkie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/kinkie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/kinkie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/kinkie/subscriptions",
+      "organizations_url": "https://api.github.com/users/kinkie/orgs",
+      "repos_url": "https://api.github.com/users/kinkie/repos",
+      "events_url": "https://api.github.com/users/kinkie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/kinkie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "388d024ea9d0cda146400219c3d7720aea839fc6",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/388d024ea9d0cda146400219c3d7720aea839fc6",
+        "html_url": "https://github.com/squid-cache/squid/commit/388d024ea9d0cda146400219c3d7720aea839fc6"
+      }
+    ]
+  },
+  {
+    "sha": "388d024ea9d0cda146400219c3d7720aea839fc6",
+    "node_id": "C_kwDOAXYlM9oAKDM4OGQwMjRlYTlkMGNkYTE0NjQwMDIxOWMzZDc3MjBhZWE4MzlmYzY",
+    "commit": {
+      "author": {
+        "name": "Francesco Chemolli",
+        "email": "5175948+kinkie@users.noreply.github.com",
+        "date": "2024-03-20T15:24:05Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-20T15:24:17Z"
+      },
+      "message": "Maintenance: rework SASL detection (#1694)\n\nMacOS Homebrew offers Cyrus SASL.",
+      "tree": {
+        "sha": "252b5df554989dcc4d363d6dbce48434f630a759",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/252b5df554989dcc4d363d6dbce48434f630a759"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/388d024ea9d0cda146400219c3d7720aea839fc6",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/388d024ea9d0cda146400219c3d7720aea839fc6",
+    "html_url": "https://github.com/squid-cache/squid/commit/388d024ea9d0cda146400219c3d7720aea839fc6",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/388d024ea9d0cda146400219c3d7720aea839fc6/comments",
+    "author": {
+      "login": "kinkie",
+      "id": 5175948,
+      "node_id": "MDQ6VXNlcjUxNzU5NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5175948?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/kinkie",
+      "html_url": "https://github.com/kinkie",
+      "followers_url": "https://api.github.com/users/kinkie/followers",
+      "following_url": "https://api.github.com/users/kinkie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/kinkie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/kinkie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/kinkie/subscriptions",
+      "organizations_url": "https://api.github.com/users/kinkie/orgs",
+      "repos_url": "https://api.github.com/users/kinkie/repos",
+      "events_url": "https://api.github.com/users/kinkie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/kinkie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f8de3912c8d58e2ae3aefb8db311d46258a21c7b",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/f8de3912c8d58e2ae3aefb8db311d46258a21c7b",
+        "html_url": "https://github.com/squid-cache/squid/commit/f8de3912c8d58e2ae3aefb8db311d46258a21c7b"
+      }
+    ]
+  },
+  {
+    "sha": "f8de3912c8d58e2ae3aefb8db311d46258a21c7b",
+    "node_id": "C_kwDOAXYlM9oAKGY4ZGUzOTEyYzhkNThlMmFlM2FlZmI4ZGIzMTFkNDYyNThhMjFjN2I",
+    "commit": {
+      "author": {
+        "name": "Francesco Chemolli",
+        "email": "5175948+kinkie@users.noreply.github.com",
+        "date": "2024-03-19T01:55:14Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-19T07:58:50Z"
+      },
+      "message": "NoNewGlobals: HttpUpgradeProtocolAccess::ProtoOther (#1745)\n\nDetected by Coverity. CID 1554674: Initialization or destruction\nordering is unspecified (GLOBAL_INIT_ORDER).",
+      "tree": {
+        "sha": "0804b0328d9f866d510d5b21af5f8a086ebc3d8e",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/0804b0328d9f866d510d5b21af5f8a086ebc3d8e"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/f8de3912c8d58e2ae3aefb8db311d46258a21c7b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/f8de3912c8d58e2ae3aefb8db311d46258a21c7b",
+    "html_url": "https://github.com/squid-cache/squid/commit/f8de3912c8d58e2ae3aefb8db311d46258a21c7b",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/f8de3912c8d58e2ae3aefb8db311d46258a21c7b/comments",
+    "author": {
+      "login": "kinkie",
+      "id": 5175948,
+      "node_id": "MDQ6VXNlcjUxNzU5NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5175948?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/kinkie",
+      "html_url": "https://github.com/kinkie",
+      "followers_url": "https://api.github.com/users/kinkie/followers",
+      "following_url": "https://api.github.com/users/kinkie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/kinkie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/kinkie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/kinkie/subscriptions",
+      "organizations_url": "https://api.github.com/users/kinkie/orgs",
+      "repos_url": "https://api.github.com/users/kinkie/repos",
+      "events_url": "https://api.github.com/users/kinkie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/kinkie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2a849db2f528e59cdc0222340251d020f651c2f4",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/2a849db2f528e59cdc0222340251d020f651c2f4",
+        "html_url": "https://github.com/squid-cache/squid/commit/2a849db2f528e59cdc0222340251d020f651c2f4"
+      }
+    ]
+  },
+  {
+    "sha": "2a849db2f528e59cdc0222340251d020f651c2f4",
+    "node_id": "C_kwDOAXYlM9oAKDJhODQ5ZGIyZjUyOGU1OWNkYzAyMjIzNDAyNTFkMDIwZjY1MWMyZjQ",
+    "commit": {
+      "author": {
+        "name": "Amos Jeffries",
+        "email": "yadij@users.noreply.github.com",
+        "date": "2024-03-17T20:13:13Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-18T00:36:51Z"
+      },
+      "message": "Maintenance: update --with-ldap detection (#1736)",
+      "tree": {
+        "sha": "07e9214badbb9cd1c59d8457de1c3057f4cea24e",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/07e9214badbb9cd1c59d8457de1c3057f4cea24e"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/2a849db2f528e59cdc0222340251d020f651c2f4",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/2a849db2f528e59cdc0222340251d020f651c2f4",
+    "html_url": "https://github.com/squid-cache/squid/commit/2a849db2f528e59cdc0222340251d020f651c2f4",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/2a849db2f528e59cdc0222340251d020f651c2f4/comments",
+    "author": {
+      "login": "yadij",
+      "id": 9123754,
+      "node_id": "MDQ6VXNlcjkxMjM3NTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9123754?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/yadij",
+      "html_url": "https://github.com/yadij",
+      "followers_url": "https://api.github.com/users/yadij/followers",
+      "following_url": "https://api.github.com/users/yadij/following{/other_user}",
+      "gists_url": "https://api.github.com/users/yadij/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/yadij/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/yadij/subscriptions",
+      "organizations_url": "https://api.github.com/users/yadij/orgs",
+      "repos_url": "https://api.github.com/users/yadij/repos",
+      "events_url": "https://api.github.com/users/yadij/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/yadij/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "90f2d6a6e0bb01be41010f1ed7007cde742e6943",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/90f2d6a6e0bb01be41010f1ed7007cde742e6943",
+        "html_url": "https://github.com/squid-cache/squid/commit/90f2d6a6e0bb01be41010f1ed7007cde742e6943"
+      }
+    ]
+  },
+  {
+    "sha": "90f2d6a6e0bb01be41010f1ed7007cde742e6943",
+    "node_id": "C_kwDOAXYlM9oAKDkwZjJkNmE2ZTBiYjAxYmU0MTAxMGYxZWQ3MDA3Y2RlNzQyZTY5NDM",
+    "commit": {
+      "author": {
+        "name": "Amos Jeffries",
+        "email": "yadij@users.noreply.github.com",
+        "date": "2024-03-16T10:56:54Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-17T16:49:25Z"
+      },
+      "message": "Docs: Update CREDITS after code removals (#1741)\n\nCommit eb9259b1a2f9b0a018cce8b692355969a92712df missed removing these\ncopyright declarations.",
+      "tree": {
+        "sha": "a3089bff3025a17d8d2865c3a50cf2d3979933c1",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/a3089bff3025a17d8d2865c3a50cf2d3979933c1"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/90f2d6a6e0bb01be41010f1ed7007cde742e6943",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/90f2d6a6e0bb01be41010f1ed7007cde742e6943",
+    "html_url": "https://github.com/squid-cache/squid/commit/90f2d6a6e0bb01be41010f1ed7007cde742e6943",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/90f2d6a6e0bb01be41010f1ed7007cde742e6943/comments",
+    "author": {
+      "login": "yadij",
+      "id": 9123754,
+      "node_id": "MDQ6VXNlcjkxMjM3NTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9123754?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/yadij",
+      "html_url": "https://github.com/yadij",
+      "followers_url": "https://api.github.com/users/yadij/followers",
+      "following_url": "https://api.github.com/users/yadij/following{/other_user}",
+      "gists_url": "https://api.github.com/users/yadij/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/yadij/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/yadij/subscriptions",
+      "organizations_url": "https://api.github.com/users/yadij/orgs",
+      "repos_url": "https://api.github.com/users/yadij/repos",
+      "events_url": "https://api.github.com/users/yadij/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/yadij/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1c464a532ab78b6ea240afd3a8a7a2485080dde0",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/1c464a532ab78b6ea240afd3a8a7a2485080dde0",
+        "html_url": "https://github.com/squid-cache/squid/commit/1c464a532ab78b6ea240afd3a8a7a2485080dde0"
+      }
+    ]
+  },
+  {
+    "sha": "1c464a532ab78b6ea240afd3a8a7a2485080dde0",
+    "node_id": "C_kwDOAXYlM9oAKDFjNDY0YTUzMmFiNzhiNmVhMjQwYWZkM2E4YTdhMjQ4NTA4MGRkZTA",
+    "commit": {
+      "author": {
+        "name": "Amos Jeffries",
+        "email": "yadij@users.noreply.github.com",
+        "date": "2024-03-15T17:26:29Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-16T07:33:28Z"
+      },
+      "message": "Convert loadable_modules to SBufList (#1738)\n\nno behaviour changes.",
+      "tree": {
+        "sha": "9d16f3ea997c47271a38c166c24350ca58d18160",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/9d16f3ea997c47271a38c166c24350ca58d18160"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/1c464a532ab78b6ea240afd3a8a7a2485080dde0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/1c464a532ab78b6ea240afd3a8a7a2485080dde0",
+    "html_url": "https://github.com/squid-cache/squid/commit/1c464a532ab78b6ea240afd3a8a7a2485080dde0",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/1c464a532ab78b6ea240afd3a8a7a2485080dde0/comments",
+    "author": {
+      "login": "yadij",
+      "id": 9123754,
+      "node_id": "MDQ6VXNlcjkxMjM3NTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9123754?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/yadij",
+      "html_url": "https://github.com/yadij",
+      "followers_url": "https://api.github.com/users/yadij/followers",
+      "following_url": "https://api.github.com/users/yadij/following{/other_user}",
+      "gists_url": "https://api.github.com/users/yadij/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/yadij/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/yadij/subscriptions",
+      "organizations_url": "https://api.github.com/users/yadij/orgs",
+      "repos_url": "https://api.github.com/users/yadij/repos",
+      "events_url": "https://api.github.com/users/yadij/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/yadij/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6793ad05d9864bd3acc1c273e8bdff66a3f9c477",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/6793ad05d9864bd3acc1c273e8bdff66a3f9c477",
+        "html_url": "https://github.com/squid-cache/squid/commit/6793ad05d9864bd3acc1c273e8bdff66a3f9c477"
+      }
+    ]
+  },
+  {
+    "sha": "6793ad05d9864bd3acc1c273e8bdff66a3f9c477",
+    "node_id": "C_kwDOAXYlM9oAKDY3OTNhZDA1ZDk4NjRiZDNhY2MxYzI3M2U4YmRmZjY2YTNmOWM0Nzc",
+    "commit": {
+      "author": {
+        "name": "Amos Jeffries",
+        "email": "yadij@users.noreply.github.com",
+        "date": "2024-03-15T13:24:27Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-15T13:24:31Z"
+      },
+      "message": "Convert hostname_aliases to SBufList (#1737)\n\nFix a bug where hostname_aliases was being\ncompared case-sensitively with HTTP request\nHost / URL domain.",
+      "tree": {
+        "sha": "630fba9e7ba042e4bbea5f0340eb3609a4f51cc7",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/630fba9e7ba042e4bbea5f0340eb3609a4f51cc7"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/6793ad05d9864bd3acc1c273e8bdff66a3f9c477",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/6793ad05d9864bd3acc1c273e8bdff66a3f9c477",
+    "html_url": "https://github.com/squid-cache/squid/commit/6793ad05d9864bd3acc1c273e8bdff66a3f9c477",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/6793ad05d9864bd3acc1c273e8bdff66a3f9c477/comments",
+    "author": {
+      "login": "yadij",
+      "id": 9123754,
+      "node_id": "MDQ6VXNlcjkxMjM3NTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9123754?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/yadij",
+      "html_url": "https://github.com/yadij",
+      "followers_url": "https://api.github.com/users/yadij/followers",
+      "following_url": "https://api.github.com/users/yadij/following{/other_user}",
+      "gists_url": "https://api.github.com/users/yadij/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/yadij/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/yadij/subscriptions",
+      "organizations_url": "https://api.github.com/users/yadij/orgs",
+      "repos_url": "https://api.github.com/users/yadij/repos",
+      "events_url": "https://api.github.com/users/yadij/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/yadij/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "209bb42516b0b926f0bc308bdf4c7a7e2fa21ec3",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/209bb42516b0b926f0bc308bdf4c7a7e2fa21ec3",
+        "html_url": "https://github.com/squid-cache/squid/commit/209bb42516b0b926f0bc308bdf4c7a7e2fa21ec3"
+      }
+    ]
+  },
+  {
+    "sha": "209bb42516b0b926f0bc308bdf4c7a7e2fa21ec3",
+    "node_id": "C_kwDOAXYlM9oAKDIwOWJiNDI1MTZiMGI5MjZmMGJjMzA4YmRmNGM3YTdlMmZhMjFlYzM",
+    "commit": {
+      "author": {
+        "name": "Amos Jeffries",
+        "email": "yadij@users.noreply.github.com",
+        "date": "2024-03-15T10:21:36Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-15T10:21:40Z"
+      },
+      "message": "Maintenance: update --with-xml2 detection (#1727)",
+      "tree": {
+        "sha": "f941a3e2fa8425806200c1d957e442ce8ca2f0b2",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/f941a3e2fa8425806200c1d957e442ce8ca2f0b2"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/209bb42516b0b926f0bc308bdf4c7a7e2fa21ec3",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/209bb42516b0b926f0bc308bdf4c7a7e2fa21ec3",
+    "html_url": "https://github.com/squid-cache/squid/commit/209bb42516b0b926f0bc308bdf4c7a7e2fa21ec3",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/209bb42516b0b926f0bc308bdf4c7a7e2fa21ec3/comments",
+    "author": {
+      "login": "yadij",
+      "id": 9123754,
+      "node_id": "MDQ6VXNlcjkxMjM3NTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9123754?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/yadij",
+      "html_url": "https://github.com/yadij",
+      "followers_url": "https://api.github.com/users/yadij/followers",
+      "following_url": "https://api.github.com/users/yadij/following{/other_user}",
+      "gists_url": "https://api.github.com/users/yadij/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/yadij/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/yadij/subscriptions",
+      "organizations_url": "https://api.github.com/users/yadij/orgs",
+      "repos_url": "https://api.github.com/users/yadij/repos",
+      "events_url": "https://api.github.com/users/yadij/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/yadij/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7b47b3cb08bfda25ce27a0add6893cfd034f83e7",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/7b47b3cb08bfda25ce27a0add6893cfd034f83e7",
+        "html_url": "https://github.com/squid-cache/squid/commit/7b47b3cb08bfda25ce27a0add6893cfd034f83e7"
+      }
+    ]
+  },
+  {
+    "sha": "7b47b3cb08bfda25ce27a0add6893cfd034f83e7",
+    "node_id": "C_kwDOAXYlM9oAKDdiNDdiM2NiMDhiZmRhMjVjZTI3YTBhZGQ2ODkzY2ZkMDM0ZjgzZTc",
+    "commit": {
+      "author": {
+        "name": "Amos Jeffries",
+        "email": "yadij@users.noreply.github.com",
+        "date": "2024-03-13T16:26:24Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-15T06:01:34Z"
+      },
+      "message": "Maintenance: update --with-expat detection (#1726)",
+      "tree": {
+        "sha": "b24f27f76a8b4aa1e5f65568d7bbd9d520cd6ed9",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/b24f27f76a8b4aa1e5f65568d7bbd9d520cd6ed9"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/7b47b3cb08bfda25ce27a0add6893cfd034f83e7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/7b47b3cb08bfda25ce27a0add6893cfd034f83e7",
+    "html_url": "https://github.com/squid-cache/squid/commit/7b47b3cb08bfda25ce27a0add6893cfd034f83e7",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/7b47b3cb08bfda25ce27a0add6893cfd034f83e7/comments",
+    "author": {
+      "login": "yadij",
+      "id": 9123754,
+      "node_id": "MDQ6VXNlcjkxMjM3NTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9123754?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/yadij",
+      "html_url": "https://github.com/yadij",
+      "followers_url": "https://api.github.com/users/yadij/followers",
+      "following_url": "https://api.github.com/users/yadij/following{/other_user}",
+      "gists_url": "https://api.github.com/users/yadij/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/yadij/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/yadij/subscriptions",
+      "organizations_url": "https://api.github.com/users/yadij/orgs",
+      "repos_url": "https://api.github.com/users/yadij/repos",
+      "events_url": "https://api.github.com/users/yadij/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/yadij/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "82c9e1f05ebe9e0be6bd9e6c4e2d4907515febc2",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/82c9e1f05ebe9e0be6bd9e6c4e2d4907515febc2",
+        "html_url": "https://github.com/squid-cache/squid/commit/82c9e1f05ebe9e0be6bd9e6c4e2d4907515febc2"
+      }
+    ]
+  },
+  {
+    "sha": "82c9e1f05ebe9e0be6bd9e6c4e2d4907515febc2",
+    "node_id": "C_kwDOAXYlM9oAKDgyYzllMWYwNWViZTllMGJlNmJkOWU2YzRlMmQ0OTA3NTE1ZmViYzI",
+    "commit": {
+      "author": {
+        "name": "Amos Jeffries",
+        "email": "yadij@users.noreply.github.com",
+        "date": "2024-03-13T08:01:12Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-13T10:36:39Z"
+      },
+      "message": "ESI: Disable by default (#1728)",
+      "tree": {
+        "sha": "07d056ca4268c5f385453ef6952fefe5778c2411",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/07d056ca4268c5f385453ef6952fefe5778c2411"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/82c9e1f05ebe9e0be6bd9e6c4e2d4907515febc2",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/82c9e1f05ebe9e0be6bd9e6c4e2d4907515febc2",
+    "html_url": "https://github.com/squid-cache/squid/commit/82c9e1f05ebe9e0be6bd9e6c4e2d4907515febc2",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/82c9e1f05ebe9e0be6bd9e6c4e2d4907515febc2/comments",
+    "author": {
+      "login": "yadij",
+      "id": 9123754,
+      "node_id": "MDQ6VXNlcjkxMjM3NTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9123754?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/yadij",
+      "html_url": "https://github.com/yadij",
+      "followers_url": "https://api.github.com/users/yadij/followers",
+      "following_url": "https://api.github.com/users/yadij/following{/other_user}",
+      "gists_url": "https://api.github.com/users/yadij/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/yadij/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/yadij/subscriptions",
+      "organizations_url": "https://api.github.com/users/yadij/orgs",
+      "repos_url": "https://api.github.com/users/yadij/repos",
+      "events_url": "https://api.github.com/users/yadij/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/yadij/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4e893ddd8dc45886e8d33e6e2b13bd2aaec6fff8",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/4e893ddd8dc45886e8d33e6e2b13bd2aaec6fff8",
+        "html_url": "https://github.com/squid-cache/squid/commit/4e893ddd8dc45886e8d33e6e2b13bd2aaec6fff8"
+      }
+    ]
+  },
+  {
+    "sha": "4e893ddd8dc45886e8d33e6e2b13bd2aaec6fff8",
+    "node_id": "C_kwDOAXYlM9oAKDRlODkzZGRkOGRjNDU4ODZlOGQzM2U2ZTJiMTNiZDJhYWVjNmZmZjg",
+    "commit": {
+      "author": {
+        "name": "Alex Rousskov",
+        "email": "rousskov@measurement-factory.com",
+        "date": "2024-03-12T19:51:24Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-13T05:08:18Z"
+      },
+      "message": "Fix ./configure after strnstr() replacement removal (#1733)\n\n    configure: line 51104: SQUID_CHECK_FUNC_STRNSTR: command not found\n\nThe macro call should have been removed in recent commit 9d3433c.",
+      "tree": {
+        "sha": "a966db198c1dcdd14eaeb5961a03cf3b71f884a6",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/a966db198c1dcdd14eaeb5961a03cf3b71f884a6"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/4e893ddd8dc45886e8d33e6e2b13bd2aaec6fff8",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/4e893ddd8dc45886e8d33e6e2b13bd2aaec6fff8",
+    "html_url": "https://github.com/squid-cache/squid/commit/4e893ddd8dc45886e8d33e6e2b13bd2aaec6fff8",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/4e893ddd8dc45886e8d33e6e2b13bd2aaec6fff8/comments",
+    "author": {
+      "login": "rousskov",
+      "id": 1084944,
+      "node_id": "MDQ6VXNlcjEwODQ5NDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1084944?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rousskov",
+      "html_url": "https://github.com/rousskov",
+      "followers_url": "https://api.github.com/users/rousskov/followers",
+      "following_url": "https://api.github.com/users/rousskov/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rousskov/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rousskov/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rousskov/subscriptions",
+      "organizations_url": "https://api.github.com/users/rousskov/orgs",
+      "repos_url": "https://api.github.com/users/rousskov/repos",
+      "events_url": "https://api.github.com/users/rousskov/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rousskov/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5a231dcd4a4d4517aabecb97ba97163d2546396a",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/5a231dcd4a4d4517aabecb97ba97163d2546396a",
+        "html_url": "https://github.com/squid-cache/squid/commit/5a231dcd4a4d4517aabecb97ba97163d2546396a"
+      }
+    ]
+  },
+  {
+    "sha": "5a231dcd4a4d4517aabecb97ba97163d2546396a",
+    "node_id": "C_kwDOAXYlM9oAKDVhMjMxZGNkNGE0ZDQ1MTdhYWJlY2I5N2JhOTcxNjNkMjU0NjM5NmE",
+    "commit": {
+      "author": {
+        "name": "Francesco Chemolli",
+        "email": "5175948+kinkie@users.noreply.github.com",
+        "date": "2024-03-12T15:08:26Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-12T17:08:35Z"
+      },
+      "message": "Implement iterator for wordlist (#1729)\n\nAlso removed ToSBufList(): Unused since inception (2013 commit 6a17a36).",
+      "tree": {
+        "sha": "d150c2379a13ab695eb542d25276d33dd73249a5",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/d150c2379a13ab695eb542d25276d33dd73249a5"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/5a231dcd4a4d4517aabecb97ba97163d2546396a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/5a231dcd4a4d4517aabecb97ba97163d2546396a",
+    "html_url": "https://github.com/squid-cache/squid/commit/5a231dcd4a4d4517aabecb97ba97163d2546396a",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/5a231dcd4a4d4517aabecb97ba97163d2546396a/comments",
+    "author": {
+      "login": "kinkie",
+      "id": 5175948,
+      "node_id": "MDQ6VXNlcjUxNzU5NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5175948?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/kinkie",
+      "html_url": "https://github.com/kinkie",
+      "followers_url": "https://api.github.com/users/kinkie/followers",
+      "following_url": "https://api.github.com/users/kinkie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/kinkie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/kinkie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/kinkie/subscriptions",
+      "organizations_url": "https://api.github.com/users/kinkie/orgs",
+      "repos_url": "https://api.github.com/users/kinkie/repos",
+      "events_url": "https://api.github.com/users/kinkie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/kinkie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1df2a7226a41c3dfe511aa0913c55031145f7c12",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/1df2a7226a41c3dfe511aa0913c55031145f7c12",
+        "html_url": "https://github.com/squid-cache/squid/commit/1df2a7226a41c3dfe511aa0913c55031145f7c12"
+      }
+    ]
+  },
+  {
+    "sha": "1df2a7226a41c3dfe511aa0913c55031145f7c12",
+    "node_id": "C_kwDOAXYlM9oAKDFkZjJhNzIyNmE0MWMzZGZlNTExYWEwOTEzYzU1MDMxMTQ1ZjdjMTI",
+    "commit": {
+      "author": {
+        "name": "Francesco Chemolli",
+        "email": "5175948+kinkie@users.noreply.github.com",
+        "date": "2024-03-11T12:06:41Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-12T05:44:03Z"
+      },
+      "message": "Improve bounds checking in rfc1035NameUnpack (#1725)\n\nPeter J. Philipp found an input buffer overread (by one byte) when\nparsing certain malformed DNS responses. Add the missing check.\n\nCo-authored-by: Peter J. Philipp <pbug44@delphinusdns.org>",
+      "tree": {
+        "sha": "6592189a0cb270a4ef4eba5b2993bece22ea15af",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/6592189a0cb270a4ef4eba5b2993bece22ea15af"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/1df2a7226a41c3dfe511aa0913c55031145f7c12",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/1df2a7226a41c3dfe511aa0913c55031145f7c12",
+    "html_url": "https://github.com/squid-cache/squid/commit/1df2a7226a41c3dfe511aa0913c55031145f7c12",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/1df2a7226a41c3dfe511aa0913c55031145f7c12/comments",
+    "author": {
+      "login": "kinkie",
+      "id": 5175948,
+      "node_id": "MDQ6VXNlcjUxNzU5NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5175948?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/kinkie",
+      "html_url": "https://github.com/kinkie",
+      "followers_url": "https://api.github.com/users/kinkie/followers",
+      "following_url": "https://api.github.com/users/kinkie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/kinkie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/kinkie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/kinkie/subscriptions",
+      "organizations_url": "https://api.github.com/users/kinkie/orgs",
+      "repos_url": "https://api.github.com/users/kinkie/repos",
+      "events_url": "https://api.github.com/users/kinkie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/kinkie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "63022fd37a4f052d9eb30b7018b32eb46eb1c4fd",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/63022fd37a4f052d9eb30b7018b32eb46eb1c4fd",
+        "html_url": "https://github.com/squid-cache/squid/commit/63022fd37a4f052d9eb30b7018b32eb46eb1c4fd"
+      }
+    ]
+  },
+  {
+    "sha": "63022fd37a4f052d9eb30b7018b32eb46eb1c4fd",
+    "node_id": "C_kwDOAXYlM9oAKDYzMDIyZmQzN2E0ZjA1MmQ5ZWIzMGI3MDE4YjMyZWI0NmViMWM0ZmQ",
+    "commit": {
+      "author": {
+        "name": "Amos Jeffries",
+        "email": "yadij@users.noreply.github.com",
+        "date": "2024-03-10T20:16:22Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-11T08:22:03Z"
+      },
+      "message": "Fix error: template-id not allowed for constructor in C++20 (#1731)",
+      "tree": {
+        "sha": "ed7cd26abafa19e5e5ac2bd53835a174e5b4502c",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/ed7cd26abafa19e5e5ac2bd53835a174e5b4502c"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/63022fd37a4f052d9eb30b7018b32eb46eb1c4fd",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/63022fd37a4f052d9eb30b7018b32eb46eb1c4fd",
+    "html_url": "https://github.com/squid-cache/squid/commit/63022fd37a4f052d9eb30b7018b32eb46eb1c4fd",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/63022fd37a4f052d9eb30b7018b32eb46eb1c4fd/comments",
+    "author": {
+      "login": "yadij",
+      "id": 9123754,
+      "node_id": "MDQ6VXNlcjkxMjM3NTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9123754?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/yadij",
+      "html_url": "https://github.com/yadij",
+      "followers_url": "https://api.github.com/users/yadij/followers",
+      "following_url": "https://api.github.com/users/yadij/following{/other_user}",
+      "gists_url": "https://api.github.com/users/yadij/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/yadij/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/yadij/subscriptions",
+      "organizations_url": "https://api.github.com/users/yadij/orgs",
+      "repos_url": "https://api.github.com/users/yadij/repos",
+      "events_url": "https://api.github.com/users/yadij/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/yadij/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6410d312077b71a1f5f619390c2d467b1fe4dc74",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/6410d312077b71a1f5f619390c2d467b1fe4dc74",
+        "html_url": "https://github.com/squid-cache/squid/commit/6410d312077b71a1f5f619390c2d467b1fe4dc74"
+      }
+    ]
+  },
+  {
+    "sha": "6410d312077b71a1f5f619390c2d467b1fe4dc74",
+    "node_id": "C_kwDOAXYlM9oAKDY0MTBkMzEyMDc3YjcxYTFmNWY2MTkzOTBjMmQ0NjdiMWZlNGRjNzQ",
+    "commit": {
+      "author": {
+        "name": "Eduard Bagdasaryan",
+        "email": "eduard.bagdasaryan@measurement-factory.com",
+        "date": "2024-03-08T06:03:20Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-08T14:14:02Z"
+      },
+      "message": "De-duplicate I/O error-detailing code (#1723)\n\nThis improvement eliminates code duplication introduced\nin recent commit b850f8b.",
+      "tree": {
+        "sha": "d156031d362ed8d06a8abc3a617caf917c978941",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/d156031d362ed8d06a8abc3a617caf917c978941"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/6410d312077b71a1f5f619390c2d467b1fe4dc74",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/6410d312077b71a1f5f619390c2d467b1fe4dc74",
+    "html_url": "https://github.com/squid-cache/squid/commit/6410d312077b71a1f5f619390c2d467b1fe4dc74",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/6410d312077b71a1f5f619390c2d467b1fe4dc74/comments",
+    "author": {
+      "login": "eduard-bagdasaryan",
+      "id": 13069213,
+      "node_id": "MDQ6VXNlcjEzMDY5MjEz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13069213?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/eduard-bagdasaryan",
+      "html_url": "https://github.com/eduard-bagdasaryan",
+      "followers_url": "https://api.github.com/users/eduard-bagdasaryan/followers",
+      "following_url": "https://api.github.com/users/eduard-bagdasaryan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/eduard-bagdasaryan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/eduard-bagdasaryan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/eduard-bagdasaryan/subscriptions",
+      "organizations_url": "https://api.github.com/users/eduard-bagdasaryan/orgs",
+      "repos_url": "https://api.github.com/users/eduard-bagdasaryan/repos",
+      "events_url": "https://api.github.com/users/eduard-bagdasaryan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/eduard-bagdasaryan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4106ed2554ddf040141628e8dde7f65dfd6dfa5c",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/4106ed2554ddf040141628e8dde7f65dfd6dfa5c",
+        "html_url": "https://github.com/squid-cache/squid/commit/4106ed2554ddf040141628e8dde7f65dfd6dfa5c"
+      }
+    ]
+  },
+  {
+    "sha": "4106ed2554ddf040141628e8dde7f65dfd6dfa5c",
+    "node_id": "C_kwDOAXYlM9oAKDQxMDZlZDI1NTRkZGYwNDAxNDE2MjhlOGRkZTdmNjVkZmQ2ZGZhNWM",
+    "commit": {
+      "author": {
+        "name": "Amos Jeffries",
+        "email": "yadij@users.noreply.github.com",
+        "date": "2024-03-07T09:55:50Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-07T09:56:01Z"
+      },
+      "message": "Maintenance: update --with-cap detection (#1718)",
+      "tree": {
+        "sha": "6a298707256fc7e7322604f8d159ab5601ee26db",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/6a298707256fc7e7322604f8d159ab5601ee26db"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/4106ed2554ddf040141628e8dde7f65dfd6dfa5c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/4106ed2554ddf040141628e8dde7f65dfd6dfa5c",
+    "html_url": "https://github.com/squid-cache/squid/commit/4106ed2554ddf040141628e8dde7f65dfd6dfa5c",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/4106ed2554ddf040141628e8dde7f65dfd6dfa5c/comments",
+    "author": {
+      "login": "yadij",
+      "id": 9123754,
+      "node_id": "MDQ6VXNlcjkxMjM3NTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9123754?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/yadij",
+      "html_url": "https://github.com/yadij",
+      "followers_url": "https://api.github.com/users/yadij/followers",
+      "following_url": "https://api.github.com/users/yadij/following{/other_user}",
+      "gists_url": "https://api.github.com/users/yadij/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/yadij/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/yadij/subscriptions",
+      "organizations_url": "https://api.github.com/users/yadij/orgs",
+      "repos_url": "https://api.github.com/users/yadij/repos",
+      "events_url": "https://api.github.com/users/yadij/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/yadij/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ba08d0f48f7116fa4c4a5495d15a6200d8361107",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/ba08d0f48f7116fa4c4a5495d15a6200d8361107",
+        "html_url": "https://github.com/squid-cache/squid/commit/ba08d0f48f7116fa4c4a5495d15a6200d8361107"
+      }
+    ]
+  },
+  {
+    "sha": "ba08d0f48f7116fa4c4a5495d15a6200d8361107",
+    "node_id": "C_kwDOAXYlM9oAKGJhMDhkMGY0OGY3MTE2ZmE0YzRhNTQ5NWQxNWE2MjAwZDgzNjExMDc",
+    "commit": {
+      "author": {
+        "name": "Amos Jeffries",
+        "email": "yadij@users.noreply.github.com",
+        "date": "2024-03-06T13:51:58Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-07T01:01:00Z"
+      },
+      "message": "Maintenance: update --with-netfilter-conntrack detection (#1717)\n\nFixes pollution of global LIBS, LDFLAGS and CPPFLAGS\nwhen the library and required headers are not\ndetected as usable.",
+      "tree": {
+        "sha": "d50371d59506c6762890471b1a90cef434d2d2a6",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/d50371d59506c6762890471b1a90cef434d2d2a6"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/ba08d0f48f7116fa4c4a5495d15a6200d8361107",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/ba08d0f48f7116fa4c4a5495d15a6200d8361107",
+    "html_url": "https://github.com/squid-cache/squid/commit/ba08d0f48f7116fa4c4a5495d15a6200d8361107",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/ba08d0f48f7116fa4c4a5495d15a6200d8361107/comments",
+    "author": {
+      "login": "yadij",
+      "id": 9123754,
+      "node_id": "MDQ6VXNlcjkxMjM3NTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9123754?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/yadij",
+      "html_url": "https://github.com/yadij",
+      "followers_url": "https://api.github.com/users/yadij/followers",
+      "following_url": "https://api.github.com/users/yadij/following{/other_user}",
+      "gists_url": "https://api.github.com/users/yadij/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/yadij/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/yadij/subscriptions",
+      "organizations_url": "https://api.github.com/users/yadij/orgs",
+      "repos_url": "https://api.github.com/users/yadij/repos",
+      "events_url": "https://api.github.com/users/yadij/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/yadij/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8dbebead4b6f7ff23ed3cfa93e16c2468f91a791",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/8dbebead4b6f7ff23ed3cfa93e16c2468f91a791",
+        "html_url": "https://github.com/squid-cache/squid/commit/8dbebead4b6f7ff23ed3cfa93e16c2468f91a791"
+      }
+    ]
+  },
+  {
+    "sha": "8dbebead4b6f7ff23ed3cfa93e16c2468f91a791",
+    "node_id": "C_kwDOAXYlM9oAKDhkYmViZWFkNGI2ZjdmZjIzZWQzY2ZhOTNlMTZjMjQ2OGY5MWE3OTE",
+    "commit": {
+      "author": {
+        "name": "Francesco Chemolli",
+        "email": "5175948+kinkie@users.noreply.github.com",
+        "date": "2024-03-06T05:32:03Z"
+      },
+      "committer": {
+        "name": "Squid Anubis",
+        "email": "squid-anubis@squid-cache.org",
+        "date": "2024-03-06T07:35:27Z"
+      },
+      "message": "mkrelease: ensure creation of translation: (#1716)\n\nEnsure presence of needed packages for release automation",
+      "tree": {
+        "sha": "9b1839cb909de1041f503f2485f082a1dbddce79",
+        "url": "https://api.github.com/repos/squid-cache/squid/git/trees/9b1839cb909de1041f503f2485f082a1dbddce79"
+      },
+      "url": "https://api.github.com/repos/squid-cache/squid/git/commits/8dbebead4b6f7ff23ed3cfa93e16c2468f91a791",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/squid-cache/squid/commits/8dbebead4b6f7ff23ed3cfa93e16c2468f91a791",
+    "html_url": "https://github.com/squid-cache/squid/commit/8dbebead4b6f7ff23ed3cfa93e16c2468f91a791",
+    "comments_url": "https://api.github.com/repos/squid-cache/squid/commits/8dbebead4b6f7ff23ed3cfa93e16c2468f91a791/comments",
+    "author": {
+      "login": "kinkie",
+      "id": 5175948,
+      "node_id": "MDQ6VXNlcjUxNzU5NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5175948?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/kinkie",
+      "html_url": "https://github.com/kinkie",
+      "followers_url": "https://api.github.com/users/kinkie/followers",
+      "following_url": "https://api.github.com/users/kinkie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/kinkie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/kinkie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/kinkie/subscriptions",
+      "organizations_url": "https://api.github.com/users/kinkie/orgs",
+      "repos_url": "https://api.github.com/users/kinkie/repos",
+      "events_url": "https://api.github.com/users/kinkie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/kinkie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "squid-anubis",
+      "id": 35778098,
+      "node_id": "MDQ6VXNlcjM1Nzc4MDk4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35778098?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/squid-anubis",
+      "html_url": "https://github.com/squid-anubis",
+      "followers_url": "https://api.github.com/users/squid-anubis/followers",
+      "following_url": "https://api.github.com/users/squid-anubis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/squid-anubis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/squid-anubis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/squid-anubis/subscriptions",
+      "organizations_url": "https://api.github.com/users/squid-anubis/orgs",
+      "repos_url": "https://api.github.com/users/squid-anubis/repos",
+      "events_url": "https://api.github.com/users/squid-anubis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/squid-anubis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9d3433c4ac6cd547c10cf298b8a5e61a463fb753",
+        "url": "https://api.github.com/repos/squid-cache/squid/commits/9d3433c4ac6cd547c10cf298b8a5e61a463fb753",
+        "html_url": "https://github.com/squid-cache/squid/commit/9d3433c4ac6cd547c10cf298b8a5e61a463fb753"
+      }
+    ]
+  }
+]

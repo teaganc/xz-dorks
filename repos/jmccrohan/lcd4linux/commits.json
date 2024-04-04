@@ -1,0 +1,1232 @@
+[
+  {
+    "sha": "cb69a93a4501b2a58e1f991c953b3c58d6ceeb67",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTpjYjY5YTkzYTQ1MDFiMmE1OGUxZjk5MWM5NTNiM2M1OGQ2Y2VlYjY3",
+    "commit": {
+      "author": {
+        "name": "jmccrohan",
+        "email": "jmccrohan@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2017-05-27T17:37:05Z"
+      },
+      "committer": {
+        "name": "jmccrohan",
+        "email": "jmccrohan@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2017-05-27T17:37:05Z"
+      },
+      "message": "picoLCDGraphic: change backlight from bool to byte\n\nBased on patch submitted by Mike Edwards <pf-debian-bugs@mirkwood.net>\nto Debian Bug #861993 (https://bugs.debian.org/861993). See excerpt from bug\nreport below.\n\n-----------------------------------------\nDear Maintainer,\n\nUsing driver 'picoLCDGraphic' in lcd4linux.conf, backlight can only be set to 0 or 1 (off/on).\nWhile the backlight of the picolcd is on at boot, the moment lcd4linux starts, the backlight turns\noff with either setting.\n\nLooking at the source for the driver, I found that somewhere along the line, the function to\nset the backlight had been changed to use an 8 bit value from 0 - 255, effectively making this\na brightness setting:\n\nstatic int drv_pLG_backlight(int backlight)\n{\n    unsigned char cmd[2] = { 0x91 };    /* set backlight */\n\n    if (backlight < 0)\n        backlight = 0;\n    if (backlight > 255)\n        backlight = 255;\n\n    cmd[1] = backlight;\n    drv_pLG_send(cmd, 2);\n\n    return backlight;\n}\n\n... but the config option for backlight was still limited to only accepting a 0 or 1:\n    if (cfg_number(section, \"Backlight\", 0, 0, 1, &value) > 0) {\n        info(\"Setting backlight to %d\", value);\n        drv_pLG_backlight(value);\n    }\n\nI've patched that if statement above to accept values between 0 and 255.  Now, setting the config\noption for backlight to 255 in lcd4linux.conf does result in the backlight being turned on at\nfull brightness.\n-----------------------------------------\n\nSigned-off-by: Jonathan McCrohan <jmccrohan@gmail.com>\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1204 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "94aa584f67a541435d06f0f375e40f2f0e5f9ff6",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/94aa584f67a541435d06f0f375e40f2f0e5f9ff6"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/cb69a93a4501b2a58e1f991c953b3c58d6ceeb67",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/cb69a93a4501b2a58e1f991c953b3c58d6ceeb67",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/cb69a93a4501b2a58e1f991c953b3c58d6ceeb67",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/cb69a93a4501b2a58e1f991c953b3c58d6ceeb67/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "4e055ed9cbda058f02f81571cc31e4cd6ef9afc2",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/4e055ed9cbda058f02f81571cc31e4cd6ef9afc2",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/4e055ed9cbda058f02f81571cc31e4cd6ef9afc2"
+      }
+    ]
+  },
+  {
+    "sha": "4e055ed9cbda058f02f81571cc31e4cd6ef9afc2",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTo0ZTA1NWVkOWNiZGEwNThmMDJmODE1NzFjYzMxZTRjZDZlZjlhZmMy",
+    "commit": {
+      "author": {
+        "name": "jmccrohan",
+        "email": "jmccrohan@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2015-07-12T21:26:15Z"
+      },
+      "committer": {
+        "name": "jmccrohan",
+        "email": "jmccrohan@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2015-07-12T21:26:15Z"
+      },
+      "message": "Replace non-portable datatypes with C99 versions\n\nFound during OpenWrt's migration from uClibc to musl.\n\nSigned-off-by: Jonathan McCrohan <jmccrohan@gmail.com>\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1203 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "aea7d1f54323e2ed9d4f1c174fc24df7b41138fe",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/aea7d1f54323e2ed9d4f1c174fc24df7b41138fe"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/4e055ed9cbda058f02f81571cc31e4cd6ef9afc2",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/4e055ed9cbda058f02f81571cc31e4cd6ef9afc2",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/4e055ed9cbda058f02f81571cc31e4cd6ef9afc2",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/4e055ed9cbda058f02f81571cc31e4cd6ef9afc2/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "d38b3dc0f50ff5049f07fbeac284fcd17f3cae30",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/d38b3dc0f50ff5049f07fbeac284fcd17f3cae30",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/d38b3dc0f50ff5049f07fbeac284fcd17f3cae30"
+      }
+    ]
+  },
+  {
+    "sha": "d38b3dc0f50ff5049f07fbeac284fcd17f3cae30",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTpkMzhiM2RjMGY1MGZmNTA0OWYwN2ZiZWFjMjg0ZmNkMTdmM2NhZTMw",
+    "commit": {
+      "author": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2015-06-18T16:44:09Z"
+      },
+      "committer": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2015-06-18T16:44:09Z"
+      },
+      "message": "drv_HD44780: add 8bit i2c mode for HD44780 by Michael Grzeschik <m.grzeschik@pengutronix.de>\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1202 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "343e12e4b51123fd466d2de20d53af4c201adf72",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/343e12e4b51123fd466d2de20d53af4c201adf72"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/d38b3dc0f50ff5049f07fbeac284fcd17f3cae30",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/d38b3dc0f50ff5049f07fbeac284fcd17f3cae30",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/d38b3dc0f50ff5049f07fbeac284fcd17f3cae30",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/d38b3dc0f50ff5049f07fbeac284fcd17f3cae30/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "00c0fae78c45e2a5044243c9da7152426fb5a1e4",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/00c0fae78c45e2a5044243c9da7152426fb5a1e4",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/00c0fae78c45e2a5044243c9da7152426fb5a1e4"
+      }
+    ]
+  },
+  {
+    "sha": "00c0fae78c45e2a5044243c9da7152426fb5a1e4",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTowMGMwZmFlNzhjNDVlMmE1MDQ0MjQzYzlkYTcxNTI0MjZmYjVhMWU0",
+    "commit": {
+      "author": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2014-09-06T02:44:21Z"
+      },
+      "committer": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2014-09-06T02:44:21Z"
+      },
+      "message": "updated to automake 1.14.1\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1201 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "93fdb8f65968f1c6db9944b659a18fc116f87e99",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/93fdb8f65968f1c6db9944b659a18fc116f87e99"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/00c0fae78c45e2a5044243c9da7152426fb5a1e4",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/00c0fae78c45e2a5044243c9da7152426fb5a1e4",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/00c0fae78c45e2a5044243c9da7152426fb5a1e4",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/00c0fae78c45e2a5044243c9da7152426fb5a1e4/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "2b70773fe8fe300621863f9f89546b738e6b5906",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/2b70773fe8fe300621863f9f89546b738e6b5906",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/2b70773fe8fe300621863f9f89546b738e6b5906"
+      }
+    ]
+  },
+  {
+    "sha": "2b70773fe8fe300621863f9f89546b738e6b5906",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNToyYjcwNzczZmU4ZmUzMDA2MjE4NjNmOWY4OTU0NmI3MzhlNmI1OTA2",
+    "commit": {
+      "author": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2013-05-23T03:10:35Z"
+      },
+      "committer": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2013-05-23T03:10:35Z"
+      },
+      "message": "autotools update (iconv?)\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1200 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "41dd4ef621d3265dcb19709c2506fa82fc21f036",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/41dd4ef621d3265dcb19709c2506fa82fc21f036"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/2b70773fe8fe300621863f9f89546b738e6b5906",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/2b70773fe8fe300621863f9f89546b738e6b5906",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/2b70773fe8fe300621863f9f89546b738e6b5906",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/2b70773fe8fe300621863f9f89546b738e6b5906/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "745168103cf981345f3ab62d884d70de14524eb4",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/745168103cf981345f3ab62d884d70de14524eb4",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/745168103cf981345f3ab62d884d70de14524eb4"
+      }
+    ]
+  },
+  {
+    "sha": "745168103cf981345f3ab62d884d70de14524eb4",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTo3NDUxNjgxMDNjZjk4MTM0NWYzYWI2MmQ4ODRkNzBkZTE0NTI0ZWI0",
+    "commit": {
+      "author": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2013-05-23T03:07:28Z"
+      },
+      "committer": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2013-05-23T03:07:28Z"
+      },
+      "message": "indentation\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1199 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "f69b1cf5bf6afaa8fcd7118bdf03b8dc409137d9",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/f69b1cf5bf6afaa8fcd7118bdf03b8dc409137d9"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/745168103cf981345f3ab62d884d70de14524eb4",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/745168103cf981345f3ab62d884d70de14524eb4",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/745168103cf981345f3ab62d884d70de14524eb4",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/745168103cf981345f3ab62d884d70de14524eb4/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "ab5d1fd17f1892b25299b5dd7ae7de0c5121613e",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/ab5d1fd17f1892b25299b5dd7ae7de0c5121613e",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/ab5d1fd17f1892b25299b5dd7ae7de0c5121613e"
+      }
+    ]
+  },
+  {
+    "sha": "ab5d1fd17f1892b25299b5dd7ae7de0c5121613e",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTphYjVkMWZkMTdmMTg5MmIyNTI5OWI1ZGQ3YWU3ZGUwYzUxMjE2MTNl",
+    "commit": {
+      "author": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2013-05-23T03:05:50Z"
+      },
+      "committer": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2013-05-23T03:05:50Z"
+      },
+      "message": "DPF patch by superelchi\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1198 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "c05ab79104e6cf85b428fa873d7f6a5569124191",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/c05ab79104e6cf85b428fa873d7f6a5569124191"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/ab5d1fd17f1892b25299b5dd7ae7de0c5121613e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/ab5d1fd17f1892b25299b5dd7ae7de0c5121613e",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/ab5d1fd17f1892b25299b5dd7ae7de0c5121613e",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/ab5d1fd17f1892b25299b5dd7ae7de0c5121613e/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "151f501456f36ffb32e02a4d9b8d232746a40eb3",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/151f501456f36ffb32e02a4d9b8d232746a40eb3",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/151f501456f36ffb32e02a4d9b8d232746a40eb3"
+      }
+    ]
+  },
+  {
+    "sha": "151f501456f36ffb32e02a4d9b8d232746a40eb3",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNToxNTFmNTAxNDU2ZjM2ZmZiMzJlMDJhNGQ5YjhkMjMyNzQ2YTQwZWIz",
+    "commit": {
+      "author": {
+        "name": "jmccrohan",
+        "email": "jmccrohan@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2013-05-15T22:58:56Z"
+      },
+      "committer": {
+        "name": "jmccrohan",
+        "email": "jmccrohan@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2013-05-15T22:58:56Z"
+      },
+      "message": "raspi: Disabled unless explicitly enabled by user\n\nAdd a raspi enabled stanza to lcd4linux.conf file to enable:\n\nPlugin raspi {\n    enabled 1\n}\n\nSigned-off-by: Jonathan McCrohan <jmccrohan@gmail.com>\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1197 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "37932140c6657b53f3bd35f360158b7ba6d7d285",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/37932140c6657b53f3bd35f360158b7ba6d7d285"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/151f501456f36ffb32e02a4d9b8d232746a40eb3",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/151f501456f36ffb32e02a4d9b8d232746a40eb3",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/151f501456f36ffb32e02a4d9b8d232746a40eb3",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/151f501456f36ffb32e02a4d9b8d232746a40eb3/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "09d2a732eaca1b3ce300887d11818685e8aa42d3",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/09d2a732eaca1b3ce300887d11818685e8aa42d3",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/09d2a732eaca1b3ce300887d11818685e8aa42d3"
+      }
+    ]
+  },
+  {
+    "sha": "09d2a732eaca1b3ce300887d11818685e8aa42d3",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTowOWQyYTczMmVhY2ExYjNjZTMwMDg4N2QxMTgxODY4NWU4YWE0MmQz",
+    "commit": {
+      "author": {
+        "name": "volker",
+        "email": "volker@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2013-03-10T19:43:13Z"
+      },
+      "committer": {
+        "name": "volker",
+        "email": "volker@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2013-03-10T19:43:13Z"
+      },
+      "message": "disable plugin sensors if not found\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1196 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "591532e18a322c470f0d13ab2736a98f56390a86",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/591532e18a322c470f0d13ab2736a98f56390a86"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/09d2a732eaca1b3ce300887d11818685e8aa42d3",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/09d2a732eaca1b3ce300887d11818685e8aa42d3",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/09d2a732eaca1b3ce300887d11818685e8aa42d3",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/09d2a732eaca1b3ce300887d11818685e8aa42d3/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "4dc83784b22be02632cd5785a6ec34a6b7532e0e",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/4dc83784b22be02632cd5785a6ec34a6b7532e0e",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/4dc83784b22be02632cd5785a6ec34a6b7532e0e"
+      }
+    ]
+  },
+  {
+    "sha": "4dc83784b22be02632cd5785a6ec34a6b7532e0e",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTo0ZGM4Mzc4NGIyMmJlMDI2MzJjZDU3ODVhNmVjMzRhNmI3NTMyZTBl",
+    "commit": {
+      "author": {
+        "name": "volker",
+        "email": "volker@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2013-02-19T23:17:43Z"
+      },
+      "committer": {
+        "name": "volker",
+        "email": "volker@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2013-02-19T23:17:43Z"
+      },
+      "message": "new plugin raspi\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1195 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "ddd449b4c451d109a4406dbec0635ccffde9d468",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/ddd449b4c451d109a4406dbec0635ccffde9d468"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/4dc83784b22be02632cd5785a6ec34a6b7532e0e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/4dc83784b22be02632cd5785a6ec34a6b7532e0e",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/4dc83784b22be02632cd5785a6ec34a6b7532e0e",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/4dc83784b22be02632cd5785a6ec34a6b7532e0e/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "9b3ccb8ecadfbe489dd6b4761445ec9b5654a1e9",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/9b3ccb8ecadfbe489dd6b4761445ec9b5654a1e9",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/9b3ccb8ecadfbe489dd6b4761445ec9b5654a1e9"
+      }
+    ]
+  },
+  {
+    "sha": "9b3ccb8ecadfbe489dd6b4761445ec9b5654a1e9",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTo5YjNjY2I4ZWNhZGZiZTQ4OWRkNmI0NzYxNDQ1ZWM5YjU2NTRhMWU5",
+    "commit": {
+      "author": {
+        "name": "volker",
+        "email": "volker@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2013-02-13T15:15:34Z"
+      },
+      "committer": {
+        "name": "volker",
+        "email": "volker@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2013-02-13T15:15:34Z"
+      },
+      "message": "added new examples to config file\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1194 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "6b32a0322bc5548a0560650f63e453962d1cadf9",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/6b32a0322bc5548a0560650f63e453962d1cadf9"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/9b3ccb8ecadfbe489dd6b4761445ec9b5654a1e9",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/9b3ccb8ecadfbe489dd6b4761445ec9b5654a1e9",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/9b3ccb8ecadfbe489dd6b4761445ec9b5654a1e9",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/9b3ccb8ecadfbe489dd6b4761445ec9b5654a1e9/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "1024b52f2cdc1a0975d96f8aceb861ddcccba806",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/1024b52f2cdc1a0975d96f8aceb861ddcccba806",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/1024b52f2cdc1a0975d96f8aceb861ddcccba806"
+      }
+    ]
+  },
+  {
+    "sha": "1024b52f2cdc1a0975d96f8aceb861ddcccba806",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNToxMDI0YjUyZjJjZGMxYTA5NzVkOTZmOGFjZWI4NjFkZGNjY2JhODA2",
+    "commit": {
+      "author": {
+        "name": "volker",
+        "email": "volker@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2013-02-13T14:00:30Z"
+      },
+      "committer": {
+        "name": "volker",
+        "email": "volker@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2013-02-13T14:00:30Z"
+      },
+      "message": "Ticket #284\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1193 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "d7904d24b97d6e4c6b729e88a1b8441778dc5cb1",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/d7904d24b97d6e4c6b729e88a1b8441778dc5cb1"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/1024b52f2cdc1a0975d96f8aceb861ddcccba806",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/1024b52f2cdc1a0975d96f8aceb861ddcccba806",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/1024b52f2cdc1a0975d96f8aceb861ddcccba806",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/1024b52f2cdc1a0975d96f8aceb861ddcccba806/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "5559e7f6cb8e9e5bdc54677704db5abcf84306ee",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/5559e7f6cb8e9e5bdc54677704db5abcf84306ee",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/5559e7f6cb8e9e5bdc54677704db5abcf84306ee"
+      }
+    ]
+  },
+  {
+    "sha": "5559e7f6cb8e9e5bdc54677704db5abcf84306ee",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTo1NTU5ZTdmNmNiOGU5ZTViZGM1NDY3NzcwNGRiNWFiY2Y4NDMwNmVl",
+    "commit": {
+      "author": {
+        "name": "volker",
+        "email": "volker@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2013-02-13T13:49:22Z"
+      },
+      "committer": {
+        "name": "volker",
+        "email": "volker@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2013-02-13T13:49:22Z"
+      },
+      "message": "stabilize text widget when no string is available; info message when serdisplib cannot open port\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1192 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "8f807dee1ad631fe530d52f44c7961a71f5c82a8",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/8f807dee1ad631fe530d52f44c7961a71f5c82a8"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/5559e7f6cb8e9e5bdc54677704db5abcf84306ee",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/5559e7f6cb8e9e5bdc54677704db5abcf84306ee",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/5559e7f6cb8e9e5bdc54677704db5abcf84306ee",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/5559e7f6cb8e9e5bdc54677704db5abcf84306ee/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "71df54522bbf46cbc18666be702106d1d591912a",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/71df54522bbf46cbc18666be702106d1d591912a",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/71df54522bbf46cbc18666be702106d1d591912a"
+      }
+    ]
+  },
+  {
+    "sha": "71df54522bbf46cbc18666be702106d1d591912a",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTo3MWRmNTQ1MjJiYmY0NmNiYzE4NjY2YmU3MDIxMDZkMWQ1OTE5MTJh",
+    "commit": {
+      "author": {
+        "name": "mzuther",
+        "email": "mzuther@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-06-23T21:52:34Z"
+      },
+      "committer": {
+        "name": "mzuther",
+        "email": "mzuther@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-06-23T21:52:34Z"
+      },
+      "message": "widget_timer: oops, forgot to update includes...\n\n\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1191 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "cb9245b0d639a968038336beaaf1e5d1e1444ad9",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/cb9245b0d639a968038336beaaf1e5d1e1444ad9"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/71df54522bbf46cbc18666be702106d1d591912a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/71df54522bbf46cbc18666be702106d1d591912a",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/71df54522bbf46cbc18666be702106d1d591912a",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/71df54522bbf46cbc18666be702106d1d591912a/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "9d72353c29fd320b9ce5260a4e0777a04576d97d",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/9d72353c29fd320b9ce5260a4e0777a04576d97d",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/9d72353c29fd320b9ce5260a4e0777a04576d97d"
+      }
+    ]
+  },
+  {
+    "sha": "9d72353c29fd320b9ce5260a4e0777a04576d97d",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTo5ZDcyMzUzYzI5ZmQzMjBiOWNlNTI2MGE0ZTA3NzdhMDQ1NzZkOTdk",
+    "commit": {
+      "author": {
+        "name": "mzuther",
+        "email": "mzuther@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-06-23T21:47:50Z"
+      },
+      "committer": {
+        "name": "mzuther",
+        "email": "mzuther@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-06-23T21:47:50Z"
+      },
+      "message": "widget_timer: timer widgets should not abuse timer groups (fixes ticket #278)\n\n\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1190 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "11d7c3f3939e2b7e24db1da5b6b2d9d8a93f8684",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/11d7c3f3939e2b7e24db1da5b6b2d9d8a93f8684"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/9d72353c29fd320b9ce5260a4e0777a04576d97d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/9d72353c29fd320b9ce5260a4e0777a04576d97d",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/9d72353c29fd320b9ce5260a4e0777a04576d97d",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/9d72353c29fd320b9ce5260a4e0777a04576d97d/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "0070c296459dd3318b99125f803dc793fb8d72e7",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/0070c296459dd3318b99125f803dc793fb8d72e7",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/0070c296459dd3318b99125f803dc793fb8d72e7"
+      }
+    ]
+  },
+  {
+    "sha": "0070c296459dd3318b99125f803dc793fb8d72e7",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTowMDcwYzI5NjQ1OWRkMzMxOGI5OTEyNWY4MDNkYzc5M2ZiOGQ3MmU3",
+    "commit": {
+      "author": {
+        "name": "jmccrohan",
+        "email": "jmccrohan@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-05-19T12:46:24Z"
+      },
+      "committer": {
+        "name": "jmccrohan",
+        "email": "jmccrohan@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-05-19T12:46:24Z"
+      },
+      "message": "Mitigate format string exploits\n\nerror: format not a string literal and no format arguments\n[-Werror=format-security]\n\nSigned-off-by: Jonathan McCrohan <jmccrohan@gmail.com>\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1189 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "92526cfaaa236c9c42bd5e4a1083b2144ab06ee4",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/92526cfaaa236c9c42bd5e4a1083b2144ab06ee4"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/0070c296459dd3318b99125f803dc793fb8d72e7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/0070c296459dd3318b99125f803dc793fb8d72e7",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/0070c296459dd3318b99125f803dc793fb8d72e7",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/0070c296459dd3318b99125f803dc793fb8d72e7/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "b0fd4a338357d019583624a1b346c3a7cd798f8f",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/b0fd4a338357d019583624a1b346c3a7cd798f8f",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/b0fd4a338357d019583624a1b346c3a7cd798f8f"
+      }
+    ]
+  },
+  {
+    "sha": "b0fd4a338357d019583624a1b346c3a7cd798f8f",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTpiMGZkNGEzMzgzNTdkMDE5NTgzNjI0YTFiMzQ2YzNhN2NkNzk4Zjhm",
+    "commit": {
+      "author": {
+        "name": "jmccrohan",
+        "email": "jmccrohan@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-05-12T13:24:40Z"
+      },
+      "committer": {
+        "name": "jmccrohan",
+        "email": "jmccrohan@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-05-12T13:24:40Z"
+      },
+      "message": "Add drv_generic_serial.c functions to header file\n\nNew functions were added in rev1171, but were not added to\ndrv_generic_serial.h\n\nFixes Debian buildd [-Wimplicit-function-declaration] warnings.\n\nSigned-off-by: Jonathan McCrohan <jmccrohan@gmail.com>\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1188 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "22313f09ebc4eb6c757c1f12109a77d8338a6177",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/22313f09ebc4eb6c757c1f12109a77d8338a6177"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/b0fd4a338357d019583624a1b346c3a7cd798f8f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/b0fd4a338357d019583624a1b346c3a7cd798f8f",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/b0fd4a338357d019583624a1b346c3a7cd798f8f",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/b0fd4a338357d019583624a1b346c3a7cd798f8f/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "ff1279f56ae73550b2c0a5bbceefaed0bc40c3b9",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/ff1279f56ae73550b2c0a5bbceefaed0bc40c3b9",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/ff1279f56ae73550b2c0a5bbceefaed0bc40c3b9"
+      }
+    ]
+  },
+  {
+    "sha": "ff1279f56ae73550b2c0a5bbceefaed0bc40c3b9",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTpmZjEyNzlmNTZhZTczNTUwYjJjMGE1YmJjZWVmYWVkMGJjNDBjM2I5",
+    "commit": {
+      "author": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-04-09T04:46:59Z"
+      },
+      "committer": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-04-09T04:46:59Z"
+      },
+      "message": "typo fix from Robert Resch\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1187 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "6540f38007435bb83a7aca3e53b1ef39d939c06a",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/6540f38007435bb83a7aca3e53b1ef39d939c06a"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/ff1279f56ae73550b2c0a5bbceefaed0bc40c3b9",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/ff1279f56ae73550b2c0a5bbceefaed0bc40c3b9",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/ff1279f56ae73550b2c0a5bbceefaed0bc40c3b9",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/ff1279f56ae73550b2c0a5bbceefaed0bc40c3b9/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "2c23bdcb1d476a4f2bfb320cdea9df56ae42f9ff",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/2c23bdcb1d476a4f2bfb320cdea9df56ae42f9ff",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/2c23bdcb1d476a4f2bfb320cdea9df56ae42f9ff"
+      }
+    ]
+  },
+  {
+    "sha": "2c23bdcb1d476a4f2bfb320cdea9df56ae42f9ff",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNToyYzIzYmRjYjFkNDc2YTRmMmJmYjMyMGNkZWE5ZGY1NmFlNDJmOWZm",
+    "commit": {
+      "author": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-04-09T04:45:07Z"
+      },
+      "committer": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-04-09T04:45:07Z"
+      },
+      "message": "patch to support hex sequences from Marcus Menzel\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1186 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "a970fb64619d3af707fd07aef0bce61b9f8774de",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/a970fb64619d3af707fd07aef0bce61b9f8774de"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/2c23bdcb1d476a4f2bfb320cdea9df56ae42f9ff",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/2c23bdcb1d476a4f2bfb320cdea9df56ae42f9ff",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/2c23bdcb1d476a4f2bfb320cdea9df56ae42f9ff",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/2c23bdcb1d476a4f2bfb320cdea9df56ae42f9ff/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "13c974ad615ac560569f20b361e82bae98ac77fc",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/13c974ad615ac560569f20b361e82bae98ac77fc",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/13c974ad615ac560569f20b361e82bae98ac77fc"
+      }
+    ]
+  },
+  {
+    "sha": "13c974ad615ac560569f20b361e82bae98ac77fc",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNToxM2M5NzRhZDYxNWFjNTYwNTY5ZjIwYjM2MWU4MmJhZTk4YWM3N2Zj",
+    "commit": {
+      "author": {
+        "name": "mjona",
+        "email": "mjona@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-03-26T13:24:37Z"
+      },
+      "committer": {
+        "name": "mjona",
+        "email": "mjona@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-03-26T13:24:37Z"
+      },
+      "message": "Fixed realloc error handling in timer_group.c; changed the interval member in the TIMER_GROUP structure from int* to int.\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1185 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "57d3f90d58fdf81a384eb756052b75c79385e001",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/57d3f90d58fdf81a384eb756052b75c79385e001"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/13c974ad615ac560569f20b361e82bae98ac77fc",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/13c974ad615ac560569f20b361e82bae98ac77fc",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/13c974ad615ac560569f20b361e82bae98ac77fc",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/13c974ad615ac560569f20b361e82bae98ac77fc/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "3ede2a57df6a1c2324b4b611bd5f2fd5a3c6567e",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/3ede2a57df6a1c2324b4b611bd5f2fd5a3c6567e",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/3ede2a57df6a1c2324b4b611bd5f2fd5a3c6567e"
+      }
+    ]
+  },
+  {
+    "sha": "3ede2a57df6a1c2324b4b611bd5f2fd5a3c6567e",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTozZWRlMmE1N2RmNmExYzIzMjRiNGI2MTFiZDVmMmZkNWEzYzY1Njdl",
+    "commit": {
+      "author": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-03-26T04:39:46Z"
+      },
+      "committer": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-03-26T04:39:46Z"
+      },
+      "message": "handle failing realloc() correctly (thanks to Mattia)\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1184 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "90b600b83662a57718c3239656b08f49e8a6f5f3",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/90b600b83662a57718c3239656b08f49e8a6f5f3"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/3ede2a57df6a1c2324b4b611bd5f2fd5a3c6567e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/3ede2a57df6a1c2324b4b611bd5f2fd5a3c6567e",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/3ede2a57df6a1c2324b4b611bd5f2fd5a3c6567e",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/3ede2a57df6a1c2324b4b611bd5f2fd5a3c6567e/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "7ae0d560e1d1529d958ca75673176c47f0dcf3b9",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/7ae0d560e1d1529d958ca75673176c47f0dcf3b9",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/7ae0d560e1d1529d958ca75673176c47f0dcf3b9"
+      }
+    ]
+  },
+  {
+    "sha": "7ae0d560e1d1529d958ca75673176c47f0dcf3b9",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTo3YWUwZDU2MGUxZDE1MjlkOTU4Y2E3NTY3MzE3NmM0N2YwZGNmM2I5",
+    "commit": {
+      "author": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-03-26T04:31:55Z"
+      },
+      "committer": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-03-26T04:31:55Z"
+      },
+      "message": "changed error() to info() to avoid syslog flooding\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1183 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "3a60450a1d3bdc2dea93b82583ffd27edd3d000d",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/3a60450a1d3bdc2dea93b82583ffd27edd3d000d"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/7ae0d560e1d1529d958ca75673176c47f0dcf3b9",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/7ae0d560e1d1529d958ca75673176c47f0dcf3b9",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/7ae0d560e1d1529d958ca75673176c47f0dcf3b9",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/7ae0d560e1d1529d958ca75673176c47f0dcf3b9/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "2a72a238872c5a74d9a1d9323a989acd05552e9f",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/2a72a238872c5a74d9a1d9323a989acd05552e9f",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/2a72a238872c5a74d9a1d9323a989acd05552e9f"
+      }
+    ]
+  },
+  {
+    "sha": "2a72a238872c5a74d9a1d9323a989acd05552e9f",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNToyYTcyYTIzODg3MmM1YTc0ZDlhMWQ5MzIzYTk4OWFjZDA1NTUyZTlm",
+    "commit": {
+      "author": {
+        "name": "mzuther",
+        "email": "mzuther@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-03-23T19:54:21Z"
+      },
+      "committer": {
+        "name": "mzuther",
+        "email": "mzuther@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-03-23T19:54:21Z"
+      },
+      "message": "timer activation: use defines instead of integers for easier reading\n\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1182 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "01287997c3c107110eb0d3a3dcff6ffc8fa18b87",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/01287997c3c107110eb0d3a3dcff6ffc8fa18b87"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/2a72a238872c5a74d9a1d9323a989acd05552e9f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/2a72a238872c5a74d9a1d9323a989acd05552e9f",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/2a72a238872c5a74d9a1d9323a989acd05552e9f",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/2a72a238872c5a74d9a1d9323a989acd05552e9f/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "446db7af452c781f700c9313bca2335eecec2c45",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/446db7af452c781f700c9313bca2335eecec2c45",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/446db7af452c781f700c9313bca2335eecec2c45"
+      }
+    ]
+  },
+  {
+    "sha": "446db7af452c781f700c9313bca2335eecec2c45",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTo0NDZkYjdhZjQ1MmM3ODFmNzAwYzkzMTNiY2EyMzM1ZWVjZWMyYzQ1",
+    "commit": {
+      "author": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-03-15T03:48:49Z"
+      },
+      "committer": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-03-15T03:48:49Z"
+      },
+      "message": "allow fine-grained backlight control for picoLCDGraphic\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1181 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "0cde19b6de7a22173626a98a1bea49a134a5ebc9",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/0cde19b6de7a22173626a98a1bea49a134a5ebc9"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/446db7af452c781f700c9313bca2335eecec2c45",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/446db7af452c781f700c9313bca2335eecec2c45",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/446db7af452c781f700c9313bca2335eecec2c45",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/446db7af452c781f700c9313bca2335eecec2c45/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "981ce7826f0adac940b0a01ee05224876b70424b",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/981ce7826f0adac940b0a01ee05224876b70424b",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/981ce7826f0adac940b0a01ee05224876b70424b"
+      }
+    ]
+  },
+  {
+    "sha": "981ce7826f0adac940b0a01ee05224876b70424b",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTo5ODFjZTc4MjZmMGFkYWM5NDBiMGEwMWVlMDUyMjQ4NzZiNzA0MjRi",
+    "commit": {
+      "author": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-02-27T10:27:40Z"
+      },
+      "committer": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-02-27T10:27:40Z"
+      },
+      "message": "jpeglib dependency typo fixed\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1180 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "e7f4997f07036ac669980d63fd0829b52d7fd2d2",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/e7f4997f07036ac669980d63fd0829b52d7fd2d2"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/981ce7826f0adac940b0a01ee05224876b70424b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/981ce7826f0adac940b0a01ee05224876b70424b",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/981ce7826f0adac940b0a01ee05224876b70424b",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/981ce7826f0adac940b0a01ee05224876b70424b/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "61e4d8a0d3e29c97b23e997423294851f61d1522",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/61e4d8a0d3e29c97b23e997423294851f61d1522",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/61e4d8a0d3e29c97b23e997423294851f61d1522"
+      }
+    ]
+  },
+  {
+    "sha": "61e4d8a0d3e29c97b23e997423294851f61d1522",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTo2MWU0ZDhhMGQzZTI5Yzk3YjIzZTk5NzQyMzI5NDg1MWY2MWQxNTIy",
+    "commit": {
+      "author": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-02-23T06:37:15Z"
+      },
+      "committer": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-02-23T06:37:15Z"
+      },
+      "message": "drv_SamsungSPF.h removed\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1179 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "83e60c03c7bdedd8a316758e8b0d905b464034cf",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/83e60c03c7bdedd8a316758e8b0d905b464034cf"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/61e4d8a0d3e29c97b23e997423294851f61d1522",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/61e4d8a0d3e29c97b23e997423294851f61d1522",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/61e4d8a0d3e29c97b23e997423294851f61d1522",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/61e4d8a0d3e29c97b23e997423294851f61d1522/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "88dde26adb2d36d724b57bd73b75a228e21bfebf",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/88dde26adb2d36d724b57bd73b75a228e21bfebf",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/88dde26adb2d36d724b57bd73b75a228e21bfebf"
+      }
+    ]
+  },
+  {
+    "sha": "88dde26adb2d36d724b57bd73b75a228e21bfebf",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTo4OGRkZTI2YWRiMmQzNmQ3MjRiNTdiZDczYjc1YTIyOGUyMWJmZWJm",
+    "commit": {
+      "author": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-02-23T06:36:53Z"
+      },
+      "committer": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-02-23T06:36:53Z"
+      },
+      "message": "some fixes from Sascha Plazar\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1178 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "efd2a52bdde3051d5d01237be63ed114ba27304c",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/efd2a52bdde3051d5d01237be63ed114ba27304c"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/88dde26adb2d36d724b57bd73b75a228e21bfebf",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/88dde26adb2d36d724b57bd73b75a228e21bfebf",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/88dde26adb2d36d724b57bd73b75a228e21bfebf",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/88dde26adb2d36d724b57bd73b75a228e21bfebf/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "eafd9557e50a4916f528cfce6f3755d8aa9e3ddf",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/eafd9557e50a4916f528cfce6f3755d8aa9e3ddf",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/eafd9557e50a4916f528cfce6f3755d8aa9e3ddf"
+      }
+    ]
+  },
+  {
+    "sha": "eafd9557e50a4916f528cfce6f3755d8aa9e3ddf",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTplYWZkOTU1N2U1MGE0OTE2ZjUyOGNmY2U2ZjM3NTVkOGFhOWUzZGRm",
+    "commit": {
+      "author": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-02-22T03:11:31Z"
+      },
+      "committer": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-02-22T03:11:31Z"
+      },
+      "message": "driver for Samsung SPF by Sascha Plazar\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1177 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "39ba96390d907007f3cdece6cc93b7d7abf85861",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/39ba96390d907007f3cdece6cc93b7d7abf85861"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/eafd9557e50a4916f528cfce6f3755d8aa9e3ddf",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/eafd9557e50a4916f528cfce6f3755d8aa9e3ddf",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/eafd9557e50a4916f528cfce6f3755d8aa9e3ddf",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/eafd9557e50a4916f528cfce6f3755d8aa9e3ddf/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "c5fc726e3be16f316da9c0e2dae97ae633d33c61",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/c5fc726e3be16f316da9c0e2dae97ae633d33c61",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/c5fc726e3be16f316da9c0e2dae97ae633d33c61"
+      }
+    ]
+  },
+  {
+    "sha": "c5fc726e3be16f316da9c0e2dae97ae633d33c61",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTpjNWZjNzI2ZTNiZTE2ZjMxNmRhOWMwZTJkYWU5N2FlNjMzZDMzYzYx",
+    "commit": {
+      "author": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-02-21T03:53:17Z"
+      },
+      "committer": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-02-21T03:53:17Z"
+      },
+      "message": "driver for Futaba VFD by Marcus Menzel\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1176 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "825835b92f3c227a0eb231bdca1b4ed6517f2f07",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/825835b92f3c227a0eb231bdca1b4ed6517f2f07"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/c5fc726e3be16f316da9c0e2dae97ae633d33c61",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/c5fc726e3be16f316da9c0e2dae97ae633d33c61",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/c5fc726e3be16f316da9c0e2dae97ae633d33c61",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/c5fc726e3be16f316da9c0e2dae97ae633d33c61/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "69ca09755b1758a055d2db155f64029d7a87e674",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/69ca09755b1758a055d2db155f64029d7a87e674",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/69ca09755b1758a055d2db155f64029d7a87e674"
+      }
+    ]
+  },
+  {
+    "sha": "69ca09755b1758a055d2db155f64029d7a87e674",
+    "node_id": "MDY6Q29tbWl0MTcyMzIwNTo2OWNhMDk3NTViMTc1OGEwNTVkMmRiMTU1ZjY0MDI5ZDdhODdlNjc0",
+    "commit": {
+      "author": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-02-16T12:50:59Z"
+      },
+      "committer": {
+        "name": "michael",
+        "email": "michael@3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+        "date": "2012-02-16T12:50:59Z"
+      },
+      "message": "teakLCM set GPIO='no' which produced linker errors (thanks to Marcus menzel for reporting)\n\ngit-svn-id: https://ssl.bulix.org/svn/lcd4linux/trunk@1175 3ae390bd-cb1e-0410-b409-cd5a39f66f1f",
+      "tree": {
+        "sha": "476ba02154e51819f9ea1b9f5dc9c240343d1b35",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/trees/476ba02154e51819f9ea1b9f5dc9c240343d1b35"
+      },
+      "url": "https://api.github.com/repos/jmccrohan/lcd4linux/git/commits/69ca09755b1758a055d2db155f64029d7a87e674",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/69ca09755b1758a055d2db155f64029d7a87e674",
+    "html_url": "https://github.com/jmccrohan/lcd4linux/commit/69ca09755b1758a055d2db155f64029d7a87e674",
+    "comments_url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/69ca09755b1758a055d2db155f64029d7a87e674/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "2e6d972471d3f3b975351c8994a70b114b9f520b",
+        "url": "https://api.github.com/repos/jmccrohan/lcd4linux/commits/2e6d972471d3f3b975351c8994a70b114b9f520b",
+        "html_url": "https://github.com/jmccrohan/lcd4linux/commit/2e6d972471d3f3b975351c8994a70b114b9f520b"
+      }
+    ]
+  }
+]

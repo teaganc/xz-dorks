@@ -1,0 +1,2372 @@
+[
+  {
+    "sha": "4ffbc0d904439aa5d5f818a2ece23bf95969ae98",
+    "node_id": "C_kwDOAiX5RtoAKDRmZmJjMGQ5MDQ0MzlhYTVkNWY4MThhMmVjZTIzYmY5NTk2OWFlOTg",
+    "commit": {
+      "author": {
+        "name": "tuksgig",
+        "email": "tuksgig@gmail.com",
+        "date": "2024-03-23T21:17:14Z"
+      },
+      "committer": {
+        "name": "Pavel Hrdina",
+        "email": "paja.hrdina@gmail.com",
+        "date": "2024-03-26T16:34:50Z"
+      },
+      "message": "Allow serial console resize to beyond 80 columns.\n\nReplace Gtk.Box.add() with Gtk.Box.pack_start() to place the VTE terminal widget. This enables horizontal expansion/filling the terminal widget when resizing the serial console window.",
+      "tree": {
+        "sha": "e7a5c9a026d4460cc699e9ca195aac3cb496a76c",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/e7a5c9a026d4460cc699e9ca195aac3cb496a76c"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/4ffbc0d904439aa5d5f818a2ece23bf95969ae98",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/4ffbc0d904439aa5d5f818a2ece23bf95969ae98",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/4ffbc0d904439aa5d5f818a2ece23bf95969ae98",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/4ffbc0d904439aa5d5f818a2ece23bf95969ae98/comments",
+    "author": {
+      "login": "tuksgig",
+      "id": 1759559,
+      "node_id": "MDQ6VXNlcjE3NTk1NTk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1759559?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tuksgig",
+      "html_url": "https://github.com/tuksgig",
+      "followers_url": "https://api.github.com/users/tuksgig/followers",
+      "following_url": "https://api.github.com/users/tuksgig/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tuksgig/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tuksgig/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tuksgig/subscriptions",
+      "organizations_url": "https://api.github.com/users/tuksgig/orgs",
+      "repos_url": "https://api.github.com/users/tuksgig/repos",
+      "events_url": "https://api.github.com/users/tuksgig/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tuksgig/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "phrdina",
+      "id": 109641,
+      "node_id": "MDQ6VXNlcjEwOTY0MQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/109641?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/phrdina",
+      "html_url": "https://github.com/phrdina",
+      "followers_url": "https://api.github.com/users/phrdina/followers",
+      "following_url": "https://api.github.com/users/phrdina/following{/other_user}",
+      "gists_url": "https://api.github.com/users/phrdina/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/phrdina/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/phrdina/subscriptions",
+      "organizations_url": "https://api.github.com/users/phrdina/orgs",
+      "repos_url": "https://api.github.com/users/phrdina/repos",
+      "events_url": "https://api.github.com/users/phrdina/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/phrdina/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e95ca453c49516aa5c291ce4839ecef6769852c9",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/e95ca453c49516aa5c291ce4839ecef6769852c9",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/e95ca453c49516aa5c291ce4839ecef6769852c9"
+      }
+    ]
+  },
+  {
+    "sha": "e95ca453c49516aa5c291ce4839ecef6769852c9",
+    "node_id": "C_kwDOAiX5RtoAKGU5NWNhNDUzYzQ5NTE2YWE1YzI5MWNlNDgzOWVjZWY2NzY5ODUyYzk",
+    "commit": {
+      "author": {
+        "name": "Pavel Hrdina",
+        "email": "phrdina@redhat.com",
+        "date": "2024-01-24T09:40:24Z"
+      },
+      "committer": {
+        "name": "Pavel Hrdina",
+        "email": "paja.hrdina@gmail.com",
+        "date": "2024-03-25T12:21:50Z"
+      },
+      "message": "virtManager: ignore agen livecycle event for shutoff VMs\n\nThis event is mainly to refresh the VM XML to figure out the state of\nvirtio channels and that should happen only for running VMs.\n\nThis affects external snapshot behavior in virtManager. If the VM is\noffline and user deletes external snapshot libvirt needs to start QEMU\nprocess to delete the snapshot. The QEMU process is started with stopped\nCPUs so it is visible as online and paused. It also emits the agent\nlifecycle event but there is no other domain lifecycle event so after\nthe snapshot deletion the VM stays paused in virtManager even if it is\nalready offline in libvirt.\n\nTo mitigate this behavior we can ignore agent lifecycle event for\nshutoff VMs.\n\nSigned-off-by: Pavel Hrdina <phrdina@redhat.com>",
+      "tree": {
+        "sha": "63f153fdb85371dac22098c0e4754aee3a537caf",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/63f153fdb85371dac22098c0e4754aee3a537caf"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/e95ca453c49516aa5c291ce4839ecef6769852c9",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/e95ca453c49516aa5c291ce4839ecef6769852c9",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/e95ca453c49516aa5c291ce4839ecef6769852c9",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/e95ca453c49516aa5c291ce4839ecef6769852c9/comments",
+    "author": {
+      "login": "phrdina",
+      "id": 109641,
+      "node_id": "MDQ6VXNlcjEwOTY0MQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/109641?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/phrdina",
+      "html_url": "https://github.com/phrdina",
+      "followers_url": "https://api.github.com/users/phrdina/followers",
+      "following_url": "https://api.github.com/users/phrdina/following{/other_user}",
+      "gists_url": "https://api.github.com/users/phrdina/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/phrdina/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/phrdina/subscriptions",
+      "organizations_url": "https://api.github.com/users/phrdina/orgs",
+      "repos_url": "https://api.github.com/users/phrdina/repos",
+      "events_url": "https://api.github.com/users/phrdina/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/phrdina/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "phrdina",
+      "id": 109641,
+      "node_id": "MDQ6VXNlcjEwOTY0MQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/109641?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/phrdina",
+      "html_url": "https://github.com/phrdina",
+      "followers_url": "https://api.github.com/users/phrdina/followers",
+      "following_url": "https://api.github.com/users/phrdina/following{/other_user}",
+      "gists_url": "https://api.github.com/users/phrdina/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/phrdina/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/phrdina/subscriptions",
+      "organizations_url": "https://api.github.com/users/phrdina/orgs",
+      "repos_url": "https://api.github.com/users/phrdina/repos",
+      "events_url": "https://api.github.com/users/phrdina/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/phrdina/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5488ff4773bd2fe046edeec33163f1229c8da901",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/5488ff4773bd2fe046edeec33163f1229c8da901",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/5488ff4773bd2fe046edeec33163f1229c8da901"
+      }
+    ]
+  },
+  {
+    "sha": "5488ff4773bd2fe046edeec33163f1229c8da901",
+    "node_id": "C_kwDOAiX5RtoAKDU0ODhmZjQ3NzNiZDJmZTA0NmVkZWVjMzMxNjNmMTIyOWM4ZGE5MDE",
+    "commit": {
+      "author": {
+        "name": "Pavel Hrdina",
+        "email": "phrdina@redhat.com",
+        "date": "2024-01-23T16:19:38Z"
+      },
+      "committer": {
+        "name": "Pavel Hrdina",
+        "email": "paja.hrdina@gmail.com",
+        "date": "2024-03-25T12:21:50Z"
+      },
+      "message": "virtManager: add support to create external snapshots\n\nAdd new 2 rows into the snapshotsnew windows, one to select if the\nsnapshot mode is `internal` or `external` and memory state location when\nmaking external snapshot for running VM.\n\nWe will check if libvirt fully supports external snapshots by consulting\nhost capabilities and add `external` to snapshot mode only if it is\nsupported.\n\nFor external snapshots the memory state is stored in separate file but\nlibvirt doesn't have any default location so virtManager will get path\nto all usable disks and create a dropdown menu for it, but user is still\nallowed to modify that path to use whatever path they prefer.\n\nSigned-off-by: Pavel Hrdina <phrdina@redhat.com>",
+      "tree": {
+        "sha": "1708c915de1d9aebd6b1ca04929dc7d7d111d07d",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/1708c915de1d9aebd6b1ca04929dc7d7d111d07d"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/5488ff4773bd2fe046edeec33163f1229c8da901",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/5488ff4773bd2fe046edeec33163f1229c8da901",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/5488ff4773bd2fe046edeec33163f1229c8da901",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/5488ff4773bd2fe046edeec33163f1229c8da901/comments",
+    "author": {
+      "login": "phrdina",
+      "id": 109641,
+      "node_id": "MDQ6VXNlcjEwOTY0MQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/109641?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/phrdina",
+      "html_url": "https://github.com/phrdina",
+      "followers_url": "https://api.github.com/users/phrdina/followers",
+      "following_url": "https://api.github.com/users/phrdina/following{/other_user}",
+      "gists_url": "https://api.github.com/users/phrdina/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/phrdina/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/phrdina/subscriptions",
+      "organizations_url": "https://api.github.com/users/phrdina/orgs",
+      "repos_url": "https://api.github.com/users/phrdina/repos",
+      "events_url": "https://api.github.com/users/phrdina/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/phrdina/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "phrdina",
+      "id": 109641,
+      "node_id": "MDQ6VXNlcjEwOTY0MQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/109641?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/phrdina",
+      "html_url": "https://github.com/phrdina",
+      "followers_url": "https://api.github.com/users/phrdina/followers",
+      "following_url": "https://api.github.com/users/phrdina/following{/other_user}",
+      "gists_url": "https://api.github.com/users/phrdina/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/phrdina/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/phrdina/subscriptions",
+      "organizations_url": "https://api.github.com/users/phrdina/orgs",
+      "repos_url": "https://api.github.com/users/phrdina/repos",
+      "events_url": "https://api.github.com/users/phrdina/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/phrdina/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f1ba012e8ff6967b0cd634ab2f9ad1315a136a90",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/f1ba012e8ff6967b0cd634ab2f9ad1315a136a90",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/f1ba012e8ff6967b0cd634ab2f9ad1315a136a90"
+      }
+    ]
+  },
+  {
+    "sha": "f1ba012e8ff6967b0cd634ab2f9ad1315a136a90",
+    "node_id": "C_kwDOAiX5RtoAKGYxYmEwMTJlOGZmNjk2N2IwY2Q2MzRhYjJmOWFkMTMxNWExMzZhOTA",
+    "commit": {
+      "author": {
+        "name": "Pavel Hrdina",
+        "email": "phrdina@redhat.com",
+        "date": "2024-01-23T13:21:24Z"
+      },
+      "committer": {
+        "name": "Pavel Hrdina",
+        "email": "paja.hrdina@gmail.com",
+        "date": "2024-03-25T12:21:50Z"
+      },
+      "message": "virtManager: domain: allow disk only snapshots\n\nThis is used for external snapshots when the VM is offline.\n\nSigned-off-by: Pavel Hrdina <phrdina@redhat.com>",
+      "tree": {
+        "sha": "55d4925b3976db46093b30939acf40a8329583a4",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/55d4925b3976db46093b30939acf40a8329583a4"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/f1ba012e8ff6967b0cd634ab2f9ad1315a136a90",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/f1ba012e8ff6967b0cd634ab2f9ad1315a136a90",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/f1ba012e8ff6967b0cd634ab2f9ad1315a136a90",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/f1ba012e8ff6967b0cd634ab2f9ad1315a136a90/comments",
+    "author": {
+      "login": "phrdina",
+      "id": 109641,
+      "node_id": "MDQ6VXNlcjEwOTY0MQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/109641?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/phrdina",
+      "html_url": "https://github.com/phrdina",
+      "followers_url": "https://api.github.com/users/phrdina/followers",
+      "following_url": "https://api.github.com/users/phrdina/following{/other_user}",
+      "gists_url": "https://api.github.com/users/phrdina/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/phrdina/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/phrdina/subscriptions",
+      "organizations_url": "https://api.github.com/users/phrdina/orgs",
+      "repos_url": "https://api.github.com/users/phrdina/repos",
+      "events_url": "https://api.github.com/users/phrdina/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/phrdina/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "phrdina",
+      "id": 109641,
+      "node_id": "MDQ6VXNlcjEwOTY0MQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/109641?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/phrdina",
+      "html_url": "https://github.com/phrdina",
+      "followers_url": "https://api.github.com/users/phrdina/followers",
+      "following_url": "https://api.github.com/users/phrdina/following{/other_user}",
+      "gists_url": "https://api.github.com/users/phrdina/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/phrdina/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/phrdina/subscriptions",
+      "organizations_url": "https://api.github.com/users/phrdina/orgs",
+      "repos_url": "https://api.github.com/users/phrdina/repos",
+      "events_url": "https://api.github.com/users/phrdina/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/phrdina/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d8565ac533c8b98476a841c00bd2397cb7aa8f90",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/d8565ac533c8b98476a841c00bd2397cb7aa8f90",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/d8565ac533c8b98476a841c00bd2397cb7aa8f90"
+      }
+    ]
+  },
+  {
+    "sha": "d8565ac533c8b98476a841c00bd2397cb7aa8f90",
+    "node_id": "C_kwDOAiX5RtoAKGQ4NTY1YWM1MzNjOGI5ODQ3NmE4NDFjMDBiZDIzOTdjYjdhYThmOTA",
+    "commit": {
+      "author": {
+        "name": "Pavel Hrdina",
+        "email": "phrdina@redhat.com",
+        "date": "2024-01-23T11:06:54Z"
+      },
+      "committer": {
+        "name": "Pavel Hrdina",
+        "email": "paja.hrdina@gmail.com",
+        "date": "2024-03-25T12:21:50Z"
+      },
+      "message": "virtinst: snapshot: add memory file attribute\n\nSigned-off-by: Pavel Hrdina <phrdina@redhat.com>",
+      "tree": {
+        "sha": "b11831621c37e1a104de10df9c9be8ded81cb0c2",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/b11831621c37e1a104de10df9c9be8ded81cb0c2"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/d8565ac533c8b98476a841c00bd2397cb7aa8f90",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/d8565ac533c8b98476a841c00bd2397cb7aa8f90",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/d8565ac533c8b98476a841c00bd2397cb7aa8f90",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/d8565ac533c8b98476a841c00bd2397cb7aa8f90/comments",
+    "author": {
+      "login": "phrdina",
+      "id": 109641,
+      "node_id": "MDQ6VXNlcjEwOTY0MQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/109641?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/phrdina",
+      "html_url": "https://github.com/phrdina",
+      "followers_url": "https://api.github.com/users/phrdina/followers",
+      "following_url": "https://api.github.com/users/phrdina/following{/other_user}",
+      "gists_url": "https://api.github.com/users/phrdina/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/phrdina/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/phrdina/subscriptions",
+      "organizations_url": "https://api.github.com/users/phrdina/orgs",
+      "repos_url": "https://api.github.com/users/phrdina/repos",
+      "events_url": "https://api.github.com/users/phrdina/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/phrdina/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "phrdina",
+      "id": 109641,
+      "node_id": "MDQ6VXNlcjEwOTY0MQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/109641?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/phrdina",
+      "html_url": "https://github.com/phrdina",
+      "followers_url": "https://api.github.com/users/phrdina/followers",
+      "following_url": "https://api.github.com/users/phrdina/following{/other_user}",
+      "gists_url": "https://api.github.com/users/phrdina/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/phrdina/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/phrdina/subscriptions",
+      "organizations_url": "https://api.github.com/users/phrdina/orgs",
+      "repos_url": "https://api.github.com/users/phrdina/repos",
+      "events_url": "https://api.github.com/users/phrdina/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/phrdina/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3cde1acbb631687dfae589e121bb5d08785ede88",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/3cde1acbb631687dfae589e121bb5d08785ede88",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/3cde1acbb631687dfae589e121bb5d08785ede88"
+      }
+    ]
+  },
+  {
+    "sha": "3cde1acbb631687dfae589e121bb5d08785ede88",
+    "node_id": "C_kwDOAiX5RtoAKDNjZGUxYWNiYjYzMTY4N2RmYWU1ODllMTIxYmI1ZDA4Nzg1ZWRlODg",
+    "commit": {
+      "author": {
+        "name": "Pavel Hrdina",
+        "email": "phrdina@redhat.com",
+        "date": "2024-01-23T11:02:43Z"
+      },
+      "committer": {
+        "name": "Pavel Hrdina",
+        "email": "paja.hrdina@gmail.com",
+        "date": "2024-03-25T12:21:50Z"
+      },
+      "message": "virtinst: add external snapshot capability\n\nSigned-off-by: Pavel Hrdina <phrdina@redhat.com>",
+      "tree": {
+        "sha": "8f9067fc127e32f570c81bc7d514dbb0b94cb57a",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/8f9067fc127e32f570c81bc7d514dbb0b94cb57a"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/3cde1acbb631687dfae589e121bb5d08785ede88",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/3cde1acbb631687dfae589e121bb5d08785ede88",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/3cde1acbb631687dfae589e121bb5d08785ede88",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/3cde1acbb631687dfae589e121bb5d08785ede88/comments",
+    "author": {
+      "login": "phrdina",
+      "id": 109641,
+      "node_id": "MDQ6VXNlcjEwOTY0MQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/109641?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/phrdina",
+      "html_url": "https://github.com/phrdina",
+      "followers_url": "https://api.github.com/users/phrdina/followers",
+      "following_url": "https://api.github.com/users/phrdina/following{/other_user}",
+      "gists_url": "https://api.github.com/users/phrdina/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/phrdina/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/phrdina/subscriptions",
+      "organizations_url": "https://api.github.com/users/phrdina/orgs",
+      "repos_url": "https://api.github.com/users/phrdina/repos",
+      "events_url": "https://api.github.com/users/phrdina/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/phrdina/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "phrdina",
+      "id": 109641,
+      "node_id": "MDQ6VXNlcjEwOTY0MQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/109641?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/phrdina",
+      "html_url": "https://github.com/phrdina",
+      "followers_url": "https://api.github.com/users/phrdina/followers",
+      "following_url": "https://api.github.com/users/phrdina/following{/other_user}",
+      "gists_url": "https://api.github.com/users/phrdina/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/phrdina/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/phrdina/subscriptions",
+      "organizations_url": "https://api.github.com/users/phrdina/orgs",
+      "repos_url": "https://api.github.com/users/phrdina/repos",
+      "events_url": "https://api.github.com/users/phrdina/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/phrdina/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "dadb9a0d6fbfc4b1f106e59bd3b0ff06a5bf253a",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/dadb9a0d6fbfc4b1f106e59bd3b0ff06a5bf253a",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/dadb9a0d6fbfc4b1f106e59bd3b0ff06a5bf253a"
+      }
+    ]
+  },
+  {
+    "sha": "dadb9a0d6fbfc4b1f106e59bd3b0ff06a5bf253a",
+    "node_id": "C_kwDOAiX5RtoAKGRhZGI5YTBkNmZiZmM0YjFmMTA2ZTU5YmQzYjBmZjA2YTViZjI1M2E",
+    "commit": {
+      "author": {
+        "name": "Pino Toscano",
+        "email": "ptoscano@redhat.com",
+        "date": "2024-03-04T05:26:27Z"
+      },
+      "committer": {
+        "name": "Pino Toscano",
+        "email": "ptoscano@redhat.com",
+        "date": "2024-03-04T05:26:27Z"
+      },
+      "message": "po: sort LINGUAS\n\nSigned-off-by: Pino Toscano <ptoscano@redhat.com>",
+      "tree": {
+        "sha": "1813a66f67c3649e1dd68503e663d41f6986ca92",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/1813a66f67c3649e1dd68503e663d41f6986ca92"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/dadb9a0d6fbfc4b1f106e59bd3b0ff06a5bf253a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/dadb9a0d6fbfc4b1f106e59bd3b0ff06a5bf253a",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/dadb9a0d6fbfc4b1f106e59bd3b0ff06a5bf253a",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/dadb9a0d6fbfc4b1f106e59bd3b0ff06a5bf253a/comments",
+    "author": {
+      "login": "ptoscano",
+      "id": 6048552,
+      "node_id": "MDQ6VXNlcjYwNDg1NTI=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6048552?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ptoscano",
+      "html_url": "https://github.com/ptoscano",
+      "followers_url": "https://api.github.com/users/ptoscano/followers",
+      "following_url": "https://api.github.com/users/ptoscano/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ptoscano/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ptoscano/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ptoscano/subscriptions",
+      "organizations_url": "https://api.github.com/users/ptoscano/orgs",
+      "repos_url": "https://api.github.com/users/ptoscano/repos",
+      "events_url": "https://api.github.com/users/ptoscano/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ptoscano/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ptoscano",
+      "id": 6048552,
+      "node_id": "MDQ6VXNlcjYwNDg1NTI=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6048552?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ptoscano",
+      "html_url": "https://github.com/ptoscano",
+      "followers_url": "https://api.github.com/users/ptoscano/followers",
+      "following_url": "https://api.github.com/users/ptoscano/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ptoscano/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ptoscano/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ptoscano/subscriptions",
+      "organizations_url": "https://api.github.com/users/ptoscano/orgs",
+      "repos_url": "https://api.github.com/users/ptoscano/repos",
+      "events_url": "https://api.github.com/users/ptoscano/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ptoscano/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "55b4c1bc9ea6d57856c2373e034d0a26a450add4",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/55b4c1bc9ea6d57856c2373e034d0a26a450add4",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/55b4c1bc9ea6d57856c2373e034d0a26a450add4"
+      }
+    ]
+  },
+  {
+    "sha": "55b4c1bc9ea6d57856c2373e034d0a26a450add4",
+    "node_id": "C_kwDOAiX5RtoAKDU1YjRjMWJjOWVhNmQ1Nzg1NmMyMzczZTAzNGQwYTI2YTQ1MGFkZDQ",
+    "commit": {
+      "author": {
+        "name": "eirik song",
+        "email": "eirik.song@gmail.com",
+        "date": "2024-02-24T15:35:59Z"
+      },
+      "committer": {
+        "name": "Pino Toscano",
+        "email": "ptoscano@redhat.com",
+        "date": "2024-03-04T05:23:39Z"
+      },
+      "message": "Translated using Weblate (Chinese (Simplified) (zh_CN))\n\nCurrently translated at 100.0% (1453 of 1453 strings)\n\nTranslation: virt-manager/virt-manager\nTranslate-URL: https://translate.fedoraproject.org/projects/virt-manager/virt-manager/zh_CN/",
+      "tree": {
+        "sha": "b376e370cd345297da40c45d0432c7e9fe5e95a9",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/b376e370cd345297da40c45d0432c7e9fe5e95a9"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/55b4c1bc9ea6d57856c2373e034d0a26a450add4",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/55b4c1bc9ea6d57856c2373e034d0a26a450add4",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/55b4c1bc9ea6d57856c2373e034d0a26a450add4",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/55b4c1bc9ea6d57856c2373e034d0a26a450add4/comments",
+    "author": {
+      "login": "eiriksong",
+      "id": 160572592,
+      "node_id": "U_kgDOCZIksA",
+      "avatar_url": "https://avatars.githubusercontent.com/u/160572592?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/eiriksong",
+      "html_url": "https://github.com/eiriksong",
+      "followers_url": "https://api.github.com/users/eiriksong/followers",
+      "following_url": "https://api.github.com/users/eiriksong/following{/other_user}",
+      "gists_url": "https://api.github.com/users/eiriksong/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/eiriksong/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/eiriksong/subscriptions",
+      "organizations_url": "https://api.github.com/users/eiriksong/orgs",
+      "repos_url": "https://api.github.com/users/eiriksong/repos",
+      "events_url": "https://api.github.com/users/eiriksong/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/eiriksong/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ptoscano",
+      "id": 6048552,
+      "node_id": "MDQ6VXNlcjYwNDg1NTI=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6048552?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ptoscano",
+      "html_url": "https://github.com/ptoscano",
+      "followers_url": "https://api.github.com/users/ptoscano/followers",
+      "following_url": "https://api.github.com/users/ptoscano/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ptoscano/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ptoscano/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ptoscano/subscriptions",
+      "organizations_url": "https://api.github.com/users/ptoscano/orgs",
+      "repos_url": "https://api.github.com/users/ptoscano/repos",
+      "events_url": "https://api.github.com/users/ptoscano/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ptoscano/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1be248e645fea27eb65effbd510050d3ddf0a1b3",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/1be248e645fea27eb65effbd510050d3ddf0a1b3",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/1be248e645fea27eb65effbd510050d3ddf0a1b3"
+      }
+    ]
+  },
+  {
+    "sha": "1be248e645fea27eb65effbd510050d3ddf0a1b3",
+    "node_id": "C_kwDOAiX5RtoAKDFiZTI0OGU2NDVmZWEyN2ViNjVlZmZiZDUxMDA1MGQzZGRmMGExYjM",
+    "commit": {
+      "author": {
+        "name": "김인수",
+        "email": "simmon@nplob.com",
+        "date": "2024-02-24T15:35:59Z"
+      },
+      "committer": {
+        "name": "Weblate",
+        "email": "noreply@weblate.org",
+        "date": "2024-03-03T19:09:43Z"
+      },
+      "message": "Translated using Weblate (Korean)\n\nCurrently translated at 100.0% (1453 of 1453 strings)\n\nTranslation: virt-manager/virt-manager\nTranslate-URL: https://translate.fedoraproject.org/projects/virt-manager/virt-manager/ko/",
+      "tree": {
+        "sha": "59b6821b1df7d4628437f1d7589893a63134317c",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/59b6821b1df7d4628437f1d7589893a63134317c"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/1be248e645fea27eb65effbd510050d3ddf0a1b3",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/1be248e645fea27eb65effbd510050d3ddf0a1b3",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/1be248e645fea27eb65effbd510050d3ddf0a1b3",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/1be248e645fea27eb65effbd510050d3ddf0a1b3/comments",
+    "author": {
+      "login": "simmon-nplob",
+      "id": 81469659,
+      "node_id": "MDQ6VXNlcjgxNDY5NjU5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/81469659?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/simmon-nplob",
+      "html_url": "https://github.com/simmon-nplob",
+      "followers_url": "https://api.github.com/users/simmon-nplob/followers",
+      "following_url": "https://api.github.com/users/simmon-nplob/following{/other_user}",
+      "gists_url": "https://api.github.com/users/simmon-nplob/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/simmon-nplob/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/simmon-nplob/subscriptions",
+      "organizations_url": "https://api.github.com/users/simmon-nplob/orgs",
+      "repos_url": "https://api.github.com/users/simmon-nplob/repos",
+      "events_url": "https://api.github.com/users/simmon-nplob/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/simmon-nplob/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "weblate",
+      "id": 1607653,
+      "node_id": "MDQ6VXNlcjE2MDc2NTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1607653?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/weblate",
+      "html_url": "https://github.com/weblate",
+      "followers_url": "https://api.github.com/users/weblate/followers",
+      "following_url": "https://api.github.com/users/weblate/following{/other_user}",
+      "gists_url": "https://api.github.com/users/weblate/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/weblate/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/weblate/subscriptions",
+      "organizations_url": "https://api.github.com/users/weblate/orgs",
+      "repos_url": "https://api.github.com/users/weblate/repos",
+      "events_url": "https://api.github.com/users/weblate/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/weblate/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e4e406e386c9503267afc7dd6e034a533382913a",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/e4e406e386c9503267afc7dd6e034a533382913a",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/e4e406e386c9503267afc7dd6e034a533382913a"
+      }
+    ]
+  },
+  {
+    "sha": "e4e406e386c9503267afc7dd6e034a533382913a",
+    "node_id": "C_kwDOAiX5RtoAKGU0ZTQwNmUzODZjOTUwMzI2N2FmYzdkZDZlMDM0YTUzMzM4MjkxM2E",
+    "commit": {
+      "author": {
+        "name": "Rafael Fontenelle",
+        "email": "rafaelff@gnome.org",
+        "date": "2024-02-24T15:35:59Z"
+      },
+      "committer": {
+        "name": "Weblate",
+        "email": "noreply@weblate.org",
+        "date": "2024-03-03T19:09:43Z"
+      },
+      "message": "Translated using Weblate (Portuguese (Brazil))\n\nCurrently translated at 95.8% (1393 of 1453 strings)\n\nTranslation: virt-manager/virt-manager\nTranslate-URL: https://translate.fedoraproject.org/projects/virt-manager/virt-manager/pt_BR/",
+      "tree": {
+        "sha": "65608222646ac5550f2b915fab7e98b7c210281d",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/65608222646ac5550f2b915fab7e98b7c210281d"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/e4e406e386c9503267afc7dd6e034a533382913a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/e4e406e386c9503267afc7dd6e034a533382913a",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/e4e406e386c9503267afc7dd6e034a533382913a",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/e4e406e386c9503267afc7dd6e034a533382913a/comments",
+    "author": {
+      "login": "rffontenelle",
+      "id": 1571783,
+      "node_id": "MDQ6VXNlcjE1NzE3ODM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1571783?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rffontenelle",
+      "html_url": "https://github.com/rffontenelle",
+      "followers_url": "https://api.github.com/users/rffontenelle/followers",
+      "following_url": "https://api.github.com/users/rffontenelle/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rffontenelle/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rffontenelle/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rffontenelle/subscriptions",
+      "organizations_url": "https://api.github.com/users/rffontenelle/orgs",
+      "repos_url": "https://api.github.com/users/rffontenelle/repos",
+      "events_url": "https://api.github.com/users/rffontenelle/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rffontenelle/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "weblate",
+      "id": 1607653,
+      "node_id": "MDQ6VXNlcjE2MDc2NTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1607653?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/weblate",
+      "html_url": "https://github.com/weblate",
+      "followers_url": "https://api.github.com/users/weblate/followers",
+      "following_url": "https://api.github.com/users/weblate/following{/other_user}",
+      "gists_url": "https://api.github.com/users/weblate/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/weblate/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/weblate/subscriptions",
+      "organizations_url": "https://api.github.com/users/weblate/orgs",
+      "repos_url": "https://api.github.com/users/weblate/repos",
+      "events_url": "https://api.github.com/users/weblate/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/weblate/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9c4b789510ae6f518d5b9e96049622af8412ee24",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/9c4b789510ae6f518d5b9e96049622af8412ee24",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/9c4b789510ae6f518d5b9e96049622af8412ee24"
+      }
+    ]
+  },
+  {
+    "sha": "9c4b789510ae6f518d5b9e96049622af8412ee24",
+    "node_id": "C_kwDOAiX5RtoAKDljNGI3ODk1MTBhZTZmNTE4ZDViOWU5NjA0OTYyMmFmODQxMmVlMjQ",
+    "commit": {
+      "author": {
+        "name": "Temuri Doghonadze",
+        "email": "temuri.doghonadze@gmail.com",
+        "date": "2024-02-24T15:35:58Z"
+      },
+      "committer": {
+        "name": "Weblate",
+        "email": "noreply@weblate.org",
+        "date": "2024-03-03T19:09:43Z"
+      },
+      "message": "Translated using Weblate (Georgian)\n\nCurrently translated at 93.1% (1353 of 1453 strings)\n\nTranslation: virt-manager/virt-manager\nTranslate-URL: https://translate.fedoraproject.org/projects/virt-manager/virt-manager/ka/\n\nTranslated using Weblate (Georgian)\n\nCurrently translated at 88.3% (1283 of 1453 strings)\n\nTranslation: virt-manager/virt-manager\nTranslate-URL: https://translate.fedoraproject.org/projects/virt-manager/virt-manager/ka/",
+      "tree": {
+        "sha": "ac5f4b3dc16464c068926720042df80126a1c804",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/ac5f4b3dc16464c068926720042df80126a1c804"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/9c4b789510ae6f518d5b9e96049622af8412ee24",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/9c4b789510ae6f518d5b9e96049622af8412ee24",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/9c4b789510ae6f518d5b9e96049622af8412ee24",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/9c4b789510ae6f518d5b9e96049622af8412ee24/comments",
+    "author": {
+      "login": "NorwayFun",
+      "id": 72336380,
+      "node_id": "MDQ6VXNlcjcyMzM2Mzgw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/72336380?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/NorwayFun",
+      "html_url": "https://github.com/NorwayFun",
+      "followers_url": "https://api.github.com/users/NorwayFun/followers",
+      "following_url": "https://api.github.com/users/NorwayFun/following{/other_user}",
+      "gists_url": "https://api.github.com/users/NorwayFun/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/NorwayFun/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/NorwayFun/subscriptions",
+      "organizations_url": "https://api.github.com/users/NorwayFun/orgs",
+      "repos_url": "https://api.github.com/users/NorwayFun/repos",
+      "events_url": "https://api.github.com/users/NorwayFun/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/NorwayFun/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "weblate",
+      "id": 1607653,
+      "node_id": "MDQ6VXNlcjE2MDc2NTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1607653?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/weblate",
+      "html_url": "https://github.com/weblate",
+      "followers_url": "https://api.github.com/users/weblate/followers",
+      "following_url": "https://api.github.com/users/weblate/following{/other_user}",
+      "gists_url": "https://api.github.com/users/weblate/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/weblate/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/weblate/subscriptions",
+      "organizations_url": "https://api.github.com/users/weblate/orgs",
+      "repos_url": "https://api.github.com/users/weblate/repos",
+      "events_url": "https://api.github.com/users/weblate/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/weblate/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c8c37cb0cd21150d7a3a070d70dd1ee89c0b98d2",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/c8c37cb0cd21150d7a3a070d70dd1ee89c0b98d2",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/c8c37cb0cd21150d7a3a070d70dd1ee89c0b98d2"
+      }
+    ]
+  },
+  {
+    "sha": "c8c37cb0cd21150d7a3a070d70dd1ee89c0b98d2",
+    "node_id": "C_kwDOAiX5RtoAKGM4YzM3Y2IwY2QyMTE1MGQ3YTNhMDcwZDcwZGQxZWU4OWMwYjk4ZDI",
+    "commit": {
+      "author": {
+        "name": "Geraldo S. Simião Kutz",
+        "email": "geraldo.simiao.kutz@gmail.com",
+        "date": "2024-02-24T15:35:58Z"
+      },
+      "committer": {
+        "name": "Weblate",
+        "email": "noreply@weblate.org",
+        "date": "2024-03-03T19:09:43Z"
+      },
+      "message": "Translated using Weblate (Portuguese (Brazil))\n\nCurrently translated at 95.8% (1392 of 1453 strings)\n\nTranslation: virt-manager/virt-manager\nTranslate-URL: https://translate.fedoraproject.org/projects/virt-manager/virt-manager/pt_BR/",
+      "tree": {
+        "sha": "eb26f5f3ff3329410b8f0acb1c3c9bdfc8344df9",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/eb26f5f3ff3329410b8f0acb1c3c9bdfc8344df9"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/c8c37cb0cd21150d7a3a070d70dd1ee89c0b98d2",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/c8c37cb0cd21150d7a3a070d70dd1ee89c0b98d2",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/c8c37cb0cd21150d7a3a070d70dd1ee89c0b98d2",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/c8c37cb0cd21150d7a3a070d70dd1ee89c0b98d2/comments",
+    "author": {
+      "login": "geraldosimiao",
+      "id": 72357821,
+      "node_id": "MDQ6VXNlcjcyMzU3ODIx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/72357821?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/geraldosimiao",
+      "html_url": "https://github.com/geraldosimiao",
+      "followers_url": "https://api.github.com/users/geraldosimiao/followers",
+      "following_url": "https://api.github.com/users/geraldosimiao/following{/other_user}",
+      "gists_url": "https://api.github.com/users/geraldosimiao/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/geraldosimiao/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/geraldosimiao/subscriptions",
+      "organizations_url": "https://api.github.com/users/geraldosimiao/orgs",
+      "repos_url": "https://api.github.com/users/geraldosimiao/repos",
+      "events_url": "https://api.github.com/users/geraldosimiao/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/geraldosimiao/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "weblate",
+      "id": 1607653,
+      "node_id": "MDQ6VXNlcjE2MDc2NTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1607653?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/weblate",
+      "html_url": "https://github.com/weblate",
+      "followers_url": "https://api.github.com/users/weblate/followers",
+      "following_url": "https://api.github.com/users/weblate/following{/other_user}",
+      "gists_url": "https://api.github.com/users/weblate/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/weblate/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/weblate/subscriptions",
+      "organizations_url": "https://api.github.com/users/weblate/orgs",
+      "repos_url": "https://api.github.com/users/weblate/repos",
+      "events_url": "https://api.github.com/users/weblate/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/weblate/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a6b62a20b62ac86e0c40d18f188b312513bafdd9",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/a6b62a20b62ac86e0c40d18f188b312513bafdd9",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/a6b62a20b62ac86e0c40d18f188b312513bafdd9"
+      }
+    ]
+  },
+  {
+    "sha": "a6b62a20b62ac86e0c40d18f188b312513bafdd9",
+    "node_id": "C_kwDOAiX5RtoAKGE2YjYyYTIwYjYyYWM4NmUwYzQwZDE4ZjE4OGIzMTI1MTNiYWZkZDk",
+    "commit": {
+      "author": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-03T16:54:37Z"
+      },
+      "committer": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-03T19:18:04Z"
+      },
+      "message": "systray: Cleanups and improvements for --show-systray\n\n- Add UI coverage\n- Drop redundant systray_instance caching\n- Tweaks help test and docs\n- Show an error if the systray doesn't embed\n\nSigned-off-by: Cole Robinson <crobinso@redhat.com>",
+      "tree": {
+        "sha": "47063318fbf3868a4e08e6daf9dd878cf4c86c7c",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/47063318fbf3868a4e08e6daf9dd878cf4c86c7c"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/a6b62a20b62ac86e0c40d18f188b312513bafdd9",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/a6b62a20b62ac86e0c40d18f188b312513bafdd9",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/a6b62a20b62ac86e0c40d18f188b312513bafdd9",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/a6b62a20b62ac86e0c40d18f188b312513bafdd9/comments",
+    "author": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2043847adece285a94eff5fe303d23d7d0ac339e",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/2043847adece285a94eff5fe303d23d7d0ac339e",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/2043847adece285a94eff5fe303d23d7d0ac339e"
+      }
+    ]
+  },
+  {
+    "sha": "2043847adece285a94eff5fe303d23d7d0ac339e",
+    "node_id": "C_kwDOAiX5RtoAKDIwNDM4NDdhZGVjZTI4NWE5NGVmZjVmZTMwM2QyM2Q3ZDBhYzMzOWU",
+    "commit": {
+      "author": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-03T18:01:57Z"
+      },
+      "committer": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-03T19:18:04Z"
+      },
+      "message": "uitests: More handling for slow startup on f39\n\nSigned-off-by: Cole Robinson <crobinso@redhat.com>",
+      "tree": {
+        "sha": "eeb20c5fc7aa854a341f2325b00798c2b269617b",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/eeb20c5fc7aa854a341f2325b00798c2b269617b"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/2043847adece285a94eff5fe303d23d7d0ac339e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/2043847adece285a94eff5fe303d23d7d0ac339e",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/2043847adece285a94eff5fe303d23d7d0ac339e",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/2043847adece285a94eff5fe303d23d7d0ac339e/comments",
+    "author": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "75e4d1dd294f26f1f17625fe075c6a6fe2c0f8b4",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/75e4d1dd294f26f1f17625fe075c6a6fe2c0f8b4",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/75e4d1dd294f26f1f17625fe075c6a6fe2c0f8b4"
+      }
+    ]
+  },
+  {
+    "sha": "75e4d1dd294f26f1f17625fe075c6a6fe2c0f8b4",
+    "node_id": "C_kwDOAiX5RtoAKDc1ZTRkMWRkMjk0ZjI2ZjFmMTc2MjVmZTA3NWM2YTZmZTJjMGY4YjQ",
+    "commit": {
+      "author": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-03T16:54:11Z"
+      },
+      "committer": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-03T19:18:04Z"
+      },
+      "message": "baseclass: Avoid glib `Source ID XX not found` at app shutdown\n\nSigned-off-by: Cole Robinson <crobinso@redhat.com>",
+      "tree": {
+        "sha": "13946ed32079fc7a63eb61d733ad1f8f5f118c5a",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/13946ed32079fc7a63eb61d733ad1f8f5f118c5a"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/75e4d1dd294f26f1f17625fe075c6a6fe2c0f8b4",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/75e4d1dd294f26f1f17625fe075c6a6fe2c0f8b4",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/75e4d1dd294f26f1f17625fe075c6a6fe2c0f8b4",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/75e4d1dd294f26f1f17625fe075c6a6fe2c0f8b4/comments",
+    "author": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6c9774267ff5595035e3bcc71b59d4cae13af8fc",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/6c9774267ff5595035e3bcc71b59d4cae13af8fc",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/6c9774267ff5595035e3bcc71b59d4cae13af8fc"
+      }
+    ]
+  },
+  {
+    "sha": "6c9774267ff5595035e3bcc71b59d4cae13af8fc",
+    "node_id": "C_kwDOAiX5RtoAKDZjOTc3NDI2N2ZmNTU5NTAzNWUzYmNjNzFiNTlkNGNhZTEzYWY4ZmM",
+    "commit": {
+      "author": {
+        "name": "Gustavo Costa",
+        "email": "xfgusta@gmail.com",
+        "date": "2021-11-04T03:57:16Z"
+      },
+      "committer": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-03T19:17:54Z"
+      },
+      "message": "man: document --show-systray option",
+      "tree": {
+        "sha": "fd964674149432e9a545daa2ed05641720d91a36",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/fd964674149432e9a545daa2ed05641720d91a36"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/6c9774267ff5595035e3bcc71b59d4cae13af8fc",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/6c9774267ff5595035e3bcc71b59d4cae13af8fc",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/6c9774267ff5595035e3bcc71b59d4cae13af8fc",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/6c9774267ff5595035e3bcc71b59d4cae13af8fc/comments",
+    "author": {
+      "login": "xfgusta",
+      "id": 66979446,
+      "node_id": "MDQ6VXNlcjY2OTc5NDQ2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/66979446?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/xfgusta",
+      "html_url": "https://github.com/xfgusta",
+      "followers_url": "https://api.github.com/users/xfgusta/followers",
+      "following_url": "https://api.github.com/users/xfgusta/following{/other_user}",
+      "gists_url": "https://api.github.com/users/xfgusta/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/xfgusta/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/xfgusta/subscriptions",
+      "organizations_url": "https://api.github.com/users/xfgusta/orgs",
+      "repos_url": "https://api.github.com/users/xfgusta/repos",
+      "events_url": "https://api.github.com/users/xfgusta/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/xfgusta/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "69290e0526aa3febf1fd867aa0e285f38df13637",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/69290e0526aa3febf1fd867aa0e285f38df13637",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/69290e0526aa3febf1fd867aa0e285f38df13637"
+      }
+    ]
+  },
+  {
+    "sha": "69290e0526aa3febf1fd867aa0e285f38df13637",
+    "node_id": "C_kwDOAiX5RtoAKDY5MjkwZTA1MjZhYTNmZWJmMWZkODY3YWEwZTI4NWYzOGRmMTM2Mzc",
+    "commit": {
+      "author": {
+        "name": "Gustavo Costa",
+        "email": "xfgusta@gmail.com",
+        "date": "2021-11-04T00:45:04Z"
+      },
+      "committer": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-03T19:17:54Z"
+      },
+      "message": "cli: add --show-systray option",
+      "tree": {
+        "sha": "fab6a533154d061f7d43622ca3a6330038cf6abd",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/fab6a533154d061f7d43622ca3a6330038cf6abd"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/69290e0526aa3febf1fd867aa0e285f38df13637",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/69290e0526aa3febf1fd867aa0e285f38df13637",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/69290e0526aa3febf1fd867aa0e285f38df13637",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/69290e0526aa3febf1fd867aa0e285f38df13637/comments",
+    "author": {
+      "login": "xfgusta",
+      "id": 66979446,
+      "node_id": "MDQ6VXNlcjY2OTc5NDQ2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/66979446?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/xfgusta",
+      "html_url": "https://github.com/xfgusta",
+      "followers_url": "https://api.github.com/users/xfgusta/followers",
+      "following_url": "https://api.github.com/users/xfgusta/following{/other_user}",
+      "gists_url": "https://api.github.com/users/xfgusta/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/xfgusta/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/xfgusta/subscriptions",
+      "organizations_url": "https://api.github.com/users/xfgusta/orgs",
+      "repos_url": "https://api.github.com/users/xfgusta/repos",
+      "events_url": "https://api.github.com/users/xfgusta/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/xfgusta/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "014d1ef99b6bf1bd34050914fc3485395d6dd9ad",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/014d1ef99b6bf1bd34050914fc3485395d6dd9ad",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/014d1ef99b6bf1bd34050914fc3485395d6dd9ad"
+      }
+    ]
+  },
+  {
+    "sha": "014d1ef99b6bf1bd34050914fc3485395d6dd9ad",
+    "node_id": "C_kwDOAiX5RtoAKDAxNGQxZWY5OWI2YmYxYmQzNDA1MDkxNGZjMzQ4NTM5NWQ2ZGQ5YWQ",
+    "commit": {
+      "author": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-02T21:22:53Z"
+      },
+      "committer": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-03T17:52:37Z"
+      },
+      "message": "console: Cleanup and improve console menu handling\n\n- Rework the ConsolePages abstraction to carry the Gtk.Menu. makes\n  it all less messy\n\n- Make the console menu the single source of truth for console\n  embeddability, and error message reporting\n\n- Small misc cleanups here and there\n\nSigned-off-by: Cole Robinson <crobinso@redhat.com>",
+      "tree": {
+        "sha": "a4a8df102f22bbcab8442c95f3af0235e0e40cec",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/a4a8df102f22bbcab8442c95f3af0235e0e40cec"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/014d1ef99b6bf1bd34050914fc3485395d6dd9ad",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/014d1ef99b6bf1bd34050914fc3485395d6dd9ad",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/014d1ef99b6bf1bd34050914fc3485395d6dd9ad",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/014d1ef99b6bf1bd34050914fc3485395d6dd9ad/comments",
+    "author": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "409e4bf2d11829206d1fc784500ed1fd72a5735a",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/409e4bf2d11829206d1fc784500ed1fd72a5735a",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/409e4bf2d11829206d1fc784500ed1fd72a5735a"
+      }
+    ]
+  },
+  {
+    "sha": "409e4bf2d11829206d1fc784500ed1fd72a5735a",
+    "node_id": "C_kwDOAiX5RtoAKDQwOWU0YmYyZDExODI5MjA2ZDFmYzc4NDUwMGVkMWZkNzJhNTczNWE",
+    "commit": {
+      "author": {
+        "name": "Feng Jiang",
+        "email": "jiangfeng@kylinos.cn",
+        "date": "2023-01-30T07:49:24Z"
+      },
+      "committer": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-03T17:52:20Z"
+      },
+      "message": "console: Select the first embeddable graphics device as graphical console\n\nCurrently, when there are multiple graphics devices, the first graphics\ndevice is always selected as the graphical console. For the following\nconfiguration:\n\n    <graphics type=\"egl-headless\">\n      <gl rendernode=\"/dev/dri/renderD128\"/>\n    </graphics>\n    <graphics type=\"spice\" autoport=\"yes\">\n      <listen type=\"address\"/>\n      <image compression=\"off\"/>\n      <gl enable=\"no\"/>\n    </graphics>\n\nvirt-manager will report an error:\n\n    Cannot display graphical console type 'egl-headless'\n\nThe patch will iterate through all graphics devices to try to select the\nfirst embeddable graphics device as graphical console.\n\nSigned-off-by: Feng Jiang <jiangfeng@kylinos.cn>\nSigned-off-by: Liming Sun <sunliming@kylinos.cn>\nReviewed-by: Cole Robinson <crobinso@redhat.com>",
+      "tree": {
+        "sha": "026e7cef89f7aa25a1f89238fe91ff8b51af6a14",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/026e7cef89f7aa25a1f89238fe91ff8b51af6a14"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/409e4bf2d11829206d1fc784500ed1fd72a5735a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/409e4bf2d11829206d1fc784500ed1fd72a5735a",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/409e4bf2d11829206d1fc784500ed1fd72a5735a",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/409e4bf2d11829206d1fc784500ed1fd72a5735a/comments",
+    "author": {
+      "login": "flynnjiang",
+      "id": 291431,
+      "node_id": "MDQ6VXNlcjI5MTQzMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/291431?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/flynnjiang",
+      "html_url": "https://github.com/flynnjiang",
+      "followers_url": "https://api.github.com/users/flynnjiang/followers",
+      "following_url": "https://api.github.com/users/flynnjiang/following{/other_user}",
+      "gists_url": "https://api.github.com/users/flynnjiang/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/flynnjiang/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/flynnjiang/subscriptions",
+      "organizations_url": "https://api.github.com/users/flynnjiang/orgs",
+      "repos_url": "https://api.github.com/users/flynnjiang/repos",
+      "events_url": "https://api.github.com/users/flynnjiang/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/flynnjiang/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d83074a001bc6cc7c01cb9a0a7c5d0b0764d2bf0",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/d83074a001bc6cc7c01cb9a0a7c5d0b0764d2bf0",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/d83074a001bc6cc7c01cb9a0a7c5d0b0764d2bf0"
+      }
+    ]
+  },
+  {
+    "sha": "d83074a001bc6cc7c01cb9a0a7c5d0b0764d2bf0",
+    "node_id": "C_kwDOAiX5RtoAKGQ4MzA3NGEwMDFiYzZjYzdjMDFjYjlhMGE3YzVkMGIwNzY0ZDJiZjA",
+    "commit": {
+      "author": {
+        "name": "Feng Jiang",
+        "email": "jiangfeng@kylinos.cn",
+        "date": "2023-01-30T07:36:04Z"
+      },
+      "committer": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-03T17:52:20Z"
+      },
+      "message": "domain: Add idx parameter to open_graphics_fd()\n\nNow open_graphics_fd() always opens the 1st graphic device, when\nthere are multiple graphic devices (e.g. spice + egl-headless),\nwe need to specify the index number for libvirt.\n\nSigned-off-by: Feng Jiang <jiangfeng@kylinos.cn>\nSigned-off-by: Ming Xie <xieming@kylinos.cn>\nReviewed-by: Cole Robinson <crobinso@redhat.com>",
+      "tree": {
+        "sha": "ccec83b8624a83704f2234f6aec11cf8b91e4a47",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/ccec83b8624a83704f2234f6aec11cf8b91e4a47"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/d83074a001bc6cc7c01cb9a0a7c5d0b0764d2bf0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/d83074a001bc6cc7c01cb9a0a7c5d0b0764d2bf0",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/d83074a001bc6cc7c01cb9a0a7c5d0b0764d2bf0",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/d83074a001bc6cc7c01cb9a0a7c5d0b0764d2bf0/comments",
+    "author": {
+      "login": "flynnjiang",
+      "id": 291431,
+      "node_id": "MDQ6VXNlcjI5MTQzMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/291431?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/flynnjiang",
+      "html_url": "https://github.com/flynnjiang",
+      "followers_url": "https://api.github.com/users/flynnjiang/followers",
+      "following_url": "https://api.github.com/users/flynnjiang/following{/other_user}",
+      "gists_url": "https://api.github.com/users/flynnjiang/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/flynnjiang/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/flynnjiang/subscriptions",
+      "organizations_url": "https://api.github.com/users/flynnjiang/orgs",
+      "repos_url": "https://api.github.com/users/flynnjiang/repos",
+      "events_url": "https://api.github.com/users/flynnjiang/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/flynnjiang/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9c242ef79cbe3a2ad94bc5aca02603d508302580",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/9c242ef79cbe3a2ad94bc5aca02603d508302580",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/9c242ef79cbe3a2ad94bc5aca02603d508302580"
+      }
+    ]
+  },
+  {
+    "sha": "9c242ef79cbe3a2ad94bc5aca02603d508302580",
+    "node_id": "C_kwDOAiX5RtoAKDljMjQyZWY3OWNiZTNhMmFkOTRiYzVhY2EwMjYwM2Q1MDgzMDI1ODA",
+    "commit": {
+      "author": {
+        "name": "Feng Jiang",
+        "email": "jiangfeng@kylinos.cn",
+        "date": "2023-01-30T07:23:37Z"
+      },
+      "committer": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-03T17:52:20Z"
+      },
+      "message": "console: Move embeddable_graphics() to console.py\n\nSigned-off-by: Feng Jiang <jiangfeng@kylinos.cn>\nSigned-off-by: Weishi Li <liweishi@kylinos.cn>\nReviewed-by: Cole Robinson <crobinso@redhat.com>",
+      "tree": {
+        "sha": "5611f1051352576ac8ae02cfa93e368659c7e9d7",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/5611f1051352576ac8ae02cfa93e368659c7e9d7"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/9c242ef79cbe3a2ad94bc5aca02603d508302580",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/9c242ef79cbe3a2ad94bc5aca02603d508302580",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/9c242ef79cbe3a2ad94bc5aca02603d508302580",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/9c242ef79cbe3a2ad94bc5aca02603d508302580/comments",
+    "author": {
+      "login": "flynnjiang",
+      "id": 291431,
+      "node_id": "MDQ6VXNlcjI5MTQzMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/291431?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/flynnjiang",
+      "html_url": "https://github.com/flynnjiang",
+      "followers_url": "https://api.github.com/users/flynnjiang/followers",
+      "following_url": "https://api.github.com/users/flynnjiang/following{/other_user}",
+      "gists_url": "https://api.github.com/users/flynnjiang/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/flynnjiang/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/flynnjiang/subscriptions",
+      "organizations_url": "https://api.github.com/users/flynnjiang/orgs",
+      "repos_url": "https://api.github.com/users/flynnjiang/repos",
+      "events_url": "https://api.github.com/users/flynnjiang/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/flynnjiang/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0d3b7f673f482f80574d71a94eb80cb55d4e1ef6",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/0d3b7f673f482f80574d71a94eb80cb55d4e1ef6",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/0d3b7f673f482f80574d71a94eb80cb55d4e1ef6"
+      }
+    ]
+  },
+  {
+    "sha": "0d3b7f673f482f80574d71a94eb80cb55d4e1ef6",
+    "node_id": "C_kwDOAiX5RtoAKDBkM2I3ZjY3M2Y0ODJmODA1NzRkNzFhOTRlYjgwY2I1NWQ0ZTFlZjY",
+    "commit": {
+      "author": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-03T15:40:46Z"
+      },
+      "committer": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-03T15:43:30Z"
+      },
+      "message": "Fix pylint 3.1.0 issues\n\nSigned-off-by: Cole Robinson <crobinso@redhat.com>",
+      "tree": {
+        "sha": "2946354df5ef281549c402af1ad7528110822ba2",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/2946354df5ef281549c402af1ad7528110822ba2"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/0d3b7f673f482f80574d71a94eb80cb55d4e1ef6",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/0d3b7f673f482f80574d71a94eb80cb55d4e1ef6",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/0d3b7f673f482f80574d71a94eb80cb55d4e1ef6",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/0d3b7f673f482f80574d71a94eb80cb55d4e1ef6/comments",
+    "author": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a52ab24ec4b8f036038e4488255792f553931c6a",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/a52ab24ec4b8f036038e4488255792f553931c6a",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/a52ab24ec4b8f036038e4488255792f553931c6a"
+      }
+    ]
+  },
+  {
+    "sha": "a52ab24ec4b8f036038e4488255792f553931c6a",
+    "node_id": "C_kwDOAiX5RtoAKGE1MmFiMjRlYzRiOGYwMzYwMzhlNDQ4ODI1NTc5MmY1NTM5MzFjNmE",
+    "commit": {
+      "author": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-03T15:23:33Z"
+      },
+      "committer": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-03T15:43:30Z"
+      },
+      "message": "createvm: Replace deprecated pkgutil.find_loader\n\nimportlib.util.find_spec is around since python 3.4\n\nSigned-off-by: Cole Robinson <crobinso@redhat.com>",
+      "tree": {
+        "sha": "fd98f3d692427790e58f845053f9df86b5a8cfb8",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/fd98f3d692427790e58f845053f9df86b5a8cfb8"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/a52ab24ec4b8f036038e4488255792f553931c6a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/a52ab24ec4b8f036038e4488255792f553931c6a",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/a52ab24ec4b8f036038e4488255792f553931c6a",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/a52ab24ec4b8f036038e4488255792f553931c6a/comments",
+    "author": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0c899a7ccd246a6e444c6827e85bbc49fb186362",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/0c899a7ccd246a6e444c6827e85bbc49fb186362",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/0c899a7ccd246a6e444c6827e85bbc49fb186362"
+      }
+    ]
+  },
+  {
+    "sha": "0c899a7ccd246a6e444c6827e85bbc49fb186362",
+    "node_id": "C_kwDOAiX5RtoAKDBjODk5YTdjY2QyNDZhNmU0NDRjNjgyN2U4NWJiYzQ5ZmIxODYzNjI",
+    "commit": {
+      "author": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-03T15:17:02Z"
+      },
+      "committer": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-03T15:43:30Z"
+      },
+      "message": "uitests: Handle slow app launch on fedora 39\n\nNot quite sure what's going on here, I think it has something to\ndo with slowness when the accessibility bus is being polled.\n\nAdd some infrastructure to increase the timeout while we wait for\nthe app to pop up\n\nSigned-off-by: Cole Robinson <crobinso@redhat.com>",
+      "tree": {
+        "sha": "caca3be531d34e76a1dd9c5ad5eba3383230f3c7",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/caca3be531d34e76a1dd9c5ad5eba3383230f3c7"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/0c899a7ccd246a6e444c6827e85bbc49fb186362",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/0c899a7ccd246a6e444c6827e85bbc49fb186362",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/0c899a7ccd246a6e444c6827e85bbc49fb186362",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/0c899a7ccd246a6e444c6827e85bbc49fb186362/comments",
+    "author": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a05ab5cdb42b0b4aff8c9997e7370590b0e0fc7b",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/a05ab5cdb42b0b4aff8c9997e7370590b0e0fc7b",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/a05ab5cdb42b0b4aff8c9997e7370590b0e0fc7b"
+      }
+    ]
+  },
+  {
+    "sha": "a05ab5cdb42b0b4aff8c9997e7370590b0e0fc7b",
+    "node_id": "C_kwDOAiX5RtoAKGEwNWFiNWNkYjQyYjBiNGFmZjhjOTk5N2U3MzcwNTkwYjBlMGZjN2I",
+    "commit": {
+      "author": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-02T19:26:28Z"
+      },
+      "committer": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-03T15:43:30Z"
+      },
+      "message": "uitests: Fix walkUI flakyness\n\nSigned-off-by: Cole Robinson <crobinso@redhat.com>",
+      "tree": {
+        "sha": "bc6670e4c662ceb7da3b29c91e93ad1a86f492e1",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/bc6670e4c662ceb7da3b29c91e93ad1a86f492e1"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/a05ab5cdb42b0b4aff8c9997e7370590b0e0fc7b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/a05ab5cdb42b0b4aff8c9997e7370590b0e0fc7b",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/a05ab5cdb42b0b4aff8c9997e7370590b0e0fc7b",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/a05ab5cdb42b0b4aff8c9997e7370590b0e0fc7b/comments",
+    "author": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "bb86721352a3478614ea69503f12e61cddaeee18",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/bb86721352a3478614ea69503f12e61cddaeee18",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/bb86721352a3478614ea69503f12e61cddaeee18"
+      }
+    ]
+  },
+  {
+    "sha": "bb86721352a3478614ea69503f12e61cddaeee18",
+    "node_id": "C_kwDOAiX5RtoAKGJiODY3MjEzNTJhMzQ3ODYxNGVhNjk1MDNmMTJlNjFjZGRhZWVlMTg",
+    "commit": {
+      "author": {
+        "name": "nose-gnome",
+        "email": "71675376+nose-gnome@users.noreply.github.com",
+        "date": "2023-03-23T16:07:29Z"
+      },
+      "committer": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-02T19:19:28Z"
+      },
+      "message": "ui: details: Increased scrolledview6's height request\n\nIncreased the height of scrolledview6 to make viewing applications  easier in os info",
+      "tree": {
+        "sha": "4ddcf943816223db2202b2e6cc84278b7a99982f",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/4ddcf943816223db2202b2e6cc84278b7a99982f"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/bb86721352a3478614ea69503f12e61cddaeee18",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/bb86721352a3478614ea69503f12e61cddaeee18",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/bb86721352a3478614ea69503f12e61cddaeee18",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/bb86721352a3478614ea69503f12e61cddaeee18/comments",
+    "author": {
+      "login": "nose-gnome",
+      "id": 71675376,
+      "node_id": "MDQ6VXNlcjcxNjc1Mzc2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/71675376?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/nose-gnome",
+      "html_url": "https://github.com/nose-gnome",
+      "followers_url": "https://api.github.com/users/nose-gnome/followers",
+      "following_url": "https://api.github.com/users/nose-gnome/following{/other_user}",
+      "gists_url": "https://api.github.com/users/nose-gnome/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/nose-gnome/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/nose-gnome/subscriptions",
+      "organizations_url": "https://api.github.com/users/nose-gnome/orgs",
+      "repos_url": "https://api.github.com/users/nose-gnome/repos",
+      "events_url": "https://api.github.com/users/nose-gnome/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/nose-gnome/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "04cc4895298c4eb86394a9840f2a6a8161b5a54d",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/04cc4895298c4eb86394a9840f2a6a8161b5a54d",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/04cc4895298c4eb86394a9840f2a6a8161b5a54d"
+      }
+    ]
+  },
+  {
+    "sha": "04cc4895298c4eb86394a9840f2a6a8161b5a54d",
+    "node_id": "C_kwDOAiX5RtoAKDA0Y2M0ODk1Mjk4YzRlYjg2Mzk0YTk4NDBmMmE2YTgxNjFiNWE1NGQ",
+    "commit": {
+      "author": {
+        "name": "nose-gnome",
+        "email": "71675376+nose-gnome@users.noreply.github.com",
+        "date": "2023-03-23T15:55:42Z"
+      },
+      "committer": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-02T19:19:28Z"
+      },
+      "message": "ui: details: fix Applications width.\n\nIn OS info the applications tree view was too narrow to read the contents, so I enabled expanding horizontally for scrolledwindow6",
+      "tree": {
+        "sha": "64d481dde6d5c34d4b635cfc36eb67e5066fb24f",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/64d481dde6d5c34d4b635cfc36eb67e5066fb24f"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/04cc4895298c4eb86394a9840f2a6a8161b5a54d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/04cc4895298c4eb86394a9840f2a6a8161b5a54d",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/04cc4895298c4eb86394a9840f2a6a8161b5a54d",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/04cc4895298c4eb86394a9840f2a6a8161b5a54d/comments",
+    "author": {
+      "login": "nose-gnome",
+      "id": 71675376,
+      "node_id": "MDQ6VXNlcjcxNjc1Mzc2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/71675376?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/nose-gnome",
+      "html_url": "https://github.com/nose-gnome",
+      "followers_url": "https://api.github.com/users/nose-gnome/followers",
+      "following_url": "https://api.github.com/users/nose-gnome/following{/other_user}",
+      "gists_url": "https://api.github.com/users/nose-gnome/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/nose-gnome/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/nose-gnome/subscriptions",
+      "organizations_url": "https://api.github.com/users/nose-gnome/orgs",
+      "repos_url": "https://api.github.com/users/nose-gnome/repos",
+      "events_url": "https://api.github.com/users/nose-gnome/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/nose-gnome/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7ae3e10bc40586c33c45d204ff828a95a9faec9c",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/7ae3e10bc40586c33c45d204ff828a95a9faec9c",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/7ae3e10bc40586c33c45d204ff828a95a9faec9c"
+      }
+    ]
+  },
+  {
+    "sha": "7ae3e10bc40586c33c45d204ff828a95a9faec9c",
+    "node_id": "C_kwDOAiX5RtoAKDdhZTNlMTBiYzQwNTg2YzMzYzQ1ZDIwNGZmODI4YTk1YTlmYWVjOWM",
+    "commit": {
+      "author": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-02T16:10:41Z"
+      },
+      "committer": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-02T18:22:45Z"
+      },
+      "message": "netlist: Fix UI error when virtual network doesn't exist\n\nSigned-off-by: Cole Robinson <crobinso@redhat.com>",
+      "tree": {
+        "sha": "0de65949ad1b11dad672de4fb2db9a6d70626e76",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/0de65949ad1b11dad672de4fb2db9a6d70626e76"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/7ae3e10bc40586c33c45d204ff828a95a9faec9c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/7ae3e10bc40586c33c45d204ff828a95a9faec9c",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/7ae3e10bc40586c33c45d204ff828a95a9faec9c",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/7ae3e10bc40586c33c45d204ff828a95a9faec9c/comments",
+    "author": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "cf172c8e575ad3ee026c29f6e9f6222f524f0fe8",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/cf172c8e575ad3ee026c29f6e9f6222f524f0fe8",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/cf172c8e575ad3ee026c29f6e9f6222f524f0fe8"
+      }
+    ]
+  },
+  {
+    "sha": "cf172c8e575ad3ee026c29f6e9f6222f524f0fe8",
+    "node_id": "C_kwDOAiX5RtoAKGNmMTcyYzhlNTc1YWQzZWUwMjZjMjlmNmU5ZjYyMjJmNTI0ZjBmZTg",
+    "commit": {
+      "author": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-02T15:25:35Z"
+      },
+      "committer": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-02T18:22:40Z"
+      },
+      "message": "testdriver: Add portgroups example to test-many-devices\n\nThis helps hit some uitests code coverage\n\nSigned-off-by: Cole Robinson <crobinso@redhat.com>",
+      "tree": {
+        "sha": "7837d42f0a4254811836a7f5bd6acd3ab3f6d156",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/7837d42f0a4254811836a7f5bd6acd3ab3f6d156"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/cf172c8e575ad3ee026c29f6e9f6222f524f0fe8",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/cf172c8e575ad3ee026c29f6e9f6222f524f0fe8",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/cf172c8e575ad3ee026c29f6e9f6222f524f0fe8",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/cf172c8e575ad3ee026c29f6e9f6222f524f0fe8/comments",
+    "author": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "82f1c4495e96a0afb52471f776fba1c249d75e1c",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/82f1c4495e96a0afb52471f776fba1c249d75e1c",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/82f1c4495e96a0afb52471f776fba1c249d75e1c"
+      }
+    ]
+  },
+  {
+    "sha": "82f1c4495e96a0afb52471f776fba1c249d75e1c",
+    "node_id": "C_kwDOAiX5RtoAKDgyZjFjNDQ5NWU5NmEwYWZiNTI0NzFmNzc2ZmJhMWMyNDlkNzVlMWM",
+    "commit": {
+      "author": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-02T14:25:44Z"
+      },
+      "committer": {
+        "name": "Cole Robinson",
+        "email": "crobinso@redhat.com",
+        "date": "2024-03-02T18:22:37Z"
+      },
+      "message": "domain: rename: handle firmware ending with .qcow2\n\nNewer libvirt + edk2 will default to nvram in qcow2 format, but\nour domain rename code had some .fd assumptions baked in.\n\nAdjust uitests to handle it too\n\nSigned-off-by: Cole Robinson <crobinso@redhat.com>",
+      "tree": {
+        "sha": "47fead5c31cd0d226c0f0d9975c8cecdaeae6f56",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/git/trees/47fead5c31cd0d226c0f0d9975c8cecdaeae6f56"
+      },
+      "url": "https://api.github.com/repos/virt-manager/virt-manager/git/commits/82f1c4495e96a0afb52471f776fba1c249d75e1c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/82f1c4495e96a0afb52471f776fba1c249d75e1c",
+    "html_url": "https://github.com/virt-manager/virt-manager/commit/82f1c4495e96a0afb52471f776fba1c249d75e1c",
+    "comments_url": "https://api.github.com/repos/virt-manager/virt-manager/commits/82f1c4495e96a0afb52471f776fba1c249d75e1c/comments",
+    "author": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "crobinso",
+      "id": 1437464,
+      "node_id": "MDQ6VXNlcjE0Mzc0NjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437464?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/crobinso",
+      "html_url": "https://github.com/crobinso",
+      "followers_url": "https://api.github.com/users/crobinso/followers",
+      "following_url": "https://api.github.com/users/crobinso/following{/other_user}",
+      "gists_url": "https://api.github.com/users/crobinso/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/crobinso/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/crobinso/subscriptions",
+      "organizations_url": "https://api.github.com/users/crobinso/orgs",
+      "repos_url": "https://api.github.com/users/crobinso/repos",
+      "events_url": "https://api.github.com/users/crobinso/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/crobinso/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "78f7797c13e6e8c56ee059dba721278270c4c4dd",
+        "url": "https://api.github.com/repos/virt-manager/virt-manager/commits/78f7797c13e6e8c56ee059dba721278270c4c4dd",
+        "html_url": "https://github.com/virt-manager/virt-manager/commit/78f7797c13e6e8c56ee059dba721278270c4c4dd"
+      }
+    ]
+  }
+]

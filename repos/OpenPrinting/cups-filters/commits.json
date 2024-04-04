@@ -1,0 +1,2377 @@
+[
+  {
+    "sha": "196a892c20d992317cf8bb8c2733808e1d381bb3",
+    "node_id": "C_kwDOBk7C4toAKDE5NmE4OTJjMjBkOTkyMzE3Y2Y4YmI4YzI3MzM4MDhlMWQzODFiYjM",
+    "commit": {
+      "author": {
+        "name": "Eli Schwartz",
+        "email": "eschwartz93@gmail.com",
+        "date": "2024-03-08T12:02:33Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-08T12:02:33Z"
+      },
+      "message": "configure: Fix broken bashism resulting in logic failure (#567)\n\nAfter carefully using configure checks designed to work on pre-unix wars\r\nbourne shells -- that is, the `test \"$var\" = \"\"` construct once upon a\r\ntime wasn't specified to treat \"\" as a distinct argument, and various\r\nbuggy implementations mishandled various forms where the first argument\r\nstarted with a dash, so the \"x\" padding provided a guaranteed comparison\r\n-- the configure.ac check then fails to run on any shells at all other\r\nthan GNU bash.\r\n\r\nBash provides the standard `test XXX = YYY` or `[ XXX = YYY ]`\r\nutilities. It also provides the ability to spell the equals sign as a\r\ndouble equals. This does nothing whatsoever -- it adds no new\r\nfunctionality to bash, it forbids nothing, it is *literally* an exact\r\nalias.\r\n\r\nIt should never be used under any circumstances. All developers must\r\nimmediately forget that it exists. Using it is non-portable and does not\r\nwork in /bin/sh scripts such as configure scripts, and it results in\r\ndangerous muscle memory when used in bash scripts because it makes\r\npeople unthinkingly use the double equals even in /bin/sh scripts. To\r\nadd insult to injury, it makes scripts take up more disk space (by a\r\nwhole byte! and sometimes even a few bytes...)\r\n\r\nDelete this accidental bashism, and restore the ability to get correct\r\n./configure behavior on systems where /bin/sh is something other than a\r\nsymlink to GNU bash.",
+      "tree": {
+        "sha": "45b10247f5267f944f44e2e47ba649a77fe68017",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/45b10247f5267f944f44e2e47ba649a77fe68017"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/196a892c20d992317cf8bb8c2733808e1d381bb3",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl6v5ZCRC1aQ7uu5UhlAAAMLEQAIypESUX66A/Vzkgeqa6ZYR4\nX2O0DOasszXlpMZJ50+D+HAtLCMtipTgcJPoRmIxoM12r0O+pfd3J78ZHuLw4qlE\nUtXPowDJBMrMPS08zHVc8S8qnNcWIWja/ReO5voUE6ebw2iKfpOI2xhLjUBcMEWZ\n9S0RbGDGjTuJxMrczcQpboUxdl4saw7G6lrjonZ/nadw/p/1tvf8jEd3B0H0kMSd\nAScg1jQvizfWzas/ahv5m+tEWNVAOC9O4KW7bqs4x1nYHBvpVot7c1s9PES4NGMR\nEF6ckDiH9UbIAaPVsqd+6S6ai6zyU8HI8lct2ZW06/e/a0sxvQcMFIID8xX8L/1+\ngMHMO6P5DhqamezZZFiwWLHG6WlTqa+mLmX+1YTeci4bBfuMgctIdfWzFDe5Afid\nEh77rgeVoHHJztXp+5w1DfwGDTFzXSMg4BvAX+UqYlJHuYZS9XeDUBYxuBC48zRB\n9QcpzDeOT2pO+S438oNLadBqJB48KOrI/oQ53NRUxTtsbn4Oj/dnw0MDkh8xtyxj\nmMSD0d9CmhwqSaTAeIxs7DIttjSYtBr5wZO8VXvwjcTZ8AJgMVPVEl+aamcd5LKS\nWHcBMccQN11ROJz6QAV/s9D8ZU8JYiTITKdWp8jWMD17eAyz4NhB9AQO7yvVEwPW\nm5yUS4sxsx8Uck5ylJen\n=c29S\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 45b10247f5267f944f44e2e47ba649a77fe68017\nparent f0bd8ce7d8410908e0665bf61046f13c45b2d6d4\nauthor Eli Schwartz <eschwartz93@gmail.com> 1709899353 -0500\ncommitter GitHub <noreply@github.com> 1709899353 +0100\n\nconfigure: Fix broken bashism resulting in logic failure (#567)\n\nAfter carefully using configure checks designed to work on pre-unix wars\r\nbourne shells -- that is, the `test \"$var\" = \"\"` construct once upon a\r\ntime wasn't specified to treat \"\" as a distinct argument, and various\r\nbuggy implementations mishandled various forms where the first argument\r\nstarted with a dash, so the \"x\" padding provided a guaranteed comparison\r\n-- the configure.ac check then fails to run on any shells at all other\r\nthan GNU bash.\r\n\r\nBash provides the standard `test XXX = YYY` or `[ XXX = YYY ]`\r\nutilities. It also provides the ability to spell the equals sign as a\r\ndouble equals. This does nothing whatsoever -- it adds no new\r\nfunctionality to bash, it forbids nothing, it is *literally* an exact\r\nalias.\r\n\r\nIt should never be used under any circumstances. All developers must\r\nimmediately forget that it exists. Using it is non-portable and does not\r\nwork in /bin/sh scripts such as configure scripts, and it results in\r\ndangerous muscle memory when used in bash scripts because it makes\r\npeople unthinkingly use the double equals even in /bin/sh scripts. To\r\nadd insult to injury, it makes scripts take up more disk space (by a\r\nwhole byte! and sometimes even a few bytes...)\r\n\r\nDelete this accidental bashism, and restore the ability to get correct\r\n./configure behavior on systems where /bin/sh is something other than a\r\nsymlink to GNU bash."
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/196a892c20d992317cf8bb8c2733808e1d381bb3",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/196a892c20d992317cf8bb8c2733808e1d381bb3",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/196a892c20d992317cf8bb8c2733808e1d381bb3/comments",
+    "author": {
+      "login": "eli-schwartz",
+      "id": 6551424,
+      "node_id": "MDQ6VXNlcjY1NTE0MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6551424?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/eli-schwartz",
+      "html_url": "https://github.com/eli-schwartz",
+      "followers_url": "https://api.github.com/users/eli-schwartz/followers",
+      "following_url": "https://api.github.com/users/eli-schwartz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/eli-schwartz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/eli-schwartz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/eli-schwartz/subscriptions",
+      "organizations_url": "https://api.github.com/users/eli-schwartz/orgs",
+      "repos_url": "https://api.github.com/users/eli-schwartz/repos",
+      "events_url": "https://api.github.com/users/eli-schwartz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/eli-schwartz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f0bd8ce7d8410908e0665bf61046f13c45b2d6d4",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/f0bd8ce7d8410908e0665bf61046f13c45b2d6d4",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/f0bd8ce7d8410908e0665bf61046f13c45b2d6d4"
+      }
+    ]
+  },
+  {
+    "sha": "f0bd8ce7d8410908e0665bf61046f13c45b2d6d4",
+    "node_id": "C_kwDOBk7C4toAKGYwYmQ4Y2U3ZDg0MTA5MDhlMDY2NWJmNjEwNDZmMTNjNDViMmQ2ZDQ",
+    "commit": {
+      "author": {
+        "name": "Eli Schwartz",
+        "email": "eschwartz93@gmail.com",
+        "date": "2024-03-08T11:50:13Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-08T11:50:13Z"
+      },
+      "message": "configure.ac: Remove final traces of avahi (#558)\n\nThis was originally searched for cups-browsed, and during the great\r\nsplit these lookups accidentally got left in and moved around in the\r\nfile.\r\n\r\nThe original code began with this autoconf comment:\r\n```\r\ndnl Avahi for cups-browsed\r\n```\r\n\r\nAfter shifting down, it became:\r\n```\r\ndnl Avahi\r\n```\r\n\r\nAfter removing avahi from configure.ac, there are no remaining mentions\r\nof avahi anywhere other than CHANGES*.md",
+      "tree": {
+        "sha": "a189efb0cfd4bcde219193a935955c182b7d661d",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/a189efb0cfd4bcde219193a935955c182b7d661d"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/f0bd8ce7d8410908e0665bf61046f13c45b2d6d4",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl6vt1CRC1aQ7uu5UhlAAATmMQAANPLXRhDJU0bI9VfqM8To/b\nBdOFa0+Z6IFGG/p4IKNIfHnboCtfnT7pFQM2OTCibzBEuvqUr3SgtLiHcYYm9mIv\nauB/VYvXadBR+0T8rQ0hor7lyf3NKUKiOG+/YVeRp7qod/JgUM2+1HS77iQCYITu\nk9IMD6tZjn4uRUEuEedEN/R6Wo53MEWptbBkCHB9Xye+lwVl5kjcSEeNJeMfVBka\nD7TQQZYO5rVFBraBttI2O/fQ9vcalBdlO/u7x/bjtHUPOTsdxjkvGdYG6ED/8wm3\nDVTHTNKkCaKGiHDj2Xrp5lWyc2NNdAkpwnXgtw6cOXmM1iMWppY1xVfLrupgzehN\nMP+wLqPt3KAdVRAzZASFhXIHckw+Epf1mxajSDfYoeRbQ1hcjv+7QfnWGGMQHMxj\nBgz14oz9P2bzYxJPVzrqcnT0MmPxZ0nqB9np7UHn3xhOKs+QaM4YvI49gzCh+Olr\nSjtV1c0PIKCNhZVf0uD0TzWAfsOhbVkrNMqPhV8Ox2j5t79TtxDRgFzBasSPlm7y\no5CwQhVJCi5VlmiR0Bw+8Nuj1IHDVm2yijDzsGkwsGX3SkEMV+9upQFYGLtuMsfR\nqESbCDvY1ju8vciQHY+Q1UUhCTjxhhdF8wmu0KFE9XFbiM3THVumPRqNo3fP+6gi\nnV2iIP/D37rSlBnVQY9i\n=eq+R\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree a189efb0cfd4bcde219193a935955c182b7d661d\nparent 2ddc72c47172b1b943fa9b228580d931edc9aa35\nauthor Eli Schwartz <eschwartz93@gmail.com> 1709898613 -0500\ncommitter GitHub <noreply@github.com> 1709898613 +0100\n\nconfigure.ac: Remove final traces of avahi (#558)\n\nThis was originally searched for cups-browsed, and during the great\r\nsplit these lookups accidentally got left in and moved around in the\r\nfile.\r\n\r\nThe original code began with this autoconf comment:\r\n```\r\ndnl Avahi for cups-browsed\r\n```\r\n\r\nAfter shifting down, it became:\r\n```\r\ndnl Avahi\r\n```\r\n\r\nAfter removing avahi from configure.ac, there are no remaining mentions\r\nof avahi anywhere other than CHANGES*.md"
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/f0bd8ce7d8410908e0665bf61046f13c45b2d6d4",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/f0bd8ce7d8410908e0665bf61046f13c45b2d6d4",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/f0bd8ce7d8410908e0665bf61046f13c45b2d6d4/comments",
+    "author": {
+      "login": "eli-schwartz",
+      "id": 6551424,
+      "node_id": "MDQ6VXNlcjY1NTE0MjQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6551424?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/eli-schwartz",
+      "html_url": "https://github.com/eli-schwartz",
+      "followers_url": "https://api.github.com/users/eli-schwartz/followers",
+      "following_url": "https://api.github.com/users/eli-schwartz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/eli-schwartz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/eli-schwartz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/eli-schwartz/subscriptions",
+      "organizations_url": "https://api.github.com/users/eli-schwartz/orgs",
+      "repos_url": "https://api.github.com/users/eli-schwartz/repos",
+      "events_url": "https://api.github.com/users/eli-schwartz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/eli-schwartz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2ddc72c47172b1b943fa9b228580d931edc9aa35",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/2ddc72c47172b1b943fa9b228580d931edc9aa35",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/2ddc72c47172b1b943fa9b228580d931edc9aa35"
+      }
+    ]
+  },
+  {
+    "sha": "2ddc72c47172b1b943fa9b228580d931edc9aa35",
+    "node_id": "C_kwDOBk7C4toAKDJkZGM3MmM0NzE3MmIxYjk0M2ZhOWIyMjg1ODBkOTMxZWRjOWFhMzU",
+    "commit": {
+      "author": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-09-22T16:12:11Z"
+      },
+      "committer": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-09-22T16:12:11Z"
+      },
+      "message": "cups-filters 2.0.0 Release",
+      "tree": {
+        "sha": "112fae04187a48b4bce9b98ab621bb211e47cd93",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/112fae04187a48b4bce9b98ab621bb211e47cd93"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/2ddc72c47172b1b943fa9b228580d931edc9aa35",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/2ddc72c47172b1b943fa9b228580d931edc9aa35",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/2ddc72c47172b1b943fa9b228580d931edc9aa35",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/2ddc72c47172b1b943fa9b228580d931edc9aa35/comments",
+    "author": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "fffe781c4de655d458607c27dce9d202c4d7ae3d",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/fffe781c4de655d458607c27dce9d202c4d7ae3d",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/fffe781c4de655d458607c27dce9d202c4d7ae3d"
+      }
+    ]
+  },
+  {
+    "sha": "fffe781c4de655d458607c27dce9d202c4d7ae3d",
+    "node_id": "C_kwDOBk7C4toAKGZmZmU3ODFjNGRlNjU1ZDQ1ODYwN2MyN2RjZTlkMjAyYzRkN2FlM2Q",
+    "commit": {
+      "author": {
+        "name": "zdohnal",
+        "email": "zdohnal@redhat.com",
+        "date": "2023-09-21T17:52:00Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-09-21T17:52:00Z"
+      },
+      "message": "Enable application/vnd.cups-postscript in conversion tables (#534)\n\nUnfortunately there are filters which produce this MIME type (such as\r\nhpps from hplip), and if someone uses such driver on client and server\r\nhas IPP Everywhere/driverless driver, job fails.\r\n\r\nThe patch (together with change in libcupsfilters, which will come later)\r\nfixes the issue.",
+      "tree": {
+        "sha": "2f20cfbaff72be3b117f8a9a4ad4766f4395f662",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/2f20cfbaff72be3b117f8a9a4ad4766f4395f662"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/fffe781c4de655d458607c27dce9d202c4d7ae3d",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlDILACRBK7hj4Ov3rIwAARBAIAGMkPDvOr1MPvHpntrkcZSgf\nSY0I17/MrMJI3/7iE9VDfNozUgqryL9qm6ZNiL5dus+GmS2NBoOUc990sQhCHfzG\nZTB4jz0zbYCR5sGV7BQiqQSNWv69KYj6QDsZkUrxPyMOn6fDp4Njd9keNt0d1Kwn\nVVaORJXPMKimrK6Y/gWUnZz4dqTVfZAqkI0+g5blHveLDOl0wOPPIGW1Hns1MXNv\nqk4qFYklTKEJaoSYjyMXrelJk2kCilBUU9OgYVIAcJW0hCQETzEmM5OijHHgv2mP\nZ7Jb1U2TANZEECkcc3XMptneC52DQPpwK75QxRXwyfFpUDybsJ8StsgklI69Vgc=\n=eJoL\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 2f20cfbaff72be3b117f8a9a4ad4766f4395f662\nparent fe184fdf86f7008bc5c811e037b55da519b1707d\nauthor zdohnal <zdohnal@redhat.com> 1695318720 +0200\ncommitter GitHub <noreply@github.com> 1695318720 +0200\n\nEnable application/vnd.cups-postscript in conversion tables (#534)\n\nUnfortunately there are filters which produce this MIME type (such as\r\nhpps from hplip), and if someone uses such driver on client and server\r\nhas IPP Everywhere/driverless driver, job fails.\r\n\r\nThe patch (together with change in libcupsfilters, which will come later)\r\nfixes the issue."
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/fffe781c4de655d458607c27dce9d202c4d7ae3d",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/fffe781c4de655d458607c27dce9d202c4d7ae3d",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/fffe781c4de655d458607c27dce9d202c4d7ae3d/comments",
+    "author": {
+      "login": "zdohnal",
+      "id": 17822565,
+      "node_id": "MDQ6VXNlcjE3ODIyNTY1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17822565?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/zdohnal",
+      "html_url": "https://github.com/zdohnal",
+      "followers_url": "https://api.github.com/users/zdohnal/followers",
+      "following_url": "https://api.github.com/users/zdohnal/following{/other_user}",
+      "gists_url": "https://api.github.com/users/zdohnal/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/zdohnal/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/zdohnal/subscriptions",
+      "organizations_url": "https://api.github.com/users/zdohnal/orgs",
+      "repos_url": "https://api.github.com/users/zdohnal/repos",
+      "events_url": "https://api.github.com/users/zdohnal/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/zdohnal/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "fe184fdf86f7008bc5c811e037b55da519b1707d",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/fe184fdf86f7008bc5c811e037b55da519b1707d",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/fe184fdf86f7008bc5c811e037b55da519b1707d"
+      }
+    ]
+  },
+  {
+    "sha": "fe184fdf86f7008bc5c811e037b55da519b1707d",
+    "node_id": "C_kwDOBk7C4toAKGZlMTg0ZmRmODZmNzAwOGJjNWM4MTFlMDM3YjU1ZGE1MTliMTcwN2Q",
+    "commit": {
+      "author": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-06-20T20:05:40Z"
+      },
+      "committer": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-06-20T20:05:40Z"
+      },
+      "message": "cups-filters 2.0rc2 Release",
+      "tree": {
+        "sha": "1504e7755872c6a3d4a20626530968c0a15f1eb5",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/1504e7755872c6a3d4a20626530968c0a15f1eb5"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/fe184fdf86f7008bc5c811e037b55da519b1707d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/fe184fdf86f7008bc5c811e037b55da519b1707d",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/fe184fdf86f7008bc5c811e037b55da519b1707d",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/fe184fdf86f7008bc5c811e037b55da519b1707d/comments",
+    "author": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8f274035756c04efeb77eb654e9d4c4447287d65",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/8f274035756c04efeb77eb654e9d4c4447287d65",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/8f274035756c04efeb77eb654e9d4c4447287d65"
+      }
+    ]
+  },
+  {
+    "sha": "8f274035756c04efeb77eb654e9d4c4447287d65",
+    "node_id": "C_kwDOBk7C4toAKDhmMjc0MDM1NzU2YzA0ZWZlYjc3ZWI2NTRlOWQ0YzQ0NDcyODdkNjU",
+    "commit": {
+      "author": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-05-17T09:12:37Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-05-17T09:12:37Z"
+      },
+      "message": "Merge pull request from GHSA-gpxc-v2m8-fr3x\n\n* beh backend: Use execv() instead of system() - CVE-2023-24805\n\nWith execv() command line arguments are passed as separate strings and\nnot the full command line in a single string. This prevents arbitrary\ncommand execution by escaping the quoting of the arguments in a job\nwith forged job title.\n\n* beh backend: Extra checks against odd/forged input - CVE-2023-24805\n\n- Do not allow '/' in the scheme of the URI (= backend executable\n  name), to assure that only backends inside /usr/lib/cups/backend/\n  are used.\n\n- Pre-define scheme buffer to empty string, to be defined for case of\n  uri being NULL.\n\n- URI must have ':', to split off scheme, otherwise error.\n\n- Check return value of snprintf() to create call path for backend, to\n  error out on truncation of a too long scheme or on complete failure\n  due to a completely odd scheme.\n\n* beh backend: Further improvements - CVE-2023-24805\n\n- Use strncat() instead of strncpy() for getting scheme from URI, the latter\n  does not require setting terminating zero byte in case of truncation.\n\n- Also exclude \".\" or \"..\" as scheme, as directories are not valid CUPS\n  backends.\n\n- Do not use fprintf() in sigterm_handler(), to not interfere with a\n  fprintf() which could be running in the main process when\n  sigterm_handler() is triggered.\n\n- Use \"static volatile int\" for global variable job_canceled.",
+      "tree": {
+        "sha": "4e610ad36d381d5cdf069bf2e0712e8ff5447156",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/4e610ad36d381d5cdf069bf2e0712e8ff5447156"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/8f274035756c04efeb77eb654e9d4c4447287d65",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkZJqFCRBK7hj4Ov3rIwAAJYcIAK3M+FJL9KFQDbW+94bupbX+\nw7X+BH4DERQkFJqV0uw3Rz05+zA7vo2H74tY/xjV+fb0B0V+IH9b9OGwZ8PMjnjK\nyL4HDSZxz3M3oaUcFH91bn2d3gHmGy08NRV9YB8FVYsWf9NwkRfV+EWJFVLOGCv5\nwKlDIPxyALlDlVpRYvO528qfrMX6D+UA5e1srgTPpqFcqSLP083HIBQYmIYv3siA\no0IxU9NMphdKVI8R2MJSYo4kTl0XYANq17rtHtnomaVpReqBdRinTZS9N7G/dagf\n+h815pzoSY59i/YsRdvYivdH7yBw75D1Prug3wcW89a7r8gj1mQCMGAEyXjZkLU=\n=Zk6j\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 4e610ad36d381d5cdf069bf2e0712e8ff5447156\nparent a4809b89909c912998fee9bcfedc43aae5bbe505\nauthor Till Kamppeter <till.kamppeter@gmail.com> 1684314757 +0200\ncommitter GitHub <noreply@github.com> 1684314757 +0200\n\nMerge pull request from GHSA-gpxc-v2m8-fr3x\n\n* beh backend: Use execv() instead of system() - CVE-2023-24805\n\nWith execv() command line arguments are passed as separate strings and\nnot the full command line in a single string. This prevents arbitrary\ncommand execution by escaping the quoting of the arguments in a job\nwith forged job title.\n\n* beh backend: Extra checks against odd/forged input - CVE-2023-24805\n\n- Do not allow '/' in the scheme of the URI (= backend executable\n  name), to assure that only backends inside /usr/lib/cups/backend/\n  are used.\n\n- Pre-define scheme buffer to empty string, to be defined for case of\n  uri being NULL.\n\n- URI must have ':', to split off scheme, otherwise error.\n\n- Check return value of snprintf() to create call path for backend, to\n  error out on truncation of a too long scheme or on complete failure\n  due to a completely odd scheme.\n\n* beh backend: Further improvements - CVE-2023-24805\n\n- Use strncat() instead of strncpy() for getting scheme from URI, the latter\n  does not require setting terminating zero byte in case of truncation.\n\n- Also exclude \".\" or \"..\" as scheme, as directories are not valid CUPS\n  backends.\n\n- Do not use fprintf() in sigterm_handler(), to not interfere with a\n  fprintf() which could be running in the main process when\n  sigterm_handler() is triggered.\n\n- Use \"static volatile int\" for global variable job_canceled."
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/8f274035756c04efeb77eb654e9d4c4447287d65",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/8f274035756c04efeb77eb654e9d4c4447287d65",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/8f274035756c04efeb77eb654e9d4c4447287d65/comments",
+    "author": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a4809b89909c912998fee9bcfedc43aae5bbe505",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/a4809b89909c912998fee9bcfedc43aae5bbe505",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/a4809b89909c912998fee9bcfedc43aae5bbe505"
+      }
+    ]
+  },
+  {
+    "sha": "a4809b89909c912998fee9bcfedc43aae5bbe505",
+    "node_id": "C_kwDOBk7C4toAKGE0ODA5Yjg5OTA5YzkxMjk5OGZlZTliY2ZlZGM0M2FhZTViYmU1MDU",
+    "commit": {
+      "author": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-04-11T23:25:35Z"
+      },
+      "committer": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-04-11T23:25:35Z"
+      },
+      "message": "parallel backend: Added missing #include lines",
+      "tree": {
+        "sha": "084dc2984ad4d76e80227fdb91ead404e18ab157",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/084dc2984ad4d76e80227fdb91ead404e18ab157"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/a4809b89909c912998fee9bcfedc43aae5bbe505",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/a4809b89909c912998fee9bcfedc43aae5bbe505",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/a4809b89909c912998fee9bcfedc43aae5bbe505",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/a4809b89909c912998fee9bcfedc43aae5bbe505/comments",
+    "author": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6b19cc6ad0ff047cf8a90dd8f9206e5aa5c48abd",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/6b19cc6ad0ff047cf8a90dd8f9206e5aa5c48abd",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/6b19cc6ad0ff047cf8a90dd8f9206e5aa5c48abd"
+      }
+    ]
+  },
+  {
+    "sha": "6b19cc6ad0ff047cf8a90dd8f9206e5aa5c48abd",
+    "node_id": "C_kwDOBk7C4toAKDZiMTljYzZhZDBmZjA0N2NmOGE5MGRkOGY5MjA2ZTVhYTVjNDhhYmQ",
+    "commit": {
+      "author": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-04-11T23:09:51Z"
+      },
+      "committer": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-04-11T23:09:51Z"
+      },
+      "message": "cups-filters 2.0rc1 Release",
+      "tree": {
+        "sha": "a1695d4f9e53a6f64f42b07242ecfb5b6048d627",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/a1695d4f9e53a6f64f42b07242ecfb5b6048d627"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/6b19cc6ad0ff047cf8a90dd8f9206e5aa5c48abd",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/6b19cc6ad0ff047cf8a90dd8f9206e5aa5c48abd",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/6b19cc6ad0ff047cf8a90dd8f9206e5aa5c48abd",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/6b19cc6ad0ff047cf8a90dd8f9206e5aa5c48abd/comments",
+    "author": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9ad74c455a1f58d5e8d84d82d3cbba9cb27360e9",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/9ad74c455a1f58d5e8d84d82d3cbba9cb27360e9",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/9ad74c455a1f58d5e8d84d82d3cbba9cb27360e9"
+      }
+    ]
+  },
+  {
+    "sha": "9ad74c455a1f58d5e8d84d82d3cbba9cb27360e9",
+    "node_id": "C_kwDOBk7C4toAKDlhZDc0YzQ1NWExZjU4ZDVlOGQ4NGQ4MmQzY2JiYTljYjI3MzYwZTk",
+    "commit": {
+      "author": {
+        "name": "Adam Majer",
+        "email": "amajer@suse.de",
+        "date": "2023-04-10T14:22:46Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-04-10T14:22:46Z"
+      },
+      "message": "Drop C++ references and obsolete C standards (#513)\n\nWith no C++ compiler needed, there is no need to set the\r\nCXXFLAGS or log it during configure. Furthermore, forcing\r\noutdated C11 standard is not a good idea considering compilers\r\nhave moved on. We should not limit our feature set, including\r\ncompiler warnings, to old standards.",
+      "tree": {
+        "sha": "0557c2454e7de486bfee5e5fccb21b521f160268",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/0557c2454e7de486bfee5e5fccb21b521f160268"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/9ad74c455a1f58d5e8d84d82d3cbba9cb27360e9",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkNBu2CRBK7hj4Ov3rIwAA5wwIAJ5tntId4xScLBGXaziYzOXB\nNNKQCiVoBnlhs78cVdPbKM3ApYOVuesHINJEjNMcYvfIrOYNCWThqD3BvPQunD92\n4YzNVsEW1dO6NMXP4xWAhY4mck3Wd7W0Quo1MbGBEvnrBOUgQa2ZMIhLlkaJmyIa\nga5iSY6yi8fULmhqWYs7tQXx34m1UcV/cPu0yj8sclxlu3oWruB3q9VCK0Vuu8Xv\nxbtzlZUknZiKdr7XJqYG5fE+63FnCpzjV5IPw8IihNXDYJytHObHoNWm5gSjtdjN\nm1YeEF+xe/l4f3IsILy78sgg5UEAJrDlH5i52pd0RtAxT2TVcj2q300PiNuuuUg=\n=Fcrw\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 0557c2454e7de486bfee5e5fccb21b521f160268\nparent 3a4d8b5b236e315fda392f4ae706578bde7a9c19\nauthor Adam Majer <amajer@suse.de> 1681136566 +0200\ncommitter GitHub <noreply@github.com> 1681136566 +0200\n\nDrop C++ references and obsolete C standards (#513)\n\nWith no C++ compiler needed, there is no need to set the\r\nCXXFLAGS or log it during configure. Furthermore, forcing\r\noutdated C11 standard is not a good idea considering compilers\r\nhave moved on. We should not limit our feature set, including\r\ncompiler warnings, to old standards."
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/9ad74c455a1f58d5e8d84d82d3cbba9cb27360e9",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/9ad74c455a1f58d5e8d84d82d3cbba9cb27360e9",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/9ad74c455a1f58d5e8d84d82d3cbba9cb27360e9/comments",
+    "author": {
+      "login": "AdamMajer",
+      "id": 1211498,
+      "node_id": "MDQ6VXNlcjEyMTE0OTg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1211498?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/AdamMajer",
+      "html_url": "https://github.com/AdamMajer",
+      "followers_url": "https://api.github.com/users/AdamMajer/followers",
+      "following_url": "https://api.github.com/users/AdamMajer/following{/other_user}",
+      "gists_url": "https://api.github.com/users/AdamMajer/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/AdamMajer/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/AdamMajer/subscriptions",
+      "organizations_url": "https://api.github.com/users/AdamMajer/orgs",
+      "repos_url": "https://api.github.com/users/AdamMajer/repos",
+      "events_url": "https://api.github.com/users/AdamMajer/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/AdamMajer/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3a4d8b5b236e315fda392f4ae706578bde7a9c19",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/3a4d8b5b236e315fda392f4ae706578bde7a9c19",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/3a4d8b5b236e315fda392f4ae706578bde7a9c19"
+      }
+    ]
+  },
+  {
+    "sha": "3a4d8b5b236e315fda392f4ae706578bde7a9c19",
+    "node_id": "C_kwDOBk7C4toAKDNhNGQ4YjViMjM2ZTMxNWZkYTM5MmY0YWU3MDY1NzhiZGU3YTljMTk",
+    "commit": {
+      "author": {
+        "name": "Steve Langasek",
+        "email": "steve.langasek@canonical.com",
+        "date": "2023-03-17T20:02:43Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-03-17T20:02:43Z"
+      },
+      "message": "foomatic-rip: Fix a SIGPIPE error when calling gs (#517)\n\nhttps://autopkgtest.ubuntu.com/packages/f/foo2zjs/lunar/ppc64el shows\r\nfoo2zjs's testsuite failing with cups-filters 2.0beta3 on ppc64el because\r\nthe gs command here to check page count is failing with a SIGPIPE when\r\ntrying to write back to the parent.  To fix this, we close gs's input fd as\r\nsoon as we know we're done writing to it.  Since gs may not have started\r\nprocessing its input until this happens, also give the final poll() a longer\r\ntimeout (5s instead of 1s); without this we see race conditions because\r\nfoomatic-rip gives up before gs has had a chance to finish processing.",
+      "tree": {
+        "sha": "e2bd800b4efea22fa077793f07d03c117098d88e",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/e2bd800b4efea22fa077793f07d03c117098d88e"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/3a4d8b5b236e315fda392f4ae706578bde7a9c19",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkFMdjCRBK7hj4Ov3rIwAAVQEIAJ6rvbPjJ7C4+aGmRTSFbOLA\nU2GYYGUoD1Q6T+f5Rxze6u2a/wzioGV2zS+J2AmYl1Hy5IOs3KIagP9vsTNoNIcp\n2guPcD+nlGRDVhCSuW+hNXlZ3J0Ye/UQFTCRZjHn3/LC1gaG1ds1yNteKlBpLcQj\n47f/3uUYmY8247alOcvy/6WPNPEUGhZO6SqiOCEuFaDENuUElp+eu2VaqGWwSBe3\nPuW/iVSD/RZIMnn18umxZioGDZ6yVzEVuZLzFW14j2n2DkclPvKKV4i31qAGBbSw\n2zJe8EuPCWy1UAWpk9Wv3FXetjIQ6YjuwBrj64rIetRDqblqKZWFHQxFKcxw7so=\n=wvUc\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree e2bd800b4efea22fa077793f07d03c117098d88e\nparent 64b3da441f36d54318352a0bb41e162f4c72cd3e\nauthor Steve Langasek <steve.langasek@canonical.com> 1679083363 -0700\ncommitter GitHub <noreply@github.com> 1679083363 +0100\n\nfoomatic-rip: Fix a SIGPIPE error when calling gs (#517)\n\nhttps://autopkgtest.ubuntu.com/packages/f/foo2zjs/lunar/ppc64el shows\r\nfoo2zjs's testsuite failing with cups-filters 2.0beta3 on ppc64el because\r\nthe gs command here to check page count is failing with a SIGPIPE when\r\ntrying to write back to the parent.  To fix this, we close gs's input fd as\r\nsoon as we know we're done writing to it.  Since gs may not have started\r\nprocessing its input until this happens, also give the final poll() a longer\r\ntimeout (5s instead of 1s); without this we see race conditions because\r\nfoomatic-rip gives up before gs has had a chance to finish processing."
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/3a4d8b5b236e315fda392f4ae706578bde7a9c19",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/3a4d8b5b236e315fda392f4ae706578bde7a9c19",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/3a4d8b5b236e315fda392f4ae706578bde7a9c19/comments",
+    "author": {
+      "login": "vorlonofportland",
+      "id": 2757405,
+      "node_id": "MDQ6VXNlcjI3NTc0MDU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2757405?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vorlonofportland",
+      "html_url": "https://github.com/vorlonofportland",
+      "followers_url": "https://api.github.com/users/vorlonofportland/followers",
+      "following_url": "https://api.github.com/users/vorlonofportland/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vorlonofportland/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vorlonofportland/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vorlonofportland/subscriptions",
+      "organizations_url": "https://api.github.com/users/vorlonofportland/orgs",
+      "repos_url": "https://api.github.com/users/vorlonofportland/repos",
+      "events_url": "https://api.github.com/users/vorlonofportland/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vorlonofportland/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "64b3da441f36d54318352a0bb41e162f4c72cd3e",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/64b3da441f36d54318352a0bb41e162f4c72cd3e",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/64b3da441f36d54318352a0bb41e162f4c72cd3e"
+      }
+    ]
+  },
+  {
+    "sha": "64b3da441f36d54318352a0bb41e162f4c72cd3e",
+    "node_id": "C_kwDOBk7C4toAKDY0YjNkYTQ0MWYzNmQ1NDMxODM1MmEwYmI0MWUxNjJmNGM3MmNkM2U",
+    "commit": {
+      "author": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-02-16T16:42:29Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-02-16T16:42:29Z"
+      },
+      "message": "Merge pull request #510 from zdohnal/coverity_fixes\n\nCoverity fixes for 2.0b3",
+      "tree": {
+        "sha": "7c46994469ffee93f4fe4e7648c7cb906d1830ed",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/7c46994469ffee93f4fe4e7648c7cb906d1830ed"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/64b3da441f36d54318352a0bb41e162f4c72cd3e",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJj7lz1CRBK7hj4Ov3rIwAAmJ0IABKX16L//awjw8onGbHjOzFt\nhZXLLGoQrzdkv5YM3Ue4bSG9/ovdm73tlmQQ2BL+49HkTxF6D9j3gSHHs+I1u7wn\np12b/o/4103Sa0v8yMKo3vS9F9atR64a2QaI8clVNeh3B+fdOGTq58AkBPW+K75q\nO8ejuSA/u6ISLZCOlz9uGrcmG4ocTS6tjKCWj+eUwWtKankCnz+o9X9GotNUVDf/\nejLpvPno6J89H1WqgFw0O+KprxkSFBVUMvaEW2F/kKp+AUMFFlN+ge08qLn0Dxc5\n0cE2+A8/O6c2gSNuVEB4u2L28zcD+yNUl+eyiA5HfdnDWHpI87hjSfOAXACLaF8=\n=JX3g\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 7c46994469ffee93f4fe4e7648c7cb906d1830ed\nparent df0de91acda997bd40ca2302f5da3eda56d5dc2e\nparent cc1c8cdc5f7763d5d27db0f6c36c499740fe7468\nauthor Till Kamppeter <till.kamppeter@gmail.com> 1676565749 +0100\ncommitter GitHub <noreply@github.com> 1676565749 +0100\n\nMerge pull request #510 from zdohnal/coverity_fixes\n\nCoverity fixes for 2.0b3"
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/64b3da441f36d54318352a0bb41e162f4c72cd3e",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/64b3da441f36d54318352a0bb41e162f4c72cd3e",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/64b3da441f36d54318352a0bb41e162f4c72cd3e/comments",
+    "author": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "df0de91acda997bd40ca2302f5da3eda56d5dc2e",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/df0de91acda997bd40ca2302f5da3eda56d5dc2e",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/df0de91acda997bd40ca2302f5da3eda56d5dc2e"
+      },
+      {
+        "sha": "cc1c8cdc5f7763d5d27db0f6c36c499740fe7468",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/cc1c8cdc5f7763d5d27db0f6c36c499740fe7468",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/cc1c8cdc5f7763d5d27db0f6c36c499740fe7468"
+      }
+    ]
+  },
+  {
+    "sha": "cc1c8cdc5f7763d5d27db0f6c36c499740fe7468",
+    "node_id": "C_kwDOBk7C4toAKGNjMWM4Y2RjNWY3NzYzZDVkMjdkYjBmNmMzNmM0OTk3NDBmZTc0Njg",
+    "commit": {
+      "author": {
+        "name": "Zdenek Dohnal",
+        "email": "zdohnal@redhat.com",
+        "date": "2023-02-16T14:48:32Z"
+      },
+      "committer": {
+        "name": "Zdenek Dohnal",
+        "email": "zdohnal@redhat.com",
+        "date": "2023-02-16T14:48:32Z"
+      },
+      "message": "Re: Fix issue 6.\n\nUse default branch instead of specific one",
+      "tree": {
+        "sha": "7c46994469ffee93f4fe4e7648c7cb906d1830ed",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/7c46994469ffee93f4fe4e7648c7cb906d1830ed"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/cc1c8cdc5f7763d5d27db0f6c36c499740fe7468",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/cc1c8cdc5f7763d5d27db0f6c36c499740fe7468",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/cc1c8cdc5f7763d5d27db0f6c36c499740fe7468",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/cc1c8cdc5f7763d5d27db0f6c36c499740fe7468/comments",
+    "author": {
+      "login": "zdohnal",
+      "id": 17822565,
+      "node_id": "MDQ6VXNlcjE3ODIyNTY1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17822565?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/zdohnal",
+      "html_url": "https://github.com/zdohnal",
+      "followers_url": "https://api.github.com/users/zdohnal/followers",
+      "following_url": "https://api.github.com/users/zdohnal/following{/other_user}",
+      "gists_url": "https://api.github.com/users/zdohnal/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/zdohnal/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/zdohnal/subscriptions",
+      "organizations_url": "https://api.github.com/users/zdohnal/orgs",
+      "repos_url": "https://api.github.com/users/zdohnal/repos",
+      "events_url": "https://api.github.com/users/zdohnal/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/zdohnal/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "zdohnal",
+      "id": 17822565,
+      "node_id": "MDQ6VXNlcjE3ODIyNTY1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17822565?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/zdohnal",
+      "html_url": "https://github.com/zdohnal",
+      "followers_url": "https://api.github.com/users/zdohnal/followers",
+      "following_url": "https://api.github.com/users/zdohnal/following{/other_user}",
+      "gists_url": "https://api.github.com/users/zdohnal/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/zdohnal/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/zdohnal/subscriptions",
+      "organizations_url": "https://api.github.com/users/zdohnal/orgs",
+      "repos_url": "https://api.github.com/users/zdohnal/repos",
+      "events_url": "https://api.github.com/users/zdohnal/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/zdohnal/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "fe04af9b4101b112105a2eb27247e8084126306f",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/fe04af9b4101b112105a2eb27247e8084126306f",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/fe04af9b4101b112105a2eb27247e8084126306f"
+      }
+    ]
+  },
+  {
+    "sha": "fe04af9b4101b112105a2eb27247e8084126306f",
+    "node_id": "C_kwDOBk7C4toAKGZlMDRhZjliNDEwMWIxMTIxMDVhMmViMjcyNDdlODA4NDEyNjMwNmY",
+    "commit": {
+      "author": {
+        "name": "Zdenek Dohnal",
+        "email": "zdohnal@redhat.com",
+        "date": "2023-02-15T18:03:37Z"
+      },
+      "committer": {
+        "name": "Zdenek Dohnal",
+        "email": "zdohnal@redhat.com",
+        "date": "2023-02-15T18:03:37Z"
+      },
+      "message": "Fix coverity issue 7.\n\nAlloc the array only in case we need it to prevent overwriting pointer",
+      "tree": {
+        "sha": "9ad375c74b466d46ab94db696f640fcee49f9494",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/9ad375c74b466d46ab94db696f640fcee49f9494"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/fe04af9b4101b112105a2eb27247e8084126306f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/fe04af9b4101b112105a2eb27247e8084126306f",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/fe04af9b4101b112105a2eb27247e8084126306f",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/fe04af9b4101b112105a2eb27247e8084126306f/comments",
+    "author": {
+      "login": "zdohnal",
+      "id": 17822565,
+      "node_id": "MDQ6VXNlcjE3ODIyNTY1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17822565?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/zdohnal",
+      "html_url": "https://github.com/zdohnal",
+      "followers_url": "https://api.github.com/users/zdohnal/followers",
+      "following_url": "https://api.github.com/users/zdohnal/following{/other_user}",
+      "gists_url": "https://api.github.com/users/zdohnal/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/zdohnal/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/zdohnal/subscriptions",
+      "organizations_url": "https://api.github.com/users/zdohnal/orgs",
+      "repos_url": "https://api.github.com/users/zdohnal/repos",
+      "events_url": "https://api.github.com/users/zdohnal/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/zdohnal/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "zdohnal",
+      "id": 17822565,
+      "node_id": "MDQ6VXNlcjE3ODIyNTY1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17822565?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/zdohnal",
+      "html_url": "https://github.com/zdohnal",
+      "followers_url": "https://api.github.com/users/zdohnal/followers",
+      "following_url": "https://api.github.com/users/zdohnal/following{/other_user}",
+      "gists_url": "https://api.github.com/users/zdohnal/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/zdohnal/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/zdohnal/subscriptions",
+      "organizations_url": "https://api.github.com/users/zdohnal/orgs",
+      "repos_url": "https://api.github.com/users/zdohnal/repos",
+      "events_url": "https://api.github.com/users/zdohnal/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/zdohnal/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f7d895144a00f5a9e24ed268af0a476b64b7a369",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/f7d895144a00f5a9e24ed268af0a476b64b7a369",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/f7d895144a00f5a9e24ed268af0a476b64b7a369"
+      }
+    ]
+  },
+  {
+    "sha": "f7d895144a00f5a9e24ed268af0a476b64b7a369",
+    "node_id": "C_kwDOBk7C4toAKGY3ZDg5NTE0NGEwMGY1YTllMjRlZDI2OGFmMGE0NzZiNjRiN2EzNjk",
+    "commit": {
+      "author": {
+        "name": "Zdenek Dohnal",
+        "email": "zdohnal@redhat.com",
+        "date": "2023-02-15T17:58:08Z"
+      },
+      "committer": {
+        "name": "Zdenek Dohnal",
+        "email": "zdohnal@redhat.com",
+        "date": "2023-02-15T17:58:08Z"
+      },
+      "message": "Fix coverity issue 6.\n\nEnsure that PrinterPlanes is not zero",
+      "tree": {
+        "sha": "38c9d450aac3bc7364ceba8133fbc4e86c7d093e",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/38c9d450aac3bc7364ceba8133fbc4e86c7d093e"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/f7d895144a00f5a9e24ed268af0a476b64b7a369",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/f7d895144a00f5a9e24ed268af0a476b64b7a369",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/f7d895144a00f5a9e24ed268af0a476b64b7a369",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/f7d895144a00f5a9e24ed268af0a476b64b7a369/comments",
+    "author": {
+      "login": "zdohnal",
+      "id": 17822565,
+      "node_id": "MDQ6VXNlcjE3ODIyNTY1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17822565?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/zdohnal",
+      "html_url": "https://github.com/zdohnal",
+      "followers_url": "https://api.github.com/users/zdohnal/followers",
+      "following_url": "https://api.github.com/users/zdohnal/following{/other_user}",
+      "gists_url": "https://api.github.com/users/zdohnal/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/zdohnal/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/zdohnal/subscriptions",
+      "organizations_url": "https://api.github.com/users/zdohnal/orgs",
+      "repos_url": "https://api.github.com/users/zdohnal/repos",
+      "events_url": "https://api.github.com/users/zdohnal/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/zdohnal/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "zdohnal",
+      "id": 17822565,
+      "node_id": "MDQ6VXNlcjE3ODIyNTY1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17822565?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/zdohnal",
+      "html_url": "https://github.com/zdohnal",
+      "followers_url": "https://api.github.com/users/zdohnal/followers",
+      "following_url": "https://api.github.com/users/zdohnal/following{/other_user}",
+      "gists_url": "https://api.github.com/users/zdohnal/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/zdohnal/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/zdohnal/subscriptions",
+      "organizations_url": "https://api.github.com/users/zdohnal/orgs",
+      "repos_url": "https://api.github.com/users/zdohnal/repos",
+      "events_url": "https://api.github.com/users/zdohnal/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/zdohnal/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7478d1ea9d1a142c96098b04fddfb79dad33c581",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/7478d1ea9d1a142c96098b04fddfb79dad33c581",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/7478d1ea9d1a142c96098b04fddfb79dad33c581"
+      }
+    ]
+  },
+  {
+    "sha": "7478d1ea9d1a142c96098b04fddfb79dad33c581",
+    "node_id": "C_kwDOBk7C4toAKDc0NzhkMWVhOWQxYTE0MmM5NjA5OGIwNGZkZGZiNzlkYWQzM2M1ODE",
+    "commit": {
+      "author": {
+        "name": "Zdenek Dohnal",
+        "email": "zdohnal@redhat.com",
+        "date": "2023-02-15T17:51:32Z"
+      },
+      "committer": {
+        "name": "Zdenek Dohnal",
+        "email": "zdohnal@redhat.com",
+        "date": "2023-02-15T17:51:32Z"
+      },
+      "message": "Fix coverity issue 5.\n\nFree the struct at the end of function",
+      "tree": {
+        "sha": "1ec0fc6648f8ef64b985b17a0f5519e2b66bb1d4",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/1ec0fc6648f8ef64b985b17a0f5519e2b66bb1d4"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/7478d1ea9d1a142c96098b04fddfb79dad33c581",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/7478d1ea9d1a142c96098b04fddfb79dad33c581",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/7478d1ea9d1a142c96098b04fddfb79dad33c581",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/7478d1ea9d1a142c96098b04fddfb79dad33c581/comments",
+    "author": {
+      "login": "zdohnal",
+      "id": 17822565,
+      "node_id": "MDQ6VXNlcjE3ODIyNTY1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17822565?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/zdohnal",
+      "html_url": "https://github.com/zdohnal",
+      "followers_url": "https://api.github.com/users/zdohnal/followers",
+      "following_url": "https://api.github.com/users/zdohnal/following{/other_user}",
+      "gists_url": "https://api.github.com/users/zdohnal/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/zdohnal/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/zdohnal/subscriptions",
+      "organizations_url": "https://api.github.com/users/zdohnal/orgs",
+      "repos_url": "https://api.github.com/users/zdohnal/repos",
+      "events_url": "https://api.github.com/users/zdohnal/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/zdohnal/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "zdohnal",
+      "id": 17822565,
+      "node_id": "MDQ6VXNlcjE3ODIyNTY1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17822565?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/zdohnal",
+      "html_url": "https://github.com/zdohnal",
+      "followers_url": "https://api.github.com/users/zdohnal/followers",
+      "following_url": "https://api.github.com/users/zdohnal/following{/other_user}",
+      "gists_url": "https://api.github.com/users/zdohnal/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/zdohnal/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/zdohnal/subscriptions",
+      "organizations_url": "https://api.github.com/users/zdohnal/orgs",
+      "repos_url": "https://api.github.com/users/zdohnal/repos",
+      "events_url": "https://api.github.com/users/zdohnal/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/zdohnal/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "02bb35bbacecf2f12ca596e391296bc47297213d",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/02bb35bbacecf2f12ca596e391296bc47297213d",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/02bb35bbacecf2f12ca596e391296bc47297213d"
+      }
+    ]
+  },
+  {
+    "sha": "02bb35bbacecf2f12ca596e391296bc47297213d",
+    "node_id": "C_kwDOBk7C4toAKDAyYmIzNWJiYWNlY2YyZjEyY2E1OTZlMzkxMjk2YmM0NzI5NzIxM2Q",
+    "commit": {
+      "author": {
+        "name": "Zdenek Dohnal",
+        "email": "zdohnal@redhat.com",
+        "date": "2023-02-15T17:48:07Z"
+      },
+      "committer": {
+        "name": "Zdenek Dohnal",
+        "email": "zdohnal@redhat.com",
+        "date": "2023-02-15T17:48:07Z"
+      },
+      "message": "Fix coverity issue 4.\n\nMove the allocation and big arrays into scope where it is needed",
+      "tree": {
+        "sha": "899165910dae4410c37491e4dc0154eef417576b",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/899165910dae4410c37491e4dc0154eef417576b"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/02bb35bbacecf2f12ca596e391296bc47297213d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/02bb35bbacecf2f12ca596e391296bc47297213d",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/02bb35bbacecf2f12ca596e391296bc47297213d",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/02bb35bbacecf2f12ca596e391296bc47297213d/comments",
+    "author": {
+      "login": "zdohnal",
+      "id": 17822565,
+      "node_id": "MDQ6VXNlcjE3ODIyNTY1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17822565?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/zdohnal",
+      "html_url": "https://github.com/zdohnal",
+      "followers_url": "https://api.github.com/users/zdohnal/followers",
+      "following_url": "https://api.github.com/users/zdohnal/following{/other_user}",
+      "gists_url": "https://api.github.com/users/zdohnal/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/zdohnal/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/zdohnal/subscriptions",
+      "organizations_url": "https://api.github.com/users/zdohnal/orgs",
+      "repos_url": "https://api.github.com/users/zdohnal/repos",
+      "events_url": "https://api.github.com/users/zdohnal/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/zdohnal/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "zdohnal",
+      "id": 17822565,
+      "node_id": "MDQ6VXNlcjE3ODIyNTY1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17822565?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/zdohnal",
+      "html_url": "https://github.com/zdohnal",
+      "followers_url": "https://api.github.com/users/zdohnal/followers",
+      "following_url": "https://api.github.com/users/zdohnal/following{/other_user}",
+      "gists_url": "https://api.github.com/users/zdohnal/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/zdohnal/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/zdohnal/subscriptions",
+      "organizations_url": "https://api.github.com/users/zdohnal/orgs",
+      "repos_url": "https://api.github.com/users/zdohnal/repos",
+      "events_url": "https://api.github.com/users/zdohnal/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/zdohnal/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b9015865bf78fed1c51a2237158822ceb959904e",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/b9015865bf78fed1c51a2237158822ceb959904e",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/b9015865bf78fed1c51a2237158822ceb959904e"
+      }
+    ]
+  },
+  {
+    "sha": "b9015865bf78fed1c51a2237158822ceb959904e",
+    "node_id": "C_kwDOBk7C4toAKGI5MDE1ODY1YmY3OGZlZDFjNTFhMjIzNzE1ODgyMmNlYjk1OTkwNGU",
+    "commit": {
+      "author": {
+        "name": "Zdenek Dohnal",
+        "email": "zdohnal@redhat.com",
+        "date": "2023-02-15T17:40:55Z"
+      },
+      "committer": {
+        "name": "Zdenek Dohnal",
+        "email": "zdohnal@redhat.com",
+        "date": "2023-02-15T17:40:55Z"
+      },
+      "message": "Fix coverity issue 3.\n\nEnsure we have NULL terminator",
+      "tree": {
+        "sha": "956aa700594e47e90222b647c8accee014d77d0a",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/956aa700594e47e90222b647c8accee014d77d0a"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/b9015865bf78fed1c51a2237158822ceb959904e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/b9015865bf78fed1c51a2237158822ceb959904e",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/b9015865bf78fed1c51a2237158822ceb959904e",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/b9015865bf78fed1c51a2237158822ceb959904e/comments",
+    "author": {
+      "login": "zdohnal",
+      "id": 17822565,
+      "node_id": "MDQ6VXNlcjE3ODIyNTY1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17822565?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/zdohnal",
+      "html_url": "https://github.com/zdohnal",
+      "followers_url": "https://api.github.com/users/zdohnal/followers",
+      "following_url": "https://api.github.com/users/zdohnal/following{/other_user}",
+      "gists_url": "https://api.github.com/users/zdohnal/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/zdohnal/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/zdohnal/subscriptions",
+      "organizations_url": "https://api.github.com/users/zdohnal/orgs",
+      "repos_url": "https://api.github.com/users/zdohnal/repos",
+      "events_url": "https://api.github.com/users/zdohnal/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/zdohnal/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "zdohnal",
+      "id": 17822565,
+      "node_id": "MDQ6VXNlcjE3ODIyNTY1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17822565?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/zdohnal",
+      "html_url": "https://github.com/zdohnal",
+      "followers_url": "https://api.github.com/users/zdohnal/followers",
+      "following_url": "https://api.github.com/users/zdohnal/following{/other_user}",
+      "gists_url": "https://api.github.com/users/zdohnal/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/zdohnal/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/zdohnal/subscriptions",
+      "organizations_url": "https://api.github.com/users/zdohnal/orgs",
+      "repos_url": "https://api.github.com/users/zdohnal/repos",
+      "events_url": "https://api.github.com/users/zdohnal/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/zdohnal/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0ea4c8d5276986450e7c9f885983eb3f2546c5cf",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/0ea4c8d5276986450e7c9f885983eb3f2546c5cf",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/0ea4c8d5276986450e7c9f885983eb3f2546c5cf"
+      }
+    ]
+  },
+  {
+    "sha": "0ea4c8d5276986450e7c9f885983eb3f2546c5cf",
+    "node_id": "C_kwDOBk7C4toAKDBlYTRjOGQ1Mjc2OTg2NDUwZTdjOWY4ODU5ODNlYjNmMjU0NmM1Y2Y",
+    "commit": {
+      "author": {
+        "name": "Zdenek Dohnal",
+        "email": "zdohnal@redhat.com",
+        "date": "2023-02-15T17:39:17Z"
+      },
+      "committer": {
+        "name": "Zdenek Dohnal",
+        "email": "zdohnal@redhat.com",
+        "date": "2023-02-15T17:39:17Z"
+      },
+      "message": "Fix coverity issue 2.\n\nDelete identical branch",
+      "tree": {
+        "sha": "6af8dd03aa1aa9d1a1a9ee724e7180bf16093005",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/6af8dd03aa1aa9d1a1a9ee724e7180bf16093005"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/0ea4c8d5276986450e7c9f885983eb3f2546c5cf",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/0ea4c8d5276986450e7c9f885983eb3f2546c5cf",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/0ea4c8d5276986450e7c9f885983eb3f2546c5cf",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/0ea4c8d5276986450e7c9f885983eb3f2546c5cf/comments",
+    "author": {
+      "login": "zdohnal",
+      "id": 17822565,
+      "node_id": "MDQ6VXNlcjE3ODIyNTY1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17822565?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/zdohnal",
+      "html_url": "https://github.com/zdohnal",
+      "followers_url": "https://api.github.com/users/zdohnal/followers",
+      "following_url": "https://api.github.com/users/zdohnal/following{/other_user}",
+      "gists_url": "https://api.github.com/users/zdohnal/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/zdohnal/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/zdohnal/subscriptions",
+      "organizations_url": "https://api.github.com/users/zdohnal/orgs",
+      "repos_url": "https://api.github.com/users/zdohnal/repos",
+      "events_url": "https://api.github.com/users/zdohnal/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/zdohnal/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "zdohnal",
+      "id": 17822565,
+      "node_id": "MDQ6VXNlcjE3ODIyNTY1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17822565?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/zdohnal",
+      "html_url": "https://github.com/zdohnal",
+      "followers_url": "https://api.github.com/users/zdohnal/followers",
+      "following_url": "https://api.github.com/users/zdohnal/following{/other_user}",
+      "gists_url": "https://api.github.com/users/zdohnal/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/zdohnal/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/zdohnal/subscriptions",
+      "organizations_url": "https://api.github.com/users/zdohnal/orgs",
+      "repos_url": "https://api.github.com/users/zdohnal/repos",
+      "events_url": "https://api.github.com/users/zdohnal/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/zdohnal/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "90f04657ad3cac36ca1bfa96f62f3878166bc8f6",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/90f04657ad3cac36ca1bfa96f62f3878166bc8f6",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/90f04657ad3cac36ca1bfa96f62f3878166bc8f6"
+      }
+    ]
+  },
+  {
+    "sha": "90f04657ad3cac36ca1bfa96f62f3878166bc8f6",
+    "node_id": "C_kwDOBk7C4toAKDkwZjA0NjU3YWQzY2FjMzZjYTFiZmE5NmY2MmYzODc4MTY2YmM4ZjY",
+    "commit": {
+      "author": {
+        "name": "Zdenek Dohnal",
+        "email": "zdohnal@redhat.com",
+        "date": "2023-02-15T17:37:37Z"
+      },
+      "committer": {
+        "name": "Zdenek Dohnal",
+        "email": "zdohnal@redhat.com",
+        "date": "2023-02-15T17:37:37Z"
+      },
+      "message": "Fix coverity issue 1.\n\nClose file descriptor in case of error",
+      "tree": {
+        "sha": "1e8147f62e06c00669ad478b005dfd916b5ca13f",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/1e8147f62e06c00669ad478b005dfd916b5ca13f"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/90f04657ad3cac36ca1bfa96f62f3878166bc8f6",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/90f04657ad3cac36ca1bfa96f62f3878166bc8f6",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/90f04657ad3cac36ca1bfa96f62f3878166bc8f6",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/90f04657ad3cac36ca1bfa96f62f3878166bc8f6/comments",
+    "author": {
+      "login": "zdohnal",
+      "id": 17822565,
+      "node_id": "MDQ6VXNlcjE3ODIyNTY1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17822565?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/zdohnal",
+      "html_url": "https://github.com/zdohnal",
+      "followers_url": "https://api.github.com/users/zdohnal/followers",
+      "following_url": "https://api.github.com/users/zdohnal/following{/other_user}",
+      "gists_url": "https://api.github.com/users/zdohnal/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/zdohnal/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/zdohnal/subscriptions",
+      "organizations_url": "https://api.github.com/users/zdohnal/orgs",
+      "repos_url": "https://api.github.com/users/zdohnal/repos",
+      "events_url": "https://api.github.com/users/zdohnal/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/zdohnal/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "zdohnal",
+      "id": 17822565,
+      "node_id": "MDQ6VXNlcjE3ODIyNTY1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17822565?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/zdohnal",
+      "html_url": "https://github.com/zdohnal",
+      "followers_url": "https://api.github.com/users/zdohnal/followers",
+      "following_url": "https://api.github.com/users/zdohnal/following{/other_user}",
+      "gists_url": "https://api.github.com/users/zdohnal/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/zdohnal/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/zdohnal/subscriptions",
+      "organizations_url": "https://api.github.com/users/zdohnal/orgs",
+      "repos_url": "https://api.github.com/users/zdohnal/repos",
+      "events_url": "https://api.github.com/users/zdohnal/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/zdohnal/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "df0de91acda997bd40ca2302f5da3eda56d5dc2e",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/df0de91acda997bd40ca2302f5da3eda56d5dc2e",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/df0de91acda997bd40ca2302f5da3eda56d5dc2e"
+      }
+    ]
+  },
+  {
+    "sha": "df0de91acda997bd40ca2302f5da3eda56d5dc2e",
+    "node_id": "C_kwDOBk7C4toAKGRmMGRlOTFhY2RhOTk3YmQ0MGNhMjMwMmY1ZGEzZWRhNTZkNWRjMmU",
+    "commit": {
+      "author": {
+        "name": "zdohnal",
+        "email": "zdohnal@redhat.com",
+        "date": "2023-02-14T18:15:03Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-02-14T18:15:03Z"
+      },
+      "message": "configure.ac: Change deprecated AC_PROG_LIBTOOL for LT_INIT (#508)",
+      "tree": {
+        "sha": "fe8ae7f235acc14ab3bb3f9adcdea87d6e94d9f9",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/fe8ae7f235acc14ab3bb3f9adcdea87d6e94d9f9"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/df0de91acda997bd40ca2302f5da3eda56d5dc2e",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJj68+nCRBK7hj4Ov3rIwAA4boIAHjnLHB5sFpYJ0ROSZEA8Jcp\nZNu67aAce/ZqT1jnhzSUfQQcNprmfa/XBFBrRM1DlNsz/EEKSz2cpuXH1wSwVKNj\nWe2p7N4eqlnOctzsPbfilNs5i4BpIhP4oH+vL63X0YUjqaaZlDWrdDNJOiFvc7by\npVfX6PsOBBryzibBUNiXtGWxQNycg6YTlukUVEUbxMW98W1UR8A1IrKTVMwyMb7J\nOUO9ksxwwqp5VZIgQ0n4+vrJmu1aHM1hO7Pc6QNn/UivElZUFEcrDzB51p2aC2jY\n8v8s1ig8aDkab+XOP6lZc2ZhPvQxabMEEQLbKicilhFJigCAL8gLx2uTFDoKxoY=\n=KPJo\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree fe8ae7f235acc14ab3bb3f9adcdea87d6e94d9f9\nparent 2b57d9678ad6ac0dc0436cb1ca2532651c49ad81\nauthor zdohnal <zdohnal@redhat.com> 1676398503 +0100\ncommitter GitHub <noreply@github.com> 1676398503 +0100\n\nconfigure.ac: Change deprecated AC_PROG_LIBTOOL for LT_INIT (#508)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/df0de91acda997bd40ca2302f5da3eda56d5dc2e",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/df0de91acda997bd40ca2302f5da3eda56d5dc2e",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/df0de91acda997bd40ca2302f5da3eda56d5dc2e/comments",
+    "author": {
+      "login": "zdohnal",
+      "id": 17822565,
+      "node_id": "MDQ6VXNlcjE3ODIyNTY1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17822565?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/zdohnal",
+      "html_url": "https://github.com/zdohnal",
+      "followers_url": "https://api.github.com/users/zdohnal/followers",
+      "following_url": "https://api.github.com/users/zdohnal/following{/other_user}",
+      "gists_url": "https://api.github.com/users/zdohnal/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/zdohnal/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/zdohnal/subscriptions",
+      "organizations_url": "https://api.github.com/users/zdohnal/orgs",
+      "repos_url": "https://api.github.com/users/zdohnal/repos",
+      "events_url": "https://api.github.com/users/zdohnal/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/zdohnal/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2b57d9678ad6ac0dc0436cb1ca2532651c49ad81",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/2b57d9678ad6ac0dc0436cb1ca2532651c49ad81",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/2b57d9678ad6ac0dc0436cb1ca2532651c49ad81"
+      }
+    ]
+  },
+  {
+    "sha": "2b57d9678ad6ac0dc0436cb1ca2532651c49ad81",
+    "node_id": "C_kwDOBk7C4toAKDJiNTdkOTY3OGFkNmFjMGRjMDQzNmNiMWNhMjUzMjY1MWM0OWFkODE",
+    "commit": {
+      "author": {
+        "name": "zdohnal",
+        "email": "zdohnal@redhat.com",
+        "date": "2023-02-02T22:58:36Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-02-02T22:58:36Z"
+      },
+      "message": "configure.ac: C++ not needed (#504)",
+      "tree": {
+        "sha": "fed6072ec8ec79fe4c7ed064c798a210fed7cc2a",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/fed6072ec8ec79fe4c7ed064c798a210fed7cc2a"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/2b57d9678ad6ac0dc0436cb1ca2532651c49ad81",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJj3EAcCRBK7hj4Ov3rIwAAa6gIAGha2dC2u/CyagyfEfHRjfIn\nIa5DbcVwmTjqbeBGbaMAUYcY2uQ4E2njM0dM3V6zb3PvpT9hAb9tl7ZGLz9SKZ9/\nPoHN/IrVYOVlb8MUbIcWl6wtFjIKH+trBcyxf4EXhR2K+AH6ZGnqtuqlZjJDYZRW\nrnSA+4YJVj4mzinIS0ChuSWo4xpH8gTToM+L/Gve82Jx9/nhEIykx2zmJY0PtdsB\nY2nMxXIuO+6UwjDV+VFBSnEu3rCleHX4Ce15ZvzmgEwk7U4f1JdLqvUNNExkDdjE\nDWhTUKZ3kiYF6jnrJ+DZ8oYKlesIT4hY2wTmrLIwzDNhrkqAPOhhvijl4aPjEYA=\n=Cm80\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree fed6072ec8ec79fe4c7ed064c798a210fed7cc2a\nparent 76c32d7797fe7c1d3207a5a29f21f7658504461c\nauthor zdohnal <zdohnal@redhat.com> 1675378716 +0100\ncommitter GitHub <noreply@github.com> 1675378716 +0100\n\nconfigure.ac: C++ not needed (#504)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/2b57d9678ad6ac0dc0436cb1ca2532651c49ad81",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/2b57d9678ad6ac0dc0436cb1ca2532651c49ad81",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/2b57d9678ad6ac0dc0436cb1ca2532651c49ad81/comments",
+    "author": {
+      "login": "zdohnal",
+      "id": 17822565,
+      "node_id": "MDQ6VXNlcjE3ODIyNTY1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17822565?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/zdohnal",
+      "html_url": "https://github.com/zdohnal",
+      "followers_url": "https://api.github.com/users/zdohnal/followers",
+      "following_url": "https://api.github.com/users/zdohnal/following{/other_user}",
+      "gists_url": "https://api.github.com/users/zdohnal/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/zdohnal/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/zdohnal/subscriptions",
+      "organizations_url": "https://api.github.com/users/zdohnal/orgs",
+      "repos_url": "https://api.github.com/users/zdohnal/repos",
+      "events_url": "https://api.github.com/users/zdohnal/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/zdohnal/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "76c32d7797fe7c1d3207a5a29f21f7658504461c",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/76c32d7797fe7c1d3207a5a29f21f7658504461c",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/76c32d7797fe7c1d3207a5a29f21f7658504461c"
+      }
+    ]
+  },
+  {
+    "sha": "76c32d7797fe7c1d3207a5a29f21f7658504461c",
+    "node_id": "C_kwDOBk7C4toAKDc2YzMyZDc3OTdmZTdjMWQzMjA3YTVhMjlmMjFmNzY1ODUwNDQ2MWM",
+    "commit": {
+      "author": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-01-31T23:58:04Z"
+      },
+      "committer": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-01-31T23:58:04Z"
+      },
+      "message": "cups-filters 2.0b3 Release",
+      "tree": {
+        "sha": "0bf3ae45b93f99d0e3337140a30b1017fee88584",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/0bf3ae45b93f99d0e3337140a30b1017fee88584"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/76c32d7797fe7c1d3207a5a29f21f7658504461c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/76c32d7797fe7c1d3207a5a29f21f7658504461c",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/76c32d7797fe7c1d3207a5a29f21f7658504461c",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/76c32d7797fe7c1d3207a5a29f21f7658504461c/comments",
+    "author": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b7cc2defeb5683d3eb1585e89d4fb7838f0d216e",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/b7cc2defeb5683d3eb1585e89d4fb7838f0d216e",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/b7cc2defeb5683d3eb1585e89d4fb7838f0d216e"
+      }
+    ]
+  },
+  {
+    "sha": "b7cc2defeb5683d3eb1585e89d4fb7838f0d216e",
+    "node_id": "C_kwDOBk7C4toAKGI3Y2MyZGVmZWI1NjgzZDNlYjE1ODVlODlkNGZiNzgzOGYwZDIxNmU",
+    "commit": {
+      "author": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-01-31T21:37:12Z"
+      },
+      "committer": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-01-31T21:37:12Z"
+      },
+      "message": "Updated CHANGES.md",
+      "tree": {
+        "sha": "52267441e3223ffdf5b90caee64e7254f7ec34fd",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/52267441e3223ffdf5b90caee64e7254f7ec34fd"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/b7cc2defeb5683d3eb1585e89d4fb7838f0d216e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/b7cc2defeb5683d3eb1585e89d4fb7838f0d216e",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/b7cc2defeb5683d3eb1585e89d4fb7838f0d216e",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/b7cc2defeb5683d3eb1585e89d4fb7838f0d216e/comments",
+    "author": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "71dd90b972ed5471e908a2560b8d3842560de852",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/71dd90b972ed5471e908a2560b8d3842560de852",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/71dd90b972ed5471e908a2560b8d3842560de852"
+      }
+    ]
+  },
+  {
+    "sha": "71dd90b972ed5471e908a2560b8d3842560de852",
+    "node_id": "C_kwDOBk7C4toAKDcxZGQ5MGI5NzJlZDU0NzFlOTA4YTI1NjBiOGQzODQyNTYwZGU4NTI",
+    "commit": {
+      "author": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-01-30T02:13:45Z"
+      },
+      "committer": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-01-30T02:13:45Z"
+      },
+      "message": "Add templates for issue reports.",
+      "tree": {
+        "sha": "7ce6123df7922c71c72198a0fe382a0bbcfec605",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/7ce6123df7922c71c72198a0fe382a0bbcfec605"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/71dd90b972ed5471e908a2560b8d3842560de852",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/71dd90b972ed5471e908a2560b8d3842560de852",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/71dd90b972ed5471e908a2560b8d3842560de852",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/71dd90b972ed5471e908a2560b8d3842560de852/comments",
+    "author": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "db1dd5a8652cbf2f43399d921ba85e6ba8ed9226",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/db1dd5a8652cbf2f43399d921ba85e6ba8ed9226",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/db1dd5a8652cbf2f43399d921ba85e6ba8ed9226"
+      }
+    ]
+  },
+  {
+    "sha": "db1dd5a8652cbf2f43399d921ba85e6ba8ed9226",
+    "node_id": "C_kwDOBk7C4toAKGRiMWRkNWE4NjUyY2JmMmY0MzM5OWQ5MjFiYTg1ZTZiYThlZDkyMjY",
+    "commit": {
+      "author": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-01-26T03:45:35Z"
+      },
+      "committer": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-01-26T03:45:35Z"
+      },
+      "message": "COPYING: Fixed typo",
+      "tree": {
+        "sha": "fab6bfa98b34a3d6157d9e6d5f1de09582baa989",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/fab6bfa98b34a3d6157d9e6d5f1de09582baa989"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/db1dd5a8652cbf2f43399d921ba85e6ba8ed9226",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/db1dd5a8652cbf2f43399d921ba85e6ba8ed9226",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/db1dd5a8652cbf2f43399d921ba85e6ba8ed9226",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/db1dd5a8652cbf2f43399d921ba85e6ba8ed9226/comments",
+    "author": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a648ef13af4c34dae88cd1ca9cbd9a123cd7cd74",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/a648ef13af4c34dae88cd1ca9cbd9a123cd7cd74",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/a648ef13af4c34dae88cd1ca9cbd9a123cd7cd74"
+      }
+    ]
+  },
+  {
+    "sha": "a648ef13af4c34dae88cd1ca9cbd9a123cd7cd74",
+    "node_id": "C_kwDOBk7C4toAKGE2NDhlZjEzYWY0YzM0ZGFlODhjZDFjYTljYmQ5YTEyM2NkN2NkNzQ",
+    "commit": {
+      "author": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-01-18T20:48:10Z"
+      },
+      "committer": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-01-18T20:48:10Z"
+      },
+      "message": "COPYING, NOTICE: Simplification for autotools-generated files\n\nautotools-generated files can be included under the license of the\nupstream code, and FSF copyright added to upstream copyright\nlist. Simplified debian/copyright appropriately.",
+      "tree": {
+        "sha": "a38910c9bf02122d53e53dc8287223b1a74a7636",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/a38910c9bf02122d53e53dc8287223b1a74a7636"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/a648ef13af4c34dae88cd1ca9cbd9a123cd7cd74",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/a648ef13af4c34dae88cd1ca9cbd9a123cd7cd74",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/a648ef13af4c34dae88cd1ca9cbd9a123cd7cd74",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/a648ef13af4c34dae88cd1ca9cbd9a123cd7cd74/comments",
+    "author": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0bdca6b6f12d34b1ff68f3c69d91aee62741c3b2",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/0bdca6b6f12d34b1ff68f3c69d91aee62741c3b2",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/0bdca6b6f12d34b1ff68f3c69d91aee62741c3b2"
+      }
+    ]
+  },
+  {
+    "sha": "0bdca6b6f12d34b1ff68f3c69d91aee62741c3b2",
+    "node_id": "C_kwDOBk7C4toAKDBiZGNhNmI2ZjEyZDM0YjFmZjY4ZjNjNjlkOTFhZWU2Mjc0MWMzYjI",
+    "commit": {
+      "author": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-01-17T18:19:11Z"
+      },
+      "committer": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-01-17T18:19:11Z"
+      },
+      "message": "texttopdf: Do not include fontconfig.h in the CUPS filter wrapper",
+      "tree": {
+        "sha": "fa503f6c7fe4c109fb60a5ca33787dc0ffd5fa0c",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/fa503f6c7fe4c109fb60a5ca33787dc0ffd5fa0c"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/0bdca6b6f12d34b1ff68f3c69d91aee62741c3b2",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/0bdca6b6f12d34b1ff68f3c69d91aee62741c3b2",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/0bdca6b6f12d34b1ff68f3c69d91aee62741c3b2",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/0bdca6b6f12d34b1ff68f3c69d91aee62741c3b2/comments",
+    "author": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "34405e816cb3fab098b3750396726a7faa6a1c5d",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/34405e816cb3fab098b3750396726a7faa6a1c5d",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/34405e816cb3fab098b3750396726a7faa6a1c5d"
+      }
+    ]
+  },
+  {
+    "sha": "34405e816cb3fab098b3750396726a7faa6a1c5d",
+    "node_id": "C_kwDOBk7C4toAKDM0NDA1ZTgxNmNiM2ZhYjA5OGIzNzUwMzk2NzI2YTdmYWE2YTFjNWQ",
+    "commit": {
+      "author": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-01-17T16:53:23Z"
+      },
+      "committer": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-01-17T16:53:23Z"
+      },
+      "message": "Build system: Do not explicitly check for libpoppler-cpp\n\nThe cups-filters does not contain any code using libpoppler-cpp,\ntherefore we let ./configure not check for it. This makes building\ndistribution packages easier.",
+      "tree": {
+        "sha": "49a17e0fa40127f0ade9ea6cdae8bb488638edf0",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/49a17e0fa40127f0ade9ea6cdae8bb488638edf0"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/34405e816cb3fab098b3750396726a7faa6a1c5d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/34405e816cb3fab098b3750396726a7faa6a1c5d",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/34405e816cb3fab098b3750396726a7faa6a1c5d",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/34405e816cb3fab098b3750396726a7faa6a1c5d/comments",
+    "author": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "501e8c57b93619613eb8f0de0025bc2d772154bd",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/501e8c57b93619613eb8f0de0025bc2d772154bd",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/501e8c57b93619613eb8f0de0025bc2d772154bd"
+      }
+    ]
+  },
+  {
+    "sha": "501e8c57b93619613eb8f0de0025bc2d772154bd",
+    "node_id": "C_kwDOBk7C4toAKDUwMWU4YzU3YjkzNjE5NjEzZWI4ZjBkZTAwMjViYzJkNzcyMTU0YmQ",
+    "commit": {
+      "author": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-01-10T01:46:16Z"
+      },
+      "committer": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-01-10T01:46:16Z"
+      },
+      "message": "Makefile.am: Include LICENSE in distribution tarball",
+      "tree": {
+        "sha": "dce8a0fab7fbb437a038cba14b849c6010253865",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/dce8a0fab7fbb437a038cba14b849c6010253865"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/501e8c57b93619613eb8f0de0025bc2d772154bd",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/501e8c57b93619613eb8f0de0025bc2d772154bd",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/501e8c57b93619613eb8f0de0025bc2d772154bd",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/501e8c57b93619613eb8f0de0025bc2d772154bd/comments",
+    "author": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5c9498a57d3b331d9b1aa59df206b26a9510f335",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/5c9498a57d3b331d9b1aa59df206b26a9510f335",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/5c9498a57d3b331d9b1aa59df206b26a9510f335"
+      }
+    ]
+  },
+  {
+    "sha": "5c9498a57d3b331d9b1aa59df206b26a9510f335",
+    "node_id": "C_kwDOBk7C4toAKDVjOTQ5OGE1N2QzYjMzMWQ5YjFhYTU5ZGYyMDZiMjZhOTUxMGYzMzU",
+    "commit": {
+      "author": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-01-08T22:51:57Z"
+      },
+      "committer": {
+        "name": "Till Kamppeter",
+        "email": "till.kamppeter@gmail.com",
+        "date": "2023-01-08T22:51:57Z"
+      },
+      "message": "cups-filters 2.0b2 Release",
+      "tree": {
+        "sha": "f3f02470aac2eb6c0a5b6f9f5b7a02874054cdcd",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/trees/f3f02470aac2eb6c0a5b6f9f5b7a02874054cdcd"
+      },
+      "url": "https://api.github.com/repos/OpenPrinting/cups-filters/git/commits/5c9498a57d3b331d9b1aa59df206b26a9510f335",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/5c9498a57d3b331d9b1aa59df206b26a9510f335",
+    "html_url": "https://github.com/OpenPrinting/cups-filters/commit/5c9498a57d3b331d9b1aa59df206b26a9510f335",
+    "comments_url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/5c9498a57d3b331d9b1aa59df206b26a9510f335/comments",
+    "author": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tillkamppeter",
+      "id": 1244825,
+      "node_id": "MDQ6VXNlcjEyNDQ4MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1244825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tillkamppeter",
+      "html_url": "https://github.com/tillkamppeter",
+      "followers_url": "https://api.github.com/users/tillkamppeter/followers",
+      "following_url": "https://api.github.com/users/tillkamppeter/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tillkamppeter/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tillkamppeter/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tillkamppeter/subscriptions",
+      "organizations_url": "https://api.github.com/users/tillkamppeter/orgs",
+      "repos_url": "https://api.github.com/users/tillkamppeter/repos",
+      "events_url": "https://api.github.com/users/tillkamppeter/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tillkamppeter/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e63198b7cff3a239a600b62cde38d5caa8ce4678",
+        "url": "https://api.github.com/repos/OpenPrinting/cups-filters/commits/e63198b7cff3a239a600b62cde38d5caa8ce4678",
+        "html_url": "https://github.com/OpenPrinting/cups-filters/commit/e63198b7cff3a239a600b62cde38d5caa8ce4678"
+      }
+    ]
+  }
+]

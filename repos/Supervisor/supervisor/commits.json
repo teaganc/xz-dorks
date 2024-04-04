@@ -1,0 +1,2379 @@
+[
+  {
+    "sha": "9ee5fee61881adc227a67d2d13414597d1f4d51c",
+    "node_id": "C_kwDOABGFwNoAKDllZTVmZWU2MTg4MWFkYzIyN2E2N2QyZDEzNDE0NTk3ZDFmNGQ1MWM",
+    "commit": {
+      "author": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2024-03-02T19:34:25Z"
+      },
+      "committer": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2024-03-02T19:39:49Z"
+      },
+      "message": "Fix crash closing already-closed socket. Refs #1596\n\n```\nerror: uncaptured python exception, closing channel <supervisor.http.deferring_http_channel connected 127.0.0.1:58792 at 0x102d3a310 channel#: 0 requests:4> (<class 'OSError'>:[Errno 57] Socket is not connected [/Users/username/git/supervisor/supervisor/medusa/asynchat_25.py|handle_read|89] [/Users/username/git/supervisor/supervisor/medusa/http_server.py|recv|528] [/Users/username/git/supervisor/supervisor/medusa/asyncore_25.py|recv|354] [/Users/username/git/supervisor/supervisor/medusa/asynchat_25.py|handle_close|156] [/Users/username/git/supervisor/supervisor/medusa/asyncore_25.py|close|361])\nerror: uncaptured python exception, closing channel <supervisor.http.deferring_http_channel connected 127.0.0.1:58792 at 0x102d3a310 channel#: 0 requests:4> (<class 'OSError'>:[Errno 57] Socket is not connected [/Users/username/git/supervisor/supervisor/supervisord.py|runforever|218] [/Users/username/git/supervisor/supervisor/medusa/asyncore_25.py|handle_read_event|392] [/Users/username/git/supervisor/supervisor/medusa/asynchat_25.py|handle_read|91] [/Users/username/git/supervisor/supervisor/medusa/http_server.py|handle_error|546] [/Users/username/git/supervisor/supervisor/medusa/asyncore_25.py|handle_error|422] [/Users/username/git/supervisor/supervisor/medusa/asyncore_25.py|close|361])\nTraceback (most recent call last):\n  File \"/Users/username/git/supervisor/supervisor/medusa/asyncore_25.py\", line 347, in recv\n    self.handle_close()\n  File \"/Users/username/git/supervisor/supervisor/medusa/asynchat_25.py\", line 156, in handle_close\n    self.close()\n  File \"/Users/username/git/supervisor/supervisor/medusa/asyncore_25.py\", line 361, in close\n    self.socket.shutdown(socket.SHUT_RDWR)\nOSError: [Errno 57] Socket is not connected\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/Users/username/git/supervisor/supervisor/medusa/asynchat_25.py\", line 89, in handle_read\n    data = self.recv (self.ac_in_buffer_size)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/username/git/supervisor/supervisor/medusa/http_server.py\", line 528, in recv\n    result = asynchat.async_chat.recv (self, buffer_size)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/username/git/supervisor/supervisor/medusa/asyncore_25.py\", line 354, in recv\n    self.handle_close()\n  File \"/Users/username/git/supervisor/supervisor/medusa/asynchat_25.py\", line 156, in handle_close\n    self.close()\n  File \"/Users/username/git/supervisor/supervisor/medusa/asyncore_25.py\", line 361, in close\n    self.socket.shutdown(socket.SHUT_RDWR)\nOSError: [Errno 57] Socket is not connected\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/Users/username/git/supervisor/supervisor/supervisord.py\", line 218, in runforever\n    dispatcher.handle_read_event()\n  File \"/Users/username/git/supervisor/supervisor/medusa/asyncore_25.py\", line 392, in handle_read_event\n    self.handle_read()\n  File \"/Users/username/git/supervisor/supervisor/medusa/asynchat_25.py\", line 91, in handle_read\n    self.handle_error()\n  File \"/Users/username/git/supervisor/supervisor/medusa/http_server.py\", line 546, in handle_error\n    asynchat.async_chat.handle_error (self)\n  File \"/Users/username/git/supervisor/supervisor/medusa/asyncore_25.py\", line 422, in handle_error\n    self.close()\n  File \"/Users/username/git/supervisor/supervisor/medusa/asyncore_25.py\", line 361, in close\n    self.socket.shutdown(socket.SHUT_RDWR)\nOSError: [Errno 57] Socket is not connected\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/opt/homebrew/bin/supervisord\", line 33, in <module>\n    sys.exit(load_entry_point('supervisor', 'console_scripts', 'supervisord')())\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/username/git/supervisor/supervisor/supervisord.py\", line 373, in main\n    go(options)\n  File \"/Users/username/git/supervisor/supervisor/supervisord.py\", line 383, in go\n    d.main()\n  File \"/Users/username/git/supervisor/supervisor/supervisord.py\", line 78, in main\n    self.run()\n  File \"/Users/username/git/supervisor/supervisor/supervisord.py\", line 94, in run\n    self.runforever()\n  File \"/Users/username/git/supervisor/supervisor/supervisord.py\", line 224, in runforever\n    combined_map[fd].handle_error()\n  File \"/Users/username/git/supervisor/supervisor/medusa/http_server.py\", line 546, in handle_error\n    asynchat.async_chat.handle_error (self)\n  File \"/Users/username/git/supervisor/supervisor/medusa/asyncore_25.py\", line 422, in handle_error\n    self.close()\n  File \"/Users/username/git/supervisor/supervisor/medusa/asyncore_25.py\", line 361, in close\n    self.socket.shutdown(socket.SHUT_RDWR)\nOSError: [Errno 57] Socket is not connected\n```",
+      "tree": {
+        "sha": "276a922050158438a04e7cbe40b0bff46d2d7977",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/276a922050158438a04e7cbe40b0bff46d2d7977"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/9ee5fee61881adc227a67d2d13414597d1f4d51c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/9ee5fee61881adc227a67d2d13414597d1f4d51c",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/9ee5fee61881adc227a67d2d13414597d1f4d51c",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/9ee5fee61881adc227a67d2d13414597d1f4d51c/comments",
+    "author": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4c845a371cc03e31477a866816f87a6a2057a857",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/4c845a371cc03e31477a866816f87a6a2057a857",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/4c845a371cc03e31477a866816f87a6a2057a857"
+      }
+    ]
+  },
+  {
+    "sha": "4c845a371cc03e31477a866816f87a6a2057a857",
+    "node_id": "C_kwDOABGFwNoAKDRjODQ1YTM3MWNjMDNlMzE0NzdhODY2ODE2Zjg3YTZhMjA1N2E4NTc",
+    "commit": {
+      "author": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2024-01-13T20:41:01Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-01-13T20:41:01Z"
+      },
+      "message": "Merge pull request #1621 from ankush/patch-1\n\nchore: typo in docs",
+      "tree": {
+        "sha": "b8bf0a68215fcba84e1815818a611ef62570ad1f",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/b8bf0a68215fcba84e1815818a611ef62570ad1f"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/4c845a371cc03e31477a866816f87a6a2057a857",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlovVdCRBK7hj4Ov3rIwAA04IIALEA65CCGrUfs6CMosvAUfF1\n13z8flr3Nc0Rvms2vlvFyNncZQHSRVP8x0DLbxs8UJBuJSBgSp/is7OGBM6bgeVt\nUNGhdXKQ7xIBK7VbTsBBuhKWWz6g6d/x9ZiU2GEWwqcreQMu5yyAi6kuZfIgmncG\ntRbcfHn7K65aQaKxonLqDZnIR9woPHFFEZn2OUe1UdMM/EB6nh/sa/jtkeTeaUY/\niyPCynfTCwKJfr4kEWCJKx5NlZExF22fiTzQ89MQywofypF+g7A9FCKkTrX6o688\nkr0sgdznJrd4I95buzbzG2zhdyf48aTx0e/UvJ4WIWj2ROGTqeOLx+jKGeXFk74=\n=miZ5\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree b8bf0a68215fcba84e1815818a611ef62570ad1f\nparent ff5356f65ebc557554bbe1b39a1f320ab346d064\nparent 6a526b9471241157349f07787d528af8e5ffe0f1\nauthor Mike Naberezny <mike@naberezny.com> 1705178461 -0800\ncommitter GitHub <noreply@github.com> 1705178461 -0800\n\nMerge pull request #1621 from ankush/patch-1\n\nchore: typo in docs"
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/4c845a371cc03e31477a866816f87a6a2057a857",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/4c845a371cc03e31477a866816f87a6a2057a857",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/4c845a371cc03e31477a866816f87a6a2057a857/comments",
+    "author": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ff5356f65ebc557554bbe1b39a1f320ab346d064",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/ff5356f65ebc557554bbe1b39a1f320ab346d064",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/ff5356f65ebc557554bbe1b39a1f320ab346d064"
+      },
+      {
+        "sha": "6a526b9471241157349f07787d528af8e5ffe0f1",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/6a526b9471241157349f07787d528af8e5ffe0f1",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/6a526b9471241157349f07787d528af8e5ffe0f1"
+      }
+    ]
+  },
+  {
+    "sha": "6a526b9471241157349f07787d528af8e5ffe0f1",
+    "node_id": "C_kwDOABGFwNoAKDZhNTI2Yjk0NzEyNDExNTczNDlmMDc3ODdkNTI4YWY4ZTVmZmUwZjE",
+    "commit": {
+      "author": {
+        "name": "Ankush Menat",
+        "email": "ankush@frappe.io",
+        "date": "2024-01-12T08:45:13Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-01-12T08:45:13Z"
+      },
+      "message": "chore: typo\n\n1 + 2 + 3 would be total of 6 seconds of wait",
+      "tree": {
+        "sha": "b8bf0a68215fcba84e1815818a611ef62570ad1f",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/b8bf0a68215fcba84e1815818a611ef62570ad1f"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/6a526b9471241157349f07787d528af8e5ffe0f1",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJloPwZCRBK7hj4Ov3rIwAAKdkIAFP+jGHpMNE4AXih6+gVjOnj\nAytFdMbmN/YIGke8yVdtdnCEu3sbxeTFGsUDftpYF+EsPBSf0Sa6yaFo9JNc/91j\nPLbFF8+OM7lb0u6yQSf5ZWedXXMnlAuc+0hWNmYr27AnErW4uVL3w7hJY/dvjQPI\ngiOEHMKN+OiqXv57PFQSx8FY6572VW8PkGxVi8iaYbIqhboIxNjs9dU7g6st59dJ\nhUgjfevW/90Khfln+GDJj1zjlsB1y8lYrIuhobewwhpgFQNHKQgBr9Ysa2DVn63X\nnli+tdatbQ0pG8zNAME+ROVVEzpF3u6AfOaciW6q5tZvD7tMdgnz2u34ZWSNcmc=\n=xJbz\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree b8bf0a68215fcba84e1815818a611ef62570ad1f\nparent ff5356f65ebc557554bbe1b39a1f320ab346d064\nauthor Ankush Menat <ankush@frappe.io> 1705049113 +0530\ncommitter GitHub <noreply@github.com> 1705049113 +0530\n\nchore: typo\n\n1 + 2 + 3 would be total of 6 seconds of wait"
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/6a526b9471241157349f07787d528af8e5ffe0f1",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/6a526b9471241157349f07787d528af8e5ffe0f1",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/6a526b9471241157349f07787d528af8e5ffe0f1/comments",
+    "author": {
+      "login": "ankush",
+      "id": 9079960,
+      "node_id": "MDQ6VXNlcjkwNzk5NjA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9079960?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ankush",
+      "html_url": "https://github.com/ankush",
+      "followers_url": "https://api.github.com/users/ankush/followers",
+      "following_url": "https://api.github.com/users/ankush/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ankush/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ankush/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ankush/subscriptions",
+      "organizations_url": "https://api.github.com/users/ankush/orgs",
+      "repos_url": "https://api.github.com/users/ankush/repos",
+      "events_url": "https://api.github.com/users/ankush/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ankush/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ff5356f65ebc557554bbe1b39a1f320ab346d064",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/ff5356f65ebc557554bbe1b39a1f320ab346d064",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/ff5356f65ebc557554bbe1b39a1f320ab346d064"
+      }
+    ]
+  },
+  {
+    "sha": "ff5356f65ebc557554bbe1b39a1f320ab346d064",
+    "node_id": "C_kwDOABGFwNoAKGZmNTM1NmY2NWViYzU1NzU1NGJiZTFiMzlhMWYzMjBhYjM0NmQwNjQ",
+    "commit": {
+      "author": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-11-18T22:08:03Z"
+      },
+      "committer": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-11-18T22:08:03Z"
+      },
+      "message": "Show less noise from pip on CI",
+      "tree": {
+        "sha": "eb69766fc307607185794979422f976322c8d91d",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/eb69766fc307607185794979422f976322c8d91d"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/ff5356f65ebc557554bbe1b39a1f320ab346d064",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/ff5356f65ebc557554bbe1b39a1f320ab346d064",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/ff5356f65ebc557554bbe1b39a1f320ab346d064",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/ff5356f65ebc557554bbe1b39a1f320ab346d064/comments",
+    "author": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2171072ee62680a5e7be810bec4b6790dc8ce72d",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/2171072ee62680a5e7be810bec4b6790dc8ce72d",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/2171072ee62680a5e7be810bec4b6790dc8ce72d"
+      }
+    ]
+  },
+  {
+    "sha": "2171072ee62680a5e7be810bec4b6790dc8ce72d",
+    "node_id": "C_kwDOABGFwNoAKDIxNzEwNzJlZTYyNjgwYTVlN2JlODEwYmVjNGI2NzkwZGM4Y2U3MmQ",
+    "commit": {
+      "author": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-10-06T16:36:49Z"
+      },
+      "committer": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-10-06T16:36:49Z"
+      },
+      "message": "Add Python 3.12",
+      "tree": {
+        "sha": "0b94016daa760a15db48e86b7e01c3f2a77c14c4",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/0b94016daa760a15db48e86b7e01c3f2a77c14c4"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/2171072ee62680a5e7be810bec4b6790dc8ce72d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/2171072ee62680a5e7be810bec4b6790dc8ce72d",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/2171072ee62680a5e7be810bec4b6790dc8ce72d",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/2171072ee62680a5e7be810bec4b6790dc8ce72d/comments",
+    "author": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b8d00ab336f4dc0b3f1cd7bcb1b351e342017be7",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/b8d00ab336f4dc0b3f1cd7bcb1b351e342017be7",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/b8d00ab336f4dc0b3f1cd7bcb1b351e342017be7"
+      }
+    ]
+  },
+  {
+    "sha": "b8d00ab336f4dc0b3f1cd7bcb1b351e342017be7",
+    "node_id": "C_kwDOABGFwNoAKGI4ZDAwYWIzMzZmNGRjMGIzZjFjZDdiY2IxYjM1MWUzNDIwMTdiZTc",
+    "commit": {
+      "author": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-09-19T19:52:24Z"
+      },
+      "committer": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-09-19T19:52:24Z"
+      },
+      "message": "Avoid pip version warnings on CI\n\nAnnotations\n1 error\ntests_py3x (3.5)\nYou are using pip version 20.3.4, however version 23.2.1 is available.\nYou should consider upgrading via the 'pip install --upgrade pip' command.",
+      "tree": {
+        "sha": "6802f0fca26bbd734de00d1671cec9ac51cf2954",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/6802f0fca26bbd734de00d1671cec9ac51cf2954"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/b8d00ab336f4dc0b3f1cd7bcb1b351e342017be7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/b8d00ab336f4dc0b3f1cd7bcb1b351e342017be7",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/b8d00ab336f4dc0b3f1cd7bcb1b351e342017be7",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/b8d00ab336f4dc0b3f1cd7bcb1b351e342017be7/comments",
+    "author": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "50cdd82a3f2dd3d04452a3d41fb60771fd931c42",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/50cdd82a3f2dd3d04452a3d41fb60771fd931c42",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/50cdd82a3f2dd3d04452a3d41fb60771fd931c42"
+      }
+    ]
+  },
+  {
+    "sha": "50cdd82a3f2dd3d04452a3d41fb60771fd931c42",
+    "node_id": "C_kwDOABGFwNoAKDUwY2RkODJhM2YyZGQzZDA0NDUyYTNkNDFmYjYwNzcxZmQ5MzFjNDI",
+    "commit": {
+      "author": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-09-19T19:06:56Z"
+      },
+      "committer": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-09-19T19:27:36Z"
+      },
+      "message": "Fix Python 2.7 and 3.4 tests on CI",
+      "tree": {
+        "sha": "953f6fb9ff69ae4471232e4ca90100f8f4aa9742",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/953f6fb9ff69ae4471232e4ca90100f8f4aa9742"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/50cdd82a3f2dd3d04452a3d41fb60771fd931c42",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/50cdd82a3f2dd3d04452a3d41fb60771fd931c42",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/50cdd82a3f2dd3d04452a3d41fb60771fd931c42",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/50cdd82a3f2dd3d04452a3d41fb60771fd931c42/comments",
+    "author": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "642468ffc5f2b98ebb08fb34b43d5826c8daff94",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/642468ffc5f2b98ebb08fb34b43d5826c8daff94",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/642468ffc5f2b98ebb08fb34b43d5826c8daff94"
+      }
+    ]
+  },
+  {
+    "sha": "642468ffc5f2b98ebb08fb34b43d5826c8daff94",
+    "node_id": "C_kwDOABGFwNoAKDY0MjQ2OGZmYzVmMmI5OGViYjA4ZmIzNGI0M2Q1ODI2YzhkYWZmOTQ",
+    "commit": {
+      "author": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-08-09T19:45:42Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-08-09T19:45:42Z"
+      },
+      "message": "Merge pull request #1597 from julien6387/master\n\nFix of #1596",
+      "tree": {
+        "sha": "2d617d7838b7065ce6cc15ffbfd02e8807e6482e",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/2d617d7838b7065ce6cc15ffbfd02e8807e6482e"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/642468ffc5f2b98ebb08fb34b43d5826c8daff94",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJk0+zmCRBK7hj4Ov3rIwAAsoIIAG3BBHfREiMPe0PVb6JVdIqj\nRFSvWZy/YxTpXXvHFSt6mIh3L85PT/2akoHIt65cZ2LwB1i2x5DDJ9NXw5ehEpnq\nSXeMyalyTIakQjhMQXAJhK7V+lkTxia5K8LjiuOJRf7sm2Bu8f8R4q/XSCOTMc3L\nfM8O1l9uyV5dF1xzSeqHNzq4r8j6oraXAJvSw5DTSwFqR7QCzripMWwnlaa3jHg2\nm6mMLB5fMuxOKeaItQVSLqDY9QmX/pKlMI/2GM9Ml8QVSgwf+9FMhQCew31R0M01\n9TGfTWw0VmcoMHg6vFWkn0Mib0IA06FNNP7QVnZzmY89pUsFpyftTUfhIzMwbT4=\n=a0LP\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 2d617d7838b7065ce6cc15ffbfd02e8807e6482e\nparent 9325eddc8f483d86d426a0c2b9c0a318c21623fa\nparent fad76d295b60934b4261528122fb1843992f22e6\nauthor Mike Naberezny <mike@naberezny.com> 1691610342 -0700\ncommitter GitHub <noreply@github.com> 1691610342 -0700\n\nMerge pull request #1597 from julien6387/master\n\nFix of #1596"
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/642468ffc5f2b98ebb08fb34b43d5826c8daff94",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/642468ffc5f2b98ebb08fb34b43d5826c8daff94",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/642468ffc5f2b98ebb08fb34b43d5826c8daff94/comments",
+    "author": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9325eddc8f483d86d426a0c2b9c0a318c21623fa",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/9325eddc8f483d86d426a0c2b9c0a318c21623fa",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/9325eddc8f483d86d426a0c2b9c0a318c21623fa"
+      },
+      {
+        "sha": "fad76d295b60934b4261528122fb1843992f22e6",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/fad76d295b60934b4261528122fb1843992f22e6",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/fad76d295b60934b4261528122fb1843992f22e6"
+      }
+    ]
+  },
+  {
+    "sha": "9325eddc8f483d86d426a0c2b9c0a318c21623fa",
+    "node_id": "C_kwDOABGFwNoAKDkzMjVlZGRjOGY0ODNkODZkNDI2YTBjMmI5YzBhMzE4YzIxNjIzZmE",
+    "commit": {
+      "author": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-08-09T17:26:59Z"
+      },
+      "committer": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-08-09T17:26:59Z"
+      },
+      "message": "Fix typo in API docs",
+      "tree": {
+        "sha": "9ed381e3448b8a8b23fc6a1197d77f8d4c52ac63",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/9ed381e3448b8a8b23fc6a1197d77f8d4c52ac63"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/9325eddc8f483d86d426a0c2b9c0a318c21623fa",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/9325eddc8f483d86d426a0c2b9c0a318c21623fa",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/9325eddc8f483d86d426a0c2b9c0a318c21623fa",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/9325eddc8f483d86d426a0c2b9c0a318c21623fa/comments",
+    "author": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "49792c94314c9b261934bc406d7e7a89c21c124b",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/49792c94314c9b261934bc406d7e7a89c21c124b",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/49792c94314c9b261934bc406d7e7a89c21c124b"
+      }
+    ]
+  },
+  {
+    "sha": "fad76d295b60934b4261528122fb1843992f22e6",
+    "node_id": "C_kwDOABGFwNoAKGZhZDc2ZDI5NWI2MDkzNGI0MjYxNTI4MTIyZmIxODQzOTkyZjIyZTY",
+    "commit": {
+      "author": {
+        "name": "Julien LE CLEACH",
+        "email": "julien.6387.dev@gmail.com",
+        "date": "2023-07-28T16:48:52Z"
+      },
+      "committer": {
+        "name": "Julien LE CLEACH",
+        "email": "julien.6387.dev@gmail.com",
+        "date": "2023-07-28T16:48:52Z"
+      },
+      "message": "Merge remote-tracking branch 'origin/master'",
+      "tree": {
+        "sha": "4369b3061e3997c14dc6a1140e84a2585cf6a86f",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/4369b3061e3997c14dc6a1140e84a2585cf6a86f"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/fad76d295b60934b4261528122fb1843992f22e6",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/fad76d295b60934b4261528122fb1843992f22e6",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/fad76d295b60934b4261528122fb1843992f22e6",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/fad76d295b60934b4261528122fb1843992f22e6/comments",
+    "author": {
+      "login": "julien6387",
+      "id": 19651909,
+      "node_id": "MDQ6VXNlcjE5NjUxOTA5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19651909?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/julien6387",
+      "html_url": "https://github.com/julien6387",
+      "followers_url": "https://api.github.com/users/julien6387/followers",
+      "following_url": "https://api.github.com/users/julien6387/following{/other_user}",
+      "gists_url": "https://api.github.com/users/julien6387/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/julien6387/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/julien6387/subscriptions",
+      "organizations_url": "https://api.github.com/users/julien6387/orgs",
+      "repos_url": "https://api.github.com/users/julien6387/repos",
+      "events_url": "https://api.github.com/users/julien6387/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/julien6387/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "julien6387",
+      "id": 19651909,
+      "node_id": "MDQ6VXNlcjE5NjUxOTA5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19651909?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/julien6387",
+      "html_url": "https://github.com/julien6387",
+      "followers_url": "https://api.github.com/users/julien6387/followers",
+      "following_url": "https://api.github.com/users/julien6387/following{/other_user}",
+      "gists_url": "https://api.github.com/users/julien6387/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/julien6387/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/julien6387/subscriptions",
+      "organizations_url": "https://api.github.com/users/julien6387/orgs",
+      "repos_url": "https://api.github.com/users/julien6387/repos",
+      "events_url": "https://api.github.com/users/julien6387/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/julien6387/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c1ce3d619b0c1308fd0739d96bd6eda67192746e",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/c1ce3d619b0c1308fd0739d96bd6eda67192746e",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/c1ce3d619b0c1308fd0739d96bd6eda67192746e"
+      },
+      {
+        "sha": "49792c94314c9b261934bc406d7e7a89c21c124b",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/49792c94314c9b261934bc406d7e7a89c21c124b",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/49792c94314c9b261934bc406d7e7a89c21c124b"
+      }
+    ]
+  },
+  {
+    "sha": "c1ce3d619b0c1308fd0739d96bd6eda67192746e",
+    "node_id": "C_kwDOABGFwNoAKGMxY2UzZDYxOWIwYzEzMDhmZDA3MzlkOTZiZDZlZGE2NzE5Mjc0NmU",
+    "commit": {
+      "author": {
+        "name": "Julien LE CLEACH",
+        "email": "julien.6387.dev@gmail.com",
+        "date": "2023-07-28T16:48:32Z"
+      },
+      "committer": {
+        "name": "Julien LE CLEACH",
+        "email": "julien.6387.dev@gmail.com",
+        "date": "2023-07-28T16:48:32Z"
+      },
+      "message": "closes #1596",
+      "tree": {
+        "sha": "a887773741fcc9d346539e4d55f0aae1af8f830b",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/a887773741fcc9d346539e4d55f0aae1af8f830b"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/c1ce3d619b0c1308fd0739d96bd6eda67192746e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/c1ce3d619b0c1308fd0739d96bd6eda67192746e",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/c1ce3d619b0c1308fd0739d96bd6eda67192746e",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/c1ce3d619b0c1308fd0739d96bd6eda67192746e/comments",
+    "author": {
+      "login": "julien6387",
+      "id": 19651909,
+      "node_id": "MDQ6VXNlcjE5NjUxOTA5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19651909?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/julien6387",
+      "html_url": "https://github.com/julien6387",
+      "followers_url": "https://api.github.com/users/julien6387/followers",
+      "following_url": "https://api.github.com/users/julien6387/following{/other_user}",
+      "gists_url": "https://api.github.com/users/julien6387/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/julien6387/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/julien6387/subscriptions",
+      "organizations_url": "https://api.github.com/users/julien6387/orgs",
+      "repos_url": "https://api.github.com/users/julien6387/repos",
+      "events_url": "https://api.github.com/users/julien6387/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/julien6387/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "julien6387",
+      "id": 19651909,
+      "node_id": "MDQ6VXNlcjE5NjUxOTA5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19651909?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/julien6387",
+      "html_url": "https://github.com/julien6387",
+      "followers_url": "https://api.github.com/users/julien6387/followers",
+      "following_url": "https://api.github.com/users/julien6387/following{/other_user}",
+      "gists_url": "https://api.github.com/users/julien6387/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/julien6387/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/julien6387/subscriptions",
+      "organizations_url": "https://api.github.com/users/julien6387/orgs",
+      "repos_url": "https://api.github.com/users/julien6387/repos",
+      "events_url": "https://api.github.com/users/julien6387/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/julien6387/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "25670861248302bf3c334912acaaddf00df6fb56",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/25670861248302bf3c334912acaaddf00df6fb56",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/25670861248302bf3c334912acaaddf00df6fb56"
+      }
+    ]
+  },
+  {
+    "sha": "49792c94314c9b261934bc406d7e7a89c21c124b",
+    "node_id": "C_kwDOABGFwNoAKDQ5NzkyYzk0MzE0YzliMjYxOTM0YmM0MDZkN2U3YTg5YzIxYzEyNGI",
+    "commit": {
+      "author": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-06-14T15:11:05Z"
+      },
+      "committer": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-06-14T15:11:05Z"
+      },
+      "message": "Add config file now required by Read the Docs\nhttps://blog.readthedocs.com/migrate-configuration-v2/",
+      "tree": {
+        "sha": "6437cc67af83b5042f6cd76052b8668fa0713d3c",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/6437cc67af83b5042f6cd76052b8668fa0713d3c"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/49792c94314c9b261934bc406d7e7a89c21c124b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/49792c94314c9b261934bc406d7e7a89c21c124b",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/49792c94314c9b261934bc406d7e7a89c21c124b",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/49792c94314c9b261934bc406d7e7a89c21c124b/comments",
+    "author": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2a93d6b21edca4e8b00987c70a350ca626aebec8",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/2a93d6b21edca4e8b00987c70a350ca626aebec8",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/2a93d6b21edca4e8b00987c70a350ca626aebec8"
+      }
+    ]
+  },
+  {
+    "sha": "2a93d6b21edca4e8b00987c70a350ca626aebec8",
+    "node_id": "C_kwDOABGFwNoAKDJhOTNkNmIyMWVkY2E0ZThiMDA5ODdjNzBhMzUwY2E2MjZhZWJlYzg",
+    "commit": {
+      "author": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-05-27T18:14:41Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-05-27T18:14:41Z"
+      },
+      "message": "Merge pull request #1581 from aftersnow/fix-high-cpu-usage\n\nFix high cpu usage caused by fd leak",
+      "tree": {
+        "sha": "6968df60302e39b7fb6e9ba60166de03d3884478",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/6968df60302e39b7fb6e9ba60166de03d3884478"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/2a93d6b21edca4e8b00987c70a350ca626aebec8",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkckiRCRBK7hj4Ov3rIwAA4nwIAFKlV8+h6uWPF5YkzztvxgCi\nDVvDyTYmiVSNxSHTfLECNW7qTJH1p3NyUvZ0eQvBSSlkxh2j4I0RWo6Ai5OI8Aux\n1EaYuu1/yHIeKXXZ8LVdkklJit0Ohc4nzMTccBTmwJ3pE+EqN6Tm1Y1/+3cjRT1k\neziglGpq/iBiKiS2jysjs9Tn5TBiZnXYs6Yhapq1vyVFhu//NHcJIxm5peL3s6qB\nKn82lapYgO75/z4jcWVqIllfRKSQgrSkMR8Wp+6/1TMls8BoL+tZti8vJ6EIFwzV\nm4Ohhm74YXkGONfYR/SSbZ2agt06NyWehaWMfuemME0EWntWInSkR5K+ZvNqTsU=\n=vcWu\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 6968df60302e39b7fb6e9ba60166de03d3884478\nparent 8c81ee17a3909b172984bc16b574677290573458\nparent 9ed80696da8e02ba76a7be112201593ba85d19a0\nauthor Mike Naberezny <mike@naberezny.com> 1685211281 -0700\ncommitter GitHub <noreply@github.com> 1685211281 -0700\n\nMerge pull request #1581 from aftersnow/fix-high-cpu-usage\n\nFix high cpu usage caused by fd leak"
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/2a93d6b21edca4e8b00987c70a350ca626aebec8",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/2a93d6b21edca4e8b00987c70a350ca626aebec8",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/2a93d6b21edca4e8b00987c70a350ca626aebec8/comments",
+    "author": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8c81ee17a3909b172984bc16b574677290573458",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/8c81ee17a3909b172984bc16b574677290573458",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/8c81ee17a3909b172984bc16b574677290573458"
+      },
+      {
+        "sha": "9ed80696da8e02ba76a7be112201593ba85d19a0",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/9ed80696da8e02ba76a7be112201593ba85d19a0",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/9ed80696da8e02ba76a7be112201593ba85d19a0"
+      }
+    ]
+  },
+  {
+    "sha": "8c81ee17a3909b172984bc16b574677290573458",
+    "node_id": "C_kwDOABGFwNoAKDhjODFlZTE3YTM5MDliMTcyOTg0YmMxNmI1NzQ2NzcyOTA1NzM0NTg",
+    "commit": {
+      "author": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-05-08T02:16:35Z"
+      },
+      "committer": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-05-08T02:16:35Z"
+      },
+      "message": "Remove Ubuntu 18.04 env no longer supported by GitHub",
+      "tree": {
+        "sha": "c68acf83bdabae12960fb2ba2fde88bd92bf5472",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/c68acf83bdabae12960fb2ba2fde88bd92bf5472"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/8c81ee17a3909b172984bc16b574677290573458",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/8c81ee17a3909b172984bc16b574677290573458",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/8c81ee17a3909b172984bc16b574677290573458",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/8c81ee17a3909b172984bc16b574677290573458/comments",
+    "author": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "aa1345703eb4c0e0c1695e15d927f28a92d49651",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/aa1345703eb4c0e0c1695e15d927f28a92d49651",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/aa1345703eb4c0e0c1695e15d927f28a92d49651"
+      }
+    ]
+  },
+  {
+    "sha": "aa1345703eb4c0e0c1695e15d927f28a92d49651",
+    "node_id": "C_kwDOABGFwNoAKGFhMTM0NTcwM2ViNGMwZTBjMTY5NWUxNWQ5MjdmMjhhOTJkNDk2NTE",
+    "commit": {
+      "author": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-04-10T14:51:17Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-04-10T14:51:17Z"
+      },
+      "message": "Merge pull request #1587 from vindolin/patch-1\n\nrdflib.net is now rdflib.dev",
+      "tree": {
+        "sha": "886ac4c06a89a8bfe72b7705dda838081a84c93a",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/886ac4c06a89a8bfe72b7705dda838081a84c93a"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/aa1345703eb4c0e0c1695e15d927f28a92d49651",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkNCJlCRBK7hj4Ov3rIwAAZ9QIAFrfrCO4zDhmtLwyTOPQTGxM\nLHbcGKrQJE++j2zEnpAXJmzQCkW5fIokHlPE2UXiN6Nz9WrzBKuSKn9MqcvqMcsI\n7/ipEvmpQsKS61g4Y5E8LrQqKOqpF8XwbVLFVt+svzx3yvi+cBepRV2/YX45aYWE\ny9sWhPQroal8yLU2MeAnOQH3+XrZah6JyqkwTEopCdreTuS3x9795uO67n21k8ji\nduxlSDfny0P2z+/Hqgsh3fffRfNZcpyz/I8ku1IzFtS7RDST78N+oy4FSDw/Kr+W\nmexOpx3639yNLUkk7sfaCqHgoa3IDBYn5V9BNKRjUmhXR9Pk+kcS+Tl9z+jinzk=\n=c8cH\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 886ac4c06a89a8bfe72b7705dda838081a84c93a\nparent f9dbb0bf40c7213c91f97000673c144fe6d6f32b\nparent b9819c385e089a9762e9ae623973a708136775fd\nauthor Mike Naberezny <mike@naberezny.com> 1681138277 -0700\ncommitter GitHub <noreply@github.com> 1681138277 -0700\n\nMerge pull request #1587 from vindolin/patch-1\n\nrdflib.net is now rdflib.dev"
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/aa1345703eb4c0e0c1695e15d927f28a92d49651",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/aa1345703eb4c0e0c1695e15d927f28a92d49651",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/aa1345703eb4c0e0c1695e15d927f28a92d49651/comments",
+    "author": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f9dbb0bf40c7213c91f97000673c144fe6d6f32b",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/f9dbb0bf40c7213c91f97000673c144fe6d6f32b",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/f9dbb0bf40c7213c91f97000673c144fe6d6f32b"
+      },
+      {
+        "sha": "b9819c385e089a9762e9ae623973a708136775fd",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/b9819c385e089a9762e9ae623973a708136775fd",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/b9819c385e089a9762e9ae623973a708136775fd"
+      }
+    ]
+  },
+  {
+    "sha": "b9819c385e089a9762e9ae623973a708136775fd",
+    "node_id": "C_kwDOABGFwNoAKGI5ODE5YzM4NWUwODlhOTc2MmU5YWU2MjM5NzNhNzA4MTM2Nzc1ZmQ",
+    "commit": {
+      "author": {
+        "name": "Thomas Schüßler",
+        "email": "834347+vindolin@users.noreply.github.com",
+        "date": "2023-04-10T07:38:37Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-04-10T07:38:37Z"
+      },
+      "message": "rdflib.net is now rdflib.dev\n\nrdflib.net is now owned by a domain squatter that relays to a gambling site.",
+      "tree": {
+        "sha": "886ac4c06a89a8bfe72b7705dda838081a84c93a",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/886ac4c06a89a8bfe72b7705dda838081a84c93a"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/b9819c385e089a9762e9ae623973a708136775fd",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkM7z9CRBK7hj4Ov3rIwAASW8IAKshNZRelBZwYirHOzAls1TN\nQn+VZzzVfDhq3OjSSnYl4M6AABBWh7MVVX39swGpi/QH10hMUFjdX7GIZUFYXuJA\ni2q+xbBPo2orpmUGGtme1iOIXrPY+rMXFkpTBzko1TxQ1Gkju91s7KK5QDtX0VW8\nrsqMush1QTi8RmoEkb8CBqY+fQBqRH6GSbzAyNAfzE+vSXo+KVhAhTJMVaL5IZzk\nlWMr6tLab4OQj6XeLAolnWDDvdcKThu5D6nJ///mYKLOt8QLwYdP2OXWgYSDYomE\nNfWjbnzOQ0eu7PREMIoExiou3pGp67+AJ8oYuUR3mt2ZJSorFVFU4HBl/iVUwgk=\n=uxdZ\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 886ac4c06a89a8bfe72b7705dda838081a84c93a\nparent f9dbb0bf40c7213c91f97000673c144fe6d6f32b\nauthor Thomas Schüßler <834347+vindolin@users.noreply.github.com> 1681112317 +0200\ncommitter GitHub <noreply@github.com> 1681112317 +0200\n\nrdflib.net is now rdflib.dev\n\nrdflib.net is now owned by a domain squatter that relays to a gambling site."
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/b9819c385e089a9762e9ae623973a708136775fd",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/b9819c385e089a9762e9ae623973a708136775fd",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/b9819c385e089a9762e9ae623973a708136775fd/comments",
+    "author": {
+      "login": "vindolin",
+      "id": 834347,
+      "node_id": "MDQ6VXNlcjgzNDM0Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/834347?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vindolin",
+      "html_url": "https://github.com/vindolin",
+      "followers_url": "https://api.github.com/users/vindolin/followers",
+      "following_url": "https://api.github.com/users/vindolin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vindolin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vindolin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vindolin/subscriptions",
+      "organizations_url": "https://api.github.com/users/vindolin/orgs",
+      "repos_url": "https://api.github.com/users/vindolin/repos",
+      "events_url": "https://api.github.com/users/vindolin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vindolin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f9dbb0bf40c7213c91f97000673c144fe6d6f32b",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/f9dbb0bf40c7213c91f97000673c144fe6d6f32b",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/f9dbb0bf40c7213c91f97000673c144fe6d6f32b"
+      }
+    ]
+  },
+  {
+    "sha": "f9dbb0bf40c7213c91f97000673c144fe6d6f32b",
+    "node_id": "C_kwDOABGFwNoAKGY5ZGJiMGJmNDBjNzIxM2M5MWY5NzAwMDY3M2MxNDRmZTZkNmYzMmI",
+    "commit": {
+      "author": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-03-27T16:17:41Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-03-27T16:17:41Z"
+      },
+      "message": "Merge pull request #1584 from rickschubert/patch-1\n\nRemove unnecessarily gendered pronoun when talking about a computer program",
+      "tree": {
+        "sha": "a182bdccc5f5ae4e181288a606d642d6aab72c92",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/a182bdccc5f5ae4e181288a606d642d6aab72c92"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/f9dbb0bf40c7213c91f97000673c144fe6d6f32b",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkIcGlCRBK7hj4Ov3rIwAA7tEIADoTiXuuZ2Z47m4kt750q0MD\ntl5At1sMoXP/fK1OaO47jEj2TPFUp5hTcXN09+yEqWpt5CV9dHTcaXCRkpaV/G2J\nSQmQ5rTnntbd3o+u5vsBpdQQpFXw4sOJtxGtt0IB0zKBkUPhEqp3j7rzBgVu0ywy\n0Qp3KxDm8EMuKQ6dhiDQZcQ7G2ddZ1XadSHnM4sUHL6Wp/jdGCkWEDkxATYIb9nq\nwhS4rA2i6GMz3HZRuKIXv3qKNjO7QSeuQAr8lLXZyn77fWdIRCUyQ2CJIFkjGGzI\nZZ42T/AI6sa65L7WJQWjze1jRUDQZz5gbj1AaL5vzxcigbo40kuyLxwzWvP7/ZI=\n=ieny\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree a182bdccc5f5ae4e181288a606d642d6aab72c92\nparent 76f4420b643ba998de71486ff666cd521f4e2db5\nparent 01546d35354113cea4e2714f50c2a2b910fd7278\nauthor Mike Naberezny <mike@naberezny.com> 1679933861 -0700\ncommitter GitHub <noreply@github.com> 1679933861 -0700\n\nMerge pull request #1584 from rickschubert/patch-1\n\nRemove unnecessarily gendered pronoun when talking about a computer program"
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/f9dbb0bf40c7213c91f97000673c144fe6d6f32b",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/f9dbb0bf40c7213c91f97000673c144fe6d6f32b",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/f9dbb0bf40c7213c91f97000673c144fe6d6f32b/comments",
+    "author": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "76f4420b643ba998de71486ff666cd521f4e2db5",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/76f4420b643ba998de71486ff666cd521f4e2db5",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/76f4420b643ba998de71486ff666cd521f4e2db5"
+      },
+      {
+        "sha": "01546d35354113cea4e2714f50c2a2b910fd7278",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/01546d35354113cea4e2714f50c2a2b910fd7278",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/01546d35354113cea4e2714f50c2a2b910fd7278"
+      }
+    ]
+  },
+  {
+    "sha": "01546d35354113cea4e2714f50c2a2b910fd7278",
+    "node_id": "C_kwDOABGFwNoAKDAxNTQ2ZDM1MzU0MTEzY2VhNGUyNzE0ZjUwYzJhMmI5MTBmZDcyNzg",
+    "commit": {
+      "author": {
+        "name": "Rick Schubert",
+        "email": "rickschubert@gmx.de",
+        "date": "2023-03-27T15:30:33Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-03-27T15:30:33Z"
+      },
+      "message": "Remove unnecessarily gendered pronoun when talking about a computer program",
+      "tree": {
+        "sha": "a182bdccc5f5ae4e181288a606d642d6aab72c92",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/a182bdccc5f5ae4e181288a606d642d6aab72c92"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/01546d35354113cea4e2714f50c2a2b910fd7278",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkIbaZCRBK7hj4Ov3rIwAAbaEIAAN59/Z5RwBQz/R9VLxpKXww\nYVuXqyL/MJnkQxGiOjrTuNuUXUmpJwEBQ3Y6ijbMPKBj1BXDEDDhxK/IR843SVf3\n3v1gaudz7603hsM5OKKYeLQr8R6KgOZsbCsqf8ufhFVhrEd/MnXUNy7326UrgrIY\nG4rsemvsmehD4h2B5Gm2jAhKcktDXVJC38ePHXZWM/cjpj2d906Fa/OVQgJfdCaH\nOp+DdU3SdGYdDyAxk2QpPQVVHs0zr4hxWyoiFfq2j3/H7A2JPd7GRjjxVKHRi35b\nb5jvA+00CSLtfj9UAw13PQcWtYf0WrNtcNa8OOGZU+ky7S/WF9I0vZwHQhlLUpY=\n=uYMj\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree a182bdccc5f5ae4e181288a606d642d6aab72c92\nparent 76f4420b643ba998de71486ff666cd521f4e2db5\nauthor Rick Schubert <rickschubert@gmx.de> 1679931033 +0100\ncommitter GitHub <noreply@github.com> 1679931033 +0100\n\nRemove unnecessarily gendered pronoun when talking about a computer program"
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/01546d35354113cea4e2714f50c2a2b910fd7278",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/01546d35354113cea4e2714f50c2a2b910fd7278",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/01546d35354113cea4e2714f50c2a2b910fd7278/comments",
+    "author": {
+      "login": "rickschubert",
+      "id": 25436915,
+      "node_id": "MDQ6VXNlcjI1NDM2OTE1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25436915?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rickschubert",
+      "html_url": "https://github.com/rickschubert",
+      "followers_url": "https://api.github.com/users/rickschubert/followers",
+      "following_url": "https://api.github.com/users/rickschubert/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rickschubert/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rickschubert/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rickschubert/subscriptions",
+      "organizations_url": "https://api.github.com/users/rickschubert/orgs",
+      "repos_url": "https://api.github.com/users/rickschubert/repos",
+      "events_url": "https://api.github.com/users/rickschubert/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rickschubert/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "76f4420b643ba998de71486ff666cd521f4e2db5",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/76f4420b643ba998de71486ff666cd521f4e2db5",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/76f4420b643ba998de71486ff666cd521f4e2db5"
+      }
+    ]
+  },
+  {
+    "sha": "76f4420b643ba998de71486ff666cd521f4e2db5",
+    "node_id": "C_kwDOABGFwNoAKDc2ZjQ0MjBiNjQzYmE5OThkZTcxNDg2ZmY2NjZjZDUyMWY0ZTJkYjU",
+    "commit": {
+      "author": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-03-25T19:41:57Z"
+      },
+      "committer": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-03-25T19:42:36Z"
+      },
+      "message": "Remove unused alias\n\neasy_install was deprecated in setuptools 42.0.0",
+      "tree": {
+        "sha": "4105240285db20f239d73ea6d6801d5274478263",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/4105240285db20f239d73ea6d6801d5274478263"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/76f4420b643ba998de71486ff666cd521f4e2db5",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/76f4420b643ba998de71486ff666cd521f4e2db5",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/76f4420b643ba998de71486ff666cd521f4e2db5",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/76f4420b643ba998de71486ff666cd521f4e2db5/comments",
+    "author": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "19c68f5d8832315cf91b5e45cd4e412295d87ead",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/19c68f5d8832315cf91b5e45cd4e412295d87ead",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/19c68f5d8832315cf91b5e45cd4e412295d87ead"
+      }
+    ]
+  },
+  {
+    "sha": "19c68f5d8832315cf91b5e45cd4e412295d87ead",
+    "node_id": "C_kwDOABGFwNoAKDE5YzY4ZjVkODgzMjMxNWNmOTFiNWU0NWNkNGU0MTIyOTVkODdlYWQ",
+    "commit": {
+      "author": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-03-23T22:10:13Z"
+      },
+      "committer": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-03-24T22:35:02Z"
+      },
+      "message": "Avoid new dependencies that will likely break installs\n\nSee this explanation:\nhttps://github.com/Supervisor/supervisor/pull/1578#issuecomment-1477046229",
+      "tree": {
+        "sha": "85f9b5b755657efea8b4a4cec197abbb765fe0bb",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/85f9b5b755657efea8b4a4cec197abbb765fe0bb"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/19c68f5d8832315cf91b5e45cd4e412295d87ead",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/19c68f5d8832315cf91b5e45cd4e412295d87ead",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/19c68f5d8832315cf91b5e45cd4e412295d87ead",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/19c68f5d8832315cf91b5e45cd4e412295d87ead/comments",
+    "author": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ca54549ded3dfab57429b722e591012b08ff0de3",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/ca54549ded3dfab57429b722e591012b08ff0de3",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/ca54549ded3dfab57429b722e591012b08ff0de3"
+      }
+    ]
+  },
+  {
+    "sha": "ca54549ded3dfab57429b722e591012b08ff0de3",
+    "node_id": "C_kwDOABGFwNoAKGNhNTQ1NDlkZWQzZGZhYjU3NDI5YjcyMmU1OTEwMTJiMDhmZjBkZTM",
+    "commit": {
+      "author": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-03-19T18:20:51Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-03-19T18:20:51Z"
+      },
+      "message": "Merge pull request #1583 from sblondon/remove-impossible-case\n\nRemove python3.3 case",
+      "tree": {
+        "sha": "bb1431b23c34a43342ac90d6397014f6e3ccb149",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/bb1431b23c34a43342ac90d6397014f6e3ccb149"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/ca54549ded3dfab57429b722e591012b08ff0de3",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkF1KDCRBK7hj4Ov3rIwAAVyYIAH8DFkvpjXv2Xmg336imMa94\n2OVhxIwJ1jGc89KpTE16YK3fz6PCrLkj+SEzoWqrT6nASYAcQKeiKjBRQtuEm3RQ\nXNR3n9NSIEnlBeVLZXrTrxZPg6JfBp3wRL3aizgT0xgv9kkKK9HWvbMnPJw9r97T\nG1HX52z51dDTKe5uO7XCizJLOj+zQvoaHqz6i+/SXaENEAqXO3XTNisPgqrynrsF\nfw3hCck7dpYYxKDSjsb3a7yGYrsCC755Y7beWnN8NYmOez5UJoMmuk8qJvEcbUkA\nw8WNYsinUoesAtIoUiFCJSu4ltJ+zn8K6HxeGazRkm09kjH4CSuuWhpWwk1fv1o=\n=NqXl\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree bb1431b23c34a43342ac90d6397014f6e3ccb149\nparent afc46a166bb2f1ab0784c00268a25131b597da96\nparent f12bd030589d2f757886b03bd0f1b6e59ffb3f05\nauthor Mike Naberezny <mike@naberezny.com> 1679250051 -0700\ncommitter GitHub <noreply@github.com> 1679250051 -0700\n\nMerge pull request #1583 from sblondon/remove-impossible-case\n\nRemove python3.3 case"
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/ca54549ded3dfab57429b722e591012b08ff0de3",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/ca54549ded3dfab57429b722e591012b08ff0de3",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/ca54549ded3dfab57429b722e591012b08ff0de3/comments",
+    "author": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "afc46a166bb2f1ab0784c00268a25131b597da96",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/afc46a166bb2f1ab0784c00268a25131b597da96",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/afc46a166bb2f1ab0784c00268a25131b597da96"
+      },
+      {
+        "sha": "f12bd030589d2f757886b03bd0f1b6e59ffb3f05",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/f12bd030589d2f757886b03bd0f1b6e59ffb3f05",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/f12bd030589d2f757886b03bd0f1b6e59ffb3f05"
+      }
+    ]
+  },
+  {
+    "sha": "f12bd030589d2f757886b03bd0f1b6e59ffb3f05",
+    "node_id": "C_kwDOABGFwNoAKGYxMmJkMDMwNTg5ZDJmNzU3ODg2YjAzYmQwZjFiNmU1OWZmYjNmMDU",
+    "commit": {
+      "author": {
+        "name": "Stéphane Blondon",
+        "email": "stephane.blondon@gmail.com",
+        "date": "2023-03-18T16:45:30Z"
+      },
+      "committer": {
+        "name": "Stéphane Blondon",
+        "email": "stephane.blondon@gmail.com",
+        "date": "2023-03-18T16:45:30Z"
+      },
+      "message": "Remove python3.3 case\n\nMiminal current python3 requirement is 3.4 so this case can't occur.",
+      "tree": {
+        "sha": "bb1431b23c34a43342ac90d6397014f6e3ccb149",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/bb1431b23c34a43342ac90d6397014f6e3ccb149"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/f12bd030589d2f757886b03bd0f1b6e59ffb3f05",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/f12bd030589d2f757886b03bd0f1b6e59ffb3f05",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/f12bd030589d2f757886b03bd0f1b6e59ffb3f05",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/f12bd030589d2f757886b03bd0f1b6e59ffb3f05/comments",
+    "author": {
+      "login": "sblondon",
+      "id": 1708780,
+      "node_id": "MDQ6VXNlcjE3MDg3ODA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1708780?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/sblondon",
+      "html_url": "https://github.com/sblondon",
+      "followers_url": "https://api.github.com/users/sblondon/followers",
+      "following_url": "https://api.github.com/users/sblondon/following{/other_user}",
+      "gists_url": "https://api.github.com/users/sblondon/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/sblondon/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/sblondon/subscriptions",
+      "organizations_url": "https://api.github.com/users/sblondon/orgs",
+      "repos_url": "https://api.github.com/users/sblondon/repos",
+      "events_url": "https://api.github.com/users/sblondon/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/sblondon/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "sblondon",
+      "id": 1708780,
+      "node_id": "MDQ6VXNlcjE3MDg3ODA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1708780?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/sblondon",
+      "html_url": "https://github.com/sblondon",
+      "followers_url": "https://api.github.com/users/sblondon/followers",
+      "following_url": "https://api.github.com/users/sblondon/following{/other_user}",
+      "gists_url": "https://api.github.com/users/sblondon/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/sblondon/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/sblondon/subscriptions",
+      "organizations_url": "https://api.github.com/users/sblondon/orgs",
+      "repos_url": "https://api.github.com/users/sblondon/repos",
+      "events_url": "https://api.github.com/users/sblondon/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/sblondon/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "afc46a166bb2f1ab0784c00268a25131b597da96",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/afc46a166bb2f1ab0784c00268a25131b597da96",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/afc46a166bb2f1ab0784c00268a25131b597da96"
+      }
+    ]
+  },
+  {
+    "sha": "9ed80696da8e02ba76a7be112201593ba85d19a0",
+    "node_id": "C_kwDOABGFwNoAKDllZDgwNjk2ZGE4ZTAyYmE3NmE3YmUxMTIyMDE1OTNiYTg1ZDE5YTA",
+    "commit": {
+      "author": {
+        "name": "winters.zc",
+        "email": "winters.zc@antfin.com",
+        "date": "2023-03-14T07:25:40Z"
+      },
+      "committer": {
+        "name": "winters.zc",
+        "email": "winters.zc@antfin.com",
+        "date": "2023-03-14T08:40:53Z"
+      },
+      "message": "Fix high cpu usage caused by fd leak\n\nWe found a problem of high CPU usage of the supervisor. This problem is\ncaused by continuous polling of a wrong fd in the main loop of the\nsupervisor. Busy polling leads to a CPU usage close to 100%. (We can\nconfirm this problem through the strace tool)\n\nThis issue can be reproduced by:\n1. Continuously initiate arbitrary requests to supervisor through\nsupervisorctl\n2. After the socket fd is closed, trigger the supervisor's subprocess\nto rotate the log (or reopen the file)\n3. If the above steps are completed within a single main loop of the\nsupervisor, the problem can be triggered\n\nThe reason for the problem is that supervisor relies on using\n_ignore_invalid() in the main loop to close fds. This method has a flaw\nthat if fd is reused before _ignore_invalid() is called, then the fd may\nalways exist in the fd list of poll .\n\nThis commit fixes the problem. By checking the validity of the fd in the\nevent list in the main loop, if the fd is not in the combined_map, it is\nconsidered to be an invalid fd and will be removed from the list.",
+      "tree": {
+        "sha": "9d546414f16ee4094f6b011e76d2f4fb3a9f48dc",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/9d546414f16ee4094f6b011e76d2f4fb3a9f48dc"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/9ed80696da8e02ba76a7be112201593ba85d19a0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/9ed80696da8e02ba76a7be112201593ba85d19a0",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/9ed80696da8e02ba76a7be112201593ba85d19a0",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/9ed80696da8e02ba76a7be112201593ba85d19a0/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "afc46a166bb2f1ab0784c00268a25131b597da96",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/afc46a166bb2f1ab0784c00268a25131b597da96",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/afc46a166bb2f1ab0784c00268a25131b597da96"
+      }
+    ]
+  },
+  {
+    "sha": "afc46a166bb2f1ab0784c00268a25131b597da96",
+    "node_id": "C_kwDOABGFwNoAKGFmYzQ2YTE2NmJiMmYxYWIwNzg0YzAwMjY4YTI1MTMxYjU5N2RhOTY",
+    "commit": {
+      "author": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-03-14T05:03:18Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-03-14T05:03:18Z"
+      },
+      "message": "Merge pull request #1580 from HieuTVGCH200824/main\n\nAdding Polyvisor to plugins list",
+      "tree": {
+        "sha": "81b804dece9ff3e2035a0cf3d95ad87173823f55",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/81b804dece9ff3e2035a0cf3d95ad87173823f55"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/afc46a166bb2f1ab0784c00268a25131b597da96",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkEAAWCRBK7hj4Ov3rIwAAsSIIADBBpFyjsNeygBcQFei8mueT\n/M/CYu3hSTB00IT+TFHHkUWK8bWr0sgZsrJtkzpM4dbKr2AX/YlnAZ+ZroX41PxY\n6cOthyGQCGcczvGvQTMSlgvaFpqOIJWYGm3BBh+EmaeaCtfCLogUaTHiZyedD3UT\nokW6FzXcq8jNIdIPYXjJbh+eCPp74nQKrYKmJi7fiZVo7jkF1GeQWoWqmFf+lZfF\niV6brkHeFWP8TSFBvzpxG2wVW1HhhNXLFSN75Ed7i40dq0qu2HTbQSuHmnJtrQdQ\nzHxfdCMJoajkyTRxborawpdYx3n3c7f6mlVPKGs5mkDm13FqoE1VBhLXAJb3VIw=\n=8LP8\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 81b804dece9ff3e2035a0cf3d95ad87173823f55\nparent 25dd835e5a37ee51c9dff65aa468b8a3ec95f5e6\nparent 6e618a23a5576ac8c03cf0075f377798cf9678ae\nauthor Mike Naberezny <mike@naberezny.com> 1678770198 -0700\ncommitter GitHub <noreply@github.com> 1678770198 -0700\n\nMerge pull request #1580 from HieuTVGCH200824/main\n\nAdding Polyvisor to plugins list"
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/afc46a166bb2f1ab0784c00268a25131b597da96",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/afc46a166bb2f1ab0784c00268a25131b597da96",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/afc46a166bb2f1ab0784c00268a25131b597da96/comments",
+    "author": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "25dd835e5a37ee51c9dff65aa468b8a3ec95f5e6",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/25dd835e5a37ee51c9dff65aa468b8a3ec95f5e6",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/25dd835e5a37ee51c9dff65aa468b8a3ec95f5e6"
+      },
+      {
+        "sha": "6e618a23a5576ac8c03cf0075f377798cf9678ae",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/6e618a23a5576ac8c03cf0075f377798cf9678ae",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/6e618a23a5576ac8c03cf0075f377798cf9678ae"
+      }
+    ]
+  },
+  {
+    "sha": "6e618a23a5576ac8c03cf0075f377798cf9678ae",
+    "node_id": "C_kwDOABGFwNoAKDZlNjE4YTIzYTU1NzZhYzhjMDNjZjAwNzVmMzc3Nzk4Y2Y5Njc4YWU",
+    "commit": {
+      "author": {
+        "name": "HieuTVGCH200824",
+        "email": "95976137+HieuTVGCH200824@users.noreply.github.com",
+        "date": "2023-03-14T04:57:01Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-03-14T04:57:01Z"
+      },
+      "message": "Update plugins.rst",
+      "tree": {
+        "sha": "01031e54e8147c5c28525c5bed471964e279eef8",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/01031e54e8147c5c28525c5bed471964e279eef8"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/6e618a23a5576ac8c03cf0075f377798cf9678ae",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkD/6dCRBK7hj4Ov3rIwAAzW8IAKqg42UqegZZebMI+htvSfcq\nMZASonMZVNPNkrZ4EHx4zK57d0ODliU35Ct22h0K3Q0pr/B4ll2WdqC8fwKcfZHd\nBil5Og9qofh7BUsQt0aVA45UP3XyJDbMSa4HFE85iR6ChFu+BGLJElsX8scLWq/N\nTJ3Jx0V3fJN5tNBTkxFlLfEaM4e0Nqa2eN36AvlpHuUsnLNw0NypfJzhq8n69Zxv\n9FQhOEB4cllEl37qO55q/i+qEEDyvtGzUV8PIjBlcD/GAtG9VzQ6pNJIgumIpzUv\nQ/yYoRmuw6I04z03t8ny6NHtgHU5CcM7MCR333Zu7gSaYWn7quebh+sjmUnZ+AM=\n=1x2V\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 01031e54e8147c5c28525c5bed471964e279eef8\nparent 05d8fb2c2f0ed72dbe53c4f406b24706fec75936\nauthor HieuTVGCH200824 <95976137+HieuTVGCH200824@users.noreply.github.com> 1678769821 +0700\ncommitter GitHub <noreply@github.com> 1678769821 +0700\n\nUpdate plugins.rst"
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/6e618a23a5576ac8c03cf0075f377798cf9678ae",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/6e618a23a5576ac8c03cf0075f377798cf9678ae",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/6e618a23a5576ac8c03cf0075f377798cf9678ae/comments",
+    "author": {
+      "login": "HieuTVGCH200824",
+      "id": 95976137,
+      "node_id": "U_kgDOBbh6yQ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/95976137?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/HieuTVGCH200824",
+      "html_url": "https://github.com/HieuTVGCH200824",
+      "followers_url": "https://api.github.com/users/HieuTVGCH200824/followers",
+      "following_url": "https://api.github.com/users/HieuTVGCH200824/following{/other_user}",
+      "gists_url": "https://api.github.com/users/HieuTVGCH200824/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/HieuTVGCH200824/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/HieuTVGCH200824/subscriptions",
+      "organizations_url": "https://api.github.com/users/HieuTVGCH200824/orgs",
+      "repos_url": "https://api.github.com/users/HieuTVGCH200824/repos",
+      "events_url": "https://api.github.com/users/HieuTVGCH200824/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/HieuTVGCH200824/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "05d8fb2c2f0ed72dbe53c4f406b24706fec75936",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/05d8fb2c2f0ed72dbe53c4f406b24706fec75936",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/05d8fb2c2f0ed72dbe53c4f406b24706fec75936"
+      }
+    ]
+  },
+  {
+    "sha": "05d8fb2c2f0ed72dbe53c4f406b24706fec75936",
+    "node_id": "C_kwDOABGFwNoAKDA1ZDhmYjJjMmYwZWQ3MmRiZTUzYzRmNDA2YjI0NzA2ZmVjNzU5MzY",
+    "commit": {
+      "author": {
+        "name": "HieuTVGCH200824",
+        "email": "95976137+HieuTVGCH200824@users.noreply.github.com",
+        "date": "2023-03-14T04:55:48Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-03-14T04:55:48Z"
+      },
+      "message": "Update plugins.rst",
+      "tree": {
+        "sha": "bea0656b3ef3d5f0ce3d49024b301ebbf4bf1a5a",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/bea0656b3ef3d5f0ce3d49024b301ebbf4bf1a5a"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/05d8fb2c2f0ed72dbe53c4f406b24706fec75936",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkD/5UCRBK7hj4Ov3rIwAASB4IAFlxaUY9Lcssu9S1lJp2lfuS\n4VysmeYgqDRrs94rOKFsmHU/ey02FGxht8oqpjJettKUuOwKQdgRgP/u+YMWSP1I\n+8X0zEb/8+cFY+CYWi4+OwaBLbe6U+GiB2hsJ2c+zcSLyW7NpFn7eCJFtqd8Uthz\ndeTJ8v98AtJLNTdSkmmuc5dIf27HNOnH44qOM9rEJnRbpbe7Ydzb+foFySdPeklr\nH+XWz4wcKi/+lkL7iJL44tjkP9eZbb8ZMJU1L0eg1bWESyXndu9hTROuzaIyLGLn\n1PB58OH/lv5BDi8kPyNqmLee8MGVK7d33hB1+yGp9J9z6kty9/Go/3Rrg20mqPc=\n=/5kC\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree bea0656b3ef3d5f0ce3d49024b301ebbf4bf1a5a\nparent a7cb60d58b5eb610feb76c675208f87501d4bc4b\nauthor HieuTVGCH200824 <95976137+HieuTVGCH200824@users.noreply.github.com> 1678769748 +0700\ncommitter GitHub <noreply@github.com> 1678769748 +0700\n\nUpdate plugins.rst"
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/05d8fb2c2f0ed72dbe53c4f406b24706fec75936",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/05d8fb2c2f0ed72dbe53c4f406b24706fec75936",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/05d8fb2c2f0ed72dbe53c4f406b24706fec75936/comments",
+    "author": {
+      "login": "HieuTVGCH200824",
+      "id": 95976137,
+      "node_id": "U_kgDOBbh6yQ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/95976137?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/HieuTVGCH200824",
+      "html_url": "https://github.com/HieuTVGCH200824",
+      "followers_url": "https://api.github.com/users/HieuTVGCH200824/followers",
+      "following_url": "https://api.github.com/users/HieuTVGCH200824/following{/other_user}",
+      "gists_url": "https://api.github.com/users/HieuTVGCH200824/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/HieuTVGCH200824/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/HieuTVGCH200824/subscriptions",
+      "organizations_url": "https://api.github.com/users/HieuTVGCH200824/orgs",
+      "repos_url": "https://api.github.com/users/HieuTVGCH200824/repos",
+      "events_url": "https://api.github.com/users/HieuTVGCH200824/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/HieuTVGCH200824/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a7cb60d58b5eb610feb76c675208f87501d4bc4b",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/a7cb60d58b5eb610feb76c675208f87501d4bc4b",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/a7cb60d58b5eb610feb76c675208f87501d4bc4b"
+      }
+    ]
+  },
+  {
+    "sha": "25dd835e5a37ee51c9dff65aa468b8a3ec95f5e6",
+    "node_id": "C_kwDOABGFwNoAKDI1ZGQ4MzVlNWEzN2VlNTFjOWRmZjY1YWE0NjhiOGEzZWM5NWY1ZTY",
+    "commit": {
+      "author": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-03-09T00:13:17Z"
+      },
+      "committer": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-03-09T00:13:17Z"
+      },
+      "message": "Use consistent import style",
+      "tree": {
+        "sha": "9cb752cd5af3a98e1657738a31143c6428577d16",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/9cb752cd5af3a98e1657738a31143c6428577d16"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/25dd835e5a37ee51c9dff65aa468b8a3ec95f5e6",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/25dd835e5a37ee51c9dff65aa468b8a3ec95f5e6",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/25dd835e5a37ee51c9dff65aa468b8a3ec95f5e6",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/25dd835e5a37ee51c9dff65aa468b8a3ec95f5e6/comments",
+    "author": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9deaca10dbcc1abc0fe92108ade124ede35c8b9a",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/9deaca10dbcc1abc0fe92108ade124ede35c8b9a",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/9deaca10dbcc1abc0fe92108ade124ede35c8b9a"
+      }
+    ]
+  },
+  {
+    "sha": "9deaca10dbcc1abc0fe92108ade124ede35c8b9a",
+    "node_id": "C_kwDOABGFwNoAKDlkZWFjYTEwZGJjYzFhYmMwZmU5MjEwOGFkZTEyNGVkZTM1YzhiOWE",
+    "commit": {
+      "author": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-03-08T20:01:28Z"
+      },
+      "committer": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-03-08T23:48:47Z"
+      },
+      "message": "Move importlib shims to compat module, add changelog entry",
+      "tree": {
+        "sha": "a37998bc2fa6fd407a3949f8e5e42134b6688065",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/a37998bc2fa6fd407a3949f8e5e42134b6688065"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/9deaca10dbcc1abc0fe92108ade124ede35c8b9a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/9deaca10dbcc1abc0fe92108ade124ede35c8b9a",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/9deaca10dbcc1abc0fe92108ade124ede35c8b9a",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/9deaca10dbcc1abc0fe92108ade124ede35c8b9a/comments",
+    "author": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8fe9410adfad2b2ad1ba84d04d6027c799502568",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/8fe9410adfad2b2ad1ba84d04d6027c799502568",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/8fe9410adfad2b2ad1ba84d04d6027c799502568"
+      }
+    ]
+  },
+  {
+    "sha": "8fe9410adfad2b2ad1ba84d04d6027c799502568",
+    "node_id": "C_kwDOABGFwNoAKDhmZTk0MTBhZGZhZDJiMmFkMWJhODRkMDRkNjAyN2M3OTk1MDI1Njg",
+    "commit": {
+      "author": {
+        "name": "Mike Naberezny",
+        "email": "mike@naberezny.com",
+        "date": "2023-03-07T23:37:55Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-03-07T23:37:55Z"
+      },
+      "message": "Merge pull request #1578 from ofek/setuptools\n\nReplace runtime dependency on setuptools with modern libraries",
+      "tree": {
+        "sha": "023b457b7f1839b20975315d82a6bd2e9235be84",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/023b457b7f1839b20975315d82a6bd2e9235be84"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/8fe9410adfad2b2ad1ba84d04d6027c799502568",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkB8rTCRBK7hj4Ov3rIwAAR4AIABfVcUsOzYQJDegl0Nbopjz3\n5lUfW30vISjRnWzw+u/QmU6w39fLThxOzWdExKdCQ1e+Be1iwjn5mGsoVFYYfhmA\numkY4SdDgqkMInZ9Xy2bKhN1oSmqJj1/ORymb3Jl37qPaMK3njUWKs1iOxZq6KZ7\n/CaN5TAghcPDe9RHf+/5wgDX4Og2SiG3O/GDi7ZH2LSAkj5D0J3peK03BWeDvQIF\nfP7SbBtlcReVSV6/529EQYrnHyHbcj63jm/xIIqLERESKEQFd/vq8AEAW1GehQCs\n3yw+2uYLOzBbLWZI/YhC6RtHMmUo8V8jhLzpwHeX9qfhRfN+ShwsObtc8gHv1vY=\n=h0hK\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 023b457b7f1839b20975315d82a6bd2e9235be84\nparent 0323a9ab2b8282994e95472cae1d78da7c3aa59d\nparent 281fd784bd7445fcbc4a50c7593b0519af9e84e3\nauthor Mike Naberezny <mike@naberezny.com> 1678232275 -0800\ncommitter GitHub <noreply@github.com> 1678232275 -0800\n\nMerge pull request #1578 from ofek/setuptools\n\nReplace runtime dependency on setuptools with modern libraries"
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/8fe9410adfad2b2ad1ba84d04d6027c799502568",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/8fe9410adfad2b2ad1ba84d04d6027c799502568",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/8fe9410adfad2b2ad1ba84d04d6027c799502568/comments",
+    "author": {
+      "login": "mnaberez",
+      "id": 52712,
+      "node_id": "MDQ6VXNlcjUyNzEy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52712?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mnaberez",
+      "html_url": "https://github.com/mnaberez",
+      "followers_url": "https://api.github.com/users/mnaberez/followers",
+      "following_url": "https://api.github.com/users/mnaberez/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mnaberez/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mnaberez/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mnaberez/subscriptions",
+      "organizations_url": "https://api.github.com/users/mnaberez/orgs",
+      "repos_url": "https://api.github.com/users/mnaberez/repos",
+      "events_url": "https://api.github.com/users/mnaberez/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mnaberez/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0323a9ab2b8282994e95472cae1d78da7c3aa59d",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/0323a9ab2b8282994e95472cae1d78da7c3aa59d",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/0323a9ab2b8282994e95472cae1d78da7c3aa59d"
+      },
+      {
+        "sha": "281fd784bd7445fcbc4a50c7593b0519af9e84e3",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/281fd784bd7445fcbc4a50c7593b0519af9e84e3",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/281fd784bd7445fcbc4a50c7593b0519af9e84e3"
+      }
+    ]
+  },
+  {
+    "sha": "281fd784bd7445fcbc4a50c7593b0519af9e84e3",
+    "node_id": "C_kwDOABGFwNoAKDI4MWZkNzg0YmQ3NDQ1ZmNiYzRhNTBjNzU5M2IwNTE5YWY5ZTg0ZTM",
+    "commit": {
+      "author": {
+        "name": "Ofek Lev",
+        "email": "ofekmeister@gmail.com",
+        "date": "2023-03-05T18:18:23Z"
+      },
+      "committer": {
+        "name": "Ofek Lev",
+        "email": "ofekmeister@gmail.com",
+        "date": "2023-03-06T00:36:56Z"
+      },
+      "message": "refactor",
+      "tree": {
+        "sha": "023b457b7f1839b20975315d82a6bd2e9235be84",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/git/trees/023b457b7f1839b20975315d82a6bd2e9235be84"
+      },
+      "url": "https://api.github.com/repos/Supervisor/supervisor/git/commits/281fd784bd7445fcbc4a50c7593b0519af9e84e3",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/Supervisor/supervisor/commits/281fd784bd7445fcbc4a50c7593b0519af9e84e3",
+    "html_url": "https://github.com/Supervisor/supervisor/commit/281fd784bd7445fcbc4a50c7593b0519af9e84e3",
+    "comments_url": "https://api.github.com/repos/Supervisor/supervisor/commits/281fd784bd7445fcbc4a50c7593b0519af9e84e3/comments",
+    "author": {
+      "login": "ofek",
+      "id": 9677399,
+      "node_id": "MDQ6VXNlcjk2NzczOTk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9677399?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ofek",
+      "html_url": "https://github.com/ofek",
+      "followers_url": "https://api.github.com/users/ofek/followers",
+      "following_url": "https://api.github.com/users/ofek/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ofek/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ofek/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ofek/subscriptions",
+      "organizations_url": "https://api.github.com/users/ofek/orgs",
+      "repos_url": "https://api.github.com/users/ofek/repos",
+      "events_url": "https://api.github.com/users/ofek/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ofek/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ofek",
+      "id": 9677399,
+      "node_id": "MDQ6VXNlcjk2NzczOTk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9677399?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ofek",
+      "html_url": "https://github.com/ofek",
+      "followers_url": "https://api.github.com/users/ofek/followers",
+      "following_url": "https://api.github.com/users/ofek/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ofek/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ofek/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ofek/subscriptions",
+      "organizations_url": "https://api.github.com/users/ofek/orgs",
+      "repos_url": "https://api.github.com/users/ofek/repos",
+      "events_url": "https://api.github.com/users/ofek/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ofek/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7d77fd56595466364f13676ad9242990b6c287d3",
+        "url": "https://api.github.com/repos/Supervisor/supervisor/commits/7d77fd56595466364f13676ad9242990b6c287d3",
+        "html_url": "https://github.com/Supervisor/supervisor/commit/7d77fd56595466364f13676ad9242990b6c287d3"
+      }
+    ]
+  }
+]

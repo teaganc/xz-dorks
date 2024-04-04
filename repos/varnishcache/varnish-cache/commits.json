@@ -1,0 +1,2377 @@
+[
+  {
+    "sha": "e676f77939e7dbde851ee3aa58dfd36505f2b7e8",
+    "node_id": "C_kwDOApqIINoAKGU2NzZmNzc5MzllN2RiZGU4NTFlZTNhYTU4ZGZkMzY1MDVmMmI3ZTg",
+    "commit": {
+      "author": {
+        "name": "AlveElde",
+        "email": "alve_elde@hotmail.com",
+        "date": "2024-03-19T12:44:24Z"
+      },
+      "committer": {
+        "name": "Nils Goroll",
+        "email": "nils.goroll@uplex.de",
+        "date": "2024-03-25T14:55:49Z"
+      },
+      "message": "purge: Use EXP_Reduce() instead of EXP_Rearm()\n\nWhen a stale object is soft-purged, the time until the object expires\nshould not be reset, as repeated soft-purges could keep the object\naround indefinitely.",
+      "tree": {
+        "sha": "04ae77bf8ae204a8e8731865584897823721ae87",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/04ae77bf8ae204a8e8731865584897823721ae87"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/e676f77939e7dbde851ee3aa58dfd36505f2b7e8",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/e676f77939e7dbde851ee3aa58dfd36505f2b7e8",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/e676f77939e7dbde851ee3aa58dfd36505f2b7e8",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/e676f77939e7dbde851ee3aa58dfd36505f2b7e8/comments",
+    "author": {
+      "login": "AlveElde",
+      "id": 21689049,
+      "node_id": "MDQ6VXNlcjIxNjg5MDQ5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/21689049?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/AlveElde",
+      "html_url": "https://github.com/AlveElde",
+      "followers_url": "https://api.github.com/users/AlveElde/followers",
+      "following_url": "https://api.github.com/users/AlveElde/following{/other_user}",
+      "gists_url": "https://api.github.com/users/AlveElde/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/AlveElde/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/AlveElde/subscriptions",
+      "organizations_url": "https://api.github.com/users/AlveElde/orgs",
+      "repos_url": "https://api.github.com/users/AlveElde/repos",
+      "events_url": "https://api.github.com/users/AlveElde/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/AlveElde/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "nigoroll",
+      "id": 1528104,
+      "node_id": "MDQ6VXNlcjE1MjgxMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1528104?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/nigoroll",
+      "html_url": "https://github.com/nigoroll",
+      "followers_url": "https://api.github.com/users/nigoroll/followers",
+      "following_url": "https://api.github.com/users/nigoroll/following{/other_user}",
+      "gists_url": "https://api.github.com/users/nigoroll/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/nigoroll/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/nigoroll/subscriptions",
+      "organizations_url": "https://api.github.com/users/nigoroll/orgs",
+      "repos_url": "https://api.github.com/users/nigoroll/repos",
+      "events_url": "https://api.github.com/users/nigoroll/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/nigoroll/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9c0abf0c8065c2dab42410475346e7dff2156bc7",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/9c0abf0c8065c2dab42410475346e7dff2156bc7",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/9c0abf0c8065c2dab42410475346e7dff2156bc7"
+      }
+    ]
+  },
+  {
+    "sha": "9c0abf0c8065c2dab42410475346e7dff2156bc7",
+    "node_id": "C_kwDOApqIINoAKDljMGFiZjBjODA2NWMyZGFiNDI0MTA0NzUzNDZlN2RmZjIxNTZiYzc",
+    "commit": {
+      "author": {
+        "name": "AlveElde",
+        "email": "alve_elde@hotmail.com",
+        "date": "2024-03-22T10:21:46Z"
+      },
+      "committer": {
+        "name": "Nils Goroll",
+        "email": "nils.goroll@uplex.de",
+        "date": "2024-03-25T14:55:49Z"
+      },
+      "message": "expire: Introduce EXP_Reduce()\n\nThis commit introduces EXP_Reduce(), a function to reduce object timers.\nThe goal is to provide a function better suited to soft-purging objects,\nas EXP_Rearm() has some non-obvious disadvantages when used or this\npurpose.\n\nWhen EXP_Rearm() is used to soft-purge an object by setting its TTL to\n0, the expiry is effectively reset to the start of the objects grace\nperiod. This happens because the object TTL includes a time delta\nbetween object insertion time (oc->t_origin) and now. The result is that\na soft-purge extends the lifetime of an already stale object, and\nrepeated soft-purges can keep the object away from expiry indefinitely.\n\nThe EXP_Reduce() function is better suited for soft-purging, as it only\nupdates an objects TTL if it would reduce the objects lifetime. The\nfunction also has facilities for reducing grace and keep.",
+      "tree": {
+        "sha": "43d41fd3eea30991da2a7156d1b48b6f44a8804c",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/43d41fd3eea30991da2a7156d1b48b6f44a8804c"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/9c0abf0c8065c2dab42410475346e7dff2156bc7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/9c0abf0c8065c2dab42410475346e7dff2156bc7",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/9c0abf0c8065c2dab42410475346e7dff2156bc7",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/9c0abf0c8065c2dab42410475346e7dff2156bc7/comments",
+    "author": {
+      "login": "AlveElde",
+      "id": 21689049,
+      "node_id": "MDQ6VXNlcjIxNjg5MDQ5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/21689049?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/AlveElde",
+      "html_url": "https://github.com/AlveElde",
+      "followers_url": "https://api.github.com/users/AlveElde/followers",
+      "following_url": "https://api.github.com/users/AlveElde/following{/other_user}",
+      "gists_url": "https://api.github.com/users/AlveElde/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/AlveElde/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/AlveElde/subscriptions",
+      "organizations_url": "https://api.github.com/users/AlveElde/orgs",
+      "repos_url": "https://api.github.com/users/AlveElde/repos",
+      "events_url": "https://api.github.com/users/AlveElde/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/AlveElde/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "nigoroll",
+      "id": 1528104,
+      "node_id": "MDQ6VXNlcjE1MjgxMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1528104?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/nigoroll",
+      "html_url": "https://github.com/nigoroll",
+      "followers_url": "https://api.github.com/users/nigoroll/followers",
+      "following_url": "https://api.github.com/users/nigoroll/following{/other_user}",
+      "gists_url": "https://api.github.com/users/nigoroll/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/nigoroll/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/nigoroll/subscriptions",
+      "organizations_url": "https://api.github.com/users/nigoroll/orgs",
+      "repos_url": "https://api.github.com/users/nigoroll/repos",
+      "events_url": "https://api.github.com/users/nigoroll/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/nigoroll/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8f2c3648b82a6e527ef86c1d6f228b94583b9e0a",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/8f2c3648b82a6e527ef86c1d6f228b94583b9e0a",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/8f2c3648b82a6e527ef86c1d6f228b94583b9e0a"
+      }
+    ]
+  },
+  {
+    "sha": "8f2c3648b82a6e527ef86c1d6f228b94583b9e0a",
+    "node_id": "C_kwDOApqIINoAKDhmMmMzNjQ4YjgyYTZlNTI3ZWY4NmMxZDZmMjI4Yjk0NTgzYjllMGE",
+    "commit": {
+      "author": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2024-03-25T09:09:27Z"
+      },
+      "committer": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2024-03-25T09:09:27Z"
+      },
+      "message": "whats-new: Use CVE-2024-30156 for the h2 broke window",
+      "tree": {
+        "sha": "b46ebefc1522a16bdaea4dcf1e120e1562ede7b6",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/b46ebefc1522a16bdaea4dcf1e120e1562ede7b6"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/8f2c3648b82a6e527ef86c1d6f228b94583b9e0a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/8f2c3648b82a6e527ef86c1d6f228b94583b9e0a",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/8f2c3648b82a6e527ef86c1d6f228b94583b9e0a",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/8f2c3648b82a6e527ef86c1d6f228b94583b9e0a/comments",
+    "author": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "13fe897fa582661fe075af21aff0e53b3770fcfe",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/13fe897fa582661fe075af21aff0e53b3770fcfe",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/13fe897fa582661fe075af21aff0e53b3770fcfe"
+      }
+    ]
+  },
+  {
+    "sha": "13fe897fa582661fe075af21aff0e53b3770fcfe",
+    "node_id": "C_kwDOApqIINoAKDEzZmU4OTdmYTU4MjY2MWZlMDc1YWYyMWFmZjBlNTNiMzc3MGZjZmU",
+    "commit": {
+      "author": {
+        "name": "Walid Boudebouda",
+        "email": "walid.boudebouda@gmail.com",
+        "date": "2024-03-15T08:39:32Z"
+      },
+      "committer": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2024-03-20T11:11:56Z"
+      },
+      "message": "varnishncsa: Reduce CTX.gen overflow likelihood\n\nIf a format never matches anything, the 4294967296th transaction\nproccessed by varnishncsa will wrap its generation around to zero,\nbe considered a match, and let vsb_fcat() pass a null string to\nVSB_quote().",
+      "tree": {
+        "sha": "7be33aeb807dcd0fbb379376a6e96ac6811fdb57",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/7be33aeb807dcd0fbb379376a6e96ac6811fdb57"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/13fe897fa582661fe075af21aff0e53b3770fcfe",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/13fe897fa582661fe075af21aff0e53b3770fcfe",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/13fe897fa582661fe075af21aff0e53b3770fcfe",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/13fe897fa582661fe075af21aff0e53b3770fcfe/comments",
+    "author": {
+      "login": "walid-git",
+      "id": 34819869,
+      "node_id": "MDQ6VXNlcjM0ODE5ODY5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/34819869?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/walid-git",
+      "html_url": "https://github.com/walid-git",
+      "followers_url": "https://api.github.com/users/walid-git/followers",
+      "following_url": "https://api.github.com/users/walid-git/following{/other_user}",
+      "gists_url": "https://api.github.com/users/walid-git/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/walid-git/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/walid-git/subscriptions",
+      "organizations_url": "https://api.github.com/users/walid-git/orgs",
+      "repos_url": "https://api.github.com/users/walid-git/repos",
+      "events_url": "https://api.github.com/users/walid-git/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/walid-git/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "23229ebdf2bf4a91bb0c806a7ac480c6cee2ca52",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/23229ebdf2bf4a91bb0c806a7ac480c6cee2ca52",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/23229ebdf2bf4a91bb0c806a7ac480c6cee2ca52"
+      }
+    ]
+  },
+  {
+    "sha": "23229ebdf2bf4a91bb0c806a7ac480c6cee2ca52",
+    "node_id": "C_kwDOApqIINoAKDIzMjI5ZWJkZjJiZjRhOTFiYjBjODA2YTdhYzQ4MGM2Y2VlMmNhNTI",
+    "commit": {
+      "author": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2024-03-19T09:19:58Z"
+      },
+      "committer": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2024-03-19T09:19:58Z"
+      },
+      "message": "circleci: Tolerate spaces in AC_INIT()\n\nBetter diff with the --word-diff --word-diff-regex=. options.",
+      "tree": {
+        "sha": "d1e61c310f32e8b41949670f7b6ef16ae85169ea",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/d1e61c310f32e8b41949670f7b6ef16ae85169ea"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/23229ebdf2bf4a91bb0c806a7ac480c6cee2ca52",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/23229ebdf2bf4a91bb0c806a7ac480c6cee2ca52",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/23229ebdf2bf4a91bb0c806a7ac480c6cee2ca52",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/23229ebdf2bf4a91bb0c806a7ac480c6cee2ca52/comments",
+    "author": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3d597de6275470155da5162e2566637acb32ecf1",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/3d597de6275470155da5162e2566637acb32ecf1",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/3d597de6275470155da5162e2566637acb32ecf1"
+      }
+    ]
+  },
+  {
+    "sha": "3d597de6275470155da5162e2566637acb32ecf1",
+    "node_id": "C_kwDOApqIINoAKDNkNTk3ZGU2Mjc1NDcwMTU1ZGE1MTYyZTI1NjY2MzdhY2IzMmVjZjE",
+    "commit": {
+      "author": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2023-09-18T05:19:46Z"
+      },
+      "committer": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2024-03-18T19:32:29Z"
+      },
+      "message": "build: Back to the future",
+      "tree": {
+        "sha": "52a225d0722147b3fbbf1b26619083767a2d5135",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/52a225d0722147b3fbbf1b26619083767a2d5135"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/3d597de6275470155da5162e2566637acb32ecf1",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/3d597de6275470155da5162e2566637acb32ecf1",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/3d597de6275470155da5162e2566637acb32ecf1",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/3d597de6275470155da5162e2566637acb32ecf1/comments",
+    "author": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "02cbe31660f4416dc776c65f27b57b0d52e74f37",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/02cbe31660f4416dc776c65f27b57b0d52e74f37",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/02cbe31660f4416dc776c65f27b57b0d52e74f37"
+      }
+    ]
+  },
+  {
+    "sha": "02cbe31660f4416dc776c65f27b57b0d52e74f37",
+    "node_id": "C_kwDOApqIINoAKDAyY2JlMzE2NjBmNDQxNmRjNzc2YzY1ZjI3YjU3YjBkNTJlNzRmMzc",
+    "commit": {
+      "author": {
+        "name": "Simon Stridsberg",
+        "email": "simon.stridsberg@varnish-software.com",
+        "date": "2024-03-18T18:28:20Z"
+      },
+      "committer": {
+        "name": "Simon Stridsberg",
+        "email": "simon.stridsberg@varnish-software.com",
+        "date": "2024-03-18T18:28:20Z"
+      },
+      "message": "Merge tag 'varnish-7.5.0'\n\nReleasing 7.5.0",
+      "tree": {
+        "sha": "8bdbfd0401156c2b1ebcb3f240e19a6fd7148574",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/8bdbfd0401156c2b1ebcb3f240e19a6fd7148574"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/02cbe31660f4416dc776c65f27b57b0d52e74f37",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/02cbe31660f4416dc776c65f27b57b0d52e74f37",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/02cbe31660f4416dc776c65f27b57b0d52e74f37",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/02cbe31660f4416dc776c65f27b57b0d52e74f37/comments",
+    "author": {
+      "login": "simonvik",
+      "id": 198342,
+      "node_id": "MDQ6VXNlcjE5ODM0Mg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/198342?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/simonvik",
+      "html_url": "https://github.com/simonvik",
+      "followers_url": "https://api.github.com/users/simonvik/followers",
+      "following_url": "https://api.github.com/users/simonvik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/simonvik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/simonvik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/simonvik/subscriptions",
+      "organizations_url": "https://api.github.com/users/simonvik/orgs",
+      "repos_url": "https://api.github.com/users/simonvik/repos",
+      "events_url": "https://api.github.com/users/simonvik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/simonvik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "simonvik",
+      "id": 198342,
+      "node_id": "MDQ6VXNlcjE5ODM0Mg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/198342?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/simonvik",
+      "html_url": "https://github.com/simonvik",
+      "followers_url": "https://api.github.com/users/simonvik/followers",
+      "following_url": "https://api.github.com/users/simonvik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/simonvik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/simonvik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/simonvik/subscriptions",
+      "organizations_url": "https://api.github.com/users/simonvik/orgs",
+      "repos_url": "https://api.github.com/users/simonvik/repos",
+      "events_url": "https://api.github.com/users/simonvik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/simonvik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ac9830e9c72eca7194c5cb60c292e6d0f1f6b1a8",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/ac9830e9c72eca7194c5cb60c292e6d0f1f6b1a8",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/ac9830e9c72eca7194c5cb60c292e6d0f1f6b1a8"
+      },
+      {
+        "sha": "eef25264e5ca5f96a77129308edb83ccf84cb1b1",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/eef25264e5ca5f96a77129308edb83ccf84cb1b1",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/eef25264e5ca5f96a77129308edb83ccf84cb1b1"
+      }
+    ]
+  },
+  {
+    "sha": "eef25264e5ca5f96a77129308edb83ccf84cb1b1",
+    "node_id": "C_kwDOApqIINoAKGVlZjI1MjY0ZTVjYTVmOTZhNzcxMjkzMDhlZGI4M2NjZjg0Y2IxYjE",
+    "commit": {
+      "author": {
+        "name": "Simon Stridsberg",
+        "email": "simon.stridsberg@varnish-software.com",
+        "date": "2024-03-18T13:45:32Z"
+      },
+      "committer": {
+        "name": "Simon Stridsberg",
+        "email": "simon.stridsberg@varnish-software.com",
+        "date": "2024-03-18T15:33:26Z"
+      },
+      "message": "Prepare for 7.5.0",
+      "tree": {
+        "sha": "8bdbfd0401156c2b1ebcb3f240e19a6fd7148574",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/8bdbfd0401156c2b1ebcb3f240e19a6fd7148574"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/eef25264e5ca5f96a77129308edb83ccf84cb1b1",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/eef25264e5ca5f96a77129308edb83ccf84cb1b1",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/eef25264e5ca5f96a77129308edb83ccf84cb1b1",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/eef25264e5ca5f96a77129308edb83ccf84cb1b1/comments",
+    "author": {
+      "login": "simonvik",
+      "id": 198342,
+      "node_id": "MDQ6VXNlcjE5ODM0Mg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/198342?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/simonvik",
+      "html_url": "https://github.com/simonvik",
+      "followers_url": "https://api.github.com/users/simonvik/followers",
+      "following_url": "https://api.github.com/users/simonvik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/simonvik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/simonvik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/simonvik/subscriptions",
+      "organizations_url": "https://api.github.com/users/simonvik/orgs",
+      "repos_url": "https://api.github.com/users/simonvik/repos",
+      "events_url": "https://api.github.com/users/simonvik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/simonvik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "simonvik",
+      "id": 198342,
+      "node_id": "MDQ6VXNlcjE5ODM0Mg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/198342?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/simonvik",
+      "html_url": "https://github.com/simonvik",
+      "followers_url": "https://api.github.com/users/simonvik/followers",
+      "following_url": "https://api.github.com/users/simonvik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/simonvik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/simonvik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/simonvik/subscriptions",
+      "organizations_url": "https://api.github.com/users/simonvik/orgs",
+      "repos_url": "https://api.github.com/users/simonvik/repos",
+      "events_url": "https://api.github.com/users/simonvik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/simonvik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "88f7f790d79941fb7592efd9b34068d1c7e0b7c2",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/88f7f790d79941fb7592efd9b34068d1c7e0b7c2",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/88f7f790d79941fb7592efd9b34068d1c7e0b7c2"
+      }
+    ]
+  },
+  {
+    "sha": "88f7f790d79941fb7592efd9b34068d1c7e0b7c2",
+    "node_id": "C_kwDOApqIINoAKDg4ZjdmNzkwZDc5OTQxZmI3NTkyZWZkOWIzNDA2OGQxYzdlMGI3YzI",
+    "commit": {
+      "author": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2024-03-15T15:03:13Z"
+      },
+      "committer": {
+        "name": "Simon Stridsberg",
+        "email": "simon.stridsberg@varnish-software.com",
+        "date": "2024-03-18T14:19:24Z"
+      },
+      "message": "whats-new: Mention CVE-2023-43622",
+      "tree": {
+        "sha": "9f1e6678d535d513632e0b3045a277400dc0f7cb",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/9f1e6678d535d513632e0b3045a277400dc0f7cb"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/88f7f790d79941fb7592efd9b34068d1c7e0b7c2",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/88f7f790d79941fb7592efd9b34068d1c7e0b7c2",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/88f7f790d79941fb7592efd9b34068d1c7e0b7c2",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/88f7f790d79941fb7592efd9b34068d1c7e0b7c2/comments",
+    "author": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "simonvik",
+      "id": 198342,
+      "node_id": "MDQ6VXNlcjE5ODM0Mg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/198342?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/simonvik",
+      "html_url": "https://github.com/simonvik",
+      "followers_url": "https://api.github.com/users/simonvik/followers",
+      "following_url": "https://api.github.com/users/simonvik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/simonvik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/simonvik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/simonvik/subscriptions",
+      "organizations_url": "https://api.github.com/users/simonvik/orgs",
+      "repos_url": "https://api.github.com/users/simonvik/repos",
+      "events_url": "https://api.github.com/users/simonvik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/simonvik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9f6a7e3f90c50565ff2184592a66d1c0e711502c",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/9f6a7e3f90c50565ff2184592a66d1c0e711502c",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/9f6a7e3f90c50565ff2184592a66d1c0e711502c"
+      }
+    ]
+  },
+  {
+    "sha": "9f6a7e3f90c50565ff2184592a66d1c0e711502c",
+    "node_id": "C_kwDOApqIINoAKDlmNmE3ZTNmOTBjNTA1NjVmZjIxODQ1OTJhNjZkMWMwZTcxMTUwMmM",
+    "commit": {
+      "author": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2023-09-11T15:52:00Z"
+      },
+      "committer": {
+        "name": "Simon Stridsberg",
+        "email": "simon.stridsberg@varnish-software.com",
+        "date": "2024-03-18T13:37:59Z"
+      },
+      "message": "http2_proto: Simplify CONTINUATION expectation check\n\nBefore the h2 frame dispatch we only need to check that coming from a\nHEADERS frame the very next frame is a CONTINUATION, when the HPACK\nblock didn't fit in the former.\n\nThe CONTINUATION dispatch will then make the stream consistency check.",
+      "tree": {
+        "sha": "e47bee19baa676bfc8b5103a5886065c3947170c",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/e47bee19baa676bfc8b5103a5886065c3947170c"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/9f6a7e3f90c50565ff2184592a66d1c0e711502c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/9f6a7e3f90c50565ff2184592a66d1c0e711502c",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/9f6a7e3f90c50565ff2184592a66d1c0e711502c",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/9f6a7e3f90c50565ff2184592a66d1c0e711502c/comments",
+    "author": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "simonvik",
+      "id": 198342,
+      "node_id": "MDQ6VXNlcjE5ODM0Mg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/198342?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/simonvik",
+      "html_url": "https://github.com/simonvik",
+      "followers_url": "https://api.github.com/users/simonvik/followers",
+      "following_url": "https://api.github.com/users/simonvik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/simonvik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/simonvik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/simonvik/subscriptions",
+      "organizations_url": "https://api.github.com/users/simonvik/orgs",
+      "repos_url": "https://api.github.com/users/simonvik/repos",
+      "events_url": "https://api.github.com/users/simonvik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/simonvik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9aa45a9f290b3e43c3939622c55017075862965f",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/9aa45a9f290b3e43c3939622c55017075862965f",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/9aa45a9f290b3e43c3939622c55017075862965f"
+      }
+    ]
+  },
+  {
+    "sha": "9aa45a9f290b3e43c3939622c55017075862965f",
+    "node_id": "C_kwDOApqIINoAKDlhYTQ1YTlmMjkwYjNlNDNjMzkzOTYyMmM1NTAxNzA3NTg2Mjk2NWY",
+    "commit": {
+      "author": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2023-11-16T16:30:17Z"
+      },
+      "committer": {
+        "name": "Simon Stridsberg",
+        "email": "simon.stridsberg@varnish-software.com",
+        "date": "2024-03-18T13:37:59Z"
+      },
+      "message": "http2_proto: Send GOAWAY before leaving the rx loop",
+      "tree": {
+        "sha": "0b656e2405f9bef1658e1e95abab4c86886fb850",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/0b656e2405f9bef1658e1e95abab4c86886fb850"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/9aa45a9f290b3e43c3939622c55017075862965f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/9aa45a9f290b3e43c3939622c55017075862965f",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/9aa45a9f290b3e43c3939622c55017075862965f",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/9aa45a9f290b3e43c3939622c55017075862965f/comments",
+    "author": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "simonvik",
+      "id": 198342,
+      "node_id": "MDQ6VXNlcjE5ODM0Mg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/198342?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/simonvik",
+      "html_url": "https://github.com/simonvik",
+      "followers_url": "https://api.github.com/users/simonvik/followers",
+      "following_url": "https://api.github.com/users/simonvik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/simonvik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/simonvik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/simonvik/subscriptions",
+      "organizations_url": "https://api.github.com/users/simonvik/orgs",
+      "repos_url": "https://api.github.com/users/simonvik/repos",
+      "events_url": "https://api.github.com/users/simonvik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/simonvik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "05d91face09ba76b5fc1cec9e13cbf2859cb7e3d",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/05d91face09ba76b5fc1cec9e13cbf2859cb7e3d",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/05d91face09ba76b5fc1cec9e13cbf2859cb7e3d"
+      }
+    ]
+  },
+  {
+    "sha": "05d91face09ba76b5fc1cec9e13cbf2859cb7e3d",
+    "node_id": "C_kwDOApqIINoAKDA1ZDkxZmFjZTA5YmE3NmI1ZmMxY2VjOWUxM2NiZjI4NTljYjdlM2Q",
+    "commit": {
+      "author": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2023-11-16T16:27:11Z"
+      },
+      "committer": {
+        "name": "Simon Stridsberg",
+        "email": "simon.stridsberg@varnish-software.com",
+        "date": "2024-03-18T13:37:59Z"
+      },
+      "message": "http2: New send_goaway flag for errors",
+      "tree": {
+        "sha": "13d0e3b4ef758920ecae2b192b8abf224f1c4a5b",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/13d0e3b4ef758920ecae2b192b8abf224f1c4a5b"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/05d91face09ba76b5fc1cec9e13cbf2859cb7e3d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/05d91face09ba76b5fc1cec9e13cbf2859cb7e3d",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/05d91face09ba76b5fc1cec9e13cbf2859cb7e3d",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/05d91face09ba76b5fc1cec9e13cbf2859cb7e3d/comments",
+    "author": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "simonvik",
+      "id": 198342,
+      "node_id": "MDQ6VXNlcjE5ODM0Mg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/198342?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/simonvik",
+      "html_url": "https://github.com/simonvik",
+      "followers_url": "https://api.github.com/users/simonvik/followers",
+      "following_url": "https://api.github.com/users/simonvik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/simonvik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/simonvik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/simonvik/subscriptions",
+      "organizations_url": "https://api.github.com/users/simonvik/orgs",
+      "repos_url": "https://api.github.com/users/simonvik/repos",
+      "events_url": "https://api.github.com/users/simonvik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/simonvik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "eccb50837d61fcb5a6927eef94c570bd1d03c26d",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/eccb50837d61fcb5a6927eef94c570bd1d03c26d",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/eccb50837d61fcb5a6927eef94c570bd1d03c26d"
+      }
+    ]
+  },
+  {
+    "sha": "eccb50837d61fcb5a6927eef94c570bd1d03c26d",
+    "node_id": "C_kwDOApqIINoAKGVjY2I1MDgzN2Q2MWZjYjVhNjkyN2VlZjk0YzU3MGJkMWQwM2MyNmQ",
+    "commit": {
+      "author": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2023-11-16T16:02:35Z"
+      },
+      "committer": {
+        "name": "Simon Stridsberg",
+        "email": "simon.stridsberg@varnish-software.com",
+        "date": "2024-03-18T13:37:59Z"
+      },
+      "message": "http2_send: Promote global BROKE_WINDOW to BANKRUPT\n\nWhen a stream times out waiting for window credits, and all the other\nstreams are broke, declare the whole connection bankrupt.",
+      "tree": {
+        "sha": "312f6c4e0d0dcc98edae25724b97483e83b19296",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/312f6c4e0d0dcc98edae25724b97483e83b19296"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/eccb50837d61fcb5a6927eef94c570bd1d03c26d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/eccb50837d61fcb5a6927eef94c570bd1d03c26d",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/eccb50837d61fcb5a6927eef94c570bd1d03c26d",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/eccb50837d61fcb5a6927eef94c570bd1d03c26d/comments",
+    "author": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "simonvik",
+      "id": 198342,
+      "node_id": "MDQ6VXNlcjE5ODM0Mg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/198342?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/simonvik",
+      "html_url": "https://github.com/simonvik",
+      "followers_url": "https://api.github.com/users/simonvik/followers",
+      "following_url": "https://api.github.com/users/simonvik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/simonvik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/simonvik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/simonvik/subscriptions",
+      "organizations_url": "https://api.github.com/users/simonvik/orgs",
+      "repos_url": "https://api.github.com/users/simonvik/repos",
+      "events_url": "https://api.github.com/users/simonvik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/simonvik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "42a10e90015bd8a9cb1c7c2e0e313f8b5ae9ebe9",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/42a10e90015bd8a9cb1c7c2e0e313f8b5ae9ebe9",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/42a10e90015bd8a9cb1c7c2e0e313f8b5ae9ebe9"
+      }
+    ]
+  },
+  {
+    "sha": "42a10e90015bd8a9cb1c7c2e0e313f8b5ae9ebe9",
+    "node_id": "C_kwDOApqIINoAKDQyYTEwZTkwMDE1YmQ4YTljYjFjN2MyZTBlMzEzZjhiNWFlOWViZTk",
+    "commit": {
+      "author": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2023-11-16T15:58:55Z"
+      },
+      "committer": {
+        "name": "Simon Stridsberg",
+        "email": "simon.stridsberg@varnish-software.com",
+        "date": "2024-03-18T13:37:59Z"
+      },
+      "message": "vsc: New MAIN.sc_bankrupt counter",
+      "tree": {
+        "sha": "aea09b033f47a3397a7937c4ce8343a74544d45c",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/aea09b033f47a3397a7937c4ce8343a74544d45c"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/42a10e90015bd8a9cb1c7c2e0e313f8b5ae9ebe9",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/42a10e90015bd8a9cb1c7c2e0e313f8b5ae9ebe9",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/42a10e90015bd8a9cb1c7c2e0e313f8b5ae9ebe9",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/42a10e90015bd8a9cb1c7c2e0e313f8b5ae9ebe9/comments",
+    "author": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "simonvik",
+      "id": 198342,
+      "node_id": "MDQ6VXNlcjE5ODM0Mg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/198342?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/simonvik",
+      "html_url": "https://github.com/simonvik",
+      "followers_url": "https://api.github.com/users/simonvik/followers",
+      "following_url": "https://api.github.com/users/simonvik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/simonvik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/simonvik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/simonvik/subscriptions",
+      "organizations_url": "https://api.github.com/users/simonvik/orgs",
+      "repos_url": "https://api.github.com/users/simonvik/repos",
+      "events_url": "https://api.github.com/users/simonvik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/simonvik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "727a5f80347545b6fc7a6aa48f9fb74e90528f0c",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/727a5f80347545b6fc7a6aa48f9fb74e90528f0c",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/727a5f80347545b6fc7a6aa48f9fb74e90528f0c"
+      }
+    ]
+  },
+  {
+    "sha": "727a5f80347545b6fc7a6aa48f9fb74e90528f0c",
+    "node_id": "C_kwDOApqIINoAKDcyN2E1ZjgwMzQ3NTQ1YjZmYzdhNmFhNDhmOWZiNzRlOTA1MjhmMGM",
+    "commit": {
+      "author": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2023-10-23T15:15:20Z"
+      },
+      "committer": {
+        "name": "Simon Stridsberg",
+        "email": "simon.stridsberg@varnish-software.com",
+        "date": "2024-03-18T13:37:59Z"
+      },
+      "message": "http2_send: Track bankrupt streams",
+      "tree": {
+        "sha": "2405430942d22d9e191f6262e6bba3079d5bc88f",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/2405430942d22d9e191f6262e6bba3079d5bc88f"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/727a5f80347545b6fc7a6aa48f9fb74e90528f0c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/727a5f80347545b6fc7a6aa48f9fb74e90528f0c",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/727a5f80347545b6fc7a6aa48f9fb74e90528f0c",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/727a5f80347545b6fc7a6aa48f9fb74e90528f0c/comments",
+    "author": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "simonvik",
+      "id": 198342,
+      "node_id": "MDQ6VXNlcjE5ODM0Mg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/198342?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/simonvik",
+      "html_url": "https://github.com/simonvik",
+      "followers_url": "https://api.github.com/users/simonvik/followers",
+      "following_url": "https://api.github.com/users/simonvik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/simonvik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/simonvik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/simonvik/subscriptions",
+      "organizations_url": "https://api.github.com/users/simonvik/orgs",
+      "repos_url": "https://api.github.com/users/simonvik/repos",
+      "events_url": "https://api.github.com/users/simonvik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/simonvik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c0201724f0280894ec714fe76fc26ba9831f0551",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/c0201724f0280894ec714fe76fc26ba9831f0551",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/c0201724f0280894ec714fe76fc26ba9831f0551"
+      }
+    ]
+  },
+  {
+    "sha": "c0201724f0280894ec714fe76fc26ba9831f0551",
+    "node_id": "C_kwDOApqIINoAKGMwMjAxNzI0ZjAyODA4OTRlYzcxNGZlNzZmYzI2YmE5ODMxZjA1NTE",
+    "commit": {
+      "author": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2023-10-23T11:15:45Z"
+      },
+      "committer": {
+        "name": "Simon Stridsberg",
+        "email": "simon.stridsberg@varnish-software.com",
+        "date": "2024-03-18T13:37:59Z"
+      },
+      "message": "http2_send: Apply h2_window_timeout\n\nIt replaces idle_send_timeout when the stream is waiting for window\ncredits before sending more DATA frames. The idle_send_timeout will\nstill apply to individual writes to the socket, but triggering it is\nconsidered a failure condition (this was already the case).\n\nThe two loops are merged into a single one to better deal with the\nlack of ordering guarantees of request vs connection stream control\nflow window crediting.\n\nRefs #2980",
+      "tree": {
+        "sha": "509676bf0ee48b1fa2d4f408c29cccc56b0d3f5b",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/509676bf0ee48b1fa2d4f408c29cccc56b0d3f5b"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/c0201724f0280894ec714fe76fc26ba9831f0551",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/c0201724f0280894ec714fe76fc26ba9831f0551",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/c0201724f0280894ec714fe76fc26ba9831f0551",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/c0201724f0280894ec714fe76fc26ba9831f0551/comments",
+    "author": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "simonvik",
+      "id": 198342,
+      "node_id": "MDQ6VXNlcjE5ODM0Mg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/198342?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/simonvik",
+      "html_url": "https://github.com/simonvik",
+      "followers_url": "https://api.github.com/users/simonvik/followers",
+      "following_url": "https://api.github.com/users/simonvik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/simonvik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/simonvik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/simonvik/subscriptions",
+      "organizations_url": "https://api.github.com/users/simonvik/orgs",
+      "repos_url": "https://api.github.com/users/simonvik/repos",
+      "events_url": "https://api.github.com/users/simonvik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/simonvik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "47e12f219108b011f41e4f6cd8c8c6262154045e",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/47e12f219108b011f41e4f6cd8c8c6262154045e",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/47e12f219108b011f41e4f6cd8c8c6262154045e"
+      }
+    ]
+  },
+  {
+    "sha": "47e12f219108b011f41e4f6cd8c8c6262154045e",
+    "node_id": "C_kwDOApqIINoAKDQ3ZTEyZjIxOTEwOGIwMTFmNDFlNGY2Y2Q4YzhjNjI2MjE1NDA0NWU",
+    "commit": {
+      "author": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2023-10-23T14:40:26Z"
+      },
+      "committer": {
+        "name": "Simon Stridsberg",
+        "email": "simon.stridsberg@varnish-software.com",
+        "date": "2024-03-18T13:37:59Z"
+      },
+      "message": "http2_send: Move h2_errcheck() at the top",
+      "tree": {
+        "sha": "24f028dc17ec9e1d62398a17fec566d763432649",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/24f028dc17ec9e1d62398a17fec566d763432649"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/47e12f219108b011f41e4f6cd8c8c6262154045e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/47e12f219108b011f41e4f6cd8c8c6262154045e",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/47e12f219108b011f41e4f6cd8c8c6262154045e",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/47e12f219108b011f41e4f6cd8c8c6262154045e/comments",
+    "author": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "simonvik",
+      "id": 198342,
+      "node_id": "MDQ6VXNlcjE5ODM0Mg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/198342?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/simonvik",
+      "html_url": "https://github.com/simonvik",
+      "followers_url": "https://api.github.com/users/simonvik/followers",
+      "following_url": "https://api.github.com/users/simonvik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/simonvik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/simonvik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/simonvik/subscriptions",
+      "organizations_url": "https://api.github.com/users/simonvik/orgs",
+      "repos_url": "https://api.github.com/users/simonvik/repos",
+      "events_url": "https://api.github.com/users/simonvik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/simonvik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0b82e00708b88f696af5881b7a19caf2144d13f7",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/0b82e00708b88f696af5881b7a19caf2144d13f7",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/0b82e00708b88f696af5881b7a19caf2144d13f7"
+      }
+    ]
+  },
+  {
+    "sha": "0b82e00708b88f696af5881b7a19caf2144d13f7",
+    "node_id": "C_kwDOApqIINoAKDBiODJlMDA3MDhiODhmNjk2YWY1ODgxYjdhMTljYWYyMTQ0ZDEzZjc",
+    "commit": {
+      "author": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2023-10-23T09:49:23Z"
+      },
+      "committer": {
+        "name": "Simon Stridsberg",
+        "email": "simon.stridsberg@varnish-software.com",
+        "date": "2024-03-18T13:37:59Z"
+      },
+      "message": "param: New h2_window_timeout parameter\n\nThis parameter needs to be somewhat high because web browsers may for\nexample only credit streams for image resources just enough to parse\nmetadata like width and height of a picture in order to perform layout\ncomputations and fetch resources more sensitive to latency before the\neffective image payloads.",
+      "tree": {
+        "sha": "5fbab2ce22001a79a7f005f0b1a2c78ff0885eb7",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/5fbab2ce22001a79a7f005f0b1a2c78ff0885eb7"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/0b82e00708b88f696af5881b7a19caf2144d13f7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/0b82e00708b88f696af5881b7a19caf2144d13f7",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/0b82e00708b88f696af5881b7a19caf2144d13f7",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/0b82e00708b88f696af5881b7a19caf2144d13f7/comments",
+    "author": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "simonvik",
+      "id": 198342,
+      "node_id": "MDQ6VXNlcjE5ODM0Mg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/198342?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/simonvik",
+      "html_url": "https://github.com/simonvik",
+      "followers_url": "https://api.github.com/users/simonvik/followers",
+      "following_url": "https://api.github.com/users/simonvik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/simonvik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/simonvik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/simonvik/subscriptions",
+      "organizations_url": "https://api.github.com/users/simonvik/orgs",
+      "repos_url": "https://api.github.com/users/simonvik/repos",
+      "events_url": "https://api.github.com/users/simonvik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/simonvik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4938f05b318eb2daa2ccc89dafeed3126552c481",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/4938f05b318eb2daa2ccc89dafeed3126552c481",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/4938f05b318eb2daa2ccc89dafeed3126552c481"
+      }
+    ]
+  },
+  {
+    "sha": "4938f05b318eb2daa2ccc89dafeed3126552c481",
+    "node_id": "C_kwDOApqIINoAKDQ5MzhmMDViMzE4ZWIyZGFhMmNjYzg5ZGFmZWVkMzEyNjU1MmM0ODE",
+    "commit": {
+      "author": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2023-11-16T15:03:42Z"
+      },
+      "committer": {
+        "name": "Simon Stridsberg",
+        "email": "simon.stridsberg@varnish-software.com",
+        "date": "2024-03-18T13:37:59Z"
+      },
+      "message": "http2_proto: Introduce a custom BROKE_WINDOW error",
+      "tree": {
+        "sha": "02037ece589b6b929836636f9821004794a3ef2a",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/02037ece589b6b929836636f9821004794a3ef2a"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/4938f05b318eb2daa2ccc89dafeed3126552c481",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/4938f05b318eb2daa2ccc89dafeed3126552c481",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/4938f05b318eb2daa2ccc89dafeed3126552c481",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/4938f05b318eb2daa2ccc89dafeed3126552c481/comments",
+    "author": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "simonvik",
+      "id": 198342,
+      "node_id": "MDQ6VXNlcjE5ODM0Mg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/198342?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/simonvik",
+      "html_url": "https://github.com/simonvik",
+      "followers_url": "https://api.github.com/users/simonvik/followers",
+      "following_url": "https://api.github.com/users/simonvik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/simonvik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/simonvik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/simonvik/subscriptions",
+      "organizations_url": "https://api.github.com/users/simonvik/orgs",
+      "repos_url": "https://api.github.com/users/simonvik/repos",
+      "events_url": "https://api.github.com/users/simonvik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/simonvik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "41ef373af53571a94ea8f73f0538322270799a84",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/41ef373af53571a94ea8f73f0538322270799a84",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/41ef373af53571a94ea8f73f0538322270799a84"
+      }
+    ]
+  },
+  {
+    "sha": "41ef373af53571a94ea8f73f0538322270799a84",
+    "node_id": "C_kwDOApqIINoAKDQxZWYzNzNhZjUzNTcxYTk0ZWE4ZjczZjA1MzgzMjIyNzA3OTlhODQ",
+    "commit": {
+      "author": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2023-11-16T13:52:49Z"
+      },
+      "committer": {
+        "name": "Simon Stridsberg",
+        "email": "simon.stridsberg@varnish-software.com",
+        "date": "2024-03-18T13:37:59Z"
+      },
+      "message": "http2_proto: Enforce session timeouts in h2_sweep()\n\nThe new meaning for h2->sess->t_idle is now the time since the last\ncomplete frame, except before the first frame where it corresponds to\nthe creation of the session.",
+      "tree": {
+        "sha": "1c24e65ba62796050d871b532345d73b43e4bbb5",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/1c24e65ba62796050d871b532345d73b43e4bbb5"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/41ef373af53571a94ea8f73f0538322270799a84",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/41ef373af53571a94ea8f73f0538322270799a84",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/41ef373af53571a94ea8f73f0538322270799a84",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/41ef373af53571a94ea8f73f0538322270799a84/comments",
+    "author": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "simonvik",
+      "id": 198342,
+      "node_id": "MDQ6VXNlcjE5ODM0Mg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/198342?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/simonvik",
+      "html_url": "https://github.com/simonvik",
+      "followers_url": "https://api.github.com/users/simonvik/followers",
+      "following_url": "https://api.github.com/users/simonvik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/simonvik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/simonvik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/simonvik/subscriptions",
+      "organizations_url": "https://api.github.com/users/simonvik/orgs",
+      "repos_url": "https://api.github.com/users/simonvik/repos",
+      "events_url": "https://api.github.com/users/simonvik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/simonvik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "64f609dbdaeb4d9f574424a374100b06f8f40398",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/64f609dbdaeb4d9f574424a374100b06f8f40398",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/64f609dbdaeb4d9f574424a374100b06f8f40398"
+      }
+    ]
+  },
+  {
+    "sha": "64f609dbdaeb4d9f574424a374100b06f8f40398",
+    "node_id": "C_kwDOApqIINoAKDY0ZjYwOWRiZGFlYjRkOWY1NzQ0MjRhMzc0MTAwYjA2ZjhmNDAzOTg",
+    "commit": {
+      "author": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2022-01-18T09:08:33Z"
+      },
+      "committer": {
+        "name": "Simon Stridsberg",
+        "email": "simon.stridsberg@varnish-software.com",
+        "date": "2024-03-18T13:37:59Z"
+      },
+      "message": "h2: Send GOAWAY frames in a dedicated function\n\nAnd after issuing or receiving a goaway, stop processing frames when\nthere are no streams left.\n\nInitially submitted as part of listen sockets management.\n\nRefs #3959",
+      "tree": {
+        "sha": "039f56eb407dc964aca21472875d92aeee3e9b37",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/039f56eb407dc964aca21472875d92aeee3e9b37"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/64f609dbdaeb4d9f574424a374100b06f8f40398",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/64f609dbdaeb4d9f574424a374100b06f8f40398",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/64f609dbdaeb4d9f574424a374100b06f8f40398",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/64f609dbdaeb4d9f574424a374100b06f8f40398/comments",
+    "author": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "simonvik",
+      "id": 198342,
+      "node_id": "MDQ6VXNlcjE5ODM0Mg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/198342?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/simonvik",
+      "html_url": "https://github.com/simonvik",
+      "followers_url": "https://api.github.com/users/simonvik/followers",
+      "following_url": "https://api.github.com/users/simonvik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/simonvik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/simonvik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/simonvik/subscriptions",
+      "organizations_url": "https://api.github.com/users/simonvik/orgs",
+      "repos_url": "https://api.github.com/users/simonvik/repos",
+      "events_url": "https://api.github.com/users/simonvik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/simonvik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7ce5f508f55706709c7e42531d001d6e554c5f42",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/7ce5f508f55706709c7e42531d001d6e554c5f42",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/7ce5f508f55706709c7e42531d001d6e554c5f42"
+      }
+    ]
+  },
+  {
+    "sha": "7ce5f508f55706709c7e42531d001d6e554c5f42",
+    "node_id": "C_kwDOApqIINoAKDdjZTVmNTA4ZjU1NzA2NzA5YzdlNDI1MzFkMDAxZDZlNTU0YzVmNDI",
+    "commit": {
+      "author": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2023-11-16T12:23:18Z"
+      },
+      "committer": {
+        "name": "Simon Stridsberg",
+        "email": "simon.stridsberg@varnish-software.com",
+        "date": "2024-03-18T13:37:59Z"
+      },
+      "message": "http2_send: Collect the timeout error",
+      "tree": {
+        "sha": "ef3bfb36606465656374c9b2ed679de0dc6aff7a",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/ef3bfb36606465656374c9b2ed679de0dc6aff7a"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/7ce5f508f55706709c7e42531d001d6e554c5f42",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/7ce5f508f55706709c7e42531d001d6e554c5f42",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/7ce5f508f55706709c7e42531d001d6e554c5f42",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/7ce5f508f55706709c7e42531d001d6e554c5f42/comments",
+    "author": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "simonvik",
+      "id": 198342,
+      "node_id": "MDQ6VXNlcjE5ODM0Mg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/198342?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/simonvik",
+      "html_url": "https://github.com/simonvik",
+      "followers_url": "https://api.github.com/users/simonvik/followers",
+      "following_url": "https://api.github.com/users/simonvik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/simonvik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/simonvik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/simonvik/subscriptions",
+      "organizations_url": "https://api.github.com/users/simonvik/orgs",
+      "repos_url": "https://api.github.com/users/simonvik/repos",
+      "events_url": "https://api.github.com/users/simonvik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/simonvik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "884f8b3164a8b598cb7960f8379f5504c70b6c62",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/884f8b3164a8b598cb7960f8379f5504c70b6c62",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/884f8b3164a8b598cb7960f8379f5504c70b6c62"
+      }
+    ]
+  },
+  {
+    "sha": "884f8b3164a8b598cb7960f8379f5504c70b6c62",
+    "node_id": "C_kwDOApqIINoAKDg4NGY4YjMxNjRhOGI1OThjYjc5NjBmODM3OWY1NTA0YzcwYjZjNjI",
+    "commit": {
+      "author": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2023-11-16T12:16:15Z"
+      },
+      "committer": {
+        "name": "Simon Stridsberg",
+        "email": "simon.stridsberg@varnish-software.com",
+        "date": "2024-03-18T13:37:58Z"
+      },
+      "message": "http2_proto: Make h2_stream_tmo() return an error",
+      "tree": {
+        "sha": "8388647678cf34a11683261bc26f90eb2db1a294",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/8388647678cf34a11683261bc26f90eb2db1a294"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/884f8b3164a8b598cb7960f8379f5504c70b6c62",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/884f8b3164a8b598cb7960f8379f5504c70b6c62",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/884f8b3164a8b598cb7960f8379f5504c70b6c62",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/884f8b3164a8b598cb7960f8379f5504c70b6c62/comments",
+    "author": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "simonvik",
+      "id": 198342,
+      "node_id": "MDQ6VXNlcjE5ODM0Mg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/198342?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/simonvik",
+      "html_url": "https://github.com/simonvik",
+      "followers_url": "https://api.github.com/users/simonvik/followers",
+      "following_url": "https://api.github.com/users/simonvik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/simonvik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/simonvik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/simonvik/subscriptions",
+      "organizations_url": "https://api.github.com/users/simonvik/orgs",
+      "repos_url": "https://api.github.com/users/simonvik/repos",
+      "events_url": "https://api.github.com/users/simonvik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/simonvik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ec95d0499777830425c890221e86ee216ea27024",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/ec95d0499777830425c890221e86ee216ea27024",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/ec95d0499777830425c890221e86ee216ea27024"
+      }
+    ]
+  },
+  {
+    "sha": "ec95d0499777830425c890221e86ee216ea27024",
+    "node_id": "C_kwDOApqIINoAKGVjOTVkMDQ5OTc3NzgzMDQyNWM4OTAyMjFlODZlZTIxNmVhMjcwMjQ",
+    "commit": {
+      "author": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2023-10-23T09:36:57Z"
+      },
+      "committer": {
+        "name": "Simon Stridsberg",
+        "email": "simon.stridsberg@varnish-software.com",
+        "date": "2024-03-18T13:37:58Z"
+      },
+      "message": "http2_send: Proper null checks for h2 errors",
+      "tree": {
+        "sha": "4b37c8aafda824f7edfa0b3fe6f007ca000a32df",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/4b37c8aafda824f7edfa0b3fe6f007ca000a32df"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/ec95d0499777830425c890221e86ee216ea27024",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/ec95d0499777830425c890221e86ee216ea27024",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/ec95d0499777830425c890221e86ee216ea27024",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/ec95d0499777830425c890221e86ee216ea27024/comments",
+    "author": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "simonvik",
+      "id": 198342,
+      "node_id": "MDQ6VXNlcjE5ODM0Mg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/198342?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/simonvik",
+      "html_url": "https://github.com/simonvik",
+      "followers_url": "https://api.github.com/users/simonvik/followers",
+      "following_url": "https://api.github.com/users/simonvik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/simonvik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/simonvik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/simonvik/subscriptions",
+      "organizations_url": "https://api.github.com/users/simonvik/orgs",
+      "repos_url": "https://api.github.com/users/simonvik/repos",
+      "events_url": "https://api.github.com/users/simonvik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/simonvik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7fb01bdfbed10f4b8a1042d9578228385000d9cf",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/7fb01bdfbed10f4b8a1042d9578228385000d9cf",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/7fb01bdfbed10f4b8a1042d9578228385000d9cf"
+      }
+    ]
+  },
+  {
+    "sha": "7fb01bdfbed10f4b8a1042d9578228385000d9cf",
+    "node_id": "C_kwDOApqIINoAKDdmYjAxYmRmYmVkMTBmNGI4YTEwNDJkOTU3ODIyODM4NTAwMGQ5Y2Y",
+    "commit": {
+      "author": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2023-10-23T09:34:31Z"
+      },
+      "committer": {
+        "name": "Simon Stridsberg",
+        "email": "simon.stridsberg@varnish-software.com",
+        "date": "2024-03-18T13:37:58Z"
+      },
+      "message": "http2_proto: Proper null checks for h2 errors",
+      "tree": {
+        "sha": "ed6fbd03d02ee55e09ae39dc89c4aadcd3bfbe59",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/ed6fbd03d02ee55e09ae39dc89c4aadcd3bfbe59"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/7fb01bdfbed10f4b8a1042d9578228385000d9cf",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/7fb01bdfbed10f4b8a1042d9578228385000d9cf",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/7fb01bdfbed10f4b8a1042d9578228385000d9cf",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/7fb01bdfbed10f4b8a1042d9578228385000d9cf/comments",
+    "author": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "simonvik",
+      "id": 198342,
+      "node_id": "MDQ6VXNlcjE5ODM0Mg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/198342?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/simonvik",
+      "html_url": "https://github.com/simonvik",
+      "followers_url": "https://api.github.com/users/simonvik/followers",
+      "following_url": "https://api.github.com/users/simonvik/following{/other_user}",
+      "gists_url": "https://api.github.com/users/simonvik/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/simonvik/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/simonvik/subscriptions",
+      "organizations_url": "https://api.github.com/users/simonvik/orgs",
+      "repos_url": "https://api.github.com/users/simonvik/repos",
+      "events_url": "https://api.github.com/users/simonvik/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/simonvik/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ac9830e9c72eca7194c5cb60c292e6d0f1f6b1a8",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/ac9830e9c72eca7194c5cb60c292e6d0f1f6b1a8",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/ac9830e9c72eca7194c5cb60c292e6d0f1f6b1a8"
+      }
+    ]
+  },
+  {
+    "sha": "ac9830e9c72eca7194c5cb60c292e6d0f1f6b1a8",
+    "node_id": "C_kwDOApqIINoAKGFjOTgzMGU5YzcyZWNhNzE5NGM1Y2I2MGMyOTJlNmQwZjFmNmIxYTg",
+    "commit": {
+      "author": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2024-03-18T13:00:56Z"
+      },
+      "committer": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2024-03-18T13:00:56Z"
+      },
+      "message": "changes: Split a strands of hair\n\nReverting \"retrieving\" to \"processing\" is motivated by the fact that we\nprocess ESI on the client side and we don't know whether we are in fact\nretrieving an object from a backend, or just reusing one from the cache.\n\nEven if the word \"processing\" appears again in the sentence, I think it\nis more accurate here.\n\nBetter diff with the --word-diff option.",
+      "tree": {
+        "sha": "05a3ed38c65e54e420b4ec6537b00dddf5c21800",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/05a3ed38c65e54e420b4ec6537b00dddf5c21800"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/ac9830e9c72eca7194c5cb60c292e6d0f1f6b1a8",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/ac9830e9c72eca7194c5cb60c292e6d0f1f6b1a8",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/ac9830e9c72eca7194c5cb60c292e6d0f1f6b1a8",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/ac9830e9c72eca7194c5cb60c292e6d0f1f6b1a8/comments",
+    "author": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "662874435af3a62af965ee030f74f25bebf37d61",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/662874435af3a62af965ee030f74f25bebf37d61",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/662874435af3a62af965ee030f74f25bebf37d61"
+      }
+    ]
+  },
+  {
+    "sha": "662874435af3a62af965ee030f74f25bebf37d61",
+    "node_id": "C_kwDOApqIINoAKDY2Mjg3NDQzNWFmM2E2MmFmOTY1ZWUwMzBmNzRmMjViZWJmMzdkNjE",
+    "commit": {
+      "author": {
+        "name": "Nils Goroll",
+        "email": "nils.goroll@uplex.de",
+        "date": "2024-03-18T12:15:52Z"
+      },
+      "committer": {
+        "name": "Nils Goroll",
+        "email": "nils.goroll@uplex.de",
+        "date": "2024-03-18T12:15:52Z"
+      },
+      "message": "Additions to release docs",
+      "tree": {
+        "sha": "537c6d36a052eff0a4128c08fb78fb25c71294bd",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/537c6d36a052eff0a4128c08fb78fb25c71294bd"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/662874435af3a62af965ee030f74f25bebf37d61",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQFJBAABCgAzFiEEicdlqw+9Qa90PBmNHc2PV6OGi9cFAmX4MH8VHG5pbHMuZ29y\nb2xsQHVwbGV4LmRlAAoJEB3Nj1ejhovXCZwH/13f/oGjDtYZyv11/B0klYKexIfi\n3zs+V8JlfDZa7OvjE9dQ5zmiYQ2ehtWqeih3mQPLx9ImvM0fhANwUUZw31+uRAxB\nR0EOseyG/rg0N8qccSIfuSoya/m8FfhJdqVHTEK9bO0xpJYKASQK9O2egSjwJUis\n6JRciWCtY6KALrSvKuR3z7zAjvAVsUWroBmJiz3KPFpiVaQgXn8dRZPcBb6Lc9ih\nGGKMBmzh33zSyJyy1Sx8iPqhQSBYeLvWOp9giXkAdq/36cgjm8gbhGIePSXkCfze\nyQGCvPdgxzJDc7FyD7deql5hZSkIt2Ayowwo0ZjMe4YPbraK94EuH4h1jos=\n=0flk\n-----END PGP SIGNATURE-----",
+        "payload": "tree 537c6d36a052eff0a4128c08fb78fb25c71294bd\nparent f44b1814b4dccc56bf5e0df213464907b14fe32b\nauthor Nils Goroll <nils.goroll@uplex.de> 1710764152 +0100\ncommitter Nils Goroll <nils.goroll@uplex.de> 1710764152 +0100\n\nAdditions to release docs\n"
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/662874435af3a62af965ee030f74f25bebf37d61",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/662874435af3a62af965ee030f74f25bebf37d61",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/662874435af3a62af965ee030f74f25bebf37d61/comments",
+    "author": {
+      "login": "nigoroll",
+      "id": 1528104,
+      "node_id": "MDQ6VXNlcjE1MjgxMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1528104?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/nigoroll",
+      "html_url": "https://github.com/nigoroll",
+      "followers_url": "https://api.github.com/users/nigoroll/followers",
+      "following_url": "https://api.github.com/users/nigoroll/following{/other_user}",
+      "gists_url": "https://api.github.com/users/nigoroll/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/nigoroll/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/nigoroll/subscriptions",
+      "organizations_url": "https://api.github.com/users/nigoroll/orgs",
+      "repos_url": "https://api.github.com/users/nigoroll/repos",
+      "events_url": "https://api.github.com/users/nigoroll/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/nigoroll/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "nigoroll",
+      "id": 1528104,
+      "node_id": "MDQ6VXNlcjE1MjgxMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1528104?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/nigoroll",
+      "html_url": "https://github.com/nigoroll",
+      "followers_url": "https://api.github.com/users/nigoroll/followers",
+      "following_url": "https://api.github.com/users/nigoroll/following{/other_user}",
+      "gists_url": "https://api.github.com/users/nigoroll/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/nigoroll/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/nigoroll/subscriptions",
+      "organizations_url": "https://api.github.com/users/nigoroll/orgs",
+      "repos_url": "https://api.github.com/users/nigoroll/repos",
+      "events_url": "https://api.github.com/users/nigoroll/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/nigoroll/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f44b1814b4dccc56bf5e0df213464907b14fe32b",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/f44b1814b4dccc56bf5e0df213464907b14fe32b",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/f44b1814b4dccc56bf5e0df213464907b14fe32b"
+      }
+    ]
+  },
+  {
+    "sha": "f44b1814b4dccc56bf5e0df213464907b14fe32b",
+    "node_id": "C_kwDOApqIINoAKGY0NGIxODE0YjRkY2NjNTZiZjVlMGRmMjEzNDY0OTA3YjE0ZmUzMmI",
+    "commit": {
+      "author": {
+        "name": "Nils Goroll",
+        "email": "nils.goroll@uplex.de",
+        "date": "2024-03-18T11:58:02Z"
+      },
+      "committer": {
+        "name": "Nils Goroll",
+        "email": "nils.goroll@uplex.de",
+        "date": "2024-03-18T12:05:41Z"
+      },
+      "message": "Changelog polish\n\n- before coffee\n+ after coffee",
+      "tree": {
+        "sha": "604f05d4debc1106b7358edf81f025695339474f",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/604f05d4debc1106b7358edf81f025695339474f"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/f44b1814b4dccc56bf5e0df213464907b14fe32b",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQFJBAABCgAzFiEEicdlqw+9Qa90PBmNHc2PV6OGi9cFAmX4LhUVHG5pbHMuZ29y\nb2xsQHVwbGV4LmRlAAoJEB3Nj1ejhovXKMQIAIyi/uIaI6/iKrBI2qwo//W2COGz\n4bKXl14goXM2SESZoy2rwXes3KMyF74Nlf0vbYra84kjrX/ZFgOb9qZYm2cf4NrP\nUIXgAjsjclSW0s3meAyKrKggv//EpfhzcEyO8/kgj3Qip2XcjcE6rhBXEvlGu0OI\n6lPpEUQR1bIEDfvne2c48j5q0oWYBXf6vpVghbOqfxnv+i057LEHtlO7Tdp1elle\nTLrx+dkKYkxenUqtlo++ARuR6rdR9o/S3kGUlmdwHn7/znvCP0/GMeFuZf0lcQ46\njJNzvgX0rf7bJPjTjJYIS1L0CZN+Sq6eW2ha/mIQlh66kOwqG0mIzLFuQcs=\n=4qoy\n-----END PGP SIGNATURE-----",
+        "payload": "tree 604f05d4debc1106b7358edf81f025695339474f\nparent 958a98cf111333725658967d1c33f6de233c7c9b\nauthor Nils Goroll <nils.goroll@uplex.de> 1710763082 +0100\ncommitter Nils Goroll <nils.goroll@uplex.de> 1710763541 +0100\n\nChangelog polish\n\n- before coffee\n+ after coffee\n"
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/f44b1814b4dccc56bf5e0df213464907b14fe32b",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/f44b1814b4dccc56bf5e0df213464907b14fe32b",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/f44b1814b4dccc56bf5e0df213464907b14fe32b/comments",
+    "author": {
+      "login": "nigoroll",
+      "id": 1528104,
+      "node_id": "MDQ6VXNlcjE1MjgxMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1528104?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/nigoroll",
+      "html_url": "https://github.com/nigoroll",
+      "followers_url": "https://api.github.com/users/nigoroll/followers",
+      "following_url": "https://api.github.com/users/nigoroll/following{/other_user}",
+      "gists_url": "https://api.github.com/users/nigoroll/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/nigoroll/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/nigoroll/subscriptions",
+      "organizations_url": "https://api.github.com/users/nigoroll/orgs",
+      "repos_url": "https://api.github.com/users/nigoroll/repos",
+      "events_url": "https://api.github.com/users/nigoroll/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/nigoroll/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "nigoroll",
+      "id": 1528104,
+      "node_id": "MDQ6VXNlcjE1MjgxMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1528104?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/nigoroll",
+      "html_url": "https://github.com/nigoroll",
+      "followers_url": "https://api.github.com/users/nigoroll/followers",
+      "following_url": "https://api.github.com/users/nigoroll/following{/other_user}",
+      "gists_url": "https://api.github.com/users/nigoroll/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/nigoroll/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/nigoroll/subscriptions",
+      "organizations_url": "https://api.github.com/users/nigoroll/orgs",
+      "repos_url": "https://api.github.com/users/nigoroll/repos",
+      "events_url": "https://api.github.com/users/nigoroll/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/nigoroll/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "958a98cf111333725658967d1c33f6de233c7c9b",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/958a98cf111333725658967d1c33f6de233c7c9b",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/958a98cf111333725658967d1c33f6de233c7c9b"
+      }
+    ]
+  },
+  {
+    "sha": "958a98cf111333725658967d1c33f6de233c7c9b",
+    "node_id": "C_kwDOApqIINoAKDk1OGE5OGNmMTExMzMzNzI1NjU4OTY3ZDFjMzNmNmRlMjMzYzdjOWI",
+    "commit": {
+      "author": {
+        "name": "Nils Goroll",
+        "email": "nils.goroll@uplex.de",
+        "date": "2024-03-18T11:47:59Z"
+      },
+      "committer": {
+        "name": "Nils Goroll",
+        "email": "nils.goroll@uplex.de",
+        "date": "2024-03-18T11:48:17Z"
+      },
+      "message": "Last minute changelog TLC",
+      "tree": {
+        "sha": "8338fb35a5574271dd9fed93dd7472795e329772",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/8338fb35a5574271dd9fed93dd7472795e329772"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/958a98cf111333725658967d1c33f6de233c7c9b",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQFJBAABCgAzFiEEicdlqw+9Qa90PBmNHc2PV6OGi9cFAmX4KgEVHG5pbHMuZ29y\nb2xsQHVwbGV4LmRlAAoJEB3Nj1ejhovX7DgH/2qLRHidYL4LaL/NwiLvT8V5fTOF\nQhLeY85pu7Mw8FJ9A6ul43XhviBodJ61Wgiu1Zfl8gzR+Fjo2gMkd0hcc75hXEw7\nLNNaFFJUePf2T0VIUasZOUBw1ySVGtvebcy9/7B+9V9VOUDHYJVFxDZe78ltY7fR\n/UyMqPUGD/qmXYDsmwOnQiTIXn3b0301pFzJUTn9I7RfgkU1D7xtO3bnUmX5kTp4\nLSxoc53AokNaO2XUXT67qLrB6RIIJvpaVUXjiQlpA7/ftc2sTlb/3U+w9C57aomE\nFtYdqtuiNz23vmrpaKbNGq9Hc2L1vcNno2cRgAC52k9ISYdRaRoc/ZvN6rk=\n=8V7A\n-----END PGP SIGNATURE-----",
+        "payload": "tree 8338fb35a5574271dd9fed93dd7472795e329772\nparent a8add6e4d05bd63281675881878576fd9be179df\nauthor Nils Goroll <nils.goroll@uplex.de> 1710762479 +0100\ncommitter Nils Goroll <nils.goroll@uplex.de> 1710762497 +0100\n\nLast minute changelog TLC\n"
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/958a98cf111333725658967d1c33f6de233c7c9b",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/958a98cf111333725658967d1c33f6de233c7c9b",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/958a98cf111333725658967d1c33f6de233c7c9b/comments",
+    "author": {
+      "login": "nigoroll",
+      "id": 1528104,
+      "node_id": "MDQ6VXNlcjE1MjgxMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1528104?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/nigoroll",
+      "html_url": "https://github.com/nigoroll",
+      "followers_url": "https://api.github.com/users/nigoroll/followers",
+      "following_url": "https://api.github.com/users/nigoroll/following{/other_user}",
+      "gists_url": "https://api.github.com/users/nigoroll/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/nigoroll/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/nigoroll/subscriptions",
+      "organizations_url": "https://api.github.com/users/nigoroll/orgs",
+      "repos_url": "https://api.github.com/users/nigoroll/repos",
+      "events_url": "https://api.github.com/users/nigoroll/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/nigoroll/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "nigoroll",
+      "id": 1528104,
+      "node_id": "MDQ6VXNlcjE1MjgxMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1528104?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/nigoroll",
+      "html_url": "https://github.com/nigoroll",
+      "followers_url": "https://api.github.com/users/nigoroll/followers",
+      "following_url": "https://api.github.com/users/nigoroll/following{/other_user}",
+      "gists_url": "https://api.github.com/users/nigoroll/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/nigoroll/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/nigoroll/subscriptions",
+      "organizations_url": "https://api.github.com/users/nigoroll/orgs",
+      "repos_url": "https://api.github.com/users/nigoroll/repos",
+      "events_url": "https://api.github.com/users/nigoroll/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/nigoroll/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a8add6e4d05bd63281675881878576fd9be179df",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/a8add6e4d05bd63281675881878576fd9be179df",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/a8add6e4d05bd63281675881878576fd9be179df"
+      }
+    ]
+  },
+  {
+    "sha": "a8add6e4d05bd63281675881878576fd9be179df",
+    "node_id": "C_kwDOApqIINoAKGE4YWRkNmU0ZDA1YmQ2MzI4MTY3NTg4MTg3ODU3NmZkOWJlMTc5ZGY",
+    "commit": {
+      "author": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2024-03-18T10:36:01Z"
+      },
+      "committer": {
+        "name": "Dridi Boukelmoune",
+        "email": "dridi.boukelmoune@gmail.com",
+        "date": "2024-03-18T10:36:01Z"
+      },
+      "message": "whats-new: Remove useless pipe\n\nSpotted by Nils.",
+      "tree": {
+        "sha": "4d291acca84d8da1b4bded5239cc568d59ed0bc2",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/trees/4d291acca84d8da1b4bded5239cc568d59ed0bc2"
+      },
+      "url": "https://api.github.com/repos/varnishcache/varnish-cache/git/commits/a8add6e4d05bd63281675881878576fd9be179df",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/a8add6e4d05bd63281675881878576fd9be179df",
+    "html_url": "https://github.com/varnishcache/varnish-cache/commit/a8add6e4d05bd63281675881878576fd9be179df",
+    "comments_url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/a8add6e4d05bd63281675881878576fd9be179df/comments",
+    "author": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Dridi",
+      "id": 891744,
+      "node_id": "MDQ6VXNlcjg5MTc0NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/891744?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Dridi",
+      "html_url": "https://github.com/Dridi",
+      "followers_url": "https://api.github.com/users/Dridi/followers",
+      "following_url": "https://api.github.com/users/Dridi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Dridi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Dridi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Dridi/subscriptions",
+      "organizations_url": "https://api.github.com/users/Dridi/orgs",
+      "repos_url": "https://api.github.com/users/Dridi/repos",
+      "events_url": "https://api.github.com/users/Dridi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Dridi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8e8e7896b24cedb834a7e37f71f531c702f26c84",
+        "url": "https://api.github.com/repos/varnishcache/varnish-cache/commits/8e8e7896b24cedb834a7e37f71f531c702f26c84",
+        "html_url": "https://github.com/varnishcache/varnish-cache/commit/8e8e7896b24cedb834a7e37f71f531c702f26c84"
+      }
+    ]
+  }
+]

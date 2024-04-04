@@ -1,0 +1,2372 @@
+[
+  {
+    "sha": "99741bde59d1d1df0963009bb624ddc105f7d8dc",
+    "node_id": "C_kwDOAAarE9oAKDk5NzQxYmRlNTlkMWQxZGYwOTYzMDA5YmI2MjRkZGMxMDVmN2Q4ZGM",
+    "commit": {
+      "author": {
+        "name": "Ameer Hamza",
+        "email": "ahamza@ixsystems.com",
+        "date": "2024-04-04T01:21:25Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-04T01:21:25Z"
+      },
+      "message": "zvol: use multiple taskq\n\nCurrently, zvol uses a single taskq, resulting in throughput bottleneck\r\nunder heavy load due to lock contention on the single taskq. This patch\r\naddresses the performance bottleneck under heavy load conditions by\r\nutilizing multiple taskqs, thus mitigating lock contention. The number\r\nof taskqs scale dynamically based on the available CPUs in the system,\r\nas illustrated below:\r\n\r\n                taskq   total\r\ncpus    taskqs  threads threads\r\n------- ------- ------- -------\r\n1       1       32       32\r\n2       1       32       32\r\n4       1       32       32\r\n8       2       16       32\r\n16      3       11       33\r\n32      5       7        35\r\n64      8       8        64\r\n128     11      12       132\r\n256     16      16       256\r\n\r\nReviewed-by: Alexander Motin <mav@FreeBSD.org>\r\nReviewed-by: Tony Hutter <hutter2@llnl.gov>\r\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nReviewed-by: Tony Nguyen <tony.nguyen@delphix.com>\r\nSigned-off-by: Ameer Hamza <ahamza@ixsystems.com>\r\nCloses #15992",
+      "tree": {
+        "sha": "f6efab10e93f61acb21273c007eec34c4a8a22db",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/f6efab10e93f61acb21273c007eec34c4a8a22db"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/99741bde59d1d1df0963009bb624ddc105f7d8dc",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDgCVCRC1aQ7uu5UhlAAA4HsQAEsmBRuOXOFlyB8pkQMNf22r\nwZ3xaBTyujYWUSwdtzib2EmecJptkOe6DQPy9uYnEGE2Rie7DUO6JK+0cO+m2dJI\ncjFylJ3qig8A+hAH8o10feAeq587zgrZEGz3ybqzC/RYpEgv8axhiorChC1bz35B\nhDO8G9HG0oVEVwfcZSRow0f+YIBon3oQ/PANhNg+1xcM5rRSbHW3KMmoJRWiRLoi\n7UyBQ5x6t99Jt5nWF2Eoc4gdXhH4asBnvxF5FpIi+Zx3K5XXFVOqNvR2gK+I/lxM\n7gyr3GoVloIsMq9l+SWHx49XEXXbq9Xt6/klzFSTjxoIxq3bWBWcFouLYz6vqiJR\nBSB/ZjGDJ7st69s67s9sSDuMLz1RcaaS9VBYEkZOxfhNouGPhpxz1UAJFYoBmL5t\nDxM0ExI9buDlKTlc3Ssof0f0lN/PuaPZZQBkI6CQS1LJWrcOnTRcn1iqQOFGHIve\nPE2Jd46/WmqmQOlsNxRrSNGb9hrZG7nRkkzOT/EKRvoe2//eos2N1HWEUQrh7Aan\n/0EO4rdmqKDvi53PKDY50YLR4BeW+PoBBKt7ngV9rpteALJrpUTGKE0GPv1Qupda\nxrlyrnjRT9fKVGjQdftE8KP3bzsbPhD6iqVbpelz8jxqxqi0TVAijGzlALfXJt5x\n3O6EQbecI8rtDe09b6dW\n=Kmpd\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree f6efab10e93f61acb21273c007eec34c4a8a22db\nparent 30c4eba4eaaef92cbc1b8d2eed6689600a342386\nauthor Ameer Hamza <ahamza@ixsystems.com> 1712193685 +0500\ncommitter GitHub <noreply@github.com> 1712193685 -0700\n\nzvol: use multiple taskq\n\nCurrently, zvol uses a single taskq, resulting in throughput bottleneck\r\nunder heavy load due to lock contention on the single taskq. This patch\r\naddresses the performance bottleneck under heavy load conditions by\r\nutilizing multiple taskqs, thus mitigating lock contention. The number\r\nof taskqs scale dynamically based on the available CPUs in the system,\r\nas illustrated below:\r\n\r\n                taskq   total\r\ncpus    taskqs  threads threads\r\n------- ------- ------- -------\r\n1       1       32       32\r\n2       1       32       32\r\n4       1       32       32\r\n8       2       16       32\r\n16      3       11       33\r\n32      5       7        35\r\n64      8       8        64\r\n128     11      12       132\r\n256     16      16       256\r\n\r\nReviewed-by: Alexander Motin <mav@FreeBSD.org>\r\nReviewed-by: Tony Hutter <hutter2@llnl.gov>\r\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nReviewed-by: Tony Nguyen <tony.nguyen@delphix.com>\r\nSigned-off-by: Ameer Hamza <ahamza@ixsystems.com>\r\nCloses #15992"
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/99741bde59d1d1df0963009bb624ddc105f7d8dc",
+    "html_url": "https://github.com/openzfs/zfs/commit/99741bde59d1d1df0963009bb624ddc105f7d8dc",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/99741bde59d1d1df0963009bb624ddc105f7d8dc/comments",
+    "author": {
+      "login": "ixhamza",
+      "id": 106930537,
+      "node_id": "U_kgDOBl-haQ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/106930537?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ixhamza",
+      "html_url": "https://github.com/ixhamza",
+      "followers_url": "https://api.github.com/users/ixhamza/followers",
+      "following_url": "https://api.github.com/users/ixhamza/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ixhamza/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ixhamza/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ixhamza/subscriptions",
+      "organizations_url": "https://api.github.com/users/ixhamza/orgs",
+      "repos_url": "https://api.github.com/users/ixhamza/repos",
+      "events_url": "https://api.github.com/users/ixhamza/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ixhamza/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "30c4eba4eaaef92cbc1b8d2eed6689600a342386",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/30c4eba4eaaef92cbc1b8d2eed6689600a342386",
+        "html_url": "https://github.com/openzfs/zfs/commit/30c4eba4eaaef92cbc1b8d2eed6689600a342386"
+      }
+    ]
+  },
+  {
+    "sha": "30c4eba4eaaef92cbc1b8d2eed6689600a342386",
+    "node_id": "C_kwDOAAarE9oAKDMwYzRlYmE0ZWFhZWY5MmNiYzFiOGQyZWVkNjY4OTYwMGEzNDIzODY",
+    "commit": {
+      "author": {
+        "name": "Pavel Snajdr",
+        "email": "snajpa@snajpa.net",
+        "date": "2024-04-04T01:09:19Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-04T01:09:19Z"
+      },
+      "message": "Fix panics when truncating/deleting files\n\nThere's an union in dbuf_dirty_record_t; dr_brtwrite could evaluate\r\nto B_TRUE if the dirty record is of another type than dl. Adding\r\nmore explicit dr type check before trying to access dr_brtwrite.\r\n\r\nFixes two similar panics:\r\n\r\n[ 1373.806119] VERIFY0(db->db_level) failed (0 == 1)\r\n[ 1373.807232] PANIC at dbuf.c:2549:dbuf_undirty()\r\n[ 1373.814979]  dump_stack_lvl+0x71/0x90\r\n[ 1373.815799]  spl_panic+0xd3/0x100 [spl]\r\n[ 1373.827709]  dbuf_undirty+0x62a/0x970 [zfs]\r\n[ 1373.829204]  dmu_buf_will_dirty_impl+0x1e9/0x5b0 [zfs]\r\n[ 1373.831010]  dnode_free_range+0x532/0x1220 [zfs]\r\n[ 1373.833922]  dmu_free_long_range+0x4e0/0x930 [zfs]\r\n[ 1373.835277]  zfs_trunc+0x75/0x1e0 [zfs]\r\n[ 1373.837958]  zfs_freesp+0x9b/0x470 [zfs]\r\n[ 1373.847236]  zfs_setattr+0x161a/0x3500 [zfs]\r\n[ 1373.855267]  zpl_setattr+0x125/0x320 [zfs]\r\n[ 1373.856725]  notify_change+0x1ee/0x4a0\r\n[ 1373.859207]  do_truncate+0x7f/0xd0\r\n[ 1373.859968]  do_sys_ftruncate+0x28e/0x2e0\r\n[ 1373.860962]  do_syscall_64+0x38/0x90\r\n[ 1373.861751]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8\r\n\r\n[ 1822.381337] VERIFY0(db->db_level) failed (0 == 1)\r\n[ 1822.382376] PANIC at dbuf.c:2549:dbuf_undirty()\r\n[ 1822.389232]  dump_stack_lvl+0x71/0x90\r\n[ 1822.389920]  spl_panic+0xd3/0x100 [spl]\r\n[ 1822.399567]  dbuf_undirty+0x62a/0x970 [zfs]\r\n[ 1822.400583]  dmu_buf_will_dirty_impl+0x1e9/0x5b0 [zfs]\r\n[ 1822.401752]  dnode_free_range+0x532/0x1220 [zfs]\r\n[ 1822.402841]  dmu_object_free+0x74/0x120 [zfs]\r\n[ 1822.403869]  zfs_znode_delete+0x75/0x120 [zfs]\r\n[ 1822.404906]  zfs_rmnode+0x3f6/0x7f0 [zfs]\r\n[ 1822.405870]  zfs_inactive+0xa3/0x610 [zfs]\r\n[ 1822.407803]  zpl_evict_inode+0x3e/0x90 [zfs]\r\n[ 1822.408831]  evict+0xc1/0x1c0\r\n[ 1822.409387]  do_unlinkat+0x147/0x300\r\n[ 1822.410060]  __x64_sys_unlinkat+0x33/0x60\r\n[ 1822.410802]  do_syscall_64+0x38/0x90\r\n[ 1822.411458]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8\r\n\r\nReviewed-by: Alexander Motin <mav@FreeBSD.org>\r\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nReviewed-by: Brian Atkinson <batkinson@lanl.gov>\r\nSigned-off-by: Pavel Snajdr <snajpa@snajpa.net>\r\nCloses #15983",
+      "tree": {
+        "sha": "1e5cddacf3bf4e005ee69274c24b4d003675ac18",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/1e5cddacf3bf4e005ee69274c24b4d003675ac18"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/30c4eba4eaaef92cbc1b8d2eed6689600a342386",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDf2/CRC1aQ7uu5UhlAAAQQsQAE7HzNFvUYvnOUl44TvzA6ba\nUWXq3LH9vQKwCZxfWTNmsCRmuA1ESRgIDmD6RsRp683RWcYxrv4BfOVoCWkHYvHb\niyZ8fJDNiXjBX1BMHEDlCp8qzJIbJagQkkYeo3higTxZIzMShQiwLKB6+vJYiQYm\n+CCanW6VELqDWznZGL2FdVQ6TGfyh4Rb+WQeB8umCOa+C3OCAk6NzbhKj1SuGOOr\nD8D1Yh7mzh1qiJtlLmSo/MVPiBiR/0MyL0pEfBEp+7t4j+MWW4QR3NKO87dHKKOk\n/TxLuFQ5H/wy60xbo889XZFPWKNBowFMQh+HOVqwRbmkD7HulHP3tGDQuU1wOkIF\nUS3wmGWS9HFQYxLaHDW22lWFLQfojZFuFIXbhpdw/Q5A0oUQbryVvojK4QS/XmN+\nk+sQy/GIrT+PW9s6Sf4TDvfr6DQCxx60Qwa4LvAHph+vLl13k14s0nYMVsVP7CaI\nf1ff9ntNrp8+6DOgNmjqokH7UYjl2eSmM2dh6lT6+sO3lTL5h4OfJs5ncO8UbS/b\nTnnX1cu5m4ahKl4nv4Ne1UEarsvo/v2AeQaxXbRTJQaAcpVy0RXijPKC3tlhf7sm\nr2Hb60a8N5f+Vn+RKB0sCWbul3I4bE4AXi42diQH5Z/NvUauzLZiUxMAww27UMTc\nmPqJrTUZn6JyF05ktvIK\n=PGH4\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 1e5cddacf3bf4e005ee69274c24b4d003675ac18\nparent 66929f6829985b9d90dcc0828291e5353e6b3fc9\nauthor Pavel Snajdr <snajpa@snajpa.net> 1712192959 +0200\ncommitter GitHub <noreply@github.com> 1712192959 -0700\n\nFix panics when truncating/deleting files\n\nThere's an union in dbuf_dirty_record_t; dr_brtwrite could evaluate\r\nto B_TRUE if the dirty record is of another type than dl. Adding\r\nmore explicit dr type check before trying to access dr_brtwrite.\r\n\r\nFixes two similar panics:\r\n\r\n[ 1373.806119] VERIFY0(db->db_level) failed (0 == 1)\r\n[ 1373.807232] PANIC at dbuf.c:2549:dbuf_undirty()\r\n[ 1373.814979]  dump_stack_lvl+0x71/0x90\r\n[ 1373.815799]  spl_panic+0xd3/0x100 [spl]\r\n[ 1373.827709]  dbuf_undirty+0x62a/0x970 [zfs]\r\n[ 1373.829204]  dmu_buf_will_dirty_impl+0x1e9/0x5b0 [zfs]\r\n[ 1373.831010]  dnode_free_range+0x532/0x1220 [zfs]\r\n[ 1373.833922]  dmu_free_long_range+0x4e0/0x930 [zfs]\r\n[ 1373.835277]  zfs_trunc+0x75/0x1e0 [zfs]\r\n[ 1373.837958]  zfs_freesp+0x9b/0x470 [zfs]\r\n[ 1373.847236]  zfs_setattr+0x161a/0x3500 [zfs]\r\n[ 1373.855267]  zpl_setattr+0x125/0x320 [zfs]\r\n[ 1373.856725]  notify_change+0x1ee/0x4a0\r\n[ 1373.859207]  do_truncate+0x7f/0xd0\r\n[ 1373.859968]  do_sys_ftruncate+0x28e/0x2e0\r\n[ 1373.860962]  do_syscall_64+0x38/0x90\r\n[ 1373.861751]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8\r\n\r\n[ 1822.381337] VERIFY0(db->db_level) failed (0 == 1)\r\n[ 1822.382376] PANIC at dbuf.c:2549:dbuf_undirty()\r\n[ 1822.389232]  dump_stack_lvl+0x71/0x90\r\n[ 1822.389920]  spl_panic+0xd3/0x100 [spl]\r\n[ 1822.399567]  dbuf_undirty+0x62a/0x970 [zfs]\r\n[ 1822.400583]  dmu_buf_will_dirty_impl+0x1e9/0x5b0 [zfs]\r\n[ 1822.401752]  dnode_free_range+0x532/0x1220 [zfs]\r\n[ 1822.402841]  dmu_object_free+0x74/0x120 [zfs]\r\n[ 1822.403869]  zfs_znode_delete+0x75/0x120 [zfs]\r\n[ 1822.404906]  zfs_rmnode+0x3f6/0x7f0 [zfs]\r\n[ 1822.405870]  zfs_inactive+0xa3/0x610 [zfs]\r\n[ 1822.407803]  zpl_evict_inode+0x3e/0x90 [zfs]\r\n[ 1822.408831]  evict+0xc1/0x1c0\r\n[ 1822.409387]  do_unlinkat+0x147/0x300\r\n[ 1822.410060]  __x64_sys_unlinkat+0x33/0x60\r\n[ 1822.410802]  do_syscall_64+0x38/0x90\r\n[ 1822.411458]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8\r\n\r\nReviewed-by: Alexander Motin <mav@FreeBSD.org>\r\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nReviewed-by: Brian Atkinson <batkinson@lanl.gov>\r\nSigned-off-by: Pavel Snajdr <snajpa@snajpa.net>\r\nCloses #15983 "
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/30c4eba4eaaef92cbc1b8d2eed6689600a342386",
+    "html_url": "https://github.com/openzfs/zfs/commit/30c4eba4eaaef92cbc1b8d2eed6689600a342386",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/30c4eba4eaaef92cbc1b8d2eed6689600a342386/comments",
+    "author": {
+      "login": "snajpa",
+      "id": 1138828,
+      "node_id": "MDQ6VXNlcjExMzg4Mjg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1138828?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/snajpa",
+      "html_url": "https://github.com/snajpa",
+      "followers_url": "https://api.github.com/users/snajpa/followers",
+      "following_url": "https://api.github.com/users/snajpa/following{/other_user}",
+      "gists_url": "https://api.github.com/users/snajpa/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/snajpa/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/snajpa/subscriptions",
+      "organizations_url": "https://api.github.com/users/snajpa/orgs",
+      "repos_url": "https://api.github.com/users/snajpa/repos",
+      "events_url": "https://api.github.com/users/snajpa/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/snajpa/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "66929f6829985b9d90dcc0828291e5353e6b3fc9",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/66929f6829985b9d90dcc0828291e5353e6b3fc9",
+        "html_url": "https://github.com/openzfs/zfs/commit/66929f6829985b9d90dcc0828291e5353e6b3fc9"
+      }
+    ]
+  },
+  {
+    "sha": "66929f6829985b9d90dcc0828291e5353e6b3fc9",
+    "node_id": "C_kwDOAAarE9oAKDY2OTI5ZjY4Mjk5ODViOWQ5MGRjYzA4MjgyOTFlNTM1M2U2YjNmYzk",
+    "commit": {
+      "author": {
+        "name": "Shengqi Chen",
+        "email": "harry-chen@outlook.com",
+        "date": "2024-04-04T01:04:15Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-04T01:04:15Z"
+      },
+      "message": "man: move zfs_prepare_disk.8 to nodist_man_MANS\n\nThe commit b53077a added zfs_prepare_disk.8 to the wrong list\r\ndist_man_MANS, in which @zfsexecdir@ will not be properly substituted.\r\nThis leads to wrong path in the manpage in generated release tarballs.\r\n\r\nReported-by: Benda Xu <orv@debian.org>\r\nReviewed-by: Tony Hutter <hutter2@llnl.gov>\r\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nSigned-off-by: Shengqi Chen <harry-chen@outlook.com>\r\nCloses #15979",
+      "tree": {
+        "sha": "c36035adcc55e3d0e9b00992282eb1224b9adb18",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/c36035adcc55e3d0e9b00992282eb1224b9adb18"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/66929f6829985b9d90dcc0828291e5353e6b3fc9",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDfyPCRC1aQ7uu5UhlAAA4EQQAFk260MlW7Iir4oRvqp77vWN\nlgrh6TI1J4TF3U7MIocWeuhhAQv1FHvd2Go/IfymktG9Qu0V2Q50d9pNl2L3ewCr\nbsquPw+a3xITJUKWXpAnACLFPst67gNQy9AVZQyjB1/+yNdRQSpKLOnq4arMY8m2\neDkULKGr8+bs0bSGoI/odXpJJO/EhJIQhCa4HhBMsptlaoQf161RKxrAYJfeggFN\nr5luwTTERP8Dl6cjHHrifBXhTHYNYPRQLPAAOWdAMkp9LhnFHSaw/WqNCfdZlPxY\nj5ef3Pdk8pyFhhQzF58HeOHjlKoh5Pq3HEPKUxFQz0pDDcYbKytMOOLbQfcxXE5m\np9ee9jv0ksAWWZNVhlvmS2AJHM8bAbIRiJkxwnBfXaYWiZPFjFugu1ZHaXSvsBDP\n8LC5Y8XBpewUHCrlwCY4c547HEVy/pKfOuuGjhh/3fKVFdC0ZMgvo/kQin9JFm+i\nueToEXnlvR8u7WRG/D2c7Uv+zZD5mGZdy5NH86+3hrCvAGl2Q94ME2s8ZWND09aX\ndHHiViSF0Er3wIR7Gs165DVZU31HrYgdJOP6IZUf/4zuzlqWeANgCbup0Nd7Gp5H\n3RiMQIp0/DDPzVuZ5nxFlHnJ2gfb9M/QQt0Aut+XN99IJaR/MUc4+SuyoogTlNQm\nn9gkYdfOqQ6/n8uJutVi\n=lgUx\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree c36035adcc55e3d0e9b00992282eb1224b9adb18\nparent ea2862cdda1009a98a6f7b390e34b705bb7d90ae\nauthor Shengqi Chen <harry-chen@outlook.com> 1712192655 +0800\ncommitter GitHub <noreply@github.com> 1712192655 -0700\n\nman: move zfs_prepare_disk.8 to nodist_man_MANS\n\nThe commit b53077a added zfs_prepare_disk.8 to the wrong list\r\ndist_man_MANS, in which @zfsexecdir@ will not be properly substituted.\r\nThis leads to wrong path in the manpage in generated release tarballs.\r\n\r\nReported-by: Benda Xu <orv@debian.org>\r\nReviewed-by: Tony Hutter <hutter2@llnl.gov>\r\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nSigned-off-by: Shengqi Chen <harry-chen@outlook.com>\r\nCloses #15979"
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/66929f6829985b9d90dcc0828291e5353e6b3fc9",
+    "html_url": "https://github.com/openzfs/zfs/commit/66929f6829985b9d90dcc0828291e5353e6b3fc9",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/66929f6829985b9d90dcc0828291e5353e6b3fc9/comments",
+    "author": {
+      "login": "Harry-Chen",
+      "id": 2819727,
+      "node_id": "MDQ6VXNlcjI4MTk3Mjc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2819727?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Harry-Chen",
+      "html_url": "https://github.com/Harry-Chen",
+      "followers_url": "https://api.github.com/users/Harry-Chen/followers",
+      "following_url": "https://api.github.com/users/Harry-Chen/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Harry-Chen/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Harry-Chen/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Harry-Chen/subscriptions",
+      "organizations_url": "https://api.github.com/users/Harry-Chen/orgs",
+      "repos_url": "https://api.github.com/users/Harry-Chen/repos",
+      "events_url": "https://api.github.com/users/Harry-Chen/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Harry-Chen/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ea2862cdda1009a98a6f7b390e34b705bb7d90ae",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/ea2862cdda1009a98a6f7b390e34b705bb7d90ae",
+        "html_url": "https://github.com/openzfs/zfs/commit/ea2862cdda1009a98a6f7b390e34b705bb7d90ae"
+      }
+    ]
+  },
+  {
+    "sha": "ea2862cdda1009a98a6f7b390e34b705bb7d90ae",
+    "node_id": "C_kwDOAAarE9oAKGVhMjg2MmNkZGExMDA5YTk4YTZmN2IzOTBlMzRiNzA1YmI3ZDkwYWU",
+    "commit": {
+      "author": {
+        "name": "Alek P",
+        "email": "alek-p@users.noreply.github.com",
+        "date": "2024-04-04T00:56:34Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-04T00:56:34Z"
+      },
+      "message": "vdev props comment and manpage should include zfsd and FreeBSD mentions\n\nReviewed-by: Tino Reichardt <milky-zfs@mcmilk.de>\r\nReviewed-by: Alexander Motin <mav@FreeBSD.org>\r\nReviewed-by: Tony Hutter <hutter2@llnl.gov>\r\nReviewed-by: Rob Norris <robn@despairlabs.com>\r\nReviewed-by: Allan Jude <allan@klarasystems.com>\r\nSigned-off-by: Alek Pinchuk <apinchuk@axcient.com>\r\nCloses #15968",
+      "tree": {
+        "sha": "3ca6efd7221166e0bf8e684b5d4ff4dd84036efe",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/3ca6efd7221166e0bf8e684b5d4ff4dd84036efe"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/ea2862cdda1009a98a6f7b390e34b705bb7d90ae",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDfrCCRC1aQ7uu5UhlAAA18gQAGVfe0S9WQgZ7SbdPNUgtuMx\nNilD1Y5nDakEyVx//axM4hdML0sdbhFLH5rlluC4tDCTkzNQp4eCtYmLD297yYo2\nWGbVhBvqebOzOB7bmNi/h0l3AcTaa7KDTxwoPgBw8c/jy19QEIXy0wnn8qzx8YCl\nQMgen6O9O4WXmGo2hqYcXmKt6ePlHzmdZ+wtLqZHN/spUvl6lXQIOBRlSb8EIX2u\nnVbaeqsMa1Hv/EVdQZdq21Zd5dhDeTIV6ioIJH/SPMc7ueMJ1tc4Cv3w4mcg2+MX\nKr0ZWwHFFiYfaBkL+x/Be+/j+kNe72G+yCsHZ5hW2WqVMp0EvAcAfY8OGALR+H23\nnpVjpnfCT88jJf+Vfth2BSjXBIqrQmHo9Bb7HtH67OpxHPCQr2juLZHoY2z/CbUR\n56ZRP6kut8/QoPEGF2GJqAL3Gb8JF5wnqn6EXnIPoMas7MXaYNH+M/RYC1K/D59E\n4FCUwVXQu2CBVohvcAm7QVZXugAtJ/JFcFO4Arz0xuHfVh1lFjlV6vEivAYPnSex\nNOeOsMLQ7iA1S7fMwjGuZ1IVe6u9okVbCnbOni2GISACpsaL0Rz3MYa0gOSYFVJ0\nYxlnMGL7oenxBAtWNVE0fugKPhFsLZnU5UNGTgCuP9R80xSpWUGjDpGbWN8oOLZb\nEnpE8c6npckoZOh2m8Uz\n=9bMF\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 3ca6efd7221166e0bf8e684b5d4ff4dd84036efe\nparent b21b967bd5095d431b71ef63f09e0d31c0ef0b08\nauthor Alek P <alek-p@users.noreply.github.com> 1712192194 -0400\ncommitter GitHub <noreply@github.com> 1712192194 -0700\n\nvdev props comment and manpage should include zfsd and FreeBSD mentions\n\nReviewed-by: Tino Reichardt <milky-zfs@mcmilk.de>\r\nReviewed-by: Alexander Motin <mav@FreeBSD.org>\r\nReviewed-by: Tony Hutter <hutter2@llnl.gov>\r\nReviewed-by: Rob Norris <robn@despairlabs.com>\r\nReviewed-by: Allan Jude <allan@klarasystems.com>\r\nSigned-off-by: Alek Pinchuk <apinchuk@axcient.com>\r\nCloses #15968 "
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/ea2862cdda1009a98a6f7b390e34b705bb7d90ae",
+    "html_url": "https://github.com/openzfs/zfs/commit/ea2862cdda1009a98a6f7b390e34b705bb7d90ae",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/ea2862cdda1009a98a6f7b390e34b705bb7d90ae/comments",
+    "author": {
+      "login": "alek-p",
+      "id": 2172305,
+      "node_id": "MDQ6VXNlcjIxNzIzMDU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2172305?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/alek-p",
+      "html_url": "https://github.com/alek-p",
+      "followers_url": "https://api.github.com/users/alek-p/followers",
+      "following_url": "https://api.github.com/users/alek-p/following{/other_user}",
+      "gists_url": "https://api.github.com/users/alek-p/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/alek-p/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/alek-p/subscriptions",
+      "organizations_url": "https://api.github.com/users/alek-p/orgs",
+      "repos_url": "https://api.github.com/users/alek-p/repos",
+      "events_url": "https://api.github.com/users/alek-p/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/alek-p/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b21b967bd5095d431b71ef63f09e0d31c0ef0b08",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/b21b967bd5095d431b71ef63f09e0d31c0ef0b08",
+        "html_url": "https://github.com/openzfs/zfs/commit/b21b967bd5095d431b71ef63f09e0d31c0ef0b08"
+      }
+    ]
+  },
+  {
+    "sha": "b21b967bd5095d431b71ef63f09e0d31c0ef0b08",
+    "node_id": "C_kwDOAAarE9oAKGIyMWI5NjdiZDUwOTVkNDMxYjcxZWY2M2YwOWUwZDMxYzBlZjBiMDg",
+    "commit": {
+      "author": {
+        "name": "Rob N",
+        "email": "rob.norris@klarasystems.com",
+        "date": "2024-04-03T23:38:18Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-03T23:38:18Z"
+      },
+      "message": "zap_leaf: make l_hash[] variable length to silence UBSAN\n\nWhen UBSAN is active and OpenZFS is a debug build, the l_hash assert at\r\nthe bottom of zap_open_leaf() causes UBSAN to complain.\r\n\r\nThis follows the example in 786641dcf to shut it up.\r\n\r\nSponsored-by: https://despairlabs.com/sponsor/\r\nReviewed-by: Alexander Motin <mav@FreeBSD.org>\r\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nSigned-off-by: Rob Norris <robn@despairlabs.com>\r\nCloses #15964",
+      "tree": {
+        "sha": "fe2ce99e0ee1305185c5813a00ba9f353546e487",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/fe2ce99e0ee1305185c5813a00ba9f353546e487"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/b21b967bd5095d431b71ef63f09e0d31c0ef0b08",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDehqCRC1aQ7uu5UhlAAAl3sQACUXI9p8lDpJRlaX9jfIFI0t\ngz5O5pFY/DeBI2Ob84qVmKU5MZPiRiPRYfTpyU59vQ8E+3yCGy2XEdmdUJPBoQF2\nAiY8Wxn9Be5b1rB4ZcoBs8N1SdCO5B6DbF886oKGec/Y7FsPFDGREa6h7EI//1xL\nGTQX33mVXjsst5U2e0w2rMQrsA/vAmI7zrZsAvZezJr23UvYIVdN8QD84qR5h6iG\n3UqXrECP/s1rsptw/+qKDcSnVVLWrF8JeC5IzVFV73cJ3PSm+LQAwu9o9bYHpTjX\nBOWlFr6IpZRXMaRAhPYxMta8g+vqsHV8Q2+mxMPM5RFf5LA4eDeQPIiBp/kT+ZgX\nu9+7TJY5eIK8PYhaz6veNP1ksYwJaDQruxUH7eEIvN6K4e2EgGM8B0uFZmNYwpUp\nLqGK2+3Vv4I205tk6h9Zm4rPxUkME8gCkCLy67L49I7lxdRLRx0v4qah0acKjWAB\nnkbBpxT+SzdC8GQMoKEAQY7wCbCHtRGwZbqvc7gp+zjuFony+2c57ieMmeCXamZL\nygkcJPgk1WjcDxcoIuAqjxPOV6yfnqz+AC/TCslJj4tjyDFEhaRSDJI8VKM0khtU\naRd6FzObnCQA7sJM6zxbmhWZx3J9cqGtfWX3ksNS0M5IASINUOEMsMivVApX2aHL\nRG6J+cA5wkNaxtfcbiaC\n=eAfW\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree fe2ce99e0ee1305185c5813a00ba9f353546e487\nparent b6bbaa837271698f238a9264c4070416077fb67b\nauthor Rob N <rob.norris@klarasystems.com> 1712187498 +1100\ncommitter GitHub <noreply@github.com> 1712187498 -0700\n\nzap_leaf: make l_hash[] variable length to silence UBSAN\n\nWhen UBSAN is active and OpenZFS is a debug build, the l_hash assert at\r\nthe bottom of zap_open_leaf() causes UBSAN to complain.\r\n\r\nThis follows the example in 786641dcf to shut it up.\r\n\r\nSponsored-by: https://despairlabs.com/sponsor/\r\nReviewed-by: Alexander Motin <mav@FreeBSD.org>\r\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nSigned-off-by: Rob Norris <robn@despairlabs.com>\r\nCloses #15964"
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/b21b967bd5095d431b71ef63f09e0d31c0ef0b08",
+    "html_url": "https://github.com/openzfs/zfs/commit/b21b967bd5095d431b71ef63f09e0d31c0ef0b08",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/b21b967bd5095d431b71ef63f09e0d31c0ef0b08/comments",
+    "author": {
+      "login": "robn",
+      "id": 130670,
+      "node_id": "MDQ6VXNlcjEzMDY3MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/130670?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/robn",
+      "html_url": "https://github.com/robn",
+      "followers_url": "https://api.github.com/users/robn/followers",
+      "following_url": "https://api.github.com/users/robn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/robn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/robn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/robn/subscriptions",
+      "organizations_url": "https://api.github.com/users/robn/orgs",
+      "repos_url": "https://api.github.com/users/robn/repos",
+      "events_url": "https://api.github.com/users/robn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/robn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b6bbaa837271698f238a9264c4070416077fb67b",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/b6bbaa837271698f238a9264c4070416077fb67b",
+        "html_url": "https://github.com/openzfs/zfs/commit/b6bbaa837271698f238a9264c4070416077fb67b"
+      }
+    ]
+  },
+  {
+    "sha": "b6bbaa837271698f238a9264c4070416077fb67b",
+    "node_id": "C_kwDOAAarE9oAKGI2YmJhYTgzNzI3MTY5OGYyMzhhOTI2NGM0MDcwNDE2MDc3ZmI2N2I",
+    "commit": {
+      "author": {
+        "name": "Paul Dagnelie",
+        "email": "pcd@delphix.com",
+        "date": "2024-04-03T23:34:46Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-03T23:34:46Z"
+      },
+      "message": "Give a better message from 'zpool get' with invalid pool name\n\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nReviewed-by: Don Brady <don.brady@klarasystems.com>\r\nReviewed-by: Tony Nguyen <tony.nguyen@delphix.com>\r\nSigned-off-by: Paul Dagnelie <pcd@delphix.com>\r\nCloses #15942",
+      "tree": {
+        "sha": "4cf1748bf9a76ad9f5f381d91318d0c5d08696ed",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/4cf1748bf9a76ad9f5f381d91318d0c5d08696ed"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/b6bbaa837271698f238a9264c4070416077fb67b",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDeeWCRC1aQ7uu5UhlAAAjowQAHbbqRKt6RUuMQgoUEmKdqiA\nerWc0YvwbNshEOn1VwX1AT3PDmMtxJrLRMVIGpdOPsVtWpx+VZkRvlFqueDSBX4r\nHS685U9JBYEk081YV6cMSbhfaapck0W6iD5cRcZ6nxeQuYh582MWj1DOXRo1mm5m\nbW2y0g/Xri0hTl5SKUTovPCa2+lh3aJXWgCTWLD59DvxekEdiG9VA97PdJagwbgw\n7AUqrPTL+mIOoAoyfz+KgaVX1VkxgIK/3HcjqyLGY6dgFR46CygrnL/+K9c3CQ7q\nglruRwffDOE4DSfl732FPSvyErVIA3a9hep+ym5EUACu+mpjZoc9MPfEEk9spxnU\np+nUOpR2s3WowCNCkJnK2XfSlo5ygYWMxbNSN9WNRHFUhMsOORbY3Fz+XF/Inq3k\nJ8Zh6LI7+RVoCJprQRIaQUKAbZ/HyXQaPayMZ0o76tHKc+FlRmN2SIAeKDr+mhQ0\nsXnZ48zDvTYMxy4eOTazt4jrBgUmfYgQdXu1INxRTpHvSe6/C/fSPYtKi3z7I6+O\nb/M9SMdjB6DzsQn1P4/GP7KWZnEGgCy2iSlCf6m1D+i19YfJQRWUgTCYOkyU9ISH\nHy8PbvFrZ4Qu5X+p5+tazJq3SXfejvzUdm8LhCylvNl5MFhgEVqViHjiTgIyrrM7\n2xgoS5BJ0h71RfjLxmTZ\n=DHLw\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 4cf1748bf9a76ad9f5f381d91318d0c5d08696ed\nparent 756e10b0a1f1f1fc4974e9d1736e1173d649cb8c\nauthor Paul Dagnelie <pcd@delphix.com> 1712187286 -0700\ncommitter GitHub <noreply@github.com> 1712187286 -0700\n\nGive a better message from 'zpool get' with invalid pool name\n\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nReviewed-by: Don Brady <don.brady@klarasystems.com>\r\nReviewed-by: Tony Nguyen <tony.nguyen@delphix.com>\r\nSigned-off-by: Paul Dagnelie <pcd@delphix.com>\r\nCloses #15942 "
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/b6bbaa837271698f238a9264c4070416077fb67b",
+    "html_url": "https://github.com/openzfs/zfs/commit/b6bbaa837271698f238a9264c4070416077fb67b",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/b6bbaa837271698f238a9264c4070416077fb67b/comments",
+    "author": {
+      "login": "pcd1193182",
+      "id": 142840,
+      "node_id": "MDQ6VXNlcjE0Mjg0MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/142840?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/pcd1193182",
+      "html_url": "https://github.com/pcd1193182",
+      "followers_url": "https://api.github.com/users/pcd1193182/followers",
+      "following_url": "https://api.github.com/users/pcd1193182/following{/other_user}",
+      "gists_url": "https://api.github.com/users/pcd1193182/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/pcd1193182/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/pcd1193182/subscriptions",
+      "organizations_url": "https://api.github.com/users/pcd1193182/orgs",
+      "repos_url": "https://api.github.com/users/pcd1193182/repos",
+      "events_url": "https://api.github.com/users/pcd1193182/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/pcd1193182/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "756e10b0a1f1f1fc4974e9d1736e1173d649cb8c",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/756e10b0a1f1f1fc4974e9d1736e1173d649cb8c",
+        "html_url": "https://github.com/openzfs/zfs/commit/756e10b0a1f1f1fc4974e9d1736e1173d649cb8c"
+      }
+    ]
+  },
+  {
+    "sha": "756e10b0a1f1f1fc4974e9d1736e1173d649cb8c",
+    "node_id": "C_kwDOAAarE9oAKDc1NmUxMGIwYTFmMWYxZmM0OTc0ZTlkMTczNmUxMTczZDY0OWNiOGM",
+    "commit": {
+      "author": {
+        "name": "Rob Norris",
+        "email": "rob.norris@klarasystems.com",
+        "date": "2024-03-27T05:15:48Z"
+      },
+      "committer": {
+        "name": "Brian Behlendorf",
+        "email": "behlendorf1@llnl.gov",
+        "date": "2024-04-03T23:06:43Z"
+      },
+      "message": "tests: simple zinject disk fault arg check\n\nJust making sure the valid values for disk faults are accepted.\nObviously we can do a lot more, but this will do to get us started.\n\nSponsored-by: Klara, Inc.\nSponsored-by: Wasabi Technology, Inc.\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\nReviewed-by: Brian Atkinson <batkinson@lanl.gov>\nReviewed-by: Tino Reichardt <milky-zfs@mcmilk.de>\nSigned-off-by: Rob Norris <rob.norris@klarasystems.com>\nCloses #15953",
+      "tree": {
+        "sha": "f0d7153d53ecc9b1ade33c0958af0d2e71d67243",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/f0d7153d53ecc9b1ade33c0958af0d2e71d67243"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/756e10b0a1f1f1fc4974e9d1736e1173d649cb8c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/756e10b0a1f1f1fc4974e9d1736e1173d649cb8c",
+    "html_url": "https://github.com/openzfs/zfs/commit/756e10b0a1f1f1fc4974e9d1736e1173d649cb8c",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/756e10b0a1f1f1fc4974e9d1736e1173d649cb8c/comments",
+    "author": {
+      "login": "robn",
+      "id": 130670,
+      "node_id": "MDQ6VXNlcjEzMDY3MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/130670?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/robn",
+      "html_url": "https://github.com/robn",
+      "followers_url": "https://api.github.com/users/robn/followers",
+      "following_url": "https://api.github.com/users/robn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/robn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/robn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/robn/subscriptions",
+      "organizations_url": "https://api.github.com/users/robn/orgs",
+      "repos_url": "https://api.github.com/users/robn/repos",
+      "events_url": "https://api.github.com/users/robn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/robn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "behlendorf",
+      "id": 148917,
+      "node_id": "MDQ6VXNlcjE0ODkxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/148917?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/behlendorf",
+      "html_url": "https://github.com/behlendorf",
+      "followers_url": "https://api.github.com/users/behlendorf/followers",
+      "following_url": "https://api.github.com/users/behlendorf/following{/other_user}",
+      "gists_url": "https://api.github.com/users/behlendorf/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/behlendorf/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/behlendorf/subscriptions",
+      "organizations_url": "https://api.github.com/users/behlendorf/orgs",
+      "repos_url": "https://api.github.com/users/behlendorf/repos",
+      "events_url": "https://api.github.com/users/behlendorf/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/behlendorf/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "fa480fe5bacceae940608860bd06d94be104cbb4",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/fa480fe5bacceae940608860bd06d94be104cbb4",
+        "html_url": "https://github.com/openzfs/zfs/commit/fa480fe5bacceae940608860bd06d94be104cbb4"
+      }
+    ]
+  },
+  {
+    "sha": "fa480fe5bacceae940608860bd06d94be104cbb4",
+    "node_id": "C_kwDOAAarE9oAKGZhNDgwZmU1YmFjY2VhZTk0MDYwODg2MGJkMDZkOTRiZTEwNGNiYjQ",
+    "commit": {
+      "author": {
+        "name": "Rob Norris",
+        "email": "rob.norris@klarasystems.com",
+        "date": "2024-02-29T23:38:41Z"
+      },
+      "committer": {
+        "name": "Brian Behlendorf",
+        "email": "behlendorf1@llnl.gov",
+        "date": "2024-04-03T23:06:19Z"
+      },
+      "message": "zinject: show more device fault fields\n\nOnce there's a few different kinds injected, its pretty hard to see them\notherwise.\n\nSo, lets show IO type, error type and frequency fields in the table too.\n\nSince we now have to convert from error code to pretty string, refactor\nthe error names into a table and add lookup functions.\n\nSponsored-by: Klara, Inc.\nSponsored-by: Wasabi Technology, Inc.\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\nReviewed-by: Brian Atkinson <batkinson@lanl.gov>\nReviewed-by: Tino Reichardt <milky-zfs@mcmilk.de>\nSigned-off-by: Rob Norris <rob.norris@klarasystems.com>\nCloses #15953",
+      "tree": {
+        "sha": "45809b9cd9d129b7c292f0e4d13f5314bc83e8a5",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/45809b9cd9d129b7c292f0e4d13f5314bc83e8a5"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/fa480fe5bacceae940608860bd06d94be104cbb4",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/fa480fe5bacceae940608860bd06d94be104cbb4",
+    "html_url": "https://github.com/openzfs/zfs/commit/fa480fe5bacceae940608860bd06d94be104cbb4",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/fa480fe5bacceae940608860bd06d94be104cbb4/comments",
+    "author": {
+      "login": "robn",
+      "id": 130670,
+      "node_id": "MDQ6VXNlcjEzMDY3MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/130670?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/robn",
+      "html_url": "https://github.com/robn",
+      "followers_url": "https://api.github.com/users/robn/followers",
+      "following_url": "https://api.github.com/users/robn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/robn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/robn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/robn/subscriptions",
+      "organizations_url": "https://api.github.com/users/robn/orgs",
+      "repos_url": "https://api.github.com/users/robn/repos",
+      "events_url": "https://api.github.com/users/robn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/robn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "behlendorf",
+      "id": 148917,
+      "node_id": "MDQ6VXNlcjE0ODkxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/148917?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/behlendorf",
+      "html_url": "https://github.com/behlendorf",
+      "followers_url": "https://api.github.com/users/behlendorf/followers",
+      "following_url": "https://api.github.com/users/behlendorf/following{/other_user}",
+      "gists_url": "https://api.github.com/users/behlendorf/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/behlendorf/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/behlendorf/subscriptions",
+      "organizations_url": "https://api.github.com/users/behlendorf/orgs",
+      "repos_url": "https://api.github.com/users/behlendorf/repos",
+      "events_url": "https://api.github.com/users/behlendorf/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/behlendorf/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ca678bc0bc8347610d34c39a5a2322be45b11093",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/ca678bc0bc8347610d34c39a5a2322be45b11093",
+        "html_url": "https://github.com/openzfs/zfs/commit/ca678bc0bc8347610d34c39a5a2322be45b11093"
+      }
+    ]
+  },
+  {
+    "sha": "ca678bc0bc8347610d34c39a5a2322be45b11093",
+    "node_id": "C_kwDOAAarE9oAKGNhNjc4YmMwYmM4MzQ3NjEwZDM0YzM5YTVhMjMyMmJlNDViMTEwOTM",
+    "commit": {
+      "author": {
+        "name": "Rob N",
+        "email": "robn@despairlabs.com",
+        "date": "2024-04-03T22:49:22Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-03T22:49:22Z"
+      },
+      "message": "Makefile.bsd: sort and cleanup source file list\n\nAll files now in their correct sections, and all sections match on-disk\r\ndir layout, and all sorted.\r\n\r\nSponsored-by: Klara, Inc.\r\nSponsored-by: Wasabi Technology, Inc.\r\nReviewed by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nReviewed-by: Tino Reichardt <milky-zfs@mcmilk.de>\r\nSigned-off-by: Rob Norris <rob.norris@klarasystems.com>\r\nCloses #15943",
+      "tree": {
+        "sha": "cfea6b720620d4b6e251d4498e1cad0cf7c8247f",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/cfea6b720620d4b6e251d4498e1cad0cf7c8247f"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/ca678bc0bc8347610d34c39a5a2322be45b11093",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDdzyCRC1aQ7uu5UhlAAA2k0QAEzknFgPSk/e52VYXtshMihv\nuqi1Fhlfkvyn9p/++pSQG+WaAgrjOkL1qDunRQpjpvipiElAoAqnQl41NOBG1OeW\nprLsr77iAEhUhGpSYIuHfnaIJivlGM4rG9ZDmEVPMq9wUWhq4NbnGoNnHRsqF/v5\n44Qz/MRDmlrv6ybaObbA4x8YMx8upeXkghdQliPLeHI47nwFjoGH0F2FR5rC80kV\nPHNJxDFcKbLCXxMIbzuheynz+sXZ3qgmGP4/FkUmswyl0hPIIXzaggivGiWLhWI+\n360qmOgqkHzw2ptcMIry6IjankdeZ0vkeklPNySOQT0iQUCasaDBM+mimWNcXF1R\nVeC+VjyrFZh/JjJ2MVqcBWR/t9SZXWUlqI25rrNHVtZBXSo06BNFpETrDI1jLth6\nQmCAJtK99SwIhUiPMbYx7d4Q/GXVMQBHdFfHDU28X2XGCZsladjzUd4ogceFSl5J\n+yS4uGZiWOZb2uY7M0Wwim8hQOtZv0bfyemJOpJAwcG+y2Br3OePnncucyP8fbtO\nLH5SeewroVPtnctvlWbelS2IjxjfnAFjMKCT28X74Sb8eqGJqxREFRPa5Sjf0FBZ\n5RbyLgba4kABQFbSnCOWYuaKvHI5MGvDg9CqRNB/gZY9M4deGHwhXJlM/RWD1Zgs\n+xOUGVS37k8WQOJUWuz9\n=u5kJ\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree cfea6b720620d4b6e251d4498e1cad0cf7c8247f\nparent 6097a7ba8b49c9b263809d2d1092fdca86182bd3\nauthor Rob N <robn@despairlabs.com> 1712184562 +1100\ncommitter GitHub <noreply@github.com> 1712184562 -0700\n\nMakefile.bsd: sort and cleanup source file list\n\nAll files now in their correct sections, and all sections match on-disk\r\ndir layout, and all sorted.\r\n\r\nSponsored-by: Klara, Inc.\r\nSponsored-by: Wasabi Technology, Inc.\r\nReviewed by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nReviewed-by: Tino Reichardt <milky-zfs@mcmilk.de>\r\nSigned-off-by: Rob Norris <rob.norris@klarasystems.com>\r\nCloses #15943 "
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/ca678bc0bc8347610d34c39a5a2322be45b11093",
+    "html_url": "https://github.com/openzfs/zfs/commit/ca678bc0bc8347610d34c39a5a2322be45b11093",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/ca678bc0bc8347610d34c39a5a2322be45b11093/comments",
+    "author": {
+      "login": "robn",
+      "id": 130670,
+      "node_id": "MDQ6VXNlcjEzMDY3MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/130670?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/robn",
+      "html_url": "https://github.com/robn",
+      "followers_url": "https://api.github.com/users/robn/followers",
+      "following_url": "https://api.github.com/users/robn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/robn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/robn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/robn/subscriptions",
+      "organizations_url": "https://api.github.com/users/robn/orgs",
+      "repos_url": "https://api.github.com/users/robn/repos",
+      "events_url": "https://api.github.com/users/robn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/robn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6097a7ba8b49c9b263809d2d1092fdca86182bd3",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/6097a7ba8b49c9b263809d2d1092fdca86182bd3",
+        "html_url": "https://github.com/openzfs/zfs/commit/6097a7ba8b49c9b263809d2d1092fdca86182bd3"
+      }
+    ]
+  },
+  {
+    "sha": "6097a7ba8b49c9b263809d2d1092fdca86182bd3",
+    "node_id": "C_kwDOAAarE9oAKDYwOTdhN2JhOGI0OWM5YjI2MzgwOWQyZDEwOTJmZGNhODYxODJiZDM",
+    "commit": {
+      "author": {
+        "name": "Rob Norris",
+        "email": "robn@despairlabs.com",
+        "date": "2024-03-27T00:24:57Z"
+      },
+      "committer": {
+        "name": "Brian Behlendorf",
+        "email": "behlendorf1@llnl.gov",
+        "date": "2024-04-03T22:29:39Z"
+      },
+      "message": "Linux 6.9 compat: blk_alloc_disk() now takes two args\n\nThere's an extra nullable arg for queue limits. Detect it, and set it to\nNULL. Similar change for blk_mq_alloc_disk(), now three args, same\ntreatment.\n\nError return now has error encoded in the return, so detect with\nIS_ERR() and explicitly NULL our own return.\n\nReviewed-by: Tony Hutter <hutter2@llnl.gov>\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\nSigned-off-by: Rob Norris <robn@despairlabs.com>\nSponsored-by: https://despairlabs.com/sponsor/\nCloses #16027\nCloses #16033",
+      "tree": {
+        "sha": "081c55684ac0fa841e50fa2de735c06a9785f661",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/081c55684ac0fa841e50fa2de735c06a9785f661"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/6097a7ba8b49c9b263809d2d1092fdca86182bd3",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/6097a7ba8b49c9b263809d2d1092fdca86182bd3",
+    "html_url": "https://github.com/openzfs/zfs/commit/6097a7ba8b49c9b263809d2d1092fdca86182bd3",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/6097a7ba8b49c9b263809d2d1092fdca86182bd3/comments",
+    "author": {
+      "login": "robn",
+      "id": 130670,
+      "node_id": "MDQ6VXNlcjEzMDY3MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/130670?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/robn",
+      "html_url": "https://github.com/robn",
+      "followers_url": "https://api.github.com/users/robn/followers",
+      "following_url": "https://api.github.com/users/robn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/robn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/robn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/robn/subscriptions",
+      "organizations_url": "https://api.github.com/users/robn/orgs",
+      "repos_url": "https://api.github.com/users/robn/repos",
+      "events_url": "https://api.github.com/users/robn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/robn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "behlendorf",
+      "id": 148917,
+      "node_id": "MDQ6VXNlcjE0ODkxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/148917?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/behlendorf",
+      "html_url": "https://github.com/behlendorf",
+      "followers_url": "https://api.github.com/users/behlendorf/followers",
+      "following_url": "https://api.github.com/users/behlendorf/following{/other_user}",
+      "gists_url": "https://api.github.com/users/behlendorf/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/behlendorf/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/behlendorf/subscriptions",
+      "organizations_url": "https://api.github.com/users/behlendorf/orgs",
+      "repos_url": "https://api.github.com/users/behlendorf/repos",
+      "events_url": "https://api.github.com/users/behlendorf/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/behlendorf/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e3120f73d0481a5e0779e45da83518373d60dcff",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/e3120f73d0481a5e0779e45da83518373d60dcff",
+        "html_url": "https://github.com/openzfs/zfs/commit/e3120f73d0481a5e0779e45da83518373d60dcff"
+      }
+    ]
+  },
+  {
+    "sha": "e3120f73d0481a5e0779e45da83518373d60dcff",
+    "node_id": "C_kwDOAAarE9oAKGUzMTIwZjczZDA0ODFhNWUwNzc5ZTQ1ZGE4MzUxODM3M2Q2MGRjZmY",
+    "commit": {
+      "author": {
+        "name": "Rob Norris",
+        "email": "robn@despairlabs.com",
+        "date": "2024-03-26T23:07:50Z"
+      },
+      "committer": {
+        "name": "Brian Behlendorf",
+        "email": "behlendorf1@llnl.gov",
+        "date": "2024-04-03T22:29:33Z"
+      },
+      "message": "Linux 6.9 compat: bdev handles are now struct file\n\nbdev_open_by_path() is replaced by bdev_file_open_by_path(), which\nreturns a plain old struct file*. Release function is gone entirely; the\nregular file release function fput() will take care of the bdev\nspecifics.\n\nReviewed-by: Tony Hutter <hutter2@llnl.gov>\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\nSigned-off-by: Rob Norris <robn@despairlabs.com>\nSponsored-by: https://despairlabs.com/sponsor/\nCloses #16027\nCloses #16033",
+      "tree": {
+        "sha": "8c9e3e1baa5dcf9137658203cc3f2ffd1ac5e5dd",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/8c9e3e1baa5dcf9137658203cc3f2ffd1ac5e5dd"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/e3120f73d0481a5e0779e45da83518373d60dcff",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/e3120f73d0481a5e0779e45da83518373d60dcff",
+    "html_url": "https://github.com/openzfs/zfs/commit/e3120f73d0481a5e0779e45da83518373d60dcff",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/e3120f73d0481a5e0779e45da83518373d60dcff/comments",
+    "author": {
+      "login": "robn",
+      "id": 130670,
+      "node_id": "MDQ6VXNlcjEzMDY3MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/130670?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/robn",
+      "html_url": "https://github.com/robn",
+      "followers_url": "https://api.github.com/users/robn/followers",
+      "following_url": "https://api.github.com/users/robn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/robn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/robn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/robn/subscriptions",
+      "organizations_url": "https://api.github.com/users/robn/orgs",
+      "repos_url": "https://api.github.com/users/robn/repos",
+      "events_url": "https://api.github.com/users/robn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/robn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "behlendorf",
+      "id": 148917,
+      "node_id": "MDQ6VXNlcjE0ODkxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/148917?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/behlendorf",
+      "html_url": "https://github.com/behlendorf",
+      "followers_url": "https://api.github.com/users/behlendorf/followers",
+      "following_url": "https://api.github.com/users/behlendorf/following{/other_user}",
+      "gists_url": "https://api.github.com/users/behlendorf/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/behlendorf/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/behlendorf/subscriptions",
+      "organizations_url": "https://api.github.com/users/behlendorf/orgs",
+      "repos_url": "https://api.github.com/users/behlendorf/repos",
+      "events_url": "https://api.github.com/users/behlendorf/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/behlendorf/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "917ff75e9510d19968ef3cc5c80b1cd0ef48f84d",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/917ff75e9510d19968ef3cc5c80b1cd0ef48f84d",
+        "html_url": "https://github.com/openzfs/zfs/commit/917ff75e9510d19968ef3cc5c80b1cd0ef48f84d"
+      }
+    ]
+  },
+  {
+    "sha": "917ff75e9510d19968ef3cc5c80b1cd0ef48f84d",
+    "node_id": "C_kwDOAAarE9oAKDkxN2ZmNzVlOTUxMGQxOTk2OGVmM2NjNWM4MGIxY2QwZWY0OGY4NGQ",
+    "commit": {
+      "author": {
+        "name": "Rob N",
+        "email": "robn@despairlabs.com",
+        "date": "2024-04-03T22:17:07Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-03T22:17:07Z"
+      },
+      "message": "vdev_disk: don't touch vbio after its handed off to the kernel\n\nAfter IO is unplugged, it may complete immediately and vbio_completion\r\nbe called on interrupt context. That may interrupt or deschedule our\r\ntask. If its the last bio, the vbio will be freed. Then, we get\r\nrescheduled, and try to write to freed memory through vbio->.\r\n\r\nThis patch just removes the the cleanup, and the corresponding assert.\r\nThese were leftovers from a previous iteration of vbio_submit() and were\r\nalways \"belt and suspenders\" ops anyway, never strictly required.\r\n\r\nSponsored-by: Klara, Inc.\r\nSponsored-by: Wasabi Technology, Inc\r\nReported-by: Rich Ercolani <rincebrain@gmail.com>\r\nReviewed-by: Laurențiu Nicola <lnicola@dend.ro>\r\nReviewed-by: Alexander Motin <mav@FreeBSD.org>\r\nReviewed-by: George Wilson <george.wilson@delphix.com>\r\nSigned-off-by: Rob Norris <rob.norris@klarasystems.com>\r\nCloses #16045\r\nCloses #16050\r\nCloses #16049",
+      "tree": {
+        "sha": "9fc2b3438c8924ec44093f69d1dd9ede7bf094ee",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/9fc2b3438c8924ec44093f69d1dd9ede7bf094ee"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/917ff75e9510d19968ef3cc5c80b1cd0ef48f84d",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDdVjCRC1aQ7uu5UhlAAAWlwQAJoGCA73MVCfKJvrvgYysboz\nGh2gQEeX2R3HgHhqcFkv8YKtPdBJxESL8TBMUNf/HmNTV0IF4srdB7lUy5J+6O33\neX59KOxZ7vkoUhBNrtvDhwJ+J6XjByXmM8j/L/MIeC8vbx3OkcC8UodmR40Rb6OQ\nRFbsFA6UT/sW5cMEAYlH2CwtBu+uj/+mwCd1k/ZPAGtK9vGaQpej1y4tGQMiRvxo\no/ymIHEARYCxBstKLNOXM8K/QjvT5dtv1C97poWdgTe2DFMj+3EF30hjqorAa28n\nkf4nsbNuMR6cNaAzoP0CYBE45HJSDX3ca8iyHxcqS1EjhuhgOQaRdvIqJAhrCrwD\nwHZitWiaBBgsRfIcPyOTi8lRFrInmhIgWeIFm9YCAOuUzSSbbAOyVFeeXrVxXOdH\niktl/DAHFzmEgmw8+l7qsmGOhKk1QkEDy9D6Sb9FTcpY8e64pMbGgZkyUQgU2Yg9\n6k7qzWmSmqnPws/8RyOrQggZqCdAGEPQi0qS5ioIt+LN7iJ1vHWJGzgvXWtUdXa7\nQC4BFInqPBj9mF1auDxBOWxRNm40v8acy1cOv+0lhXfGyRDBrUqi1OhUUz6As7T5\nF2I2/bP5T74fLHAWsRjDBttUebquVfm4nl0oBPB6K5tpC9Bd+h5ZCd5HO2jSHn0d\nYqQeLa7Qq7qxBRqTo2nj\n=uyf6\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 9fc2b3438c8924ec44093f69d1dd9ede7bf094ee\nparent a9a4290173dfdfd25aabd623bc3ccd994126794a\nauthor Rob N <robn@despairlabs.com> 1712182627 +1100\ncommitter GitHub <noreply@github.com> 1712182627 -0700\n\nvdev_disk: don't touch vbio after its handed off to the kernel\n\nAfter IO is unplugged, it may complete immediately and vbio_completion\r\nbe called on interrupt context. That may interrupt or deschedule our\r\ntask. If its the last bio, the vbio will be freed. Then, we get\r\nrescheduled, and try to write to freed memory through vbio->.\r\n\r\nThis patch just removes the the cleanup, and the corresponding assert.\r\nThese were leftovers from a previous iteration of vbio_submit() and were\r\nalways \"belt and suspenders\" ops anyway, never strictly required.\r\n\r\nSponsored-by: Klara, Inc.\r\nSponsored-by: Wasabi Technology, Inc\r\nReported-by: Rich Ercolani <rincebrain@gmail.com>\r\nReviewed-by: Laurențiu Nicola <lnicola@dend.ro>\r\nReviewed-by: Alexander Motin <mav@FreeBSD.org>\r\nReviewed-by: George Wilson <george.wilson@delphix.com>\r\nSigned-off-by: Rob Norris <rob.norris@klarasystems.com>\r\nCloses #16045\r\nCloses #16050\r\nCloses #16049 "
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/917ff75e9510d19968ef3cc5c80b1cd0ef48f84d",
+    "html_url": "https://github.com/openzfs/zfs/commit/917ff75e9510d19968ef3cc5c80b1cd0ef48f84d",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/917ff75e9510d19968ef3cc5c80b1cd0ef48f84d/comments",
+    "author": {
+      "login": "robn",
+      "id": 130670,
+      "node_id": "MDQ6VXNlcjEzMDY3MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/130670?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/robn",
+      "html_url": "https://github.com/robn",
+      "followers_url": "https://api.github.com/users/robn/followers",
+      "following_url": "https://api.github.com/users/robn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/robn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/robn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/robn/subscriptions",
+      "organizations_url": "https://api.github.com/users/robn/orgs",
+      "repos_url": "https://api.github.com/users/robn/repos",
+      "events_url": "https://api.github.com/users/robn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/robn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a9a4290173dfdfd25aabd623bc3ccd994126794a",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/a9a4290173dfdfd25aabd623bc3ccd994126794a",
+        "html_url": "https://github.com/openzfs/zfs/commit/a9a4290173dfdfd25aabd623bc3ccd994126794a"
+      }
+    ]
+  },
+  {
+    "sha": "a9a4290173dfdfd25aabd623bc3ccd994126794a",
+    "node_id": "C_kwDOAAarE9oAKGE5YTQyOTAxNzNkZmRmZDI1YWFiZDYyM2JjM2NjZDk5NDEyNjc5NGE",
+    "commit": {
+      "author": {
+        "name": "Rob N",
+        "email": "robn@despairlabs.com",
+        "date": "2024-04-03T22:13:27Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-03T22:13:27Z"
+      },
+      "message": "xdr: header cleanup\n\n#16047 notes that include/os/freebsd/spl/rpc/xdr.h carried an\r\n(apparently) incompatible license. While looking into it, it seems that\r\nthis file is actually unnecessary these days - FreeBSD's kernel XDR has\r\nXDR_CONTROL, xdrmem_control and XDR_GET_BYTES_AVAIL, while userspace has\r\nXDR_CONTROL and xdrmem_control, and our implementation of\r\nXDR_GET_BYTES_AVAIL for libspl works nicely with it. So this removes\r\nthat file outright.\r\n\r\nTo keep the includes in nvpair.c tidy, I've made a few small adjustments\r\nto the Linux headers. By definition, rpc/types.h provides bool_t and is\r\nincluded before rpc/xdr.h, so I've created rpc/types.h for Linux. This\r\nisn't necessary for userspace; both FreeBSD native and tirpc on Linux\r\nalready have these headers set up correctly.\r\n\r\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nSigned-off-by: Rob Norris <robn@despairlabs.com>\r\nSponsored-by: https://despairlabs.com/sponsor/\r\nCloses #16047 \r\nCloses #16051",
+      "tree": {
+        "sha": "2c2e14962b1e77479406bc7438324c26bfc1db2f",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/2c2e14962b1e77479406bc7438324c26bfc1db2f"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/a9a4290173dfdfd25aabd623bc3ccd994126794a",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDdSHCRC1aQ7uu5UhlAAAHH0QAEBp8en9JjX2X/zq9D7RF1CV\ntHymPP6gf8FQbw18zlJluwYXzoOu3QAioXlbGKOX5nlmDgy72O3maCa3H+E7bPHa\n/K01oonq/B1ZzHyzQQDHZ2IIlaIOYJsYAwlfzgk8Zek5lt6L4uttSdxgDroJTXve\nLLQ19dOy5J20b+APZfEsh00f1VzISEViNsmhIY0s0ftVZr9hnjwW4NwkJurhZMNQ\nQMDdPwlZPmMRj32z3yA99O62xatkfYv9EWZQt3Rm26nzhYq/q/8P7eWQP7tFxKtj\nQqZxzZv4i2c2OIqaRf0LNdp+u08FUgd2KqwGdgt8yiRWRdSlLfyUpWfBNKH2KGS+\nkn61TEXjfmsbyhLY5mjBtqgSHZrfzkQi0alDUcrDxpDEznWG6Jm/q2gpL3EY5C38\nJ1bw9jpR+oc/n8i8FrPi2/WlrVzTa8zz8w0Gb0jjB/1JVUm4sI3FrZGcRCQSe7fe\n/mM5UMx16Z5JOmPWpx03mjlhb1P17FojMFmmX7xqh6qKmmin5iUEovfYgKbSFD35\njqzYiPg3CzJXp+wnxwwUpNGXpObZMrPS+8f2aVXHlYiclM+nQHcRuB+NClZOxt0E\nNJf2G81wWDTbtswiI1+Bf9KYzZq571nnoAAUZHTdxpBlCMcqUYgLa17vY6mzeG4z\nr/Z3UigRK/v7Y3/DLric\n=INS3\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 2c2e14962b1e77479406bc7438324c26bfc1db2f\nparent b12738182cff269456e7737241415356c08b5d2e\nauthor Rob N <robn@despairlabs.com> 1712182407 +1100\ncommitter GitHub <noreply@github.com> 1712182407 -0700\n\nxdr: header cleanup\n\n#16047 notes that include/os/freebsd/spl/rpc/xdr.h carried an\r\n(apparently) incompatible license. While looking into it, it seems that\r\nthis file is actually unnecessary these days - FreeBSD's kernel XDR has\r\nXDR_CONTROL, xdrmem_control and XDR_GET_BYTES_AVAIL, while userspace has\r\nXDR_CONTROL and xdrmem_control, and our implementation of\r\nXDR_GET_BYTES_AVAIL for libspl works nicely with it. So this removes\r\nthat file outright.\r\n\r\nTo keep the includes in nvpair.c tidy, I've made a few small adjustments\r\nto the Linux headers. By definition, rpc/types.h provides bool_t and is\r\nincluded before rpc/xdr.h, so I've created rpc/types.h for Linux. This\r\nisn't necessary for userspace; both FreeBSD native and tirpc on Linux\r\nalready have these headers set up correctly.\r\n\r\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nSigned-off-by: Rob Norris <robn@despairlabs.com>\r\nSponsored-by: https://despairlabs.com/sponsor/\r\nCloses #16047 \r\nCloses #16051 "
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/a9a4290173dfdfd25aabd623bc3ccd994126794a",
+    "html_url": "https://github.com/openzfs/zfs/commit/a9a4290173dfdfd25aabd623bc3ccd994126794a",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/a9a4290173dfdfd25aabd623bc3ccd994126794a/comments",
+    "author": {
+      "login": "robn",
+      "id": 130670,
+      "node_id": "MDQ6VXNlcjEzMDY3MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/130670?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/robn",
+      "html_url": "https://github.com/robn",
+      "followers_url": "https://api.github.com/users/robn/followers",
+      "following_url": "https://api.github.com/users/robn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/robn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/robn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/robn/subscriptions",
+      "organizations_url": "https://api.github.com/users/robn/orgs",
+      "repos_url": "https://api.github.com/users/robn/repos",
+      "events_url": "https://api.github.com/users/robn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/robn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b12738182cff269456e7737241415356c08b5d2e",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/b12738182cff269456e7737241415356c08b5d2e",
+        "html_url": "https://github.com/openzfs/zfs/commit/b12738182cff269456e7737241415356c08b5d2e"
+      }
+    ]
+  },
+  {
+    "sha": "b12738182cff269456e7737241415356c08b5d2e",
+    "node_id": "C_kwDOAAarE9oAKGIxMjczODE4MmNmZjI2OTQ1NmU3NzM3MjQxNDE1MzU2YzA4YjVkMmU",
+    "commit": {
+      "author": {
+        "name": "Alexander Motin",
+        "email": "mav@FreeBSD.org",
+        "date": "2024-04-03T22:04:26Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-03T22:04:26Z"
+      },
+      "message": "Improve dbuf_read() error reporting\n\nPrevious code reported non-ZIO errors only via return value, but\r\nnot via parent ZIO.  It could cause NULL-dereference panics due\r\nto dmu_buf_hold_array_by_dnode() ignoring the return value,\r\nrelying solely on parent ZIO status.\r\n\r\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nReviewed-by: Ameer Hamza <ahamza@ixsystems.com>\r\nReported by:\tAmeer Hamza <ahamza@ixsystems.com>\r\nSigned-off-by:\tAlexander Motin <mav@FreeBSD.org>\r\nSponsored by:\tiXsystems, Inc.\r\nCloses #16042",
+      "tree": {
+        "sha": "b2ee1f3322d010ecd0d782d18c13c7af93e8f6c1",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/b2ee1f3322d010ecd0d782d18c13c7af93e8f6c1"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/b12738182cff269456e7737241415356c08b5d2e",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDdJqCRC1aQ7uu5UhlAAAT9cQAFKL8Eg9pVpIeS1yP+NyQlVB\ngENtVlc1DSUybZV16X/DGTF5M7QPc6ekuiaIX6/7tLWqnLxq0ObyXRbk6cS2pWLa\nBsCeO2Oy6IN9N8mRuF9+dM47Q2/7Dqbh153+s3ntSOynVB8XDaqjIzr8MNdrplM2\nV0tDUJzLwW7XDzqcdulFgQ/2r2fDL8AsKSPa6aqzyu4sifMTjsOwwmCE71voB3IL\nVGZgY2x38tOlMrEev+4lJiDElVpj6E9rEJ9jr9dVvhUaQbBTkyiamKi5OGvc08z/\nqBDR9J5XrEyOFc4UYXr5vC1WRMSgVlzP6bQh4QnbB0zGP3aKBzLq9pHxdQNN0lyU\nVO/+kZbAztRMBve/A6O0tQ8DZWM4CHhmVMtsfRBG73dvZd2olaW+FiGE74Kv1wJ+\nOTSgkOsb6vr/HvXUV8QzWwcGE+S4L30DFDTNtyyEYVVUu3YnW1AMG++c+B6voTlg\nK7bI0i1CrtLqAenxdrmk5s7JD3iWR0WizPjexECfjsamypqNO6TaK2nKGdmr4myv\nVU3LI9t7hGApT0s4ZJikL//vM6vumg9uJeSoxURJZwDFdzNoxBwViwYDKxXHB2cL\nFmXLh0BEu47KqA2CYZ6+CudNr9MkF3J4LMt4iVRJSOLM/uJycktwG/8X2Cyl0TbZ\ngUJv1i4he8y1aEeVp9rG\n=+THy\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree b2ee1f3322d010ecd0d782d18c13c7af93e8f6c1\nparent 39be46f43f96fb7420386d03751b01f5cb376d6b\nauthor Alexander Motin <mav@FreeBSD.org> 1712181866 -0400\ncommitter GitHub <noreply@github.com> 1712181866 -0700\n\nImprove dbuf_read() error reporting\n\nPrevious code reported non-ZIO errors only via return value, but\r\nnot via parent ZIO.  It could cause NULL-dereference panics due\r\nto dmu_buf_hold_array_by_dnode() ignoring the return value,\r\nrelying solely on parent ZIO status.\r\n\r\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nReviewed-by: Ameer Hamza <ahamza@ixsystems.com>\r\nReported by:\tAmeer Hamza <ahamza@ixsystems.com>\r\nSigned-off-by:\tAlexander Motin <mav@FreeBSD.org>\r\nSponsored by:\tiXsystems, Inc.\r\nCloses #16042 "
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/b12738182cff269456e7737241415356c08b5d2e",
+    "html_url": "https://github.com/openzfs/zfs/commit/b12738182cff269456e7737241415356c08b5d2e",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/b12738182cff269456e7737241415356c08b5d2e/comments",
+    "author": {
+      "login": "amotin",
+      "id": 5219480,
+      "node_id": "MDQ6VXNlcjUyMTk0ODA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5219480?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/amotin",
+      "html_url": "https://github.com/amotin",
+      "followers_url": "https://api.github.com/users/amotin/followers",
+      "following_url": "https://api.github.com/users/amotin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/amotin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/amotin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/amotin/subscriptions",
+      "organizations_url": "https://api.github.com/users/amotin/orgs",
+      "repos_url": "https://api.github.com/users/amotin/repos",
+      "events_url": "https://api.github.com/users/amotin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/amotin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "39be46f43f96fb7420386d03751b01f5cb376d6b",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/39be46f43f96fb7420386d03751b01f5cb376d6b",
+        "html_url": "https://github.com/openzfs/zfs/commit/39be46f43f96fb7420386d03751b01f5cb376d6b"
+      }
+    ]
+  },
+  {
+    "sha": "39be46f43f96fb7420386d03751b01f5cb376d6b",
+    "node_id": "C_kwDOAAarE9oAKDM5YmU0NmY0M2Y5NmZiNzQyMDM4NmQwMzc1MWIwMWY1Y2IzNzZkNmI",
+    "commit": {
+      "author": {
+        "name": "Robert Evans",
+        "email": "evansr@google.com",
+        "date": "2024-03-30T00:11:52Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-30T00:11:52Z"
+      },
+      "message": "Linux 5.18+ compat: Detect filemap_range_has_page\n\nIn v5.18 `filemap_range_has_page` moved to `pagemap.h`\r\n\r\n`pagemap.h` has been around since 3.10 so just include both\r\n\r\nReviewed-by: Tony Hutter <hutter2@llnl.gov>\r\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nReviewed-by: Rob Norris <robn@despairlabs.com>\r\nSigned-off-by: Robert Evans <evansr@google.com>\r\nCloses #16034",
+      "tree": {
+        "sha": "b506f5269e3ef3514da638a880a3d44f545ad3aa",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/b506f5269e3ef3514da638a880a3d44f545ad3aa"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/39be46f43f96fb7420386d03751b01f5cb376d6b",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmB1jICRC1aQ7uu5UhlAAAbzYQAKhszo+VjQIcpBkL9qdJfDHp\n3DFjl2mVGjwT6+p6HMYGhHk+mFi60WyxKw6D1Wk0xmMhCOF+XcCbpLEZrmlhXFTZ\npfcxiH1C/ZWY2jdlTKPZVXwHN4ftAH/1+I5ZBBmJmRgINcDnXxVfOTiXMIzq/PdB\nQE2r+a92znJFrSFvIUnGEgaxdmhlU47d6/mfWprrODl4a+8SkBfoRj6ind3ZAdsb\nQFINbmOAt9jp8T8cPgfWxcYaOULqRwESyBkobdnQFttI+BMwZtbfV0VXKM1LbfkS\nZ8Yk7JOdpgdyvBclwE4syG6j07SZSC+eRkkd7w2VG81uJPMT12sQL+c7GsEaixSq\ndTKYDZ99zMdDX3FCUJ6Rzq3GGRMSbPpfaawRPH7nteFuW1VG39wooJ9OB1IGK3az\nqsrZ8FFubWZ4pKRaDUFpWtq6IJkiSYjU5dnKNihf2CFF1QyLG4sF7n1Ae5JhMxFt\nnJ0JCgQKEXU76AMeAfC1i008cutAJlHggzALtK/VsYCjbCNR2uiYawEFBI1/gfHM\n2lubA0AMJK6q+CbWk/hRCWZgYseG/lak/BdWAWzYUZ94c2hptHdyGSGm+16iWOVZ\n2PC32qyYZ5jsgj8r5KGgeC9spVMLYvySxRclVbb7ye5HeGUMOlgAnKyK6NRklHSu\nXGTnFinFTgC1xcUdg8Nv\n=bi2u\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree b506f5269e3ef3514da638a880a3d44f545ad3aa\nparent 2553f94c4299aaf31c5ceea4bfbfcc811cf76513\nauthor Robert Evans <evansr@google.com> 1711757512 -0400\ncommitter GitHub <noreply@github.com> 1711757512 -0700\n\nLinux 5.18+ compat: Detect filemap_range_has_page\n\nIn v5.18 `filemap_range_has_page` moved to `pagemap.h`\r\n\r\n`pagemap.h` has been around since 3.10 so just include both\r\n\r\nReviewed-by: Tony Hutter <hutter2@llnl.gov>\r\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nReviewed-by: Rob Norris <robn@despairlabs.com>\r\nSigned-off-by: Robert Evans <evansr@google.com>\r\nCloses #16034 "
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/39be46f43f96fb7420386d03751b01f5cb376d6b",
+    "html_url": "https://github.com/openzfs/zfs/commit/39be46f43f96fb7420386d03751b01f5cb376d6b",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/39be46f43f96fb7420386d03751b01f5cb376d6b/comments",
+    "author": {
+      "login": "rrevans",
+      "id": 1613426,
+      "node_id": "MDQ6VXNlcjE2MTM0MjY=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1613426?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rrevans",
+      "html_url": "https://github.com/rrevans",
+      "followers_url": "https://api.github.com/users/rrevans/followers",
+      "following_url": "https://api.github.com/users/rrevans/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rrevans/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rrevans/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rrevans/subscriptions",
+      "organizations_url": "https://api.github.com/users/rrevans/orgs",
+      "repos_url": "https://api.github.com/users/rrevans/repos",
+      "events_url": "https://api.github.com/users/rrevans/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rrevans/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2553f94c4299aaf31c5ceea4bfbfcc811cf76513",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/2553f94c4299aaf31c5ceea4bfbfcc811cf76513",
+        "html_url": "https://github.com/openzfs/zfs/commit/2553f94c4299aaf31c5ceea4bfbfcc811cf76513"
+      }
+    ]
+  },
+  {
+    "sha": "2553f94c4299aaf31c5ceea4bfbfcc811cf76513",
+    "node_id": "C_kwDOAAarE9oAKDI1NTNmOTRjNDI5OWFhZjMxYzVjZWVhNGJmYmZjYzgxMWNmNzY1MTM",
+    "commit": {
+      "author": {
+        "name": "Robert Evans",
+        "email": "evansr@google.com",
+        "date": "2024-03-29T21:59:23Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-29T21:59:23Z"
+      },
+      "message": "Fix buffer underflow if sysfs file is empty\n\nReviewed-by: Alexander Motin <mav@FreeBSD.org>\r\nReviewed-by: Tony Hutter <hutter2@llnl.gov>\r\nReviewed-by: Jason Lee <jasonlee@lanl.gov>\r\nSigned-off-by: Robert Evans <evansr@google.com>\r\nCloses #16028\r\nCloses #16035",
+      "tree": {
+        "sha": "fa5c149309de789de7b01ba01ceefae82fb407e1",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/fa5c149309de789de7b01ba01ceefae82fb407e1"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/2553f94c4299aaf31c5ceea4bfbfcc811cf76513",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmBzm7CRC1aQ7uu5UhlAAAd8oQAFPMy8v6RX3Jme1i+yzxKAVk\nTpvFZN3Qdpk12uk4k3fxi+a7f8QvcezvIBU2KEqHEl1LrXU8WGL/KBuiWHx3kIAm\n+v2wP8a3UQCU9sQwTMA74T+XvHI4xxyzmZWVW6wXbvRj5O/gSYMwhnzyAkpOq8Mh\nNTnNReHD74+6k9FHUQhfG0sJzzX2E47aZijJ0IbzVWaVwbz7+Puy59nu203JOYom\nAs1RbY/6x19jZEEWiV08x3UrPdvajiPN1Ada2wXfrulTEaL44Jsun7LXEcADG1Gm\nB+yKO4/j0sBARWfKhlpdw4lgDwUoxke/ObLM+pui24dSZfkzhockfCwdQ7GStVZC\nQJY+NHDWIN2Y+qNe69lyQk28rZ7BslrmqtG/wyPVyCsITBZLx+d1Nsx4po0l0Knu\nP2tOazG4+XkqZ1wO2psBvmwF3uZb6bGa1/GS2aCvmPufur1FqJWu+h5o4Ll6H2AJ\nXJNDTXxaoReQPIJnIIKsR6VE8pukiVOg6e1FehuLabKYQAYe7RzdAT9a8wl557U+\npY7GBx9IlWhsuZFfEI735O4Pgwf2w6vP8RfOQ/JJXtR9FBgIiyAbv4UqoISke+Bh\nxExzvJ/2HPHj8ERf03pdXPFLc1gVAu53xlJIGp7wo1A+hllvfbH3X2XgJUNeeQ4Z\nasGwmNO6De5L37wjTkof\n=JsP7\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree fa5c149309de789de7b01ba01ceefae82fb407e1\nparent cfb96c772b8448dca6eaeb66a540b8bb39c9908c\nauthor Robert Evans <evansr@google.com> 1711749563 -0400\ncommitter GitHub <noreply@github.com> 1711749563 -0700\n\nFix buffer underflow if sysfs file is empty\n\nReviewed-by: Alexander Motin <mav@FreeBSD.org>\r\nReviewed-by: Tony Hutter <hutter2@llnl.gov>\r\nReviewed-by: Jason Lee <jasonlee@lanl.gov>\r\nSigned-off-by: Robert Evans <evansr@google.com>\r\nCloses #16028\r\nCloses #16035 "
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/2553f94c4299aaf31c5ceea4bfbfcc811cf76513",
+    "html_url": "https://github.com/openzfs/zfs/commit/2553f94c4299aaf31c5ceea4bfbfcc811cf76513",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/2553f94c4299aaf31c5ceea4bfbfcc811cf76513/comments",
+    "author": {
+      "login": "rrevans",
+      "id": 1613426,
+      "node_id": "MDQ6VXNlcjE2MTM0MjY=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1613426?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rrevans",
+      "html_url": "https://github.com/rrevans",
+      "followers_url": "https://api.github.com/users/rrevans/followers",
+      "following_url": "https://api.github.com/users/rrevans/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rrevans/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rrevans/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rrevans/subscriptions",
+      "organizations_url": "https://api.github.com/users/rrevans/orgs",
+      "repos_url": "https://api.github.com/users/rrevans/repos",
+      "events_url": "https://api.github.com/users/rrevans/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rrevans/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "cfb96c772b8448dca6eaeb66a540b8bb39c9908c",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/cfb96c772b8448dca6eaeb66a540b8bb39c9908c",
+        "html_url": "https://github.com/openzfs/zfs/commit/cfb96c772b8448dca6eaeb66a540b8bb39c9908c"
+      }
+    ]
+  },
+  {
+    "sha": "cfb96c772b8448dca6eaeb66a540b8bb39c9908c",
+    "node_id": "C_kwDOAAarE9oAKGNmYjk2Yzc3MmI4NDQ4ZGNhNmVhZWI2NmE1NDBiOGJiMzljOTkwOGM",
+    "commit": {
+      "author": {
+        "name": "Rob N",
+        "email": "rob.norris@klarasystems.com",
+        "date": "2024-03-29T21:51:33Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-29T21:51:33Z"
+      },
+      "message": "vdev_disk: clean up spa/bdev mode conversion\n\n43e8f6e37 introduced a subtle API misuse, in that it passed the output\r\nfrom vdev_bdev_mode() back into itself. Fortunately, the\r\nSPA_MODE_(READ|WRITE) bit values exactly map to the FMODE_(READ|WRITE) &\r\nBLK_OPEN_(READ|WRITE) bit values, so it didn't result in a bug, but it\r\nwas hard to read and understand, so I cleaned it up.\r\n\r\nIn doing so, I noticed that the only call to vdev_bdev_mode() without\r\nthe \"exclusive\" flag set was in that misuse, and actually, we never do a\r\nnon-exclusive blkdev_get_by_path(). So I've just made exclusive be\r\nalways-on.\r\n\r\n\r\nSponsored-by: Klara, Inc.\r\nSponsored-by: Wasabi Technology, Inc.\r\nReviewed by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nReviewed-by: Allan Jude <allan@klarasystems.com>\r\nSigned-off-by: Rob Norris <rob.norris@klarasystems.com>\r\nCloses #15995",
+      "tree": {
+        "sha": "8e1a59165585fbe0f0b7f7f7d0f551cb65aed5a2",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/8e1a59165585fbe0f0b7f7f7d0f551cb65aed5a2"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/cfb96c772b8448dca6eaeb66a540b8bb39c9908c",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmBzflCRC1aQ7uu5UhlAAAltkQAB9zDn8LhK3kfMe6+lGxfJTp\n9p9e3LtMBDnd8PNKrwCln6lRJJnNYQjuGBmHuiU6kZQsHp4pF4eDgcbx0fcUuvG7\netSxs/tkJFIuWcFIWhSmGnxgz8qoywrk8SMEeJZsDqYBbpysckUjcyK3Nv0LtmZz\nM6IfQg0jXaqQsJTQlFhVqZpv+hZjaMBS35ygrkPoAAemmoWbLa6hhNwche/2zSDu\nLu1lxbWXx3V672S7OF+3gAZNdR6VKgg4GMUzN0yyQDZ4ux+OjUJdFeVvCLlR7AwF\nMPC7Vsndk439VsW1BgEVlDGVHYeV7seGCrwWg1Rz8sfUKf36amGzFRGgTHghbtVh\nRkfeGS9HoO1greorHZY9hyD98vvXe0h3VhpkugVENnAZWjPlKhk8Sjd6SJZfaiS2\nBM2csh+pXjJodxjfnB97IZtBDfrQEqkk3fAvNCH8TgTBXP+MfS5ej21SvovmRdI+\niLTfrVsK0Y2xmWVH5OLJgG4G6bjYYzW63X0OfGC8q5DyjoDLqFwETYa3ivuF/nLC\nVoHoGmzUsXxZauo/BwNWy9rEQONe2pMo11r0vW+aU/5jTlc30MBDObQCerD5itvo\nX5Yx6LTtM0PdlymIS9uOjFy9FJCC9dPf7Qo6rbUFBDIxsZ1W3wm/byU4ny9zc+b5\nF8fNKHcO1RXNqS3tOzOT\n=fbWI\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 8e1a59165585fbe0f0b7f7f7d0f551cb65aed5a2\nparent c0aab8b8f91f5ecb2c625a8fa7265f26c260e10a\nauthor Rob N <rob.norris@klarasystems.com> 1711749093 +1100\ncommitter GitHub <noreply@github.com> 1711749093 -0700\n\nvdev_disk: clean up spa/bdev mode conversion\n\n43e8f6e37 introduced a subtle API misuse, in that it passed the output\r\nfrom vdev_bdev_mode() back into itself. Fortunately, the\r\nSPA_MODE_(READ|WRITE) bit values exactly map to the FMODE_(READ|WRITE) &\r\nBLK_OPEN_(READ|WRITE) bit values, so it didn't result in a bug, but it\r\nwas hard to read and understand, so I cleaned it up.\r\n\r\nIn doing so, I noticed that the only call to vdev_bdev_mode() without\r\nthe \"exclusive\" flag set was in that misuse, and actually, we never do a\r\nnon-exclusive blkdev_get_by_path(). So I've just made exclusive be\r\nalways-on.\r\n\r\n\r\nSponsored-by: Klara, Inc.\r\nSponsored-by: Wasabi Technology, Inc.\r\nReviewed by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nReviewed-by: Allan Jude <allan@klarasystems.com>\r\nSigned-off-by: Rob Norris <rob.norris@klarasystems.com>\r\nCloses #15995 "
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/cfb96c772b8448dca6eaeb66a540b8bb39c9908c",
+    "html_url": "https://github.com/openzfs/zfs/commit/cfb96c772b8448dca6eaeb66a540b8bb39c9908c",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/cfb96c772b8448dca6eaeb66a540b8bb39c9908c/comments",
+    "author": {
+      "login": "robn",
+      "id": 130670,
+      "node_id": "MDQ6VXNlcjEzMDY3MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/130670?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/robn",
+      "html_url": "https://github.com/robn",
+      "followers_url": "https://api.github.com/users/robn/followers",
+      "following_url": "https://api.github.com/users/robn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/robn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/robn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/robn/subscriptions",
+      "organizations_url": "https://api.github.com/users/robn/orgs",
+      "repos_url": "https://api.github.com/users/robn/repos",
+      "events_url": "https://api.github.com/users/robn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/robn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c0aab8b8f91f5ecb2c625a8fa7265f26c260e10a",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/c0aab8b8f91f5ecb2c625a8fa7265f26c260e10a",
+        "html_url": "https://github.com/openzfs/zfs/commit/c0aab8b8f91f5ecb2c625a8fa7265f26c260e10a"
+      }
+    ]
+  },
+  {
+    "sha": "c0aab8b8f91f5ecb2c625a8fa7265f26c260e10a",
+    "node_id": "C_kwDOAAarE9oAKGMwYWFiOGI4ZjkxZjVlY2IyYzYyNWE4ZmE3MjY1ZjI2YzI2MGUxMGE",
+    "commit": {
+      "author": {
+        "name": "Fabian-Gruenbichler",
+        "email": "f.gruenbichler@proxmox.com",
+        "date": "2024-03-29T21:37:40Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-29T21:37:40Z"
+      },
+      "message": "zvols: prevent overflow of minor device numbers\n\ncurrently, the linux kernel allows 2^20 minor devices per major device\r\nnumber.  ZFS reserves blocks of 2^4 minors per zvol: 1 for the zvol\r\nitself, the other 15 for the first partitions of that zvol. as a result,\r\nonly 2^16 such blocks are available for use.\r\n\r\nthere are no checks in place to avoid overflowing into the major device\r\nnumber when more than 2^16 zvols are allocated (with volmode=dev or\r\ndefault). instead of ignoring this limit, which comes with all sorts of\r\nweird knock-on effects, detect this situation and simply fail allocating\r\nthe zvol block device early on.\r\n\r\nwithout this safeguard, the kernel will reject the attempt to create an\r\nalready existing block device, but ZFS doesn't handle this error and\r\ngets confused about which zvol occupies which minor slot, potentially\r\nresulting in kernel NULL derefs and other issues later on.\r\n\r\nReviewed-by: Tony Hutter <hutter2@llnl.gov>\r\nReviewed by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nSigned-off-by: Fabian Grünbichler <f.gruenbichler@proxmox.com>\r\nCloses #16006",
+      "tree": {
+        "sha": "042d244f699dbda976dfe244b9977b1d64b9c8c1",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/042d244f699dbda976dfe244b9977b1d64b9c8c1"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/c0aab8b8f91f5ecb2c625a8fa7265f26c260e10a",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmBzSkCRC1aQ7uu5UhlAAA5wYQAKpGfD99y/MsxYYEEPQS3O6L\nc7dfxoVzDKxEILtd66Xpe49hXEmKLPwk3fo3bz0MWUCQjOCwbG7J7Nvk9rv9Op4R\nA9rq/ynnEN6e+kYCEurraINCl65e5gudcVNGSeY96kAxgUovTFdvGFdycFIRcnmF\n4v6jQEkpi4omVkkN1xp6SjSUz9kwrhk13bB5j9ay7ibzhX5UsLIoA/tq3VPc/fvQ\n1Ew5FkGoBjUz12R7gnmiLeiXvxjIsB+X1rD5/jYq+5YSH09u/rhnk/RnG8JMJXAl\nfpYcAtVgum8Js37VvzJHcA4ljyqGJMy68oKZmFlHGvV+Tkwdt9odCyg2g2+VEBJu\nW1FTrHdbXChbOofMNTs+psz1IoG1hFWgeerReEJyR3I04D15i9elWSuvHvYnzWRI\nqZDZHH/gb0DIlTk9JN0CrnZoohFzFEBZp1IeRhAjpfQPVfqedrEiayoTh6mWaaWR\nL6dADDKnHiRxdE2gAV9K1BNKEXBYbwhUekn9jK6MSJM40bRtzDKJW8GX5l3NIECF\n9K3UovCTB80CVrXQrN6Hkvj1Z2/e+IVZzNsbpSBQVpTAn9KzwVMTM1RQvaM1g9L4\nq2g514GZdnyRKGyjaEM6973hq+6bUm9HH5bmTPe3dP/eegN5iB5JRjJP+JaDoNMc\nsPrfK7+WEjJrgMRmNQBl\n=aePr\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 042d244f699dbda976dfe244b9977b1d64b9c8c1\nparent b1e46f869e773086c23c565d7d5b261577023cfb\nauthor Fabian-Gruenbichler <f.gruenbichler@proxmox.com> 1711748260 +0100\ncommitter GitHub <noreply@github.com> 1711748260 -0700\n\nzvols: prevent overflow of minor device numbers\n\ncurrently, the linux kernel allows 2^20 minor devices per major device\r\nnumber.  ZFS reserves blocks of 2^4 minors per zvol: 1 for the zvol\r\nitself, the other 15 for the first partitions of that zvol. as a result,\r\nonly 2^16 such blocks are available for use.\r\n\r\nthere are no checks in place to avoid overflowing into the major device\r\nnumber when more than 2^16 zvols are allocated (with volmode=dev or\r\ndefault). instead of ignoring this limit, which comes with all sorts of\r\nweird knock-on effects, detect this situation and simply fail allocating\r\nthe zvol block device early on.\r\n\r\nwithout this safeguard, the kernel will reject the attempt to create an\r\nalready existing block device, but ZFS doesn't handle this error and\r\ngets confused about which zvol occupies which minor slot, potentially\r\nresulting in kernel NULL derefs and other issues later on.\r\n\r\nReviewed-by: Tony Hutter <hutter2@llnl.gov>\r\nReviewed by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nSigned-off-by: Fabian Grünbichler <f.gruenbichler@proxmox.com>\r\nCloses #16006 "
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/c0aab8b8f91f5ecb2c625a8fa7265f26c260e10a",
+    "html_url": "https://github.com/openzfs/zfs/commit/c0aab8b8f91f5ecb2c625a8fa7265f26c260e10a",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/c0aab8b8f91f5ecb2c625a8fa7265f26c260e10a/comments",
+    "author": {
+      "login": "Fabian-Gruenbichler",
+      "id": 3062805,
+      "node_id": "MDQ6VXNlcjMwNjI4MDU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3062805?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Fabian-Gruenbichler",
+      "html_url": "https://github.com/Fabian-Gruenbichler",
+      "followers_url": "https://api.github.com/users/Fabian-Gruenbichler/followers",
+      "following_url": "https://api.github.com/users/Fabian-Gruenbichler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Fabian-Gruenbichler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Fabian-Gruenbichler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Fabian-Gruenbichler/subscriptions",
+      "organizations_url": "https://api.github.com/users/Fabian-Gruenbichler/orgs",
+      "repos_url": "https://api.github.com/users/Fabian-Gruenbichler/repos",
+      "events_url": "https://api.github.com/users/Fabian-Gruenbichler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Fabian-Gruenbichler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b1e46f869e773086c23c565d7d5b261577023cfb",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/b1e46f869e773086c23c565d7d5b261577023cfb",
+        "html_url": "https://github.com/openzfs/zfs/commit/b1e46f869e773086c23c565d7d5b261577023cfb"
+      }
+    ]
+  },
+  {
+    "sha": "b1e46f869e773086c23c565d7d5b261577023cfb",
+    "node_id": "C_kwDOAAarE9oAKGIxZTQ2Zjg2OWU3NzMwODZjMjNjNTY1ZDdkNWIyNjE1NzcwMjNjZmI",
+    "commit": {
+      "author": {
+        "name": "George Wilson",
+        "email": "george.wilson@delphix.com",
+        "date": "2024-03-29T19:15:56Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-29T19:15:56Z"
+      },
+      "message": "Add ashift validation when adding devices to a pool\n\nCurrently, zpool add allows users to add top-level vdevs that have\r\ndifferent ashifts but doing so prevents users from being able to\r\nperform a top-level vdev removal. Often times consumers may not realize\r\nthat they have mismatched ashifts until the top-level removal fails.\r\n\r\nThis feature adds ashift validation to the zpool add command and will\r\nfail the operation if the sector size of the specified vdev does not\r\nmatch the existing pool. This behavior can be disabled by using the -f\r\nflag. In addition, new flags have been added to provide fine-grained\r\ncontrol to disable specific checks. These flags\r\nare:\r\n\r\n--allow-in-use\r\n--allow-ashift-mismatch\r\n--allow-replicaton-mismatch\r\n\r\nThe force flag will disable all of these checks.\r\n\r\nReviewed by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nReviewed by: Alexander Motin <mav@FreeBSD.org>\r\nReviewed-by: Mark Maybee <mmaybee@delphix.com>\r\nSigned-off-by: George Wilson <gwilson@delphix.com>\r\nCloses #15509",
+      "tree": {
+        "sha": "841a192c9d0ec6b0c3dfd60856548322ea225176",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/841a192c9d0ec6b0c3dfd60856548322ea225176"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/b1e46f869e773086c23c565d7d5b261577023cfb",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmBxNtCRC1aQ7uu5UhlAAAfBAQAAQMhlY4yaciDSce4DcIj0ip\nmf7FQ0n6VNrvYf6FmXFwKtc4iXPdJhytL0dJ6YGXcMg9EjMpxE/+ga+2c/Iyivut\nJ/K24ZAZmLUZYyakRAZcIK3PgfYUB0ZTZu9LUe/+dSGKRL/c/MNJh/ac+sxBkvbl\ngHHynRi7NM2QX1zBIEzzjFYpkp5lGP/p4wWGQhdZozF98rJN8FkLCXh0Sg3ffuFl\nhFp/RqziRmxcvvYl2Sp2YO2oUmANP6meA7aBYmvqI2N+ATWiaRFKXotlVJvK9paf\nqIsuYXzTv73Eoe7icNNMlwU9EvdWnXO2gUB2Zv3WAoFgvE+0bQorrrhME0e6Plw8\nXmbw+IBGSdcNh+hTaBikkQf0utcaK4e7WBLmo3gSZCHZ3cz9/2HU/Mz/uBDuCAb2\nxGjLrlcw5NxsM15U4kDf7sx2qclHyLCGoY4GgyiNQklnGqAI8+K79LgxZuhuyuZl\nV4NrO3+KZegkwol1nqcYPJR9QN7AhipJ5cp9aZp9WgAFn4xODFTL9dUexxG0h7SX\nmEOvw9zxDKpzi8BPYXmpA96/F6/HspyB4Udvcq65CbBRNWBpa1rJOjFdnrZrjyxH\nHzgYPgxZBlb/CQb9KtsY0/YHrZ18Cb8+1lj+U8fjbHqFoHrbLW5KnjUnsX15mmzK\ncjYmi+/LTt3F2Klm47Mo\n=f/Je\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 841a192c9d0ec6b0c3dfd60856548322ea225176\nparent e39e20b6dc73bd7df1f097c23b5297bcc989ed53\nauthor George Wilson <george.wilson@delphix.com> 1711739756 -0400\ncommitter GitHub <noreply@github.com> 1711739756 -0600\n\nAdd ashift validation when adding devices to a pool\n\nCurrently, zpool add allows users to add top-level vdevs that have\r\ndifferent ashifts but doing so prevents users from being able to\r\nperform a top-level vdev removal. Often times consumers may not realize\r\nthat they have mismatched ashifts until the top-level removal fails.\r\n\r\nThis feature adds ashift validation to the zpool add command and will\r\nfail the operation if the sector size of the specified vdev does not\r\nmatch the existing pool. This behavior can be disabled by using the -f\r\nflag. In addition, new flags have been added to provide fine-grained\r\ncontrol to disable specific checks. These flags\r\nare:\r\n\r\n--allow-in-use\r\n--allow-ashift-mismatch\r\n--allow-replicaton-mismatch\r\n\r\nThe force flag will disable all of these checks.\r\n\r\nReviewed by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nReviewed by: Alexander Motin <mav@FreeBSD.org>\r\nReviewed-by: Mark Maybee <mmaybee@delphix.com>\r\nSigned-off-by: George Wilson <gwilson@delphix.com>\r\nCloses #15509"
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/b1e46f869e773086c23c565d7d5b261577023cfb",
+    "html_url": "https://github.com/openzfs/zfs/commit/b1e46f869e773086c23c565d7d5b261577023cfb",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/b1e46f869e773086c23c565d7d5b261577023cfb/comments",
+    "author": {
+      "login": "grwilson",
+      "id": 595369,
+      "node_id": "MDQ6VXNlcjU5NTM2OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/595369?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/grwilson",
+      "html_url": "https://github.com/grwilson",
+      "followers_url": "https://api.github.com/users/grwilson/followers",
+      "following_url": "https://api.github.com/users/grwilson/following{/other_user}",
+      "gists_url": "https://api.github.com/users/grwilson/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/grwilson/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/grwilson/subscriptions",
+      "organizations_url": "https://api.github.com/users/grwilson/orgs",
+      "repos_url": "https://api.github.com/users/grwilson/repos",
+      "events_url": "https://api.github.com/users/grwilson/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/grwilson/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e39e20b6dc73bd7df1f097c23b5297bcc989ed53",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/e39e20b6dc73bd7df1f097c23b5297bcc989ed53",
+        "html_url": "https://github.com/openzfs/zfs/commit/e39e20b6dc73bd7df1f097c23b5297bcc989ed53"
+      }
+    ]
+  },
+  {
+    "sha": "e39e20b6dc73bd7df1f097c23b5297bcc989ed53",
+    "node_id": "C_kwDOAAarE9oAKGUzOWUyMGI2ZGM3M2JkN2RmMWYwOTdjMjNiNTI5N2JjYzk4OWVkNTM",
+    "commit": {
+      "author": {
+        "name": "Robert Evans",
+        "email": "evansr@google.com",
+        "date": "2024-03-27T21:59:16Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-27T21:59:16Z"
+      },
+      "message": "ZTS: fix flakiness in cp_files_002_pos\n\nFix RANDOM to not return zero.\r\n\r\nOverwriting with `dd ... count=0` does not test anything.\r\n\r\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nReviewed-by: Alexander Motin <mav@FreeBSD.org>\r\nReviewed-by: George Melikov <mail@gmelikov.ru>\r\nReviewed-by: Allan Jude <allan@klarasystems.com>\r\nSigned-off-by: Robert Evans <evansr@google.com>\r\nCloses #16029",
+      "tree": {
+        "sha": "ab608ddaf7a0cd040c73b0eda2267dee826d1b60",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/ab608ddaf7a0cd040c73b0eda2267dee826d1b60"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/e39e20b6dc73bd7df1f097c23b5297bcc989ed53",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmBJa0CRC1aQ7uu5UhlAAA5LYQABrmrY0saW5vOS+KCYRIC7r3\naXmsGsYrBwOHAQvM2PvMBGsKDhEynhtd6ncZB4NuW6f0Jhng2GKlR84nNt5V0gcF\nV3scVa+1kbz9l8ONxMFLktMIM4uAFO7KpmF2OCeMuQ/on4gSJzPRpCg7MOzEo/6n\n1m8NHHT1BYw/Dhrtf0SwGRQeHDbjx7NIG+xDNw27rPgZVOEXP7M6ZhbZ7O23M4Vi\nUt0g62Uesnrdgwixk0VJLxDpwQdWRwvqMfuvV6Ij9rjSjdpJSSnuvg7oqDx8UW9w\nDAf0YIMIAc2s3pzGC7dCf1/O775E3SlPOx/zBoOQJDGVthn4Tw7uFmcPxKy2Lfmv\njQlxPOf8TBNO5pTS7YKG4dcPfPctiBOzzd5tv6VJYvyE75+xoaAscNl/IuC7dFkE\ngSjMkxk/p47AkLAewAM2rUMgTcZDg9KTCXzXLj3StlJTR4iG9Ohdq374JYtvyZnj\n5fpq3R2JrPUyM3DKrUcSIKaq/zDvwghYxZih/Xnc0Q2onMDliw6Vr7Ofa/NTGAs7\njasuoBbGzIK6XTYPJCHiqEyw8G+Yi1NlCABlmu9/TiZFEVESsexwzXEc2QYz00Z2\n4bk8nfHZzZPJTJK15PQ5TqJNcIQ6EoTYwrk1MsGosyQukKr2RrINGmJV+7ZO5+gi\n6j4qPzXeVnSyui3hGHEM\n=Ytb1\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree ab608ddaf7a0cd040c73b0eda2267dee826d1b60\nparent 0c8eb974ff3bba965d7303d3fa7db2007ef4bdfa\nauthor Robert Evans <evansr@google.com> 1711576756 -0400\ncommitter GitHub <noreply@github.com> 1711576756 -0700\n\nZTS: fix flakiness in cp_files_002_pos\n\nFix RANDOM to not return zero.\r\n\r\nOverwriting with `dd ... count=0` does not test anything.\r\n\r\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nReviewed-by: Alexander Motin <mav@FreeBSD.org>\r\nReviewed-by: George Melikov <mail@gmelikov.ru>\r\nReviewed-by: Allan Jude <allan@klarasystems.com>\r\nSigned-off-by: Robert Evans <evansr@google.com>\r\nCloses #16029 "
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/e39e20b6dc73bd7df1f097c23b5297bcc989ed53",
+    "html_url": "https://github.com/openzfs/zfs/commit/e39e20b6dc73bd7df1f097c23b5297bcc989ed53",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/e39e20b6dc73bd7df1f097c23b5297bcc989ed53/comments",
+    "author": {
+      "login": "rrevans",
+      "id": 1613426,
+      "node_id": "MDQ6VXNlcjE2MTM0MjY=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1613426?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rrevans",
+      "html_url": "https://github.com/rrevans",
+      "followers_url": "https://api.github.com/users/rrevans/followers",
+      "following_url": "https://api.github.com/users/rrevans/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rrevans/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rrevans/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rrevans/subscriptions",
+      "organizations_url": "https://api.github.com/users/rrevans/orgs",
+      "repos_url": "https://api.github.com/users/rrevans/repos",
+      "events_url": "https://api.github.com/users/rrevans/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rrevans/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0c8eb974ff3bba965d7303d3fa7db2007ef4bdfa",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/0c8eb974ff3bba965d7303d3fa7db2007ef4bdfa",
+        "html_url": "https://github.com/openzfs/zfs/commit/0c8eb974ff3bba965d7303d3fa7db2007ef4bdfa"
+      }
+    ]
+  },
+  {
+    "sha": "0c8eb974ff3bba965d7303d3fa7db2007ef4bdfa",
+    "node_id": "C_kwDOAAarE9oAKDBjOGViOTc0ZmYzYmJhOTY1ZDczMDNkM2ZhN2RiMjAwN2VmNGJkZmE",
+    "commit": {
+      "author": {
+        "name": "Alexander Motin",
+        "email": "mav@FreeBSD.org",
+        "date": "2024-03-19T17:08:05Z"
+      },
+      "committer": {
+        "name": "Brian Behlendorf",
+        "email": "behlendorf1@llnl.gov",
+        "date": "2024-03-27T21:47:06Z"
+      },
+      "message": "BRT: Check pool clone stats in more tests\n\nThis should allow to catch some leaks, if those happen.\n\nWhile there fix some cosmetic issues.\n\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\nSigned-off-by: Alexander Motin <mav@FreeBSD.org>\nSponsored by: iXsystems, Inc.\nCloses #16007",
+      "tree": {
+        "sha": "ef607dc969cedfb2c6becf1f4bf0c46bc4ce9736",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/ef607dc969cedfb2c6becf1f4bf0c46bc4ce9736"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/0c8eb974ff3bba965d7303d3fa7db2007ef4bdfa",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/0c8eb974ff3bba965d7303d3fa7db2007ef4bdfa",
+    "html_url": "https://github.com/openzfs/zfs/commit/0c8eb974ff3bba965d7303d3fa7db2007ef4bdfa",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/0c8eb974ff3bba965d7303d3fa7db2007ef4bdfa/comments",
+    "author": {
+      "login": "amotin",
+      "id": 5219480,
+      "node_id": "MDQ6VXNlcjUyMTk0ODA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5219480?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/amotin",
+      "html_url": "https://github.com/amotin",
+      "followers_url": "https://api.github.com/users/amotin/followers",
+      "following_url": "https://api.github.com/users/amotin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/amotin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/amotin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/amotin/subscriptions",
+      "organizations_url": "https://api.github.com/users/amotin/orgs",
+      "repos_url": "https://api.github.com/users/amotin/repos",
+      "events_url": "https://api.github.com/users/amotin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/amotin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "behlendorf",
+      "id": 148917,
+      "node_id": "MDQ6VXNlcjE0ODkxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/148917?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/behlendorf",
+      "html_url": "https://github.com/behlendorf",
+      "followers_url": "https://api.github.com/users/behlendorf/followers",
+      "following_url": "https://api.github.com/users/behlendorf/following{/other_user}",
+      "gists_url": "https://api.github.com/users/behlendorf/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/behlendorf/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/behlendorf/subscriptions",
+      "organizations_url": "https://api.github.com/users/behlendorf/orgs",
+      "repos_url": "https://api.github.com/users/behlendorf/repos",
+      "events_url": "https://api.github.com/users/behlendorf/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/behlendorf/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b4034276247bfe430a7ff8d8ef9b06826e83cb9d",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/b4034276247bfe430a7ff8d8ef9b06826e83cb9d",
+        "html_url": "https://github.com/openzfs/zfs/commit/b4034276247bfe430a7ff8d8ef9b06826e83cb9d"
+      }
+    ]
+  },
+  {
+    "sha": "b4034276247bfe430a7ff8d8ef9b06826e83cb9d",
+    "node_id": "C_kwDOAAarE9oAKGI0MDM0Mjc2MjQ3YmZlNDMwYTdmZjhkOGVmOWIwNjgyNmU4M2NiOWQ",
+    "commit": {
+      "author": {
+        "name": "Alexander Motin",
+        "email": "mav@FreeBSD.org",
+        "date": "2024-03-19T16:25:14Z"
+      },
+      "committer": {
+        "name": "Brian Behlendorf",
+        "email": "behlendorf1@llnl.gov",
+        "date": "2024-03-27T21:46:48Z"
+      },
+      "message": "BRT: Fix tests to work on non-empty pools\n\nIt should not normally happen, but if it does, better to not fail\neverything for no good reason, or it may be hard to debug.\n\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\nSigned-off-by: Alexander Motin <mav@FreeBSD.org>\nSponsored by: iXsystems, Inc.\nCloses #16007",
+      "tree": {
+        "sha": "c516a2e3d57705f4051636f6a20d601fd9ef3870",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/c516a2e3d57705f4051636f6a20d601fd9ef3870"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/b4034276247bfe430a7ff8d8ef9b06826e83cb9d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/b4034276247bfe430a7ff8d8ef9b06826e83cb9d",
+    "html_url": "https://github.com/openzfs/zfs/commit/b4034276247bfe430a7ff8d8ef9b06826e83cb9d",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/b4034276247bfe430a7ff8d8ef9b06826e83cb9d/comments",
+    "author": {
+      "login": "amotin",
+      "id": 5219480,
+      "node_id": "MDQ6VXNlcjUyMTk0ODA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5219480?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/amotin",
+      "html_url": "https://github.com/amotin",
+      "followers_url": "https://api.github.com/users/amotin/followers",
+      "following_url": "https://api.github.com/users/amotin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/amotin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/amotin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/amotin/subscriptions",
+      "organizations_url": "https://api.github.com/users/amotin/orgs",
+      "repos_url": "https://api.github.com/users/amotin/repos",
+      "events_url": "https://api.github.com/users/amotin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/amotin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "behlendorf",
+      "id": 148917,
+      "node_id": "MDQ6VXNlcjE0ODkxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/148917?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/behlendorf",
+      "html_url": "https://github.com/behlendorf",
+      "followers_url": "https://api.github.com/users/behlendorf/followers",
+      "following_url": "https://api.github.com/users/behlendorf/following{/other_user}",
+      "gists_url": "https://api.github.com/users/behlendorf/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/behlendorf/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/behlendorf/subscriptions",
+      "organizations_url": "https://api.github.com/users/behlendorf/orgs",
+      "repos_url": "https://api.github.com/users/behlendorf/repos",
+      "events_url": "https://api.github.com/users/behlendorf/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/behlendorf/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a89d209bb60c3f32881da7624bd01d28023da4f4",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/a89d209bb60c3f32881da7624bd01d28023da4f4",
+        "html_url": "https://github.com/openzfs/zfs/commit/a89d209bb60c3f32881da7624bd01d28023da4f4"
+      }
+    ]
+  },
+  {
+    "sha": "a89d209bb60c3f32881da7624bd01d28023da4f4",
+    "node_id": "C_kwDOAAarE9oAKGE4OWQyMDliYjYwYzNmMzI4ODFkYTc2MjRiZDAxZDI4MDIzZGE0ZjQ",
+    "commit": {
+      "author": {
+        "name": "Alexander Motin",
+        "email": "mav@FreeBSD.org",
+        "date": "2024-03-18T18:19:53Z"
+      },
+      "committer": {
+        "name": "Brian Behlendorf",
+        "email": "behlendorf1@llnl.gov",
+        "date": "2024-03-27T21:45:27Z"
+      },
+      "message": "BRT: Fix holes cloning.\n\n - When reading L0 block pointers handle buffers without ones and\nwithout dirty records as a holes.  Those appear when dnode size\nwas increased, but the end was never written, so there are no new\nindirection levels to store the pointers.  It makes no sense to\nreturn EAGAIN here, since sync won't create new indirection levels\nuntil there will be actual writes.\n - When cloning blocks set destination hole logical birth time\nto the current TXG.  Otherwise if we are cloning over existing\ndata, newly created holes may not be properly replicated later.\nUse BP_SET_BIRTH() when possible to not replicate its logic.\n\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\nSigned-off-by: Alexander Motin <mav@FreeBSD.org>\nSponsored by: iXsystems, Inc.\nCloses #15994\nCloses #16007",
+      "tree": {
+        "sha": "5ead860a25d8347074151a47b3d68a2230e42515",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/5ead860a25d8347074151a47b3d68a2230e42515"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/a89d209bb60c3f32881da7624bd01d28023da4f4",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/a89d209bb60c3f32881da7624bd01d28023da4f4",
+    "html_url": "https://github.com/openzfs/zfs/commit/a89d209bb60c3f32881da7624bd01d28023da4f4",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/a89d209bb60c3f32881da7624bd01d28023da4f4/comments",
+    "author": {
+      "login": "amotin",
+      "id": 5219480,
+      "node_id": "MDQ6VXNlcjUyMTk0ODA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5219480?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/amotin",
+      "html_url": "https://github.com/amotin",
+      "followers_url": "https://api.github.com/users/amotin/followers",
+      "following_url": "https://api.github.com/users/amotin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/amotin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/amotin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/amotin/subscriptions",
+      "organizations_url": "https://api.github.com/users/amotin/orgs",
+      "repos_url": "https://api.github.com/users/amotin/repos",
+      "events_url": "https://api.github.com/users/amotin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/amotin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "behlendorf",
+      "id": 148917,
+      "node_id": "MDQ6VXNlcjE0ODkxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/148917?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/behlendorf",
+      "html_url": "https://github.com/behlendorf",
+      "followers_url": "https://api.github.com/users/behlendorf/followers",
+      "following_url": "https://api.github.com/users/behlendorf/following{/other_user}",
+      "gists_url": "https://api.github.com/users/behlendorf/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/behlendorf/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/behlendorf/subscriptions",
+      "organizations_url": "https://api.github.com/users/behlendorf/orgs",
+      "repos_url": "https://api.github.com/users/behlendorf/repos",
+      "events_url": "https://api.github.com/users/behlendorf/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/behlendorf/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8cd8ccca5383dcdd9bf55d4d22921a6b43b4ebe1",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/8cd8ccca5383dcdd9bf55d4d22921a6b43b4ebe1",
+        "html_url": "https://github.com/openzfs/zfs/commit/8cd8ccca5383dcdd9bf55d4d22921a6b43b4ebe1"
+      }
+    ]
+  },
+  {
+    "sha": "8cd8ccca5383dcdd9bf55d4d22921a6b43b4ebe1",
+    "node_id": "C_kwDOAAarE9oAKDhjZDhjY2NhNTM4M2RjZGQ5YmY1NWQ0ZDIyOTIxYTZiNDNiNGViZTE",
+    "commit": {
+      "author": {
+        "name": "Alexander Motin",
+        "email": "mav@FreeBSD.org",
+        "date": "2024-03-26T00:13:45Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-26T00:13:45Z"
+      },
+      "message": "BRT: Skip getting length in brt_entry_lookup()\n\nUnlike DDT, where ZAP values may have different lengths due to\r\ncompression, all BRT entries are identical 8-byte counters.  It\r\ndoes not make sense to first fetch the length only to assert it.\r\nzap_lookup_uint64() is specifically designed to work with counters\r\nof different size and should return error if something odd found.\r\nCalling it straight allows to save some measurable CPU time.\r\n\r\nReviewed-by: Pawel Jakub Dawidek <pawel@dawidek.net>\r\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nReviewed-by: Rob Norris <robn@despairlabs.com>\r\nSigned-off-by:\tAlexander Motin <mav@FreeBSD.org>\r\nSponsored by:\tiXsystems, Inc.\r\nCloses #15950",
+      "tree": {
+        "sha": "f5c0bc1ef5e9040249285ed3af820bbc029d1286",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/f5c0bc1ef5e9040249285ed3af820bbc029d1286"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/8cd8ccca5383dcdd9bf55d4d22921a6b43b4ebe1",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmAhM5CRC1aQ7uu5UhlAAAzMMQAHw2P4knB9qSmh7dBTl4bssg\niCUsFv5lXF6i/PSY/neK3wJbbs91rcWi71Cs5BCXhA3z3pddlzb0IRaVDSafr7z5\nE78cmZaSbJWrg/SXClVvgOxDP/j+M6mZj0GNIrERZbKK8zwh96WCNTycM01ERwyD\nC3KIBOanJD8o7Ncbnn+S16DhTrT0mBx+dh4qgr5loo7EdFV1YAHXxHeKv29GsZJj\nHS38MH3mN+I87mRso5XVcuLHr2xICZk/yPsWa3SWJcioY9XDbeByTkPNxCp1NDDS\nb/J9rM7QAzP5yqSrLZ6jlE9kT5UChHD0cL8IHeyrBTXRz0Om02FREIqUp9zu7clX\nGC63+iOF6iHXUSPw/f55QXL1rW9XvlVqc+Sn0IaCR9DHSVrvTvU83I1kEaxvzRg0\nBKIaBHAujZ8DerKqMQp5azmpJ7Uil/T5poIpiITYWgVUHR6eBLQdGpCmR/V8se+M\nr6aH7hp9X7NdiUc9xfIbm/PtLSIIHOGqpFxEOSO31VqrQzw+b2y60N2+KFyBmGTY\nNWJLt0MxZ/5bsrePKe1zQqGMhqaMvHvtQ0jd8klxcFU+aoFVH6uuxVqowt/iG++K\nK+ZWFsdHQZxXpKgvVwdzrYnnW8/eRX5nKsA17YLTWzyACloY1kUlL6bQRMNQ/KzA\nld8YMl5E1cWbsKoM5JGw\n=DUMx\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree f5c0bc1ef5e9040249285ed3af820bbc029d1286\nparent c6be6ce1755a3d9a3cbe70256cd8958ef83d8542\nauthor Alexander Motin <mav@FreeBSD.org> 1711412025 -0400\ncommitter GitHub <noreply@github.com> 1711412025 -0700\n\nBRT: Skip getting length in brt_entry_lookup()\n\nUnlike DDT, where ZAP values may have different lengths due to\r\ncompression, all BRT entries are identical 8-byte counters.  It\r\ndoes not make sense to first fetch the length only to assert it.\r\nzap_lookup_uint64() is specifically designed to work with counters\r\nof different size and should return error if something odd found.\r\nCalling it straight allows to save some measurable CPU time.\r\n\r\nReviewed-by: Pawel Jakub Dawidek <pawel@dawidek.net>\r\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\r\nReviewed-by: Rob Norris <robn@despairlabs.com>\r\nSigned-off-by:\tAlexander Motin <mav@FreeBSD.org>\r\nSponsored by:\tiXsystems, Inc.\r\nCloses #15950 "
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/8cd8ccca5383dcdd9bf55d4d22921a6b43b4ebe1",
+    "html_url": "https://github.com/openzfs/zfs/commit/8cd8ccca5383dcdd9bf55d4d22921a6b43b4ebe1",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/8cd8ccca5383dcdd9bf55d4d22921a6b43b4ebe1/comments",
+    "author": {
+      "login": "amotin",
+      "id": 5219480,
+      "node_id": "MDQ6VXNlcjUyMTk0ODA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5219480?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/amotin",
+      "html_url": "https://github.com/amotin",
+      "followers_url": "https://api.github.com/users/amotin/followers",
+      "following_url": "https://api.github.com/users/amotin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/amotin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/amotin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/amotin/subscriptions",
+      "organizations_url": "https://api.github.com/users/amotin/orgs",
+      "repos_url": "https://api.github.com/users/amotin/repos",
+      "events_url": "https://api.github.com/users/amotin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/amotin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c6be6ce1755a3d9a3cbe70256cd8958ef83d8542",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/c6be6ce1755a3d9a3cbe70256cd8958ef83d8542",
+        "html_url": "https://github.com/openzfs/zfs/commit/c6be6ce1755a3d9a3cbe70256cd8958ef83d8542"
+      }
+    ]
+  },
+  {
+    "sha": "c6be6ce1755a3d9a3cbe70256cd8958ef83d8542",
+    "node_id": "C_kwDOAAarE9oAKGM2YmU2Y2UxNzU1YTNkOWEzY2JlNzAyNTZjZDg5NThlZjgzZDg1NDI",
+    "commit": {
+      "author": {
+        "name": "Rob Norris",
+        "email": "rob.norris@klarasystems.com",
+        "date": "2024-03-13T23:57:30Z"
+      },
+      "committer": {
+        "name": "Brian Behlendorf",
+        "email": "behlendorf1@llnl.gov",
+        "date": "2024-03-25T23:51:54Z"
+      },
+      "message": "abd_iter_page: don't use compound heads on Linux <4.5\n\nBefore 4.5 (specifically, torvalds/linux@ddc58f2), head and tail pages\nin a compound page were refcounted separately. This means that using the\nhead page without taking a reference to it could see it cleaned up later\nbefore we're finished with it. Specifically, bio_add_page() would take a\nreference, and drop its reference after the bio completion callback\nreturns.\n\nIf the zio is executed immediately from the completion callback, this is\nusually ok, as any data is referenced through the tail page referenced\nby the ABD, and so becomes \"live\" that way. If there's a delay in zio\nexecution (high load, error injection), then the head page can be freed,\nalong with any dirty flags or other indicators that the underlying\nmemory is used. Later, when the zio completes and that memory is\naccessed, its either unmapped and an unhandled fault takes down the\nentire system, or it is mapped and we end up messing around in someone\nelse's memory. Both of these are very bad.\n\nThe solution on these older kernels is to take a reference to the head\npage when we use it, and release it when we're done. There's not really\na sensible way under our current structure to do this; the \"best\" would\nbe to keep a list of head page references in the ABD, and release them\nwhen the ABD is freed.\n\nSince this additional overhead is totally unnecessary on 4.5+, where\nhead and tail pages share refcounts, I've opted to simply not use the\ncompound head in ABD page iteration there. This is theoretically less\nefficient (though cleaning up head page references would add overhead),\nbut its safe, and we still get the other benefits of not mapping pages\nbefore adding them to a bio and not mis-splitting pages.\n\nThere doesn't appear to be an obvious symbol name or config option we\ncan match on to discover this behaviour in configure (and the mm/page\nAPIs have changed a lot since then anyway), so I've gone with a simple\nversion check.\n\nReviewed-by: Alexander Motin <mav@FreeBSD.org>\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\nSigned-off-by: Rob Norris <rob.norris@klarasystems.com>\nSponsored-by: Klara, Inc.\nSponsored-by: Wasabi Technology, Inc.\nCloses #15533\nCloses #15588",
+      "tree": {
+        "sha": "87c72b0b1bb1736146acf183d867325bfb16b1ca",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/87c72b0b1bb1736146acf183d867325bfb16b1ca"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/c6be6ce1755a3d9a3cbe70256cd8958ef83d8542",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/c6be6ce1755a3d9a3cbe70256cd8958ef83d8542",
+    "html_url": "https://github.com/openzfs/zfs/commit/c6be6ce1755a3d9a3cbe70256cd8958ef83d8542",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/c6be6ce1755a3d9a3cbe70256cd8958ef83d8542/comments",
+    "author": {
+      "login": "robn",
+      "id": 130670,
+      "node_id": "MDQ6VXNlcjEzMDY3MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/130670?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/robn",
+      "html_url": "https://github.com/robn",
+      "followers_url": "https://api.github.com/users/robn/followers",
+      "following_url": "https://api.github.com/users/robn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/robn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/robn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/robn/subscriptions",
+      "organizations_url": "https://api.github.com/users/robn/orgs",
+      "repos_url": "https://api.github.com/users/robn/repos",
+      "events_url": "https://api.github.com/users/robn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/robn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "behlendorf",
+      "id": 148917,
+      "node_id": "MDQ6VXNlcjE0ODkxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/148917?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/behlendorf",
+      "html_url": "https://github.com/behlendorf",
+      "followers_url": "https://api.github.com/users/behlendorf/followers",
+      "following_url": "https://api.github.com/users/behlendorf/following{/other_user}",
+      "gists_url": "https://api.github.com/users/behlendorf/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/behlendorf/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/behlendorf/subscriptions",
+      "organizations_url": "https://api.github.com/users/behlendorf/orgs",
+      "repos_url": "https://api.github.com/users/behlendorf/repos",
+      "events_url": "https://api.github.com/users/behlendorf/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/behlendorf/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "72fd834c47558cb10d847948d1a4615e894c77c3",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/72fd834c47558cb10d847948d1a4615e894c77c3",
+        "html_url": "https://github.com/openzfs/zfs/commit/72fd834c47558cb10d847948d1a4615e894c77c3"
+      }
+    ]
+  },
+  {
+    "sha": "72fd834c47558cb10d847948d1a4615e894c77c3",
+    "node_id": "C_kwDOAAarE9oAKDcyZmQ4MzRjNDc1NThjYjEwZDg0Nzk0OGQxYTQ2MTVlODk0Yzc3YzM",
+    "commit": {
+      "author": {
+        "name": "Rob Norris",
+        "email": "rob.norris@klarasystems.com",
+        "date": "2024-02-21T00:07:21Z"
+      },
+      "committer": {
+        "name": "Brian Behlendorf",
+        "email": "behlendorf1@llnl.gov",
+        "date": "2024-03-25T23:51:47Z"
+      },
+      "message": "vdev_disk: use bio_chain() to submit multiple BIOs\n\nSimplifies our code a lot, so we don't have to wait for each and\nreassemble them.\n\nReviewed-by: Alexander Motin <mav@FreeBSD.org>\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\nSigned-off-by: Rob Norris <rob.norris@klarasystems.com>\nSponsored-by: Klara, Inc.\nSponsored-by: Wasabi Technology, Inc.\nCloses #15533\nCloses #15588",
+      "tree": {
+        "sha": "688b09ec89f5fb2494ef621740dbad9b467690ce",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/688b09ec89f5fb2494ef621740dbad9b467690ce"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/72fd834c47558cb10d847948d1a4615e894c77c3",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/72fd834c47558cb10d847948d1a4615e894c77c3",
+    "html_url": "https://github.com/openzfs/zfs/commit/72fd834c47558cb10d847948d1a4615e894c77c3",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/72fd834c47558cb10d847948d1a4615e894c77c3/comments",
+    "author": {
+      "login": "robn",
+      "id": 130670,
+      "node_id": "MDQ6VXNlcjEzMDY3MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/130670?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/robn",
+      "html_url": "https://github.com/robn",
+      "followers_url": "https://api.github.com/users/robn/followers",
+      "following_url": "https://api.github.com/users/robn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/robn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/robn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/robn/subscriptions",
+      "organizations_url": "https://api.github.com/users/robn/orgs",
+      "repos_url": "https://api.github.com/users/robn/repos",
+      "events_url": "https://api.github.com/users/robn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/robn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "behlendorf",
+      "id": 148917,
+      "node_id": "MDQ6VXNlcjE0ODkxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/148917?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/behlendorf",
+      "html_url": "https://github.com/behlendorf",
+      "followers_url": "https://api.github.com/users/behlendorf/followers",
+      "following_url": "https://api.github.com/users/behlendorf/following{/other_user}",
+      "gists_url": "https://api.github.com/users/behlendorf/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/behlendorf/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/behlendorf/subscriptions",
+      "organizations_url": "https://api.github.com/users/behlendorf/orgs",
+      "repos_url": "https://api.github.com/users/behlendorf/repos",
+      "events_url": "https://api.github.com/users/behlendorf/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/behlendorf/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "df2169d141aadc0c2cc728c5c5261d6f5c2a27f7",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/df2169d141aadc0c2cc728c5c5261d6f5c2a27f7",
+        "html_url": "https://github.com/openzfs/zfs/commit/df2169d141aadc0c2cc728c5c5261d6f5c2a27f7"
+      }
+    ]
+  },
+  {
+    "sha": "df2169d141aadc0c2cc728c5c5261d6f5c2a27f7",
+    "node_id": "C_kwDOAAarE9oAKGRmMjE2OWQxNDFhYWRjMGMyY2M3MjhjNWM1MjYxZDZmNWMyYTI3Zjc",
+    "commit": {
+      "author": {
+        "name": "Rob Norris",
+        "email": "rob.norris@klarasystems.com",
+        "date": "2024-01-09T02:28:57Z"
+      },
+      "committer": {
+        "name": "Brian Behlendorf",
+        "email": "behlendorf1@llnl.gov",
+        "date": "2024-03-25T23:51:30Z"
+      },
+      "message": "vdev_disk: add module parameter to select BIO submission method\n\nThis makes the submission method selectable at module load time via the\n`zfs_vdev_disk_classic` parameter, allowing this change to be backported\nto 2.2 safely, and disabled in favour of the \"classic\" submission method\nif new problems come up.\n\nReviewed-by: Alexander Motin <mav@FreeBSD.org>\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\nSigned-off-by: Rob Norris <rob.norris@klarasystems.com>\nSponsored-by: Klara, Inc.\nSponsored-by: Wasabi Technology, Inc.\nCloses #15533\nCloses #15588",
+      "tree": {
+        "sha": "a60bc30234f302ed72445ebaf90c7ce5fd3e1b02",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/a60bc30234f302ed72445ebaf90c7ce5fd3e1b02"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/df2169d141aadc0c2cc728c5c5261d6f5c2a27f7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/df2169d141aadc0c2cc728c5c5261d6f5c2a27f7",
+    "html_url": "https://github.com/openzfs/zfs/commit/df2169d141aadc0c2cc728c5c5261d6f5c2a27f7",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/df2169d141aadc0c2cc728c5c5261d6f5c2a27f7/comments",
+    "author": {
+      "login": "robn",
+      "id": 130670,
+      "node_id": "MDQ6VXNlcjEzMDY3MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/130670?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/robn",
+      "html_url": "https://github.com/robn",
+      "followers_url": "https://api.github.com/users/robn/followers",
+      "following_url": "https://api.github.com/users/robn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/robn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/robn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/robn/subscriptions",
+      "organizations_url": "https://api.github.com/users/robn/orgs",
+      "repos_url": "https://api.github.com/users/robn/repos",
+      "events_url": "https://api.github.com/users/robn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/robn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "behlendorf",
+      "id": 148917,
+      "node_id": "MDQ6VXNlcjE0ODkxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/148917?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/behlendorf",
+      "html_url": "https://github.com/behlendorf",
+      "followers_url": "https://api.github.com/users/behlendorf/followers",
+      "following_url": "https://api.github.com/users/behlendorf/following{/other_user}",
+      "gists_url": "https://api.github.com/users/behlendorf/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/behlendorf/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/behlendorf/subscriptions",
+      "organizations_url": "https://api.github.com/users/behlendorf/orgs",
+      "repos_url": "https://api.github.com/users/behlendorf/repos",
+      "events_url": "https://api.github.com/users/behlendorf/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/behlendorf/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "06a196020e6f70d2fedbd4d0d05bbe0c1ac6e4d8",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/06a196020e6f70d2fedbd4d0d05bbe0c1ac6e4d8",
+        "html_url": "https://github.com/openzfs/zfs/commit/06a196020e6f70d2fedbd4d0d05bbe0c1ac6e4d8"
+      }
+    ]
+  },
+  {
+    "sha": "06a196020e6f70d2fedbd4d0d05bbe0c1ac6e4d8",
+    "node_id": "C_kwDOAAarE9oAKDA2YTE5NjAyMGU2ZjcwZDJmZWRiZDRkMGQwNWJiZTBjMWFjNmU0ZDg",
+    "commit": {
+      "author": {
+        "name": "Rob Norris",
+        "email": "rob.norris@klarasystems.com",
+        "date": "2023-07-18T01:11:29Z"
+      },
+      "committer": {
+        "name": "Brian Behlendorf",
+        "email": "behlendorf1@llnl.gov",
+        "date": "2024-03-25T23:51:14Z"
+      },
+      "message": "vdev_disk: rewrite BIO filling machinery to avoid split pages\n\nThis commit tackles a number of issues in the way BIOs (`struct bio`)\nare constructed for submission to the Linux block layer.\n\nThe kernel has a hard upper limit on the number of pages/segments that\ncan be added to a BIO, as well as a separate limit for each device\n(related to its queue depth and other scheduling characteristics).\n\nZFS counts the number of memory pages in the request ABD\n(`abd_nr_pages_off()`, and then uses that as the number of segments to\nput into the BIO, up to the hard upper limit. If it requires more than\nthe limit, it will create multiple BIOs.\n\nLeaving aside the fact that page count method is wrong (see below), not\nlimiting to the device segment max means that the device driver will\nneed to split the BIO in half. This is alone is not necessarily a\nproblem, but it interacts with another issue to cause a much larger\nproblem.\n\nThe kernel function to add a segment to a BIO (`bio_add_page()`) takes a\n`struct page` pointer, and offset+len within it. `struct page` can\nrepresent a run of contiguous memory pages (known as a \"compound page\").\nIn can be of arbitrary length.\n\nThe ZFS functions that count ABD pages and load them into the BIO\n(`abd_nr_pages_off()`, `bio_map()` and `abd_bio_map_off()`) will never\nconsider a page to be more than `PAGE_SIZE` (4K), even if the `struct\npage` is for multiple pages. In this case, it will load the same `struct\npage` into the BIO multiple times, with the offset adjusted each time.\n\nWith a sufficiently large ABD, this can easily lead to the BIO being\nentirely filled much earlier than it could have been. This is also\nfurther contributes to the problem caused by the incorrect segment limit\ncalculation, as its much easier to go past the device limit, and so\nrequire a split.\n\nAgain, this is not a problem on its own.\n\nThe logic for \"never submit more than `PAGE_SIZE`\" is actually a little\nmore subtle. It will actually never submit a buffer that crosses a 4K\npage boundary.\n\nIn practice, this is fine, as most ABDs are scattered, that is a list of\ncomplete 4K pages, and so are loaded in as such.\n\nLinear ABDs are typically allocated from slabs, and for small sizes they\nare frequently not aligned to page boundaries. For example, a 12K\nallocation can span four pages, eg:\n\n     -- 4K -- -- 4K -- -- 4K -- -- 4K --\n    |        |        |        |        |\n          :## ######## ######## ######:    [1K, 4K, 4K, 3K]\n\nSuch an allocation would be loaded into a BIO as you see:\n\n    [1K, 4K, 4K, 3K]\n\nThis tends not to be a problem in practice, because even if the BIO were\nfilled and needed to be split, each half would still have either a start\nor end aligned to the logical block size of the device (assuming 4K at\nleast).\n\n---\n\nIn ideal circumstances, these shortcomings don't cause any particular\nproblems. Its when they start to interact with other ZFS features that\nthings get interesting.\n\nAggregation will create a \"gang\" ABD, which is simply a list of other\nABDs. Iterating over a gang ABD is just iterating over each ABD within\nit in turn.\n\nBecause the segments are simply loaded in order, we can end up with\nuneven segments either side of the \"gap\" between the two ABDs. For\nexample, two 12K ABDs might be aggregated and then loaded as:\n\n    [1K, 4K, 4K, 3K, 2K, 4K, 4K, 2K]\n\nShould a split occur, each individual BIO can end up either having an\nstart or end offset that is not aligned to the logical block size, which\nsome drivers (eg SCSI) will reject. However, this tends not to happen\nbecause the default aggregation limit usually keeps the BIO small enough\nto not require more than one split, and most pages are actually full 4K\npages, so hitting an uneven gap is very rare anyway.\n\nIf the pool is under particular memory pressure, then an IO can be\nbroken down into a \"gang block\", a 512-byte block composed of a header\nand up to three block pointers. Each points to a fragment of the\noriginal write, or in turn, another gang block, breaking the original\ndata up over and over until space can be found in the pool for each of\nthem.\n\nEach gang header is a separate 512-byte memory allocation from a slab,\nthat needs to be written down to disk. When the gang header is added to\nthe BIO, its a single 512-byte segment.\n\nPulling all this together, consider a large aggregated write of gang\nblocks. This results a BIO containing lots of 512-byte segments. Given\nour tendency to overfill the BIO, a split is likely, and most possible\nsplit points will yield a pair of BIOs that are misaligned. Drivers that\ncare, like the SCSI driver, will reject them.\n\n---\n\nThis commit is a substantial refactor and rewrite of much of `vdev_disk`\nto sort all this out.\n\n`vdev_bio_max_segs()` now returns the ideal maximum size for the device,\nif available. There's also a tuneable `zfs_vdev_disk_max_segs` to\noverride this, to assist with testing.\n\nWe scan the ABD up front to count the number of pages within it, and to\nconfirm that if we submitted all those pages to one or more BIOs, it\ncould be split at any point with creating a misaligned BIO.  If the\npages in the BIO are not usable (as in any of the above situations), the\nABD is linearised, and then checked again. This is the same technique\nused in `vdev_geom` on FreeBSD, adjusted for Linux's variable page size\nand allocator quirks.\n\n`vbio_t` is a cleanup and enhancement of the old `dio_request_t`. The\nidea is simply that it can hold all the state needed to create, submit\nand return multiple BIOs, including all the refcounts, the ABD copy if\nit was needed, and so on. Apart from what I hope is a clearer interface,\nthe major difference is that because we know how many BIOs we'll need up\nfront, we don't need the old overflow logic that would grow the BIO\narray, throw away all the old work and restart. We can get it right from\nthe start.\n\nReviewed-by: Alexander Motin <mav@FreeBSD.org>\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\nSigned-off-by: Rob Norris <rob.norris@klarasystems.com>\nSponsored-by: Klara, Inc.\nSponsored-by: Wasabi Technology, Inc.\nCloses #15533\nCloses #15588",
+      "tree": {
+        "sha": "8a41b68c5818d5377a704f463dda24dfc4fca2d9",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/8a41b68c5818d5377a704f463dda24dfc4fca2d9"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/06a196020e6f70d2fedbd4d0d05bbe0c1ac6e4d8",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/06a196020e6f70d2fedbd4d0d05bbe0c1ac6e4d8",
+    "html_url": "https://github.com/openzfs/zfs/commit/06a196020e6f70d2fedbd4d0d05bbe0c1ac6e4d8",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/06a196020e6f70d2fedbd4d0d05bbe0c1ac6e4d8/comments",
+    "author": {
+      "login": "robn",
+      "id": 130670,
+      "node_id": "MDQ6VXNlcjEzMDY3MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/130670?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/robn",
+      "html_url": "https://github.com/robn",
+      "followers_url": "https://api.github.com/users/robn/followers",
+      "following_url": "https://api.github.com/users/robn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/robn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/robn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/robn/subscriptions",
+      "organizations_url": "https://api.github.com/users/robn/orgs",
+      "repos_url": "https://api.github.com/users/robn/repos",
+      "events_url": "https://api.github.com/users/robn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/robn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "behlendorf",
+      "id": 148917,
+      "node_id": "MDQ6VXNlcjE0ODkxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/148917?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/behlendorf",
+      "html_url": "https://github.com/behlendorf",
+      "followers_url": "https://api.github.com/users/behlendorf/followers",
+      "following_url": "https://api.github.com/users/behlendorf/following{/other_user}",
+      "gists_url": "https://api.github.com/users/behlendorf/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/behlendorf/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/behlendorf/subscriptions",
+      "organizations_url": "https://api.github.com/users/behlendorf/orgs",
+      "repos_url": "https://api.github.com/users/behlendorf/repos",
+      "events_url": "https://api.github.com/users/behlendorf/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/behlendorf/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c4a13ba483f08a81aa47479d2f763a470d95b2b0",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/c4a13ba483f08a81aa47479d2f763a470d95b2b0",
+        "html_url": "https://github.com/openzfs/zfs/commit/c4a13ba483f08a81aa47479d2f763a470d95b2b0"
+      }
+    ]
+  },
+  {
+    "sha": "c4a13ba483f08a81aa47479d2f763a470d95b2b0",
+    "node_id": "C_kwDOAAarE9oAKGM0YTEzYmE0ODNmMDhhODFhYTQ3NDc5ZDJmNzYzYTQ3MGQ5NWIyYjA",
+    "commit": {
+      "author": {
+        "name": "Rob Norris",
+        "email": "rob.norris@klarasystems.com",
+        "date": "2024-01-09T01:29:19Z"
+      },
+      "committer": {
+        "name": "Brian Behlendorf",
+        "email": "behlendorf1@llnl.gov",
+        "date": "2024-03-25T23:51:04Z"
+      },
+      "message": "vdev_disk: make read/write IO function configurable\n\nThis is just setting up for the next couple of commits, which will add a\nnew IO function and a parameter to select it.\n\nReviewed-by: Alexander Motin <mav@FreeBSD.org>\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\nSigned-off-by: Rob Norris <rob.norris@klarasystems.com>\nSponsored-by: Klara, Inc.\nSponsored-by: Wasabi Technology, Inc.\nCloses #15533\nCloses #15588",
+      "tree": {
+        "sha": "b67404264e49b4d5eb8b99d2b52a8dee745d3835",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/b67404264e49b4d5eb8b99d2b52a8dee745d3835"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/c4a13ba483f08a81aa47479d2f763a470d95b2b0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/c4a13ba483f08a81aa47479d2f763a470d95b2b0",
+    "html_url": "https://github.com/openzfs/zfs/commit/c4a13ba483f08a81aa47479d2f763a470d95b2b0",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/c4a13ba483f08a81aa47479d2f763a470d95b2b0/comments",
+    "author": {
+      "login": "robn",
+      "id": 130670,
+      "node_id": "MDQ6VXNlcjEzMDY3MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/130670?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/robn",
+      "html_url": "https://github.com/robn",
+      "followers_url": "https://api.github.com/users/robn/followers",
+      "following_url": "https://api.github.com/users/robn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/robn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/robn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/robn/subscriptions",
+      "organizations_url": "https://api.github.com/users/robn/orgs",
+      "repos_url": "https://api.github.com/users/robn/repos",
+      "events_url": "https://api.github.com/users/robn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/robn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "behlendorf",
+      "id": 148917,
+      "node_id": "MDQ6VXNlcjE0ODkxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/148917?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/behlendorf",
+      "html_url": "https://github.com/behlendorf",
+      "followers_url": "https://api.github.com/users/behlendorf/followers",
+      "following_url": "https://api.github.com/users/behlendorf/following{/other_user}",
+      "gists_url": "https://api.github.com/users/behlendorf/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/behlendorf/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/behlendorf/subscriptions",
+      "organizations_url": "https://api.github.com/users/behlendorf/orgs",
+      "repos_url": "https://api.github.com/users/behlendorf/repos",
+      "events_url": "https://api.github.com/users/behlendorf/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/behlendorf/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "867178ae1db28e73051c8a7ce662f2f2f81cd8e6",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/867178ae1db28e73051c8a7ce662f2f2f81cd8e6",
+        "html_url": "https://github.com/openzfs/zfs/commit/867178ae1db28e73051c8a7ce662f2f2f81cd8e6"
+      }
+    ]
+  },
+  {
+    "sha": "867178ae1db28e73051c8a7ce662f2f2f81cd8e6",
+    "node_id": "C_kwDOAAarE9oAKDg2NzE3OGFlMWRiMjhlNzMwNTFjOGE3Y2U2NjJmMmYyZjgxY2Q4ZTY",
+    "commit": {
+      "author": {
+        "name": "Rob Norris",
+        "email": "rob.norris@klarasystems.com",
+        "date": "2024-01-09T01:23:30Z"
+      },
+      "committer": {
+        "name": "Brian Behlendorf",
+        "email": "behlendorf1@llnl.gov",
+        "date": "2024-03-25T23:50:56Z"
+      },
+      "message": "vdev_disk: reorganise vdev_disk_io_start\n\nLight reshuffle to make it a bit more linear to read and get rid of a\nbunch of args that aren't needed in all cases.\n\nReviewed-by: Alexander Motin <mav@FreeBSD.org>\nReviewed-by: Brian Behlendorf <behlendorf1@llnl.gov>\nSigned-off-by: Rob Norris <rob.norris@klarasystems.com>\nSponsored-by: Klara, Inc.\nSponsored-by: Wasabi Technology, Inc.\nCloses #15533\nCloses #15588",
+      "tree": {
+        "sha": "d17cf2403059c8738124e082f5f8ea8880dfe8fe",
+        "url": "https://api.github.com/repos/openzfs/zfs/git/trees/d17cf2403059c8738124e082f5f8ea8880dfe8fe"
+      },
+      "url": "https://api.github.com/repos/openzfs/zfs/git/commits/867178ae1db28e73051c8a7ce662f2f2f81cd8e6",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openzfs/zfs/commits/867178ae1db28e73051c8a7ce662f2f2f81cd8e6",
+    "html_url": "https://github.com/openzfs/zfs/commit/867178ae1db28e73051c8a7ce662f2f2f81cd8e6",
+    "comments_url": "https://api.github.com/repos/openzfs/zfs/commits/867178ae1db28e73051c8a7ce662f2f2f81cd8e6/comments",
+    "author": {
+      "login": "robn",
+      "id": 130670,
+      "node_id": "MDQ6VXNlcjEzMDY3MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/130670?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/robn",
+      "html_url": "https://github.com/robn",
+      "followers_url": "https://api.github.com/users/robn/followers",
+      "following_url": "https://api.github.com/users/robn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/robn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/robn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/robn/subscriptions",
+      "organizations_url": "https://api.github.com/users/robn/orgs",
+      "repos_url": "https://api.github.com/users/robn/repos",
+      "events_url": "https://api.github.com/users/robn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/robn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "behlendorf",
+      "id": 148917,
+      "node_id": "MDQ6VXNlcjE0ODkxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/148917?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/behlendorf",
+      "html_url": "https://github.com/behlendorf",
+      "followers_url": "https://api.github.com/users/behlendorf/followers",
+      "following_url": "https://api.github.com/users/behlendorf/following{/other_user}",
+      "gists_url": "https://api.github.com/users/behlendorf/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/behlendorf/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/behlendorf/subscriptions",
+      "organizations_url": "https://api.github.com/users/behlendorf/orgs",
+      "repos_url": "https://api.github.com/users/behlendorf/repos",
+      "events_url": "https://api.github.com/users/behlendorf/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/behlendorf/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f3b85d706bae82957d2e3e0ef1d53a1cfab60eb4",
+        "url": "https://api.github.com/repos/openzfs/zfs/commits/f3b85d706bae82957d2e3e0ef1d53a1cfab60eb4",
+        "html_url": "https://github.com/openzfs/zfs/commit/f3b85d706bae82957d2e3e0ef1d53a1cfab60eb4"
+      }
+    ]
+  }
+]

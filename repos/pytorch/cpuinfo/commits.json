@@ -1,0 +1,2377 @@
+[
+  {
+    "sha": "f42f5eaf0bbeabd3a1153651cd2a5989faac4f58",
+    "node_id": "C_kwDOBP5DD9oAKGY0MmY1ZWFmMGJiZWFiZDNhMTE1MzY1MWNkMmE1OTg5ZmFhYzRmNTg",
+    "commit": {
+      "author": {
+        "name": "Ma Mingfei",
+        "email": "mingfei.ma@intel.com",
+        "date": "2024-03-28T06:03:24Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-28T06:03:24Z"
+      },
+      "message": "Add detection for Intel Advanced Matrix Extensions (AMX) instructions (#231)\n\nTested using intel SDE: https://www.intel.com/content/www/us/en/download/684897/intel-software-development-emulator.html\r\n\r\nTest scripts:\r\n```\r\nbash scripts/local-build.sh\r\n\r\nISAS=()\r\nOPTIONS=()\r\nPLATFORMS=()\r\n\r\nOPTIONS+=(-quark); PLATFORMS+=(\"Quark\")\r\nOPTIONS+=(-p4); PLATFORMS+=(\"Pentium4\")\r\nOPTIONS+=(-p4p); PLATFORMS+=(\"Pentium4 Prescott\")\r\nOPTIONS+=(-mrm); PLATFORMS+=(\"Merom\")\r\nOPTIONS+=(-pnr); PLATFORMS+=(\"Penryn\")\r\nOPTIONS+=(-nhm); PLATFORMS+=(\"Nehalem\")\r\nOPTIONS+=(-wsm); PLATFORMS+=(\"Westmere\")\r\nOPTIONS+=(-snb); PLATFORMS+=(\"Sandy Bridge\")\r\nOPTIONS+=(-ivb); PLATFORMS+=(\"Ivy Bridge\")\r\nOPTIONS+=(-hsw); PLATFORMS+=(\"Haswell\")\r\nOPTIONS+=(-bdw); PLATFORMS+=(\"Broadwell\")\r\nOPTIONS+=(-slt); PLATFORMS+=(\"Saltwell\")\r\nOPTIONS+=(-slm); PLATFORMS+=(\"Silvermont\")\r\nOPTIONS+=(-glm); PLATFORMS+=(\"Goldmont\")\r\nOPTIONS+=(-glp); PLATFORMS+=(\"Goldmont Plus\")\r\nOPTIONS+=(-tnt); PLATFORMS+=(\"Tremont\")\r\nOPTIONS+=(-snr); PLATFORMS+=(\"Snow Ridge\")\r\nOPTIONS+=(-skl); PLATFORMS+=(\"Skylake\")\r\nOPTIONS+=(-cnl); PLATFORMS+=(\"Cannon Lake\")\r\nOPTIONS+=(-icl); PLATFORMS+=(\"Ice Lake\")\r\nOPTIONS+=(-skx); PLATFORMS+=(\"Skylake server\")\r\nOPTIONS+=(-clx); PLATFORMS+=(\"Cascade Lake\")\r\nOPTIONS+=(-cpx); PLATFORMS+=(\"Cooper Lake\")\r\nOPTIONS+=(-icx); PLATFORMS+=(\"Ice Lake server\")\r\nOPTIONS+=(-knl); PLATFORMS+=(\"Knights landing\")\r\nOPTIONS+=(-knm); PLATFORMS+=(\"Knights mill\")\r\nOPTIONS+=(-tgl); PLATFORMS+=(\"Tiger Lake\")\r\nOPTIONS+=(-adl); PLATFORMS+=(\"Alder Lake\")\r\nOPTIONS+=(-mtl); PLATFORMS+=(\"Meteor Lake\")\r\nOPTIONS+=(-rpl); PLATFORMS+=(\"Raptor Lake\")\r\nOPTIONS+=(-spr); PLATFORMS+=(\"Sapphire Rapids\")\r\nOPTIONS+=(-gnr); PLATFORMS+=(\"Granite Rapids\")\r\nOPTIONS+=(-gnr256); PLATFORMS+=(\"Granite Rapids (AVX10.1 / 256VL)\")\r\nOPTIONS+=(-srf); PLATFORMS+=(\"Sierra Forest\")\r\nOPTIONS+=(-arl); PLATFORMS+=(\"Arrow Lake\")\r\nOPTIONS+=(-lnl); PLATFORMS+=(\"Lunar Lake\")\r\nOPTIONS+=(-future); PLATFORMS+=(\"Future chip\")\r\n\r\nISAS+=(\"AMXBF16\")\r\nISAS+=(\"AMXTILE\")\r\nISAS+=(\"AMXINT8\")\r\nISAS+=(\"AMXFP16\")\r\n\r\nSDE_BIN=\"/home/mingfeim/packages/sde-external-9.33.0-2024-01-07-lin/sde\"\r\n\r\nfor I in \"${!PLATFORMS[@]}\"; do\r\n  echo \"${PLATFORMS[\"${I}\"]}\"\r\n    for J in \"${!ISAS[@]}\"; do\r\n      \"${SDE_BIN}\" \"${OPTIONS[$I]}\" -- ./build/local/isa-info | grep ${ISAS[$J]}\r\n    done\r\ndone\r\n```\r\n\r\n\r\nResults:\r\n```\r\nQuark\r\nSDE-ERROR: 64 bits applications are not supported by input chip: PENTIUM or by the input cpuid definition file\r\nSDE-ERROR: 64 bits applications are not supported by input chip: PENTIUM or by the input cpuid definition file\r\nSDE-ERROR: 64 bits applications are not supported by input chip: PENTIUM or by the input cpuid definition file\r\nSDE-ERROR: 64 bits applications are not supported by input chip: PENTIUM or by the input cpuid definition file\r\nPentium4\r\nSDE-ERROR: 64 bits applications are not supported by input chip: PENTIUM4 or by the input cpuid definition file\r\nSDE-ERROR: 64 bits applications are not supported by input chip: PENTIUM4 or by the input cpuid definition file\r\nSDE-ERROR: 64 bits applications are not supported by input chip: PENTIUM4 or by the input cpuid definition file\r\nSDE-ERROR: 64 bits applications are not supported by input chip: PENTIUM4 or by the input cpuid definition file\r\nPentium4 Prescott\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nMerom\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nPenryn\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nNehalem\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nWestmere\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nSandy Bridge\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nIvy Bridge\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nHaswell\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nBroadwell\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nSaltwell\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nSilvermont\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nGoldmont\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nGoldmont Plus\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nTremont\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nSnow Ridge\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nSkylake\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nCannon Lake\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nIce Lake\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nSkylake server\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nCascade Lake\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nCooper Lake\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nIce Lake server\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nKnights landing\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nKnights mill\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nTiger Lake\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nAlder Lake\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nMeteor Lake\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nRaptor Lake\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nSapphire Rapids\r\n        AMXBF16: yes\r\n        AMXTILE: yes\r\n        AMXINT8: yes\r\n        AMXFP16: no\r\nGranite Rapids\r\n        AMXBF16: yes\r\n        AMXTILE: yes\r\n        AMXINT8: yes\r\n        AMXFP16: yes\r\nGranite Rapids (AVX10.1 / 256VL)\r\n        AMXBF16: yes\r\n        AMXTILE: yes\r\n        AMXINT8: yes\r\n        AMXFP16: yes\r\nSierra Forest\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nArrow Lake\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nLunar Lake\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nFuture chip\r\n        AMXBF16: yes\r\n        AMXTILE: yes\r\n        AMXINT8: yes\r\n        AMXFP16: yes\r\n```",
+      "tree": {
+        "sha": "ec36c21a9230b8a3e42fdfc9cde3aa511818cfbc",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/ec36c21a9230b8a3e42fdfc9cde3aa511818cfbc"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/f42f5eaf0bbeabd3a1153651cd2a5989faac4f58",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmBQgsCRC1aQ7uu5UhlAAAAwoQAKu1ZicxtglN5aIf9dSwv8Vp\nCnaVKn6NmdG6IaEj7dvtmri0DSDJBXOLusNUzGKQe5iArHPx0+/PJeNNULQavkaf\n4lcsSk1bKtojs3UO2xhZQ7tPSi3UpjTFQA2RpJGTP+DZHnLBol7iTOjMcyByj/iB\nWSiB0dMigaohDdh25OCpmfWsIJ91X7PmbJyful9ZbXN0gNjO+stEX7c0TGXO+zex\nGBmbWbuJnseTcVmTQH4K5LVhwevC/vXLbLCo4Ml2MuBwD+g4vIGfQksu6tvTyxTA\nKSHRIRBFYq/zR+Tx/fAB8CdqfICpTL42edw6GH6kUAkDNO7/L9wtsQPAPhwJlzID\niswNfAapfj47VPX3XWD7cjqaUIB5lU8wKJIoyepkhyMW2tgwD+tg7zLqXTqIICim\ny4o6ryDkPsflLgvK2GvIAuB08pefXZ+pxsCl/d2efVsbr3bZmOEeMrTkuYWHSOM8\n27oA9w273fGbHaFlfk2DQauwYMWUgK/2pqTiPjNEk1biUkFgGKPEWqVHbk3Mq8GZ\ntFO/y2mup5h1IblZ5hHlBH9rWJTzMZBOGlYR79BjeJsBp4ZwgsL1EnH1HwGzj80q\nudCyCDT4VH2n7rJNLuoa/rR6csCJb1Pu24g7Qt94SMUB//XHtaSuEqmFio4Fmlt1\nroGZiyFYXSlYWmkO8w+1\n=mAbe\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree ec36c21a9230b8a3e42fdfc9cde3aa511818cfbc\nparent 6543fec09b2f04ac4a666882998b534afc9c1349\nauthor Ma Mingfei <mingfei.ma@intel.com> 1711605804 +0800\ncommitter GitHub <noreply@github.com> 1711605804 -0700\n\nAdd detection for Intel Advanced Matrix Extensions (AMX) instructions (#231)\n\nTested using intel SDE: https://www.intel.com/content/www/us/en/download/684897/intel-software-development-emulator.html\r\n\r\nTest scripts:\r\n```\r\nbash scripts/local-build.sh\r\n\r\nISAS=()\r\nOPTIONS=()\r\nPLATFORMS=()\r\n\r\nOPTIONS+=(-quark); PLATFORMS+=(\"Quark\")\r\nOPTIONS+=(-p4); PLATFORMS+=(\"Pentium4\")\r\nOPTIONS+=(-p4p); PLATFORMS+=(\"Pentium4 Prescott\")\r\nOPTIONS+=(-mrm); PLATFORMS+=(\"Merom\")\r\nOPTIONS+=(-pnr); PLATFORMS+=(\"Penryn\")\r\nOPTIONS+=(-nhm); PLATFORMS+=(\"Nehalem\")\r\nOPTIONS+=(-wsm); PLATFORMS+=(\"Westmere\")\r\nOPTIONS+=(-snb); PLATFORMS+=(\"Sandy Bridge\")\r\nOPTIONS+=(-ivb); PLATFORMS+=(\"Ivy Bridge\")\r\nOPTIONS+=(-hsw); PLATFORMS+=(\"Haswell\")\r\nOPTIONS+=(-bdw); PLATFORMS+=(\"Broadwell\")\r\nOPTIONS+=(-slt); PLATFORMS+=(\"Saltwell\")\r\nOPTIONS+=(-slm); PLATFORMS+=(\"Silvermont\")\r\nOPTIONS+=(-glm); PLATFORMS+=(\"Goldmont\")\r\nOPTIONS+=(-glp); PLATFORMS+=(\"Goldmont Plus\")\r\nOPTIONS+=(-tnt); PLATFORMS+=(\"Tremont\")\r\nOPTIONS+=(-snr); PLATFORMS+=(\"Snow Ridge\")\r\nOPTIONS+=(-skl); PLATFORMS+=(\"Skylake\")\r\nOPTIONS+=(-cnl); PLATFORMS+=(\"Cannon Lake\")\r\nOPTIONS+=(-icl); PLATFORMS+=(\"Ice Lake\")\r\nOPTIONS+=(-skx); PLATFORMS+=(\"Skylake server\")\r\nOPTIONS+=(-clx); PLATFORMS+=(\"Cascade Lake\")\r\nOPTIONS+=(-cpx); PLATFORMS+=(\"Cooper Lake\")\r\nOPTIONS+=(-icx); PLATFORMS+=(\"Ice Lake server\")\r\nOPTIONS+=(-knl); PLATFORMS+=(\"Knights landing\")\r\nOPTIONS+=(-knm); PLATFORMS+=(\"Knights mill\")\r\nOPTIONS+=(-tgl); PLATFORMS+=(\"Tiger Lake\")\r\nOPTIONS+=(-adl); PLATFORMS+=(\"Alder Lake\")\r\nOPTIONS+=(-mtl); PLATFORMS+=(\"Meteor Lake\")\r\nOPTIONS+=(-rpl); PLATFORMS+=(\"Raptor Lake\")\r\nOPTIONS+=(-spr); PLATFORMS+=(\"Sapphire Rapids\")\r\nOPTIONS+=(-gnr); PLATFORMS+=(\"Granite Rapids\")\r\nOPTIONS+=(-gnr256); PLATFORMS+=(\"Granite Rapids (AVX10.1 / 256VL)\")\r\nOPTIONS+=(-srf); PLATFORMS+=(\"Sierra Forest\")\r\nOPTIONS+=(-arl); PLATFORMS+=(\"Arrow Lake\")\r\nOPTIONS+=(-lnl); PLATFORMS+=(\"Lunar Lake\")\r\nOPTIONS+=(-future); PLATFORMS+=(\"Future chip\")\r\n\r\nISAS+=(\"AMXBF16\")\r\nISAS+=(\"AMXTILE\")\r\nISAS+=(\"AMXINT8\")\r\nISAS+=(\"AMXFP16\")\r\n\r\nSDE_BIN=\"/home/mingfeim/packages/sde-external-9.33.0-2024-01-07-lin/sde\"\r\n\r\nfor I in \"${!PLATFORMS[@]}\"; do\r\n  echo \"${PLATFORMS[\"${I}\"]}\"\r\n    for J in \"${!ISAS[@]}\"; do\r\n      \"${SDE_BIN}\" \"${OPTIONS[$I]}\" -- ./build/local/isa-info | grep ${ISAS[$J]}\r\n    done\r\ndone\r\n```\r\n\r\n\r\nResults:\r\n```\r\nQuark\r\nSDE-ERROR: 64 bits applications are not supported by input chip: PENTIUM or by the input cpuid definition file\r\nSDE-ERROR: 64 bits applications are not supported by input chip: PENTIUM or by the input cpuid definition file\r\nSDE-ERROR: 64 bits applications are not supported by input chip: PENTIUM or by the input cpuid definition file\r\nSDE-ERROR: 64 bits applications are not supported by input chip: PENTIUM or by the input cpuid definition file\r\nPentium4\r\nSDE-ERROR: 64 bits applications are not supported by input chip: PENTIUM4 or by the input cpuid definition file\r\nSDE-ERROR: 64 bits applications are not supported by input chip: PENTIUM4 or by the input cpuid definition file\r\nSDE-ERROR: 64 bits applications are not supported by input chip: PENTIUM4 or by the input cpuid definition file\r\nSDE-ERROR: 64 bits applications are not supported by input chip: PENTIUM4 or by the input cpuid definition file\r\nPentium4 Prescott\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nMerom\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nPenryn\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nNehalem\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nWestmere\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nSandy Bridge\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nIvy Bridge\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nHaswell\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nBroadwell\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nSaltwell\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nSilvermont\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nGoldmont\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nGoldmont Plus\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nTremont\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nSnow Ridge\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nSkylake\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nCannon Lake\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nIce Lake\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nSkylake server\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nCascade Lake\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nCooper Lake\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nIce Lake server\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nKnights landing\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nKnights mill\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nTiger Lake\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nAlder Lake\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nMeteor Lake\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nRaptor Lake\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nSapphire Rapids\r\n        AMXBF16: yes\r\n        AMXTILE: yes\r\n        AMXINT8: yes\r\n        AMXFP16: no\r\nGranite Rapids\r\n        AMXBF16: yes\r\n        AMXTILE: yes\r\n        AMXINT8: yes\r\n        AMXFP16: yes\r\nGranite Rapids (AVX10.1 / 256VL)\r\n        AMXBF16: yes\r\n        AMXTILE: yes\r\n        AMXINT8: yes\r\n        AMXFP16: yes\r\nSierra Forest\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nArrow Lake\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nLunar Lake\r\n        AMXBF16: no\r\n        AMXTILE: no\r\n        AMXINT8: no\r\n        AMXFP16: no\r\nFuture chip\r\n        AMXBF16: yes\r\n        AMXTILE: yes\r\n        AMXINT8: yes\r\n        AMXFP16: yes\r\n```"
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/f42f5eaf0bbeabd3a1153651cd2a5989faac4f58",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/f42f5eaf0bbeabd3a1153651cd2a5989faac4f58",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/f42f5eaf0bbeabd3a1153651cd2a5989faac4f58/comments",
+    "author": {
+      "login": "mingfeima",
+      "id": 20233731,
+      "node_id": "MDQ6VXNlcjIwMjMzNzMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/20233731?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mingfeima",
+      "html_url": "https://github.com/mingfeima",
+      "followers_url": "https://api.github.com/users/mingfeima/followers",
+      "following_url": "https://api.github.com/users/mingfeima/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mingfeima/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mingfeima/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mingfeima/subscriptions",
+      "organizations_url": "https://api.github.com/users/mingfeima/orgs",
+      "repos_url": "https://api.github.com/users/mingfeima/repos",
+      "events_url": "https://api.github.com/users/mingfeima/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mingfeima/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6543fec09b2f04ac4a666882998b534afc9c1349",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/6543fec09b2f04ac4a666882998b534afc9c1349",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/6543fec09b2f04ac4a666882998b534afc9c1349"
+      }
+    ]
+  },
+  {
+    "sha": "6543fec09b2f04ac4a666882998b534afc9c1349",
+    "node_id": "C_kwDOBP5DD9oAKDY1NDNmZWMwOWIyZjA0YWM0YTY2Njg4Mjk5OGI1MzRhZmM5YzEzNDk",
+    "commit": {
+      "author": {
+        "name": "Everton Constantino",
+        "email": "everton.constantino@linaro.org",
+        "date": "2024-03-17T00:45:01Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-17T00:45:01Z"
+      },
+      "message": "Include support for Windows on Arm on BUILD.bazel along with proper Volterra detection (#220)\n\nThis MR includes support for building with Bazel  on cpu `arm64_windows`, I also tried this on my Volterra Windows Dev Kit and noticed that the core string seems different from what the current source code defines. I don't know if this is because my hardware is a bit different or not. \r\n\r\nI ran the tests with the following results\r\n\r\n```\r\n[==========] Running 132 tests from 28 test suites.\r\n[----------] Global test environment set-up.\r\n[----------] 1 test from PROCESSORS_COUNT\r\n[ RUN      ] PROCESSORS_COUNT.non_zero\r\n[       OK ] PROCESSORS_COUNT.non_zero (0 ms)\r\n[----------] 1 test from PROCESSORS_COUNT (0 ms total)\r\n\r\n[----------] 1 test from PROCESSORS\r\n[ RUN      ] PROCESSORS.non_null\r\n[       OK ] PROCESSORS.non_null (0 ms)\r\n[----------] 1 test from PROCESSORS (0 ms total)\r\n\r\n[----------] 13 tests from PROCESSOR\r\n[ RUN      ] PROCESSOR.non_null\r\n[       OK ] PROCESSOR.non_null (0 ms)\r\n[ RUN      ] PROCESSOR.valid_smt_id\r\n[       OK ] PROCESSOR.valid_smt_id (0 ms)\r\n[ RUN      ] PROCESSOR.valid_core\r\n[       OK ] PROCESSOR.valid_core (0 ms)\r\n[ RUN      ] PROCESSOR.consistent_core\r\n[       OK ] PROCESSOR.consistent_core (0 ms)\r\n[ RUN      ] PROCESSOR.valid_cluster\r\n[       OK ] PROCESSOR.valid_cluster (0 ms)\r\n[ RUN      ] PROCESSOR.consistent_cluster\r\n[       OK ] PROCESSOR.consistent_cluster (0 ms)\r\n[ RUN      ] PROCESSOR.valid_package\r\n[       OK ] PROCESSOR.valid_package (0 ms)\r\n[ RUN      ] PROCESSOR.consistent_package\r\n[       OK ] PROCESSOR.consistent_package (0 ms)\r\n[ RUN      ] PROCESSOR.consistent_l1i\r\n[       OK ] PROCESSOR.consistent_l1i (0 ms)\r\n[ RUN      ] PROCESSOR.consistent_l1d\r\n[       OK ] PROCESSOR.consistent_l1d (0 ms)\r\n[ RUN      ] PROCESSOR.consistent_l2\r\n[       OK ] PROCESSOR.consistent_l2 (0 ms)\r\n[ RUN      ] PROCESSOR.consistent_l3\r\n[       OK ] PROCESSOR.consistent_l3 (0 ms)\r\n[ RUN      ] PROCESSOR.consistent_l4\r\n[       OK ] PROCESSOR.consistent_l4 (0 ms)\r\n[----------] 13 tests from PROCESSOR (7 ms total)\r\n\r\n[----------] 1 test from CORES_COUNT\r\n[ RUN      ] CORES_COUNT.within_bounds\r\n[       OK ] CORES_COUNT.within_bounds (0 ms)\r\n[----------] 1 test from CORES_COUNT (0 ms total)\r\n\r\n[----------] 1 test from CORES\r\n[ RUN      ] CORES.non_null\r\n[       OK ] CORES.non_null (0 ms)\r\n[----------] 1 test from CORES (0 ms total)\r\n\r\n[----------] 10 tests from CORE\r\n[ RUN      ] CORE.non_null\r\n[       OK ] CORE.non_null (0 ms)\r\n[ RUN      ] CORE.non_zero_processors\r\n[       OK ] CORE.non_zero_processors (0 ms)\r\n[ RUN      ] CORE.consistent_processors\r\n[       OK ] CORE.consistent_processors (0 ms)\r\n[ RUN      ] CORE.valid_core_id\r\n[       OK ] CORE.valid_core_id (0 ms)\r\n[ RUN      ] CORE.valid_cluster\r\n[       OK ] CORE.valid_cluster (0 ms)\r\n[ RUN      ] CORE.consistent_cluster\r\n[       OK ] CORE.consistent_cluster (0 ms)\r\n[ RUN      ] CORE.valid_package\r\n[       OK ] CORE.valid_package (0 ms)\r\n[ RUN      ] CORE.consistent_package\r\n[       OK ] CORE.consistent_package (0 ms)\r\n[ RUN      ] CORE.known_vendor\r\n[       OK ] CORE.known_vendor (0 ms)\r\n[ RUN      ] CORE.known_uarch\r\n[       OK ] CORE.known_uarch (0 ms)\r\n[----------] 10 tests from CORE (5 ms total)\r\n\r\n[----------] 1 test from CLUSTERS_COUNT\r\n[ RUN      ] CLUSTERS_COUNT.within_bounds\r\n[       OK ] CLUSTERS_COUNT.within_bounds (0 ms)\r\n[----------] 1 test from CLUSTERS_COUNT (0 ms total)\r\n\r\n[----------] 1 test from CLUSTERS\r\n[ RUN      ] CLUSTERS.non_null\r\n[       OK ] CLUSTERS.non_null (0 ms)\r\n[----------] 1 test from CLUSTERS (0 ms total)\r\n\r\n[----------] 14 tests from CLUSTER\r\n[ RUN      ] CLUSTER.non_null\r\n[       OK ] CLUSTER.non_null (0 ms)\r\n[ RUN      ] CLUSTER.non_zero_processors\r\n[       OK ] CLUSTER.non_zero_processors (0 ms)\r\n[ RUN      ] CLUSTER.valid_processors\r\n[       OK ] CLUSTER.valid_processors (0 ms)\r\n[ RUN      ] CLUSTER.consistent_processors\r\n[       OK ] CLUSTER.consistent_processors (0 ms)\r\n[ RUN      ] CLUSTER.non_zero_cores\r\n[       OK ] CLUSTER.non_zero_cores (0 ms)\r\n[ RUN      ] CLUSTER.valid_cores\r\n[       OK ] CLUSTER.valid_cores (0 ms)\r\n[ RUN      ] CLUSTER.consistent_cores\r\n[       OK ] CLUSTER.consistent_cores (0 ms)\r\n[ RUN      ] CLUSTER.valid_cluster_id\r\n[       OK ] CLUSTER.valid_cluster_id (0 ms)\r\n[ RUN      ] CLUSTER.valid_package\r\n[       OK ] CLUSTER.valid_package (0 ms)\r\n[ RUN      ] CLUSTER.consistent_package\r\n[       OK ] CLUSTER.consistent_package (0 ms)\r\n[ RUN      ] CLUSTER.consistent_vendor\r\n[       OK ] CLUSTER.consistent_vendor (0 ms)\r\n[ RUN      ] CLUSTER.consistent_uarch\r\n[       OK ] CLUSTER.consistent_uarch (0 ms)\r\n[ RUN      ] CLUSTER.consistent_midr\r\n[       OK ] CLUSTER.consistent_midr (0 ms)\r\n[ RUN      ] CLUSTER.consistent_frequency\r\n[       OK ] CLUSTER.consistent_frequency (0 ms)\r\n[----------] 14 tests from CLUSTER (7 ms total)\r\n\r\n[----------] 1 test from PACKAGES_COUNT\r\n[ RUN      ] PACKAGES_COUNT.within_bounds\r\n[       OK ] PACKAGES_COUNT.within_bounds (0 ms)\r\n[----------] 1 test from PACKAGES_COUNT (0 ms total)\r\n\r\n[----------] 1 test from PACKAGES\r\n[ RUN      ] PACKAGES.non_null\r\n[       OK ] PACKAGES.non_null (0 ms)\r\n[----------] 1 test from PACKAGES (0 ms total)\r\n\r\n[----------] 10 tests from PACKAGE\r\n[ RUN      ] PACKAGE.non_null\r\n[       OK ] PACKAGE.non_null (0 ms)\r\n[ RUN      ] PACKAGE.non_zero_processors\r\n[       OK ] PACKAGE.non_zero_processors (0 ms)\r\n[ RUN      ] PACKAGE.valid_processors\r\n[       OK ] PACKAGE.valid_processors (0 ms)\r\n[ RUN      ] PACKAGE.consistent_processors\r\n[       OK ] PACKAGE.consistent_processors (0 ms)\r\n[ RUN      ] PACKAGE.non_zero_cores\r\n[       OK ] PACKAGE.non_zero_cores (0 ms)\r\n[ RUN      ] PACKAGE.valid_cores\r\n[       OK ] PACKAGE.valid_cores (0 ms)\r\n[ RUN      ] PACKAGE.consistent_cores\r\n[       OK ] PACKAGE.consistent_cores (0 ms)\r\n[ RUN      ] PACKAGE.non_zero_clusters\r\n[       OK ] PACKAGE.non_zero_clusters (0 ms)\r\n[ RUN      ] PACKAGE.valid_clusters\r\n[       OK ] PACKAGE.valid_clusters (0 ms)\r\n[ RUN      ] PACKAGE.consistent_cluster\r\n[       OK ] PACKAGE.consistent_cluster (0 ms)\r\n[----------] 10 tests from PACKAGE (5 ms total)\r\n\r\n[----------] 1 test from UARCHS_COUNT\r\n[ RUN      ] UARCHS_COUNT.within_bounds\r\n[       OK ] UARCHS_COUNT.within_bounds (0 ms)\r\n[----------] 1 test from UARCHS_COUNT (0 ms total)\r\n\r\n[----------] 1 test from UARCHS\r\n[ RUN      ] UARCHS.non_null\r\n[       OK ] UARCHS.non_null (0 ms)\r\n[----------] 1 test from UARCHS (0 ms total)\r\n\r\n[----------] 5 tests from UARCH\r\n[ RUN      ] UARCH.non_null\r\n[       OK ] UARCH.non_null (0 ms)\r\n[ RUN      ] UARCH.non_zero_processors\r\n[       OK ] UARCH.non_zero_processors (0 ms)\r\n[ RUN      ] UARCH.valid_processors\r\n[       OK ] UARCH.valid_processors (0 ms)\r\n[ RUN      ] UARCH.non_zero_cores\r\n[       OK ] UARCH.non_zero_cores (0 ms)\r\n[ RUN      ] UARCH.valid_cores\r\n[       OK ] UARCH.valid_cores (0 ms)\r\n[----------] 5 tests from UARCH (2 ms total)\r\n\r\n[----------] 1 test from L1I_CACHES_COUNT\r\n[ RUN      ] L1I_CACHES_COUNT.within_bounds\r\n[       OK ] L1I_CACHES_COUNT.within_bounds (0 ms)\r\n[----------] 1 test from L1I_CACHES_COUNT (0 ms total)\r\n\r\n[----------] 1 test from L1I_CACHES\r\n[ RUN      ] L1I_CACHES.non_null\r\n[       OK ] L1I_CACHES.non_null (0 ms)\r\n[----------] 1 test from L1I_CACHES (0 ms total)\r\n\r\n[----------] 13 tests from L1I_CACHE\r\n[ RUN      ] L1I_CACHE.non_null\r\n[       OK ] L1I_CACHE.non_null (0 ms)\r\n[ RUN      ] L1I_CACHE.non_zero_size\r\n[       OK ] L1I_CACHE.non_zero_size (0 ms)\r\n[ RUN      ] L1I_CACHE.valid_size\r\n[       OK ] L1I_CACHE.valid_size (0 ms)\r\n[ RUN      ] L1I_CACHE.non_zero_associativity\r\n[       OK ] L1I_CACHE.non_zero_associativity (0 ms)\r\n[ RUN      ] L1I_CACHE.non_zero_partitions\r\n[       OK ] L1I_CACHE.non_zero_partitions (0 ms)\r\n[ RUN      ] L1I_CACHE.non_zero_line_size\r\n[       OK ] L1I_CACHE.non_zero_line_size (0 ms)\r\n[ RUN      ] L1I_CACHE.power_of_2_line_size\r\n[       OK ] L1I_CACHE.power_of_2_line_size (0 ms)\r\n[ RUN      ] L1I_CACHE.reasonable_line_size\r\n[       OK ] L1I_CACHE.reasonable_line_size (0 ms)\r\n[ RUN      ] L1I_CACHE.valid_flags\r\n[       OK ] L1I_CACHE.valid_flags (0 ms)\r\n[ RUN      ] L1I_CACHE.non_inclusive\r\n[       OK ] L1I_CACHE.non_inclusive (0 ms)\r\n[ RUN      ] L1I_CACHE.non_zero_processors\r\n[       OK ] L1I_CACHE.non_zero_processors (0 ms)\r\n[ RUN      ] L1I_CACHE.valid_processors\r\n[       OK ] L1I_CACHE.valid_processors (0 ms)\r\n[ RUN      ] L1I_CACHE.consistent_processors\r\n[       OK ] L1I_CACHE.consistent_processors (0 ms)\r\n[----------] 13 tests from L1I_CACHE (7 ms total)\r\n\r\n[----------] 1 test from L1D_CACHES_COUNT\r\n[ RUN      ] L1D_CACHES_COUNT.within_bounds\r\n[       OK ] L1D_CACHES_COUNT.within_bounds (0 ms)\r\n[----------] 1 test from L1D_CACHES_COUNT (0 ms total)\r\n\r\n[----------] 1 test from L1D_CACHES\r\n[ RUN      ] L1D_CACHES.non_null\r\n[       OK ] L1D_CACHES.non_null (0 ms)\r\n[----------] 1 test from L1D_CACHES (0 ms total)\r\n\r\n[----------] 13 tests from L1D_CACHE\r\n[ RUN      ] L1D_CACHE.non_null\r\n[       OK ] L1D_CACHE.non_null (0 ms)\r\n[ RUN      ] L1D_CACHE.non_zero_size\r\n[       OK ] L1D_CACHE.non_zero_size (0 ms)\r\n[ RUN      ] L1D_CACHE.valid_size\r\n[       OK ] L1D_CACHE.valid_size (0 ms)\r\n[ RUN      ] L1D_CACHE.non_zero_associativity\r\n[       OK ] L1D_CACHE.non_zero_associativity (0 ms)\r\n[ RUN      ] L1D_CACHE.non_zero_partitions\r\n[       OK ] L1D_CACHE.non_zero_partitions (0 ms)\r\n[ RUN      ] L1D_CACHE.non_zero_line_size\r\n[       OK ] L1D_CACHE.non_zero_line_size (0 ms)\r\n[ RUN      ] L1D_CACHE.power_of_2_line_size\r\n[       OK ] L1D_CACHE.power_of_2_line_size (0 ms)\r\n[ RUN      ] L1D_CACHE.reasonable_line_size\r\n[       OK ] L1D_CACHE.reasonable_line_size (0 ms)\r\n[ RUN      ] L1D_CACHE.valid_flags\r\n[       OK ] L1D_CACHE.valid_flags (0 ms)\r\n[ RUN      ] L1D_CACHE.non_inclusive\r\n[       OK ] L1D_CACHE.non_inclusive (0 ms)\r\n[ RUN      ] L1D_CACHE.non_zero_processors\r\n[       OK ] L1D_CACHE.non_zero_processors (0 ms)\r\n[ RUN      ] L1D_CACHE.valid_processors\r\n[       OK ] L1D_CACHE.valid_processors (0 ms)\r\n[ RUN      ] L1D_CACHE.consistent_processors\r\n[       OK ] L1D_CACHE.consistent_processors (0 ms)\r\n[----------] 13 tests from L1D_CACHE (7 ms total)\r\n\r\n[----------] 1 test from L2_CACHES_COUNT\r\n[ RUN      ] L2_CACHES_COUNT.within_bounds\r\n[       OK ] L2_CACHES_COUNT.within_bounds (0 ms)\r\n[----------] 1 test from L2_CACHES_COUNT (0 ms total)\r\n\r\n[----------] 1 test from L2_CACHES\r\n[ RUN      ] L2_CACHES.non_null\r\n[       OK ] L2_CACHES.non_null (0 ms)\r\n[----------] 1 test from L2_CACHES (0 ms total)\r\n\r\n[----------] 12 tests from L2_CACHE\r\n[ RUN      ] L2_CACHE.non_null\r\n[       OK ] L2_CACHE.non_null (0 ms)\r\n[ RUN      ] L2_CACHE.non_zero_size\r\n[       OK ] L2_CACHE.non_zero_size (0 ms)\r\n[ RUN      ] L2_CACHE.valid_size\r\n[       OK ] L2_CACHE.valid_size (0 ms)\r\n[ RUN      ] L2_CACHE.non_zero_associativity\r\n[       OK ] L2_CACHE.non_zero_associativity (0 ms)\r\n[ RUN      ] L2_CACHE.non_zero_partitions\r\n[       OK ] L2_CACHE.non_zero_partitions (0 ms)\r\n[ RUN      ] L2_CACHE.non_zero_line_size\r\n[       OK ] L2_CACHE.non_zero_line_size (0 ms)\r\n[ RUN      ] L2_CACHE.power_of_2_line_size\r\n[       OK ] L2_CACHE.power_of_2_line_size (0 ms)\r\n[ RUN      ] L2_CACHE.reasonable_line_size\r\n[       OK ] L2_CACHE.reasonable_line_size (0 ms)\r\n[ RUN      ] L2_CACHE.valid_flags\r\n[       OK ] L2_CACHE.valid_flags (0 ms)\r\n[ RUN      ] L2_CACHE.non_zero_processors\r\n[       OK ] L2_CACHE.non_zero_processors (0 ms)\r\n[ RUN      ] L2_CACHE.valid_processors\r\n[       OK ] L2_CACHE.valid_processors (0 ms)\r\n[ RUN      ] L2_CACHE.consistent_processors\r\n[       OK ] L2_CACHE.consistent_processors (0 ms)\r\n[----------] 12 tests from L2_CACHE (6 ms total)\r\n\r\n[----------] 1 test from L3_CACHES_COUNT\r\n[ RUN      ] L3_CACHES_COUNT.within_bounds\r\n[       OK ] L3_CACHES_COUNT.within_bounds (0 ms)\r\n[----------] 1 test from L3_CACHES_COUNT (0 ms total)\r\n\r\n[----------] 12 tests from L3_CACHE\r\n[ RUN      ] L3_CACHE.non_null\r\n[       OK ] L3_CACHE.non_null (0 ms)\r\n[ RUN      ] L3_CACHE.non_zero_size\r\n[       OK ] L3_CACHE.non_zero_size (0 ms)\r\n[ RUN      ] L3_CACHE.valid_size\r\n[       OK ] L3_CACHE.valid_size (0 ms)\r\n[ RUN      ] L3_CACHE.non_zero_associativity\r\n[       OK ] L3_CACHE.non_zero_associativity (0 ms)\r\n[ RUN      ] L3_CACHE.non_zero_partitions\r\n[       OK ] L3_CACHE.non_zero_partitions (0 ms)\r\n[ RUN      ] L3_CACHE.non_zero_line_size\r\n[       OK ] L3_CACHE.non_zero_line_size (0 ms)\r\n[ RUN      ] L3_CACHE.power_of_2_line_size\r\n[       OK ] L3_CACHE.power_of_2_line_size (0 ms)\r\n[ RUN      ] L3_CACHE.reasonable_line_size\r\n[       OK ] L3_CACHE.reasonable_line_size (0 ms)\r\n[ RUN      ] L3_CACHE.valid_flags\r\n[       OK ] L3_CACHE.valid_flags (0 ms)\r\n[ RUN      ] L3_CACHE.non_zero_processors\r\n[       OK ] L3_CACHE.non_zero_processors (0 ms)\r\n[ RUN      ] L3_CACHE.valid_processors\r\n[       OK ] L3_CACHE.valid_processors (0 ms)\r\n[ RUN      ] L3_CACHE.consistent_processors\r\n[       OK ] L3_CACHE.consistent_processors (0 ms)\r\n[----------] 12 tests from L3_CACHE (6 ms total)\r\n\r\n[----------] 1 test from L4_CACHES_COUNT\r\n[ RUN      ] L4_CACHES_COUNT.within_bounds\r\n[       OK ] L4_CACHES_COUNT.within_bounds (0 ms)\r\n[----------] 1 test from L4_CACHES_COUNT (0 ms total)\r\n\r\n[----------] 12 tests from L4_CACHE\r\n[ RUN      ] L4_CACHE.non_null\r\n[       OK ] L4_CACHE.non_null (0 ms)\r\n[ RUN      ] L4_CACHE.non_zero_size\r\n[       OK ] L4_CACHE.non_zero_size (0 ms)\r\n[ RUN      ] L4_CACHE.valid_size\r\n[       OK ] L4_CACHE.valid_size (0 ms)\r\n[ RUN      ] L4_CACHE.non_zero_associativity\r\n[       OK ] L4_CACHE.non_zero_associativity (0 ms)\r\n[ RUN      ] L4_CACHE.non_zero_partitions\r\n[       OK ] L4_CACHE.non_zero_partitions (0 ms)\r\n[ RUN      ] L4_CACHE.non_zero_line_size\r\n[       OK ] L4_CACHE.non_zero_line_size (0 ms)\r\n[ RUN      ] L4_CACHE.power_of_2_line_size\r\n[       OK ] L4_CACHE.power_of_2_line_size (0 ms)\r\n[ RUN      ] L4_CACHE.reasonable_line_size\r\n[       OK ] L4_CACHE.reasonable_line_size (0 ms)\r\n[ RUN      ] L4_CACHE.valid_flags\r\n[       OK ] L4_CACHE.valid_flags (0 ms)\r\n[ RUN      ] L4_CACHE.non_zero_processors\r\n[       OK ] L4_CACHE.non_zero_processors (0 ms)\r\n[ RUN      ] L4_CACHE.valid_processors\r\n[       OK ] L4_CACHE.valid_processors (0 ms)\r\n[ RUN      ] L4_CACHE.consistent_processors\r\n[       OK ] L4_CACHE.consistent_processors (0 ms)\r\n[----------] 12 tests from L4_CACHE (6 ms total)\r\n\r\n[----------] Global test environment tear-down\r\n[==========] 132 tests from 28 test suites ran. (93 ms total)\r\n[  PASSED  ] 132 tests.\r\n```\r\n\r\nwith `cpu-info.exe` returning\r\n\r\n```\r\nPackages:\r\n        0: Snapdragon (TM) 8cx Gen 3\r\nMicroarchitectures:\r\n        4x Cortex-A78\r\n        4x Cortex-X1\r\nCores:\r\n        0: 1 processor (0), ARM Cortex-A78\r\n        1: 1 processor (1), ARM Cortex-A78\r\n        2: 1 processor (2), ARM Cortex-A78\r\n        3: 1 processor (3), ARM Cortex-A78\r\n        4: 1 processor (4), ARM Cortex-X1\r\n        5: 1 processor (5), ARM Cortex-X1\r\n        6: 1 processor (6), ARM Cortex-X1\r\n        7: 1 processor (7), ARM Cortex-X1\r\nLogical processors:\r\n        0\r\n        1\r\n        2\r\n        3\r\n        4\r\n        5\r\n        6\r\n        7\r\n```\r\n\r\nand `isa-info.exe` returning\r\n\r\n```\r\nInstruction sets:\r\n        ARM v8.1 atomics: yes\r\n        ARM v8.1 SQRDMLxH: yes\r\n        ARM v8.2 FP16 arithmetics: yes\r\n        ARM v8.2 FHM: no\r\n        ARM v8.2 BF16: no\r\n        ARM v8.2 Int8 dot product: yes\r\n        ARM v8.2 Int8 matrix multiplication: no\r\n        ARM v8.3 JS conversion: no\r\n        ARM v8.3 complex: no\r\nSIMD extensions:\r\n        ARM SVE: no\r\n        ARM SVE 2: no\r\nCryptography extensions:\r\n        AES: yes\r\n        SHA1: yes\r\n        SHA2: yes\r\n        PMULL: yes\r\n        CRC32: yes\r\n```",
+      "tree": {
+        "sha": "0a3ae292be7b1e0c6e63a543f198ce9a66acf91c",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/0a3ae292be7b1e0c6e63a543f198ce9a66acf91c"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/6543fec09b2f04ac4a666882998b534afc9c1349",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl9j0NCRC1aQ7uu5UhlAAAAigQAHXfPpQpqK5e/zh9f6QJzxKt\nD1zK+xWI7FLXYRSEXOUZxOmJbKkEhxvlxbvelbBu8XlM9JHy+9hrC80F634WBHdB\nETSLSYn9l2KMfu3DoDOeE8CUR1089pg6LfntY/o0FFxcGGqd0R5x9oOe6g8c4RKa\ngEO7+JRgNOEHQevLEx8sZt0/JOkX6SWrrfHRAYz0phJC7ZpaCAdpnELZLlG7W2VY\nFPLsBWzrGBJpCLOfmwWvX5jnmb4mq20Oi7Fa0XOPPbqBbQFRuhVsIuUTdj9ZQMzZ\nKO/7/044iBA3QRXk2HwakGxbYofOTWlJjrf6qBg56OIGsgClp4L6Ca77oKRQ69hv\n94N0cBRnNgybbgCrMo5zYxSrLrRRdUaUXp/Lwzu7TU6pHyBXwYtLpZgNiWYzayrP\neoz7IJ9vHlTTGh/dzTcaqVdpLyKLoFBZ2L+1zNBxdk/64c9D6+EHMSQM3zI7RjCT\n84phoSHMCYpnP53YhaDxqSIGBceGtMrNa/yg24NHALt7yw7Op06+xJmlIdH4M5Xs\nnTPDyYV4Np2/uFvNKGY11/AaxjJwbDarIkaNUrtL18Xiao5TEZSavEyMS4DY6w3E\nHoKeu5+olioC2WcVdL+hXCTiVeEhSb4GT/VJ0Yo7MaG4dHGN8FvSO0/NMnvdfFZC\nSxMTt7U8365UMnu2nM0+\n=04L1\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 0a3ae292be7b1e0c6e63a543f198ce9a66acf91c\nparent fb08ae018ef8d8f71e3a2960c0982f90b688fe06\nauthor Everton Constantino <everton.constantino@linaro.org> 1710636301 -0300\ncommitter GitHub <noreply@github.com> 1710636301 -0700\n\nInclude support for Windows on Arm on BUILD.bazel along with proper Volterra detection (#220)\n\nThis MR includes support for building with Bazel  on cpu `arm64_windows`, I also tried this on my Volterra Windows Dev Kit and noticed that the core string seems different from what the current source code defines. I don't know if this is because my hardware is a bit different or not. \r\n\r\nI ran the tests with the following results\r\n\r\n```\r\n[==========] Running 132 tests from 28 test suites.\r\n[----------] Global test environment set-up.\r\n[----------] 1 test from PROCESSORS_COUNT\r\n[ RUN      ] PROCESSORS_COUNT.non_zero\r\n[       OK ] PROCESSORS_COUNT.non_zero (0 ms)\r\n[----------] 1 test from PROCESSORS_COUNT (0 ms total)\r\n\r\n[----------] 1 test from PROCESSORS\r\n[ RUN      ] PROCESSORS.non_null\r\n[       OK ] PROCESSORS.non_null (0 ms)\r\n[----------] 1 test from PROCESSORS (0 ms total)\r\n\r\n[----------] 13 tests from PROCESSOR\r\n[ RUN      ] PROCESSOR.non_null\r\n[       OK ] PROCESSOR.non_null (0 ms)\r\n[ RUN      ] PROCESSOR.valid_smt_id\r\n[       OK ] PROCESSOR.valid_smt_id (0 ms)\r\n[ RUN      ] PROCESSOR.valid_core\r\n[       OK ] PROCESSOR.valid_core (0 ms)\r\n[ RUN      ] PROCESSOR.consistent_core\r\n[       OK ] PROCESSOR.consistent_core (0 ms)\r\n[ RUN      ] PROCESSOR.valid_cluster\r\n[       OK ] PROCESSOR.valid_cluster (0 ms)\r\n[ RUN      ] PROCESSOR.consistent_cluster\r\n[       OK ] PROCESSOR.consistent_cluster (0 ms)\r\n[ RUN      ] PROCESSOR.valid_package\r\n[       OK ] PROCESSOR.valid_package (0 ms)\r\n[ RUN      ] PROCESSOR.consistent_package\r\n[       OK ] PROCESSOR.consistent_package (0 ms)\r\n[ RUN      ] PROCESSOR.consistent_l1i\r\n[       OK ] PROCESSOR.consistent_l1i (0 ms)\r\n[ RUN      ] PROCESSOR.consistent_l1d\r\n[       OK ] PROCESSOR.consistent_l1d (0 ms)\r\n[ RUN      ] PROCESSOR.consistent_l2\r\n[       OK ] PROCESSOR.consistent_l2 (0 ms)\r\n[ RUN      ] PROCESSOR.consistent_l3\r\n[       OK ] PROCESSOR.consistent_l3 (0 ms)\r\n[ RUN      ] PROCESSOR.consistent_l4\r\n[       OK ] PROCESSOR.consistent_l4 (0 ms)\r\n[----------] 13 tests from PROCESSOR (7 ms total)\r\n\r\n[----------] 1 test from CORES_COUNT\r\n[ RUN      ] CORES_COUNT.within_bounds\r\n[       OK ] CORES_COUNT.within_bounds (0 ms)\r\n[----------] 1 test from CORES_COUNT (0 ms total)\r\n\r\n[----------] 1 test from CORES\r\n[ RUN      ] CORES.non_null\r\n[       OK ] CORES.non_null (0 ms)\r\n[----------] 1 test from CORES (0 ms total)\r\n\r\n[----------] 10 tests from CORE\r\n[ RUN      ] CORE.non_null\r\n[       OK ] CORE.non_null (0 ms)\r\n[ RUN      ] CORE.non_zero_processors\r\n[       OK ] CORE.non_zero_processors (0 ms)\r\n[ RUN      ] CORE.consistent_processors\r\n[       OK ] CORE.consistent_processors (0 ms)\r\n[ RUN      ] CORE.valid_core_id\r\n[       OK ] CORE.valid_core_id (0 ms)\r\n[ RUN      ] CORE.valid_cluster\r\n[       OK ] CORE.valid_cluster (0 ms)\r\n[ RUN      ] CORE.consistent_cluster\r\n[       OK ] CORE.consistent_cluster (0 ms)\r\n[ RUN      ] CORE.valid_package\r\n[       OK ] CORE.valid_package (0 ms)\r\n[ RUN      ] CORE.consistent_package\r\n[       OK ] CORE.consistent_package (0 ms)\r\n[ RUN      ] CORE.known_vendor\r\n[       OK ] CORE.known_vendor (0 ms)\r\n[ RUN      ] CORE.known_uarch\r\n[       OK ] CORE.known_uarch (0 ms)\r\n[----------] 10 tests from CORE (5 ms total)\r\n\r\n[----------] 1 test from CLUSTERS_COUNT\r\n[ RUN      ] CLUSTERS_COUNT.within_bounds\r\n[       OK ] CLUSTERS_COUNT.within_bounds (0 ms)\r\n[----------] 1 test from CLUSTERS_COUNT (0 ms total)\r\n\r\n[----------] 1 test from CLUSTERS\r\n[ RUN      ] CLUSTERS.non_null\r\n[       OK ] CLUSTERS.non_null (0 ms)\r\n[----------] 1 test from CLUSTERS (0 ms total)\r\n\r\n[----------] 14 tests from CLUSTER\r\n[ RUN      ] CLUSTER.non_null\r\n[       OK ] CLUSTER.non_null (0 ms)\r\n[ RUN      ] CLUSTER.non_zero_processors\r\n[       OK ] CLUSTER.non_zero_processors (0 ms)\r\n[ RUN      ] CLUSTER.valid_processors\r\n[       OK ] CLUSTER.valid_processors (0 ms)\r\n[ RUN      ] CLUSTER.consistent_processors\r\n[       OK ] CLUSTER.consistent_processors (0 ms)\r\n[ RUN      ] CLUSTER.non_zero_cores\r\n[       OK ] CLUSTER.non_zero_cores (0 ms)\r\n[ RUN      ] CLUSTER.valid_cores\r\n[       OK ] CLUSTER.valid_cores (0 ms)\r\n[ RUN      ] CLUSTER.consistent_cores\r\n[       OK ] CLUSTER.consistent_cores (0 ms)\r\n[ RUN      ] CLUSTER.valid_cluster_id\r\n[       OK ] CLUSTER.valid_cluster_id (0 ms)\r\n[ RUN      ] CLUSTER.valid_package\r\n[       OK ] CLUSTER.valid_package (0 ms)\r\n[ RUN      ] CLUSTER.consistent_package\r\n[       OK ] CLUSTER.consistent_package (0 ms)\r\n[ RUN      ] CLUSTER.consistent_vendor\r\n[       OK ] CLUSTER.consistent_vendor (0 ms)\r\n[ RUN      ] CLUSTER.consistent_uarch\r\n[       OK ] CLUSTER.consistent_uarch (0 ms)\r\n[ RUN      ] CLUSTER.consistent_midr\r\n[       OK ] CLUSTER.consistent_midr (0 ms)\r\n[ RUN      ] CLUSTER.consistent_frequency\r\n[       OK ] CLUSTER.consistent_frequency (0 ms)\r\n[----------] 14 tests from CLUSTER (7 ms total)\r\n\r\n[----------] 1 test from PACKAGES_COUNT\r\n[ RUN      ] PACKAGES_COUNT.within_bounds\r\n[       OK ] PACKAGES_COUNT.within_bounds (0 ms)\r\n[----------] 1 test from PACKAGES_COUNT (0 ms total)\r\n\r\n[----------] 1 test from PACKAGES\r\n[ RUN      ] PACKAGES.non_null\r\n[       OK ] PACKAGES.non_null (0 ms)\r\n[----------] 1 test from PACKAGES (0 ms total)\r\n\r\n[----------] 10 tests from PACKAGE\r\n[ RUN      ] PACKAGE.non_null\r\n[       OK ] PACKAGE.non_null (0 ms)\r\n[ RUN      ] PACKAGE.non_zero_processors\r\n[       OK ] PACKAGE.non_zero_processors (0 ms)\r\n[ RUN      ] PACKAGE.valid_processors\r\n[       OK ] PACKAGE.valid_processors (0 ms)\r\n[ RUN      ] PACKAGE.consistent_processors\r\n[       OK ] PACKAGE.consistent_processors (0 ms)\r\n[ RUN      ] PACKAGE.non_zero_cores\r\n[       OK ] PACKAGE.non_zero_cores (0 ms)\r\n[ RUN      ] PACKAGE.valid_cores\r\n[       OK ] PACKAGE.valid_cores (0 ms)\r\n[ RUN      ] PACKAGE.consistent_cores\r\n[       OK ] PACKAGE.consistent_cores (0 ms)\r\n[ RUN      ] PACKAGE.non_zero_clusters\r\n[       OK ] PACKAGE.non_zero_clusters (0 ms)\r\n[ RUN      ] PACKAGE.valid_clusters\r\n[       OK ] PACKAGE.valid_clusters (0 ms)\r\n[ RUN      ] PACKAGE.consistent_cluster\r\n[       OK ] PACKAGE.consistent_cluster (0 ms)\r\n[----------] 10 tests from PACKAGE (5 ms total)\r\n\r\n[----------] 1 test from UARCHS_COUNT\r\n[ RUN      ] UARCHS_COUNT.within_bounds\r\n[       OK ] UARCHS_COUNT.within_bounds (0 ms)\r\n[----------] 1 test from UARCHS_COUNT (0 ms total)\r\n\r\n[----------] 1 test from UARCHS\r\n[ RUN      ] UARCHS.non_null\r\n[       OK ] UARCHS.non_null (0 ms)\r\n[----------] 1 test from UARCHS (0 ms total)\r\n\r\n[----------] 5 tests from UARCH\r\n[ RUN      ] UARCH.non_null\r\n[       OK ] UARCH.non_null (0 ms)\r\n[ RUN      ] UARCH.non_zero_processors\r\n[       OK ] UARCH.non_zero_processors (0 ms)\r\n[ RUN      ] UARCH.valid_processors\r\n[       OK ] UARCH.valid_processors (0 ms)\r\n[ RUN      ] UARCH.non_zero_cores\r\n[       OK ] UARCH.non_zero_cores (0 ms)\r\n[ RUN      ] UARCH.valid_cores\r\n[       OK ] UARCH.valid_cores (0 ms)\r\n[----------] 5 tests from UARCH (2 ms total)\r\n\r\n[----------] 1 test from L1I_CACHES_COUNT\r\n[ RUN      ] L1I_CACHES_COUNT.within_bounds\r\n[       OK ] L1I_CACHES_COUNT.within_bounds (0 ms)\r\n[----------] 1 test from L1I_CACHES_COUNT (0 ms total)\r\n\r\n[----------] 1 test from L1I_CACHES\r\n[ RUN      ] L1I_CACHES.non_null\r\n[       OK ] L1I_CACHES.non_null (0 ms)\r\n[----------] 1 test from L1I_CACHES (0 ms total)\r\n\r\n[----------] 13 tests from L1I_CACHE\r\n[ RUN      ] L1I_CACHE.non_null\r\n[       OK ] L1I_CACHE.non_null (0 ms)\r\n[ RUN      ] L1I_CACHE.non_zero_size\r\n[       OK ] L1I_CACHE.non_zero_size (0 ms)\r\n[ RUN      ] L1I_CACHE.valid_size\r\n[       OK ] L1I_CACHE.valid_size (0 ms)\r\n[ RUN      ] L1I_CACHE.non_zero_associativity\r\n[       OK ] L1I_CACHE.non_zero_associativity (0 ms)\r\n[ RUN      ] L1I_CACHE.non_zero_partitions\r\n[       OK ] L1I_CACHE.non_zero_partitions (0 ms)\r\n[ RUN      ] L1I_CACHE.non_zero_line_size\r\n[       OK ] L1I_CACHE.non_zero_line_size (0 ms)\r\n[ RUN      ] L1I_CACHE.power_of_2_line_size\r\n[       OK ] L1I_CACHE.power_of_2_line_size (0 ms)\r\n[ RUN      ] L1I_CACHE.reasonable_line_size\r\n[       OK ] L1I_CACHE.reasonable_line_size (0 ms)\r\n[ RUN      ] L1I_CACHE.valid_flags\r\n[       OK ] L1I_CACHE.valid_flags (0 ms)\r\n[ RUN      ] L1I_CACHE.non_inclusive\r\n[       OK ] L1I_CACHE.non_inclusive (0 ms)\r\n[ RUN      ] L1I_CACHE.non_zero_processors\r\n[       OK ] L1I_CACHE.non_zero_processors (0 ms)\r\n[ RUN      ] L1I_CACHE.valid_processors\r\n[       OK ] L1I_CACHE.valid_processors (0 ms)\r\n[ RUN      ] L1I_CACHE.consistent_processors\r\n[       OK ] L1I_CACHE.consistent_processors (0 ms)\r\n[----------] 13 tests from L1I_CACHE (7 ms total)\r\n\r\n[----------] 1 test from L1D_CACHES_COUNT\r\n[ RUN      ] L1D_CACHES_COUNT.within_bounds\r\n[       OK ] L1D_CACHES_COUNT.within_bounds (0 ms)\r\n[----------] 1 test from L1D_CACHES_COUNT (0 ms total)\r\n\r\n[----------] 1 test from L1D_CACHES\r\n[ RUN      ] L1D_CACHES.non_null\r\n[       OK ] L1D_CACHES.non_null (0 ms)\r\n[----------] 1 test from L1D_CACHES (0 ms total)\r\n\r\n[----------] 13 tests from L1D_CACHE\r\n[ RUN      ] L1D_CACHE.non_null\r\n[       OK ] L1D_CACHE.non_null (0 ms)\r\n[ RUN      ] L1D_CACHE.non_zero_size\r\n[       OK ] L1D_CACHE.non_zero_size (0 ms)\r\n[ RUN      ] L1D_CACHE.valid_size\r\n[       OK ] L1D_CACHE.valid_size (0 ms)\r\n[ RUN      ] L1D_CACHE.non_zero_associativity\r\n[       OK ] L1D_CACHE.non_zero_associativity (0 ms)\r\n[ RUN      ] L1D_CACHE.non_zero_partitions\r\n[       OK ] L1D_CACHE.non_zero_partitions (0 ms)\r\n[ RUN      ] L1D_CACHE.non_zero_line_size\r\n[       OK ] L1D_CACHE.non_zero_line_size (0 ms)\r\n[ RUN      ] L1D_CACHE.power_of_2_line_size\r\n[       OK ] L1D_CACHE.power_of_2_line_size (0 ms)\r\n[ RUN      ] L1D_CACHE.reasonable_line_size\r\n[       OK ] L1D_CACHE.reasonable_line_size (0 ms)\r\n[ RUN      ] L1D_CACHE.valid_flags\r\n[       OK ] L1D_CACHE.valid_flags (0 ms)\r\n[ RUN      ] L1D_CACHE.non_inclusive\r\n[       OK ] L1D_CACHE.non_inclusive (0 ms)\r\n[ RUN      ] L1D_CACHE.non_zero_processors\r\n[       OK ] L1D_CACHE.non_zero_processors (0 ms)\r\n[ RUN      ] L1D_CACHE.valid_processors\r\n[       OK ] L1D_CACHE.valid_processors (0 ms)\r\n[ RUN      ] L1D_CACHE.consistent_processors\r\n[       OK ] L1D_CACHE.consistent_processors (0 ms)\r\n[----------] 13 tests from L1D_CACHE (7 ms total)\r\n\r\n[----------] 1 test from L2_CACHES_COUNT\r\n[ RUN      ] L2_CACHES_COUNT.within_bounds\r\n[       OK ] L2_CACHES_COUNT.within_bounds (0 ms)\r\n[----------] 1 test from L2_CACHES_COUNT (0 ms total)\r\n\r\n[----------] 1 test from L2_CACHES\r\n[ RUN      ] L2_CACHES.non_null\r\n[       OK ] L2_CACHES.non_null (0 ms)\r\n[----------] 1 test from L2_CACHES (0 ms total)\r\n\r\n[----------] 12 tests from L2_CACHE\r\n[ RUN      ] L2_CACHE.non_null\r\n[       OK ] L2_CACHE.non_null (0 ms)\r\n[ RUN      ] L2_CACHE.non_zero_size\r\n[       OK ] L2_CACHE.non_zero_size (0 ms)\r\n[ RUN      ] L2_CACHE.valid_size\r\n[       OK ] L2_CACHE.valid_size (0 ms)\r\n[ RUN      ] L2_CACHE.non_zero_associativity\r\n[       OK ] L2_CACHE.non_zero_associativity (0 ms)\r\n[ RUN      ] L2_CACHE.non_zero_partitions\r\n[       OK ] L2_CACHE.non_zero_partitions (0 ms)\r\n[ RUN      ] L2_CACHE.non_zero_line_size\r\n[       OK ] L2_CACHE.non_zero_line_size (0 ms)\r\n[ RUN      ] L2_CACHE.power_of_2_line_size\r\n[       OK ] L2_CACHE.power_of_2_line_size (0 ms)\r\n[ RUN      ] L2_CACHE.reasonable_line_size\r\n[       OK ] L2_CACHE.reasonable_line_size (0 ms)\r\n[ RUN      ] L2_CACHE.valid_flags\r\n[       OK ] L2_CACHE.valid_flags (0 ms)\r\n[ RUN      ] L2_CACHE.non_zero_processors\r\n[       OK ] L2_CACHE.non_zero_processors (0 ms)\r\n[ RUN      ] L2_CACHE.valid_processors\r\n[       OK ] L2_CACHE.valid_processors (0 ms)\r\n[ RUN      ] L2_CACHE.consistent_processors\r\n[       OK ] L2_CACHE.consistent_processors (0 ms)\r\n[----------] 12 tests from L2_CACHE (6 ms total)\r\n\r\n[----------] 1 test from L3_CACHES_COUNT\r\n[ RUN      ] L3_CACHES_COUNT.within_bounds\r\n[       OK ] L3_CACHES_COUNT.within_bounds (0 ms)\r\n[----------] 1 test from L3_CACHES_COUNT (0 ms total)\r\n\r\n[----------] 12 tests from L3_CACHE\r\n[ RUN      ] L3_CACHE.non_null\r\n[       OK ] L3_CACHE.non_null (0 ms)\r\n[ RUN      ] L3_CACHE.non_zero_size\r\n[       OK ] L3_CACHE.non_zero_size (0 ms)\r\n[ RUN      ] L3_CACHE.valid_size\r\n[       OK ] L3_CACHE.valid_size (0 ms)\r\n[ RUN      ] L3_CACHE.non_zero_associativity\r\n[       OK ] L3_CACHE.non_zero_associativity (0 ms)\r\n[ RUN      ] L3_CACHE.non_zero_partitions\r\n[       OK ] L3_CACHE.non_zero_partitions (0 ms)\r\n[ RUN      ] L3_CACHE.non_zero_line_size\r\n[       OK ] L3_CACHE.non_zero_line_size (0 ms)\r\n[ RUN      ] L3_CACHE.power_of_2_line_size\r\n[       OK ] L3_CACHE.power_of_2_line_size (0 ms)\r\n[ RUN      ] L3_CACHE.reasonable_line_size\r\n[       OK ] L3_CACHE.reasonable_line_size (0 ms)\r\n[ RUN      ] L3_CACHE.valid_flags\r\n[       OK ] L3_CACHE.valid_flags (0 ms)\r\n[ RUN      ] L3_CACHE.non_zero_processors\r\n[       OK ] L3_CACHE.non_zero_processors (0 ms)\r\n[ RUN      ] L3_CACHE.valid_processors\r\n[       OK ] L3_CACHE.valid_processors (0 ms)\r\n[ RUN      ] L3_CACHE.consistent_processors\r\n[       OK ] L3_CACHE.consistent_processors (0 ms)\r\n[----------] 12 tests from L3_CACHE (6 ms total)\r\n\r\n[----------] 1 test from L4_CACHES_COUNT\r\n[ RUN      ] L4_CACHES_COUNT.within_bounds\r\n[       OK ] L4_CACHES_COUNT.within_bounds (0 ms)\r\n[----------] 1 test from L4_CACHES_COUNT (0 ms total)\r\n\r\n[----------] 12 tests from L4_CACHE\r\n[ RUN      ] L4_CACHE.non_null\r\n[       OK ] L4_CACHE.non_null (0 ms)\r\n[ RUN      ] L4_CACHE.non_zero_size\r\n[       OK ] L4_CACHE.non_zero_size (0 ms)\r\n[ RUN      ] L4_CACHE.valid_size\r\n[       OK ] L4_CACHE.valid_size (0 ms)\r\n[ RUN      ] L4_CACHE.non_zero_associativity\r\n[       OK ] L4_CACHE.non_zero_associativity (0 ms)\r\n[ RUN      ] L4_CACHE.non_zero_partitions\r\n[       OK ] L4_CACHE.non_zero_partitions (0 ms)\r\n[ RUN      ] L4_CACHE.non_zero_line_size\r\n[       OK ] L4_CACHE.non_zero_line_size (0 ms)\r\n[ RUN      ] L4_CACHE.power_of_2_line_size\r\n[       OK ] L4_CACHE.power_of_2_line_size (0 ms)\r\n[ RUN      ] L4_CACHE.reasonable_line_size\r\n[       OK ] L4_CACHE.reasonable_line_size (0 ms)\r\n[ RUN      ] L4_CACHE.valid_flags\r\n[       OK ] L4_CACHE.valid_flags (0 ms)\r\n[ RUN      ] L4_CACHE.non_zero_processors\r\n[       OK ] L4_CACHE.non_zero_processors (0 ms)\r\n[ RUN      ] L4_CACHE.valid_processors\r\n[       OK ] L4_CACHE.valid_processors (0 ms)\r\n[ RUN      ] L4_CACHE.consistent_processors\r\n[       OK ] L4_CACHE.consistent_processors (0 ms)\r\n[----------] 12 tests from L4_CACHE (6 ms total)\r\n\r\n[----------] Global test environment tear-down\r\n[==========] 132 tests from 28 test suites ran. (93 ms total)\r\n[  PASSED  ] 132 tests.\r\n```\r\n\r\nwith `cpu-info.exe` returning\r\n\r\n```\r\nPackages:\r\n        0: Snapdragon (TM) 8cx Gen 3\r\nMicroarchitectures:\r\n        4x Cortex-A78\r\n        4x Cortex-X1\r\nCores:\r\n        0: 1 processor (0), ARM Cortex-A78\r\n        1: 1 processor (1), ARM Cortex-A78\r\n        2: 1 processor (2), ARM Cortex-A78\r\n        3: 1 processor (3), ARM Cortex-A78\r\n        4: 1 processor (4), ARM Cortex-X1\r\n        5: 1 processor (5), ARM Cortex-X1\r\n        6: 1 processor (6), ARM Cortex-X1\r\n        7: 1 processor (7), ARM Cortex-X1\r\nLogical processors:\r\n        0\r\n        1\r\n        2\r\n        3\r\n        4\r\n        5\r\n        6\r\n        7\r\n```\r\n\r\nand `isa-info.exe` returning\r\n\r\n```\r\nInstruction sets:\r\n        ARM v8.1 atomics: yes\r\n        ARM v8.1 SQRDMLxH: yes\r\n        ARM v8.2 FP16 arithmetics: yes\r\n        ARM v8.2 FHM: no\r\n        ARM v8.2 BF16: no\r\n        ARM v8.2 Int8 dot product: yes\r\n        ARM v8.2 Int8 matrix multiplication: no\r\n        ARM v8.3 JS conversion: no\r\n        ARM v8.3 complex: no\r\nSIMD extensions:\r\n        ARM SVE: no\r\n        ARM SVE 2: no\r\nCryptography extensions:\r\n        AES: yes\r\n        SHA1: yes\r\n        SHA2: yes\r\n        PMULL: yes\r\n        CRC32: yes\r\n``` "
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/6543fec09b2f04ac4a666882998b534afc9c1349",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/6543fec09b2f04ac4a666882998b534afc9c1349",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/6543fec09b2f04ac4a666882998b534afc9c1349/comments",
+    "author": {
+      "login": "everton1984",
+      "id": 16298969,
+      "node_id": "MDQ6VXNlcjE2Mjk4OTY5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16298969?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/everton1984",
+      "html_url": "https://github.com/everton1984",
+      "followers_url": "https://api.github.com/users/everton1984/followers",
+      "following_url": "https://api.github.com/users/everton1984/following{/other_user}",
+      "gists_url": "https://api.github.com/users/everton1984/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/everton1984/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/everton1984/subscriptions",
+      "organizations_url": "https://api.github.com/users/everton1984/orgs",
+      "repos_url": "https://api.github.com/users/everton1984/repos",
+      "events_url": "https://api.github.com/users/everton1984/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/everton1984/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "fb08ae018ef8d8f71e3a2960c0982f90b688fe06",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/fb08ae018ef8d8f71e3a2960c0982f90b688fe06",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/fb08ae018ef8d8f71e3a2960c0982f90b688fe06"
+      }
+    ]
+  },
+  {
+    "sha": "fb08ae018ef8d8f71e3a2960c0982f90b688fe06",
+    "node_id": "C_kwDOBP5DD9oAKGZiMDhhZTAxOGVmOGQ4ZjcxZTNhMjk2MGMwOTgyZjkwYjY4OGZlMDY",
+    "commit": {
+      "author": {
+        "name": "Vertexwahn",
+        "email": "julian.amann@tum.de",
+        "date": "2024-03-15T15:43:54Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-15T15:43:54Z"
+      },
+      "message": "Bazel-support: Add MODUEL.bazel to support Bzlmod (#229)\n\nThis PR adds a `MODULE.bazel` file. This is needed for [Bzlmod](https://bazel.build/external/mod-command) support of Bazel. In the long term this will replace the `WORKSPACE.bazel` file. In the meantime, both files are needed.",
+      "tree": {
+        "sha": "a19bab81282de90aa21b8936c50f3c0225c301bd",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/a19bab81282de90aa21b8936c50f3c0225c301bd"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/fb08ae018ef8d8f71e3a2960c0982f90b688fe06",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl9Gy6CRC1aQ7uu5UhlAAAL+AQAIZacwIRhja2/baulbKIbPKq\niRaLT1EYDTfFPMDdRrOW0zT5itmlj5XSQPnXEw479rAIDM29OuDDtZx9SNt9NKdk\nMBf3UVnMCCKnfg3HCHmeMNbZTvzvElbPivYFKh5ybdmADw0ix8F4EoMDyXQh0u0v\n2kf0Va2P0dnLb+/DnqyPjqgbP9pSrZciqgntmGoJS6tYJKF1lFot5dqrVWY8OxV8\n30lC0gUtnlpNghHDLAWWKLntaxDmgaLf7CC90CBPeGhcUgg3EUGpcATWox8GeTZy\ntbXYzFLQiFBBsQbkLQ4wypq8/66aO5PYLUOnIJ25T9QpqfyFihB9tSIMVpVcFIdC\nt9QMEGtfkDT5pJ6D8AFw+9cRFMGfGeGES77yleyQZdFUAtaIN/ZjGVN6uBG/Ao2W\ng3ftMOXRWHGIclQqOIt4BDXjX1MOYvQsnoGrZRmD6QwsC5B/SBUSM2cnx3LRMliA\nrYN2ULFntRHGxFU9Pcfg4yTi900z+CnBY9fKdBT4KfCgY5o5evisty8FgxBhANe0\n8BIvpMGFhsBLey14SOaGsMYaOzigJitME+NG7hcft2oNj+c7RJNMFMRrICPv1T3x\n2RObHV8mRBvQN6OsDjazJmxvh40HrbDTM7vL/7FZyDmsgtAJTxyCKA8nuhVCvAoO\noCs8luPdlbqO0V45JirT\n=cRBJ\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree a19bab81282de90aa21b8936c50f3c0225c301bd\nparent aa4b2163b99ac9534194520f70b93eeefb0b3b4e\nauthor Vertexwahn <julian.amann@tum.de> 1710517434 +0100\ncommitter GitHub <noreply@github.com> 1710517434 -0700\n\nBazel-support: Add MODUEL.bazel to support Bzlmod (#229)\n\nThis PR adds a `MODULE.bazel` file. This is needed for [Bzlmod](https://bazel.build/external/mod-command) support of Bazel. In the long term this will replace the `WORKSPACE.bazel` file. In the meantime, both files are needed."
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/fb08ae018ef8d8f71e3a2960c0982f90b688fe06",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/fb08ae018ef8d8f71e3a2960c0982f90b688fe06",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/fb08ae018ef8d8f71e3a2960c0982f90b688fe06/comments",
+    "author": {
+      "login": "Vertexwahn",
+      "id": 3775001,
+      "node_id": "MDQ6VXNlcjM3NzUwMDE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3775001?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Vertexwahn",
+      "html_url": "https://github.com/Vertexwahn",
+      "followers_url": "https://api.github.com/users/Vertexwahn/followers",
+      "following_url": "https://api.github.com/users/Vertexwahn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Vertexwahn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Vertexwahn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Vertexwahn/subscriptions",
+      "organizations_url": "https://api.github.com/users/Vertexwahn/orgs",
+      "repos_url": "https://api.github.com/users/Vertexwahn/repos",
+      "events_url": "https://api.github.com/users/Vertexwahn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Vertexwahn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "aa4b2163b99ac9534194520f70b93eeefb0b3b4e",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/aa4b2163b99ac9534194520f70b93eeefb0b3b4e",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/aa4b2163b99ac9534194520f70b93eeefb0b3b4e"
+      }
+    ]
+  },
+  {
+    "sha": "aa4b2163b99ac9534194520f70b93eeefb0b3b4e",
+    "node_id": "C_kwDOBP5DD9oAKGFhNGIyMTYzYjk5YWM5NTM0MTk0NTIwZjcwYjkzZWVlZmIwYjNiNGU",
+    "commit": {
+      "author": {
+        "name": "Digant Desai",
+        "email": "digantdesai@meta.com",
+        "date": "2024-02-26T15:33:39Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-02-26T15:33:39Z"
+      },
+      "message": "Merge pull request #225 from fbarchard/break\n\ncachebreak",
+      "tree": {
+        "sha": "a39e25d0da2dad841a5a7419d9763678928ac976",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/a39e25d0da2dad841a5a7419d9763678928ac976"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/aa4b2163b99ac9534194520f70b93eeefb0b3b4e",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl3K9TCRC1aQ7uu5UhlAAA3OgQAEie9+qv6Wl6C7ikTBY9BlHe\nPFZjHl/dzeSGskuYdpS43k5GMqzqX/CfmvgrTiks36IzjL0xk42dnEL1m2BXSe8+\nvfmChm8kML65tGmrA4pQwTqc9zL424/ECXoyxqH1QzT7AOG/7Qbqi67KhSuWgVMx\n7Wec1l4/xeximWGj77HJgY+RVCM0FyDifqrU7Md81fH5Fi3nlW5PiJ8p8+0KgZgZ\nkTDnfdIoqysHvELS98rYK7VDkOZbpX0sgixMTb/6lKkvEOdDug6X/smIwUlvEQyS\nazJHNE7jEQQ6f3apBLS8S6/oVg6UxokRakW5vkzTYbbqkivEccLEbff2qSfAsmBT\nRqCz6OwR1+J9Gq81KRJYMm+TeFhsdEhcrl4SlVhcEipYPz5dnlD+wWMaXB4Y7LR2\nvZB8O1zkMg9Ezsxg63Lo+hdUHR3wuWMG06X8FK5RFf7Ii/syLD74qWy82q5/kv/x\nVFS+HKOxk3rXYxDgAzlB3IQQoBBBVrjeYPFQKUgUKhhfhysG5iwM7hRE0U8YeQcu\npvj/GEKFwLp6GUMhlZGth+8oSnGFYuBMhGrQX1OEMV4ScsIfOhgFrSdn2Xz0wspr\n2/x4FPc4vuvhlG5Rt9UtUkPKaPZmmrgUfla2h5tPKhe9CZ9bFg2VYhNm5UIvPCkL\nzfVu6JDWRr/di1/sK3rI\n=30H8\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree a39e25d0da2dad841a5a7419d9763678928ac976\nparent 9484a6c590f831a30c1eec1311568b1a967a89dc\nparent 3990771460470b37ef5affd98c206d5af9f89b80\nauthor Digant Desai <digantdesai@meta.com> 1708961619 -0600\ncommitter GitHub <noreply@github.com> 1708961619 -0600\n\nMerge pull request #225 from fbarchard/break\n\ncachebreak"
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/aa4b2163b99ac9534194520f70b93eeefb0b3b4e",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/aa4b2163b99ac9534194520f70b93eeefb0b3b4e",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/aa4b2163b99ac9534194520f70b93eeefb0b3b4e/comments",
+    "author": {
+      "login": "digantdesai",
+      "id": 368720,
+      "node_id": "MDQ6VXNlcjM2ODcyMA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/368720?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/digantdesai",
+      "html_url": "https://github.com/digantdesai",
+      "followers_url": "https://api.github.com/users/digantdesai/followers",
+      "following_url": "https://api.github.com/users/digantdesai/following{/other_user}",
+      "gists_url": "https://api.github.com/users/digantdesai/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/digantdesai/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/digantdesai/subscriptions",
+      "organizations_url": "https://api.github.com/users/digantdesai/orgs",
+      "repos_url": "https://api.github.com/users/digantdesai/repos",
+      "events_url": "https://api.github.com/users/digantdesai/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/digantdesai/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9484a6c590f831a30c1eec1311568b1a967a89dc",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/9484a6c590f831a30c1eec1311568b1a967a89dc",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/9484a6c590f831a30c1eec1311568b1a967a89dc"
+      },
+      {
+        "sha": "3990771460470b37ef5affd98c206d5af9f89b80",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/3990771460470b37ef5affd98c206d5af9f89b80",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/3990771460470b37ef5affd98c206d5af9f89b80"
+      }
+    ]
+  },
+  {
+    "sha": "3990771460470b37ef5affd98c206d5af9f89b80",
+    "node_id": "C_kwDOBP5DD9oAKDM5OTA3NzE0NjA0NzBiMzdlZjVhZmZkOThjMjA2ZDVhZjlmODliODA",
+    "commit": {
+      "author": {
+        "name": "Frank Barchard",
+        "email": "fbarchard@google.com",
+        "date": "2024-02-24T00:58:01Z"
+      },
+      "committer": {
+        "name": "Frank Barchard",
+        "email": "fbarchard@google.com",
+        "date": "2024-02-24T00:58:01Z"
+      },
+      "message": "Add missing break to cpuinfo_x86_decode_cache_descriptor",
+      "tree": {
+        "sha": "a39e25d0da2dad841a5a7419d9763678928ac976",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/a39e25d0da2dad841a5a7419d9763678928ac976"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/3990771460470b37ef5affd98c206d5af9f89b80",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/3990771460470b37ef5affd98c206d5af9f89b80",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/3990771460470b37ef5affd98c206d5af9f89b80",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/3990771460470b37ef5affd98c206d5af9f89b80/comments",
+    "author": {
+      "login": "fbarchard",
+      "id": 14915597,
+      "node_id": "MDQ6VXNlcjE0OTE1NTk3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14915597?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/fbarchard",
+      "html_url": "https://github.com/fbarchard",
+      "followers_url": "https://api.github.com/users/fbarchard/followers",
+      "following_url": "https://api.github.com/users/fbarchard/following{/other_user}",
+      "gists_url": "https://api.github.com/users/fbarchard/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/fbarchard/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/fbarchard/subscriptions",
+      "organizations_url": "https://api.github.com/users/fbarchard/orgs",
+      "repos_url": "https://api.github.com/users/fbarchard/repos",
+      "events_url": "https://api.github.com/users/fbarchard/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/fbarchard/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "fbarchard",
+      "id": 14915597,
+      "node_id": "MDQ6VXNlcjE0OTE1NTk3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14915597?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/fbarchard",
+      "html_url": "https://github.com/fbarchard",
+      "followers_url": "https://api.github.com/users/fbarchard/followers",
+      "following_url": "https://api.github.com/users/fbarchard/following{/other_user}",
+      "gists_url": "https://api.github.com/users/fbarchard/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/fbarchard/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/fbarchard/subscriptions",
+      "organizations_url": "https://api.github.com/users/fbarchard/orgs",
+      "repos_url": "https://api.github.com/users/fbarchard/repos",
+      "events_url": "https://api.github.com/users/fbarchard/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/fbarchard/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9484a6c590f831a30c1eec1311568b1a967a89dc",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/9484a6c590f831a30c1eec1311568b1a967a89dc",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/9484a6c590f831a30c1eec1311568b1a967a89dc"
+      }
+    ]
+  },
+  {
+    "sha": "9484a6c590f831a30c1eec1311568b1a967a89dc",
+    "node_id": "C_kwDOBP5DD9oAKDk0ODRhNmM1OTBmODMxYTMwYzFlZWMxMzExNTY4YjFhOTY3YTg5ZGM",
+    "commit": {
+      "author": {
+        "name": "Mark Ryan",
+        "email": "markdryan@rivosinc.com",
+        "date": "2024-01-23T14:59:49Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-01-23T14:59:49Z"
+      },
+      "message": "ci: Add an Ubuntu:22.04 builder for RISC-V (#219)\n\ncpuinfo is built for riscv64 using a riscv64 container.  binfmt_misc\r\nallows the riscv64 binaries in the container to be executed with QEMU.\r\nThis is slower than cross compiling but as there's not that much code\r\nthe build times are acceptable.  It takes just under 6 minutes for the\r\nfull riscv64 github action to run.  We also have the option of running\r\nsome of the built RISC-V binaries, e.g., unit tests, in the CI. It\r\nshould be easy to expand the matrix to add CI for other architectures\r\nnot natively supported by github actions.",
+      "tree": {
+        "sha": "6106d04fe81f24dbcba82d7e00e4e762c160e5cc",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/6106d04fe81f24dbcba82d7e00e4e762c160e5cc"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/9484a6c590f831a30c1eec1311568b1a967a89dc",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJlr9RlCRC1aQ7uu5UhlAAArDEQABuo+ciEFv+FVkovjeNX43sE\nhKAIbjHap+odsYC706K6bnD40ma/2Z+Kd1x5EIjD13IrjJfrBAGy4XSsuJLJX46s\nRMEPUjHkmYGf38O4cT3rTjeBAUMw10tlhYXPpnj8mwJR0PDDWKXSFqqD81lLy3Ee\naxx1zkvJ4lGYEOb/FyYrPtaIW3DbWh4qrBxxfO+AglkgF+OIsutX03rta6u9ve4m\nP1Bps4WuxMm6sO8ukiD16sG0LtX9HqSBxkLqGHQqh/KnrXz/IOp7pK8dKma108Rw\nAoaq0GhCnYB2TiRbDYJL66sokej9J7OTqtwnaVbWZhWZABx5B3DCZWTtsxECvgW9\nN4GAt+AuDcW411jVdpq4OJNerH5bmlQ/QTNpzOoCK/coSNs3UUgIeEzceCy70sqF\nWEq/DmdFKDZ0OVKXt0Y8Z0H529oaJt1Y7hHiTcWUMkwn0ey1LOKwFp4iiXpBeySS\nJAwJpnNd0QjpIYVwchYkJ2uhLf9RwOksZ1jRrEoOzk5jBVyBcQJREhPOfmrJhDEw\nuRvvS+z4y5y+UO3jcREOC1CSmLmaAUydJTcYadbJSbuWm9+kUAE90jzjp9LkA2fV\nz6asnEYBc2gApHbqAVBAwtl3upNmi9SAvgVvGNVSy6Yazy7yELFu2xw8xpo+3W9Y\nBSarLQtjDSn/qVfHS6Am\n=j3+X\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 6106d04fe81f24dbcba82d7e00e4e762c160e5cc\nparent 434970b5d072d2f1e5e5fb44009884f278514588\nauthor Mark Ryan <markdryan@rivosinc.com> 1706021989 +0100\ncommitter GitHub <noreply@github.com> 1706021989 -0800\n\nci: Add an Ubuntu:22.04 builder for RISC-V (#219)\n\ncpuinfo is built for riscv64 using a riscv64 container.  binfmt_misc\r\nallows the riscv64 binaries in the container to be executed with QEMU.\r\nThis is slower than cross compiling but as there's not that much code\r\nthe build times are acceptable.  It takes just under 6 minutes for the\r\nfull riscv64 github action to run.  We also have the option of running\r\nsome of the built RISC-V binaries, e.g., unit tests, in the CI. It\r\nshould be easy to expand the matrix to add CI for other architectures\r\nnot natively supported by github actions."
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/9484a6c590f831a30c1eec1311568b1a967a89dc",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/9484a6c590f831a30c1eec1311568b1a967a89dc",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/9484a6c590f831a30c1eec1311568b1a967a89dc/comments",
+    "author": {
+      "login": "markdryan",
+      "id": 984073,
+      "node_id": "MDQ6VXNlcjk4NDA3Mw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/984073?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/markdryan",
+      "html_url": "https://github.com/markdryan",
+      "followers_url": "https://api.github.com/users/markdryan/followers",
+      "following_url": "https://api.github.com/users/markdryan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/markdryan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/markdryan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/markdryan/subscriptions",
+      "organizations_url": "https://api.github.com/users/markdryan/orgs",
+      "repos_url": "https://api.github.com/users/markdryan/repos",
+      "events_url": "https://api.github.com/users/markdryan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/markdryan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "434970b5d072d2f1e5e5fb44009884f278514588",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/434970b5d072d2f1e5e5fb44009884f278514588",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/434970b5d072d2f1e5e5fb44009884f278514588"
+      }
+    ]
+  },
+  {
+    "sha": "434970b5d072d2f1e5e5fb44009884f278514588",
+    "node_id": "C_kwDOBP5DD9oAKDQzNDk3MGI1ZDA3MmQyZjFlNWU1ZmI0NDAwOTg4NGYyNzg1MTQ1ODg",
+    "commit": {
+      "author": {
+        "name": "Prashanth Swaminathan",
+        "email": "40780424+prashanthswami@users.noreply.github.com",
+        "date": "2024-01-23T14:53:09Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-01-23T14:53:09Z"
+      },
+      "message": "Upgrade to warning when name is truncated (#216)\n\nSignal to users that the name field may not produce the expected string\r\nif the chipset name and revision exceeds the maximum size of the buffer.\r\nIn practice, this is unlikely as the buffer size is reasonably high for\r\na chipset name/revision.",
+      "tree": {
+        "sha": "13c5cf7b2e91002885a6bac25e871e3c6baaaeef",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/13c5cf7b2e91002885a6bac25e871e3c6baaaeef"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/434970b5d072d2f1e5e5fb44009884f278514588",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJlr9LVCRC1aQ7uu5UhlAAAdBkQAC0Qc8eh4xItpooXN4LJ2g31\nfj2UF65IzAVLIfdQjxGhRFpxuMrvzT3QPTdJ3Wd/PWR3LzoGnY4W00rEpgB/h83s\nRHOYPLv6VqOXAXSZrAWOh2DEfcn2E+fTN3IXy7oN11PCcnRPm1NeNDim22yMBOjC\nqQdeUwc26T3DrxisHQLQP2xBanSliRo+tmZGU8fyKO2WcvsOG3fWGcjT9kGHkl52\nq/XRG3XjoGas8s1k4gtBWu6Zabb0MH/Utf4AaHQgUCveuhB/XoI59IaIM1Xjslor\n7lDqt5sAZckUGak6GUBYaAZOSD+r2mNWleZc+3l+HEWm08zaQnD6Z/rwefwX7DfG\nSoUF/6KmILYyWeRBCdq/of9JRG+g9C+d3UQJN/H6ujOSEC2xkXl7KyB+kLFUrK+W\nCt0Ctdks64XOKWeITaKBpB8J/9rQKarkE6j563P9XiUg9WirtKeDfVP3XXYM/aq8\nJ7SR0td6DRNNePQ8P1OSfI99tNmKpjTlx1rqEGwgwfyGkRya4NVzEQWX5ENaYKIR\nmFXxXY69/9YX4Ldw8O81cCLUxpp8yZ3Qto9WI4ROmF9aK0OsPyD8JeTXUbRcgd/3\nr/ZFuPBTOApfrfY8k4kbgOdIy62+abQDr2XQFwVbWh5EmCvbNCiTl4YjWG2EeSFB\ntz6fszR6FPj/j8nJR7IH\n=JzVr\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 13c5cf7b2e91002885a6bac25e871e3c6baaaeef\nparent 9321265af2078e98b91774a53bdccaea0f6665f8\nauthor Prashanth Swaminathan <40780424+prashanthswami@users.noreply.github.com> 1706021589 -0800\ncommitter GitHub <noreply@github.com> 1706021589 -0800\n\nUpgrade to warning when name is truncated (#216)\n\nSignal to users that the name field may not produce the expected string\r\nif the chipset name and revision exceeds the maximum size of the buffer.\r\nIn practice, this is unlikely as the buffer size is reasonably high for\r\na chipset name/revision."
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/434970b5d072d2f1e5e5fb44009884f278514588",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/434970b5d072d2f1e5e5fb44009884f278514588",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/434970b5d072d2f1e5e5fb44009884f278514588/comments",
+    "author": {
+      "login": "prashanthswami",
+      "id": 40780424,
+      "node_id": "MDQ6VXNlcjQwNzgwNDI0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/40780424?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/prashanthswami",
+      "html_url": "https://github.com/prashanthswami",
+      "followers_url": "https://api.github.com/users/prashanthswami/followers",
+      "following_url": "https://api.github.com/users/prashanthswami/following{/other_user}",
+      "gists_url": "https://api.github.com/users/prashanthswami/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/prashanthswami/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/prashanthswami/subscriptions",
+      "organizations_url": "https://api.github.com/users/prashanthswami/orgs",
+      "repos_url": "https://api.github.com/users/prashanthswami/repos",
+      "events_url": "https://api.github.com/users/prashanthswami/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/prashanthswami/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9321265af2078e98b91774a53bdccaea0f6665f8",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/9321265af2078e98b91774a53bdccaea0f6665f8",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/9321265af2078e98b91774a53bdccaea0f6665f8"
+      }
+    ]
+  },
+  {
+    "sha": "9321265af2078e98b91774a53bdccaea0f6665f8",
+    "node_id": "C_kwDOBP5DD9oAKDkzMjEyNjVhZjIwNzhlOThiOTE3NzRhNTNiZGNjYWVhMGY2NjY1Zjg",
+    "commit": {
+      "author": {
+        "name": "Mark Ryan",
+        "email": "markdryan@rivosinc.com",
+        "date": "2024-01-22T17:43:46Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-01-22T17:43:46Z"
+      },
+      "message": "Fix RISC-V Linux build again (#215)\n\nPR https://github.com/pytorch/cpuinfo/pull/204 broke the RISC-V\r\nbuild by including for a second time a header file that currently\r\nonly exists in the RISC-V Android NDK.  The header is not yet\r\navailable in mainstream Linux distributions.  The header in question,\r\n<sys/hwprobe.h>, is already included when building for Android\r\nat the top of riscv-hw.c so the second include is unnecessary and\r\ncan be safely removed.",
+      "tree": {
+        "sha": "6d8fc346dfe3d0c2a652a761456b5ec86a8bc482",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/6d8fc346dfe3d0c2a652a761456b5ec86a8bc482"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/9321265af2078e98b91774a53bdccaea0f6665f8",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJlrqlSCRC1aQ7uu5UhlAAAhWgQAH1IQuOTK7u7cPmzSd8FqLYy\nAdfEyQcfbvqWGbogt2p8mLC5Xu+9kfu0yvacvICf3gryjhQVVw77NdI1lMTHvb0x\nAMCkqGtCKRUbG0aAA0WO9Aine2QC/PxbJqdzPhWlGIyBRaE34g1UPAa/cMuI5P5W\nuAQtAwSIocbQB+334TziMsMuM9mpGrjGGk94dxsnHuhoubj5Y3yrdfD9+DPnCMvx\nzTukmFBzeMrnqwbsmVT4YdLbf9maQQaeAZ0vDmZdZSZUKA2dmlNgVlvAxafUp++L\ndx003QqcrfHERP5lH0lpI5Iml2ugRkFMmj+b7rKEtWfHFl/gqa6Z7ACLuSdiMf6/\nCEvpzyVFSDJmbU9Sv+YttBrMF4YKNSME0gMhITCsmgIGb19X44A++JMhIbp4/IO5\nqTvjxugrolDumwy4uOfbzhUPSfyWDI6cdI9mocOpydj70VL3VskvmJbD6VVZVT/J\nLerL97QB5osT8JBgiDo8Gqt3EKhnW+CpYEE3mqXy4bwoyB2OfiSsDr3+kbOEZPIA\noB3TDcKoY6d/qLxp8sfg+ldoTQM0s7zrQ9bd9ZUtxkwaHFWDKxcb4fGs2Ve7dyVv\n8K3xecV7vUHeUJiaM16zlRQ6CNg5mFDZOOjT+quRBdEb2J7eptlgbAucRFNf2vzD\nKHEoGqphZdB92p5J9BIv\n=xLyO\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 6d8fc346dfe3d0c2a652a761456b5ec86a8bc482\nparent 76cc10d627add77922dc24521b332a055a4d6d77\nauthor Mark Ryan <markdryan@rivosinc.com> 1705945426 +0100\ncommitter GitHub <noreply@github.com> 1705945426 -0800\n\nFix RISC-V Linux build again (#215)\n\nPR https://github.com/pytorch/cpuinfo/pull/204 broke the RISC-V\r\nbuild by including for a second time a header file that currently\r\nonly exists in the RISC-V Android NDK.  The header is not yet\r\navailable in mainstream Linux distributions.  The header in question,\r\n<sys/hwprobe.h>, is already included when building for Android\r\nat the top of riscv-hw.c so the second include is unnecessary and\r\ncan be safely removed."
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/9321265af2078e98b91774a53bdccaea0f6665f8",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/9321265af2078e98b91774a53bdccaea0f6665f8",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/9321265af2078e98b91774a53bdccaea0f6665f8/comments",
+    "author": {
+      "login": "markdryan",
+      "id": 984073,
+      "node_id": "MDQ6VXNlcjk4NDA3Mw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/984073?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/markdryan",
+      "html_url": "https://github.com/markdryan",
+      "followers_url": "https://api.github.com/users/markdryan/followers",
+      "following_url": "https://api.github.com/users/markdryan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/markdryan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/markdryan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/markdryan/subscriptions",
+      "organizations_url": "https://api.github.com/users/markdryan/orgs",
+      "repos_url": "https://api.github.com/users/markdryan/repos",
+      "events_url": "https://api.github.com/users/markdryan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/markdryan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "76cc10d627add77922dc24521b332a055a4d6d77",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/76cc10d627add77922dc24521b332a055a4d6d77",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/76cc10d627add77922dc24521b332a055a4d6d77"
+      }
+    ]
+  },
+  {
+    "sha": "76cc10d627add77922dc24521b332a055a4d6d77",
+    "node_id": "C_kwDOBP5DD9oAKDc2Y2MxMGQ2MjdhZGQ3NzkyMmRjMjQ1MjFiMzMyYTA1NWE0ZDZkNzc",
+    "commit": {
+      "author": {
+        "name": "Prashanth Swaminathan",
+        "email": "40780424+prashanthswami@users.noreply.github.com",
+        "date": "2024-01-09T00:59:57Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-01-09T00:59:57Z"
+      },
+      "message": "Run Bazel build in Github Actions (#213)\n\nAs some clients rely on the Bazel build, add a workflow to verify at\r\nleast one Bazel target (linux-x86). Also, perform some minor cleanup to\r\ncomments and target branches in our workflow files.",
+      "tree": {
+        "sha": "e941b881a01629495249ffd5a14d6ca3118b957d",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/e941b881a01629495249ffd5a14d6ca3118b957d"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/76cc10d627add77922dc24521b332a055a4d6d77",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlnJqNCRBK7hj4Ov3rIwAALCMIAGx1QciIW7eRQ2yZsZ3sBAkV\nTcCcmE8KlZHle8Y3qxope8KJlYS/vklORehizz0WeUBXzBIs+S9Do1Os6yKeW7j9\ngQhxJLd4ij8BgLvRVJo3+7Wtav7i1fvufbIu+Em6FfWHPVzCCxUpoxNtxV5faAve\nULdM7cm3V/LVl32LZmJDp9C35gXFRnRSN1yeANag8aHVyoOsmaCIQBxkqJpTO2s0\nu5KN2qxSNGQ0DzcpFuYxQN7FHFe9SSgAqzJXa9OUDfkW7D6VUVDamUasQxUL/NyT\n86QrrtLdTj45YuVt64sF8zqejv2Wd8YyBElrhHyZ2nBCeFOR/tPnWtWVuR6BNRg=\n=xjCW\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree e941b881a01629495249ffd5a14d6ca3118b957d\nparent 050273682e78409dd76bdfea2a24e17f63f94977\nauthor Prashanth Swaminathan <40780424+prashanthswami@users.noreply.github.com> 1704761997 -0800\ncommitter GitHub <noreply@github.com> 1704761997 -0800\n\nRun Bazel build in Github Actions (#213)\n\nAs some clients rely on the Bazel build, add a workflow to verify at\r\nleast one Bazel target (linux-x86). Also, perform some minor cleanup to\r\ncomments and target branches in our workflow files."
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/76cc10d627add77922dc24521b332a055a4d6d77",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/76cc10d627add77922dc24521b332a055a4d6d77",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/76cc10d627add77922dc24521b332a055a4d6d77/comments",
+    "author": {
+      "login": "prashanthswami",
+      "id": 40780424,
+      "node_id": "MDQ6VXNlcjQwNzgwNDI0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/40780424?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/prashanthswami",
+      "html_url": "https://github.com/prashanthswami",
+      "followers_url": "https://api.github.com/users/prashanthswami/followers",
+      "following_url": "https://api.github.com/users/prashanthswami/following{/other_user}",
+      "gists_url": "https://api.github.com/users/prashanthswami/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/prashanthswami/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/prashanthswami/subscriptions",
+      "organizations_url": "https://api.github.com/users/prashanthswami/orgs",
+      "repos_url": "https://api.github.com/users/prashanthswami/repos",
+      "events_url": "https://api.github.com/users/prashanthswami/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/prashanthswami/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "050273682e78409dd76bdfea2a24e17f63f94977",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/050273682e78409dd76bdfea2a24e17f63f94977",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/050273682e78409dd76bdfea2a24e17f63f94977"
+      }
+    ]
+  },
+  {
+    "sha": "050273682e78409dd76bdfea2a24e17f63f94977",
+    "node_id": "C_kwDOBP5DD9oAKDA1MDI3MzY4MmU3ODQwOWRkNzZiZGZlYTJhMjRlMTdmNjNmOTQ5Nzc",
+    "commit": {
+      "author": {
+        "name": "Prashanth Swaminathan",
+        "email": "40780424+prashanthswami@users.noreply.github.com",
+        "date": "2024-01-08T21:05:58Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-01-08T21:05:58Z"
+      },
+      "message": "Adjust log levels of /proc/cpuinfo parsing (#209)\n\nThere are a few steps in our parsing logic where we skip lines that don't match the expectations of the /proc/cpuinfo node. Reduce the log level of these lines to 'debug', as these are not generally errors and are noisy on systems that have unique cpuinfo key-value pairs.\r\n\r\nWhen parsing logic encounters a higher-than-expected processor number, increase the level to warning, to indicate that an error may have occurred in the parsing step.\r\n\r\nThis does not fully address #19 but resolves the underlying noise reported.",
+      "tree": {
+        "sha": "dabbfcd60e94222a3d794222933922a1fdb08d20",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/dabbfcd60e94222a3d794222933922a1fdb08d20"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/050273682e78409dd76bdfea2a24e17f63f94977",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlnGO2CRBK7hj4Ov3rIwAAmgoIADMkdzzGq9NuS18HJcJ6QjMk\nr6BnL2triD3z68j80bFxRYT8gcfz16u8mybokwDEGIHFk689eYqw86vffAFoBTQr\ng56Y42ZtvZyOO19AXN+44fCRqIAjOdAuWzuTVV7MQV6x+LajG02oaq9jv0NRL2uW\nojVjjqNERyE9XhwYe5CfsNjwJU8gFM/A2hQTjBpEI7TMRyO1Kzsn9WRYSGtdAQWZ\noUXTOFf/u2gAuudNWFD4XSSjugUk+r4Y6UeVpONqAQRrMYRhG10dugvl2uM6Gjuk\nDwkwq34kqNRMqC/kM2OimB1ifp9YUUf2uG5sHfdQRMoDZmNBUodvpWiToGjbVHE=\n=Zge4\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree dabbfcd60e94222a3d794222933922a1fdb08d20\nparent 42bff7ad39de3eb520cb20ab27f51ed816935edc\nauthor Prashanth Swaminathan <40780424+prashanthswami@users.noreply.github.com> 1704747958 -0800\ncommitter GitHub <noreply@github.com> 1704747958 -0800\n\nAdjust log levels of /proc/cpuinfo parsing (#209)\n\nThere are a few steps in our parsing logic where we skip lines that don't match the expectations of the /proc/cpuinfo node. Reduce the log level of these lines to 'debug', as these are not generally errors and are noisy on systems that have unique cpuinfo key-value pairs.\r\n\r\nWhen parsing logic encounters a higher-than-expected processor number, increase the level to warning, to indicate that an error may have occurred in the parsing step.\r\n\r\nThis does not fully address #19 but resolves the underlying noise reported."
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/050273682e78409dd76bdfea2a24e17f63f94977",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/050273682e78409dd76bdfea2a24e17f63f94977",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/050273682e78409dd76bdfea2a24e17f63f94977/comments",
+    "author": {
+      "login": "prashanthswami",
+      "id": 40780424,
+      "node_id": "MDQ6VXNlcjQwNzgwNDI0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/40780424?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/prashanthswami",
+      "html_url": "https://github.com/prashanthswami",
+      "followers_url": "https://api.github.com/users/prashanthswami/followers",
+      "following_url": "https://api.github.com/users/prashanthswami/following{/other_user}",
+      "gists_url": "https://api.github.com/users/prashanthswami/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/prashanthswami/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/prashanthswami/subscriptions",
+      "organizations_url": "https://api.github.com/users/prashanthswami/orgs",
+      "repos_url": "https://api.github.com/users/prashanthswami/repos",
+      "events_url": "https://api.github.com/users/prashanthswami/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/prashanthswami/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "42bff7ad39de3eb520cb20ab27f51ed816935edc",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/42bff7ad39de3eb520cb20ab27f51ed816935edc",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/42bff7ad39de3eb520cb20ab27f51ed816935edc"
+      }
+    ]
+  },
+  {
+    "sha": "42bff7ad39de3eb520cb20ab27f51ed816935edc",
+    "node_id": "C_kwDOBP5DD9oAKDQyYmZmN2FkMzlkZTNlYjUyMGNiMjBhYjI3ZjUxZWQ4MTY5MzVlZGM",
+    "commit": {
+      "author": {
+        "name": "Prashanth Swaminathan",
+        "email": "40780424+prashanthswami@users.noreply.github.com",
+        "date": "2024-01-06T01:17:27Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-01-06T01:17:27Z"
+      },
+      "message": "Add .clang-format to enforce project style (#204)\n\n* Add .clang-format to enforce project style\r\n\r\nThe settings here match the current settings for the pytorch/pytorch\r\nproject, with the exception that 8-character-width tabs are preferred in\r\nplace of spaces.\r\n\r\n* Mass reformat of all .c and .h files\r\n\r\nNow that we have a clang-format file defined, clean up all usages once.\r\n\r\n* Enable clang-format-check workflow\r\n\r\nEnforce clang-format consistency on all new changes.",
+      "tree": {
+        "sha": "8144d604fefbdffe0b2b14a99eab1389c8ac1d87",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/8144d604fefbdffe0b2b14a99eab1389c8ac1d87"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/42bff7ad39de3eb520cb20ab27f51ed816935edc",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlmKonCRBK7hj4Ov3rIwAAYwsIAFxVwCKtOvVnEl9hqQ7wxLIG\n21bi9fSv2dMDlXyadTxqP6eaF1HuWP97vEHBSXvZPfRUAqkto9rDmoVFNlbhVA2F\nhvJ2RfnoxJ2EOA3QHYp32lyXD115PUVr2ax7iLPvCDSVHBfa7LvOYGpz4CabDckA\nMUIpIQFCynYhecylRZ5L/LcS3lHN1m0xPm2HXFOmqGu8IQpmg6tEBOpHRwKf5br5\ncWBmNb7qk4CVdhOv5VbnDM7/asbcAxxAGzENQOUz8LiKeORqr3KCTMACycnDec1/\nfurEcQ5/6IeAQfViCgqVNSrx3q53orB7ngjPrdV8G1gxDlcnJ1SycbN/nZFlC5E=\n=IFg5\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 8144d604fefbdffe0b2b14a99eab1389c8ac1d87\nparent 313524ab20d2041854af8ad07bf726ddd485d258\nauthor Prashanth Swaminathan <40780424+prashanthswami@users.noreply.github.com> 1704503847 -0800\ncommitter GitHub <noreply@github.com> 1704503847 -0800\n\nAdd .clang-format to enforce project style (#204)\n\n* Add .clang-format to enforce project style\r\n\r\nThe settings here match the current settings for the pytorch/pytorch\r\nproject, with the exception that 8-character-width tabs are preferred in\r\nplace of spaces.\r\n\r\n* Mass reformat of all .c and .h files\r\n\r\nNow that we have a clang-format file defined, clean up all usages once.\r\n\r\n* Enable clang-format-check workflow\r\n\r\nEnforce clang-format consistency on all new changes."
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/42bff7ad39de3eb520cb20ab27f51ed816935edc",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/42bff7ad39de3eb520cb20ab27f51ed816935edc",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/42bff7ad39de3eb520cb20ab27f51ed816935edc/comments",
+    "author": {
+      "login": "prashanthswami",
+      "id": 40780424,
+      "node_id": "MDQ6VXNlcjQwNzgwNDI0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/40780424?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/prashanthswami",
+      "html_url": "https://github.com/prashanthswami",
+      "followers_url": "https://api.github.com/users/prashanthswami/followers",
+      "following_url": "https://api.github.com/users/prashanthswami/following{/other_user}",
+      "gists_url": "https://api.github.com/users/prashanthswami/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/prashanthswami/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/prashanthswami/subscriptions",
+      "organizations_url": "https://api.github.com/users/prashanthswami/orgs",
+      "repos_url": "https://api.github.com/users/prashanthswami/repos",
+      "events_url": "https://api.github.com/users/prashanthswami/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/prashanthswami/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "313524ab20d2041854af8ad07bf726ddd485d258",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/313524ab20d2041854af8ad07bf726ddd485d258",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/313524ab20d2041854af8ad07bf726ddd485d258"
+      }
+    ]
+  },
+  {
+    "sha": "313524ab20d2041854af8ad07bf726ddd485d258",
+    "node_id": "C_kwDOBP5DD9oAKDMxMzUyNGFiMjBkMjA0MTg1NGFmOGFkMDdiZjcyNmRkZDQ4NWQyNTg",
+    "commit": {
+      "author": {
+        "name": "Mark Ryan",
+        "email": "desdemonaryan@hotmail.com",
+        "date": "2024-01-05T18:26:21Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-01-05T18:26:21Z"
+      },
+      "message": "Fix RISC-V Linux build (#212)\n\nCpuinfo was failing to build on RISC-V Linux distributions, e.g.,\r\nUbuntu 23.10, as it includes a header file sys/hwprobe.h that is\r\nnot yet provided by glibc (although it is provided by bionic).  We\r\nfix the issue by only including sys/hwprobe.h when building for\r\nAndroid, and invoking the hwprobe syscall directly on other\r\nLinux distributions.  The Android specific check can be removed in\r\nthe future once sys/hwprobe.h becomes available in glibc.",
+      "tree": {
+        "sha": "0b2ce35f5c6c01c49b81a02774539b8153eed26d",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/0b2ce35f5c6c01c49b81a02774539b8153eed26d"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/313524ab20d2041854af8ad07bf726ddd485d258",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlmEnNCRBK7hj4Ov3rIwAAVBYIAIu3fSFDwZvFlp2x0KW4d3Lr\nC+do1J6oFJ9C2bGbAn2CmuMojY5q/gqeyFIKxsc+tyoUWytImhP5tDR4VisooT0z\nN2VmilCcGKFyC30R3svIfVo8Lc3OsQITGLycppJa4/0uYYSaFpSOAedsuM73BJeg\na70cxCtYIhs4QeUv/5UMD7zm/QQWTxflMweIASCoGAvnWVOraNkrm2jy/wTk4+W4\ncZPEV/u0XoNLenh6TK5t6MInYsnQLCFupwXaTyK4415gUGnrH58xDHmmwgqX8QxL\nbiHuWIU8LDhLNaAEyuNHdPcwkER9EoB9SZex+LHq1tZLsWuzrNv8mU9GoxVCrHE=\n=XwGi\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 0b2ce35f5c6c01c49b81a02774539b8153eed26d\nparent 2f4c278f7aa3e9a451c14c3e9a02c3e091140d96\nauthor Mark Ryan <desdemonaryan@hotmail.com> 1704479181 +0000\ncommitter GitHub <noreply@github.com> 1704479181 -0800\n\nFix RISC-V Linux build (#212)\n\nCpuinfo was failing to build on RISC-V Linux distributions, e.g.,\r\nUbuntu 23.10, as it includes a header file sys/hwprobe.h that is\r\nnot yet provided by glibc (although it is provided by bionic).  We\r\nfix the issue by only including sys/hwprobe.h when building for\r\nAndroid, and invoking the hwprobe syscall directly on other\r\nLinux distributions.  The Android specific check can be removed in\r\nthe future once sys/hwprobe.h becomes available in glibc."
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/313524ab20d2041854af8ad07bf726ddd485d258",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/313524ab20d2041854af8ad07bf726ddd485d258",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/313524ab20d2041854af8ad07bf726ddd485d258/comments",
+    "author": {
+      "login": "markdryan",
+      "id": 984073,
+      "node_id": "MDQ6VXNlcjk4NDA3Mw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/984073?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/markdryan",
+      "html_url": "https://github.com/markdryan",
+      "followers_url": "https://api.github.com/users/markdryan/followers",
+      "following_url": "https://api.github.com/users/markdryan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/markdryan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/markdryan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/markdryan/subscriptions",
+      "organizations_url": "https://api.github.com/users/markdryan/orgs",
+      "repos_url": "https://api.github.com/users/markdryan/repos",
+      "events_url": "https://api.github.com/users/markdryan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/markdryan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2f4c278f7aa3e9a451c14c3e9a02c3e091140d96",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/2f4c278f7aa3e9a451c14c3e9a02c3e091140d96",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/2f4c278f7aa3e9a451c14c3e9a02c3e091140d96"
+      }
+    ]
+  },
+  {
+    "sha": "2f4c278f7aa3e9a451c14c3e9a02c3e091140d96",
+    "node_id": "C_kwDOBP5DD9oAKDJmNGMyNzhmN2FhM2U5YTQ1MWMxNGMzZTlhMDJjM2UwOTExNDBkOTY",
+    "commit": {
+      "author": {
+        "name": "Iacopo Colonnelli",
+        "email": "iacopo.c92@gmail.com",
+        "date": "2023-12-08T05:34:03Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-12-08T05:34:03Z"
+      },
+      "message": "Improve smallfile callback (#211)\n\nThis PR improves the smallfile callback error reporting, passing the\r\nname of the inspected file in the `filename` argument instead of forcing\r\nit to be `KERNEL_MAX_FILENAME` as before.",
+      "tree": {
+        "sha": "c6e2fcdbbfc969d7bec14a44b6e46d6d8db62648",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/c6e2fcdbbfc969d7bec14a44b6e46d6d8db62648"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/2f4c278f7aa3e9a451c14c3e9a02c3e091140d96",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlcqrLCRBK7hj4Ov3rIwAAWC0IAD0akmkUAvylFjT9tv9xCorT\nuxBog9XMAeXWjzolxvnbsXz1MVLLvbP91v87aNS6Il6y7Wp8WwgZ16dC9rGGyMhE\nJBXdMsbYSSdIrefL65LxB6C86XnRYlBn2XLLZx7xMIskA5GTz5qGqDOIk3TXNYs9\nyO7BFpeWjZSg2B4IDme93WVJMWHX7n8D2kSMKWUIvBoVCC1LOL4h4AehQHKCFN24\nTGLe3gRga0ZbQLLQKAiuMBvswfHOfL1EjUUkf+UPyBoX1HMbXrTHCm9fL0PQ8wT0\n1n+ySqnlkHljGpYIvOn/zDyVDX+OoI69qtS6ZVzJZXPfYksP1hesCvRx6knFRXs=\n=/70D\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree c6e2fcdbbfc969d7bec14a44b6e46d6d8db62648\nparent b8b29a164e7704b75ad66b072aa2db409cc941fd\nauthor Iacopo Colonnelli <iacopo.c92@gmail.com> 1702013643 +0100\ncommitter GitHub <noreply@github.com> 1702013643 -0800\n\nImprove smallfile callback (#211)\n\nThis PR improves the smallfile callback error reporting, passing the\r\nname of the inspected file in the `filename` argument instead of forcing\r\nit to be `KERNEL_MAX_FILENAME` as before."
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/2f4c278f7aa3e9a451c14c3e9a02c3e091140d96",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/2f4c278f7aa3e9a451c14c3e9a02c3e091140d96",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/2f4c278f7aa3e9a451c14c3e9a02c3e091140d96/comments",
+    "author": {
+      "login": "GlassOfWhiskey",
+      "id": 15560442,
+      "node_id": "MDQ6VXNlcjE1NTYwNDQy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/15560442?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/GlassOfWhiskey",
+      "html_url": "https://github.com/GlassOfWhiskey",
+      "followers_url": "https://api.github.com/users/GlassOfWhiskey/followers",
+      "following_url": "https://api.github.com/users/GlassOfWhiskey/following{/other_user}",
+      "gists_url": "https://api.github.com/users/GlassOfWhiskey/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/GlassOfWhiskey/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/GlassOfWhiskey/subscriptions",
+      "organizations_url": "https://api.github.com/users/GlassOfWhiskey/orgs",
+      "repos_url": "https://api.github.com/users/GlassOfWhiskey/repos",
+      "events_url": "https://api.github.com/users/GlassOfWhiskey/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/GlassOfWhiskey/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b8b29a164e7704b75ad66b072aa2db409cc941fd",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/b8b29a164e7704b75ad66b072aa2db409cc941fd",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/b8b29a164e7704b75ad66b072aa2db409cc941fd"
+      }
+    ]
+  },
+  {
+    "sha": "b8b29a164e7704b75ad66b072aa2db409cc941fd",
+    "node_id": "C_kwDOBP5DD9oAKGI4YjI5YTE2NGU3NzA0Yjc1YWQ2NmIwNzJhYTJkYjQwOWNjOTQxZmQ",
+    "commit": {
+      "author": {
+        "name": "Prashanth Swaminathan",
+        "email": "40780424+prashanthswami@users.noreply.github.com",
+        "date": "2023-11-30T14:47:12Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-11-30T14:47:12Z"
+      },
+      "message": "Fix chipset enum name to include 'vendor_' (#210)\n\nThe original change that introduced this should have used a consistent prefix for all enum types, for consistency sake.",
+      "tree": {
+        "sha": "c9f4a323635ff9585dac77f229b8e0fdb5255be0",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/c9f4a323635ff9585dac77f229b8e0fdb5255be0"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/b8b29a164e7704b75ad66b072aa2db409cc941fd",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlaKBwCRBK7hj4Ov3rIwAAh7YIAA7rd1EcL+AztrgNIl+zzFh5\nCRDXFQyH/mFghyj3ozuPs8Qi3Pyf8Db+X6eSFnJ1iu43NjaEdHPQc1khlfwfDG/X\nC1iceW3208GKUQKxpneSgkcxKTiqjZSCfsxgeG0h/EWZoSD21xnTspWFTQcAJBfN\nAfS9OVOnwTRbOXS9XWea5WHPcD9arkjSm88aZp7GUERXQU4wiRd+ARzsF07p0K3f\n4wAbcaqx5g5PqIdoT71/arCewlv3EWAbq25DF43WTjDAVs6R4eBhRj6RE6Z3z/9a\nSSdi+Htr6CBprSHgLEE9AHHPePU8hJnF9tQ/v9rE1lKwj2LWKM7R3tx28t7C3cM=\n=eSPg\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree c9f4a323635ff9585dac77f229b8e0fdb5255be0\nparent 9d809924011af8ff49dadbda1499dc5193f1659c\nauthor Prashanth Swaminathan <40780424+prashanthswami@users.noreply.github.com> 1701355632 -0800\ncommitter GitHub <noreply@github.com> 1701355632 -0800\n\nFix chipset enum name to include 'vendor_' (#210)\n\nThe original change that introduced this should have used a consistent prefix for all enum types, for consistency sake."
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/b8b29a164e7704b75ad66b072aa2db409cc941fd",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/b8b29a164e7704b75ad66b072aa2db409cc941fd",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/b8b29a164e7704b75ad66b072aa2db409cc941fd/comments",
+    "author": {
+      "login": "prashanthswami",
+      "id": 40780424,
+      "node_id": "MDQ6VXNlcjQwNzgwNDI0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/40780424?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/prashanthswami",
+      "html_url": "https://github.com/prashanthswami",
+      "followers_url": "https://api.github.com/users/prashanthswami/followers",
+      "following_url": "https://api.github.com/users/prashanthswami/following{/other_user}",
+      "gists_url": "https://api.github.com/users/prashanthswami/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/prashanthswami/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/prashanthswami/subscriptions",
+      "organizations_url": "https://api.github.com/users/prashanthswami/orgs",
+      "repos_url": "https://api.github.com/users/prashanthswami/repos",
+      "events_url": "https://api.github.com/users/prashanthswami/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/prashanthswami/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9d809924011af8ff49dadbda1499dc5193f1659c",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/9d809924011af8ff49dadbda1499dc5193f1659c",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/9d809924011af8ff49dadbda1499dc5193f1659c"
+      }
+    ]
+  },
+  {
+    "sha": "9d809924011af8ff49dadbda1499dc5193f1659c",
+    "node_id": "C_kwDOBP5DD9oAKDlkODA5OTI0MDExYWY4ZmY0OWRhZGJkYTE0OTlkYzUxOTNmMTY1OWM",
+    "commit": {
+      "author": {
+        "name": "Prashanth Swaminathan",
+        "email": "40780424+prashanthswami@users.noreply.github.com",
+        "date": "2023-11-28T16:06:02Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-11-28T16:06:02Z"
+      },
+      "message": "Fix CPU_SET dynamic allocation and leak (#205)\n\nThe initial implementation had a number of issues:\r\n- The allocation of the CPU_SET should be checked for a NULL return.\r\n- The CPU_*_S macros should be used when working with dynamic sets.\r\n- The CPU_SET needs to be cleared via CPU_ZERO_S before use.\r\n- Dynamic CPU_SETs need to be freed after use.\r\n- The __riscv_hwprobe syscall is expecting a set *size* not a *count*.",
+      "tree": {
+        "sha": "cffc1cfd500e42f75ce47f37e71087ccb3309967",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/cffc1cfd500e42f75ce47f37e71087ccb3309967"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/9d809924011af8ff49dadbda1499dc5193f1659c",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlZg/qCRBK7hj4Ov3rIwAAlmsIAFC5nandce5cGjn0aqnDvifW\nzWA1PTSjptU3KKI+HgqFojX/RhphyhOdQWRTLTGVGWRWP96M9L4Klea2Qyq4lHVX\nuIkTalHuBAIsI8zqcyztYY/seHB3uSfNs1RCrqh4axAaTviKzoqaMmjEWdP5tjI2\nLgpfcPvZ57i5x/xrrEPaIxFsdtgYllczJrTxf/dTSuJBvQO05ZlR6LLYjUEN6h/i\n3LPPkiw3DyazJn7bMyEZS2ILi95YMloYQBdHOyYhCZeo030vqa6ny6XORnDz6gkE\nXODUb5OrVjTil9pGNwiSsGSrMlS7gbS+tg4ydc9a9F4YqYgebU87AYHz/iQyJBs=\n=PiHl\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree cffc1cfd500e42f75ce47f37e71087ccb3309967\nparent ef634603954d88d2643d5809011288b890ac126e\nauthor Prashanth Swaminathan <40780424+prashanthswami@users.noreply.github.com> 1701187562 -0800\ncommitter GitHub <noreply@github.com> 1701187562 -0800\n\nFix CPU_SET dynamic allocation and leak (#205)\n\nThe initial implementation had a number of issues:\r\n- The allocation of the CPU_SET should be checked for a NULL return.\r\n- The CPU_*_S macros should be used when working with dynamic sets.\r\n- The CPU_SET needs to be cleared via CPU_ZERO_S before use.\r\n- Dynamic CPU_SETs need to be freed after use.\r\n- The __riscv_hwprobe syscall is expecting a set *size* not a *count*."
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/9d809924011af8ff49dadbda1499dc5193f1659c",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/9d809924011af8ff49dadbda1499dc5193f1659c",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/9d809924011af8ff49dadbda1499dc5193f1659c/comments",
+    "author": {
+      "login": "prashanthswami",
+      "id": 40780424,
+      "node_id": "MDQ6VXNlcjQwNzgwNDI0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/40780424?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/prashanthswami",
+      "html_url": "https://github.com/prashanthswami",
+      "followers_url": "https://api.github.com/users/prashanthswami/followers",
+      "following_url": "https://api.github.com/users/prashanthswami/following{/other_user}",
+      "gists_url": "https://api.github.com/users/prashanthswami/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/prashanthswami/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/prashanthswami/subscriptions",
+      "organizations_url": "https://api.github.com/users/prashanthswami/orgs",
+      "repos_url": "https://api.github.com/users/prashanthswami/repos",
+      "events_url": "https://api.github.com/users/prashanthswami/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/prashanthswami/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ef634603954d88d2643d5809011288b890ac126e",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/ef634603954d88d2643d5809011288b890ac126e",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/ef634603954d88d2643d5809011288b890ac126e"
+      }
+    ]
+  },
+  {
+    "sha": "ef634603954d88d2643d5809011288b890ac126e",
+    "node_id": "C_kwDOBP5DD9oAKGVmNjM0NjAzOTU0ZDg4ZDI2NDNkNTgwOTAxMTI4OGI4OTBhYzEyNmU",
+    "commit": {
+      "author": {
+        "name": "Prashanth Swaminathan",
+        "email": "40780424+prashanthswami@users.noreply.github.com",
+        "date": "2023-11-20T18:46:35Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-11-20T18:46:35Z"
+      },
+      "message": "Add android_riscv64 to BUILD.bazel (#201)",
+      "tree": {
+        "sha": "18f20ed8db763610ee9000c3db6a3d246ddb54c9",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/18f20ed8db763610ee9000c3db6a3d246ddb54c9"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/ef634603954d88d2643d5809011288b890ac126e",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlW6mLCRBK7hj4Ov3rIwAARA4IAIQ1odDgfV6KmJipCea3v36P\n1hjqVV2yNO/u1yTCocB+uQdSf1cYohopWlWL9ZqKA/5Y9Ot/AKNJiS4Ir1Md/wYS\nz0ITUMC5FHlqd74gLz/nnovdRlM3cTraa5ej4ZQA6uO4nSmHZ86ikNy2Qy80+pay\nOPznUB4aWAQLd5QGs6+d/MYt9jMuvdqNXjQBKn+/EZHlRQ2poe9caKy9MEbB0N5P\npruSR+t5vSscKaANswa/rKYh3GH2Z7JY+WDOMv/1pjoaEh3s3+09RjKbzbEupFEw\nvuxvu/oBEQkDM+I1bHxkm7MK6RFS0CMTQqsifvR5an+cChML99OgCcL2T9a9q6A=\n=LPxj\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 18f20ed8db763610ee9000c3db6a3d246ddb54c9\nparent 20bd32c1b50d8d70f8ddd67e7e8782bf3847ebad\nauthor Prashanth Swaminathan <40780424+prashanthswami@users.noreply.github.com> 1700505995 -0800\ncommitter GitHub <noreply@github.com> 1700505995 -0800\n\nAdd android_riscv64 to BUILD.bazel (#201)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/ef634603954d88d2643d5809011288b890ac126e",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/ef634603954d88d2643d5809011288b890ac126e",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/ef634603954d88d2643d5809011288b890ac126e/comments",
+    "author": {
+      "login": "prashanthswami",
+      "id": 40780424,
+      "node_id": "MDQ6VXNlcjQwNzgwNDI0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/40780424?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/prashanthswami",
+      "html_url": "https://github.com/prashanthswami",
+      "followers_url": "https://api.github.com/users/prashanthswami/followers",
+      "following_url": "https://api.github.com/users/prashanthswami/following{/other_user}",
+      "gists_url": "https://api.github.com/users/prashanthswami/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/prashanthswami/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/prashanthswami/subscriptions",
+      "organizations_url": "https://api.github.com/users/prashanthswami/orgs",
+      "repos_url": "https://api.github.com/users/prashanthswami/repos",
+      "events_url": "https://api.github.com/users/prashanthswami/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/prashanthswami/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "20bd32c1b50d8d70f8ddd67e7e8782bf3847ebad",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/20bd32c1b50d8d70f8ddd67e7e8782bf3847ebad",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/20bd32c1b50d8d70f8ddd67e7e8782bf3847ebad"
+      }
+    ]
+  },
+  {
+    "sha": "20bd32c1b50d8d70f8ddd67e7e8782bf3847ebad",
+    "node_id": "C_kwDOBP5DD9oAKDIwYmQzMmMxYjUwZDhkNzBmOGRkZDY3ZTdlODc4MmJmMzg0N2ViYWQ",
+    "commit": {
+      "author": {
+        "name": "snadampal",
+        "email": "87143774+snadampal@users.noreply.github.com",
+        "date": "2023-11-16T22:47:25Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-11-16T22:47:25Z"
+      },
+      "message": "[arm] fix the logic for identifying the valid processors (#197)\n\nThe current logic for valid processor detection is reporting all cpus irrespective of whether they are online or not. so, it's causing thread over-subscription for the scenarios where the online cpu count < the actual cpus. This is fixed by publishing only the online cpu count as the valid processors.",
+      "tree": {
+        "sha": "d7cb1bd2350ae2e00d0de0ae270e3460ba596442",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/d7cb1bd2350ae2e00d0de0ae270e3460ba596442"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/20bd32c1b50d8d70f8ddd67e7e8782bf3847ebad",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlVpv9CRBK7hj4Ov3rIwAA82gIAKP5BZEWh25jcbwI40zNIudH\npq8GAiQC9KFpput0DJ7HIkhbbsSzbySI4NIao9sCPJv3bnX8tsf97DvHPfwrafc0\nQyaVzmbnfGOSoQ2jWmaAKM7qGkZF9xVrB7R4yEAXDvvPzw/zHTKgv7hfNx+e6d34\nHWBi5oX6ga1FM53PJ7NDxRK7mnxzHxVEbCSipl9sr0vcj7/BoexZu6Q8ZLrCuzCL\nVU0fsJcglSpA/mzIPQ8QbNUDbwxWd49Nix/CLgoL1RqBHud5LO3yxTeaIxhknm5M\napxYs99Nu4+lsBs0qrGKQ4utB095h0lCWdQVaEnwK11BZhoz3yRl7F4866Jr/lI=\n=Wd8J\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree d7cb1bd2350ae2e00d0de0ae270e3460ba596442\nparent 9f13d15a88de63cfb516f12cc9ac330ad8b9cadb\nauthor snadampal <87143774+snadampal@users.noreply.github.com> 1700174845 -0600\ncommitter GitHub <noreply@github.com> 1700174845 -0800\n\n[arm] fix the logic for identifying the valid processors (#197)\n\nThe current logic for valid processor detection is reporting all cpus irrespective of whether they are online or not. so, it's causing thread over-subscription for the scenarios where the online cpu count < the actual cpus. This is fixed by publishing only the online cpu count as the valid processors."
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/20bd32c1b50d8d70f8ddd67e7e8782bf3847ebad",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/20bd32c1b50d8d70f8ddd67e7e8782bf3847ebad",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/20bd32c1b50d8d70f8ddd67e7e8782bf3847ebad/comments",
+    "author": {
+      "login": "snadampal",
+      "id": 87143774,
+      "node_id": "MDQ6VXNlcjg3MTQzNzc0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/87143774?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/snadampal",
+      "html_url": "https://github.com/snadampal",
+      "followers_url": "https://api.github.com/users/snadampal/followers",
+      "following_url": "https://api.github.com/users/snadampal/following{/other_user}",
+      "gists_url": "https://api.github.com/users/snadampal/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/snadampal/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/snadampal/subscriptions",
+      "organizations_url": "https://api.github.com/users/snadampal/orgs",
+      "repos_url": "https://api.github.com/users/snadampal/repos",
+      "events_url": "https://api.github.com/users/snadampal/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/snadampal/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9f13d15a88de63cfb516f12cc9ac330ad8b9cadb",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/9f13d15a88de63cfb516f12cc9ac330ad8b9cadb",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/9f13d15a88de63cfb516f12cc9ac330ad8b9cadb"
+      }
+    ]
+  },
+  {
+    "sha": "9f13d15a88de63cfb516f12cc9ac330ad8b9cadb",
+    "node_id": "C_kwDOBP5DD9oAKDlmMTNkMTVhODhkZTYzY2ZiNTE2ZjEyY2M5YWMzMzBhZDhiOWNhZGI",
+    "commit": {
+      "author": {
+        "name": "Prashanth Swaminathan",
+        "email": "40780424+prashanthswami@users.noreply.github.com",
+        "date": "2023-11-16T17:07:26Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-11-16T17:07:26Z"
+      },
+      "message": "Fix size check of max processor count (#199)\n\nOn 64-bit systems, size_t will not overflow when the function to get max\r\nprocessors returns UINT32_MAX. Use the appropriate uint32_t type.",
+      "tree": {
+        "sha": "bcd1e245e82d61a0cb3b1a140654ae2779e639cf",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/bcd1e245e82d61a0cb3b1a140654ae2779e639cf"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/9f13d15a88de63cfb516f12cc9ac330ad8b9cadb",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlVkxOCRBK7hj4Ov3rIwAAgIUIABuuVK/ghL3C94dtbhc1PxaX\nwXMdTJspzIzOdz7F5NTllG44ZbjD5VAKLLX5aJybR2SymqrgMRFAPhrHSoIUmOua\ne1Ms/BeRMZyy8AmtbMJrpQsLYJNTsSu+/EP+9tptki8WAy0COz3zN7CXs7/afFKx\nPChJ/p37xClb7ZelattoXwI1WshMsYfHuE0wkY+P4wQkBBwOnN9h1tRcFkHPfo6q\n1TKWkp2AYI4aBq+Eiq+nzJa9fmtuzcKZx55oWRwnr5C/SMAmSRDK4j4MN3EIMQbn\nGvwB4m0/H16S2cSQngL0uKrGufnuvo+Oc8E/Q2RLpg5L8yhISvnB064hZS3Du/U=\n=20o8\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree bcd1e245e82d61a0cb3b1a140654ae2779e639cf\nparent 4e5be9e1c6c5895bc5105a92d587bc9df8d2522b\nauthor Prashanth Swaminathan <40780424+prashanthswami@users.noreply.github.com> 1700154446 -0800\ncommitter GitHub <noreply@github.com> 1700154446 -0800\n\nFix size check of max processor count (#199)\n\nOn 64-bit systems, size_t will not overflow when the function to get max\r\nprocessors returns UINT32_MAX. Use the appropriate uint32_t type."
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/9f13d15a88de63cfb516f12cc9ac330ad8b9cadb",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/9f13d15a88de63cfb516f12cc9ac330ad8b9cadb",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/9f13d15a88de63cfb516f12cc9ac330ad8b9cadb/comments",
+    "author": {
+      "login": "prashanthswami",
+      "id": 40780424,
+      "node_id": "MDQ6VXNlcjQwNzgwNDI0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/40780424?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/prashanthswami",
+      "html_url": "https://github.com/prashanthswami",
+      "followers_url": "https://api.github.com/users/prashanthswami/followers",
+      "following_url": "https://api.github.com/users/prashanthswami/following{/other_user}",
+      "gists_url": "https://api.github.com/users/prashanthswami/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/prashanthswami/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/prashanthswami/subscriptions",
+      "organizations_url": "https://api.github.com/users/prashanthswami/orgs",
+      "repos_url": "https://api.github.com/users/prashanthswami/repos",
+      "events_url": "https://api.github.com/users/prashanthswami/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/prashanthswami/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4e5be9e1c6c5895bc5105a92d587bc9df8d2522b",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/4e5be9e1c6c5895bc5105a92d587bc9df8d2522b",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/4e5be9e1c6c5895bc5105a92d587bc9df8d2522b"
+      }
+    ]
+  },
+  {
+    "sha": "4e5be9e1c6c5895bc5105a92d587bc9df8d2522b",
+    "node_id": "C_kwDOBP5DD9oAKDRlNWJlOWUxYzZjNTg5NWJjNTEwNWE5MmQ1ODdiYzlkZjhkMjUyMmI",
+    "commit": {
+      "author": {
+        "name": "Prashanth Swaminathan",
+        "email": "40780424+prashanthswami@users.noreply.github.com",
+        "date": "2023-11-14T19:24:07Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-11-14T19:24:07Z"
+      },
+      "message": "Add limited support for RISC-V initialization (#190)\n\n* Adds header definitions for RISCV32 and RISCV64, and support in Bazel\r\n  files for RISCV64. Adds ISA information for RISC-V and hwcap support.\r\n\r\n* Adds support to construct the processor, core, cluster and package\r\n  information reported by the system.\r\n\r\n* Remaining support required for:\r\n  - Inferring uarch of each processor (reports unknown for now).\r\n  - Reading cache information (left empty for now).\r\n\r\nTest: Build and ran cpu_info and isa_info on RISC-V QEMU instance and\r\nRISC-V Android emulator. Confirmed that it properly reports the ISA\r\ninformation as well as processor and cluster counts.",
+      "tree": {
+        "sha": "9b1fdb6469fbb2a540fb5fbd466c22c03b17a5cf",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/9b1fdb6469fbb2a540fb5fbd466c22c03b17a5cf"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/4e5be9e1c6c5895bc5105a92d587bc9df8d2522b",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlU8lXCRBK7hj4Ov3rIwAAvK0IAB12S1EgdtLjbwSHMMWf59zl\nAr4YwOEMwrEqj/6PXe7+7NWQmNRGXTxfrFyIgQFPLUn/JRsVl7qJ5bsOhPHC3iAG\n/nqWvrFstp8f0Jjo2r7vOoHuED/WrG7tR3TEUuun1G5SD3tsNeiLbzQuylwgaISM\nLokT+KTmdgsfjSK3EKH9gcAj9yTXfdz1Ty/T7azWlYiPMQZ0KjXKPBRAl1U72x2u\nBmryqNS+y/Z+ntNbRFKLZ6hitNAT/iWUgtfW0UqQOaWS60cJBSM0Yzq7RqCZsVRG\ntR7+1uBqfUCqu383O0wteGLbNCdAtBiBcwtu8F8xWlHhq60P5Shgh3UKz74Xeps=\n=5Y4C\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 9b1fdb6469fbb2a540fb5fbd466c22c03b17a5cf\nparent d6860c477c99f1fce9e28eb206891af3c0e1a1d7\nauthor Prashanth Swaminathan <40780424+prashanthswami@users.noreply.github.com> 1699989847 -0800\ncommitter GitHub <noreply@github.com> 1699989847 -0800\n\nAdd limited support for RISC-V initialization (#190)\n\n* Adds header definitions for RISCV32 and RISCV64, and support in Bazel\r\n  files for RISCV64. Adds ISA information for RISC-V and hwcap support.\r\n\r\n* Adds support to construct the processor, core, cluster and package\r\n  information reported by the system.\r\n\r\n* Remaining support required for:\r\n  - Inferring uarch of each processor (reports unknown for now).\r\n  - Reading cache information (left empty for now).\r\n\r\nTest: Build and ran cpu_info and isa_info on RISC-V QEMU instance and\r\nRISC-V Android emulator. Confirmed that it properly reports the ISA\r\ninformation as well as processor and cluster counts."
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/4e5be9e1c6c5895bc5105a92d587bc9df8d2522b",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/4e5be9e1c6c5895bc5105a92d587bc9df8d2522b",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/4e5be9e1c6c5895bc5105a92d587bc9df8d2522b/comments",
+    "author": {
+      "login": "prashanthswami",
+      "id": 40780424,
+      "node_id": "MDQ6VXNlcjQwNzgwNDI0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/40780424?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/prashanthswami",
+      "html_url": "https://github.com/prashanthswami",
+      "followers_url": "https://api.github.com/users/prashanthswami/followers",
+      "following_url": "https://api.github.com/users/prashanthswami/following{/other_user}",
+      "gists_url": "https://api.github.com/users/prashanthswami/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/prashanthswami/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/prashanthswami/subscriptions",
+      "organizations_url": "https://api.github.com/users/prashanthswami/orgs",
+      "repos_url": "https://api.github.com/users/prashanthswami/repos",
+      "events_url": "https://api.github.com/users/prashanthswami/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/prashanthswami/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d6860c477c99f1fce9e28eb206891af3c0e1a1d7",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/d6860c477c99f1fce9e28eb206891af3c0e1a1d7",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/d6860c477c99f1fce9e28eb206891af3c0e1a1d7"
+      }
+    ]
+  },
+  {
+    "sha": "d6860c477c99f1fce9e28eb206891af3c0e1a1d7",
+    "node_id": "C_kwDOBP5DD9oAKGQ2ODYwYzQ3N2M5OWYxZmNlOWUyOGViMjA2ODkxYWYzYzBlMWExZDc",
+    "commit": {
+      "author": {
+        "name": "Quentin Khan",
+        "email": "dev@pelikhan.xyz",
+        "date": "2023-11-04T00:50:14Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-11-04T00:50:14Z"
+      },
+      "message": "Add detection of Intel x86 AVX-VNNI instructions. (#196)\n\nTested using Intel SDE:\r\n\r\n```\r\nbash scripts/local-build.sh\r\n\r\nOPTIONS=()\r\nPLATFORMS=()\r\n\r\nOPTIONS+=(-quark); PLATFORMS+=(\"Quark\")\r\nOPTIONS+=(-p4); PLATFORMS+=(\"Pentium4\")\r\nOPTIONS+=(-p4p); PLATFORMS+=(\"Pentium4 Prescott\")\r\nOPTIONS+=(-mrm); PLATFORMS+=(\"Merom\")\r\nOPTIONS+=(-pnr); PLATFORMS+=(\"Penryn\")\r\nOPTIONS+=(-nhm); PLATFORMS+=(\"Nehalem\")\r\nOPTIONS+=(-wsm); PLATFORMS+=(\"Westmere\")\r\nOPTIONS+=(-snb); PLATFORMS+=(\"Sandy Bridge\")\r\nOPTIONS+=(-ivb); PLATFORMS+=(\"Ivy Bridge\")\r\nOPTIONS+=(-hsw); PLATFORMS+=(\"Haswell\")\r\nOPTIONS+=(-bdw); PLATFORMS+=(\"Broadwell\")\r\nOPTIONS+=(-slt); PLATFORMS+=(\"Saltwell\")\r\nOPTIONS+=(-slm); PLATFORMS+=(\"Silvermont\")\r\nOPTIONS+=(-glm); PLATFORMS+=(\"Goldmont\")\r\nOPTIONS+=(-glp); PLATFORMS+=(\"Goldmont Plus\")\r\nOPTIONS+=(-tnt); PLATFORMS+=(\"Tremont\")\r\nOPTIONS+=(-snr); PLATFORMS+=(\"Snow Ridge\")\r\nOPTIONS+=(-skl); PLATFORMS+=(\"Skylake\")\r\nOPTIONS+=(-cnl); PLATFORMS+=(\"Cannon Lake\")\r\nOPTIONS+=(-icl); PLATFORMS+=(\"Ice Lake\")\r\nOPTIONS+=(-skx); PLATFORMS+=(\"Skylake server\")\r\nOPTIONS+=(-clx); PLATFORMS+=(\"Cascade Lake\")\r\nOPTIONS+=(-cpx); PLATFORMS+=(\"Cooper Lake\")\r\nOPTIONS+=(-icx); PLATFORMS+=(\"Ice Lake server\")\r\nOPTIONS+=(-knl); PLATFORMS+=(\"Knights landing\")\r\nOPTIONS+=(-knm); PLATFORMS+=(\"Knights mill\")\r\nOPTIONS+=(-tgl); PLATFORMS+=(\"Tiger Lake\")\r\nOPTIONS+=(-adl); PLATFORMS+=(\"Alder Lake\")\r\nOPTIONS+=(-mtl); PLATFORMS+=(\"Meteor Lake\")\r\nOPTIONS+=(-rpl); PLATFORMS+=(\"Raptor Lake\")\r\nOPTIONS+=(-spr); PLATFORMS+=(\"Sapphire Rapids\")\r\nOPTIONS+=(-gnr); PLATFORMS+=(\"Granite Rapids\")\r\nOPTIONS+=(-srf); PLATFORMS+=(\"Sierra Forest\")\r\nOPTIONS+=(-grr); PLATFORMS+=(\"Grand Ridge\")\r\nOPTIONS+=(-future); PLATFORMS+=(\"Future chip\")\r\n\r\nSDE_BIN=\"path/to/sde\"\r\n\r\nfor I in \"${!PLATFORMS[@]}\"; do\r\n  echo \"${PLATFORMS[\"${I}\"]}\"\r\n  \"${SDE_BIN}\" \"${OPTIONS[$I]}\" -- ./build/local/isa-info | grep \"AVXVNNI\"\r\ndone\r\n```\r\n\r\nResult:\r\n\r\n```\r\nQuark\r\n        [error]\r\nMerom\r\n        [error]\r\nPenryn\r\n        [error]\r\nNehalem\r\n        [error]\r\nWestmere\r\n        AVXVNNI: no\r\nSandy Bridge\r\n        AVXVNNI: no\r\nIvy Bridge\r\n        AVXVNNI: no\r\nHaswell\r\n        AVXVNNI: no\r\nBroadwell\r\n        AVXVNNI: no\r\nSaltwell\r\n        [error]\r\nSilvermont\r\n        AVXVNNI: no\r\nGoldmont\r\n        AVXVNNI: no\r\nGoldmont Plus\r\n        AVXVNNI: no\r\nTremont\r\n        AVXVNNI: no\r\nSnow Ridge\r\n        AVXVNNI: no\r\nSkylake\r\n        AVXVNNI: no\r\nCannon Lake\r\n        AVXVNNI: no\r\nIce Lake\r\n        AVXVNNI: no\r\nSkylake server\r\n        AVXVNNI: no\r\nCascade Lake\r\n        AVXVNNI: no\r\nCooper Lake\r\n        AVXVNNI: no\r\nIce Lake server\r\n        AVXVNNI: no\r\nKnights landing\r\n        AVXVNNI: no\r\nKnights mill\r\n        AVXVNNI: no\r\nTiger Lake\r\n        AVXVNNI: no\r\nAlder Lake\r\n        AVXVNNI: yes\r\nMeteor Lake\r\n        AVXVNNI: yes\r\nRaptor Lake\r\n        AVXVNNI: yes\r\nSapphire Rapids\r\n        AVXVNNI: yes\r\nGranite Rapids\r\n        AVXVNNI: yes\r\nSierra Forest\r\n        AVXVNNI: yes\r\nGrand Ridge\r\n        AVXVNNI: yes\r\nFuture chip\r\n        AVXVNNI: yes\r\n```",
+      "tree": {
+        "sha": "007610914ea9a9d54b71ff412cf9b07c6bb078ee",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/007610914ea9a9d54b71ff412cf9b07c6bb078ee"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/d6860c477c99f1fce9e28eb206891af3c0e1a1d7",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlRZVGCRBK7hj4Ov3rIwAAVfwIABKylo6wA/E7hMNHcMFU+S/K\n+TSQiLZ0gkXZ7zpfcxChX71c6AOMdNmGJ36dbK8Qf4lYxTOrbYcfszK3Tp1d4t1B\nLdwgtsBxNukHaXQvuzPTlYFQhO+P7lsHf7JXOf4bUWUYWkbpv5FW/bMegimyfQFW\nrmFhzyQ6YT0Dd9gnAvymJ3+su1c8WDFF6GMWwUjq70UtF7O+E241zdzTChWK4nMv\nPxGV5BujeF4DZecHcgKB8rXJgdmRJ3PTxOxVm1gn8eULfVaAds9RflrbvCk1yYmb\ntupr0l/y5ucVKHzQ7hDQ+77PY04WIfhiODeoC6FMdQ9JAYoeITWGhy1hkpvH6lU=\n=KzwP\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 007610914ea9a9d54b71ff412cf9b07c6bb078ee\nparent 76d5e8f5b563daa65340a60fce0e9aec73a936df\nauthor Quentin Khan <dev@pelikhan.xyz> 1699059014 +0100\ncommitter GitHub <noreply@github.com> 1699059014 -0700\n\nAdd detection of Intel x86 AVX-VNNI instructions. (#196)\n\nTested using Intel SDE:\r\n\r\n```\r\nbash scripts/local-build.sh\r\n\r\nOPTIONS=()\r\nPLATFORMS=()\r\n\r\nOPTIONS+=(-quark); PLATFORMS+=(\"Quark\")\r\nOPTIONS+=(-p4); PLATFORMS+=(\"Pentium4\")\r\nOPTIONS+=(-p4p); PLATFORMS+=(\"Pentium4 Prescott\")\r\nOPTIONS+=(-mrm); PLATFORMS+=(\"Merom\")\r\nOPTIONS+=(-pnr); PLATFORMS+=(\"Penryn\")\r\nOPTIONS+=(-nhm); PLATFORMS+=(\"Nehalem\")\r\nOPTIONS+=(-wsm); PLATFORMS+=(\"Westmere\")\r\nOPTIONS+=(-snb); PLATFORMS+=(\"Sandy Bridge\")\r\nOPTIONS+=(-ivb); PLATFORMS+=(\"Ivy Bridge\")\r\nOPTIONS+=(-hsw); PLATFORMS+=(\"Haswell\")\r\nOPTIONS+=(-bdw); PLATFORMS+=(\"Broadwell\")\r\nOPTIONS+=(-slt); PLATFORMS+=(\"Saltwell\")\r\nOPTIONS+=(-slm); PLATFORMS+=(\"Silvermont\")\r\nOPTIONS+=(-glm); PLATFORMS+=(\"Goldmont\")\r\nOPTIONS+=(-glp); PLATFORMS+=(\"Goldmont Plus\")\r\nOPTIONS+=(-tnt); PLATFORMS+=(\"Tremont\")\r\nOPTIONS+=(-snr); PLATFORMS+=(\"Snow Ridge\")\r\nOPTIONS+=(-skl); PLATFORMS+=(\"Skylake\")\r\nOPTIONS+=(-cnl); PLATFORMS+=(\"Cannon Lake\")\r\nOPTIONS+=(-icl); PLATFORMS+=(\"Ice Lake\")\r\nOPTIONS+=(-skx); PLATFORMS+=(\"Skylake server\")\r\nOPTIONS+=(-clx); PLATFORMS+=(\"Cascade Lake\")\r\nOPTIONS+=(-cpx); PLATFORMS+=(\"Cooper Lake\")\r\nOPTIONS+=(-icx); PLATFORMS+=(\"Ice Lake server\")\r\nOPTIONS+=(-knl); PLATFORMS+=(\"Knights landing\")\r\nOPTIONS+=(-knm); PLATFORMS+=(\"Knights mill\")\r\nOPTIONS+=(-tgl); PLATFORMS+=(\"Tiger Lake\")\r\nOPTIONS+=(-adl); PLATFORMS+=(\"Alder Lake\")\r\nOPTIONS+=(-mtl); PLATFORMS+=(\"Meteor Lake\")\r\nOPTIONS+=(-rpl); PLATFORMS+=(\"Raptor Lake\")\r\nOPTIONS+=(-spr); PLATFORMS+=(\"Sapphire Rapids\")\r\nOPTIONS+=(-gnr); PLATFORMS+=(\"Granite Rapids\")\r\nOPTIONS+=(-srf); PLATFORMS+=(\"Sierra Forest\")\r\nOPTIONS+=(-grr); PLATFORMS+=(\"Grand Ridge\")\r\nOPTIONS+=(-future); PLATFORMS+=(\"Future chip\")\r\n\r\nSDE_BIN=\"path/to/sde\"\r\n\r\nfor I in \"${!PLATFORMS[@]}\"; do\r\n  echo \"${PLATFORMS[\"${I}\"]}\"\r\n  \"${SDE_BIN}\" \"${OPTIONS[$I]}\" -- ./build/local/isa-info | grep \"AVXVNNI\"\r\ndone\r\n```\r\n\r\nResult:\r\n\r\n```\r\nQuark\r\n        [error]\r\nMerom\r\n        [error]\r\nPenryn\r\n        [error]\r\nNehalem\r\n        [error]\r\nWestmere\r\n        AVXVNNI: no\r\nSandy Bridge\r\n        AVXVNNI: no\r\nIvy Bridge\r\n        AVXVNNI: no\r\nHaswell\r\n        AVXVNNI: no\r\nBroadwell\r\n        AVXVNNI: no\r\nSaltwell\r\n        [error]\r\nSilvermont\r\n        AVXVNNI: no\r\nGoldmont\r\n        AVXVNNI: no\r\nGoldmont Plus\r\n        AVXVNNI: no\r\nTremont\r\n        AVXVNNI: no\r\nSnow Ridge\r\n        AVXVNNI: no\r\nSkylake\r\n        AVXVNNI: no\r\nCannon Lake\r\n        AVXVNNI: no\r\nIce Lake\r\n        AVXVNNI: no\r\nSkylake server\r\n        AVXVNNI: no\r\nCascade Lake\r\n        AVXVNNI: no\r\nCooper Lake\r\n        AVXVNNI: no\r\nIce Lake server\r\n        AVXVNNI: no\r\nKnights landing\r\n        AVXVNNI: no\r\nKnights mill\r\n        AVXVNNI: no\r\nTiger Lake\r\n        AVXVNNI: no\r\nAlder Lake\r\n        AVXVNNI: yes\r\nMeteor Lake\r\n        AVXVNNI: yes\r\nRaptor Lake\r\n        AVXVNNI: yes\r\nSapphire Rapids\r\n        AVXVNNI: yes\r\nGranite Rapids\r\n        AVXVNNI: yes\r\nSierra Forest\r\n        AVXVNNI: yes\r\nGrand Ridge\r\n        AVXVNNI: yes\r\nFuture chip\r\n        AVXVNNI: yes\r\n```"
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/d6860c477c99f1fce9e28eb206891af3c0e1a1d7",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/d6860c477c99f1fce9e28eb206891af3c0e1a1d7",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/d6860c477c99f1fce9e28eb206891af3c0e1a1d7/comments",
+    "author": {
+      "login": "qukhan",
+      "id": 13188547,
+      "node_id": "MDQ6VXNlcjEzMTg4NTQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13188547?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/qukhan",
+      "html_url": "https://github.com/qukhan",
+      "followers_url": "https://api.github.com/users/qukhan/followers",
+      "following_url": "https://api.github.com/users/qukhan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/qukhan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/qukhan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/qukhan/subscriptions",
+      "organizations_url": "https://api.github.com/users/qukhan/orgs",
+      "repos_url": "https://api.github.com/users/qukhan/repos",
+      "events_url": "https://api.github.com/users/qukhan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/qukhan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "76d5e8f5b563daa65340a60fce0e9aec73a936df",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/76d5e8f5b563daa65340a60fce0e9aec73a936df",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/76d5e8f5b563daa65340a60fce0e9aec73a936df"
+      }
+    ]
+  },
+  {
+    "sha": "76d5e8f5b563daa65340a60fce0e9aec73a936df",
+    "node_id": "C_kwDOBP5DD9oAKDc2ZDVlOGY1YjU2M2RhYTY1MzQwYTYwZmNlMGU5YWVjNzNhOTM2ZGY",
+    "commit": {
+      "author": {
+        "name": "Paolo",
+        "email": "142514942+paolotricerri@users.noreply.github.com",
+        "date": "2023-10-19T19:37:38Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-10-19T19:37:38Z"
+      },
+      "message": "Add support for Arm Neoverse V2 (#194)",
+      "tree": {
+        "sha": "79b788ec104b3183812d6b353f25b24ffd277be5",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/79b788ec104b3183812d6b353f25b24ffd277be5"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/76d5e8f5b563daa65340a60fce0e9aec73a936df",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlMYWCCRBK7hj4Ov3rIwAAl3EIADDS1nH7WiuH9spdgOYx1oaF\ntKCYkD3rNTIdSSefxWuadXwQGOmoqmBnRiYIXZaLNKjl5+C1RkwyxnoqkahjlQ2F\nFKxmXGIHNmGyXwVu7+hRZP91oZXrR/bve9lgLCjs29vNptHMaUXiXlNH1C8mlS9F\noZJ8AHaqUA6axMTtkErzRlnKAyelr6BS9MSQTdJYiG7H5ahrPMjcZETV4hUe4W3L\nJH3kVkXrrHZb/6d06/jstMdUHBclt1m0DQh1pc7zr5vyIcY0uO2vFvfCGvpB9m5L\nwL4A1LksBWo7HKuNv/N7jpO3KszL/awZs10EKx7ZW2Ytejl5yxKhtwyVlUtuY8Y=\n=m+xs\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 79b788ec104b3183812d6b353f25b24ffd277be5\nparent 959002f82d7962a473d8bf301845f2af720e0aa4\nauthor Paolo <142514942+paolotricerri@users.noreply.github.com> 1697744258 +0100\ncommitter GitHub <noreply@github.com> 1697744258 -0700\n\nAdd support for Arm Neoverse V2 (#194)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/76d5e8f5b563daa65340a60fce0e9aec73a936df",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/76d5e8f5b563daa65340a60fce0e9aec73a936df",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/76d5e8f5b563daa65340a60fce0e9aec73a936df/comments",
+    "author": {
+      "login": "paolotricerri",
+      "id": 142514942,
+      "node_id": "U_kgDOCH6a_g",
+      "avatar_url": "https://avatars.githubusercontent.com/u/142514942?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/paolotricerri",
+      "html_url": "https://github.com/paolotricerri",
+      "followers_url": "https://api.github.com/users/paolotricerri/followers",
+      "following_url": "https://api.github.com/users/paolotricerri/following{/other_user}",
+      "gists_url": "https://api.github.com/users/paolotricerri/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/paolotricerri/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/paolotricerri/subscriptions",
+      "organizations_url": "https://api.github.com/users/paolotricerri/orgs",
+      "repos_url": "https://api.github.com/users/paolotricerri/repos",
+      "events_url": "https://api.github.com/users/paolotricerri/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/paolotricerri/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "959002f82d7962a473d8bf301845f2af720e0aa4",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/959002f82d7962a473d8bf301845f2af720e0aa4",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/959002f82d7962a473d8bf301845f2af720e0aa4"
+      }
+    ]
+  },
+  {
+    "sha": "959002f82d7962a473d8bf301845f2af720e0aa4",
+    "node_id": "C_kwDOBP5DD9oAKDk1OTAwMmY4MmQ3OTYyYTQ3M2Q4YmYzMDE4NDVmMmFmNzIwZTBhYTQ",
+    "commit": {
+      "author": {
+        "name": "Marat Dukhan",
+        "email": "maratek@google.com",
+        "date": "2023-08-16T22:30:44Z"
+      },
+      "committer": {
+        "name": "Marat Dukhan",
+        "email": "maratek@gmail.com",
+        "date": "2023-08-16T22:37:13Z"
+      },
+      "message": "Include intrin.h MSVC header in cpuinfo/utils.h",
+      "tree": {
+        "sha": "8395e6351ce613e17b3d948590eaa356fcf13526",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/8395e6351ce613e17b3d948590eaa356fcf13526"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/959002f82d7962a473d8bf301845f2af720e0aa4",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/959002f82d7962a473d8bf301845f2af720e0aa4",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/959002f82d7962a473d8bf301845f2af720e0aa4",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/959002f82d7962a473d8bf301845f2af720e0aa4/comments",
+    "author": {
+      "login": "Maratyszcza",
+      "id": 1093985,
+      "node_id": "MDQ6VXNlcjEwOTM5ODU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1093985?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Maratyszcza",
+      "html_url": "https://github.com/Maratyszcza",
+      "followers_url": "https://api.github.com/users/Maratyszcza/followers",
+      "following_url": "https://api.github.com/users/Maratyszcza/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Maratyszcza/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Maratyszcza/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Maratyszcza/subscriptions",
+      "organizations_url": "https://api.github.com/users/Maratyszcza/orgs",
+      "repos_url": "https://api.github.com/users/Maratyszcza/repos",
+      "events_url": "https://api.github.com/users/Maratyszcza/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Maratyszcza/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Maratyszcza",
+      "id": 1093985,
+      "node_id": "MDQ6VXNlcjEwOTM5ODU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1093985?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Maratyszcza",
+      "html_url": "https://github.com/Maratyszcza",
+      "followers_url": "https://api.github.com/users/Maratyszcza/followers",
+      "following_url": "https://api.github.com/users/Maratyszcza/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Maratyszcza/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Maratyszcza/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Maratyszcza/subscriptions",
+      "organizations_url": "https://api.github.com/users/Maratyszcza/orgs",
+      "repos_url": "https://api.github.com/users/Maratyszcza/repos",
+      "events_url": "https://api.github.com/users/Maratyszcza/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Maratyszcza/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9df83faa65d4c5db3ad6630cbb944a0b4e5e4a84",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/9df83faa65d4c5db3ad6630cbb944a0b4e5e4a84",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/9df83faa65d4c5db3ad6630cbb944a0b4e5e4a84"
+      }
+    ]
+  },
+  {
+    "sha": "9df83faa65d4c5db3ad6630cbb944a0b4e5e4a84",
+    "node_id": "C_kwDOBP5DD9oAKDlkZjgzZmFhNjVkNGM1ZGIzYWQ2NjMwY2JiOTQ0YTBiNGU1ZTRhODQ",
+    "commit": {
+      "author": {
+        "name": "Marat Dukhan",
+        "email": "maratek@google.com",
+        "date": "2023-08-16T22:03:06Z"
+      },
+      "committer": {
+        "name": "Marat Dukhan",
+        "email": "maratek@gmail.com",
+        "date": "2023-08-16T22:09:13Z"
+      },
+      "message": "Support building for ARM Linux with GLibC older than 2.16",
+      "tree": {
+        "sha": "ebd08974cf5b45a6bb3437441f856d422af361cc",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/ebd08974cf5b45a6bb3437441f856d422af361cc"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/9df83faa65d4c5db3ad6630cbb944a0b4e5e4a84",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/9df83faa65d4c5db3ad6630cbb944a0b4e5e4a84",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/9df83faa65d4c5db3ad6630cbb944a0b4e5e4a84",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/9df83faa65d4c5db3ad6630cbb944a0b4e5e4a84/comments",
+    "author": {
+      "login": "Maratyszcza",
+      "id": 1093985,
+      "node_id": "MDQ6VXNlcjEwOTM5ODU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1093985?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Maratyszcza",
+      "html_url": "https://github.com/Maratyszcza",
+      "followers_url": "https://api.github.com/users/Maratyszcza/followers",
+      "following_url": "https://api.github.com/users/Maratyszcza/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Maratyszcza/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Maratyszcza/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Maratyszcza/subscriptions",
+      "organizations_url": "https://api.github.com/users/Maratyszcza/orgs",
+      "repos_url": "https://api.github.com/users/Maratyszcza/repos",
+      "events_url": "https://api.github.com/users/Maratyszcza/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Maratyszcza/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Maratyszcza",
+      "id": 1093985,
+      "node_id": "MDQ6VXNlcjEwOTM5ODU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1093985?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Maratyszcza",
+      "html_url": "https://github.com/Maratyszcza",
+      "followers_url": "https://api.github.com/users/Maratyszcza/followers",
+      "following_url": "https://api.github.com/users/Maratyszcza/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Maratyszcza/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Maratyszcza/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Maratyszcza/subscriptions",
+      "organizations_url": "https://api.github.com/users/Maratyszcza/orgs",
+      "repos_url": "https://api.github.com/users/Maratyszcza/repos",
+      "events_url": "https://api.github.com/users/Maratyszcza/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Maratyszcza/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "dce131b242c5282e2e5ee254364ff2ea7e1b0999",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/dce131b242c5282e2e5ee254364ff2ea7e1b0999",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/dce131b242c5282e2e5ee254364ff2ea7e1b0999"
+      }
+    ]
+  },
+  {
+    "sha": "dce131b242c5282e2e5ee254364ff2ea7e1b0999",
+    "node_id": "C_kwDOBP5DD9oAKGRjZTEzMWIyNDJjNTI4MmUyZTVlZTI1NDM2NGZmMmVhN2UxYjA5OTk",
+    "commit": {
+      "author": {
+        "name": "Marat Dukhan",
+        "email": "maratek@google.com",
+        "date": "2023-08-16T21:46:07Z"
+      },
+      "committer": {
+        "name": "Marat Dukhan",
+        "email": "maratek@gmail.com",
+        "date": "2023-08-16T21:55:52Z"
+      },
+      "message": "Work around faulty implementations of NEON DOT instructions\n\nPrevent detection of NEON DOT instruction set on Spreadtrum SC9863A and\nUnisoc T310, where these instructions occasionally trigger SIGILL",
+      "tree": {
+        "sha": "7d8dab4cff58f2f95e0f9fe6ea942c70e06fba36",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/7d8dab4cff58f2f95e0f9fe6ea942c70e06fba36"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/dce131b242c5282e2e5ee254364ff2ea7e1b0999",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/dce131b242c5282e2e5ee254364ff2ea7e1b0999",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/dce131b242c5282e2e5ee254364ff2ea7e1b0999",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/dce131b242c5282e2e5ee254364ff2ea7e1b0999/comments",
+    "author": {
+      "login": "Maratyszcza",
+      "id": 1093985,
+      "node_id": "MDQ6VXNlcjEwOTM5ODU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1093985?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Maratyszcza",
+      "html_url": "https://github.com/Maratyszcza",
+      "followers_url": "https://api.github.com/users/Maratyszcza/followers",
+      "following_url": "https://api.github.com/users/Maratyszcza/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Maratyszcza/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Maratyszcza/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Maratyszcza/subscriptions",
+      "organizations_url": "https://api.github.com/users/Maratyszcza/orgs",
+      "repos_url": "https://api.github.com/users/Maratyszcza/repos",
+      "events_url": "https://api.github.com/users/Maratyszcza/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Maratyszcza/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Maratyszcza",
+      "id": 1093985,
+      "node_id": "MDQ6VXNlcjEwOTM5ODU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1093985?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Maratyszcza",
+      "html_url": "https://github.com/Maratyszcza",
+      "followers_url": "https://api.github.com/users/Maratyszcza/followers",
+      "following_url": "https://api.github.com/users/Maratyszcza/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Maratyszcza/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Maratyszcza/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Maratyszcza/subscriptions",
+      "organizations_url": "https://api.github.com/users/Maratyszcza/orgs",
+      "repos_url": "https://api.github.com/users/Maratyszcza/repos",
+      "events_url": "https://api.github.com/users/Maratyszcza/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Maratyszcza/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3c8583da7fe36c9fe1367cf18907b479c115759d",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/3c8583da7fe36c9fe1367cf18907b479c115759d",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/3c8583da7fe36c9fe1367cf18907b479c115759d"
+      }
+    ]
+  },
+  {
+    "sha": "3c8583da7fe36c9fe1367cf18907b479c115759d",
+    "node_id": "C_kwDOBP5DD9oAKDNjODU4M2RhN2ZlMzZjOWZlMTM2N2NmMTg5MDdiNDc5YzExNTc1OWQ",
+    "commit": {
+      "author": {
+        "name": "Marat Dukhan",
+        "email": "maratek@google.com",
+        "date": "2023-08-16T21:36:09Z"
+      },
+      "committer": {
+        "name": "Marat Dukhan",
+        "email": "maratek@gmail.com",
+        "date": "2023-08-16T21:43:29Z"
+      },
+      "message": "Don't consider Cortex-A65 in AArch32 ISA detection\n\nCortex-A65 is AArch64-only and not paired with AArch32-capable cores",
+      "tree": {
+        "sha": "5ca72575f9ce84f529a8c6a3c435e34fd1d9fc53",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/5ca72575f9ce84f529a8c6a3c435e34fd1d9fc53"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/3c8583da7fe36c9fe1367cf18907b479c115759d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/3c8583da7fe36c9fe1367cf18907b479c115759d",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/3c8583da7fe36c9fe1367cf18907b479c115759d",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/3c8583da7fe36c9fe1367cf18907b479c115759d/comments",
+    "author": {
+      "login": "Maratyszcza",
+      "id": 1093985,
+      "node_id": "MDQ6VXNlcjEwOTM5ODU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1093985?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Maratyszcza",
+      "html_url": "https://github.com/Maratyszcza",
+      "followers_url": "https://api.github.com/users/Maratyszcza/followers",
+      "following_url": "https://api.github.com/users/Maratyszcza/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Maratyszcza/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Maratyszcza/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Maratyszcza/subscriptions",
+      "organizations_url": "https://api.github.com/users/Maratyszcza/orgs",
+      "repos_url": "https://api.github.com/users/Maratyszcza/repos",
+      "events_url": "https://api.github.com/users/Maratyszcza/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Maratyszcza/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Maratyszcza",
+      "id": 1093985,
+      "node_id": "MDQ6VXNlcjEwOTM5ODU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1093985?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Maratyszcza",
+      "html_url": "https://github.com/Maratyszcza",
+      "followers_url": "https://api.github.com/users/Maratyszcza/followers",
+      "following_url": "https://api.github.com/users/Maratyszcza/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Maratyszcza/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Maratyszcza/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Maratyszcza/subscriptions",
+      "organizations_url": "https://api.github.com/users/Maratyszcza/orgs",
+      "repos_url": "https://api.github.com/users/Maratyszcza/repos",
+      "events_url": "https://api.github.com/users/Maratyszcza/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Maratyszcza/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c15d537323081f188e4643f31bd93e6732992311",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/c15d537323081f188e4643f31bd93e6732992311",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/c15d537323081f188e4643f31bd93e6732992311"
+      }
+    ]
+  },
+  {
+    "sha": "c15d537323081f188e4643f31bd93e6732992311",
+    "node_id": "C_kwDOBP5DD9oAKGMxNWQ1MzczMjMwODFmMTg4ZTQ2NDNmMzFiZDkzZTY3MzI5OTIzMTE",
+    "commit": {
+      "author": {
+        "name": "Marat Dukhan",
+        "email": "maratek@google.com",
+        "date": "2023-08-16T21:25:24Z"
+      },
+      "committer": {
+        "name": "Marat Dukhan",
+        "email": "maratek@gmail.com",
+        "date": "2023-08-16T21:29:55Z"
+      },
+      "message": "Remove redundant newline after match_t",
+      "tree": {
+        "sha": "6e063f3ff8a7274e8fbff36720d4dc712ba20351",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/6e063f3ff8a7274e8fbff36720d4dc712ba20351"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/c15d537323081f188e4643f31bd93e6732992311",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/c15d537323081f188e4643f31bd93e6732992311",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/c15d537323081f188e4643f31bd93e6732992311",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/c15d537323081f188e4643f31bd93e6732992311/comments",
+    "author": {
+      "login": "Maratyszcza",
+      "id": 1093985,
+      "node_id": "MDQ6VXNlcjEwOTM5ODU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1093985?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Maratyszcza",
+      "html_url": "https://github.com/Maratyszcza",
+      "followers_url": "https://api.github.com/users/Maratyszcza/followers",
+      "following_url": "https://api.github.com/users/Maratyszcza/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Maratyszcza/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Maratyszcza/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Maratyszcza/subscriptions",
+      "organizations_url": "https://api.github.com/users/Maratyszcza/orgs",
+      "repos_url": "https://api.github.com/users/Maratyszcza/repos",
+      "events_url": "https://api.github.com/users/Maratyszcza/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Maratyszcza/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Maratyszcza",
+      "id": 1093985,
+      "node_id": "MDQ6VXNlcjEwOTM5ODU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1093985?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Maratyszcza",
+      "html_url": "https://github.com/Maratyszcza",
+      "followers_url": "https://api.github.com/users/Maratyszcza/followers",
+      "following_url": "https://api.github.com/users/Maratyszcza/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Maratyszcza/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Maratyszcza/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Maratyszcza/subscriptions",
+      "organizations_url": "https://api.github.com/users/Maratyszcza/orgs",
+      "repos_url": "https://api.github.com/users/Maratyszcza/repos",
+      "events_url": "https://api.github.com/users/Maratyszcza/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Maratyszcza/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e00b4854ca4600022c4f942dee1bddf52bafc9cb",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/e00b4854ca4600022c4f942dee1bddf52bafc9cb",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/e00b4854ca4600022c4f942dee1bddf52bafc9cb"
+      }
+    ]
+  },
+  {
+    "sha": "e00b4854ca4600022c4f942dee1bddf52bafc9cb",
+    "node_id": "C_kwDOBP5DD9oAKGUwMGI0ODU0Y2E0NjAwMDIyYzRmOTQyZGVlMWJkZGY1MmJhZmM5Y2I",
+    "commit": {
+      "author": {
+        "name": "Marat Dukhan",
+        "email": "maratek@google.com",
+        "date": "2023-08-16T20:55:57Z"
+      },
+      "committer": {
+        "name": "Marat Dukhan",
+        "email": "maratek@gmail.com",
+        "date": "2023-08-16T21:20:49Z"
+      },
+      "message": "Detect Unisoc T-series chipsets",
+      "tree": {
+        "sha": "9718b9beb7704e6aea676cadada3584ac4ddc87f",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/9718b9beb7704e6aea676cadada3584ac4ddc87f"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/e00b4854ca4600022c4f942dee1bddf52bafc9cb",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/e00b4854ca4600022c4f942dee1bddf52bafc9cb",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/e00b4854ca4600022c4f942dee1bddf52bafc9cb",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/e00b4854ca4600022c4f942dee1bddf52bafc9cb/comments",
+    "author": {
+      "login": "Maratyszcza",
+      "id": 1093985,
+      "node_id": "MDQ6VXNlcjEwOTM5ODU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1093985?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Maratyszcza",
+      "html_url": "https://github.com/Maratyszcza",
+      "followers_url": "https://api.github.com/users/Maratyszcza/followers",
+      "following_url": "https://api.github.com/users/Maratyszcza/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Maratyszcza/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Maratyszcza/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Maratyszcza/subscriptions",
+      "organizations_url": "https://api.github.com/users/Maratyszcza/orgs",
+      "repos_url": "https://api.github.com/users/Maratyszcza/repos",
+      "events_url": "https://api.github.com/users/Maratyszcza/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Maratyszcza/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Maratyszcza",
+      "id": 1093985,
+      "node_id": "MDQ6VXNlcjEwOTM5ODU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1093985?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Maratyszcza",
+      "html_url": "https://github.com/Maratyszcza",
+      "followers_url": "https://api.github.com/users/Maratyszcza/followers",
+      "following_url": "https://api.github.com/users/Maratyszcza/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Maratyszcza/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Maratyszcza/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Maratyszcza/subscriptions",
+      "organizations_url": "https://api.github.com/users/Maratyszcza/orgs",
+      "repos_url": "https://api.github.com/users/Maratyszcza/repos",
+      "events_url": "https://api.github.com/users/Maratyszcza/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Maratyszcza/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8eab20281d2648db5b88c47ace6540396435dbae",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/8eab20281d2648db5b88c47ace6540396435dbae",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/8eab20281d2648db5b88c47ace6540396435dbae"
+      }
+    ]
+  },
+  {
+    "sha": "8eab20281d2648db5b88c47ace6540396435dbae",
+    "node_id": "C_kwDOBP5DD9oAKDhlYWIyMDI4MWQyNjQ4ZGI1Yjg4YzQ3YWNlNjU0MDM5NjQzNWRiYWU",
+    "commit": {
+      "author": {
+        "name": "Marat Dukhan",
+        "email": "maratek@google.com",
+        "date": "2023-08-16T21:04:59Z"
+      },
+      "committer": {
+        "name": "Marat Dukhan",
+        "email": "maratek@gmail.com",
+        "date": "2023-08-16T21:11:20Z"
+      },
+      "message": "Remove redundant architecture version check in aarch32-isa.c",
+      "tree": {
+        "sha": "fe54b313dbb189cfc952f528de0ae068a2ec4168",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/fe54b313dbb189cfc952f528de0ae068a2ec4168"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/8eab20281d2648db5b88c47ace6540396435dbae",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/8eab20281d2648db5b88c47ace6540396435dbae",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/8eab20281d2648db5b88c47ace6540396435dbae",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/8eab20281d2648db5b88c47ace6540396435dbae/comments",
+    "author": {
+      "login": "Maratyszcza",
+      "id": 1093985,
+      "node_id": "MDQ6VXNlcjEwOTM5ODU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1093985?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Maratyszcza",
+      "html_url": "https://github.com/Maratyszcza",
+      "followers_url": "https://api.github.com/users/Maratyszcza/followers",
+      "following_url": "https://api.github.com/users/Maratyszcza/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Maratyszcza/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Maratyszcza/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Maratyszcza/subscriptions",
+      "organizations_url": "https://api.github.com/users/Maratyszcza/orgs",
+      "repos_url": "https://api.github.com/users/Maratyszcza/repos",
+      "events_url": "https://api.github.com/users/Maratyszcza/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Maratyszcza/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Maratyszcza",
+      "id": 1093985,
+      "node_id": "MDQ6VXNlcjEwOTM5ODU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1093985?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Maratyszcza",
+      "html_url": "https://github.com/Maratyszcza",
+      "followers_url": "https://api.github.com/users/Maratyszcza/followers",
+      "following_url": "https://api.github.com/users/Maratyszcza/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Maratyszcza/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Maratyszcza/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Maratyszcza/subscriptions",
+      "organizations_url": "https://api.github.com/users/Maratyszcza/orgs",
+      "repos_url": "https://api.github.com/users/Maratyszcza/repos",
+      "events_url": "https://api.github.com/users/Maratyszcza/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Maratyszcza/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6bd16265d150d7d44f7daf22fe7fb559f22ed563",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/6bd16265d150d7d44f7daf22fe7fb559f22ed563",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/6bd16265d150d7d44f7daf22fe7fb559f22ed563"
+      }
+    ]
+  },
+  {
+    "sha": "6bd16265d150d7d44f7daf22fe7fb559f22ed563",
+    "node_id": "C_kwDOBP5DD9oAKDZiZDE2MjY1ZDE1MGQ3ZDQ0ZjdkYWYyMmZlN2ZiNTU5ZjIyZWQ1NjM",
+    "commit": {
+      "author": {
+        "name": "Marat Dukhan",
+        "email": "maratek@google.com",
+        "date": "2023-08-16T20:31:28Z"
+      },
+      "committer": {
+        "name": "Marat Dukhan",
+        "email": "maratek@gmail.com",
+        "date": "2023-08-16T20:38:29Z"
+      },
+      "message": "Fix a bug in load_u24le introduced in #178",
+      "tree": {
+        "sha": "e5cda866fb23c7cb33c66f215eb4b8f8df9c4860",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/e5cda866fb23c7cb33c66f215eb4b8f8df9c4860"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/6bd16265d150d7d44f7daf22fe7fb559f22ed563",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/6bd16265d150d7d44f7daf22fe7fb559f22ed563",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/6bd16265d150d7d44f7daf22fe7fb559f22ed563",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/6bd16265d150d7d44f7daf22fe7fb559f22ed563/comments",
+    "author": {
+      "login": "Maratyszcza",
+      "id": 1093985,
+      "node_id": "MDQ6VXNlcjEwOTM5ODU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1093985?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Maratyszcza",
+      "html_url": "https://github.com/Maratyszcza",
+      "followers_url": "https://api.github.com/users/Maratyszcza/followers",
+      "following_url": "https://api.github.com/users/Maratyszcza/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Maratyszcza/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Maratyszcza/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Maratyszcza/subscriptions",
+      "organizations_url": "https://api.github.com/users/Maratyszcza/orgs",
+      "repos_url": "https://api.github.com/users/Maratyszcza/repos",
+      "events_url": "https://api.github.com/users/Maratyszcza/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Maratyszcza/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Maratyszcza",
+      "id": 1093985,
+      "node_id": "MDQ6VXNlcjEwOTM5ODU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1093985?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Maratyszcza",
+      "html_url": "https://github.com/Maratyszcza",
+      "followers_url": "https://api.github.com/users/Maratyszcza/followers",
+      "following_url": "https://api.github.com/users/Maratyszcza/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Maratyszcza/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Maratyszcza/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Maratyszcza/subscriptions",
+      "organizations_url": "https://api.github.com/users/Maratyszcza/orgs",
+      "repos_url": "https://api.github.com/users/Maratyszcza/repos",
+      "events_url": "https://api.github.com/users/Maratyszcza/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Maratyszcza/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8dd681754889258cf134dd42362cd2a8d2c9028e",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/8dd681754889258cf134dd42362cd2a8d2c9028e",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/8dd681754889258cf134dd42362cd2a8d2c9028e"
+      }
+    ]
+  },
+  {
+    "sha": "8dd681754889258cf134dd42362cd2a8d2c9028e",
+    "node_id": "C_kwDOBP5DD9oAKDhkZDY4MTc1NDg4OTI1OGNmMTM0ZGQ0MjM2MmNkMmE4ZDJjOTAyOGU",
+    "commit": {
+      "author": {
+        "name": "Marat Dukhan",
+        "email": "maratek@google.com",
+        "date": "2023-08-16T20:08:35Z"
+      },
+      "committer": {
+        "name": "Marat Dukhan",
+        "email": "maratek@gmail.com",
+        "date": "2023-08-16T20:24:23Z"
+      },
+      "message": "Workaround unimplemented GetMaximumProcessorGroupCount on WINE",
+      "tree": {
+        "sha": "c833a93640f7a8accbdd331089a1e81f1b8b0f45",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/git/trees/c833a93640f7a8accbdd331089a1e81f1b8b0f45"
+      },
+      "url": "https://api.github.com/repos/pytorch/cpuinfo/git/commits/8dd681754889258cf134dd42362cd2a8d2c9028e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/8dd681754889258cf134dd42362cd2a8d2c9028e",
+    "html_url": "https://github.com/pytorch/cpuinfo/commit/8dd681754889258cf134dd42362cd2a8d2c9028e",
+    "comments_url": "https://api.github.com/repos/pytorch/cpuinfo/commits/8dd681754889258cf134dd42362cd2a8d2c9028e/comments",
+    "author": {
+      "login": "Maratyszcza",
+      "id": 1093985,
+      "node_id": "MDQ6VXNlcjEwOTM5ODU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1093985?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Maratyszcza",
+      "html_url": "https://github.com/Maratyszcza",
+      "followers_url": "https://api.github.com/users/Maratyszcza/followers",
+      "following_url": "https://api.github.com/users/Maratyszcza/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Maratyszcza/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Maratyszcza/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Maratyszcza/subscriptions",
+      "organizations_url": "https://api.github.com/users/Maratyszcza/orgs",
+      "repos_url": "https://api.github.com/users/Maratyszcza/repos",
+      "events_url": "https://api.github.com/users/Maratyszcza/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Maratyszcza/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Maratyszcza",
+      "id": 1093985,
+      "node_id": "MDQ6VXNlcjEwOTM5ODU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1093985?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Maratyszcza",
+      "html_url": "https://github.com/Maratyszcza",
+      "followers_url": "https://api.github.com/users/Maratyszcza/followers",
+      "following_url": "https://api.github.com/users/Maratyszcza/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Maratyszcza/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Maratyszcza/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Maratyszcza/subscriptions",
+      "organizations_url": "https://api.github.com/users/Maratyszcza/orgs",
+      "repos_url": "https://api.github.com/users/Maratyszcza/repos",
+      "events_url": "https://api.github.com/users/Maratyszcza/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Maratyszcza/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "baa1ee9df218a9adf568f39587c4339e1adf81a8",
+        "url": "https://api.github.com/repos/pytorch/cpuinfo/commits/baa1ee9df218a9adf568f39587c4339e1adf81a8",
+        "html_url": "https://github.com/pytorch/cpuinfo/commit/baa1ee9df218a9adf568f39587c4339e1adf81a8"
+      }
+    ]
+  }
+]

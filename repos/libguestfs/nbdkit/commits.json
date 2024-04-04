@@ -1,0 +1,2372 @@
+[
+  {
+    "sha": "45b72f5bd8fc1b475fa130d06c86cd877bf595d5",
+    "node_id": "C_kwDOAKVm-NoAKDQ1YjcyZjViZDhmYzFiNDc1ZmExMzBkMDZjODZjZDg3N2JmNTk1ZDU",
+    "commit": {
+      "author": {
+        "name": "Richard W.M. Jones",
+        "email": "rjones@redhat.com",
+        "date": "2023-03-10T09:59:15Z"
+      },
+      "committer": {
+        "name": "Richard W.M. Jones",
+        "email": "rjones@redhat.com",
+        "date": "2023-03-10T10:08:50Z"
+      },
+      "message": "server/crypto.c: Improve error messages in crypto_send\n\nThe ->send method is expected to set errno.  We didn't set it\nexplicitly before, although it was usually set implicitly.  Let's\nimprove this.\n\nFirstly never lose the real error message (from gnutls) so always call\nnbdkit_error (... gnutls_strerror ...)  along error paths, even though\nthat sometimes means we'll get double errors because the caller will\nalso call nbdkit_error (... \"%m\" ...).\n\nSecondly make sure errno is set to something on error.  Surround each\ngnutls call with errno = 0; ... if (errno == 0) errno = EIO.  This\nmeans we'll capture the underlying syscall error if there was one, but\nif there wasn't one then we'll always return with errno set on error\npaths out of the function.",
+      "tree": {
+        "sha": "e9b2c1f687bb9f34732d7eb2bc784a75705a371e",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/e9b2c1f687bb9f34732d7eb2bc784a75705a371e"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/45b72f5bd8fc1b475fa130d06c86cd877bf595d5",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/45b72f5bd8fc1b475fa130d06c86cd877bf595d5",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/45b72f5bd8fc1b475fa130d06c86cd877bf595d5",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/45b72f5bd8fc1b475fa130d06c86cd877bf595d5/comments",
+    "author": {
+      "login": "rwmjones",
+      "id": 259688,
+      "node_id": "MDQ6VXNlcjI1OTY4OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/259688?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rwmjones",
+      "html_url": "https://github.com/rwmjones",
+      "followers_url": "https://api.github.com/users/rwmjones/followers",
+      "following_url": "https://api.github.com/users/rwmjones/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rwmjones/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rwmjones/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rwmjones/subscriptions",
+      "organizations_url": "https://api.github.com/users/rwmjones/orgs",
+      "repos_url": "https://api.github.com/users/rwmjones/repos",
+      "events_url": "https://api.github.com/users/rwmjones/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rwmjones/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "rwmjones",
+      "id": 259688,
+      "node_id": "MDQ6VXNlcjI1OTY4OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/259688?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rwmjones",
+      "html_url": "https://github.com/rwmjones",
+      "followers_url": "https://api.github.com/users/rwmjones/followers",
+      "following_url": "https://api.github.com/users/rwmjones/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rwmjones/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rwmjones/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rwmjones/subscriptions",
+      "organizations_url": "https://api.github.com/users/rwmjones/orgs",
+      "repos_url": "https://api.github.com/users/rwmjones/repos",
+      "events_url": "https://api.github.com/users/rwmjones/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rwmjones/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9fb6ca6b0492c427809398b330e315cd9e76c5a9",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/9fb6ca6b0492c427809398b330e315cd9e76c5a9",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/9fb6ca6b0492c427809398b330e315cd9e76c5a9"
+      }
+    ]
+  },
+  {
+    "sha": "9fb6ca6b0492c427809398b330e315cd9e76c5a9",
+    "node_id": "C_kwDOAKVm-NoAKDlmYjZjYTZiMDQ5MmM0Mjc4MDkzOThiMzMwZTMxNWNkOWU3NmM1YTk",
+    "commit": {
+      "author": {
+        "name": "Richard W.M. Jones",
+        "email": "rjones@redhat.com",
+        "date": "2023-03-10T10:08:14Z"
+      },
+      "committer": {
+        "name": "Richard W.M. Jones",
+        "email": "rjones@redhat.com",
+        "date": "2023-03-10T10:08:50Z"
+      },
+      "message": "server/crypto.c: Remove incorrect comment\n\n'flags' is not ignored, remove comment saying it was.",
+      "tree": {
+        "sha": "9712637d369a9248917a00d9df52228454338fab",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/9712637d369a9248917a00d9df52228454338fab"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/9fb6ca6b0492c427809398b330e315cd9e76c5a9",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/9fb6ca6b0492c427809398b330e315cd9e76c5a9",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/9fb6ca6b0492c427809398b330e315cd9e76c5a9",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/9fb6ca6b0492c427809398b330e315cd9e76c5a9/comments",
+    "author": {
+      "login": "rwmjones",
+      "id": 259688,
+      "node_id": "MDQ6VXNlcjI1OTY4OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/259688?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rwmjones",
+      "html_url": "https://github.com/rwmjones",
+      "followers_url": "https://api.github.com/users/rwmjones/followers",
+      "following_url": "https://api.github.com/users/rwmjones/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rwmjones/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rwmjones/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rwmjones/subscriptions",
+      "organizations_url": "https://api.github.com/users/rwmjones/orgs",
+      "repos_url": "https://api.github.com/users/rwmjones/repos",
+      "events_url": "https://api.github.com/users/rwmjones/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rwmjones/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "rwmjones",
+      "id": 259688,
+      "node_id": "MDQ6VXNlcjI1OTY4OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/259688?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rwmjones",
+      "html_url": "https://github.com/rwmjones",
+      "followers_url": "https://api.github.com/users/rwmjones/followers",
+      "following_url": "https://api.github.com/users/rwmjones/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rwmjones/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rwmjones/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rwmjones/subscriptions",
+      "organizations_url": "https://api.github.com/users/rwmjones/orgs",
+      "repos_url": "https://api.github.com/users/rwmjones/repos",
+      "events_url": "https://api.github.com/users/rwmjones/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rwmjones/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6c02c6a469d62a047f230b0ccf03f72328312d2b",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/6c02c6a469d62a047f230b0ccf03f72328312d2b",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/6c02c6a469d62a047f230b0ccf03f72328312d2b"
+      }
+    ]
+  },
+  {
+    "sha": "6c02c6a469d62a047f230b0ccf03f72328312d2b",
+    "node_id": "C_kwDOAKVm-NoAKDZjMDJjNmE0NjlkNjJhMDQ3ZjIzMGIwY2NmMDNmNzIzMjgzMTJkMmI",
+    "commit": {
+      "author": {
+        "name": "Richard W.M. Jones",
+        "email": "rjones@redhat.com",
+        "date": "2023-03-09T10:47:49Z"
+      },
+      "committer": {
+        "name": "Richard W.M. Jones",
+        "email": "rjones@redhat.com",
+        "date": "2023-03-09T10:47:49Z"
+      },
+      "message": "Version 1.33.11.",
+      "tree": {
+        "sha": "3d21f74cab812381c87f144e33665c10d664183e",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/3d21f74cab812381c87f144e33665c10d664183e"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/6c02c6a469d62a047f230b0ccf03f72328312d2b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/6c02c6a469d62a047f230b0ccf03f72328312d2b",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/6c02c6a469d62a047f230b0ccf03f72328312d2b",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/6c02c6a469d62a047f230b0ccf03f72328312d2b/comments",
+    "author": {
+      "login": "rwmjones",
+      "id": 259688,
+      "node_id": "MDQ6VXNlcjI1OTY4OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/259688?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rwmjones",
+      "html_url": "https://github.com/rwmjones",
+      "followers_url": "https://api.github.com/users/rwmjones/followers",
+      "following_url": "https://api.github.com/users/rwmjones/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rwmjones/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rwmjones/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rwmjones/subscriptions",
+      "organizations_url": "https://api.github.com/users/rwmjones/orgs",
+      "repos_url": "https://api.github.com/users/rwmjones/repos",
+      "events_url": "https://api.github.com/users/rwmjones/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rwmjones/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "rwmjones",
+      "id": 259688,
+      "node_id": "MDQ6VXNlcjI1OTY4OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/259688?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rwmjones",
+      "html_url": "https://github.com/rwmjones",
+      "followers_url": "https://api.github.com/users/rwmjones/followers",
+      "following_url": "https://api.github.com/users/rwmjones/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rwmjones/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rwmjones/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rwmjones/subscriptions",
+      "organizations_url": "https://api.github.com/users/rwmjones/orgs",
+      "repos_url": "https://api.github.com/users/rwmjones/repos",
+      "events_url": "https://api.github.com/users/rwmjones/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rwmjones/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "712fe24c18df21567e566a013d92f9138666ec8c",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/712fe24c18df21567e566a013d92f9138666ec8c",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/712fe24c18df21567e566a013d92f9138666ec8c"
+      }
+    ]
+  },
+  {
+    "sha": "712fe24c18df21567e566a013d92f9138666ec8c",
+    "node_id": "C_kwDOAKVm-NoAKDcxMmZlMjRjMThkZjIxNTY3ZTU2NmEwMTNkOTJmOTEzODY2NmVjOGM",
+    "commit": {
+      "author": {
+        "name": "Laszlo Ersek",
+        "email": "lersek@redhat.com",
+        "date": "2023-03-04T20:05:03Z"
+      },
+      "committer": {
+        "name": "Laszlo Ersek",
+        "email": "lersek@redhat.com",
+        "date": "2023-03-04T20:05:03Z"
+      },
+      "message": "Update Red Hat Copyright Notices\n\nWe've been advised to state Red Hat's Copyright as\n\n  Copyright Red Hat\n\nIn order to collect our current copyright notices, I've used the following\n\"loose options\" for git-grep (bash syntax):\n\n  loose_options=(-i -e copyright --and -e 'red.?hat')\n\nNamely, the command\n\n  git grep -h \"${loose_options[@]}\"\n\nproduces 464 matches (lines) in libnbd @ d169661119f6, and 861 matches\n(lines) in nbdkit @ e36cfb6fa4f8.\n\nLest we replace strings too broadly, define the \"strict pattern\" as\nfollows (note that we assume LC_ALL=en_US.UTF-8):\n\n  year='20[0-2][0-9]'\n  year_range=\"$year(-$year)?\"\n  year_range_list=\"$year_range(, $year_range)*\"\n  year_range_list_opt=\"( $year_range_list)?\"\n  c_sym='(\\(C\\)|©)'\n  company='Red Hat,? Inc\\.'\n  strict_pattern=\"[Cc]opyright $c_sym$year_range_list_opt $company\"\n\nThe command\n\n  git grep -h \"${loose_options[@]}\" \\\n  | grep -E -v -- \"$strict_pattern\"\n\nproduces zero lines in each of nbdkit and libnbd, meaning that the \"strict\npattern\" covers all matches from the \"loose options\".\n\nAssuming that our filenames do not contain newline characters, replace the\ncopyright notices with the following command:\n\n  git grep -l \"${loose_options[@]}\" \\\n  | sponge \\\n  | tr '\\n' '\\0' \\\n  | xargs -0 -r -- sed -i -E -e \"s/$strict_pattern/Copyright Red Hat/\" --\n\nThe resultant diffstat in each project shows that all notices have been\nreplaced (note that some files contain multiple notices, therefore the\nnumber of files modified is less than the number of lines modified).\n\nSigned-off-by: Laszlo Ersek <lersek@redhat.com>",
+      "tree": {
+        "sha": "4d2c8d3f647dece26839578705112620598e088a",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/4d2c8d3f647dece26839578705112620598e088a"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/712fe24c18df21567e566a013d92f9138666ec8c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/712fe24c18df21567e566a013d92f9138666ec8c",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/712fe24c18df21567e566a013d92f9138666ec8c",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/712fe24c18df21567e566a013d92f9138666ec8c/comments",
+    "author": {
+      "login": "lersek",
+      "id": 4354893,
+      "node_id": "MDQ6VXNlcjQzNTQ4OTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4354893?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lersek",
+      "html_url": "https://github.com/lersek",
+      "followers_url": "https://api.github.com/users/lersek/followers",
+      "following_url": "https://api.github.com/users/lersek/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lersek/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lersek/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lersek/subscriptions",
+      "organizations_url": "https://api.github.com/users/lersek/orgs",
+      "repos_url": "https://api.github.com/users/lersek/repos",
+      "events_url": "https://api.github.com/users/lersek/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lersek/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lersek",
+      "id": 4354893,
+      "node_id": "MDQ6VXNlcjQzNTQ4OTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4354893?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lersek",
+      "html_url": "https://github.com/lersek",
+      "followers_url": "https://api.github.com/users/lersek/followers",
+      "following_url": "https://api.github.com/users/lersek/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lersek/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lersek/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lersek/subscriptions",
+      "organizations_url": "https://api.github.com/users/lersek/orgs",
+      "repos_url": "https://api.github.com/users/lersek/repos",
+      "events_url": "https://api.github.com/users/lersek/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lersek/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e36cfb6fa4f8f7daeebabb7db07e0fe7ba1d0477",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/e36cfb6fa4f8f7daeebabb7db07e0fe7ba1d0477",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/e36cfb6fa4f8f7daeebabb7db07e0fe7ba1d0477"
+      }
+    ]
+  },
+  {
+    "sha": "e36cfb6fa4f8f7daeebabb7db07e0fe7ba1d0477",
+    "node_id": "C_kwDOAKVm-NoAKGUzNmNmYjZmYTRmOGY3ZGFlZWJhYmI3ZGIwN2UwZmU3YmExZDA0Nzc",
+    "commit": {
+      "author": {
+        "name": "Laszlo Ersek",
+        "email": "lersek@redhat.com",
+        "date": "2023-03-03T07:51:45Z"
+      },
+      "committer": {
+        "name": "Laszlo Ersek",
+        "email": "lersek@redhat.com",
+        "date": "2023-03-04T05:06:15Z"
+      },
+      "message": "convert string_vector_(iter(free) + reset()) to string_vector_empty()\n\n(Reimplement libnbd commit c7ff70101e8c, \"convert\nstring_vector_(iter(free) + reset()) to string_vector_empty()\",\n2023-02-28.)\n\nConvert the 5 string_vector_(iter(free) + reset()) call sites mentioned\npreviously to string_vector_empty().\n\nNote that the converted code performs more cleanup steps in some cases\nthan strictly necessary, but the extra work is harmless, and arguably\nbeneficial for clarity / consistency.\n\nAlso note that the CLEANUP_FREE_*() macros remain unique to nbdkit; libnbd\ndoes not use __attribute__((cleanup)), per libnbd commit f306e231d294\n(\"common/utils: Add extensible string, based on vector\", 2022-03-12).\n\nSigned-off-by: Laszlo Ersek <lersek@redhat.com>\nMessage-Id: <20230303075145.177338-10-lersek@redhat.com>\nAcked-by: Richard W.M. Jones <rjones@redhat.com>\nAcked-by: Eric Blake <eblake@redhat.com>",
+      "tree": {
+        "sha": "7f52ceed1f6556f78ec64ea4d0d563e1d90c0543",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/7f52ceed1f6556f78ec64ea4d0d563e1d90c0543"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/e36cfb6fa4f8f7daeebabb7db07e0fe7ba1d0477",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/e36cfb6fa4f8f7daeebabb7db07e0fe7ba1d0477",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/e36cfb6fa4f8f7daeebabb7db07e0fe7ba1d0477",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/e36cfb6fa4f8f7daeebabb7db07e0fe7ba1d0477/comments",
+    "author": {
+      "login": "lersek",
+      "id": 4354893,
+      "node_id": "MDQ6VXNlcjQzNTQ4OTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4354893?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lersek",
+      "html_url": "https://github.com/lersek",
+      "followers_url": "https://api.github.com/users/lersek/followers",
+      "following_url": "https://api.github.com/users/lersek/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lersek/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lersek/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lersek/subscriptions",
+      "organizations_url": "https://api.github.com/users/lersek/orgs",
+      "repos_url": "https://api.github.com/users/lersek/repos",
+      "events_url": "https://api.github.com/users/lersek/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lersek/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lersek",
+      "id": 4354893,
+      "node_id": "MDQ6VXNlcjQzNTQ4OTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4354893?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lersek",
+      "html_url": "https://github.com/lersek",
+      "followers_url": "https://api.github.com/users/lersek/followers",
+      "following_url": "https://api.github.com/users/lersek/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lersek/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lersek/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lersek/subscriptions",
+      "organizations_url": "https://api.github.com/users/lersek/orgs",
+      "repos_url": "https://api.github.com/users/lersek/repos",
+      "events_url": "https://api.github.com/users/lersek/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lersek/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "40231e71a891ae2061b21b183b8b7136230188a9",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/40231e71a891ae2061b21b183b8b7136230188a9",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/40231e71a891ae2061b21b183b8b7136230188a9"
+      }
+    ]
+  },
+  {
+    "sha": "40231e71a891ae2061b21b183b8b7136230188a9",
+    "node_id": "C_kwDOAKVm-NoAKDQwMjMxZTcxYTg5MWFlMjA2MWIyMWIxODNiOGI3MTM2MjMwMTg4YTk",
+    "commit": {
+      "author": {
+        "name": "Laszlo Ersek",
+        "email": "lersek@redhat.com",
+        "date": "2023-03-03T07:51:44Z"
+      },
+      "committer": {
+        "name": "Laszlo Ersek",
+        "email": "lersek@redhat.com",
+        "date": "2023-03-04T05:06:12Z"
+      },
+      "message": "vector: introduce DEFINE_POINTER_VECTOR_TYPE()\n\n(Commit message below adapted from libnbd commit fda38988b86b, \"vector:\nintroduce DEFINE_POINTER_VECTOR_TYPE()\", 2023-02-28).\n\nThe \"name##_iter\" function is used 5 times in nbdkit as follows:\n\n  string_vector_iter (..., (void *) free);\n\nCasting \"free\" to (void*) is ugly. (Well-defined by POSIX, but still.)\n\nFurthermore, in those 5 cases, the freeing of the vector's strings is\nimmediately followed by the release of the vector's array-of-pointers too.\n(This additional step is not expressed consistently across nbdkit: it's\nsometimes spelled as free(vec.ptr), sometimes as\nstring_vector_reset(&vec).)\n\nIntroduce \"name##_empty\", which performs both steps at the same time.\n\nExpose the \"name##_empty\" function definition with a new, separate macro:\nADD_VECTOR_EMPTY_METHOD(). The existent DEFINE_VECTOR_TYPE() macro permits\nsuch element types that are not pointers, or are pointers to const- and/or\nvolatile-qualified objects. Whereas \"name##_empty\" requires that the\nelements be pointers to dynamically allocated, non-const, non-volatile\nobjects.\n\nAdd DEFINE_POINTER_VECTOR_TYPE() that expands to both DEFINE_VECTOR_TYPE()\nand the additive ADD_VECTOR_EMPTY_METHOD().\n\n(\n\nFor example, after\n\n  typedef char foobar[5];\n\nthe following compiles (as expected):\n\n  DEFINE_VECTOR_TYPE (foobar_vector, foobar);\n\nand the following fails to build (as expected):\n\n  DEFINE_POINTER_VECTOR_TYPE (foobar_vector_bad, foobar);\n\nwith the diagnostics including\n\n> In function ‘foobar_vector_bad_empty’:\n> error: size of array ‘_vector_contains_pointers1’ is negative\n\n)\n\nSwitch \"string_vector\" to DEFINE_POINTER_VECTOR_TYPE(). The 5\nstring_vector_iter() call sites continue working; they will be converted\nto string_vector_empty() in a subsequent patch.\n\nSigned-off-by: Laszlo Ersek <lersek@redhat.com>\n(cherry picked from libnbd commit fda38988b86bb133b56fc6251b2d581e809b3b67)\nMessage-Id: <20230303075145.177338-9-lersek@redhat.com>\nAcked-by: Richard W.M. Jones <rjones@redhat.com>\nAcked-by: Eric Blake <eblake@redhat.com>",
+      "tree": {
+        "sha": "bbb3055fded56b178b22dc6db8eaec79376c8a84",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/bbb3055fded56b178b22dc6db8eaec79376c8a84"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/40231e71a891ae2061b21b183b8b7136230188a9",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/40231e71a891ae2061b21b183b8b7136230188a9",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/40231e71a891ae2061b21b183b8b7136230188a9",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/40231e71a891ae2061b21b183b8b7136230188a9/comments",
+    "author": {
+      "login": "lersek",
+      "id": 4354893,
+      "node_id": "MDQ6VXNlcjQzNTQ4OTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4354893?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lersek",
+      "html_url": "https://github.com/lersek",
+      "followers_url": "https://api.github.com/users/lersek/followers",
+      "following_url": "https://api.github.com/users/lersek/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lersek/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lersek/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lersek/subscriptions",
+      "organizations_url": "https://api.github.com/users/lersek/orgs",
+      "repos_url": "https://api.github.com/users/lersek/repos",
+      "events_url": "https://api.github.com/users/lersek/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lersek/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lersek",
+      "id": 4354893,
+      "node_id": "MDQ6VXNlcjQzNTQ4OTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4354893?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lersek",
+      "html_url": "https://github.com/lersek",
+      "followers_url": "https://api.github.com/users/lersek/followers",
+      "following_url": "https://api.github.com/users/lersek/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lersek/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lersek/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lersek/subscriptions",
+      "organizations_url": "https://api.github.com/users/lersek/orgs",
+      "repos_url": "https://api.github.com/users/lersek/repos",
+      "events_url": "https://api.github.com/users/lersek/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lersek/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3d426186b223dfcd3c4c6a70b5765d20f02bd904",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/3d426186b223dfcd3c4c6a70b5765d20f02bd904",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/3d426186b223dfcd3c4c6a70b5765d20f02bd904"
+      }
+    ]
+  },
+  {
+    "sha": "3d426186b223dfcd3c4c6a70b5765d20f02bd904",
+    "node_id": "C_kwDOAKVm-NoAKDNkNDI2MTg2YjIyM2RmY2QzYzRjNmE3MGI1NzY1ZDIwZjAyYmQ5MDQ",
+    "commit": {
+      "author": {
+        "name": "Laszlo Ersek",
+        "email": "lersek@redhat.com",
+        "date": "2023-03-03T07:51:43Z"
+      },
+      "committer": {
+        "name": "Laszlo Ersek",
+        "email": "lersek@redhat.com",
+        "date": "2023-03-04T05:06:09Z"
+      },
+      "message": "force semicolon after DEFINE_VECTOR_TYPE() macro invocations\n\nOriginal commit message:\n\nCurrently, a semicolon after a DEFINE_VECTOR_TYPE(...) macro invocation is\nnot needed, nor does our documentation in \"common/utils/vector.h\"\nprescribe one. Furthermore, it breaks ISO C, which gcc reports with\n\"-Wpedantic\":\n\n> warning: ISO C does not allow extra ‘;’ outside of a function\n> [-Wpedantic]\n\nOur current usage is inconsistent; a proper subset of all our\nDEFINE_VECTOR_TYPE() invocations is succeeded by a semicolon. We could\nremove these semicolons, but that doesn't play nicely with Emacs's C\nlanguage parser. Thus, force the semicolon instead.\n\nPorting notes:\n\n- The call sites needing an update in nbdkit are distinct from those\n  updated in libnbd commit f3bc106dbc17 (\"force semicolon after\n  DEFINE_VECTOR_TYPE() macro invocations\", 2023-02-28). Thus,\n  \"cherry-picking f3bc106dbc17\" only applies to \"common/utils/vector.h\";\n  the rest has to be reimplemented from zero.\n\nSigned-off-by: Laszlo Ersek <lersek@redhat.com>\n(cherry picked from libnbd commit f3bc106dbc178a993db0e2006469da9ae0bf8db2)\nMessage-Id: <20230303075145.177338-8-lersek@redhat.com>\nAcked-by: Richard W.M. Jones <rjones@redhat.com>\nAcked-by: Eric Blake <eblake@redhat.com>",
+      "tree": {
+        "sha": "8b32f4c76413652fff8f7595b7a81accfb306fc7",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/8b32f4c76413652fff8f7595b7a81accfb306fc7"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/3d426186b223dfcd3c4c6a70b5765d20f02bd904",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/3d426186b223dfcd3c4c6a70b5765d20f02bd904",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/3d426186b223dfcd3c4c6a70b5765d20f02bd904",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/3d426186b223dfcd3c4c6a70b5765d20f02bd904/comments",
+    "author": {
+      "login": "lersek",
+      "id": 4354893,
+      "node_id": "MDQ6VXNlcjQzNTQ4OTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4354893?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lersek",
+      "html_url": "https://github.com/lersek",
+      "followers_url": "https://api.github.com/users/lersek/followers",
+      "following_url": "https://api.github.com/users/lersek/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lersek/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lersek/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lersek/subscriptions",
+      "organizations_url": "https://api.github.com/users/lersek/orgs",
+      "repos_url": "https://api.github.com/users/lersek/repos",
+      "events_url": "https://api.github.com/users/lersek/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lersek/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lersek",
+      "id": 4354893,
+      "node_id": "MDQ6VXNlcjQzNTQ4OTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4354893?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lersek",
+      "html_url": "https://github.com/lersek",
+      "followers_url": "https://api.github.com/users/lersek/followers",
+      "following_url": "https://api.github.com/users/lersek/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lersek/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lersek/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lersek/subscriptions",
+      "organizations_url": "https://api.github.com/users/lersek/orgs",
+      "repos_url": "https://api.github.com/users/lersek/repos",
+      "events_url": "https://api.github.com/users/lersek/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lersek/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "bfeddb36bbf1e2ef1dc6e09a352ebe0e861387c0",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/bfeddb36bbf1e2ef1dc6e09a352ebe0e861387c0",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/bfeddb36bbf1e2ef1dc6e09a352ebe0e861387c0"
+      }
+    ]
+  },
+  {
+    "sha": "bfeddb36bbf1e2ef1dc6e09a352ebe0e861387c0",
+    "node_id": "C_kwDOAKVm-NoAKGJmZWRkYjM2YmJmMWUyZWYxZGM2ZTA5YTM1MmViZTBlODYxMzg3YzA",
+    "commit": {
+      "author": {
+        "name": "Laszlo Ersek",
+        "email": "lersek@redhat.com",
+        "date": "2023-03-03T07:51:42Z"
+      },
+      "committer": {
+        "name": "Laszlo Ersek",
+        "email": "lersek@redhat.com",
+        "date": "2023-03-04T05:06:07Z"
+      },
+      "message": "common/include: extract STATIC_ASSERT() macro\n\nWe already have two use cases for static assertions (and soon we'll have\nyet another). Namely:\n\n- STATIC_ASSERT_UNSIGNED_INT() in \"checked-overflow.h\". Here, we use our\n  own trick, based on a negative-sized array typedef that's named with\n  NBDKIT_UNIQUE_NAME.\n\n- static_assert() in \"test-array-size.c\". This uses the C11 macro called\n  static_assert() from <assert.h>, which wraps the C11 _Static_assert().\n  This is not really great: our baseline is C99, not C11 (per commit\n  762f7c9e5166, \"tests: Set minimum compiler to ISO C99.\", 2021-04-08) --\n  which is why the same assertions are repeated in the code as normal\n  runtime assert() calls, in case static_assert() is not defined.\n\nFactor out our own STATIC_ASSERT(), from STATIC_ASSERT_UNSIGNED_INT().\n\nPut it to use in \"test-array-size.c\", replacing both the runtime assert()s\nand the compile-time static_assert()s. Note that for the latter, in order\nto remain consistent with STATIC_ASSERT_UNSIGNED_INT(), we no longer\nprovide the *complaint* that we want the compiler to emit upon assertion\nfailure, but an identifier that stands for the predicate that we *expect*.\n\nWhen uncommenting the negative test case in \"test-array-size.c\", the\nresultant wall of compiler diagnostics includes the following entry:\n\n> test-array-size.c:83:39: error: size of array\n> ‘_array_size_macro_is_applied_to_array13’ is negative\n\nThis patch will have to be ported to nbdkit. (IMO we can implement the\nchange in libnbd first -- the \"common\" subdir is meant to be common, so no\nparticular precedence should be assumed.)\n\nSigned-off-by: Laszlo Ersek <lersek@redhat.com>\n(cherry picked from libnbd commit c593baab3c9c8b17317daece0694ec8b5fc6fb46)\nMessage-Id: <20230303075145.177338-7-lersek@redhat.com>\nAcked-by: Richard W.M. Jones <rjones@redhat.com>\nAcked-by: Eric Blake <eblake@redhat.com>",
+      "tree": {
+        "sha": "ef216ed3b7734e093669d95a74575662ead59774",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/ef216ed3b7734e093669d95a74575662ead59774"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/bfeddb36bbf1e2ef1dc6e09a352ebe0e861387c0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/bfeddb36bbf1e2ef1dc6e09a352ebe0e861387c0",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/bfeddb36bbf1e2ef1dc6e09a352ebe0e861387c0",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/bfeddb36bbf1e2ef1dc6e09a352ebe0e861387c0/comments",
+    "author": {
+      "login": "lersek",
+      "id": 4354893,
+      "node_id": "MDQ6VXNlcjQzNTQ4OTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4354893?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lersek",
+      "html_url": "https://github.com/lersek",
+      "followers_url": "https://api.github.com/users/lersek/followers",
+      "following_url": "https://api.github.com/users/lersek/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lersek/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lersek/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lersek/subscriptions",
+      "organizations_url": "https://api.github.com/users/lersek/orgs",
+      "repos_url": "https://api.github.com/users/lersek/repos",
+      "events_url": "https://api.github.com/users/lersek/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lersek/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lersek",
+      "id": 4354893,
+      "node_id": "MDQ6VXNlcjQzNTQ4OTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4354893?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lersek",
+      "html_url": "https://github.com/lersek",
+      "followers_url": "https://api.github.com/users/lersek/followers",
+      "following_url": "https://api.github.com/users/lersek/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lersek/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lersek/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lersek/subscriptions",
+      "organizations_url": "https://api.github.com/users/lersek/orgs",
+      "repos_url": "https://api.github.com/users/lersek/repos",
+      "events_url": "https://api.github.com/users/lersek/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lersek/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "130475898de133cf518bc981abebf1dad6951db1",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/130475898de133cf518bc981abebf1dad6951db1",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/130475898de133cf518bc981abebf1dad6951db1"
+      }
+    ]
+  },
+  {
+    "sha": "130475898de133cf518bc981abebf1dad6951db1",
+    "node_id": "C_kwDOAKVm-NoAKDEzMDQ3NTg5OGRlMTMzY2Y1MThiYzk4MWFiZWJmMWRhZDY5NTFkYjE",
+    "commit": {
+      "author": {
+        "name": "Laszlo Ersek",
+        "email": "lersek@redhat.com",
+        "date": "2023-03-03T07:51:41Z"
+      },
+      "committer": {
+        "name": "Laszlo Ersek",
+        "email": "lersek@redhat.com",
+        "date": "2023-03-04T05:06:05Z"
+      },
+      "message": "common/include: add TYPE_IS_POINTER() macro\n\nBecause the current definition of TYPE_IS_ARRAY() already contains a\nnegation, defining TYPE_IS_POINTER() in terms of TYPE_IS_ARRAY() would\nlead to double negation, which I consider less than ideal style.\nTherefore, introduce TYPE_IS_POINTER() from scratch, and rebase\nTYPE_IS_ARRAY() on top of TYPE_IS_POINTER().\n\nSuggested-by: Richard W.M. Jones <rjones@redhat.com>\nSigned-off-by: Laszlo Ersek <lersek@redhat.com>\n(cherry picked from libnbd commit 59dc9b7e3937b472d7203e6e0c96def120a1a54b)\nMessage-Id: <20230303075145.177338-6-lersek@redhat.com>\nAcked-by: Richard W.M. Jones <rjones@redhat.com>\nAcked-by: Eric Blake <eblake@redhat.com>",
+      "tree": {
+        "sha": "fb7fda680428fa20c7fa86faf13da529b1e3ea7f",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/fb7fda680428fa20c7fa86faf13da529b1e3ea7f"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/130475898de133cf518bc981abebf1dad6951db1",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/130475898de133cf518bc981abebf1dad6951db1",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/130475898de133cf518bc981abebf1dad6951db1",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/130475898de133cf518bc981abebf1dad6951db1/comments",
+    "author": {
+      "login": "lersek",
+      "id": 4354893,
+      "node_id": "MDQ6VXNlcjQzNTQ4OTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4354893?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lersek",
+      "html_url": "https://github.com/lersek",
+      "followers_url": "https://api.github.com/users/lersek/followers",
+      "following_url": "https://api.github.com/users/lersek/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lersek/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lersek/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lersek/subscriptions",
+      "organizations_url": "https://api.github.com/users/lersek/orgs",
+      "repos_url": "https://api.github.com/users/lersek/repos",
+      "events_url": "https://api.github.com/users/lersek/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lersek/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lersek",
+      "id": 4354893,
+      "node_id": "MDQ6VXNlcjQzNTQ4OTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4354893?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lersek",
+      "html_url": "https://github.com/lersek",
+      "followers_url": "https://api.github.com/users/lersek/followers",
+      "following_url": "https://api.github.com/users/lersek/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lersek/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lersek/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lersek/subscriptions",
+      "organizations_url": "https://api.github.com/users/lersek/orgs",
+      "repos_url": "https://api.github.com/users/lersek/repos",
+      "events_url": "https://api.github.com/users/lersek/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lersek/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8528d00c7034cb11d54437c7df043d998cc7d06e",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/8528d00c7034cb11d54437c7df043d998cc7d06e",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/8528d00c7034cb11d54437c7df043d998cc7d06e"
+      }
+    ]
+  },
+  {
+    "sha": "8528d00c7034cb11d54437c7df043d998cc7d06e",
+    "node_id": "C_kwDOAKVm-NoAKDg1MjhkMDBjNzAzNGNiMTFkNTQ0MzdjN2RmMDQzZDk5OGNjN2QwNmU",
+    "commit": {
+      "author": {
+        "name": "Laszlo Ersek",
+        "email": "lersek@redhat.com",
+        "date": "2023-03-03T07:51:40Z"
+      },
+      "committer": {
+        "name": "Laszlo Ersek",
+        "email": "lersek@redhat.com",
+        "date": "2023-03-04T05:06:02Z"
+      },
+      "message": "use space consistently in function and function-like macro invocations\n\n(This is a reimplementation from scratch of libnbd commit b5101fbc59cb,\n\"use space consistently in function and function-like macro invocations\",\n2023-02-22.)\n\nWe intend to place a space character between the function designator and\nthe opening parenthesis in a function call. We've been executing on that\nmostly consistently; fix the few exceptions now.\n\nThe same convention should be applied to the invocations of function-like\nmacros, and to instances of \"__attribute__ ((attr))\". (The latter is\nexemplified, although not consistently, by the GCC manual.) Implement\nthis, by inserting the necessary spaces.\n\nFurthermore, the C standard calls \"defined\" -- as in \"#if defined\nidentifier\" and (equivalently) \"#if defined (identifier)\" -- a unary\npreprocessing operator. We can spell the parenthesized form as\n\n  defined (identifier)\n\nrather than\n\n  defined(identifier)\n\nso choose the former.\n\nWhile at it, touch up the following space-related warts:\n\n- The parameter / argument lists of the STUB() and OPTIONAL_STUB() macros,\n  used in VDDK code, lack spaces after the commas; supply them.\n\n- There is a single backslash in the definition of each of the\n  ACQUIRE_LOCK_FOR_CURRENT_SCOPE(), ACQUIRE_WRLOCK_FOR_CURRENT_SCOPE(),\n  ACQUIRE_RDLOCK_FOR_CURRENT_SCOPE(), and GET_HANDLE_FOR_CURRENT_SCOPE()\n  macros. Each backslash is preceded by many spaces, even though there are\n  no multiple backslashes that should be aligned. Squeeze the space\n  characters.\n\nI collected the locations possibly missing spaces with:\n\n  git grep -EHn '\\<[a-zA-Z0-9_]+\\(' -- '*.c' '*.h'\n\nand then manually updated each as necessary (this time using negative\nlook-behind regexes in xnedit, for excluding \"#define MACRO(...)\"\nmatches).\n\nI didn't change occurrences in comments (no comment seemed to indicate\ncopying and pasting an expression into new code).\n\n\"git show -w\" outputs nothing for this patch.\n\nThe test suite passes.\n\nSigned-off-by: Laszlo Ersek <lersek@redhat.com>\nMessage-Id: <20230303075145.177338-5-lersek@redhat.com>\nAcked-by: Richard W.M. Jones <rjones@redhat.com>\nAcked-by: Eric Blake <eblake@redhat.com>",
+      "tree": {
+        "sha": "7cc9b262508cbb4abb7b0d8c897837bd00b046d4",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/7cc9b262508cbb4abb7b0d8c897837bd00b046d4"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/8528d00c7034cb11d54437c7df043d998cc7d06e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/8528d00c7034cb11d54437c7df043d998cc7d06e",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/8528d00c7034cb11d54437c7df043d998cc7d06e",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/8528d00c7034cb11d54437c7df043d998cc7d06e/comments",
+    "author": {
+      "login": "lersek",
+      "id": 4354893,
+      "node_id": "MDQ6VXNlcjQzNTQ4OTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4354893?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lersek",
+      "html_url": "https://github.com/lersek",
+      "followers_url": "https://api.github.com/users/lersek/followers",
+      "following_url": "https://api.github.com/users/lersek/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lersek/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lersek/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lersek/subscriptions",
+      "organizations_url": "https://api.github.com/users/lersek/orgs",
+      "repos_url": "https://api.github.com/users/lersek/repos",
+      "events_url": "https://api.github.com/users/lersek/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lersek/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lersek",
+      "id": 4354893,
+      "node_id": "MDQ6VXNlcjQzNTQ4OTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4354893?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lersek",
+      "html_url": "https://github.com/lersek",
+      "followers_url": "https://api.github.com/users/lersek/followers",
+      "following_url": "https://api.github.com/users/lersek/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lersek/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lersek/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lersek/subscriptions",
+      "organizations_url": "https://api.github.com/users/lersek/orgs",
+      "repos_url": "https://api.github.com/users/lersek/repos",
+      "events_url": "https://api.github.com/users/lersek/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lersek/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "79f5422f8bb1d8afedf62ac55a5bb0d31f869cb3",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/79f5422f8bb1d8afedf62ac55a5bb0d31f869cb3",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/79f5422f8bb1d8afedf62ac55a5bb0d31f869cb3"
+      }
+    ]
+  },
+  {
+    "sha": "79f5422f8bb1d8afedf62ac55a5bb0d31f869cb3",
+    "node_id": "C_kwDOAKVm-NoAKDc5ZjU0MjJmOGJiMWQ4YWZlZGY2MmFjNTVhNWJiMGQzMWY4NjljYjM",
+    "commit": {
+      "author": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-03-03T07:51:39Z"
+      },
+      "committer": {
+        "name": "Laszlo Ersek",
+        "email": "lersek@redhat.com",
+        "date": "2023-03-04T05:05:59Z"
+      },
+      "message": "build: Silence some cppcheck warnings [partial port]\n\nOriginal commit message:\n\nI ran:\n$ cppcheck --cppcheck-build-dir=cache/cppcheck -q -I . -I common/include/ \\\n  -I include/ -I lib/ -I common/utils/ -i generator/ .\n\nthen inspected the output.  cppcheck correctly flags:\n\ncopy/file-ops.c:423:10: portability: 'data' is of type 'void *'. When using void pointers in calculations, the behaviour is undefined. Arithmetic operations on 'void *' is a GNU C extension, which defines the 'sizeof(void)' to be 1. [arithOperationsOnVoidPointer]\n\nexamples/copy-libev.c:312:10: style: Local variable 'is_zero' shadows outer function [shadowFunction]\n\nocaml/nbd-c.c:419:16: portability: Shifting signed 32-bit value by 31 bits is implementation-defined behaviour. See condition at line 416. [shiftTooManyBitsSigned]\n\nIt also has several easy-to-fix false positives such as:\n\nlib/opt.c:98:17: error: Uninitialized variable: err [uninitvar]\n\nwhere the tool failed to see that err was always assigned by the\ncallback function, or\n\npython/methods.c:357:7: style: Unused variable: ret [unusedVariable]\n\nwhere the tool prefers redundant ; to delimit use of Python macros\nfrom actual assignments.  I even addressed some of its style\ncomplaints, like:\n\ncopy/nbd-ops.c:466:16: style: The scope of the variable 'd' can be reduced...\n\nexamples/open-qcow2.c:12:23: style: Parameter 'argv' can be declared with const [constParameter]\n\ncommon/utils/test-vector.c:53:0: style: The function 'int64_vector_append' is never used. [unusedFunction]\n\nThen there are other false positives that are harder to silence (for\nexample, it complains about the macros ARRAY_SIZE(), ADD_OVERFLOW(),\nMUL_OVERFLOW(); incorrectly suggesting to add const to callback\nfunction signatures; ...)  which I don't try to address here.  So at\nthis point, it's not yet worth automating a run of cppcheck into our\nCI.\n\nPorting notes:\n\n- Only pick the \"common/utils/vector.h\" and \"common/utils/test-vector.c\"\n  code changes, for bringing nbdkit's common/ subdir closer to that of\n  libnbd.\n\n- Extend \"__attribute__((__unused__))\" to name##_duplicate(). This\n  function comes from nbdkit commit 78b72746e547 (\"vector: Add\n  vector_duplicate function\", 2021-08-22), and was not present in libnbd\n  at the time of libnbd commit 8fb8ffb53477 (\"build: Silence some cppcheck\n  warnings\", 2022-11-02).\n\nSigned-off-by: Laszlo Ersek <lersek@redhat.com>\n(cherry picked from libnbd commit 8fb8ffb534774e4fc9115b484277713285238078)\nMessage-Id: <20230303075145.177338-4-lersek@redhat.com>\nAcked-by: Richard W.M. Jones <rjones@redhat.com>\nAcked-by: Eric Blake <eblake@redhat.com>",
+      "tree": {
+        "sha": "07a6a1c881f5c765150b8f0edc9095c927864dea",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/07a6a1c881f5c765150b8f0edc9095c927864dea"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/79f5422f8bb1d8afedf62ac55a5bb0d31f869cb3",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/79f5422f8bb1d8afedf62ac55a5bb0d31f869cb3",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/79f5422f8bb1d8afedf62ac55a5bb0d31f869cb3",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/79f5422f8bb1d8afedf62ac55a5bb0d31f869cb3/comments",
+    "author": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lersek",
+      "id": 4354893,
+      "node_id": "MDQ6VXNlcjQzNTQ4OTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4354893?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lersek",
+      "html_url": "https://github.com/lersek",
+      "followers_url": "https://api.github.com/users/lersek/followers",
+      "following_url": "https://api.github.com/users/lersek/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lersek/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lersek/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lersek/subscriptions",
+      "organizations_url": "https://api.github.com/users/lersek/orgs",
+      "repos_url": "https://api.github.com/users/lersek/repos",
+      "events_url": "https://api.github.com/users/lersek/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lersek/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e495698e5cf72dc6225fc5e8f259a67f22361f31",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/e495698e5cf72dc6225fc5e8f259a67f22361f31",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/e495698e5cf72dc6225fc5e8f259a67f22361f31"
+      }
+    ]
+  },
+  {
+    "sha": "e495698e5cf72dc6225fc5e8f259a67f22361f31",
+    "node_id": "C_kwDOAKVm-NoAKGU0OTU2OThlNWNmNzJkYzYyMjVmYzVlOGYyNTlhNjdmMjIzNjFmMzE",
+    "commit": {
+      "author": {
+        "name": "Richard W.M. Jones",
+        "email": "rjones@redhat.com",
+        "date": "2023-03-03T07:51:38Z"
+      },
+      "committer": {
+        "name": "Laszlo Ersek",
+        "email": "lersek@redhat.com",
+        "date": "2023-03-04T05:05:56Z"
+      },
+      "message": "common/include: Add a function to compute log2(unsigned long)\n\nSigned-off-by: Laszlo Ersek <lersek@redhat.com>\n(cherry picked from libnbd commit 27a9bb45c70dbb1112cab6bdc1a61b21f78bc6f4)\nMessage-Id: <20230303075145.177338-3-lersek@redhat.com>\nAcked-by: Richard W.M. Jones <rjones@redhat.com>\nAcked-by: Eric Blake <eblake@redhat.com>",
+      "tree": {
+        "sha": "93db5e77f4105cb8a37511465e9e03d5092c498f",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/93db5e77f4105cb8a37511465e9e03d5092c498f"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/e495698e5cf72dc6225fc5e8f259a67f22361f31",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/e495698e5cf72dc6225fc5e8f259a67f22361f31",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/e495698e5cf72dc6225fc5e8f259a67f22361f31",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/e495698e5cf72dc6225fc5e8f259a67f22361f31/comments",
+    "author": {
+      "login": "rwmjones",
+      "id": 259688,
+      "node_id": "MDQ6VXNlcjI1OTY4OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/259688?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rwmjones",
+      "html_url": "https://github.com/rwmjones",
+      "followers_url": "https://api.github.com/users/rwmjones/followers",
+      "following_url": "https://api.github.com/users/rwmjones/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rwmjones/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rwmjones/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rwmjones/subscriptions",
+      "organizations_url": "https://api.github.com/users/rwmjones/orgs",
+      "repos_url": "https://api.github.com/users/rwmjones/repos",
+      "events_url": "https://api.github.com/users/rwmjones/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rwmjones/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lersek",
+      "id": 4354893,
+      "node_id": "MDQ6VXNlcjQzNTQ4OTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4354893?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lersek",
+      "html_url": "https://github.com/lersek",
+      "followers_url": "https://api.github.com/users/lersek/followers",
+      "following_url": "https://api.github.com/users/lersek/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lersek/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lersek/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lersek/subscriptions",
+      "organizations_url": "https://api.github.com/users/lersek/orgs",
+      "repos_url": "https://api.github.com/users/lersek/repos",
+      "events_url": "https://api.github.com/users/lersek/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lersek/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f7270b9091e5b83f4a2cb5d08b1b21a0adc29c56",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/f7270b9091e5b83f4a2cb5d08b1b21a0adc29c56",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/f7270b9091e5b83f4a2cb5d08b1b21a0adc29c56"
+      }
+    ]
+  },
+  {
+    "sha": "f7270b9091e5b83f4a2cb5d08b1b21a0adc29c56",
+    "node_id": "C_kwDOAKVm-NoAKGY3MjcwYjkwOTFlNWI4M2Y0YTJjYjVkMDhiMWIyMWEwYWRjMjljNTY",
+    "commit": {
+      "author": {
+        "name": "Nir Soffer",
+        "email": "nsoffer@redhat.com",
+        "date": "2023-03-03T07:51:37Z"
+      },
+      "committer": {
+        "name": "Laszlo Ersek",
+        "email": "lersek@redhat.com",
+        "date": "2023-03-04T05:05:16Z"
+      },
+      "message": "common/utils/vector.h: Remove stale reference to `size`\n\nOriginal commit message:\n\nUpdate stale comments to use `len` instead of `size`.\n\nFixes: commit cc0567e9aed7e6b40a44bf8eac0a262ac7314fec\nSigned-off-by: Nir Soffer <nsoffer@redhat.com>\n\nPorting notes:\n\n(1) Libnbd commit cc0567e9aed7 (\"common/utils/vector: Rename `size` to\n`len`\", 2021-10-31) renamed the \"size\" field of our vector data structure\nto \"len\", but forgot to update the field name in the comments of\n\"vector.h\".\n\n(2) Libnbd commit cc0567e9aed7 was ported to nbdkit as commit 0b0eece73f04\n(\"common/utils/vector: Rename `size` to `len`\", 2021-11-07). The port did\n*more* than the original: the port also renamed the field in the comments\nof \"vector.h\", plus it clarified the leading comment on name##_reserve().\n\n(3) Libnbd commit 3d6be922e701 (\"common/utils/vector.h: Remove stale\nreference to `size`\", 2021-11-05) fixed up earlier libnbd commit\ncc0567e9aed7 by cleaning up the comments, probably striving for synching\nlibnbd's \"vector.h\" with nbdkit's. However, this libnbd fixup introduced a\n*new* wrapping difference, relative to nbdkit, to the previously mentioned\ncomment above name##_reserve().\n\n(4) By porting libnbd commit 3d6be922e701 to nbdkit, we can unify the\nwrapping of the name##_reserve() comment.\n\nSigned-off-by: Laszlo Ersek <lersek@redhat.com>\n(cherry picked from libnbd commit 3d6be922e70153a220c7e5c7ae2425d1ff7197f8)\nMessage-Id: <20230303075145.177338-2-lersek@redhat.com>\nAcked-by: Richard W.M. Jones <rjones@redhat.com>\nAcked-by: Eric Blake <eblake@redhat.com>",
+      "tree": {
+        "sha": "010765a964745f093fb509bb72d7ad3e636e8617",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/010765a964745f093fb509bb72d7ad3e636e8617"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/f7270b9091e5b83f4a2cb5d08b1b21a0adc29c56",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/f7270b9091e5b83f4a2cb5d08b1b21a0adc29c56",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/f7270b9091e5b83f4a2cb5d08b1b21a0adc29c56",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/f7270b9091e5b83f4a2cb5d08b1b21a0adc29c56/comments",
+    "author": {
+      "login": "nirs",
+      "id": 395026,
+      "node_id": "MDQ6VXNlcjM5NTAyNg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/395026?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/nirs",
+      "html_url": "https://github.com/nirs",
+      "followers_url": "https://api.github.com/users/nirs/followers",
+      "following_url": "https://api.github.com/users/nirs/following{/other_user}",
+      "gists_url": "https://api.github.com/users/nirs/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/nirs/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/nirs/subscriptions",
+      "organizations_url": "https://api.github.com/users/nirs/orgs",
+      "repos_url": "https://api.github.com/users/nirs/repos",
+      "events_url": "https://api.github.com/users/nirs/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/nirs/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lersek",
+      "id": 4354893,
+      "node_id": "MDQ6VXNlcjQzNTQ4OTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4354893?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lersek",
+      "html_url": "https://github.com/lersek",
+      "followers_url": "https://api.github.com/users/lersek/followers",
+      "following_url": "https://api.github.com/users/lersek/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lersek/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lersek/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lersek/subscriptions",
+      "organizations_url": "https://api.github.com/users/lersek/orgs",
+      "repos_url": "https://api.github.com/users/lersek/repos",
+      "events_url": "https://api.github.com/users/lersek/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lersek/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "648a7909b69ed9be576e379097da09e9507fb868",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/648a7909b69ed9be576e379097da09e9507fb868",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/648a7909b69ed9be576e379097da09e9507fb868"
+      }
+    ]
+  },
+  {
+    "sha": "648a7909b69ed9be576e379097da09e9507fb868",
+    "node_id": "C_kwDOAKVm-NoAKDY0OGE3OTA5YjY5ZWQ5YmU1NzZlMzc5MDk3ZGEwOWU5NTA3ZmI4Njg",
+    "commit": {
+      "author": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-02-28T22:12:14Z"
+      },
+      "committer": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-03-01T16:44:09Z"
+      },
+      "message": "perl: Skip CI builds on newer FreeBSD\n\nperl is causing odd compiler errors, such as on FreeBSD 13:\n\nIn file included from /usr/local/lib/perl5/5.32/mach/CORE/sbox32_hash.h:4:\n/usr/local/lib/perl5/5.32/mach/CORE/zaphod32_hash.h:164:5: error: '(' and '{' tokens introducing statement expression appear in different macro expansion contexts [-Werror,-Wcompound-token-split-by-macro]\n    ZAPHOD32_SCRAMBLE32(state[2],0x9c5cc4e9);\n    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/usr/local/lib/perl5/5.32/mach/CORE/zaphod32_hash.h:80:38: note: expanded from macro 'ZAPHOD32_SCRAMBLE32'\n#define ZAPHOD32_SCRAMBLE32(v,prime) STMT_START {  \\\n                                     ^~~~~~~~~~\n\nIt's easier to just ignore perl on these platforms than to worry about\nwhen community will fix the compilation issue.",
+      "tree": {
+        "sha": "72f54e28b39d2e41321c52efc5850726366f693e",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/72f54e28b39d2e41321c52efc5850726366f693e"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/648a7909b69ed9be576e379097da09e9507fb868",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/648a7909b69ed9be576e379097da09e9507fb868",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/648a7909b69ed9be576e379097da09e9507fb868",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/648a7909b69ed9be576e379097da09e9507fb868/comments",
+    "author": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a3a2f9a46054ab45ce170f92344eea1e801d9892",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/a3a2f9a46054ab45ce170f92344eea1e801d9892",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/a3a2f9a46054ab45ce170f92344eea1e801d9892"
+      }
+    ]
+  },
+  {
+    "sha": "a3a2f9a46054ab45ce170f92344eea1e801d9892",
+    "node_id": "C_kwDOAKVm-NoAKGEzYTJmOWE0NjA1NGFiNDVjZTE3MGY5MjM0NGVlYTFlODAxZDk4OTI",
+    "commit": {
+      "author": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-03-01T16:43:57Z"
+      },
+      "committer": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-03-01T16:43:57Z"
+      },
+      "message": "golang: Skip CI builds on MacOS and newer FreeBSD\n\ngolang is causing odd linker errors on these platforms:\n\nFreeBSD 13:\ngo build -o /tmp/cirrus-ci-build/plugins/golang/examples/disk/nbdkit-godisk-plugin.so -buildmode=c-shared\n# main\n/usr/local/go119/pkg/tool/freebsd_amd64/link: running cc failed: exit status 1\nld: error: /lib/libc.so.7: undefined reference to environ [--no-allow-shlib-undefined]\nld: error: /lib/libc.so.7: undefined reference to __progname [--no-allow-shlib-undefined]\ncc: error: linker command failed with exit code 1 (use -v to see invocation)\ngmake[3]: *** [Makefile:1097: examples/disk/nbdkit-godisk-plugin.so] Error 2\n\nMacOS 12:\ngo build -o /private/var/folders/76/zy5ktkns50v6gt5g8r0sf6sc0000gn/T/cirrus-ci-build/plugins/golang/examples/disk/nbdkit-godisk-plugin.so -buildmode=c-shared\n# main\n/opt/homebrew/Cellar/go/1.20.1/libexec/pkg/tool/darwin_arm64/link: running clang failed: exit status 1\nld: unknown option: --unresolved-symbols=ignore-in-object-files\nclang: error: linker command failed with exit code 1 (use -v to see invocation)\ngmake[3]: *** [Makefile:1097: examples/disk/nbdkit-godisk-plugin.so] Error 1\n\nIt's easier to just ignore golang on these platforms than to worry\nabout why the Go community is playing weird games with the linker.",
+      "tree": {
+        "sha": "fe06e7564df4301dc2ecc2b311c298334bfb525a",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/fe06e7564df4301dc2ecc2b311c298334bfb525a"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/a3a2f9a46054ab45ce170f92344eea1e801d9892",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/a3a2f9a46054ab45ce170f92344eea1e801d9892",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/a3a2f9a46054ab45ce170f92344eea1e801d9892",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/a3a2f9a46054ab45ce170f92344eea1e801d9892/comments",
+    "author": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f935260cc50265e1f89e95ae4ca275b43d38f128",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/f935260cc50265e1f89e95ae4ca275b43d38f128",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/f935260cc50265e1f89e95ae4ca275b43d38f128"
+      }
+    ]
+  },
+  {
+    "sha": "f935260cc50265e1f89e95ae4ca275b43d38f128",
+    "node_id": "C_kwDOAKVm-NoAKGY5MzUyNjBjYzUwMjY1ZTFmODllOTVhZTRjYTI3NWI0M2QzOGYxMjg",
+    "commit": {
+      "author": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-03-01T16:43:29Z"
+      },
+      "committer": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-03-01T16:43:29Z"
+      },
+      "message": "rust: Skip CI builds on MacOS\n\nrust is causing odd linker errors on MacOS 12:\n\n   Compiling nbdkit v0.2.0 (/private/var/folders/76/zy5ktkns50v6gt5g8r0sf6sc0000gn/T/cirrus-ci-build/plugins/rust)\nerror: linking with `cc` failed: exit status: 1\n|\n...\n= note: Undefined symbols for architecture arm64:\n            \"_nbdkit_error\", referenced from:\n                nbdkit::ffi::set_error::h9a0be1bb8e8c07fd in libnbdkit-5dffb1334787f6f3.rlib(nbdkit-5dffb1334787f6f3.nbdkit.5e276eb4-cgu.0.rcgu.o)\n            \"_nbdkit_set_error\", referenced from:\n                nbdkit::ffi::set_error::h9a0be1bb8e8c07fd in libnbdkit-5dffb1334787f6f3.rlib(nbdkit-5dffb1334787f6f3.nbdkit.5e276eb4-cgu.0.rcgu.o)\nld: symbol(s) not found for architecture arm64\n\nWhile it looks like it is nbdkit's fault, it's easier to disable the\ntest for now to get to a green CI than to figure out why our list of\npublic symbols is not working on that platform.",
+      "tree": {
+        "sha": "3b182ea087f4df5e1bde7817903678eca55e030c",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/3b182ea087f4df5e1bde7817903678eca55e030c"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/f935260cc50265e1f89e95ae4ca275b43d38f128",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/f935260cc50265e1f89e95ae4ca275b43d38f128",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/f935260cc50265e1f89e95ae4ca275b43d38f128",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/f935260cc50265e1f89e95ae4ca275b43d38f128/comments",
+    "author": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "71493c91be53d74741d9719ca05b106d6d0d180e",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/71493c91be53d74741d9719ca05b106d6d0d180e",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/71493c91be53d74741d9719ca05b106d6d0d180e"
+      }
+    ]
+  },
+  {
+    "sha": "71493c91be53d74741d9719ca05b106d6d0d180e",
+    "node_id": "C_kwDOAKVm-NoAKDcxNDkzYzkxYmU1M2Q3NDc0MWQ5NzE5Y2EwNWIxMDZkNmQwZDE4MGU",
+    "commit": {
+      "author": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-02-28T19:05:43Z"
+      },
+      "committer": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-03-01T15:10:52Z"
+      },
+      "message": "ci: Another attempt at MacOS\n\nImport some lcitool improvements to avoid packages that are not\navailable through homebrew on MacOS, as well as some other tweaks:\n\n- Bare libtorrent does not exist; libtorrent-rasterbar is available\nbut fails to compile due to broken pkg-config --cflags\n- tcl is spelled tcl-tk\n- python3-boto3, sfdisk, and python3-libnbd are missing\n- Bare perl is sufficient for building the perl bindings, without\n  needing a non-existent perl5-devel.\n- Homebrew warns that compiling against e2fsprogs intentionally\n  requires a modification to PKG_CONFIG_PATH.\n\nWith this, it's time to revert the allow-failure portion of commit\n6b4178d0.\n\nDepends on https://gitlab.com/libvirt/libvirt-ci/-/merge_requests/360",
+      "tree": {
+        "sha": "c566230c6690b4da6fdf02147898bc9db92dcc8c",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/c566230c6690b4da6fdf02147898bc9db92dcc8c"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/71493c91be53d74741d9719ca05b106d6d0d180e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/71493c91be53d74741d9719ca05b106d6d0d180e",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/71493c91be53d74741d9719ca05b106d6d0d180e",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/71493c91be53d74741d9719ca05b106d6d0d180e/comments",
+    "author": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8f554a7cd7097d232eb4914863cc161094ad9be1",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/8f554a7cd7097d232eb4914863cc161094ad9be1",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/8f554a7cd7097d232eb4914863cc161094ad9be1"
+      }
+    ]
+  },
+  {
+    "sha": "8f554a7cd7097d232eb4914863cc161094ad9be1",
+    "node_id": "C_kwDOAKVm-NoAKDhmNTU0YTdjZDcwOTdkMjMyZWI0OTE0ODYzY2MxNjEwOTRhZDliZTE",
+    "commit": {
+      "author": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-03-01T01:28:31Z"
+      },
+      "committer": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-03-01T14:45:58Z"
+      },
+      "message": "ci: Expose more env vars needed by build.sh\n\nIn order for build.sh to see variables on Cirrus CI, we have to make\nsure they get passed through from the gitlab container.  This will\nmake it possible to skip language bindings that don't work on FreeBSD\nor MacOS.",
+      "tree": {
+        "sha": "156710ce1a4b38f4aebfb026690dfa7a4191331d",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/156710ce1a4b38f4aebfb026690dfa7a4191331d"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/8f554a7cd7097d232eb4914863cc161094ad9be1",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/8f554a7cd7097d232eb4914863cc161094ad9be1",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/8f554a7cd7097d232eb4914863cc161094ad9be1",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/8f554a7cd7097d232eb4914863cc161094ad9be1/comments",
+    "author": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "99c57eefa962a5e80751dc98659a7f0acac1b5ad",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/99c57eefa962a5e80751dc98659a7f0acac1b5ad",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/99c57eefa962a5e80751dc98659a7f0acac1b5ad"
+      }
+    ]
+  },
+  {
+    "sha": "99c57eefa962a5e80751dc98659a7f0acac1b5ad",
+    "node_id": "C_kwDOAKVm-NoAKDk5YzU3ZWVmYTk2MmE1ZTgwNzUxZGM5ODY1OWE3ZjBhY2FjMWI1YWQ",
+    "commit": {
+      "author": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-03-01T02:56:22Z"
+      },
+      "committer": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-03-01T03:05:11Z"
+      },
+      "message": "torrent: Use correct compiler flags\n\nSince the torrent plugin is compiled in C++, it needs CXXFLAGS instead\nof CFLAGS for automake to pass on whatever pkg-config --cflags wants.\nDoing this exposes some latent -Wshadow warnings, easy enough to fix.\n\nAll other C++ plugins correctly used CXXFLAGS; this patch also fixes a\nmisuse of CXXFLAGS for a dummy C library in the testsuite.\n\nFixes: 3cdd6e27 (\"Add Bittorrent plugin.\", v1.21.13)",
+      "tree": {
+        "sha": "9b0d3e460d2c719fb0ad939acbb7e690db61bb5c",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/9b0d3e460d2c719fb0ad939acbb7e690db61bb5c"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/99c57eefa962a5e80751dc98659a7f0acac1b5ad",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/99c57eefa962a5e80751dc98659a7f0acac1b5ad",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/99c57eefa962a5e80751dc98659a7f0acac1b5ad",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/99c57eefa962a5e80751dc98659a7f0acac1b5ad/comments",
+    "author": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "474569ea8c2e2af59abd19367db46910154c6a97",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/474569ea8c2e2af59abd19367db46910154c6a97",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/474569ea8c2e2af59abd19367db46910154c6a97"
+      }
+    ]
+  },
+  {
+    "sha": "474569ea8c2e2af59abd19367db46910154c6a97",
+    "node_id": "C_kwDOAKVm-NoAKDQ3NDU2OWVhOGMyZTJhZjU5YWJkMTkzNjdkYjQ2OTEwMTU0YzZhOTc",
+    "commit": {
+      "author": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-02-28T21:46:56Z"
+      },
+      "committer": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-02-28T22:01:39Z"
+      },
+      "message": "maint: Drop odd defaults in configure\n\nSetting with_manpages= twice makes little sense, especially if we then\ncheck $enable_manpages; the gnutls copy appears to be copy-and-paste,\nwhile the one near enable_pod appears to be confusion on AC_ARG_WITH\nvs. AC_ARG_ENABLE.  And nothing uses with_readline, under\nbash-completion, so just drop it.\n\nFixes: acf0b5e2 (\"configure: Add --with s for automagic dependencies\", v1.33.4)",
+      "tree": {
+        "sha": "0e794c1eba5356551d3ff92d63c4628f99a7b2ad",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/0e794c1eba5356551d3ff92d63c4628f99a7b2ad"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/474569ea8c2e2af59abd19367db46910154c6a97",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/474569ea8c2e2af59abd19367db46910154c6a97",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/474569ea8c2e2af59abd19367db46910154c6a97",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/474569ea8c2e2af59abd19367db46910154c6a97/comments",
+    "author": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "65fbd0cc87b38f4068c0d973947a82c2d4f9822c",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/65fbd0cc87b38f4068c0d973947a82c2d4f9822c",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/65fbd0cc87b38f4068c0d973947a82c2d4f9822c"
+      }
+    ]
+  },
+  {
+    "sha": "65fbd0cc87b38f4068c0d973947a82c2d4f9822c",
+    "node_id": "C_kwDOAKVm-NoAKDY1ZmJkMGNjODdiMzhmNDA2OGMwZDk3Mzk0N2E4MmMyZDRmOTgyMmM",
+    "commit": {
+      "author": {
+        "name": "Richard W.M. Jones",
+        "email": "rjones@redhat.com",
+        "date": "2023-02-28T15:23:59Z"
+      },
+      "committer": {
+        "name": "Richard W.M. Jones",
+        "email": "rjones@redhat.com",
+        "date": "2023-02-28T15:23:59Z"
+      },
+      "message": "Version 1.33.10.",
+      "tree": {
+        "sha": "6c91cba9a66d315cc0496000bf286f2661b7f703",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/6c91cba9a66d315cc0496000bf286f2661b7f703"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/65fbd0cc87b38f4068c0d973947a82c2d4f9822c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/65fbd0cc87b38f4068c0d973947a82c2d4f9822c",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/65fbd0cc87b38f4068c0d973947a82c2d4f9822c",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/65fbd0cc87b38f4068c0d973947a82c2d4f9822c/comments",
+    "author": {
+      "login": "rwmjones",
+      "id": 259688,
+      "node_id": "MDQ6VXNlcjI1OTY4OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/259688?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rwmjones",
+      "html_url": "https://github.com/rwmjones",
+      "followers_url": "https://api.github.com/users/rwmjones/followers",
+      "following_url": "https://api.github.com/users/rwmjones/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rwmjones/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rwmjones/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rwmjones/subscriptions",
+      "organizations_url": "https://api.github.com/users/rwmjones/orgs",
+      "repos_url": "https://api.github.com/users/rwmjones/repos",
+      "events_url": "https://api.github.com/users/rwmjones/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rwmjones/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "rwmjones",
+      "id": 259688,
+      "node_id": "MDQ6VXNlcjI1OTY4OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/259688?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rwmjones",
+      "html_url": "https://github.com/rwmjones",
+      "followers_url": "https://api.github.com/users/rwmjones/followers",
+      "following_url": "https://api.github.com/users/rwmjones/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rwmjones/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rwmjones/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rwmjones/subscriptions",
+      "organizations_url": "https://api.github.com/users/rwmjones/orgs",
+      "repos_url": "https://api.github.com/users/rwmjones/repos",
+      "events_url": "https://api.github.com/users/rwmjones/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rwmjones/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a6078b730c2c2c5cf8c8149d972cdc97eedeabdb",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/a6078b730c2c2c5cf8c8149d972cdc97eedeabdb",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/a6078b730c2c2c5cf8c8149d972cdc97eedeabdb"
+      }
+    ]
+  },
+  {
+    "sha": "a6078b730c2c2c5cf8c8149d972cdc97eedeabdb",
+    "node_id": "C_kwDOAKVm-NoAKGE2MDc4YjczMGMyYzJjNWNmOGM4MTQ5ZDk3MmNkYzk3ZWVkZWFiZGI",
+    "commit": {
+      "author": {
+        "name": "Richard W.M. Jones",
+        "email": "rjones@redhat.com",
+        "date": "2023-02-27T20:22:58Z"
+      },
+      "committer": {
+        "name": "Richard W.M. Jones",
+        "email": "rjones@redhat.com",
+        "date": "2023-02-28T12:25:36Z"
+      },
+      "message": "curl: Add debugging of the curl handle pool\n\nThis is enabled through a hidden debug flag:\n\n  nbdkit curl -D curl.pool=1",
+      "tree": {
+        "sha": "1ffee1c49695c9d65a6ba7aa850a93eb8f4bdfef",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/1ffee1c49695c9d65a6ba7aa850a93eb8f4bdfef"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/a6078b730c2c2c5cf8c8149d972cdc97eedeabdb",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/a6078b730c2c2c5cf8c8149d972cdc97eedeabdb",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/a6078b730c2c2c5cf8c8149d972cdc97eedeabdb",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/a6078b730c2c2c5cf8c8149d972cdc97eedeabdb/comments",
+    "author": {
+      "login": "rwmjones",
+      "id": 259688,
+      "node_id": "MDQ6VXNlcjI1OTY4OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/259688?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rwmjones",
+      "html_url": "https://github.com/rwmjones",
+      "followers_url": "https://api.github.com/users/rwmjones/followers",
+      "following_url": "https://api.github.com/users/rwmjones/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rwmjones/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rwmjones/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rwmjones/subscriptions",
+      "organizations_url": "https://api.github.com/users/rwmjones/orgs",
+      "repos_url": "https://api.github.com/users/rwmjones/repos",
+      "events_url": "https://api.github.com/users/rwmjones/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rwmjones/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "rwmjones",
+      "id": 259688,
+      "node_id": "MDQ6VXNlcjI1OTY4OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/259688?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rwmjones",
+      "html_url": "https://github.com/rwmjones",
+      "followers_url": "https://api.github.com/users/rwmjones/followers",
+      "following_url": "https://api.github.com/users/rwmjones/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rwmjones/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rwmjones/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rwmjones/subscriptions",
+      "organizations_url": "https://api.github.com/users/rwmjones/orgs",
+      "repos_url": "https://api.github.com/users/rwmjones/repos",
+      "events_url": "https://api.github.com/users/rwmjones/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rwmjones/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6b4178d0fdfeac989dfd110fa9d409bfa483522a",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/6b4178d0fdfeac989dfd110fa9d409bfa483522a",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/6b4178d0fdfeac989dfd110fa9d409bfa483522a"
+      }
+    ]
+  },
+  {
+    "sha": "6b4178d0fdfeac989dfd110fa9d409bfa483522a",
+    "node_id": "C_kwDOAKVm-NoAKDZiNDE3OGQwZmRmZWFjOTg5ZGZkMTEwZmE5ZDQwOWJmYTQ4MzUyMmE",
+    "commit": {
+      "author": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-02-27T20:08:30Z"
+      },
+      "committer": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-02-27T20:11:05Z"
+      },
+      "message": "ci: Temporarily disable perl in MacOS\n\nhomebrew is complaining that there is no 'perl5-devel' package on\nperl.  Rather than figure out why, my first step is just skip building\nthe perl plugin on that platform, so we can at least maximize other\ncoverage rather than dying before even starting to compile.\n\nAlso, temporarily enable CI to be green while MacOS is failing, as I\ndon't have easy access to MacOS other than via a round-trip through\nCirrus.",
+      "tree": {
+        "sha": "24c74bc887e04498439117a0e5aee5d529d55d6b",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/24c74bc887e04498439117a0e5aee5d529d55d6b"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/6b4178d0fdfeac989dfd110fa9d409bfa483522a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/6b4178d0fdfeac989dfd110fa9d409bfa483522a",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/6b4178d0fdfeac989dfd110fa9d409bfa483522a",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/6b4178d0fdfeac989dfd110fa9d409bfa483522a/comments",
+    "author": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d1041952124275bc542f25e2cdbee9c11d505357",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/d1041952124275bc542f25e2cdbee9c11d505357",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/d1041952124275bc542f25e2cdbee9c11d505357"
+      }
+    ]
+  },
+  {
+    "sha": "d1041952124275bc542f25e2cdbee9c11d505357",
+    "node_id": "C_kwDOAKVm-NoAKGQxMDQxOTUyMTI0Mjc1YmM1NDJmMjVlMmNkYmVlOWMxMWQ1MDUzNTc",
+    "commit": {
+      "author": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-02-27T19:37:04Z"
+      },
+      "committer": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-02-27T19:37:04Z"
+      },
+      "message": "torrent: port to MacOS\n\nHomebrew has two separate forks for libtorrent; we have to be explicit\nin picking one.  Until today, no one had actually tried using\nlibtorrent with Cirrus CI (nbdkit seems to be the only project linking\nto it).  See also\nhttps://gitlab.com/libvirt/libvirt-ci/-/merge_requests/360",
+      "tree": {
+        "sha": "7e364d9cb471a0de07d6daf48e30c9ac71f22851",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/7e364d9cb471a0de07d6daf48e30c9ac71f22851"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/d1041952124275bc542f25e2cdbee9c11d505357",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/d1041952124275bc542f25e2cdbee9c11d505357",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/d1041952124275bc542f25e2cdbee9c11d505357",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/d1041952124275bc542f25e2cdbee9c11d505357/comments",
+    "author": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e442bd10db0561303099a02c732f80f44fc0bce1",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/e442bd10db0561303099a02c732f80f44fc0bce1",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/e442bd10db0561303099a02c732f80f44fc0bce1"
+      }
+    ]
+  },
+  {
+    "sha": "e442bd10db0561303099a02c732f80f44fc0bce1",
+    "node_id": "C_kwDOAKVm-NoAKGU0NDJiZDEwZGIwNTYxMzAzMDk5YTAyYzczMmY4MGY0NGZjMGJjZTE",
+    "commit": {
+      "author": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-02-27T18:50:12Z"
+      },
+      "committer": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-02-27T18:56:13Z"
+      },
+      "message": "exitwhen: Fix compilation on FreeBSD\n\nPOSIX says WIFEXITED() and friends require <sys/wait.h>.  Linux\nhappens to leak those out other headers as well, but FreeBSD was\nstricter.  Meanwhile, mingw lacks that header, so copy the paradigm\nused elsewhere for conditional inclusion.",
+      "tree": {
+        "sha": "eccbce9ce0d822216d651c3893edf15168481046",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/eccbce9ce0d822216d651c3893edf15168481046"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/e442bd10db0561303099a02c732f80f44fc0bce1",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/e442bd10db0561303099a02c732f80f44fc0bce1",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/e442bd10db0561303099a02c732f80f44fc0bce1",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/e442bd10db0561303099a02c732f80f44fc0bce1/comments",
+    "author": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5eaec1b3a216c3b2637dd26c13563c4611a62439",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/5eaec1b3a216c3b2637dd26c13563c4611a62439",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/5eaec1b3a216c3b2637dd26c13563c4611a62439"
+      }
+    ]
+  },
+  {
+    "sha": "5eaec1b3a216c3b2637dd26c13563c4611a62439",
+    "node_id": "C_kwDOAKVm-NoAKDVlYWVjMWIzYTIxNmMzYjI2MzdkZDI2YzEzNTYzYzQ2MTFhNjI0Mzk",
+    "commit": {
+      "author": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2022-10-20T12:56:02Z"
+      },
+      "committer": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-02-27T17:17:11Z"
+      },
+      "message": "ci: Update with lcitool, enable Cirrus setups\n\nEnable macos and freebsd builds (they've been marked as allow-failure\nsince commit 32b395a7, and until today, we had not set up the\nCIRRUS_GITHUB_REPO envvar in gitlab's CI section).  Rerun 'lcitool\nmanifest ci/manifest.yml' to pick up recent changes in lcitool (favor\nthe :latest over :master image).\n\nGenerated with lcitool @64f11afd8",
+      "tree": {
+        "sha": "b159440cb62c8ca62ee2e6a316862025b91f285a",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/b159440cb62c8ca62ee2e6a316862025b91f285a"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/5eaec1b3a216c3b2637dd26c13563c4611a62439",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/5eaec1b3a216c3b2637dd26c13563c4611a62439",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/5eaec1b3a216c3b2637dd26c13563c4611a62439",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/5eaec1b3a216c3b2637dd26c13563c4611a62439/comments",
+    "author": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "560ae38c6d425c4dee913fd45f3b72024c9fb5c5",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/560ae38c6d425c4dee913fd45f3b72024c9fb5c5",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/560ae38c6d425c4dee913fd45f3b72024c9fb5c5"
+      }
+    ]
+  },
+  {
+    "sha": "560ae38c6d425c4dee913fd45f3b72024c9fb5c5",
+    "node_id": "C_kwDOAKVm-NoAKDU2MGFlMzhjNmQ0MjVjNGRlZTkxM2ZkNDVmM2I3MjAyNGM5ZmI1YzU",
+    "commit": {
+      "author": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-02-27T15:42:02Z"
+      },
+      "committer": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-02-27T15:42:59Z"
+      },
+      "message": "curl: Fix mingw build\n\nThe recent curl handle refactoring broke CI on mingw.\n\nFixes: ebf1ad85 (\"curl: Split out the libcurl handle from the plugin handle\"\", v1.33.8)",
+      "tree": {
+        "sha": "1a49925ef601a20a138bb5e8be9b24a24f4398d3",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/1a49925ef601a20a138bb5e8be9b24a24f4398d3"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/560ae38c6d425c4dee913fd45f3b72024c9fb5c5",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/560ae38c6d425c4dee913fd45f3b72024c9fb5c5",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/560ae38c6d425c4dee913fd45f3b72024c9fb5c5",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/560ae38c6d425c4dee913fd45f3b72024c9fb5c5/comments",
+    "author": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9d82aa4f6aaffa5f6c725ea95ce478f828204302",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/9d82aa4f6aaffa5f6c725ea95ce478f828204302",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/9d82aa4f6aaffa5f6c725ea95ce478f828204302"
+      }
+    ]
+  },
+  {
+    "sha": "9d82aa4f6aaffa5f6c725ea95ce478f828204302",
+    "node_id": "C_kwDOAKVm-NoAKDlkODJhYTRmNmFhZmZhNWY2YzcyNWVhOTVjZTQ3OGY4MjgyMDQzMDI",
+    "commit": {
+      "author": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-02-23T20:18:10Z"
+      },
+      "committer": {
+        "name": "Eric Blake",
+        "email": "eblake@redhat.com",
+        "date": "2023-02-27T13:52:43Z"
+      },
+      "message": "server: Don't assert on send if client hangs up early\n\nlibnbd's copy/copy-nbd-error.sh was triggering an assertion failure in\nnbdkit (this is the command that triggered the failure, at least with\nnbdcopy 1.14.2; although future nbdcopy may be fixed independently to\nmore gracefully exit):\n\n$ nbdcopy -- [ nbdkit --exit-with-parent -v --filter=error pattern 5M error-pread-rate=0.5 ] null:\n...\nnbdkit: pattern.2: debug: error-inject: pread count=262144 offset=4718592\nnbdkit: pattern.2: debug: pattern: pread count=262144 offset=4718592\nnbdkit: pattern.1: debug: error-inject: pread count=262144 offset=4456448\nnbdkit: pattern.1: error: injecting EIO error into pread\nnbdkit: pattern.1: debug: sending error reply: Input/output error\nnbdkit: pattern.3: debug: error-inject: pread count=262144 offset=4980736\nnbdkit: pattern.3: debug: pattern: pread count=262144 offset=4980736\nnbdkit: pattern.4: error: write data: NBD_CMD_READ: Broken pipe\nnbdkit: pattern.4: debug: exiting worker thread pattern.4\nnbdkit: connections.c:402: raw_send_socket: Assertion `sock >= 0' failed.\n\nWhen there are multiple queued requests, and the client hangs up\nabruptly as soon as the first error response is seen (rather than\nwaiting until all other queued responses are flushed then sending\nNBD_CMD_DISC), another thread that has a queued response ready to send\nsees EPIPE (the client is no longer reading) and closes the socket,\nthen the third thread triggers the assertion failure because it was\nnot expecting to attempt a send to a closed socket.  Thus, my claim\nthat sock would always be non-negative after collecting data from the\nplugin was wrong.  The bug can only happen for a server with\nNBDKIT_THREAD_MODEL_PARALLEL, as that is the only time a single client\ncan have more than one worker thread; and even with parallel service\nbetween clients, it is possible to avoid the bug by using 'nbdkit\n--threads=1' (at the expense of performance, because each single\nclient can no longer benefit from interleaved requests).\n\nFor the nbdcopy example, --exit-with-parent means it's just an\nannoyance (nbdcopy has already exited, and no further client will be\nconnecting); but for a longer-running nbdkit server accepting multiple\nclients (particularly likely when advertising MULTI-CONN, although\nthat is not a prerequisite), it means any one client can easily\ntrigger the SIGABRT by intentionally queueing multiple NBD_CMD_READ\nthen disconnecting early, and thereby kill nbdkit and starve other\nclients.  Note that SIGABRT is the most likely outcome; however, there\nis also a small window for something else: if client 1's first thread\ntriggers conn->close(SHUT_WR) while holding read_lock, there is a\nwindow betwen shutdown(conn->sockout) and conn->sockout=-1 where the\nclient's second thread holding write_lock can copy a stale\nnon-negative value of sock=conn->sockout.  If during this window a 2nd\nclient connects, an fd allocated as part of the second client can end\nup with the same value as the stale 'sock' in the first client, where\nwe send data to a completely unrelated socket rather than triggering\nthe assertion failure.\n\nWhether this bug rises to the level of CVE depends on whether you\nconsider one client being able to starve others a privilege escalation\n(if you are not using TLS, there are other ways for a bad client to\nstarve peers; if you are using TLS, then the starved client has the\nsame credentials as the client that caused the SIGABRT or data\ncorruption so there is no privilege boundary escalation).\n\nPartially reverts 26fd5e42; protocol_recv_request_send_reply() must\nonce again have a return status, because it is essential that when the\nclient has multiple worker threads, conn->sockout not be modified\nexcept under the write_lock, and altering it is easier at a central\npoint where we do not risk deadlock with read_lock or status_lock.\n\nAdd some testsuite coverage that does not depend on current nbdcopy's\nabrupt disconnect behavior.  The TLS case happens to pass even without\nthis patch, but the plaintext version demonstrates the same core dump\nthat triggered my efforts on this patch.\n\nFixes: https://bugzilla.redhat.com/show_bug.cgi?id=2173054\nFixes: daef505e (\"server: Give client EOF when we are done writing\", v1.32.4)\nSigned-off-by: Eric Blake <eblake@redhat.com>\n[eblake: rearrange if-chain in protocol_recv_request_send_reply]\nReviewed-by: Laszlo Ersek <lersek@redhat.com>",
+      "tree": {
+        "sha": "5779cf75da97b0e1b208b404bf7cc31e8680421b",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/5779cf75da97b0e1b208b404bf7cc31e8680421b"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/9d82aa4f6aaffa5f6c725ea95ce478f828204302",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/9d82aa4f6aaffa5f6c725ea95ce478f828204302",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/9d82aa4f6aaffa5f6c725ea95ce478f828204302",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/9d82aa4f6aaffa5f6c725ea95ce478f828204302/comments",
+    "author": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ebblake",
+      "id": 32933908,
+      "node_id": "MDQ6VXNlcjMyOTMzOTA4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32933908?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebblake",
+      "html_url": "https://github.com/ebblake",
+      "followers_url": "https://api.github.com/users/ebblake/followers",
+      "following_url": "https://api.github.com/users/ebblake/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebblake/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebblake/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebblake/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebblake/orgs",
+      "repos_url": "https://api.github.com/users/ebblake/repos",
+      "events_url": "https://api.github.com/users/ebblake/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebblake/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "eb9ca5f2ba5c5d5d30d88ec807d9ac0f9b7722ce",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/eb9ca5f2ba5c5d5d30d88ec807d9ac0f9b7722ce",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/eb9ca5f2ba5c5d5d30d88ec807d9ac0f9b7722ce"
+      }
+    ]
+  },
+  {
+    "sha": "eb9ca5f2ba5c5d5d30d88ec807d9ac0f9b7722ce",
+    "node_id": "C_kwDOAKVm-NoAKGViOWNhNWYyYmE1YzVkNWQzMGQ4OGVjODA3ZDlhYzBmOWI3NzIyY2U",
+    "commit": {
+      "author": {
+        "name": "Richard W.M. Jones",
+        "email": "rjones@redhat.com",
+        "date": "2023-02-26T17:17:08Z"
+      },
+      "committer": {
+        "name": "Richard W.M. Jones",
+        "email": "rjones@redhat.com",
+        "date": "2023-02-26T17:22:48Z"
+      },
+      "message": "ocaml: In NBDKit(3), more consistent references to other man pages\n\nThere appears to be no ocamldoc markup for referencing external man\npages.  However we can at least be consistent within our docs.\n\nAlso adds a link to nbdkit-plugin(3) which should be read as a\ncompanion to the NBDKit(3) man page.",
+      "tree": {
+        "sha": "e09a011e9bb5eb7c8afa84d0c9d73fc30ae82f32",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/e09a011e9bb5eb7c8afa84d0c9d73fc30ae82f32"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/eb9ca5f2ba5c5d5d30d88ec807d9ac0f9b7722ce",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/eb9ca5f2ba5c5d5d30d88ec807d9ac0f9b7722ce",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/eb9ca5f2ba5c5d5d30d88ec807d9ac0f9b7722ce",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/eb9ca5f2ba5c5d5d30d88ec807d9ac0f9b7722ce/comments",
+    "author": {
+      "login": "rwmjones",
+      "id": 259688,
+      "node_id": "MDQ6VXNlcjI1OTY4OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/259688?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rwmjones",
+      "html_url": "https://github.com/rwmjones",
+      "followers_url": "https://api.github.com/users/rwmjones/followers",
+      "following_url": "https://api.github.com/users/rwmjones/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rwmjones/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rwmjones/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rwmjones/subscriptions",
+      "organizations_url": "https://api.github.com/users/rwmjones/orgs",
+      "repos_url": "https://api.github.com/users/rwmjones/repos",
+      "events_url": "https://api.github.com/users/rwmjones/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rwmjones/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "rwmjones",
+      "id": 259688,
+      "node_id": "MDQ6VXNlcjI1OTY4OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/259688?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rwmjones",
+      "html_url": "https://github.com/rwmjones",
+      "followers_url": "https://api.github.com/users/rwmjones/followers",
+      "following_url": "https://api.github.com/users/rwmjones/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rwmjones/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rwmjones/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rwmjones/subscriptions",
+      "organizations_url": "https://api.github.com/users/rwmjones/orgs",
+      "repos_url": "https://api.github.com/users/rwmjones/repos",
+      "events_url": "https://api.github.com/users/rwmjones/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rwmjones/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e09d69473c42b459001fe8482a7041dc3fad235c",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/e09d69473c42b459001fe8482a7041dc3fad235c",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/e09d69473c42b459001fe8482a7041dc3fad235c"
+      }
+    ]
+  },
+  {
+    "sha": "e09d69473c42b459001fe8482a7041dc3fad235c",
+    "node_id": "C_kwDOAKVm-NoAKGUwOWQ2OTQ3M2M0MmI0NTkwMDFmZTg0ODJhNzA0MWRjM2ZhZDIzNWM",
+    "commit": {
+      "author": {
+        "name": "Richard W.M. Jones",
+        "email": "rjones@redhat.com",
+        "date": "2023-02-26T16:52:01Z"
+      },
+      "committer": {
+        "name": "Richard W.M. Jones",
+        "email": "rjones@redhat.com",
+        "date": "2023-02-26T17:15:05Z"
+      },
+      "message": "ocaml: Add binding for returning NBDKIT_API_VERSION of OCaml plugins",
+      "tree": {
+        "sha": "b187ab2aa47a9764d08ff3bac4d6198e669344fb",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/git/trees/b187ab2aa47a9764d08ff3bac4d6198e669344fb"
+      },
+      "url": "https://api.github.com/repos/libguestfs/nbdkit/git/commits/e09d69473c42b459001fe8482a7041dc3fad235c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/e09d69473c42b459001fe8482a7041dc3fad235c",
+    "html_url": "https://github.com/libguestfs/nbdkit/commit/e09d69473c42b459001fe8482a7041dc3fad235c",
+    "comments_url": "https://api.github.com/repos/libguestfs/nbdkit/commits/e09d69473c42b459001fe8482a7041dc3fad235c/comments",
+    "author": {
+      "login": "rwmjones",
+      "id": 259688,
+      "node_id": "MDQ6VXNlcjI1OTY4OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/259688?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rwmjones",
+      "html_url": "https://github.com/rwmjones",
+      "followers_url": "https://api.github.com/users/rwmjones/followers",
+      "following_url": "https://api.github.com/users/rwmjones/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rwmjones/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rwmjones/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rwmjones/subscriptions",
+      "organizations_url": "https://api.github.com/users/rwmjones/orgs",
+      "repos_url": "https://api.github.com/users/rwmjones/repos",
+      "events_url": "https://api.github.com/users/rwmjones/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rwmjones/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "rwmjones",
+      "id": 259688,
+      "node_id": "MDQ6VXNlcjI1OTY4OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/259688?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rwmjones",
+      "html_url": "https://github.com/rwmjones",
+      "followers_url": "https://api.github.com/users/rwmjones/followers",
+      "following_url": "https://api.github.com/users/rwmjones/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rwmjones/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rwmjones/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rwmjones/subscriptions",
+      "organizations_url": "https://api.github.com/users/rwmjones/orgs",
+      "repos_url": "https://api.github.com/users/rwmjones/repos",
+      "events_url": "https://api.github.com/users/rwmjones/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rwmjones/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "78ca564421fcee60f789f6e3290dbe001ab32b35",
+        "url": "https://api.github.com/repos/libguestfs/nbdkit/commits/78ca564421fcee60f789f6e3290dbe001ab32b35",
+        "html_url": "https://github.com/libguestfs/nbdkit/commit/78ca564421fcee60f789f6e3290dbe001ab32b35"
+      }
+    ]
+  }
+]

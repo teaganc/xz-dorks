@@ -1,0 +1,2334 @@
+[
+  {
+    "sha": "4ad4095a34cf22f122e1d995d4acaec84fef2f4f",
+    "node_id": "C_kwDOCuY8nNoAKDRhZDQwOTVhMzRjZjIyZjEyMmUxZDk5NWQ0YWNhZWM4NGZlZjJmNGY",
+    "commit": {
+      "author": {
+        "name": "Mathew Jacob",
+        "email": "63362973+mjacob1002@users.noreply.github.com",
+        "date": "2024-03-26T22:12:56Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-26T22:12:56Z"
+      },
+      "message": "CkIO Reading Capabilities (#3788)\n\n* Added the read_stripe field to the Options struct in ckio.h\n\n* Added the read_stripe parameter in Options to the be puped\n\n* Added startReadSession function to the ckio.h file. Will be called analagously to the startSession function that is used for writes.\n\n* Added the message type ReadReadyMsg, as well as the read function that the user will interact with. read() was declared in the ckio.h file, while I defined the ReadReadyMsg class in the .h file as well.\n\n* Added the prepareReadSession function to the director, and laid out some scaffolding for the ReadSession chare array. These changes are in ckio.ciI\n\n* Wrote the prepareReadSessionHelper function, which sets up all of the reader chares.\n\n* Wrote the ReadSession constructor in ckio.C\n\n* implemented the ReadSession constructor that initializes the offset and bytes, as well as the ReadSession::readData function which gets the data from memory into chare array to serve to the user\n\n* Got the reads to work in parallel. Must fix the memory leaks and implement a method of ending a read session.\n\n* Removed the read_id field of the director as it wasn't being used.\n\n* Included a (delete this) call at the of ReadAssembler::shareData so that the chare will clean itself up upon invoking the user provided callback after receiving all the necessary data for the read.\n\n* New test suite written in io_read under tests. Giving a linker error with \u001B[200~https://github.com/elamdf/\n\n* add missing def include\n\n* Added the new test suite and the test file readtest.txt\n\n* Added a clearBuffer() method to the chare array ReadSession in order to clean up that buffer memory. This is a stand-in for an actual freeing of the chare array, as broadcasting ckDestroy seems to break the code.\n\n* Commented out the printing code that tracks the where the CkIO library is in the line of execution.\n\n* io_read: Use relative paths in Makefile\n\n* Added a function that gets the data at offset and num bytes sequentially. Then in testRead will cal that seq read function and verifies that parallel read and sequential read get the same data.\n\n* Made the gathering of the information point to point and not a broadcast in order to reduce amount of messages sent.\n\n* Added the ckDestroy broadcast once closeReadSession is invoked.\n\n* Added some comments to give better insight as to what the test for parallel reads is doing.\n\n* Tests: Readd deleted io test\n\n* Fixed a comment relating to creating the read assembler\r\n\r\nChanged comment reading \"create read assemble\" to \"create read assembler\" on line 156\n\nCo-authored-by: Ronak Buch <rabuch2@illinois.edu>\n\n* Switched buffer=data.data() to _data_buffer.data() because _data_buffer is what the full read request, while data simply contains the data from a specific IO chare.\n\n* Simply memcpy into the vector::data directly instead of allocating a whole new buffer and then copying into the vector\n\n* Removed the clearBuffer broadcast because ckDestroy is being broadcasted instead, which will already free all of the memory\n\n* Removed the commented ckDestroy broadcast, as it is already being called.\n\n* Removed the empty headers directory and the 'touch headers' from Makefile. Also restored the LUSTRE command in the Makefile\n\n* Removed ReadAssembler constructor comments:\n\n* Removed debugging comments from ReadAssembler::shareData\n;\n\n* Removed debugging comments from ReadSession::sendData\n\n* Removed comments from ReadSession constructor\n\n* Removed comment that wasn't helpful from impl::Director::prepareReadSessionHelper\n\n* removed debugging statements from impl::Director::::read(), which is called by Ck::IO::read\n\n* Removed the comments from ReadSession::readData that were superfluous:\n\n* Cleaned up white space in the ckio.ci file\n\n* Removed the -verbose from the lb_test Makefile\n\n* Removed the periodic_lb_broadcast_test binary ping\n\n* Removed the period_selection binary from the meta_lb_test\n\n* Removed the extra lines from comment in the ckio.h file\n\n* Changed the shareData method from taking vector<char> to char[] and size_t num_bytes for performance boost.\n\n* Removed the ckouts from debugging\n\n* Changed the std::cerr to CkAbort if opening the file fails in ReadSession::readData\n\n* Removed the unistd.h include that wasn't wrapped in the windows checker\n\n* Removed the comment touching headeres in the Makfile on line 21\n\n* Instead of push_back with vector in sendData, set the size of vector directly and then insert\n\n* Changed the loop to copy data to a memcpy call. Resulted in huge speedup from 3.1sec to 1.7secs when reading 4GB file using benchmark program.\n\n* supported tagging reads in class ReadCompleteMsg, Ck::IO::read, ReadAssembler\n\n* Changed Ck::IO::read functions to be handled by the manager on each PE rather than the Director chare that was on PE 0.\n\n* Edits to the reading tests\n\n* Changed ifstream to fread\n\n* Added fseek when converting the ifstream to the FILE pointers. Also added a dd command in the tests/charm++/io_read/Makefile to automatically create the file large_test.txt when make is ran\n\n* Avoided the extra memcpy in the ReadAssembler::shareData function. Also inserted some logging statements in order to determine when the disk reads are finished.\n\n* Start of implementing the zerocopy API by assigning 0-copy post and assigning tags to the buffers.\n\n* Fixed bug with the start_idx in Manager::read. By doing (offset - session -> offset) instead of offset, it will find correct ReadSession chare because new value is wrt the actual readsession instead of just the file.\n\n* Introduced the CkPostBuffer by deferring a lot of the heavy lifting of read-serving to read assembler. Added tracking of buffer tags on the manager group with getTag and _curr_tag. Adjusted the sendData method to take the buffer tag so that it can correctly call shareData and do the CkMatch. Still have to adjust the shareData method to tag the buffer tag.\n\n* EXPERIMENTAL: trying to find why ckarray:1266 is segfaulting when trying to access pointer locMgr.\n\n* Implemented a reduction on managers after adding the session and readassembler key-value pair to the map. Used SDAG to correctly invoke the callback after the read session has been setup correctly in startReadSession call.\n\n* when the read is done, remove the ReadInfo struct from the map on the ReadAssembler\n\n* Potential bug: was using CkIO library read-tags per ReadAssembler rather than from the manager. Potentially meant if there were multiple sessions open, the Zero Copy would have multiple tags of the same value because 2 separate ReadAssemblers would've assigned the same tag on the PE. By using the manager, even if they're part of different sessions, every read within the CkIO library will have different tags.\n\n* Changed the API of reads; instead of specifying the number of bytes each IO chare will own, instead specify the number of IO chares that you would like. CkIO will calculate the read stripe from there. Any extra bytes that don't divide evenly will be owned by the last IO chare.:\n\n* Changed the default behavior if Options::num_readers is 0\n\n* Moving debugging statements to comments or the DEBUG macro\n\n* Laid out the BufferMap class that will be used to layout how the IO chares will be laid out\n\n* Added a startReadSession that allows a vector of PEs to be passed in for mapping of the IO Buffer chares.\n\n* Added asynchronous reads by spawning a thread to do the fread instead of doing it in the main thread. Use shared future to manage race conditions.\n\n* BUG FIX: If the IO buffers didn't evenly divide the session size and the last buffer stored more data, reads that required that extra bit of data wouldn't work properly because the posting of buffers for the Zero Copy wouldn't include that because they'd only do (read_stripe), when there's extra data on the end. Added a conditional testing if the current buffer being explored is the last one, and then simply set the length of ZC posting to be the read_offset + read_size - (read_stripe * i + session.offset).\n\n* Removed random string creation in the sendData function. Also made sendData a threaded entry method\n\n* Added a polling of the shared_future to see if the data is ready. If the I/O isn't done, suspend the Charm++ UTL and do other work while the I/O, letting the Charm RTS schedule the thread. Might want to add some sort of limit on number of I/O threads allowed per PE\n\n* Fixed edge case in the reads where you read into extra bytes in your read request\n\n* Renamed ReadSession to BufferChares\n\n* Removed random print statements + code that wasn't being used anymore\n\n* Comments for future developers, as well as some ideas for improvements/future work\n\n* Wrote a basic unit test with 3 Buffer Chares, 10 readers, and a 100 byte test file. Ensure that some reads cross buffer chare boundaries\n\n* Added the test recipe to the Makefile - hopefully that will fix all of the failed PRs\n\n* Added CkIO to the conditional that links -pthread iff the platform needs it\n\n* removed the binary that was accidentally check in; hopefully that makes smp tests pass\n\n* Added  flag to the end of the tests for io_Read\n\n* Fix potential mistake in the  for io_read tests\n\n* remove commands not involved in building tests from the iotest rule\n\n* Improve the formatting of CkIO Reading tests, as well as get rid of the rrors\n\nCo-authored-by: Evan Ramos <evan@hpccharm.com>\n\n* Removed both deprecated and unused functions.\n\n* Removed commented out file read\n\n* Switched the setting of num_readers to numReaders after changing the variable name\n\n* Changed the default value for numReaders if not set\n\n* Switched to opening the file in binary mode so that windows doesn't mangle the newline character\n\n* Trying to combat slow disk times\n\n* got rid of MPI version\n\n* fixed the friend read functino to have the new signature\n\n* memory leak fixed with buffer chare destructor\n\n* debug print statements and things\n\n* debug print statements\n\n* adding debug things but crashing on round 2\n\n* user events debugging, yield macro\n\n* adding io updates with yield and call after implementations\n\n* got rid of almost all the debu statements. Now we must see if we can clean up serveRead and also if we can add an example to the examples folder.\n\n* Added a working test in the tests/ folder and also cleaned up the ckio source code'\n\n* renamed read_stripe to read_stride to reflect it measure how much data buffer chares own\n\n* fixing bug in test\n\n* cleanup test code and add smp\n\n* spacing fix\n\n* adding sdag threading\n\n* switch from open64 (largefile) to plain open\n\n* removing unistd.h\n\n* changing prints to aborts\n\n* updating open permissions to support windows\n\n* adding windows read\n\n* adding O_BINARY to windows call\n\n* adding touch headers to makefile\n\n* merged the conflicts - finally mostly eng ready\n\n---------\n\nCo-authored-by: Ubuntu <ubuntu@ip-172-31-67-19.ec2.internal>\nCo-authored-by: Zane Fink <finkzane@gmail.com>\nCo-authored-by: Ronak Buch <rabuch2@illinois.edu>\nCo-authored-by: Mathew Jacob <tg883159@c506-014.stampede2.tacc.utexas.edu>\nCo-authored-by: Mathew Jacob <tg883159@login3.stampede2.tacc.utexas.edu>\nCo-authored-by: Mathew Jacob <tg883159@login1.stampede2.tacc.utexas.edu>\nCo-authored-by: Mathew Jacob <tg883159@login4.stampede2.tacc.utexas.edu>\nCo-authored-by: Mathew Jacob <tg883159@login2.stampede2.tacc.utexas.edu>\nCo-authored-by: Evan Ramos <evan@hpccharm.com>\nCo-authored-by: Mathew Jacob <jacob1@dt-login01.delta.ncsa.illinois.edu>\nCo-authored-by: mtaylo12 <mayat4@illinois.edu>\nCo-authored-by: Maya Taylor <mtaylor5@br014.ib.bridges2.psc.edu>\nCo-authored-by: Maya Taylor <mtaylor5@br013.ib.bridges2.psc.edu>\nCo-authored-by: Mathew Jacob <jacob1@dt-login02.delta.ncsa.illinois.edu>\nCo-authored-by: Maya Taylor <mtaylor5@br011.ib.bridges2.psc.edu>\nCo-authored-by: mtaylo12 <70495835+mtaylo12@users.noreply.github.com>\nCo-authored-by: Eric Bohm <eric@hpccharm.com>",
+      "tree": {
+        "sha": "fd8cd461f4fb7e536e126188702cecfbff767aab",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/fd8cd461f4fb7e536e126188702cecfbff767aab"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/4ad4095a34cf22f122e1d995d4acaec84fef2f4f",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmA0h4CRC1aQ7uu5UhlAAAuw0QAFqADmOHzzbt11FQBVOpYI+k\no/BQN3GP9EHuDj5NFzLuYQt2w2dLmoQcaZGhKp0XFVcrzeMoGlc+tCw+twXZaQTu\nsuVTUQpSEjDEEcLONC3npYY3dSJf1aY8QaYWUg/RTiMBAJvyliRPUWi/YFONrz3y\nVMH3SsJV5F8RdY1BLmCrhiF5zswiMyCqPhsVR4YDZx9w6EhwLGocJmSOgR5HfJpp\nAl6QtHo4k+QwDPmtrQCtreuoM+2BSFjmMQWdt+YC6KEUVVF00BXKkCMAxA47POIZ\nxKhWdiwoSv9l8/fAVJjszaRZVmUU7obzvtIsR56P+g12xeDsSuRdrg3evcoi63qF\nTcf6f4zlPw4fwcedPNrM1jI3uJtI/J+lU0FLh4IunAXBkU3wPLHDaRZaUbLkmywE\ncZ88gu349pzMOpmtU7cRoo1SyH7mu5HiD+McYdxBohdM+r5gormt4S8zSHkwZHPU\njTpgnLd21dM/h40Mu9yy7u3GNxabVeamqRYsen8alXgrFiXqF2wU228Ek2NaiWDc\nmThV6E16+NgfY1bt9jIB/E90iuxx/h0V+yzGFTGDC1dPfdtKJQ8A5OzGjcrAekeT\nZRZY6lldT22ZfMhtXa/op3SdQ6R7rEs/PsXNVNQjRqSaxes+cNnRLPZ2d0lV2YNQ\nWO0ktocRo35SX3mpLvO9\n=ugbB\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree fd8cd461f4fb7e536e126188702cecfbff767aab\nparent 4f3eed1cbfb3bb5fb39d240f102a2c12361e8683\nauthor Mathew Jacob <63362973+mjacob1002@users.noreply.github.com> 1711491176 -0400\ncommitter GitHub <noreply@github.com> 1711491176 +0000\n\nCkIO Reading Capabilities (#3788)\n\n* Added the read_stripe field to the Options struct in ckio.h\n\n* Added the read_stripe parameter in Options to the be puped\n\n* Added startReadSession function to the ckio.h file. Will be called analagously to the startSession function that is used for writes.\n\n* Added the message type ReadReadyMsg, as well as the read function that the user will interact with. read() was declared in the ckio.h file, while I defined the ReadReadyMsg class in the .h file as well.\n\n* Added the prepareReadSession function to the director, and laid out some scaffolding for the ReadSession chare array. These changes are in ckio.ciI\n\n* Wrote the prepareReadSessionHelper function, which sets up all of the reader chares.\n\n* Wrote the ReadSession constructor in ckio.C\n\n* implemented the ReadSession constructor that initializes the offset and bytes, as well as the ReadSession::readData function which gets the data from memory into chare array to serve to the user\n\n* Got the reads to work in parallel. Must fix the memory leaks and implement a method of ending a read session.\n\n* Removed the read_id field of the director as it wasn't being used.\n\n* Included a (delete this) call at the of ReadAssembler::shareData so that the chare will clean itself up upon invoking the user provided callback after receiving all the necessary data for the read.\n\n* New test suite written in io_read under tests. Giving a linker error with \u001B[200~https://github.com/elamdf/\n\n* add missing def include\n\n* Added the new test suite and the test file readtest.txt\n\n* Added a clearBuffer() method to the chare array ReadSession in order to clean up that buffer memory. This is a stand-in for an actual freeing of the chare array, as broadcasting ckDestroy seems to break the code.\n\n* Commented out the printing code that tracks the where the CkIO library is in the line of execution.\n\n* io_read: Use relative paths in Makefile\n\n* Added a function that gets the data at offset and num bytes sequentially. Then in testRead will cal that seq read function and verifies that parallel read and sequential read get the same data.\n\n* Made the gathering of the information point to point and not a broadcast in order to reduce amount of messages sent.\n\n* Added the ckDestroy broadcast once closeReadSession is invoked.\n\n* Added some comments to give better insight as to what the test for parallel reads is doing.\n\n* Tests: Readd deleted io test\n\n* Fixed a comment relating to creating the read assembler\r\n\r\nChanged comment reading \"create read assemble\" to \"create read assembler\" on line 156\n\nCo-authored-by: Ronak Buch <rabuch2@illinois.edu>\n\n* Switched buffer=data.data() to _data_buffer.data() because _data_buffer is what the full read request, while data simply contains the data from a specific IO chare.\n\n* Simply memcpy into the vector::data directly instead of allocating a whole new buffer and then copying into the vector\n\n* Removed the clearBuffer broadcast because ckDestroy is being broadcasted instead, which will already free all of the memory\n\n* Removed the commented ckDestroy broadcast, as it is already being called.\n\n* Removed the empty headers directory and the 'touch headers' from Makefile. Also restored the LUSTRE command in the Makefile\n\n* Removed ReadAssembler constructor comments:\n\n* Removed debugging comments from ReadAssembler::shareData\n;\n\n* Removed debugging comments from ReadSession::sendData\n\n* Removed comments from ReadSession constructor\n\n* Removed comment that wasn't helpful from impl::Director::prepareReadSessionHelper\n\n* removed debugging statements from impl::Director::::read(), which is called by Ck::IO::read\n\n* Removed the comments from ReadSession::readData that were superfluous:\n\n* Cleaned up white space in the ckio.ci file\n\n* Removed the -verbose from the lb_test Makefile\n\n* Removed the periodic_lb_broadcast_test binary ping\n\n* Removed the period_selection binary from the meta_lb_test\n\n* Removed the extra lines from comment in the ckio.h file\n\n* Changed the shareData method from taking vector<char> to char[] and size_t num_bytes for performance boost.\n\n* Removed the ckouts from debugging\n\n* Changed the std::cerr to CkAbort if opening the file fails in ReadSession::readData\n\n* Removed the unistd.h include that wasn't wrapped in the windows checker\n\n* Removed the comment touching headeres in the Makfile on line 21\n\n* Instead of push_back with vector in sendData, set the size of vector directly and then insert\n\n* Changed the loop to copy data to a memcpy call. Resulted in huge speedup from 3.1sec to 1.7secs when reading 4GB file using benchmark program.\n\n* supported tagging reads in class ReadCompleteMsg, Ck::IO::read, ReadAssembler\n\n* Changed Ck::IO::read functions to be handled by the manager on each PE rather than the Director chare that was on PE 0.\n\n* Edits to the reading tests\n\n* Changed ifstream to fread\n\n* Added fseek when converting the ifstream to the FILE pointers. Also added a dd command in the tests/charm++/io_read/Makefile to automatically create the file large_test.txt when make is ran\n\n* Avoided the extra memcpy in the ReadAssembler::shareData function. Also inserted some logging statements in order to determine when the disk reads are finished.\n\n* Start of implementing the zerocopy API by assigning 0-copy post and assigning tags to the buffers.\n\n* Fixed bug with the start_idx in Manager::read. By doing (offset - session -> offset) instead of offset, it will find correct ReadSession chare because new value is wrt the actual readsession instead of just the file.\n\n* Introduced the CkPostBuffer by deferring a lot of the heavy lifting of read-serving to read assembler. Added tracking of buffer tags on the manager group with getTag and _curr_tag. Adjusted the sendData method to take the buffer tag so that it can correctly call shareData and do the CkMatch. Still have to adjust the shareData method to tag the buffer tag.\n\n* EXPERIMENTAL: trying to find why ckarray:1266 is segfaulting when trying to access pointer locMgr.\n\n* Implemented a reduction on managers after adding the session and readassembler key-value pair to the map. Used SDAG to correctly invoke the callback after the read session has been setup correctly in startReadSession call.\n\n* when the read is done, remove the ReadInfo struct from the map on the ReadAssembler\n\n* Potential bug: was using CkIO library read-tags per ReadAssembler rather than from the manager. Potentially meant if there were multiple sessions open, the Zero Copy would have multiple tags of the same value because 2 separate ReadAssemblers would've assigned the same tag on the PE. By using the manager, even if they're part of different sessions, every read within the CkIO library will have different tags.\n\n* Changed the API of reads; instead of specifying the number of bytes each IO chare will own, instead specify the number of IO chares that you would like. CkIO will calculate the read stripe from there. Any extra bytes that don't divide evenly will be owned by the last IO chare.:\n\n* Changed the default behavior if Options::num_readers is 0\n\n* Moving debugging statements to comments or the DEBUG macro\n\n* Laid out the BufferMap class that will be used to layout how the IO chares will be laid out\n\n* Added a startReadSession that allows a vector of PEs to be passed in for mapping of the IO Buffer chares.\n\n* Added asynchronous reads by spawning a thread to do the fread instead of doing it in the main thread. Use shared future to manage race conditions.\n\n* BUG FIX: If the IO buffers didn't evenly divide the session size and the last buffer stored more data, reads that required that extra bit of data wouldn't work properly because the posting of buffers for the Zero Copy wouldn't include that because they'd only do (read_stripe), when there's extra data on the end. Added a conditional testing if the current buffer being explored is the last one, and then simply set the length of ZC posting to be the read_offset + read_size - (read_stripe * i + session.offset).\n\n* Removed random string creation in the sendData function. Also made sendData a threaded entry method\n\n* Added a polling of the shared_future to see if the data is ready. If the I/O isn't done, suspend the Charm++ UTL and do other work while the I/O, letting the Charm RTS schedule the thread. Might want to add some sort of limit on number of I/O threads allowed per PE\n\n* Fixed edge case in the reads where you read into extra bytes in your read request\n\n* Renamed ReadSession to BufferChares\n\n* Removed random print statements + code that wasn't being used anymore\n\n* Comments for future developers, as well as some ideas for improvements/future work\n\n* Wrote a basic unit test with 3 Buffer Chares, 10 readers, and a 100 byte test file. Ensure that some reads cross buffer chare boundaries\n\n* Added the test recipe to the Makefile - hopefully that will fix all of the failed PRs\n\n* Added CkIO to the conditional that links -pthread iff the platform needs it\n\n* removed the binary that was accidentally check in; hopefully that makes smp tests pass\n\n* Added  flag to the end of the tests for io_Read\n\n* Fix potential mistake in the  for io_read tests\n\n* remove commands not involved in building tests from the iotest rule\n\n* Improve the formatting of CkIO Reading tests, as well as get rid of the rrors\n\nCo-authored-by: Evan Ramos <evan@hpccharm.com>\n\n* Removed both deprecated and unused functions.\n\n* Removed commented out file read\n\n* Switched the setting of num_readers to numReaders after changing the variable name\n\n* Changed the default value for numReaders if not set\n\n* Switched to opening the file in binary mode so that windows doesn't mangle the newline character\n\n* Trying to combat slow disk times\n\n* got rid of MPI version\n\n* fixed the friend read functino to have the new signature\n\n* memory leak fixed with buffer chare destructor\n\n* debug print statements and things\n\n* debug print statements\n\n* adding debug things but crashing on round 2\n\n* user events debugging, yield macro\n\n* adding io updates with yield and call after implementations\n\n* got rid of almost all the debu statements. Now we must see if we can clean up serveRead and also if we can add an example to the examples folder.\n\n* Added a working test in the tests/ folder and also cleaned up the ckio source code'\n\n* renamed read_stripe to read_stride to reflect it measure how much data buffer chares own\n\n* fixing bug in test\n\n* cleanup test code and add smp\n\n* spacing fix\n\n* adding sdag threading\n\n* switch from open64 (largefile) to plain open\n\n* removing unistd.h\n\n* changing prints to aborts\n\n* updating open permissions to support windows\n\n* adding windows read\n\n* adding O_BINARY to windows call\n\n* adding touch headers to makefile\n\n* merged the conflicts - finally mostly eng ready\n\n---------\n\nCo-authored-by: Ubuntu <ubuntu@ip-172-31-67-19.ec2.internal>\nCo-authored-by: Zane Fink <finkzane@gmail.com>\nCo-authored-by: Ronak Buch <rabuch2@illinois.edu>\nCo-authored-by: Mathew Jacob <tg883159@c506-014.stampede2.tacc.utexas.edu>\nCo-authored-by: Mathew Jacob <tg883159@login3.stampede2.tacc.utexas.edu>\nCo-authored-by: Mathew Jacob <tg883159@login1.stampede2.tacc.utexas.edu>\nCo-authored-by: Mathew Jacob <tg883159@login4.stampede2.tacc.utexas.edu>\nCo-authored-by: Mathew Jacob <tg883159@login2.stampede2.tacc.utexas.edu>\nCo-authored-by: Evan Ramos <evan@hpccharm.com>\nCo-authored-by: Mathew Jacob <jacob1@dt-login01.delta.ncsa.illinois.edu>\nCo-authored-by: mtaylo12 <mayat4@illinois.edu>\nCo-authored-by: Maya Taylor <mtaylor5@br014.ib.bridges2.psc.edu>\nCo-authored-by: Maya Taylor <mtaylor5@br013.ib.bridges2.psc.edu>\nCo-authored-by: Mathew Jacob <jacob1@dt-login02.delta.ncsa.illinois.edu>\nCo-authored-by: Maya Taylor <mtaylor5@br011.ib.bridges2.psc.edu>\nCo-authored-by: mtaylo12 <70495835+mtaylo12@users.noreply.github.com>\nCo-authored-by: Eric Bohm <eric@hpccharm.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/4ad4095a34cf22f122e1d995d4acaec84fef2f4f",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/4ad4095a34cf22f122e1d995d4acaec84fef2f4f",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/4ad4095a34cf22f122e1d995d4acaec84fef2f4f/comments",
+    "author": {
+      "login": "mjacob1002",
+      "id": 63362973,
+      "node_id": "MDQ6VXNlcjYzMzYyOTcz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/63362973?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mjacob1002",
+      "html_url": "https://github.com/mjacob1002",
+      "followers_url": "https://api.github.com/users/mjacob1002/followers",
+      "following_url": "https://api.github.com/users/mjacob1002/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mjacob1002/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mjacob1002/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mjacob1002/subscriptions",
+      "organizations_url": "https://api.github.com/users/mjacob1002/orgs",
+      "repos_url": "https://api.github.com/users/mjacob1002/repos",
+      "events_url": "https://api.github.com/users/mjacob1002/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mjacob1002/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4f3eed1cbfb3bb5fb39d240f102a2c12361e8683",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/4f3eed1cbfb3bb5fb39d240f102a2c12361e8683",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/4f3eed1cbfb3bb5fb39d240f102a2c12361e8683"
+      }
+    ]
+  },
+  {
+    "sha": "4f3eed1cbfb3bb5fb39d240f102a2c12361e8683",
+    "node_id": "C_kwDOCuY8nNoAKDRmM2VlZDFjYmZiM2JiNWZiMzlkMjQwZjEwMmEyYzEyMzYxZTg2ODM",
+    "commit": {
+      "author": {
+        "name": "Eric Bohm",
+        "email": "ebohm@illinois.edu",
+        "date": "2024-03-25T22:20:54Z"
+      },
+      "committer": {
+        "name": "Eric Bohm",
+        "email": "eric@hpccharm.com",
+        "date": "2024-03-25T23:57:45Z"
+      },
+      "message": "bugfix: update namd binary from namd2 to namd3",
+      "tree": {
+        "sha": "c4ce83ee483c57e7e73a1df90be8974b00043069",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/c4ce83ee483c57e7e73a1df90be8974b00043069"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/4f3eed1cbfb3bb5fb39d240f102a2c12361e8683",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/4f3eed1cbfb3bb5fb39d240f102a2c12361e8683",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/4f3eed1cbfb3bb5fb39d240f102a2c12361e8683",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/4f3eed1cbfb3bb5fb39d240f102a2c12361e8683/comments",
+    "author": {
+      "login": "ebohm",
+      "id": 4490885,
+      "node_id": "MDQ6VXNlcjQ0OTA4ODU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4490885?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ebohm",
+      "html_url": "https://github.com/ebohm",
+      "followers_url": "https://api.github.com/users/ebohm/followers",
+      "following_url": "https://api.github.com/users/ebohm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ebohm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ebohm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ebohm/subscriptions",
+      "organizations_url": "https://api.github.com/users/ebohm/orgs",
+      "repos_url": "https://api.github.com/users/ebohm/repos",
+      "events_url": "https://api.github.com/users/ebohm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ebohm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ericjbohm",
+      "id": 7762591,
+      "node_id": "MDQ6VXNlcjc3NjI1OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7762591?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ericjbohm",
+      "html_url": "https://github.com/ericjbohm",
+      "followers_url": "https://api.github.com/users/ericjbohm/followers",
+      "following_url": "https://api.github.com/users/ericjbohm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ericjbohm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ericjbohm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ericjbohm/subscriptions",
+      "organizations_url": "https://api.github.com/users/ericjbohm/orgs",
+      "repos_url": "https://api.github.com/users/ericjbohm/repos",
+      "events_url": "https://api.github.com/users/ericjbohm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ericjbohm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "63ab5638c26e7ce1d4a36c5b4580412c8be24353",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/63ab5638c26e7ce1d4a36c5b4580412c8be24353",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/63ab5638c26e7ce1d4a36c5b4580412c8be24353"
+      }
+    ]
+  },
+  {
+    "sha": "63ab5638c26e7ce1d4a36c5b4580412c8be24353",
+    "node_id": "C_kwDOCuY8nNoAKDYzYWI1NjM4YzI2ZTdjZTFkNGEzNmM1YjQ1ODA0MTJjOGJlMjQzNTM",
+    "commit": {
+      "author": {
+        "name": "Tom Vander Aa",
+        "email": "vanderaa@imec.be",
+        "date": "2024-03-08T09:03:49Z"
+      },
+      "committer": {
+        "name": "Matthias Diener",
+        "email": "mdiener@illinois.edu",
+        "date": "2024-03-15T15:11:50Z"
+      },
+      "message": "charmc: remove unused TEMP_BASE variable",
+      "tree": {
+        "sha": "b1e6786c2ce56b450cf65f4da1995ae5cca85f58",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/b1e6786c2ce56b450cf65f4da1995ae5cca85f58"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/63ab5638c26e7ce1d4a36c5b4580412c8be24353",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/63ab5638c26e7ce1d4a36c5b4580412c8be24353",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/63ab5638c26e7ce1d4a36c5b4580412c8be24353",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/63ab5638c26e7ce1d4a36c5b4580412c8be24353/comments",
+    "author": {
+      "login": "tvandera",
+      "id": 3993861,
+      "node_id": "MDQ6VXNlcjM5OTM4NjE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3993861?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tvandera",
+      "html_url": "https://github.com/tvandera",
+      "followers_url": "https://api.github.com/users/tvandera/followers",
+      "following_url": "https://api.github.com/users/tvandera/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tvandera/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tvandera/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tvandera/subscriptions",
+      "organizations_url": "https://api.github.com/users/tvandera/orgs",
+      "repos_url": "https://api.github.com/users/tvandera/repos",
+      "events_url": "https://api.github.com/users/tvandera/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tvandera/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "matthiasdiener",
+      "id": 1772435,
+      "node_id": "MDQ6VXNlcjE3NzI0MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1772435?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/matthiasdiener",
+      "html_url": "https://github.com/matthiasdiener",
+      "followers_url": "https://api.github.com/users/matthiasdiener/followers",
+      "following_url": "https://api.github.com/users/matthiasdiener/following{/other_user}",
+      "gists_url": "https://api.github.com/users/matthiasdiener/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/matthiasdiener/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/matthiasdiener/subscriptions",
+      "organizations_url": "https://api.github.com/users/matthiasdiener/orgs",
+      "repos_url": "https://api.github.com/users/matthiasdiener/repos",
+      "events_url": "https://api.github.com/users/matthiasdiener/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/matthiasdiener/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "90b67d88576f82ca5e7a8a390f5a859c00194ee0",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/90b67d88576f82ca5e7a8a390f5a859c00194ee0",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/90b67d88576f82ca5e7a8a390f5a859c00194ee0"
+      }
+    ]
+  },
+  {
+    "sha": "90b67d88576f82ca5e7a8a390f5a859c00194ee0",
+    "node_id": "C_kwDOCuY8nNoAKDkwYjY3ZDg4NTc2ZjgyY2E1ZTdhOGEzOTBmNWE4NTljMDAxOTRlZTA",
+    "commit": {
+      "author": {
+        "name": "Tom Vander Aa",
+        "email": "vanderaa@imec.be",
+        "date": "2024-03-08T09:03:15Z"
+      },
+      "committer": {
+        "name": "Matthias Diener",
+        "email": "mdiener@illinois.edu",
+        "date": "2024-03-15T15:11:50Z"
+      },
+      "message": "charmc: include charmc PID in TMP files",
+      "tree": {
+        "sha": "a28915dd6acbcdde1275c6ba3d8c25c6069fec23",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/a28915dd6acbcdde1275c6ba3d8c25c6069fec23"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/90b67d88576f82ca5e7a8a390f5a859c00194ee0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/90b67d88576f82ca5e7a8a390f5a859c00194ee0",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/90b67d88576f82ca5e7a8a390f5a859c00194ee0",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/90b67d88576f82ca5e7a8a390f5a859c00194ee0/comments",
+    "author": {
+      "login": "tvandera",
+      "id": 3993861,
+      "node_id": "MDQ6VXNlcjM5OTM4NjE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3993861?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tvandera",
+      "html_url": "https://github.com/tvandera",
+      "followers_url": "https://api.github.com/users/tvandera/followers",
+      "following_url": "https://api.github.com/users/tvandera/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tvandera/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tvandera/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tvandera/subscriptions",
+      "organizations_url": "https://api.github.com/users/tvandera/orgs",
+      "repos_url": "https://api.github.com/users/tvandera/repos",
+      "events_url": "https://api.github.com/users/tvandera/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tvandera/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "matthiasdiener",
+      "id": 1772435,
+      "node_id": "MDQ6VXNlcjE3NzI0MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1772435?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/matthiasdiener",
+      "html_url": "https://github.com/matthiasdiener",
+      "followers_url": "https://api.github.com/users/matthiasdiener/followers",
+      "following_url": "https://api.github.com/users/matthiasdiener/following{/other_user}",
+      "gists_url": "https://api.github.com/users/matthiasdiener/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/matthiasdiener/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/matthiasdiener/subscriptions",
+      "organizations_url": "https://api.github.com/users/matthiasdiener/orgs",
+      "repos_url": "https://api.github.com/users/matthiasdiener/repos",
+      "events_url": "https://api.github.com/users/matthiasdiener/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/matthiasdiener/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e4c9c7d01cf978655943181b16312288b090ca2b",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/e4c9c7d01cf978655943181b16312288b090ca2b",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/e4c9c7d01cf978655943181b16312288b090ca2b"
+      }
+    ]
+  },
+  {
+    "sha": "e4c9c7d01cf978655943181b16312288b090ca2b",
+    "node_id": "C_kwDOCuY8nNoAKGU0YzljN2QwMWNmOTc4NjU1OTQzMTgxYjE2MzEyMjg4YjA5MGNhMmI",
+    "commit": {
+      "author": {
+        "name": "Tom Vander Aa",
+        "email": "vanderaa@imec.be",
+        "date": "2024-03-07T13:11:24Z"
+      },
+      "committer": {
+        "name": "Matthias Diener",
+        "email": "mdiener@illinois.edu",
+        "date": "2024-03-15T15:11:50Z"
+      },
+      "message": "charmc: do not use pipes. They hide exit codes",
+      "tree": {
+        "sha": "b6eff7a0608f72e626482dd75dbfb58b1103a4d2",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/b6eff7a0608f72e626482dd75dbfb58b1103a4d2"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/e4c9c7d01cf978655943181b16312288b090ca2b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/e4c9c7d01cf978655943181b16312288b090ca2b",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/e4c9c7d01cf978655943181b16312288b090ca2b",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/e4c9c7d01cf978655943181b16312288b090ca2b/comments",
+    "author": {
+      "login": "tvandera",
+      "id": 3993861,
+      "node_id": "MDQ6VXNlcjM5OTM4NjE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3993861?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tvandera",
+      "html_url": "https://github.com/tvandera",
+      "followers_url": "https://api.github.com/users/tvandera/followers",
+      "following_url": "https://api.github.com/users/tvandera/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tvandera/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tvandera/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tvandera/subscriptions",
+      "organizations_url": "https://api.github.com/users/tvandera/orgs",
+      "repos_url": "https://api.github.com/users/tvandera/repos",
+      "events_url": "https://api.github.com/users/tvandera/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tvandera/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "matthiasdiener",
+      "id": 1772435,
+      "node_id": "MDQ6VXNlcjE3NzI0MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1772435?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/matthiasdiener",
+      "html_url": "https://github.com/matthiasdiener",
+      "followers_url": "https://api.github.com/users/matthiasdiener/followers",
+      "following_url": "https://api.github.com/users/matthiasdiener/following{/other_user}",
+      "gists_url": "https://api.github.com/users/matthiasdiener/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/matthiasdiener/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/matthiasdiener/subscriptions",
+      "organizations_url": "https://api.github.com/users/matthiasdiener/orgs",
+      "repos_url": "https://api.github.com/users/matthiasdiener/repos",
+      "events_url": "https://api.github.com/users/matthiasdiener/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/matthiasdiener/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a8b232a2c035a03af341ba853d0dcf0f9b2cb4ba",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/a8b232a2c035a03af341ba853d0dcf0f9b2cb4ba",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/a8b232a2c035a03af341ba853d0dcf0f9b2cb4ba"
+      }
+    ]
+  },
+  {
+    "sha": "a8b232a2c035a03af341ba853d0dcf0f9b2cb4ba",
+    "node_id": "C_kwDOCuY8nNoAKGE4YjIzMmEyYzAzNWEwM2FmMzQxYmE4NTNkMGRjZjBmOWIyY2I0YmE",
+    "commit": {
+      "author": {
+        "name": "Matthias Diener",
+        "email": "matthias.diener@gmail.com",
+        "date": "2024-03-15T13:11:00Z"
+      },
+      "committer": {
+        "name": "Matthias Diener",
+        "email": "mdiener@illinois.edu",
+        "date": "2024-03-15T14:04:16Z"
+      },
+      "message": "bump mpi-linux-x86_64 time limit",
+      "tree": {
+        "sha": "aa5fe306a3579fe5dc32574713a32f5c300b9ab2",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/aa5fe306a3579fe5dc32574713a32f5c300b9ab2"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/a8b232a2c035a03af341ba853d0dcf0f9b2cb4ba",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/a8b232a2c035a03af341ba853d0dcf0f9b2cb4ba",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/a8b232a2c035a03af341ba853d0dcf0f9b2cb4ba",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/a8b232a2c035a03af341ba853d0dcf0f9b2cb4ba/comments",
+    "author": {
+      "login": "matthiasdiener",
+      "id": 1772435,
+      "node_id": "MDQ6VXNlcjE3NzI0MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1772435?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/matthiasdiener",
+      "html_url": "https://github.com/matthiasdiener",
+      "followers_url": "https://api.github.com/users/matthiasdiener/followers",
+      "following_url": "https://api.github.com/users/matthiasdiener/following{/other_user}",
+      "gists_url": "https://api.github.com/users/matthiasdiener/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/matthiasdiener/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/matthiasdiener/subscriptions",
+      "organizations_url": "https://api.github.com/users/matthiasdiener/orgs",
+      "repos_url": "https://api.github.com/users/matthiasdiener/repos",
+      "events_url": "https://api.github.com/users/matthiasdiener/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/matthiasdiener/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "matthiasdiener",
+      "id": 1772435,
+      "node_id": "MDQ6VXNlcjE3NzI0MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1772435?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/matthiasdiener",
+      "html_url": "https://github.com/matthiasdiener",
+      "followers_url": "https://api.github.com/users/matthiasdiener/followers",
+      "following_url": "https://api.github.com/users/matthiasdiener/following{/other_user}",
+      "gists_url": "https://api.github.com/users/matthiasdiener/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/matthiasdiener/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/matthiasdiener/subscriptions",
+      "organizations_url": "https://api.github.com/users/matthiasdiener/orgs",
+      "repos_url": "https://api.github.com/users/matthiasdiener/repos",
+      "events_url": "https://api.github.com/users/matthiasdiener/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/matthiasdiener/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "75e2b6dfe18493cc0295d045942066bd49f640d0",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/75e2b6dfe18493cc0295d045942066bd49f640d0",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/75e2b6dfe18493cc0295d045942066bd49f640d0"
+      }
+    ]
+  },
+  {
+    "sha": "75e2b6dfe18493cc0295d045942066bd49f640d0",
+    "node_id": "C_kwDOCuY8nNoAKDc1ZTJiNmRmZTE4NDkzY2MwMjk1ZDA0NTk0MjA2NmJkNDlmNjQwZDA",
+    "commit": {
+      "author": {
+        "name": "Tom Vander Aa",
+        "email": "vanderaa@imec.be",
+        "date": "2024-02-21T09:43:20Z"
+      },
+      "committer": {
+        "name": "Matthias Diener",
+        "email": "mdiener@illinois.edu",
+        "date": "2024-03-15T14:04:16Z"
+      },
+      "message": "LB: fix pup of CkLBOptions class",
+      "tree": {
+        "sha": "4ef3271fc36972d97fa54dc0bbe1d79496510da8",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/4ef3271fc36972d97fa54dc0bbe1d79496510da8"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/75e2b6dfe18493cc0295d045942066bd49f640d0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/75e2b6dfe18493cc0295d045942066bd49f640d0",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/75e2b6dfe18493cc0295d045942066bd49f640d0",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/75e2b6dfe18493cc0295d045942066bd49f640d0/comments",
+    "author": {
+      "login": "tvandera",
+      "id": 3993861,
+      "node_id": "MDQ6VXNlcjM5OTM4NjE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3993861?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tvandera",
+      "html_url": "https://github.com/tvandera",
+      "followers_url": "https://api.github.com/users/tvandera/followers",
+      "following_url": "https://api.github.com/users/tvandera/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tvandera/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tvandera/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tvandera/subscriptions",
+      "organizations_url": "https://api.github.com/users/tvandera/orgs",
+      "repos_url": "https://api.github.com/users/tvandera/repos",
+      "events_url": "https://api.github.com/users/tvandera/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tvandera/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "matthiasdiener",
+      "id": 1772435,
+      "node_id": "MDQ6VXNlcjE3NzI0MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1772435?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/matthiasdiener",
+      "html_url": "https://github.com/matthiasdiener",
+      "followers_url": "https://api.github.com/users/matthiasdiener/followers",
+      "following_url": "https://api.github.com/users/matthiasdiener/following{/other_user}",
+      "gists_url": "https://api.github.com/users/matthiasdiener/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/matthiasdiener/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/matthiasdiener/subscriptions",
+      "organizations_url": "https://api.github.com/users/matthiasdiener/orgs",
+      "repos_url": "https://api.github.com/users/matthiasdiener/repos",
+      "events_url": "https://api.github.com/users/matthiasdiener/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/matthiasdiener/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "738c09c9e845f2ec82c491f10a27f82729a847a5",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/738c09c9e845f2ec82c491f10a27f82729a847a5",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/738c09c9e845f2ec82c491f10a27f82729a847a5"
+      }
+    ]
+  },
+  {
+    "sha": "738c09c9e845f2ec82c491f10a27f82729a847a5",
+    "node_id": "C_kwDOCuY8nNoAKDczOGMwOWM5ZTg0NWYyZWM4MmM0OTFmMTBhMjdmODI3MjlhODQ3YTU",
+    "commit": {
+      "author": {
+        "name": "Sam White",
+        "email": "white67@illinois.edu",
+        "date": "2023-12-14T16:52:12Z"
+      },
+      "committer": {
+        "name": "Sam White",
+        "email": "white67@illinois.edu",
+        "date": "2024-02-17T21:59:55Z"
+      },
+      "message": "Update Boost ULT context library to v1.84.0",
+      "tree": {
+        "sha": "0548ffc56151bc2a9b133872f131a6ba0a19c12d",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/0548ffc56151bc2a9b133872f131a6ba0a19c12d"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/738c09c9e845f2ec82c491f10a27f82729a847a5",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/738c09c9e845f2ec82c491f10a27f82729a847a5",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/738c09c9e845f2ec82c491f10a27f82729a847a5",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/738c09c9e845f2ec82c491f10a27f82729a847a5/comments",
+    "author": {
+      "login": "stwhite91",
+      "id": 12042181,
+      "node_id": "MDQ6VXNlcjEyMDQyMTgx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12042181?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/stwhite91",
+      "html_url": "https://github.com/stwhite91",
+      "followers_url": "https://api.github.com/users/stwhite91/followers",
+      "following_url": "https://api.github.com/users/stwhite91/following{/other_user}",
+      "gists_url": "https://api.github.com/users/stwhite91/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/stwhite91/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/stwhite91/subscriptions",
+      "organizations_url": "https://api.github.com/users/stwhite91/orgs",
+      "repos_url": "https://api.github.com/users/stwhite91/repos",
+      "events_url": "https://api.github.com/users/stwhite91/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/stwhite91/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "stwhite91",
+      "id": 12042181,
+      "node_id": "MDQ6VXNlcjEyMDQyMTgx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12042181?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/stwhite91",
+      "html_url": "https://github.com/stwhite91",
+      "followers_url": "https://api.github.com/users/stwhite91/followers",
+      "following_url": "https://api.github.com/users/stwhite91/following{/other_user}",
+      "gists_url": "https://api.github.com/users/stwhite91/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/stwhite91/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/stwhite91/subscriptions",
+      "organizations_url": "https://api.github.com/users/stwhite91/orgs",
+      "repos_url": "https://api.github.com/users/stwhite91/repos",
+      "events_url": "https://api.github.com/users/stwhite91/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/stwhite91/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a69973aff45d8cd6965871f546ab2d5f3ef3ef42",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/a69973aff45d8cd6965871f546ab2d5f3ef3ef42",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/a69973aff45d8cd6965871f546ab2d5f3ef3ef42"
+      }
+    ]
+  },
+  {
+    "sha": "a69973aff45d8cd6965871f546ab2d5f3ef3ef42",
+    "node_id": "C_kwDOCuY8nNoAKGE2OTk3M2FmZjQ1ZDhjZDY5NjU4NzFmNTQ2YWIyZDVmM2VmM2VmNDI",
+    "commit": {
+      "author": {
+        "name": "Sam White",
+        "email": "white67@illinois.edu",
+        "date": "2023-12-14T17:41:48Z"
+      },
+      "committer": {
+        "name": "Evan Ramos",
+        "email": "evan@hpccharm.com",
+        "date": "2024-02-14T21:11:41Z"
+      },
+      "message": "hwloc: Update to v2.10.0",
+      "tree": {
+        "sha": "468e4a06f6965727521943c81f1b3691154b955c",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/468e4a06f6965727521943c81f1b3691154b955c"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/a69973aff45d8cd6965871f546ab2d5f3ef3ef42",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/a69973aff45d8cd6965871f546ab2d5f3ef3ef42",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/a69973aff45d8cd6965871f546ab2d5f3ef3ef42",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/a69973aff45d8cd6965871f546ab2d5f3ef3ef42/comments",
+    "author": {
+      "login": "stwhite91",
+      "id": 12042181,
+      "node_id": "MDQ6VXNlcjEyMDQyMTgx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12042181?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/stwhite91",
+      "html_url": "https://github.com/stwhite91",
+      "followers_url": "https://api.github.com/users/stwhite91/followers",
+      "following_url": "https://api.github.com/users/stwhite91/following{/other_user}",
+      "gists_url": "https://api.github.com/users/stwhite91/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/stwhite91/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/stwhite91/subscriptions",
+      "organizations_url": "https://api.github.com/users/stwhite91/orgs",
+      "repos_url": "https://api.github.com/users/stwhite91/repos",
+      "events_url": "https://api.github.com/users/stwhite91/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/stwhite91/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "evan-charmworks",
+      "id": 31295111,
+      "node_id": "MDQ6VXNlcjMxMjk1MTEx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31295111?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/evan-charmworks",
+      "html_url": "https://github.com/evan-charmworks",
+      "followers_url": "https://api.github.com/users/evan-charmworks/followers",
+      "following_url": "https://api.github.com/users/evan-charmworks/following{/other_user}",
+      "gists_url": "https://api.github.com/users/evan-charmworks/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/evan-charmworks/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/evan-charmworks/subscriptions",
+      "organizations_url": "https://api.github.com/users/evan-charmworks/orgs",
+      "repos_url": "https://api.github.com/users/evan-charmworks/repos",
+      "events_url": "https://api.github.com/users/evan-charmworks/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/evan-charmworks/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "32de593b61e6763d5726cc6c87e4c91f8a4e757f",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/32de593b61e6763d5726cc6c87e4c91f8a4e757f",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/32de593b61e6763d5726cc6c87e4c91f8a4e757f"
+      }
+    ]
+  },
+  {
+    "sha": "32de593b61e6763d5726cc6c87e4c91f8a4e757f",
+    "node_id": "C_kwDOCuY8nNoAKDMyZGU1OTNiNjFlNjc2M2Q1NzI2Y2M2Yzg3ZTRjOTFmOGE0ZTc1N2Y",
+    "commit": {
+      "author": {
+        "name": "Eric Bohm",
+        "email": "eric@hpccharm.com",
+        "date": "2023-11-28T20:47:28Z"
+      },
+      "committer": {
+        "name": "Eric Bohm",
+        "email": "eric@hpccharm.com",
+        "date": "2023-12-04T19:28:03Z"
+      },
+      "message": "detect that the run is within a SLURM allocation\nif so, use srun as the launcher\nchoose cray-shasta if craype",
+      "tree": {
+        "sha": "1577823d35836a055cfe59d90d69f65b0e41d0a5",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/1577823d35836a055cfe59d90d69f65b0e41d0a5"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/32de593b61e6763d5726cc6c87e4c91f8a4e757f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/32de593b61e6763d5726cc6c87e4c91f8a4e757f",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/32de593b61e6763d5726cc6c87e4c91f8a4e757f",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/32de593b61e6763d5726cc6c87e4c91f8a4e757f/comments",
+    "author": {
+      "login": "ericjbohm",
+      "id": 7762591,
+      "node_id": "MDQ6VXNlcjc3NjI1OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7762591?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ericjbohm",
+      "html_url": "https://github.com/ericjbohm",
+      "followers_url": "https://api.github.com/users/ericjbohm/followers",
+      "following_url": "https://api.github.com/users/ericjbohm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ericjbohm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ericjbohm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ericjbohm/subscriptions",
+      "organizations_url": "https://api.github.com/users/ericjbohm/orgs",
+      "repos_url": "https://api.github.com/users/ericjbohm/repos",
+      "events_url": "https://api.github.com/users/ericjbohm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ericjbohm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ericjbohm",
+      "id": 7762591,
+      "node_id": "MDQ6VXNlcjc3NjI1OTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7762591?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ericjbohm",
+      "html_url": "https://github.com/ericjbohm",
+      "followers_url": "https://api.github.com/users/ericjbohm/followers",
+      "following_url": "https://api.github.com/users/ericjbohm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ericjbohm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ericjbohm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ericjbohm/subscriptions",
+      "organizations_url": "https://api.github.com/users/ericjbohm/orgs",
+      "repos_url": "https://api.github.com/users/ericjbohm/repos",
+      "events_url": "https://api.github.com/users/ericjbohm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ericjbohm/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a0eec8146297f9d4cc0f512ab5a80a03321757da",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/a0eec8146297f9d4cc0f512ab5a80a03321757da",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/a0eec8146297f9d4cc0f512ab5a80a03321757da"
+      }
+    ]
+  },
+  {
+    "sha": "a0eec8146297f9d4cc0f512ab5a80a03321757da",
+    "node_id": "C_kwDOCuY8nNoAKGEwZWVjODE0NjI5N2Y5ZDRjYzBmNTEyYWI1YTgwYTAzMzIxNzU3ZGE",
+    "commit": {
+      "author": {
+        "name": "Matthias Diener",
+        "email": "mdiener@illinois.edu",
+        "date": "2023-11-03T21:25:29Z"
+      },
+      "committer": {
+        "name": "Matthias Diener",
+        "email": "mdiener@illinois.edu",
+        "date": "2023-11-21T22:22:13Z"
+      },
+      "message": "gfortran 13",
+      "tree": {
+        "sha": "a8f8c21ffbd662fe41200864d8b6a73915e67d38",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/a8f8c21ffbd662fe41200864d8b6a73915e67d38"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/a0eec8146297f9d4cc0f512ab5a80a03321757da",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/a0eec8146297f9d4cc0f512ab5a80a03321757da",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/a0eec8146297f9d4cc0f512ab5a80a03321757da",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/a0eec8146297f9d4cc0f512ab5a80a03321757da/comments",
+    "author": {
+      "login": "matthiasdiener",
+      "id": 1772435,
+      "node_id": "MDQ6VXNlcjE3NzI0MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1772435?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/matthiasdiener",
+      "html_url": "https://github.com/matthiasdiener",
+      "followers_url": "https://api.github.com/users/matthiasdiener/followers",
+      "following_url": "https://api.github.com/users/matthiasdiener/following{/other_user}",
+      "gists_url": "https://api.github.com/users/matthiasdiener/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/matthiasdiener/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/matthiasdiener/subscriptions",
+      "organizations_url": "https://api.github.com/users/matthiasdiener/orgs",
+      "repos_url": "https://api.github.com/users/matthiasdiener/repos",
+      "events_url": "https://api.github.com/users/matthiasdiener/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/matthiasdiener/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "matthiasdiener",
+      "id": 1772435,
+      "node_id": "MDQ6VXNlcjE3NzI0MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1772435?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/matthiasdiener",
+      "html_url": "https://github.com/matthiasdiener",
+      "followers_url": "https://api.github.com/users/matthiasdiener/followers",
+      "following_url": "https://api.github.com/users/matthiasdiener/following{/other_user}",
+      "gists_url": "https://api.github.com/users/matthiasdiener/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/matthiasdiener/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/matthiasdiener/subscriptions",
+      "organizations_url": "https://api.github.com/users/matthiasdiener/orgs",
+      "repos_url": "https://api.github.com/users/matthiasdiener/repos",
+      "events_url": "https://api.github.com/users/matthiasdiener/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/matthiasdiener/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e4e5713ffaf558fecb4f838c6ed28e7a5bf35381",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/e4e5713ffaf558fecb4f838c6ed28e7a5bf35381",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/e4e5713ffaf558fecb4f838c6ed28e7a5bf35381"
+      }
+    ]
+  },
+  {
+    "sha": "e4e5713ffaf558fecb4f838c6ed28e7a5bf35381",
+    "node_id": "C_kwDOCuY8nNoAKGU0ZTU3MTNmZmFmNTU4ZmVjYjRmODM4YzZlZDI4ZTdhNWJmMzUzODE",
+    "commit": {
+      "author": {
+        "name": "Matthias Diener",
+        "email": "mdiener@illinois.edu",
+        "date": "2023-11-03T20:14:36Z"
+      },
+      "committer": {
+        "name": "Matthias Diener",
+        "email": "mdiener@illinois.edu",
+        "date": "2023-11-21T22:22:13Z"
+      },
+      "message": "spack fix(?)",
+      "tree": {
+        "sha": "10614692599a1ad44a0099131a137667ca69ef0d",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/10614692599a1ad44a0099131a137667ca69ef0d"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/e4e5713ffaf558fecb4f838c6ed28e7a5bf35381",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/e4e5713ffaf558fecb4f838c6ed28e7a5bf35381",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/e4e5713ffaf558fecb4f838c6ed28e7a5bf35381",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/e4e5713ffaf558fecb4f838c6ed28e7a5bf35381/comments",
+    "author": {
+      "login": "matthiasdiener",
+      "id": 1772435,
+      "node_id": "MDQ6VXNlcjE3NzI0MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1772435?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/matthiasdiener",
+      "html_url": "https://github.com/matthiasdiener",
+      "followers_url": "https://api.github.com/users/matthiasdiener/followers",
+      "following_url": "https://api.github.com/users/matthiasdiener/following{/other_user}",
+      "gists_url": "https://api.github.com/users/matthiasdiener/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/matthiasdiener/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/matthiasdiener/subscriptions",
+      "organizations_url": "https://api.github.com/users/matthiasdiener/orgs",
+      "repos_url": "https://api.github.com/users/matthiasdiener/repos",
+      "events_url": "https://api.github.com/users/matthiasdiener/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/matthiasdiener/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "matthiasdiener",
+      "id": 1772435,
+      "node_id": "MDQ6VXNlcjE3NzI0MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1772435?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/matthiasdiener",
+      "html_url": "https://github.com/matthiasdiener",
+      "followers_url": "https://api.github.com/users/matthiasdiener/followers",
+      "following_url": "https://api.github.com/users/matthiasdiener/following{/other_user}",
+      "gists_url": "https://api.github.com/users/matthiasdiener/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/matthiasdiener/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/matthiasdiener/subscriptions",
+      "organizations_url": "https://api.github.com/users/matthiasdiener/orgs",
+      "repos_url": "https://api.github.com/users/matthiasdiener/repos",
+      "events_url": "https://api.github.com/users/matthiasdiener/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/matthiasdiener/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3f8b617684fa1653fb27576b3613ffeac135466a",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/3f8b617684fa1653fb27576b3613ffeac135466a",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/3f8b617684fa1653fb27576b3613ffeac135466a"
+      }
+    ]
+  },
+  {
+    "sha": "3f8b617684fa1653fb27576b3613ffeac135466a",
+    "node_id": "C_kwDOCuY8nNoAKDNmOGI2MTc2ODRmYTE2NTNmYjI3NTc2YjM2MTNmZmVhYzEzNTQ2NmE",
+    "commit": {
+      "author": {
+        "name": "Matthias Diener",
+        "email": "mdiener@illinois.edu",
+        "date": "2023-11-03T19:52:10Z"
+      },
+      "committer": {
+        "name": "Matthias Diener",
+        "email": "mdiener@illinois.edu",
+        "date": "2023-11-21T22:22:13Z"
+      },
+      "message": "move netlrts-x86_64 to github actions from circleci",
+      "tree": {
+        "sha": "440b1e2bf0ad0e31a967957083615e998bce3b81",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/440b1e2bf0ad0e31a967957083615e998bce3b81"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/3f8b617684fa1653fb27576b3613ffeac135466a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/3f8b617684fa1653fb27576b3613ffeac135466a",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/3f8b617684fa1653fb27576b3613ffeac135466a",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/3f8b617684fa1653fb27576b3613ffeac135466a/comments",
+    "author": {
+      "login": "matthiasdiener",
+      "id": 1772435,
+      "node_id": "MDQ6VXNlcjE3NzI0MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1772435?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/matthiasdiener",
+      "html_url": "https://github.com/matthiasdiener",
+      "followers_url": "https://api.github.com/users/matthiasdiener/followers",
+      "following_url": "https://api.github.com/users/matthiasdiener/following{/other_user}",
+      "gists_url": "https://api.github.com/users/matthiasdiener/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/matthiasdiener/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/matthiasdiener/subscriptions",
+      "organizations_url": "https://api.github.com/users/matthiasdiener/orgs",
+      "repos_url": "https://api.github.com/users/matthiasdiener/repos",
+      "events_url": "https://api.github.com/users/matthiasdiener/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/matthiasdiener/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "matthiasdiener",
+      "id": 1772435,
+      "node_id": "MDQ6VXNlcjE3NzI0MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1772435?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/matthiasdiener",
+      "html_url": "https://github.com/matthiasdiener",
+      "followers_url": "https://api.github.com/users/matthiasdiener/followers",
+      "following_url": "https://api.github.com/users/matthiasdiener/following{/other_user}",
+      "gists_url": "https://api.github.com/users/matthiasdiener/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/matthiasdiener/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/matthiasdiener/subscriptions",
+      "organizations_url": "https://api.github.com/users/matthiasdiener/orgs",
+      "repos_url": "https://api.github.com/users/matthiasdiener/repos",
+      "events_url": "https://api.github.com/users/matthiasdiener/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/matthiasdiener/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1d440346248720ed348da42fb74ab9956272043d",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/1d440346248720ed348da42fb74ab9956272043d",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/1d440346248720ed348da42fb74ab9956272043d"
+      }
+    ]
+  },
+  {
+    "sha": "1d440346248720ed348da42fb74ab9956272043d",
+    "node_id": "C_kwDOCuY8nNoAKDFkNDQwMzQ2MjQ4NzIwZWQzNDhkYTQyZmI3NGFiOTk1NjI3MjA0M2Q",
+    "commit": {
+      "author": {
+        "name": "Matthias Diener",
+        "email": "mdiener@illinois.edu",
+        "date": "2023-11-03T19:40:27Z"
+      },
+      "committer": {
+        "name": "Matthias Diener",
+        "email": "mdiener@illinois.edu",
+        "date": "2023-11-21T22:22:13Z"
+      },
+      "message": "remove travis",
+      "tree": {
+        "sha": "fd4331222c9d811ee99ed5dbeab87f7fd8abe631",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/fd4331222c9d811ee99ed5dbeab87f7fd8abe631"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/1d440346248720ed348da42fb74ab9956272043d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/1d440346248720ed348da42fb74ab9956272043d",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/1d440346248720ed348da42fb74ab9956272043d",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/1d440346248720ed348da42fb74ab9956272043d/comments",
+    "author": {
+      "login": "matthiasdiener",
+      "id": 1772435,
+      "node_id": "MDQ6VXNlcjE3NzI0MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1772435?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/matthiasdiener",
+      "html_url": "https://github.com/matthiasdiener",
+      "followers_url": "https://api.github.com/users/matthiasdiener/followers",
+      "following_url": "https://api.github.com/users/matthiasdiener/following{/other_user}",
+      "gists_url": "https://api.github.com/users/matthiasdiener/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/matthiasdiener/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/matthiasdiener/subscriptions",
+      "organizations_url": "https://api.github.com/users/matthiasdiener/orgs",
+      "repos_url": "https://api.github.com/users/matthiasdiener/repos",
+      "events_url": "https://api.github.com/users/matthiasdiener/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/matthiasdiener/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "matthiasdiener",
+      "id": 1772435,
+      "node_id": "MDQ6VXNlcjE3NzI0MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1772435?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/matthiasdiener",
+      "html_url": "https://github.com/matthiasdiener",
+      "followers_url": "https://api.github.com/users/matthiasdiener/followers",
+      "following_url": "https://api.github.com/users/matthiasdiener/following{/other_user}",
+      "gists_url": "https://api.github.com/users/matthiasdiener/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/matthiasdiener/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/matthiasdiener/subscriptions",
+      "organizations_url": "https://api.github.com/users/matthiasdiener/orgs",
+      "repos_url": "https://api.github.com/users/matthiasdiener/repos",
+      "events_url": "https://api.github.com/users/matthiasdiener/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/matthiasdiener/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "423e3e1a6982e2dc6b1a7772f102f483a04b9e3c",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/423e3e1a6982e2dc6b1a7772f102f483a04b9e3c",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/423e3e1a6982e2dc6b1a7772f102f483a04b9e3c"
+      }
+    ]
+  },
+  {
+    "sha": "423e3e1a6982e2dc6b1a7772f102f483a04b9e3c",
+    "node_id": "C_kwDOCuY8nNoAKDQyM2UzZTFhNjk4MmUyZGM2YjFhNzc3MmYxMDJmNDgzYTA0YjllM2M",
+    "commit": {
+      "author": {
+        "name": "Matthias Diener",
+        "email": "mdiener@illinois.edu",
+        "date": "2023-11-03T19:30:07Z"
+      },
+      "committer": {
+        "name": "Matthias Diener",
+        "email": "mdiener@illinois.edu",
+        "date": "2023-11-21T22:22:13Z"
+      },
+      "message": "fix spack",
+      "tree": {
+        "sha": "3fe93f849f58aae494981d55df800d3e9d7e7260",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/3fe93f849f58aae494981d55df800d3e9d7e7260"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/423e3e1a6982e2dc6b1a7772f102f483a04b9e3c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/423e3e1a6982e2dc6b1a7772f102f483a04b9e3c",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/423e3e1a6982e2dc6b1a7772f102f483a04b9e3c",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/423e3e1a6982e2dc6b1a7772f102f483a04b9e3c/comments",
+    "author": {
+      "login": "matthiasdiener",
+      "id": 1772435,
+      "node_id": "MDQ6VXNlcjE3NzI0MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1772435?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/matthiasdiener",
+      "html_url": "https://github.com/matthiasdiener",
+      "followers_url": "https://api.github.com/users/matthiasdiener/followers",
+      "following_url": "https://api.github.com/users/matthiasdiener/following{/other_user}",
+      "gists_url": "https://api.github.com/users/matthiasdiener/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/matthiasdiener/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/matthiasdiener/subscriptions",
+      "organizations_url": "https://api.github.com/users/matthiasdiener/orgs",
+      "repos_url": "https://api.github.com/users/matthiasdiener/repos",
+      "events_url": "https://api.github.com/users/matthiasdiener/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/matthiasdiener/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "matthiasdiener",
+      "id": 1772435,
+      "node_id": "MDQ6VXNlcjE3NzI0MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1772435?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/matthiasdiener",
+      "html_url": "https://github.com/matthiasdiener",
+      "followers_url": "https://api.github.com/users/matthiasdiener/followers",
+      "following_url": "https://api.github.com/users/matthiasdiener/following{/other_user}",
+      "gists_url": "https://api.github.com/users/matthiasdiener/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/matthiasdiener/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/matthiasdiener/subscriptions",
+      "organizations_url": "https://api.github.com/users/matthiasdiener/orgs",
+      "repos_url": "https://api.github.com/users/matthiasdiener/repos",
+      "events_url": "https://api.github.com/users/matthiasdiener/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/matthiasdiener/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "197983e27db39f477f3b13b729e1cd948f8fcaab",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/197983e27db39f477f3b13b729e1cd948f8fcaab",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/197983e27db39f477f3b13b729e1cd948f8fcaab"
+      }
+    ]
+  },
+  {
+    "sha": "197983e27db39f477f3b13b729e1cd948f8fcaab",
+    "node_id": "C_kwDOCuY8nNoAKDE5Nzk4M2UyN2RiMzlmNDc3ZjNiMTNiNzI5ZTFjZDk0OGY4ZmNhYWI",
+    "commit": {
+      "author": {
+        "name": "Matthias Diener",
+        "email": "mdiener@illinois.edu",
+        "date": "2023-11-03T19:27:19Z"
+      },
+      "committer": {
+        "name": "Matthias Diener",
+        "email": "mdiener@illinois.edu",
+        "date": "2023-11-21T22:22:13Z"
+      },
+      "message": "Unify CI components",
+      "tree": {
+        "sha": "32569a157dfc8035590a7e58a6710d10bb3f0faf",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/32569a157dfc8035590a7e58a6710d10bb3f0faf"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/197983e27db39f477f3b13b729e1cd948f8fcaab",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/197983e27db39f477f3b13b729e1cd948f8fcaab",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/197983e27db39f477f3b13b729e1cd948f8fcaab",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/197983e27db39f477f3b13b729e1cd948f8fcaab/comments",
+    "author": {
+      "login": "matthiasdiener",
+      "id": 1772435,
+      "node_id": "MDQ6VXNlcjE3NzI0MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1772435?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/matthiasdiener",
+      "html_url": "https://github.com/matthiasdiener",
+      "followers_url": "https://api.github.com/users/matthiasdiener/followers",
+      "following_url": "https://api.github.com/users/matthiasdiener/following{/other_user}",
+      "gists_url": "https://api.github.com/users/matthiasdiener/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/matthiasdiener/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/matthiasdiener/subscriptions",
+      "organizations_url": "https://api.github.com/users/matthiasdiener/orgs",
+      "repos_url": "https://api.github.com/users/matthiasdiener/repos",
+      "events_url": "https://api.github.com/users/matthiasdiener/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/matthiasdiener/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "matthiasdiener",
+      "id": 1772435,
+      "node_id": "MDQ6VXNlcjE3NzI0MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1772435?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/matthiasdiener",
+      "html_url": "https://github.com/matthiasdiener",
+      "followers_url": "https://api.github.com/users/matthiasdiener/followers",
+      "following_url": "https://api.github.com/users/matthiasdiener/following{/other_user}",
+      "gists_url": "https://api.github.com/users/matthiasdiener/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/matthiasdiener/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/matthiasdiener/subscriptions",
+      "organizations_url": "https://api.github.com/users/matthiasdiener/orgs",
+      "repos_url": "https://api.github.com/users/matthiasdiener/repos",
+      "events_url": "https://api.github.com/users/matthiasdiener/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/matthiasdiener/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "cdaacf7e6f0be0825e343c987d700ec761f8b23a",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/cdaacf7e6f0be0825e343c987d700ec761f8b23a",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/cdaacf7e6f0be0825e343c987d700ec761f8b23a"
+      }
+    ]
+  },
+  {
+    "sha": "cdaacf7e6f0be0825e343c987d700ec761f8b23a",
+    "node_id": "C_kwDOCuY8nNoAKGNkYWFjZjdlNmYwYmUwODI1ZTM0M2M5ODdkNzAwZWM3NjFmOGIyM2E",
+    "commit": {
+      "author": {
+        "name": "Jaemin Choi",
+        "email": "choi1@gpub046.delta.ncsa.illinois.edu",
+        "date": "2023-10-10T21:49:59Z"
+      },
+      "committer": {
+        "name": "Thomas Quinn",
+        "email": "trq@astro.washington.edu",
+        "date": "2023-10-11T03:50:30Z"
+      },
+      "message": "Define HAPI_TRACE with --enable-tracing",
+      "tree": {
+        "sha": "bbf4289b63cbc7d76a4eefb99b4a68bdcf69b44e",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/bbf4289b63cbc7d76a4eefb99b4a68bdcf69b44e"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/cdaacf7e6f0be0825e343c987d700ec761f8b23a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/cdaacf7e6f0be0825e343c987d700ec761f8b23a",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/cdaacf7e6f0be0825e343c987d700ec761f8b23a",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/cdaacf7e6f0be0825e343c987d700ec761f8b23a/comments",
+    "author": null,
+    "committer": {
+      "login": "trquinn",
+      "id": 5175698,
+      "node_id": "MDQ6VXNlcjUxNzU2OTg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5175698?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/trquinn",
+      "html_url": "https://github.com/trquinn",
+      "followers_url": "https://api.github.com/users/trquinn/followers",
+      "following_url": "https://api.github.com/users/trquinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/trquinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/trquinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/trquinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/trquinn/orgs",
+      "repos_url": "https://api.github.com/users/trquinn/repos",
+      "events_url": "https://api.github.com/users/trquinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/trquinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "aae1699a78c72fa488278658ffec2ea95b9bfe12",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/aae1699a78c72fa488278658ffec2ea95b9bfe12",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/aae1699a78c72fa488278658ffec2ea95b9bfe12"
+      }
+    ]
+  },
+  {
+    "sha": "aae1699a78c72fa488278658ffec2ea95b9bfe12",
+    "node_id": "C_kwDOCuY8nNoAKGFhZTE2OTlhNzhjNzJmYTQ4ODI3ODY1OGZmZWMyZWE5NWI5YmZlMTI",
+    "commit": {
+      "author": {
+        "name": "Jaemin Choi",
+        "email": "choi1@dt-login01.delta.ncsa.illinois.edu",
+        "date": "2023-10-10T21:16:13Z"
+      },
+      "committer": {
+        "name": "Thomas Quinn",
+        "email": "trq@astro.washington.edu",
+        "date": "2023-10-11T03:50:30Z"
+      },
+      "message": "Fix CUDA hello example and compilation with HAPI_TRACE",
+      "tree": {
+        "sha": "9526f1f4deb2747a0de33abe0230162ed9bdbf3d",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/9526f1f4deb2747a0de33abe0230162ed9bdbf3d"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/aae1699a78c72fa488278658ffec2ea95b9bfe12",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/aae1699a78c72fa488278658ffec2ea95b9bfe12",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/aae1699a78c72fa488278658ffec2ea95b9bfe12",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/aae1699a78c72fa488278658ffec2ea95b9bfe12/comments",
+    "author": null,
+    "committer": {
+      "login": "trquinn",
+      "id": 5175698,
+      "node_id": "MDQ6VXNlcjUxNzU2OTg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5175698?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/trquinn",
+      "html_url": "https://github.com/trquinn",
+      "followers_url": "https://api.github.com/users/trquinn/followers",
+      "following_url": "https://api.github.com/users/trquinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/trquinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/trquinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/trquinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/trquinn/orgs",
+      "repos_url": "https://api.github.com/users/trquinn/repos",
+      "events_url": "https://api.github.com/users/trquinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/trquinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "520585628155479ae7f50df671e21fc084274a46",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/520585628155479ae7f50df671e21fc084274a46",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/520585628155479ae7f50df671e21fc084274a46"
+      }
+    ]
+  },
+  {
+    "sha": "520585628155479ae7f50df671e21fc084274a46",
+    "node_id": "C_kwDOCuY8nNoAKDUyMDU4NTYyODE1NTQ3OWFlN2Y1MGRmNjcxZTIxZmMwODQyNzRhNDY",
+    "commit": {
+      "author": {
+        "name": "Matthias Diener",
+        "email": "mdiener@illinois.edu",
+        "date": "2023-09-27T18:23:13Z"
+      },
+      "committer": {
+        "name": "Matthias Diener",
+        "email": "mdiener@illinois.edu",
+        "date": "2023-10-03T18:01:44Z"
+      },
+      "message": "bump theme version",
+      "tree": {
+        "sha": "8983fbfc97658a9d265436bd051f9a887afb01d5",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/8983fbfc97658a9d265436bd051f9a887afb01d5"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/520585628155479ae7f50df671e21fc084274a46",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/520585628155479ae7f50df671e21fc084274a46",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/520585628155479ae7f50df671e21fc084274a46",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/520585628155479ae7f50df671e21fc084274a46/comments",
+    "author": {
+      "login": "matthiasdiener",
+      "id": 1772435,
+      "node_id": "MDQ6VXNlcjE3NzI0MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1772435?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/matthiasdiener",
+      "html_url": "https://github.com/matthiasdiener",
+      "followers_url": "https://api.github.com/users/matthiasdiener/followers",
+      "following_url": "https://api.github.com/users/matthiasdiener/following{/other_user}",
+      "gists_url": "https://api.github.com/users/matthiasdiener/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/matthiasdiener/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/matthiasdiener/subscriptions",
+      "organizations_url": "https://api.github.com/users/matthiasdiener/orgs",
+      "repos_url": "https://api.github.com/users/matthiasdiener/repos",
+      "events_url": "https://api.github.com/users/matthiasdiener/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/matthiasdiener/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "matthiasdiener",
+      "id": 1772435,
+      "node_id": "MDQ6VXNlcjE3NzI0MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1772435?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/matthiasdiener",
+      "html_url": "https://github.com/matthiasdiener",
+      "followers_url": "https://api.github.com/users/matthiasdiener/followers",
+      "following_url": "https://api.github.com/users/matthiasdiener/following{/other_user}",
+      "gists_url": "https://api.github.com/users/matthiasdiener/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/matthiasdiener/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/matthiasdiener/subscriptions",
+      "organizations_url": "https://api.github.com/users/matthiasdiener/orgs",
+      "repos_url": "https://api.github.com/users/matthiasdiener/repos",
+      "events_url": "https://api.github.com/users/matthiasdiener/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/matthiasdiener/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b38fdc293504e08242ef1c49d497675b6269fb4f",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/b38fdc293504e08242ef1c49d497675b6269fb4f",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/b38fdc293504e08242ef1c49d497675b6269fb4f"
+      }
+    ]
+  },
+  {
+    "sha": "b38fdc293504e08242ef1c49d497675b6269fb4f",
+    "node_id": "C_kwDOCuY8nNoAKGIzOGZkYzI5MzUwNGUwODI0MmVmMWM0OWQ0OTc2NzViNjI2OWZiNGY",
+    "commit": {
+      "author": {
+        "name": "Matthias Diener",
+        "email": "mdiener@illinois.edu",
+        "date": "2023-09-27T18:16:28Z"
+      },
+      "committer": {
+        "name": "Matthias Diener",
+        "email": "mdiener@illinois.edu",
+        "date": "2023-10-03T18:01:44Z"
+      },
+      "message": "add .readthedocs.yaml",
+      "tree": {
+        "sha": "68f71b6d89422b1ac29ec7eef1b2440259ac5ad9",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/68f71b6d89422b1ac29ec7eef1b2440259ac5ad9"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/b38fdc293504e08242ef1c49d497675b6269fb4f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/b38fdc293504e08242ef1c49d497675b6269fb4f",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/b38fdc293504e08242ef1c49d497675b6269fb4f",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/b38fdc293504e08242ef1c49d497675b6269fb4f/comments",
+    "author": {
+      "login": "matthiasdiener",
+      "id": 1772435,
+      "node_id": "MDQ6VXNlcjE3NzI0MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1772435?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/matthiasdiener",
+      "html_url": "https://github.com/matthiasdiener",
+      "followers_url": "https://api.github.com/users/matthiasdiener/followers",
+      "following_url": "https://api.github.com/users/matthiasdiener/following{/other_user}",
+      "gists_url": "https://api.github.com/users/matthiasdiener/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/matthiasdiener/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/matthiasdiener/subscriptions",
+      "organizations_url": "https://api.github.com/users/matthiasdiener/orgs",
+      "repos_url": "https://api.github.com/users/matthiasdiener/repos",
+      "events_url": "https://api.github.com/users/matthiasdiener/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/matthiasdiener/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "matthiasdiener",
+      "id": 1772435,
+      "node_id": "MDQ6VXNlcjE3NzI0MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1772435?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/matthiasdiener",
+      "html_url": "https://github.com/matthiasdiener",
+      "followers_url": "https://api.github.com/users/matthiasdiener/followers",
+      "following_url": "https://api.github.com/users/matthiasdiener/following{/other_user}",
+      "gists_url": "https://api.github.com/users/matthiasdiener/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/matthiasdiener/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/matthiasdiener/subscriptions",
+      "organizations_url": "https://api.github.com/users/matthiasdiener/orgs",
+      "repos_url": "https://api.github.com/users/matthiasdiener/repos",
+      "events_url": "https://api.github.com/users/matthiasdiener/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/matthiasdiener/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "691b53c0e6868e0350edd5a19781941059a2cf42",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/691b53c0e6868e0350edd5a19781941059a2cf42",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/691b53c0e6868e0350edd5a19781941059a2cf42"
+      }
+    ]
+  },
+  {
+    "sha": "691b53c0e6868e0350edd5a19781941059a2cf42",
+    "node_id": "C_kwDOCuY8nNoAKDY5MWI1M2MwZTY4NjhlMDM1MGVkZDVhMTk3ODE5NDEwNTlhMmNmNDI",
+    "commit": {
+      "author": {
+        "name": "Thomas Quinn",
+        "email": "trq@astro.washington.edu",
+        "date": "2023-09-22T16:28:01Z"
+      },
+      "committer": {
+        "name": "Mathew Jacob",
+        "email": "63362973+mjacob1002@users.noreply.github.com",
+        "date": "2023-09-25T23:01:31Z"
+      },
+      "message": "ckio: set AnytimeMigration to false for WriteSession\n\nThis prevents springCleaning on the WriteSession array, and works around\npossible problems after the array gets deleted.",
+      "tree": {
+        "sha": "0c5091fcf40663fe1a2efe313f7b4b0c00bfa11b",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/0c5091fcf40663fe1a2efe313f7b4b0c00bfa11b"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/691b53c0e6868e0350edd5a19781941059a2cf42",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/691b53c0e6868e0350edd5a19781941059a2cf42",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/691b53c0e6868e0350edd5a19781941059a2cf42",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/691b53c0e6868e0350edd5a19781941059a2cf42/comments",
+    "author": {
+      "login": "trquinn",
+      "id": 5175698,
+      "node_id": "MDQ6VXNlcjUxNzU2OTg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5175698?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/trquinn",
+      "html_url": "https://github.com/trquinn",
+      "followers_url": "https://api.github.com/users/trquinn/followers",
+      "following_url": "https://api.github.com/users/trquinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/trquinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/trquinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/trquinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/trquinn/orgs",
+      "repos_url": "https://api.github.com/users/trquinn/repos",
+      "events_url": "https://api.github.com/users/trquinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/trquinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "mjacob1002",
+      "id": 63362973,
+      "node_id": "MDQ6VXNlcjYzMzYyOTcz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/63362973?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mjacob1002",
+      "html_url": "https://github.com/mjacob1002",
+      "followers_url": "https://api.github.com/users/mjacob1002/followers",
+      "following_url": "https://api.github.com/users/mjacob1002/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mjacob1002/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mjacob1002/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mjacob1002/subscriptions",
+      "organizations_url": "https://api.github.com/users/mjacob1002/orgs",
+      "repos_url": "https://api.github.com/users/mjacob1002/repos",
+      "events_url": "https://api.github.com/users/mjacob1002/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mjacob1002/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "606459e74233494b53fcd669e8384738c24b119b",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/606459e74233494b53fcd669e8384738c24b119b",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/606459e74233494b53fcd669e8384738c24b119b"
+      }
+    ]
+  },
+  {
+    "sha": "606459e74233494b53fcd669e8384738c24b119b",
+    "node_id": "C_kwDOCuY8nNoAKDYwNjQ1OWU3NDIzMzQ5NGI1M2ZjZDY2OWU4Mzg0NzM4YzI0YjExOWI",
+    "commit": {
+      "author": {
+        "name": "Evan Ramos",
+        "email": "evan@hpccharm.com",
+        "date": "2023-08-04T00:02:15Z"
+      },
+      "committer": {
+        "name": "Evan Ramos",
+        "email": "evan@hpccharm.com",
+        "date": "2023-08-04T15:34:59Z"
+      },
+      "message": "CMake: Use FindCUDAToolkit and enable_language(CUDA) instead of FindCUDA\n\nFixes warning:\n\nCMake Warning (dev) at CMakeLists.txt:696 (find_package):\n  Policy CMP0146 is not set: The FindCUDA module is removed.  Run \"cmake\n  --help-policy CMP0146\" for policy details.  Use the cmake_policy command to\n  set the policy and suppress this warning.",
+      "tree": {
+        "sha": "d9e06e8206db16dd97dba3c448f02614eed3a501",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/d9e06e8206db16dd97dba3c448f02614eed3a501"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/606459e74233494b53fcd669e8384738c24b119b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/606459e74233494b53fcd669e8384738c24b119b",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/606459e74233494b53fcd669e8384738c24b119b",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/606459e74233494b53fcd669e8384738c24b119b/comments",
+    "author": {
+      "login": "evan-charmworks",
+      "id": 31295111,
+      "node_id": "MDQ6VXNlcjMxMjk1MTEx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31295111?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/evan-charmworks",
+      "html_url": "https://github.com/evan-charmworks",
+      "followers_url": "https://api.github.com/users/evan-charmworks/followers",
+      "following_url": "https://api.github.com/users/evan-charmworks/following{/other_user}",
+      "gists_url": "https://api.github.com/users/evan-charmworks/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/evan-charmworks/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/evan-charmworks/subscriptions",
+      "organizations_url": "https://api.github.com/users/evan-charmworks/orgs",
+      "repos_url": "https://api.github.com/users/evan-charmworks/repos",
+      "events_url": "https://api.github.com/users/evan-charmworks/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/evan-charmworks/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "evan-charmworks",
+      "id": 31295111,
+      "node_id": "MDQ6VXNlcjMxMjk1MTEx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31295111?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/evan-charmworks",
+      "html_url": "https://github.com/evan-charmworks",
+      "followers_url": "https://api.github.com/users/evan-charmworks/followers",
+      "following_url": "https://api.github.com/users/evan-charmworks/following{/other_user}",
+      "gists_url": "https://api.github.com/users/evan-charmworks/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/evan-charmworks/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/evan-charmworks/subscriptions",
+      "organizations_url": "https://api.github.com/users/evan-charmworks/orgs",
+      "repos_url": "https://api.github.com/users/evan-charmworks/repos",
+      "events_url": "https://api.github.com/users/evan-charmworks/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/evan-charmworks/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6ccdd70b8151c3b20d63acf376042be638a2e98a",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/6ccdd70b8151c3b20d63acf376042be638a2e98a",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/6ccdd70b8151c3b20d63acf376042be638a2e98a"
+      }
+    ]
+  },
+  {
+    "sha": "6ccdd70b8151c3b20d63acf376042be638a2e98a",
+    "node_id": "C_kwDOCuY8nNoAKDZjY2RkNzBiODE1MWMzYjIwZDYzYWNmMzc2MDQyYmU2MzhhMmU5OGE",
+    "commit": {
+      "author": {
+        "name": "Evan Ramos",
+        "email": "evan@hpccharm.com",
+        "date": "2023-08-03T02:23:22Z"
+      },
+      "committer": {
+        "name": "Evan Ramos",
+        "email": "evan@hpccharm.com",
+        "date": "2023-08-04T15:34:59Z"
+      },
+      "message": "CMake: Use FindPython instead of FindPythonInterp\n\nFixes warning:\n\nCMake Warning (dev) at CMakeLists.txt:337 (find_package):\n  Policy CMP0148 is not set: The FindPythonInterp and FindPythonLibs modules\n  are removed.  Run \"cmake --help-policy CMP0148\" for policy details.  Use\n  the cmake_policy command to set the policy and suppress this warning.",
+      "tree": {
+        "sha": "3dae22f62acaa528df7d497772875547daa42704",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/3dae22f62acaa528df7d497772875547daa42704"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/6ccdd70b8151c3b20d63acf376042be638a2e98a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/6ccdd70b8151c3b20d63acf376042be638a2e98a",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/6ccdd70b8151c3b20d63acf376042be638a2e98a",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/6ccdd70b8151c3b20d63acf376042be638a2e98a/comments",
+    "author": {
+      "login": "evan-charmworks",
+      "id": 31295111,
+      "node_id": "MDQ6VXNlcjMxMjk1MTEx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31295111?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/evan-charmworks",
+      "html_url": "https://github.com/evan-charmworks",
+      "followers_url": "https://api.github.com/users/evan-charmworks/followers",
+      "following_url": "https://api.github.com/users/evan-charmworks/following{/other_user}",
+      "gists_url": "https://api.github.com/users/evan-charmworks/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/evan-charmworks/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/evan-charmworks/subscriptions",
+      "organizations_url": "https://api.github.com/users/evan-charmworks/orgs",
+      "repos_url": "https://api.github.com/users/evan-charmworks/repos",
+      "events_url": "https://api.github.com/users/evan-charmworks/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/evan-charmworks/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "evan-charmworks",
+      "id": 31295111,
+      "node_id": "MDQ6VXNlcjMxMjk1MTEx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31295111?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/evan-charmworks",
+      "html_url": "https://github.com/evan-charmworks",
+      "followers_url": "https://api.github.com/users/evan-charmworks/followers",
+      "following_url": "https://api.github.com/users/evan-charmworks/following{/other_user}",
+      "gists_url": "https://api.github.com/users/evan-charmworks/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/evan-charmworks/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/evan-charmworks/subscriptions",
+      "organizations_url": "https://api.github.com/users/evan-charmworks/orgs",
+      "repos_url": "https://api.github.com/users/evan-charmworks/repos",
+      "events_url": "https://api.github.com/users/evan-charmworks/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/evan-charmworks/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5e4add3415eb31f30555f2afd8b05bf2f93e89a6",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/5e4add3415eb31f30555f2afd8b05bf2f93e89a6",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/5e4add3415eb31f30555f2afd8b05bf2f93e89a6"
+      }
+    ]
+  },
+  {
+    "sha": "5e4add3415eb31f30555f2afd8b05bf2f93e89a6",
+    "node_id": "C_kwDOCuY8nNoAKDVlNGFkZDM0MTVlYjMxZjMwNTU1ZjJhZmQ4YjA1YmYyZjkzZTg5YTY",
+    "commit": {
+      "author": {
+        "name": "Evan Ramos",
+        "email": "evan@hpccharm.com",
+        "date": "2023-08-03T20:58:45Z"
+      },
+      "committer": {
+        "name": "Evan Ramos",
+        "email": "evan@hpccharm.com",
+        "date": "2023-08-04T15:34:59Z"
+      },
+      "message": "CMake: Set policy CMP0102 to NEW\n\nFixes warning:\n\nCMake Warning (dev) at /usr/share/cmake-3.22/Modules/FindJPEG.cmake:142 (mark_as_advanced):\n  Policy CMP0102 is not set: The variable named \"JPEG_LIBRARY\" is not in the\n  cache.  This results in an empty cache entry which is no longer created\n  when policy CMP0102 is set to NEW.  Run \"cmake --help-policy CMP0102\" for\n  policy details.  Use the cmake_policy command to set the policy and\n  suppress this warning.",
+      "tree": {
+        "sha": "fb3121bf1cde1aed6403896c405520d84ef36924",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/fb3121bf1cde1aed6403896c405520d84ef36924"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/5e4add3415eb31f30555f2afd8b05bf2f93e89a6",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/5e4add3415eb31f30555f2afd8b05bf2f93e89a6",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/5e4add3415eb31f30555f2afd8b05bf2f93e89a6",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/5e4add3415eb31f30555f2afd8b05bf2f93e89a6/comments",
+    "author": {
+      "login": "evan-charmworks",
+      "id": 31295111,
+      "node_id": "MDQ6VXNlcjMxMjk1MTEx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31295111?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/evan-charmworks",
+      "html_url": "https://github.com/evan-charmworks",
+      "followers_url": "https://api.github.com/users/evan-charmworks/followers",
+      "following_url": "https://api.github.com/users/evan-charmworks/following{/other_user}",
+      "gists_url": "https://api.github.com/users/evan-charmworks/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/evan-charmworks/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/evan-charmworks/subscriptions",
+      "organizations_url": "https://api.github.com/users/evan-charmworks/orgs",
+      "repos_url": "https://api.github.com/users/evan-charmworks/repos",
+      "events_url": "https://api.github.com/users/evan-charmworks/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/evan-charmworks/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "evan-charmworks",
+      "id": 31295111,
+      "node_id": "MDQ6VXNlcjMxMjk1MTEx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31295111?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/evan-charmworks",
+      "html_url": "https://github.com/evan-charmworks",
+      "followers_url": "https://api.github.com/users/evan-charmworks/followers",
+      "following_url": "https://api.github.com/users/evan-charmworks/following{/other_user}",
+      "gists_url": "https://api.github.com/users/evan-charmworks/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/evan-charmworks/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/evan-charmworks/subscriptions",
+      "organizations_url": "https://api.github.com/users/evan-charmworks/orgs",
+      "repos_url": "https://api.github.com/users/evan-charmworks/repos",
+      "events_url": "https://api.github.com/users/evan-charmworks/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/evan-charmworks/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7e7533bd72ef89967e1f748e7aa0e8192f696ac8",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/7e7533bd72ef89967e1f748e7aa0e8192f696ac8",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/7e7533bd72ef89967e1f748e7aa0e8192f696ac8"
+      }
+    ]
+  },
+  {
+    "sha": "7e7533bd72ef89967e1f748e7aa0e8192f696ac8",
+    "node_id": "C_kwDOCuY8nNoAKDdlNzUzM2JkNzJlZjg5OTY3ZTFmNzQ4ZTdhYTBlODE5MmY2OTZhYzg",
+    "commit": {
+      "author": {
+        "name": "Evan Ramos",
+        "email": "evan@hpccharm.com",
+        "date": "2023-08-03T02:11:36Z"
+      },
+      "committer": {
+        "name": "Evan Ramos",
+        "email": "evan@hpccharm.com",
+        "date": "2023-08-04T15:34:59Z"
+      },
+      "message": "CMake: Indicate that v3.5 has been tested for the minimum requirement\n\nFixes warning:\n\nCMake Deprecation Warning at CMakeLists.txt:13 (cmake_minimum_required):\n  Compatibility with CMake < 3.5 will be removed from a future version of\n  CMake.\n\n  Update the VERSION argument <min> value or use a ...<max> suffix to tell\n  CMake that the project does not need compatibility with older versions.",
+      "tree": {
+        "sha": "4b15a019f0e823194cd73e528a66e4744806e4f9",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/4b15a019f0e823194cd73e528a66e4744806e4f9"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/7e7533bd72ef89967e1f748e7aa0e8192f696ac8",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/7e7533bd72ef89967e1f748e7aa0e8192f696ac8",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/7e7533bd72ef89967e1f748e7aa0e8192f696ac8",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/7e7533bd72ef89967e1f748e7aa0e8192f696ac8/comments",
+    "author": {
+      "login": "evan-charmworks",
+      "id": 31295111,
+      "node_id": "MDQ6VXNlcjMxMjk1MTEx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31295111?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/evan-charmworks",
+      "html_url": "https://github.com/evan-charmworks",
+      "followers_url": "https://api.github.com/users/evan-charmworks/followers",
+      "following_url": "https://api.github.com/users/evan-charmworks/following{/other_user}",
+      "gists_url": "https://api.github.com/users/evan-charmworks/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/evan-charmworks/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/evan-charmworks/subscriptions",
+      "organizations_url": "https://api.github.com/users/evan-charmworks/orgs",
+      "repos_url": "https://api.github.com/users/evan-charmworks/repos",
+      "events_url": "https://api.github.com/users/evan-charmworks/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/evan-charmworks/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "evan-charmworks",
+      "id": 31295111,
+      "node_id": "MDQ6VXNlcjMxMjk1MTEx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31295111?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/evan-charmworks",
+      "html_url": "https://github.com/evan-charmworks",
+      "followers_url": "https://api.github.com/users/evan-charmworks/followers",
+      "following_url": "https://api.github.com/users/evan-charmworks/following{/other_user}",
+      "gists_url": "https://api.github.com/users/evan-charmworks/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/evan-charmworks/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/evan-charmworks/subscriptions",
+      "organizations_url": "https://api.github.com/users/evan-charmworks/orgs",
+      "repos_url": "https://api.github.com/users/evan-charmworks/repos",
+      "events_url": "https://api.github.com/users/evan-charmworks/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/evan-charmworks/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6fa158e5875193166ddc12f2cdd315dc1bd1ebe1",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/6fa158e5875193166ddc12f2cdd315dc1bd1ebe1",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/6fa158e5875193166ddc12f2cdd315dc1bd1ebe1"
+      }
+    ]
+  },
+  {
+    "sha": "6fa158e5875193166ddc12f2cdd315dc1bd1ebe1",
+    "node_id": "C_kwDOCuY8nNoAKDZmYTE1OGU1ODc1MTkzMTY2ZGRjMTJmMmNkZDMxNWRjMWJkMWViZTE",
+    "commit": {
+      "author": {
+        "name": "Evan Ramos",
+        "email": "evan@hpccharm.com",
+        "date": "2023-08-03T17:02:36Z"
+      },
+      "committer": {
+        "name": "Evan Ramos",
+        "email": "evan@hpccharm.com",
+        "date": "2023-08-04T15:34:59Z"
+      },
+      "message": "Fix build of PythonCCS",
+      "tree": {
+        "sha": "9ef8a31bf075fdb3a6e1a88aa540b4399e390c26",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/9ef8a31bf075fdb3a6e1a88aa540b4399e390c26"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/6fa158e5875193166ddc12f2cdd315dc1bd1ebe1",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/6fa158e5875193166ddc12f2cdd315dc1bd1ebe1",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/6fa158e5875193166ddc12f2cdd315dc1bd1ebe1",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/6fa158e5875193166ddc12f2cdd315dc1bd1ebe1/comments",
+    "author": {
+      "login": "evan-charmworks",
+      "id": 31295111,
+      "node_id": "MDQ6VXNlcjMxMjk1MTEx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31295111?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/evan-charmworks",
+      "html_url": "https://github.com/evan-charmworks",
+      "followers_url": "https://api.github.com/users/evan-charmworks/followers",
+      "following_url": "https://api.github.com/users/evan-charmworks/following{/other_user}",
+      "gists_url": "https://api.github.com/users/evan-charmworks/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/evan-charmworks/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/evan-charmworks/subscriptions",
+      "organizations_url": "https://api.github.com/users/evan-charmworks/orgs",
+      "repos_url": "https://api.github.com/users/evan-charmworks/repos",
+      "events_url": "https://api.github.com/users/evan-charmworks/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/evan-charmworks/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "evan-charmworks",
+      "id": 31295111,
+      "node_id": "MDQ6VXNlcjMxMjk1MTEx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31295111?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/evan-charmworks",
+      "html_url": "https://github.com/evan-charmworks",
+      "followers_url": "https://api.github.com/users/evan-charmworks/followers",
+      "following_url": "https://api.github.com/users/evan-charmworks/following{/other_user}",
+      "gists_url": "https://api.github.com/users/evan-charmworks/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/evan-charmworks/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/evan-charmworks/subscriptions",
+      "organizations_url": "https://api.github.com/users/evan-charmworks/orgs",
+      "repos_url": "https://api.github.com/users/evan-charmworks/repos",
+      "events_url": "https://api.github.com/users/evan-charmworks/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/evan-charmworks/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8387fc367233b4ae425c5b20bf33e30b3301e322",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/8387fc367233b4ae425c5b20bf33e30b3301e322",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/8387fc367233b4ae425c5b20bf33e30b3301e322"
+      }
+    ]
+  },
+  {
+    "sha": "8387fc367233b4ae425c5b20bf33e30b3301e322",
+    "node_id": "C_kwDOCuY8nNoAKDgzODdmYzM2NzIzM2I0YWU0MjVjNWIyMGJmMzNlMzBiMzMwMWUzMjI",
+    "commit": {
+      "author": {
+        "name": "Evan Ramos",
+        "email": "evan@hpccharm.com",
+        "date": "2023-08-03T23:23:01Z"
+      },
+      "committer": {
+        "name": "Evan Ramos",
+        "email": "evan@hpccharm.com",
+        "date": "2023-08-04T15:34:59Z"
+      },
+      "message": "Fix build with CCS disabled",
+      "tree": {
+        "sha": "ebc4929f2da9fc520cb9f844db866733ade1903e",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/ebc4929f2da9fc520cb9f844db866733ade1903e"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/8387fc367233b4ae425c5b20bf33e30b3301e322",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/8387fc367233b4ae425c5b20bf33e30b3301e322",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/8387fc367233b4ae425c5b20bf33e30b3301e322",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/8387fc367233b4ae425c5b20bf33e30b3301e322/comments",
+    "author": {
+      "login": "evan-charmworks",
+      "id": 31295111,
+      "node_id": "MDQ6VXNlcjMxMjk1MTEx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31295111?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/evan-charmworks",
+      "html_url": "https://github.com/evan-charmworks",
+      "followers_url": "https://api.github.com/users/evan-charmworks/followers",
+      "following_url": "https://api.github.com/users/evan-charmworks/following{/other_user}",
+      "gists_url": "https://api.github.com/users/evan-charmworks/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/evan-charmworks/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/evan-charmworks/subscriptions",
+      "organizations_url": "https://api.github.com/users/evan-charmworks/orgs",
+      "repos_url": "https://api.github.com/users/evan-charmworks/repos",
+      "events_url": "https://api.github.com/users/evan-charmworks/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/evan-charmworks/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "evan-charmworks",
+      "id": 31295111,
+      "node_id": "MDQ6VXNlcjMxMjk1MTEx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31295111?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/evan-charmworks",
+      "html_url": "https://github.com/evan-charmworks",
+      "followers_url": "https://api.github.com/users/evan-charmworks/followers",
+      "following_url": "https://api.github.com/users/evan-charmworks/following{/other_user}",
+      "gists_url": "https://api.github.com/users/evan-charmworks/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/evan-charmworks/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/evan-charmworks/subscriptions",
+      "organizations_url": "https://api.github.com/users/evan-charmworks/orgs",
+      "repos_url": "https://api.github.com/users/evan-charmworks/repos",
+      "events_url": "https://api.github.com/users/evan-charmworks/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/evan-charmworks/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4ebf61df154791224eda61c31fe4b64c91395b02",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/4ebf61df154791224eda61c31fe4b64c91395b02",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/4ebf61df154791224eda61c31fe4b64c91395b02"
+      }
+    ]
+  },
+  {
+    "sha": "4ebf61df154791224eda61c31fe4b64c91395b02",
+    "node_id": "C_kwDOCuY8nNoAKDRlYmY2MWRmMTU0NzkxMjI0ZWRhNjFjMzFmZTRiNjRjOTEzOTViMDI",
+    "commit": {
+      "author": {
+        "name": "Evan Ramos",
+        "email": "evan@hpccharm.com",
+        "date": "2023-07-31T22:14:07Z"
+      },
+      "committer": {
+        "name": "Evan Ramos",
+        "email": "evan@hpccharm.com",
+        "date": "2023-08-01T04:32:13Z"
+      },
+      "message": "hwloc: Fix type of hostname_size parameter on Windows\n\nAvoids warning: passing argument 2 of 'GetComputerNameA' from incompatible\npointer type [-Wincompatible-pointer-types]\n\nMerged upstream as\nhttps://github.com/open-mpi/hwloc/commit/49b940c3a4fa4a4e570c03884c3590e0819200a6",
+      "tree": {
+        "sha": "78edbbb3e63f1d480e2b0bd638e11452f63e0a42",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/78edbbb3e63f1d480e2b0bd638e11452f63e0a42"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/4ebf61df154791224eda61c31fe4b64c91395b02",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/4ebf61df154791224eda61c31fe4b64c91395b02",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/4ebf61df154791224eda61c31fe4b64c91395b02",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/4ebf61df154791224eda61c31fe4b64c91395b02/comments",
+    "author": {
+      "login": "evan-charmworks",
+      "id": 31295111,
+      "node_id": "MDQ6VXNlcjMxMjk1MTEx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31295111?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/evan-charmworks",
+      "html_url": "https://github.com/evan-charmworks",
+      "followers_url": "https://api.github.com/users/evan-charmworks/followers",
+      "following_url": "https://api.github.com/users/evan-charmworks/following{/other_user}",
+      "gists_url": "https://api.github.com/users/evan-charmworks/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/evan-charmworks/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/evan-charmworks/subscriptions",
+      "organizations_url": "https://api.github.com/users/evan-charmworks/orgs",
+      "repos_url": "https://api.github.com/users/evan-charmworks/repos",
+      "events_url": "https://api.github.com/users/evan-charmworks/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/evan-charmworks/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "evan-charmworks",
+      "id": 31295111,
+      "node_id": "MDQ6VXNlcjMxMjk1MTEx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31295111?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/evan-charmworks",
+      "html_url": "https://github.com/evan-charmworks",
+      "followers_url": "https://api.github.com/users/evan-charmworks/followers",
+      "following_url": "https://api.github.com/users/evan-charmworks/following{/other_user}",
+      "gists_url": "https://api.github.com/users/evan-charmworks/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/evan-charmworks/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/evan-charmworks/subscriptions",
+      "organizations_url": "https://api.github.com/users/evan-charmworks/orgs",
+      "repos_url": "https://api.github.com/users/evan-charmworks/repos",
+      "events_url": "https://api.github.com/users/evan-charmworks/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/evan-charmworks/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "42928be0294a4a622c29b4edb75171146b190f26",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/42928be0294a4a622c29b4edb75171146b190f26",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/42928be0294a4a622c29b4edb75171146b190f26"
+      }
+    ]
+  },
+  {
+    "sha": "42928be0294a4a622c29b4edb75171146b190f26",
+    "node_id": "C_kwDOCuY8nNoAKDQyOTI4YmUwMjk0YTRhNjIyYzI5YjRlZGI3NTE3MTE0NmIxOTBmMjY",
+    "commit": {
+      "author": {
+        "name": "Evan Ramos",
+        "email": "evan@hpccharm.com",
+        "date": "2023-07-31T21:44:04Z"
+      },
+      "committer": {
+        "name": "Evan Ramos",
+        "email": "evan@hpccharm.com",
+        "date": "2023-08-01T04:32:13Z"
+      },
+      "message": "CMake: Fix pgcc and nvhpc error `Unknown switch: --c++11;--gnu_extensions`",
+      "tree": {
+        "sha": "28edc6eefe1ae0b29d78aea0709513fee4fa7a99",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/28edc6eefe1ae0b29d78aea0709513fee4fa7a99"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/42928be0294a4a622c29b4edb75171146b190f26",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/42928be0294a4a622c29b4edb75171146b190f26",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/42928be0294a4a622c29b4edb75171146b190f26",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/42928be0294a4a622c29b4edb75171146b190f26/comments",
+    "author": {
+      "login": "evan-charmworks",
+      "id": 31295111,
+      "node_id": "MDQ6VXNlcjMxMjk1MTEx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31295111?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/evan-charmworks",
+      "html_url": "https://github.com/evan-charmworks",
+      "followers_url": "https://api.github.com/users/evan-charmworks/followers",
+      "following_url": "https://api.github.com/users/evan-charmworks/following{/other_user}",
+      "gists_url": "https://api.github.com/users/evan-charmworks/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/evan-charmworks/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/evan-charmworks/subscriptions",
+      "organizations_url": "https://api.github.com/users/evan-charmworks/orgs",
+      "repos_url": "https://api.github.com/users/evan-charmworks/repos",
+      "events_url": "https://api.github.com/users/evan-charmworks/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/evan-charmworks/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "evan-charmworks",
+      "id": 31295111,
+      "node_id": "MDQ6VXNlcjMxMjk1MTEx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31295111?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/evan-charmworks",
+      "html_url": "https://github.com/evan-charmworks",
+      "followers_url": "https://api.github.com/users/evan-charmworks/followers",
+      "following_url": "https://api.github.com/users/evan-charmworks/following{/other_user}",
+      "gists_url": "https://api.github.com/users/evan-charmworks/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/evan-charmworks/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/evan-charmworks/subscriptions",
+      "organizations_url": "https://api.github.com/users/evan-charmworks/orgs",
+      "repos_url": "https://api.github.com/users/evan-charmworks/repos",
+      "events_url": "https://api.github.com/users/evan-charmworks/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/evan-charmworks/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "22d584c949fe04917d48d109dd8d7475fe465912",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/22d584c949fe04917d48d109dd8d7475fe465912",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/22d584c949fe04917d48d109dd8d7475fe465912"
+      }
+    ]
+  },
+  {
+    "sha": "22d584c949fe04917d48d109dd8d7475fe465912",
+    "node_id": "C_kwDOCuY8nNoAKDIyZDU4NGM5NDlmZTA0OTE3ZDQ4ZDEwOWRkOGQ3NDc1ZmU0NjU5MTI",
+    "commit": {
+      "author": {
+        "name": "Evan Ramos",
+        "email": "evan@hpccharm.com",
+        "date": "2023-07-31T21:14:56Z"
+      },
+      "committer": {
+        "name": "Evan Ramos",
+        "email": "evan@hpccharm.com",
+        "date": "2023-08-01T04:32:13Z"
+      },
+      "message": "Add support for NVIDIA HPC SDK compiler",
+      "tree": {
+        "sha": "ac9072a64547ddb5b8c36236fae28a7840a8d009",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/git/trees/ac9072a64547ddb5b8c36236fae28a7840a8d009"
+      },
+      "url": "https://api.github.com/repos/UIUC-PPL/charm/git/commits/22d584c949fe04917d48d109dd8d7475fe465912",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/22d584c949fe04917d48d109dd8d7475fe465912",
+    "html_url": "https://github.com/UIUC-PPL/charm/commit/22d584c949fe04917d48d109dd8d7475fe465912",
+    "comments_url": "https://api.github.com/repos/UIUC-PPL/charm/commits/22d584c949fe04917d48d109dd8d7475fe465912/comments",
+    "author": {
+      "login": "evan-charmworks",
+      "id": 31295111,
+      "node_id": "MDQ6VXNlcjMxMjk1MTEx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31295111?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/evan-charmworks",
+      "html_url": "https://github.com/evan-charmworks",
+      "followers_url": "https://api.github.com/users/evan-charmworks/followers",
+      "following_url": "https://api.github.com/users/evan-charmworks/following{/other_user}",
+      "gists_url": "https://api.github.com/users/evan-charmworks/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/evan-charmworks/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/evan-charmworks/subscriptions",
+      "organizations_url": "https://api.github.com/users/evan-charmworks/orgs",
+      "repos_url": "https://api.github.com/users/evan-charmworks/repos",
+      "events_url": "https://api.github.com/users/evan-charmworks/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/evan-charmworks/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "evan-charmworks",
+      "id": 31295111,
+      "node_id": "MDQ6VXNlcjMxMjk1MTEx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31295111?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/evan-charmworks",
+      "html_url": "https://github.com/evan-charmworks",
+      "followers_url": "https://api.github.com/users/evan-charmworks/followers",
+      "following_url": "https://api.github.com/users/evan-charmworks/following{/other_user}",
+      "gists_url": "https://api.github.com/users/evan-charmworks/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/evan-charmworks/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/evan-charmworks/subscriptions",
+      "organizations_url": "https://api.github.com/users/evan-charmworks/orgs",
+      "repos_url": "https://api.github.com/users/evan-charmworks/repos",
+      "events_url": "https://api.github.com/users/evan-charmworks/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/evan-charmworks/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "558e1ceb7eb81b35f79f32f5e36976099c4eeb41",
+        "url": "https://api.github.com/repos/UIUC-PPL/charm/commits/558e1ceb7eb81b35f79f32f5e36976099c4eeb41",
+        "html_url": "https://github.com/UIUC-PPL/charm/commit/558e1ceb7eb81b35f79f32f5e36976099c4eeb41"
+      }
+    ]
+  }
+]

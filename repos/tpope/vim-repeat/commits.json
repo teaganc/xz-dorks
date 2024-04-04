@@ -1,0 +1,2374 @@
+[
+  {
+    "sha": "24afe922e6a05891756ecf331f39a1f6743d3d5a",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOjI0YWZlOTIyZTZhMDU4OTE3NTZlY2YzMzFmMzlhMWY2NzQzZDNkNWE=",
+    "commit": {
+      "author": {
+        "name": "Ingo Karkat",
+        "email": "swdev@ingo-karkat.de",
+        "date": "2020-10-19T16:45:36Z"
+      },
+      "committer": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2021-01-25T03:11:08Z"
+      },
+      "message": "Rework error return to prevent off-by-one in Ex mode\n\nMy automated tests run Vim in silent batch mode (:help -s-ex), these also cover repeat of mappings via repeat.vim. Unfortunately, the combination of feedkeys() and :execute used in the repeat.vim implementation to return a potential caught error cause the line where the repeat mapping is executed to be increased, so for me the tests fail in a really strange way. The same problem can occur if someone uses repeats in silent batch mode (e.g. through a recorded macro) - though the source of the problem would be even harder to track down there - in my test run it at least was easily reproducible.\n\nI raised this as a potential Vim bug in https://github.com/vim/vim/issues/7153, but Bram explained that it's a side effect of Ex mode (where empty lines make the cursor go to the next line, and as repeat#run() returns the empty String on the happy path, that's an empty line being executed). Recommendation from Bram is to pass the \"x\" flag for immediate execution to feedkeys() (which avoids the problem). However, in the context of repeat.vim this would mean that any errors resulting from the repeat mapping invocation would have to be caught inside repeat#run(), because they would then execute within the function's context, and not after it. Also, the \"x\" flag would not be supported by old Vim 7.3 and earlier.\n\nInstead, I chose to avoid the problem by replacing the :execute with a more straightforward :call (actually an :if that tests a returned Boolean success flag), so instead of the clever direct execution of the returned :echoerr command, the error message instead is retrieved from a script-local variable via a new repeat#errmsg() getter. I use this idiom in all of my plugins through a set of utility functions (https://github.com/inkarkat/vim-ingo-library/blob/5bb32fd27aa37a767d92ed29eb76dd48a7b0c7d2/autoload/ingo/err.vim#L38-L41), too.\nSo by adding a little (well encapsulated) variable and getter, this problem can be avoided without touching the sensitive feedkeys() and try...catch logic within the plugin.",
+      "tree": {
+        "sha": "c58e3972f23c02431bccd3ab4d3f07865d7f9593",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/c58e3972f23c02431bccd3ab4d3f07865d7f9593"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/24afe922e6a05891756ecf331f39a1f6743d3d5a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/24afe922e6a05891756ecf331f39a1f6743d3d5a",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/24afe922e6a05891756ecf331f39a1f6743d3d5a",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/24afe922e6a05891756ecf331f39a1f6743d3d5a/comments",
+    "author": {
+      "login": "inkarkat",
+      "id": 181261,
+      "node_id": "MDQ6VXNlcjE4MTI2MQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/181261?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/inkarkat",
+      "html_url": "https://github.com/inkarkat",
+      "followers_url": "https://api.github.com/users/inkarkat/followers",
+      "following_url": "https://api.github.com/users/inkarkat/following{/other_user}",
+      "gists_url": "https://api.github.com/users/inkarkat/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/inkarkat/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/inkarkat/subscriptions",
+      "organizations_url": "https://api.github.com/users/inkarkat/orgs",
+      "repos_url": "https://api.github.com/users/inkarkat/repos",
+      "events_url": "https://api.github.com/users/inkarkat/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/inkarkat/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "parents": [
+      {
+        "sha": "c947ad2b6a16983724a0153bdf7f66d7a80a32ca",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/c947ad2b6a16983724a0153bdf7f66d7a80a32ca",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/c947ad2b6a16983724a0153bdf7f66d7a80a32ca"
+      }
+    ]
+  },
+  {
+    "sha": "c947ad2b6a16983724a0153bdf7f66d7a80a32ca",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOmM5NDdhZDJiNmExNjk4MzcyNGEwMTUzYmRmN2Y2NmQ3YTgwYTMyY2E=",
+    "commit": {
+      "author": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2019-10-26T22:09:00Z"
+      },
+      "committer": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2019-11-13T00:31:06Z"
+      },
+      "message": "Add sponsor button",
+      "tree": {
+        "sha": "65ad1fe7e36fe9677be5a53747a2d5971f5f81e1",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/65ad1fe7e36fe9677be5a53747a2d5971f5f81e1"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/c947ad2b6a16983724a0153bdf7f66d7a80a32ca",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/c947ad2b6a16983724a0153bdf7f66d7a80a32ca",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/c947ad2b6a16983724a0153bdf7f66d7a80a32ca",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/c947ad2b6a16983724a0153bdf7f66d7a80a32ca/comments",
+    "author": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "committer": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "parents": [
+      {
+        "sha": "ae361bea990e27d5beade3a8d9fa22e25cec3100",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/ae361bea990e27d5beade3a8d9fa22e25cec3100",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/ae361bea990e27d5beade3a8d9fa22e25cec3100"
+      }
+    ]
+  },
+  {
+    "sha": "ae361bea990e27d5beade3a8d9fa22e25cec3100",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOmFlMzYxYmVhOTkwZTI3ZDViZWFkZTNhOGQ5ZmEyMmUyNWNlYzMxMDA=",
+    "commit": {
+      "author": {
+        "name": "Anton Kochkov",
+        "email": "xvilka@gmail.com",
+        "date": "2019-07-29T11:45:34Z"
+      },
+      "committer": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2019-07-29T16:17:59Z"
+      },
+      "message": "Add vim-radical in the plugins list",
+      "tree": {
+        "sha": "f315d8da2d94a16bb0135289ac9a2a8e57345e95",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/f315d8da2d94a16bb0135289ac9a2a8e57345e95"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/ae361bea990e27d5beade3a8d9fa22e25cec3100",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/ae361bea990e27d5beade3a8d9fa22e25cec3100",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/ae361bea990e27d5beade3a8d9fa22e25cec3100",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/ae361bea990e27d5beade3a8d9fa22e25cec3100/comments",
+    "author": {
+      "login": "XVilka",
+      "id": 203261,
+      "node_id": "MDQ6VXNlcjIwMzI2MQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/203261?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/XVilka",
+      "html_url": "https://github.com/XVilka",
+      "followers_url": "https://api.github.com/users/XVilka/followers",
+      "following_url": "https://api.github.com/users/XVilka/following{/other_user}",
+      "gists_url": "https://api.github.com/users/XVilka/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/XVilka/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/XVilka/subscriptions",
+      "organizations_url": "https://api.github.com/users/XVilka/orgs",
+      "repos_url": "https://api.github.com/users/XVilka/repos",
+      "events_url": "https://api.github.com/users/XVilka/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/XVilka/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "parents": [
+      {
+        "sha": "0b9b5e742f67bc81ae4a1f79318549d3afc90b13",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/0b9b5e742f67bc81ae4a1f79318549d3afc90b13",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/0b9b5e742f67bc81ae4a1f79318549d3afc90b13"
+      }
+    ]
+  },
+  {
+    "sha": "0b9b5e742f67bc81ae4a1f79318549d3afc90b13",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOjBiOWI1ZTc0MmY2N2JjODFhZTRhMWY3OTMxODU0OWQzYWZjOTBiMTM=",
+    "commit": {
+      "author": {
+        "name": "Ingo Karkat",
+        "email": "swdev@ingo-karkat.de",
+        "date": "2019-01-24T13:50:50Z"
+      },
+      "committer": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2019-04-26T02:13:50Z"
+      },
+      "message": "Make an explicit register on repeat override g:repeat_reg\n\nAs with built-in commands, this allows to override the original register on repeat, e.g. \"a. uses register a instead of the original one.\n\nOne limitation is that we cannot detect whether no or the default register has been given, so an override from a non-default to the default register (e.g. via \"\".) is not possible.",
+      "tree": {
+        "sha": "4a4b95d05747231158e62b632086bb32271cdd7b",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/4a4b95d05747231158e62b632086bb32271cdd7b"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/0b9b5e742f67bc81ae4a1f79318549d3afc90b13",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/0b9b5e742f67bc81ae4a1f79318549d3afc90b13",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/0b9b5e742f67bc81ae4a1f79318549d3afc90b13",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/0b9b5e742f67bc81ae4a1f79318549d3afc90b13/comments",
+    "author": {
+      "login": "inkarkat",
+      "id": 181261,
+      "node_id": "MDQ6VXNlcjE4MTI2MQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/181261?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/inkarkat",
+      "html_url": "https://github.com/inkarkat",
+      "followers_url": "https://api.github.com/users/inkarkat/followers",
+      "following_url": "https://api.github.com/users/inkarkat/following{/other_user}",
+      "gists_url": "https://api.github.com/users/inkarkat/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/inkarkat/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/inkarkat/subscriptions",
+      "organizations_url": "https://api.github.com/users/inkarkat/orgs",
+      "repos_url": "https://api.github.com/users/inkarkat/repos",
+      "events_url": "https://api.github.com/users/inkarkat/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/inkarkat/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "parents": [
+      {
+        "sha": "5974ea07acf1ebcc6bae429444d35d9db4e08103",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/5974ea07acf1ebcc6bae429444d35d9db4e08103",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/5974ea07acf1ebcc6bae429444d35d9db4e08103"
+      }
+    ]
+  },
+  {
+    "sha": "5974ea07acf1ebcc6bae429444d35d9db4e08103",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOjU5NzRlYTA3YWNmMWViY2M2YmFlNDI5NDQ0ZDM1ZDlkYjRlMDgxMDM=",
+    "commit": {
+      "author": {
+        "name": "Ingo Karkat",
+        "email": "swdev@ingo-karkat.de",
+        "date": "2012-11-29T09:19:30Z"
+      },
+      "committer": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2019-04-26T01:49:34Z"
+      },
+      "message": "Documentation fix for repeat#setreg()\n\nNeed to :execute the :silent! call to avoid that the remainder of the\ncommand line is aborted together with the call when repeat.vim is not\ninstalled. Otherwise, <SID>MyFunction() won't be invoked, and the\nmapping does nothing.",
+      "tree": {
+        "sha": "0ab8c508348bdd8adcf5f1465d1aa95759cf7b6e",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/0ab8c508348bdd8adcf5f1465d1aa95759cf7b6e"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/5974ea07acf1ebcc6bae429444d35d9db4e08103",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/5974ea07acf1ebcc6bae429444d35d9db4e08103",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/5974ea07acf1ebcc6bae429444d35d9db4e08103",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/5974ea07acf1ebcc6bae429444d35d9db4e08103/comments",
+    "author": {
+      "login": "inkarkat",
+      "id": 181261,
+      "node_id": "MDQ6VXNlcjE4MTI2MQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/181261?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/inkarkat",
+      "html_url": "https://github.com/inkarkat",
+      "followers_url": "https://api.github.com/users/inkarkat/followers",
+      "following_url": "https://api.github.com/users/inkarkat/following{/other_user}",
+      "gists_url": "https://api.github.com/users/inkarkat/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/inkarkat/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/inkarkat/subscriptions",
+      "organizations_url": "https://api.github.com/users/inkarkat/orgs",
+      "repos_url": "https://api.github.com/users/inkarkat/repos",
+      "events_url": "https://api.github.com/users/inkarkat/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/inkarkat/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "parents": [
+      {
+        "sha": "eb97e729bed91a7679ff6798d6a08c43d1297bbc",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/eb97e729bed91a7679ff6798d6a08c43d1297bbc",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/eb97e729bed91a7679ff6798d6a08c43d1297bbc"
+      }
+    ]
+  },
+  {
+    "sha": "eb97e729bed91a7679ff6798d6a08c43d1297bbc",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOmViOTdlNzI5YmVkOTFhNzY3OWZmNjc5OGQ2YTA4YzQzZDEyOTdiYmM=",
+    "commit": {
+      "author": {
+        "name": "Ingo Karkat",
+        "email": "swdev@ingo-karkat.de",
+        "date": "2019-01-29T10:19:42Z"
+      },
+      "committer": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2019-04-26T01:48:12Z"
+      },
+      "message": "feedkeys(..., 'i') sends keys in the wrong order in Vim 7.0/1/2\n\nThe current implementation prefers feedkeys(..., 'i') and only falls back to :normal if Vim 7.4 does not have the 'i' flag and if Vim 7.3 supports :normal with count. For Vim 8.0 (and later), and also for versions between 7.0 and 7.3.99, feedkeys(..., 'i') is used. Due to the prepending action of the 'i' flag, keys must be submitted in reverse order; that's why s is submitted before r . cnt.  Vim 7.0...7.3.99 ignore the 'i' flag, though, and append the keys, which are now in the wrong order (this only matters if a register or count is given).\n\nAdd a separate conditional branch for Vim versions before 7.3.100 that uses feedkeys() in the correct order and omits the ignored 'i' flag.",
+      "tree": {
+        "sha": "01c332585ffcbddfe17490315aa30d989f6f43c6",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/01c332585ffcbddfe17490315aa30d989f6f43c6"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/eb97e729bed91a7679ff6798d6a08c43d1297bbc",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/eb97e729bed91a7679ff6798d6a08c43d1297bbc",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/eb97e729bed91a7679ff6798d6a08c43d1297bbc",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/eb97e729bed91a7679ff6798d6a08c43d1297bbc/comments",
+    "author": {
+      "login": "inkarkat",
+      "id": 181261,
+      "node_id": "MDQ6VXNlcjE4MTI2MQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/181261?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/inkarkat",
+      "html_url": "https://github.com/inkarkat",
+      "followers_url": "https://api.github.com/users/inkarkat/followers",
+      "following_url": "https://api.github.com/users/inkarkat/following{/other_user}",
+      "gists_url": "https://api.github.com/users/inkarkat/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/inkarkat/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/inkarkat/subscriptions",
+      "organizations_url": "https://api.github.com/users/inkarkat/orgs",
+      "repos_url": "https://api.github.com/users/inkarkat/repos",
+      "events_url": "https://api.github.com/users/inkarkat/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/inkarkat/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "parents": [
+      {
+        "sha": "43d2678fa59d068c815d8298331c195e850ff5a7",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/43d2678fa59d068c815d8298331c195e850ff5a7",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/43d2678fa59d068c815d8298331c195e850ff5a7"
+      }
+    ]
+  },
+  {
+    "sha": "43d2678fa59d068c815d8298331c195e850ff5a7",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOjQzZDI2NzhmYTU5ZDA2OGM4MTVkODI5ODMzMWMxOTVlODUwZmY1YTc=",
+    "commit": {
+      "author": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2018-07-02T19:03:55Z"
+      },
+      "committer": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2018-07-02T19:03:55Z"
+      },
+      "message": "Remove outdated plugin references",
+      "tree": {
+        "sha": "c2dcf45ca547c2590cd85e452434108ea67fa847",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/c2dcf45ca547c2590cd85e452434108ea67fa847"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/43d2678fa59d068c815d8298331c195e850ff5a7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/43d2678fa59d068c815d8298331c195e850ff5a7",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/43d2678fa59d068c815d8298331c195e850ff5a7",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/43d2678fa59d068c815d8298331c195e850ff5a7/comments",
+    "author": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "committer": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "parents": [
+      {
+        "sha": "1ea8a5325b7ce9c20a691fb8b595c23b29df4120",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/1ea8a5325b7ce9c20a691fb8b595c23b29df4120",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/1ea8a5325b7ce9c20a691fb8b595c23b29df4120"
+      }
+    ]
+  },
+  {
+    "sha": "1ea8a5325b7ce9c20a691fb8b595c23b29df4120",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOjFlYThhNTMyNWI3Y2U5YzIwYTY5MWZiOGI1OTVjMjNiMjlkZjQxMjA=",
+    "commit": {
+      "author": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2018-07-02T19:03:36Z"
+      },
+      "committer": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2018-07-02T19:03:36Z"
+      },
+      "message": "Update installation instructions",
+      "tree": {
+        "sha": "7f6e7b338b0fe94422c9ab048b9e711e1c4c3d2d",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/7f6e7b338b0fe94422c9ab048b9e711e1c4c3d2d"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/1ea8a5325b7ce9c20a691fb8b595c23b29df4120",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/1ea8a5325b7ce9c20a691fb8b595c23b29df4120",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/1ea8a5325b7ce9c20a691fb8b595c23b29df4120",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/1ea8a5325b7ce9c20a691fb8b595c23b29df4120/comments",
+    "author": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "committer": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "parents": [
+      {
+        "sha": "8fe8bde4f4989f5a3baf2aa88250b1e718308898",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/8fe8bde4f4989f5a3baf2aa88250b1e718308898",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/8fe8bde4f4989f5a3baf2aa88250b1e718308898"
+      }
+    ]
+  },
+  {
+    "sha": "8fe8bde4f4989f5a3baf2aa88250b1e718308898",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOjhmZThiZGU0ZjQ5ODlmNWEzYmFmMmFhODgyNTBiMWU3MTgzMDg4OTg=",
+    "commit": {
+      "author": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2018-07-02T19:03:25Z"
+      },
+      "committer": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2018-07-02T19:03:25Z"
+      },
+      "message": "Change Markdown heading style",
+      "tree": {
+        "sha": "4453caa6baf75e830f86625f25139fc20d908fe6",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/4453caa6baf75e830f86625f25139fc20d908fe6"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/8fe8bde4f4989f5a3baf2aa88250b1e718308898",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/8fe8bde4f4989f5a3baf2aa88250b1e718308898",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/8fe8bde4f4989f5a3baf2aa88250b1e718308898",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/8fe8bde4f4989f5a3baf2aa88250b1e718308898/comments",
+    "author": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "committer": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "parents": [
+      {
+        "sha": "8106e142dfdc278ff3eaaadd7b362ad7949d4357",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/8106e142dfdc278ff3eaaadd7b362ad7949d4357",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/8106e142dfdc278ff3eaaadd7b362ad7949d4357"
+      }
+    ]
+  },
+  {
+    "sha": "8106e142dfdc278ff3eaaadd7b362ad7949d4357",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOjgxMDZlMTQyZGZkYzI3OGZmM2VhYWFkZDdiMzYyYWQ3OTQ5ZDQzNTc=",
+    "commit": {
+      "author": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2018-01-31T04:08:02Z"
+      },
+      "committer": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2018-01-31T04:08:02Z"
+      },
+      "message": "repeat.vim 1.2\n\n* Provide <Plug> mappings.\n* Enable repeating operators with custom motions.\n* Assorted bug fixes.",
+      "tree": {
+        "sha": "16b0a2b0d201281e334081a73298dd1b3a07dce7",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/16b0a2b0d201281e334081a73298dd1b3a07dce7"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/8106e142dfdc278ff3eaaadd7b362ad7949d4357",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/8106e142dfdc278ff3eaaadd7b362ad7949d4357",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/8106e142dfdc278ff3eaaadd7b362ad7949d4357",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/8106e142dfdc278ff3eaaadd7b362ad7949d4357/comments",
+    "author": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "committer": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "parents": [
+      {
+        "sha": "1b82cad74cd5d5caf3c4092365cda54dc1fb853e",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/1b82cad74cd5d5caf3c4092365cda54dc1fb853e",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/1b82cad74cd5d5caf3c4092365cda54dc1fb853e"
+      }
+    ]
+  },
+  {
+    "sha": "1b82cad74cd5d5caf3c4092365cda54dc1fb853e",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOjFiODJjYWQ3NGNkNWQ1Y2FmM2M0MDkyMzY1Y2RhNTRkYzFmYjg1M2U=",
+    "commit": {
+      "author": {
+        "name": "Jacob Niehus",
+        "email": "jacob.niehus@gmail.com",
+        "date": "2018-01-21T23:45:49Z"
+      },
+      "committer": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2018-01-21T23:45:49Z"
+      },
+      "message": "Fix undo messages being hidden (#33)",
+      "tree": {
+        "sha": "783dd6e160b197d8c6d88f809533706b8c258a8d",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/783dd6e160b197d8c6d88f809533706b8c258a8d"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/1b82cad74cd5d5caf3c4092365cda54dc1fb853e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/1b82cad74cd5d5caf3c4092365cda54dc1fb853e",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/1b82cad74cd5d5caf3c4092365cda54dc1fb853e",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/1b82cad74cd5d5caf3c4092365cda54dc1fb853e/comments",
+    "author": {
+      "login": "wilywampa",
+      "id": 4472522,
+      "node_id": "MDQ6VXNlcjQ0NzI1MjI=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4472522?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/wilywampa",
+      "html_url": "https://github.com/wilywampa",
+      "followers_url": "https://api.github.com/users/wilywampa/followers",
+      "following_url": "https://api.github.com/users/wilywampa/following{/other_user}",
+      "gists_url": "https://api.github.com/users/wilywampa/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/wilywampa/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/wilywampa/subscriptions",
+      "organizations_url": "https://api.github.com/users/wilywampa/orgs",
+      "repos_url": "https://api.github.com/users/wilywampa/repos",
+      "events_url": "https://api.github.com/users/wilywampa/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/wilywampa/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "parents": [
+      {
+        "sha": "070ee903245999b2b79f7386631ffd29ce9b8e9f",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/070ee903245999b2b79f7386631ffd29ce9b8e9f",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/070ee903245999b2b79f7386631ffd29ce9b8e9f"
+      }
+    ]
+  },
+  {
+    "sha": "070ee903245999b2b79f7386631ffd29ce9b8e9f",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOjA3MGVlOTAzMjQ1OTk5YjJiNzlmNzM4NjYzMWZmZDI5Y2U5YjhlOWY=",
+    "commit": {
+      "author": {
+        "name": "Chris Paul",
+        "email": "chrispetrunoff@me.com",
+        "date": "2017-04-21T17:43:53Z"
+      },
+      "committer": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2017-04-21T17:43:53Z"
+      },
+      "message": "Remove unneeded exe in example mapping (#60)",
+      "tree": {
+        "sha": "0afdac9fcbaa2984ff0f45b8502e7da38c8baefa",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/0afdac9fcbaa2984ff0f45b8502e7da38c8baefa"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/070ee903245999b2b79f7386631ffd29ce9b8e9f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/070ee903245999b2b79f7386631ffd29ce9b8e9f",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/070ee903245999b2b79f7386631ffd29ce9b8e9f",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/070ee903245999b2b79f7386631ffd29ce9b8e9f/comments",
+    "author": {
+      "login": "bounceme",
+      "id": 9332107,
+      "node_id": "MDQ6VXNlcjkzMzIxMDc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9332107?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/bounceme",
+      "html_url": "https://github.com/bounceme",
+      "followers_url": "https://api.github.com/users/bounceme/followers",
+      "following_url": "https://api.github.com/users/bounceme/following{/other_user}",
+      "gists_url": "https://api.github.com/users/bounceme/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/bounceme/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/bounceme/subscriptions",
+      "organizations_url": "https://api.github.com/users/bounceme/orgs",
+      "repos_url": "https://api.github.com/users/bounceme/repos",
+      "events_url": "https://api.github.com/users/bounceme/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/bounceme/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "parents": [
+      {
+        "sha": "7a6675f092842c8f81e71d5345bd7cdbf3759415",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/7a6675f092842c8f81e71d5345bd7cdbf3759415",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/7a6675f092842c8f81e71d5345bd7cdbf3759415"
+      }
+    ]
+  },
+  {
+    "sha": "7a6675f092842c8f81e71d5345bd7cdbf3759415",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOjdhNjY3NWYwOTI4NDJjOGY4MWU3MWQ1MzQ1YmQ3Y2RiZjM3NTk0MTU=",
+    "commit": {
+      "author": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2015-05-09T17:57:55Z"
+      },
+      "committer": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2015-05-09T17:57:55Z"
+      },
+      "message": "Merge pull request #47 from orlp/master\n\nPrevent stack trace of search errors.",
+      "tree": {
+        "sha": "d642f019d7b3f45e762c55ee74bc46c073b77226",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/d642f019d7b3f45e762c55ee74bc46c073b77226"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/7a6675f092842c8f81e71d5345bd7cdbf3759415",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/7a6675f092842c8f81e71d5345bd7cdbf3759415",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/7a6675f092842c8f81e71d5345bd7cdbf3759415",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/7a6675f092842c8f81e71d5345bd7cdbf3759415/comments",
+    "author": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "committer": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "parents": [
+      {
+        "sha": "5bacc6f8056bc6ad1e247c730bbdbe7aa8a0befd",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/5bacc6f8056bc6ad1e247c730bbdbe7aa8a0befd",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/5bacc6f8056bc6ad1e247c730bbdbe7aa8a0befd"
+      },
+      {
+        "sha": "e42a430e644f68a8d7da32425158600fb48ab8cd",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/e42a430e644f68a8d7da32425158600fb48ab8cd",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/e42a430e644f68a8d7da32425158600fb48ab8cd"
+      }
+    ]
+  },
+  {
+    "sha": "5bacc6f8056bc6ad1e247c730bbdbe7aa8a0befd",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOjViYWNjNmY4MDU2YmM2YWQxZTI0N2M3MzBiYmRiZTdhYThhMGJlZmQ=",
+    "commit": {
+      "author": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2015-05-07T18:29:12Z"
+      },
+      "committer": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2015-05-07T18:29:12Z"
+      },
+      "message": "Fix bogus spaces in maps",
+      "tree": {
+        "sha": "1fcd8b27ab9252d4a7ca1b4d60e4ed97fd23be5d",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/1fcd8b27ab9252d4a7ca1b4d60e4ed97fd23be5d"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/5bacc6f8056bc6ad1e247c730bbdbe7aa8a0befd",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/5bacc6f8056bc6ad1e247c730bbdbe7aa8a0befd",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/5bacc6f8056bc6ad1e247c730bbdbe7aa8a0befd",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/5bacc6f8056bc6ad1e247c730bbdbe7aa8a0befd/comments",
+    "author": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "committer": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "parents": [
+      {
+        "sha": "c4f9f159e66a00e148b05d3c97c20072777d559f",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/c4f9f159e66a00e148b05d3c97c20072777d559f",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/c4f9f159e66a00e148b05d3c97c20072777d559f"
+      }
+    ]
+  },
+  {
+    "sha": "e42a430e644f68a8d7da32425158600fb48ab8cd",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOmU0MmE0MzBlNjQ0ZjY4YThkN2RhMzI0MjUxNTg2MDBmYjQ4YWI4Y2Q=",
+    "commit": {
+      "author": {
+        "name": "Orson Peters",
+        "email": "orsonpeters@gmail.com",
+        "date": "2015-04-22T23:45:15Z"
+      },
+      "committer": {
+        "name": "Orson Peters",
+        "email": "orsonpeters@gmail.com",
+        "date": "2015-04-22T23:45:15Z"
+      },
+      "message": "More realistic Vim error, and catch all normal exceptions.",
+      "tree": {
+        "sha": "6c0750f67601b6b4a87e68de9083e945ec98c8c4",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/6c0750f67601b6b4a87e68de9083e945ec98c8c4"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/e42a430e644f68a8d7da32425158600fb48ab8cd",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/e42a430e644f68a8d7da32425158600fb48ab8cd",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/e42a430e644f68a8d7da32425158600fb48ab8cd",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/e42a430e644f68a8d7da32425158600fb48ab8cd/comments",
+    "author": {
+      "login": "orlp",
+      "id": 202547,
+      "node_id": "MDQ6VXNlcjIwMjU0Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/202547?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/orlp",
+      "html_url": "https://github.com/orlp",
+      "followers_url": "https://api.github.com/users/orlp/followers",
+      "following_url": "https://api.github.com/users/orlp/following{/other_user}",
+      "gists_url": "https://api.github.com/users/orlp/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/orlp/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/orlp/subscriptions",
+      "organizations_url": "https://api.github.com/users/orlp/orgs",
+      "repos_url": "https://api.github.com/users/orlp/repos",
+      "events_url": "https://api.github.com/users/orlp/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/orlp/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "orlp",
+      "id": 202547,
+      "node_id": "MDQ6VXNlcjIwMjU0Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/202547?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/orlp",
+      "html_url": "https://github.com/orlp",
+      "followers_url": "https://api.github.com/users/orlp/followers",
+      "following_url": "https://api.github.com/users/orlp/following{/other_user}",
+      "gists_url": "https://api.github.com/users/orlp/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/orlp/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/orlp/subscriptions",
+      "organizations_url": "https://api.github.com/users/orlp/orgs",
+      "repos_url": "https://api.github.com/users/orlp/repos",
+      "events_url": "https://api.github.com/users/orlp/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/orlp/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "655dd3e2be99a7f0481dcee2e195d767a848545e",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/655dd3e2be99a7f0481dcee2e195d767a848545e",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/655dd3e2be99a7f0481dcee2e195d767a848545e"
+      }
+    ]
+  },
+  {
+    "sha": "655dd3e2be99a7f0481dcee2e195d767a848545e",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOjY1NWRkM2UyYmU5OWE3ZjA0ODFkY2VlMmUxOTVkNzY3YTg0ODU0NWU=",
+    "commit": {
+      "author": {
+        "name": "Orson Peters",
+        "email": "orsonpeters@gmail.com",
+        "date": "2015-04-22T22:27:56Z"
+      },
+      "committer": {
+        "name": "Orson Peters",
+        "email": "orsonpeters@gmail.com",
+        "date": "2015-04-22T22:27:56Z"
+      },
+      "message": "Prevent stack trace of search errors.",
+      "tree": {
+        "sha": "3da4bb40a0f444380cb4b83bc2d9d67cd3a09e4d",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/3da4bb40a0f444380cb4b83bc2d9d67cd3a09e4d"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/655dd3e2be99a7f0481dcee2e195d767a848545e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/655dd3e2be99a7f0481dcee2e195d767a848545e",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/655dd3e2be99a7f0481dcee2e195d767a848545e",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/655dd3e2be99a7f0481dcee2e195d767a848545e/comments",
+    "author": {
+      "login": "orlp",
+      "id": 202547,
+      "node_id": "MDQ6VXNlcjIwMjU0Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/202547?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/orlp",
+      "html_url": "https://github.com/orlp",
+      "followers_url": "https://api.github.com/users/orlp/followers",
+      "following_url": "https://api.github.com/users/orlp/following{/other_user}",
+      "gists_url": "https://api.github.com/users/orlp/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/orlp/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/orlp/subscriptions",
+      "organizations_url": "https://api.github.com/users/orlp/orgs",
+      "repos_url": "https://api.github.com/users/orlp/repos",
+      "events_url": "https://api.github.com/users/orlp/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/orlp/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "orlp",
+      "id": 202547,
+      "node_id": "MDQ6VXNlcjIwMjU0Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/202547?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/orlp",
+      "html_url": "https://github.com/orlp",
+      "followers_url": "https://api.github.com/users/orlp/followers",
+      "following_url": "https://api.github.com/users/orlp/following{/other_user}",
+      "gists_url": "https://api.github.com/users/orlp/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/orlp/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/orlp/subscriptions",
+      "organizations_url": "https://api.github.com/users/orlp/orgs",
+      "repos_url": "https://api.github.com/users/orlp/repos",
+      "events_url": "https://api.github.com/users/orlp/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/orlp/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c4f9f159e66a00e148b05d3c97c20072777d559f",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/c4f9f159e66a00e148b05d3c97c20072777d559f",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/c4f9f159e66a00e148b05d3c97c20072777d559f"
+      }
+    ]
+  },
+  {
+    "sha": "c4f9f159e66a00e148b05d3c97c20072777d559f",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOmM0ZjlmMTU5ZTY2YTAwZTE0OGIwNWQzYzk3YzIwMDcyNzc3ZDU1OWY=",
+    "commit": {
+      "author": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2015-04-03T14:30:37Z"
+      },
+      "committer": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2015-04-03T14:30:37Z"
+      },
+      "message": "Merge pull request #46 from wellle/45-fix-feedkeys-count\n\nRevert order of feedkeys calls to fix counts",
+      "tree": {
+        "sha": "4bb8e0efc7a1f677384a07d06930aef988fe2ce9",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/4bb8e0efc7a1f677384a07d06930aef988fe2ce9"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/c4f9f159e66a00e148b05d3c97c20072777d559f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/c4f9f159e66a00e148b05d3c97c20072777d559f",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/c4f9f159e66a00e148b05d3c97c20072777d559f",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/c4f9f159e66a00e148b05d3c97c20072777d559f/comments",
+    "author": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "committer": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "parents": [
+      {
+        "sha": "b01aafbd8d44573abf0ad36afb2df66e92f1a680",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/b01aafbd8d44573abf0ad36afb2df66e92f1a680",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/b01aafbd8d44573abf0ad36afb2df66e92f1a680"
+      },
+      {
+        "sha": "7568a9604b56074593078904ff928b46677d74d6",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/7568a9604b56074593078904ff928b46677d74d6",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/7568a9604b56074593078904ff928b46677d74d6"
+      }
+    ]
+  },
+  {
+    "sha": "7568a9604b56074593078904ff928b46677d74d6",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOjc1NjhhOTYwNGI1NjA3NDU5MzA3ODkwNGZmOTI4YjQ2Njc3ZDc0ZDY=",
+    "commit": {
+      "author": {
+        "name": "Christian Wellenbrock",
+        "email": "christian.wellenbrock@gmail.com",
+        "date": "2015-04-03T10:30:43Z"
+      },
+      "committer": {
+        "name": "Christian Wellenbrock",
+        "email": "christian.wellenbrock@gmail.com",
+        "date": "2015-04-03T10:30:43Z"
+      },
+      "message": "Revert order of feedkeys calls to fix counts\n\nSince we are using the `i` flag, the feedkeys calls insert the keys\ninstead of appending. That's why we need to insert the second part of\nthe command before inserting the first part in front of it.",
+      "tree": {
+        "sha": "4bb8e0efc7a1f677384a07d06930aef988fe2ce9",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/4bb8e0efc7a1f677384a07d06930aef988fe2ce9"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/7568a9604b56074593078904ff928b46677d74d6",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/7568a9604b56074593078904ff928b46677d74d6",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/7568a9604b56074593078904ff928b46677d74d6",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/7568a9604b56074593078904ff928b46677d74d6/comments",
+    "author": {
+      "login": "wellle",
+      "id": 474504,
+      "node_id": "MDQ6VXNlcjQ3NDUwNA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/474504?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/wellle",
+      "html_url": "https://github.com/wellle",
+      "followers_url": "https://api.github.com/users/wellle/followers",
+      "following_url": "https://api.github.com/users/wellle/following{/other_user}",
+      "gists_url": "https://api.github.com/users/wellle/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/wellle/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/wellle/subscriptions",
+      "organizations_url": "https://api.github.com/users/wellle/orgs",
+      "repos_url": "https://api.github.com/users/wellle/repos",
+      "events_url": "https://api.github.com/users/wellle/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/wellle/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "wellle",
+      "id": 474504,
+      "node_id": "MDQ6VXNlcjQ3NDUwNA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/474504?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/wellle",
+      "html_url": "https://github.com/wellle",
+      "followers_url": "https://api.github.com/users/wellle/followers",
+      "following_url": "https://api.github.com/users/wellle/following{/other_user}",
+      "gists_url": "https://api.github.com/users/wellle/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/wellle/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/wellle/subscriptions",
+      "organizations_url": "https://api.github.com/users/wellle/orgs",
+      "repos_url": "https://api.github.com/users/wellle/repos",
+      "events_url": "https://api.github.com/users/wellle/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/wellle/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b01aafbd8d44573abf0ad36afb2df66e92f1a680",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/b01aafbd8d44573abf0ad36afb2df66e92f1a680",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/b01aafbd8d44573abf0ad36afb2df66e92f1a680"
+      }
+    ]
+  },
+  {
+    "sha": "b01aafbd8d44573abf0ad36afb2df66e92f1a680",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOmIwMWFhZmJkOGQ0NDU3M2FiZjBhZDM2YWZiMmRmNjZlOTJmMWE2ODA=",
+    "commit": {
+      "author": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2015-03-08T03:28:23Z"
+      },
+      "committer": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2015-03-08T03:28:23Z"
+      },
+      "message": "Merge pull request #43 from jasonkuhrt/patch-1\n\nUpdate README.markdown",
+      "tree": {
+        "sha": "c0b76a8cb95be3b5067609c988126096167a41be",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/c0b76a8cb95be3b5067609c988126096167a41be"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/b01aafbd8d44573abf0ad36afb2df66e92f1a680",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/b01aafbd8d44573abf0ad36afb2df66e92f1a680",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/b01aafbd8d44573abf0ad36afb2df66e92f1a680",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/b01aafbd8d44573abf0ad36afb2df66e92f1a680/comments",
+    "author": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "committer": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "parents": [
+      {
+        "sha": "d9fbf5a137773c3737cf5f0cdfc3e155c393b96d",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/d9fbf5a137773c3737cf5f0cdfc3e155c393b96d",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/d9fbf5a137773c3737cf5f0cdfc3e155c393b96d"
+      },
+      {
+        "sha": "751b369cc3028978ddd44581fc3da3728ec7ba28",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/751b369cc3028978ddd44581fc3da3728ec7ba28",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/751b369cc3028978ddd44581fc3da3728ec7ba28"
+      }
+    ]
+  },
+  {
+    "sha": "751b369cc3028978ddd44581fc3da3728ec7ba28",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOjc1MWIzNjljYzMwMjg5NzhkZGQ0NDU4MWZjM2RhMzcyOGVjN2JhMjg=",
+    "commit": {
+      "author": {
+        "name": "Jason Rose-Kuhrt",
+        "email": "jasonkuhrt@me.com",
+        "date": "2015-03-08T03:17:05Z"
+      },
+      "committer": {
+        "name": "Jason Rose-Kuhrt",
+        "email": "jasonkuhrt@me.com",
+        "date": "2015-03-08T03:17:05Z"
+      },
+      "message": "Update README.markdown",
+      "tree": {
+        "sha": "c0b76a8cb95be3b5067609c988126096167a41be",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/c0b76a8cb95be3b5067609c988126096167a41be"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/751b369cc3028978ddd44581fc3da3728ec7ba28",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/751b369cc3028978ddd44581fc3da3728ec7ba28",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/751b369cc3028978ddd44581fc3da3728ec7ba28",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/751b369cc3028978ddd44581fc3da3728ec7ba28/comments",
+    "author": {
+      "login": "jasonkuhrt",
+      "id": 284476,
+      "node_id": "MDQ6VXNlcjI4NDQ3Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/284476?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jasonkuhrt",
+      "html_url": "https://github.com/jasonkuhrt",
+      "followers_url": "https://api.github.com/users/jasonkuhrt/followers",
+      "following_url": "https://api.github.com/users/jasonkuhrt/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jasonkuhrt/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jasonkuhrt/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jasonkuhrt/subscriptions",
+      "organizations_url": "https://api.github.com/users/jasonkuhrt/orgs",
+      "repos_url": "https://api.github.com/users/jasonkuhrt/repos",
+      "events_url": "https://api.github.com/users/jasonkuhrt/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jasonkuhrt/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jasonkuhrt",
+      "id": 284476,
+      "node_id": "MDQ6VXNlcjI4NDQ3Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/284476?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jasonkuhrt",
+      "html_url": "https://github.com/jasonkuhrt",
+      "followers_url": "https://api.github.com/users/jasonkuhrt/followers",
+      "following_url": "https://api.github.com/users/jasonkuhrt/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jasonkuhrt/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jasonkuhrt/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jasonkuhrt/subscriptions",
+      "organizations_url": "https://api.github.com/users/jasonkuhrt/orgs",
+      "repos_url": "https://api.github.com/users/jasonkuhrt/repos",
+      "events_url": "https://api.github.com/users/jasonkuhrt/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jasonkuhrt/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d9fbf5a137773c3737cf5f0cdfc3e155c393b96d",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/d9fbf5a137773c3737cf5f0cdfc3e155c393b96d",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/d9fbf5a137773c3737cf5f0cdfc3e155c393b96d"
+      }
+    ]
+  },
+  {
+    "sha": "d9fbf5a137773c3737cf5f0cdfc3e155c393b96d",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOmQ5ZmJmNWExMzc3NzNjMzczN2NmNWYwY2RmYzNlMTU1YzM5M2I5NmQ=",
+    "commit": {
+      "author": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2015-02-20T20:33:20Z"
+      },
+      "committer": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2015-02-20T20:33:20Z"
+      },
+      "message": "Merge pull request #42 from Konfekt/patch-2\n\nremove trailing spaces in remaps",
+      "tree": {
+        "sha": "06e8103690a78e392de65007abfdafb3a25e5574",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/06e8103690a78e392de65007abfdafb3a25e5574"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/d9fbf5a137773c3737cf5f0cdfc3e155c393b96d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/d9fbf5a137773c3737cf5f0cdfc3e155c393b96d",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/d9fbf5a137773c3737cf5f0cdfc3e155c393b96d",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/d9fbf5a137773c3737cf5f0cdfc3e155c393b96d/comments",
+    "author": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "committer": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "parents": [
+      {
+        "sha": "4895d90a14bff7932ff6cd2439189ac51f1078fd",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/4895d90a14bff7932ff6cd2439189ac51f1078fd",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/4895d90a14bff7932ff6cd2439189ac51f1078fd"
+      },
+      {
+        "sha": "88e7d7e5c35fd1e7eb6b63cc895a7e426bbf04c1",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/88e7d7e5c35fd1e7eb6b63cc895a7e426bbf04c1",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/88e7d7e5c35fd1e7eb6b63cc895a7e426bbf04c1"
+      }
+    ]
+  },
+  {
+    "sha": "88e7d7e5c35fd1e7eb6b63cc895a7e426bbf04c1",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOjg4ZTdkN2U1YzM1ZmQxZTdlYjZiNjNjYzg5NWE3ZTQyNmJiZjA0YzE=",
+    "commit": {
+      "author": {
+        "name": "Konfekt",
+        "email": "Konfekt@users.noreply.github.com",
+        "date": "2015-02-20T20:28:28Z"
+      },
+      "committer": {
+        "name": "Konfekt",
+        "email": "Konfekt@users.noreply.github.com",
+        "date": "2015-02-20T20:28:28Z"
+      },
+      "message": "remove trailing spaces in remaps\n\nVim interprets `nmap <key> <mapping> ` as `nmap <key> <mapping><space>`. \r\nHere we do not want this and put `|` directly after `<mapping>`.",
+      "tree": {
+        "sha": "06e8103690a78e392de65007abfdafb3a25e5574",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/06e8103690a78e392de65007abfdafb3a25e5574"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/88e7d7e5c35fd1e7eb6b63cc895a7e426bbf04c1",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/88e7d7e5c35fd1e7eb6b63cc895a7e426bbf04c1",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/88e7d7e5c35fd1e7eb6b63cc895a7e426bbf04c1",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/88e7d7e5c35fd1e7eb6b63cc895a7e426bbf04c1/comments",
+    "author": {
+      "login": "Konfekt",
+      "id": 7195553,
+      "node_id": "MDQ6VXNlcjcxOTU1NTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7195553?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Konfekt",
+      "html_url": "https://github.com/Konfekt",
+      "followers_url": "https://api.github.com/users/Konfekt/followers",
+      "following_url": "https://api.github.com/users/Konfekt/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Konfekt/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Konfekt/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Konfekt/subscriptions",
+      "organizations_url": "https://api.github.com/users/Konfekt/orgs",
+      "repos_url": "https://api.github.com/users/Konfekt/repos",
+      "events_url": "https://api.github.com/users/Konfekt/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Konfekt/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Konfekt",
+      "id": 7195553,
+      "node_id": "MDQ6VXNlcjcxOTU1NTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7195553?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Konfekt",
+      "html_url": "https://github.com/Konfekt",
+      "followers_url": "https://api.github.com/users/Konfekt/followers",
+      "following_url": "https://api.github.com/users/Konfekt/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Konfekt/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Konfekt/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Konfekt/subscriptions",
+      "organizations_url": "https://api.github.com/users/Konfekt/orgs",
+      "repos_url": "https://api.github.com/users/Konfekt/repos",
+      "events_url": "https://api.github.com/users/Konfekt/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Konfekt/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "cffb2e7578c10da5e89bb1164caba06f96f4989b",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/cffb2e7578c10da5e89bb1164caba06f96f4989b",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/cffb2e7578c10da5e89bb1164caba06f96f4989b"
+      }
+    ]
+  },
+  {
+    "sha": "4895d90a14bff7932ff6cd2439189ac51f1078fd",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOjQ4OTVkOTBhMTRiZmY3OTMyZmY2Y2QyNDM5MTg5YWM1MWYxMDc4ZmQ=",
+    "commit": {
+      "author": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2015-02-20T20:17:44Z"
+      },
+      "committer": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2015-02-20T20:17:44Z"
+      },
+      "message": "Merge pull request #41 from Konfekt/patch-2\n\nmore convenient remapping by using <plug> mappings",
+      "tree": {
+        "sha": "7c0b40070261a8d7886a4e2094979520e862d145",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/7c0b40070261a8d7886a4e2094979520e862d145"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/4895d90a14bff7932ff6cd2439189ac51f1078fd",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/4895d90a14bff7932ff6cd2439189ac51f1078fd",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/4895d90a14bff7932ff6cd2439189ac51f1078fd",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/4895d90a14bff7932ff6cd2439189ac51f1078fd/comments",
+    "author": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "committer": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "parents": [
+      {
+        "sha": "b06684a19549a45c91f36dc47dc55525e4c9c994",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/b06684a19549a45c91f36dc47dc55525e4c9c994",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/b06684a19549a45c91f36dc47dc55525e4c9c994"
+      },
+      {
+        "sha": "cffb2e7578c10da5e89bb1164caba06f96f4989b",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/cffb2e7578c10da5e89bb1164caba06f96f4989b",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/cffb2e7578c10da5e89bb1164caba06f96f4989b"
+      }
+    ]
+  },
+  {
+    "sha": "cffb2e7578c10da5e89bb1164caba06f96f4989b",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOmNmZmIyZTc1NzhjMTBkYTVlODliYjExNjRjYWJhMDZmOTZmNDk4OWI=",
+    "commit": {
+      "author": {
+        "name": "Konfekt",
+        "email": "Konfekt@users.noreply.github.com",
+        "date": "2015-02-20T20:14:38Z"
+      },
+      "committer": {
+        "name": "Konfekt",
+        "email": "Konfekt@users.noreply.github.com",
+        "date": "2015-02-20T20:14:38Z"
+      },
+      "message": "more convenient remapping by using <plug> mappings\n\nNow mappings can be remapped in `.vimrc` by\r\n`nnoremap <key> <Plug>(RepeatUndoLine)`\r\nand disablabled in `.vimrc` by\r\n`nnoremap <SID>(DisableRepeatUndoLine) <Plug>(RepeatUndoLine)`",
+      "tree": {
+        "sha": "7c0b40070261a8d7886a4e2094979520e862d145",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/7c0b40070261a8d7886a4e2094979520e862d145"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/cffb2e7578c10da5e89bb1164caba06f96f4989b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/cffb2e7578c10da5e89bb1164caba06f96f4989b",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/cffb2e7578c10da5e89bb1164caba06f96f4989b",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/cffb2e7578c10da5e89bb1164caba06f96f4989b/comments",
+    "author": {
+      "login": "Konfekt",
+      "id": 7195553,
+      "node_id": "MDQ6VXNlcjcxOTU1NTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7195553?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Konfekt",
+      "html_url": "https://github.com/Konfekt",
+      "followers_url": "https://api.github.com/users/Konfekt/followers",
+      "following_url": "https://api.github.com/users/Konfekt/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Konfekt/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Konfekt/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Konfekt/subscriptions",
+      "organizations_url": "https://api.github.com/users/Konfekt/orgs",
+      "repos_url": "https://api.github.com/users/Konfekt/repos",
+      "events_url": "https://api.github.com/users/Konfekt/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Konfekt/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Konfekt",
+      "id": 7195553,
+      "node_id": "MDQ6VXNlcjcxOTU1NTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7195553?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Konfekt",
+      "html_url": "https://github.com/Konfekt",
+      "followers_url": "https://api.github.com/users/Konfekt/followers",
+      "following_url": "https://api.github.com/users/Konfekt/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Konfekt/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Konfekt/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Konfekt/subscriptions",
+      "organizations_url": "https://api.github.com/users/Konfekt/orgs",
+      "repos_url": "https://api.github.com/users/Konfekt/repos",
+      "events_url": "https://api.github.com/users/Konfekt/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Konfekt/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b06684a19549a45c91f36dc47dc55525e4c9c994",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/b06684a19549a45c91f36dc47dc55525e4c9c994",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/b06684a19549a45c91f36dc47dc55525e4c9c994"
+      }
+    ]
+  },
+  {
+    "sha": "b06684a19549a45c91f36dc47dc55525e4c9c994",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOmIwNjY4NGExOTU0OWE0NWM5MWYzNmRjNDdkYzU1NTI1ZTRjOWM5OTQ=",
+    "commit": {
+      "author": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2015-01-31T20:17:00Z"
+      },
+      "committer": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2015-01-31T20:17:00Z"
+      },
+      "message": "Merge pull request #39 from wellle/feedkeys-i\n\nPass flag 'i' to feedkeys() call",
+      "tree": {
+        "sha": "8a2a9d1a68c747e6e4e669f3d2c31ec2ae105422",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/8a2a9d1a68c747e6e4e669f3d2c31ec2ae105422"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/b06684a19549a45c91f36dc47dc55525e4c9c994",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/b06684a19549a45c91f36dc47dc55525e4c9c994",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/b06684a19549a45c91f36dc47dc55525e4c9c994",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/b06684a19549a45c91f36dc47dc55525e4c9c994/comments",
+    "author": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "committer": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "parents": [
+      {
+        "sha": "bd3b51723559ceefe36484fbd35524a98062ba8e",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/bd3b51723559ceefe36484fbd35524a98062ba8e",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/bd3b51723559ceefe36484fbd35524a98062ba8e"
+      },
+      {
+        "sha": "ad89be240fe2eb78cd7e5ff47293faa548c03ee8",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/ad89be240fe2eb78cd7e5ff47293faa548c03ee8",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/ad89be240fe2eb78cd7e5ff47293faa548c03ee8"
+      }
+    ]
+  },
+  {
+    "sha": "ad89be240fe2eb78cd7e5ff47293faa548c03ee8",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOmFkODliZTI0MGZlMmViNzhjZDdlNWZmNDcyOTNmYWE1NDhjMDNlZTg=",
+    "commit": {
+      "author": {
+        "name": "Christian Wellenbrock",
+        "email": "christian.wellenbrock@gmail.com",
+        "date": "2015-01-28T15:49:35Z"
+      },
+      "committer": {
+        "name": "Christian Wellenbrock",
+        "email": "christian.wellenbrock@gmail.com",
+        "date": "2015-01-28T15:51:28Z"
+      },
+      "message": "Pass flag 'i' to feedkeys() calls\n\nOnly fall back to :norm for versions 7.3.100 <= v < 7.4.601",
+      "tree": {
+        "sha": "8a2a9d1a68c747e6e4e669f3d2c31ec2ae105422",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/8a2a9d1a68c747e6e4e669f3d2c31ec2ae105422"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/ad89be240fe2eb78cd7e5ff47293faa548c03ee8",
+      "comment_count": 1,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/ad89be240fe2eb78cd7e5ff47293faa548c03ee8",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/ad89be240fe2eb78cd7e5ff47293faa548c03ee8",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/ad89be240fe2eb78cd7e5ff47293faa548c03ee8/comments",
+    "author": {
+      "login": "wellle",
+      "id": 474504,
+      "node_id": "MDQ6VXNlcjQ3NDUwNA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/474504?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/wellle",
+      "html_url": "https://github.com/wellle",
+      "followers_url": "https://api.github.com/users/wellle/followers",
+      "following_url": "https://api.github.com/users/wellle/following{/other_user}",
+      "gists_url": "https://api.github.com/users/wellle/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/wellle/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/wellle/subscriptions",
+      "organizations_url": "https://api.github.com/users/wellle/orgs",
+      "repos_url": "https://api.github.com/users/wellle/repos",
+      "events_url": "https://api.github.com/users/wellle/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/wellle/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "wellle",
+      "id": 474504,
+      "node_id": "MDQ6VXNlcjQ3NDUwNA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/474504?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/wellle",
+      "html_url": "https://github.com/wellle",
+      "followers_url": "https://api.github.com/users/wellle/followers",
+      "following_url": "https://api.github.com/users/wellle/following{/other_user}",
+      "gists_url": "https://api.github.com/users/wellle/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/wellle/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/wellle/subscriptions",
+      "organizations_url": "https://api.github.com/users/wellle/orgs",
+      "repos_url": "https://api.github.com/users/wellle/repos",
+      "events_url": "https://api.github.com/users/wellle/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/wellle/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "bd3b51723559ceefe36484fbd35524a98062ba8e",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/bd3b51723559ceefe36484fbd35524a98062ba8e",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/bd3b51723559ceefe36484fbd35524a98062ba8e"
+      }
+    ]
+  },
+  {
+    "sha": "bd3b51723559ceefe36484fbd35524a98062ba8e",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOmJkM2I1MTcyMzU1OWNlZWZlMzY0ODRmYmQzNTUyNGE5ODA2MmJhOGU=",
+    "commit": {
+      "author": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2015-01-19T22:20:08Z"
+      },
+      "committer": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2015-01-19T22:20:08Z"
+      },
+      "message": "Merge pull request #37 from justinmk/fix703\n\nFix condition for Vim <= 7.3",
+      "tree": {
+        "sha": "1f1e78ae71f40e625490ffbea394b91ea1de56d0",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/1f1e78ae71f40e625490ffbea394b91ea1de56d0"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/bd3b51723559ceefe36484fbd35524a98062ba8e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/bd3b51723559ceefe36484fbd35524a98062ba8e",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/bd3b51723559ceefe36484fbd35524a98062ba8e",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/bd3b51723559ceefe36484fbd35524a98062ba8e/comments",
+    "author": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "committer": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "parents": [
+      {
+        "sha": "7f09c18d2e84b87b16afe99f1d17054c14fa3c3e",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/7f09c18d2e84b87b16afe99f1d17054c14fa3c3e",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/7f09c18d2e84b87b16afe99f1d17054c14fa3c3e"
+      },
+      {
+        "sha": "006694e0f5f11d5c1f7be586944048a3887bb42d",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/006694e0f5f11d5c1f7be586944048a3887bb42d",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/006694e0f5f11d5c1f7be586944048a3887bb42d"
+      }
+    ]
+  },
+  {
+    "sha": "006694e0f5f11d5c1f7be586944048a3887bb42d",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOjAwNjY5NGUwZjVmMTFkNWMxZjdiZTU4Njk0NDA0OGEzODg3YmI0MmQ=",
+    "commit": {
+      "author": {
+        "name": "Justin M. Keyes",
+        "email": "jkeyes@connectwise.com",
+        "date": "2015-01-19T22:09:05Z"
+      },
+      "committer": {
+        "name": "Justin M. Keyes",
+        "email": "jkeyes@connectwise.com",
+        "date": "2015-01-19T22:09:05Z"
+      },
+      "message": "Fix condition for Vim <= 7.3",
+      "tree": {
+        "sha": "1f1e78ae71f40e625490ffbea394b91ea1de56d0",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/1f1e78ae71f40e625490ffbea394b91ea1de56d0"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/006694e0f5f11d5c1f7be586944048a3887bb42d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/006694e0f5f11d5c1f7be586944048a3887bb42d",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/006694e0f5f11d5c1f7be586944048a3887bb42d",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/006694e0f5f11d5c1f7be586944048a3887bb42d/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "7f09c18d2e84b87b16afe99f1d17054c14fa3c3e",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/7f09c18d2e84b87b16afe99f1d17054c14fa3c3e",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/7f09c18d2e84b87b16afe99f1d17054c14fa3c3e"
+      }
+    ]
+  },
+  {
+    "sha": "7f09c18d2e84b87b16afe99f1d17054c14fa3c3e",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOjdmMDljMThkMmU4NGI4N2IxNmFmZTk5ZjFkMTcwNTRjMTRmYTNjM2U=",
+    "commit": {
+      "author": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2015-01-19T20:42:53Z"
+      },
+      "committer": {
+        "name": "Tim Pope",
+        "email": "code@tpope.net",
+        "date": "2015-01-19T20:42:53Z"
+      },
+      "message": "Merge pull request #36 from justinmk/norm\n\nUse :norm for Vim 7.3.100 or later",
+      "tree": {
+        "sha": "8a8014d04bf2cbfc24925fb7d6edd9726764bb4d",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/8a8014d04bf2cbfc24925fb7d6edd9726764bb4d"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/7f09c18d2e84b87b16afe99f1d17054c14fa3c3e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/7f09c18d2e84b87b16afe99f1d17054c14fa3c3e",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/7f09c18d2e84b87b16afe99f1d17054c14fa3c3e",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/7f09c18d2e84b87b16afe99f1d17054c14fa3c3e/comments",
+    "author": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "committer": {
+      "login": "tpope",
+      "id": 378,
+      "node_id": "MDQ6VXNlcjM3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/378?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tpope",
+      "html_url": "https://github.com/tpope",
+      "followers_url": "https://api.github.com/users/tpope/followers",
+      "following_url": "https://api.github.com/users/tpope/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tpope/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tpope/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tpope/subscriptions",
+      "organizations_url": "https://api.github.com/users/tpope/orgs",
+      "repos_url": "https://api.github.com/users/tpope/repos",
+      "events_url": "https://api.github.com/users/tpope/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tpope/received_events",
+      "type": "User",
+      "site_admin": true
+    },
+    "parents": [
+      {
+        "sha": "b6bdd0f2d03ce80d6acfbfa9be1ee71b16f69b5d",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/b6bdd0f2d03ce80d6acfbfa9be1ee71b16f69b5d",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/b6bdd0f2d03ce80d6acfbfa9be1ee71b16f69b5d"
+      },
+      {
+        "sha": "193f4866df114390459739934506b8a0e5ca4ab0",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/193f4866df114390459739934506b8a0e5ca4ab0",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/193f4866df114390459739934506b8a0e5ca4ab0"
+      }
+    ]
+  },
+  {
+    "sha": "193f4866df114390459739934506b8a0e5ca4ab0",
+    "node_id": "MDY6Q29tbWl0NDM0MTQyOjE5M2Y0ODY2ZGYxMTQzOTA0NTk3Mzk5MzQ1MDZiOGEwZTVjYTRhYjA=",
+    "commit": {
+      "author": {
+        "name": "Justin M. Keyes",
+        "email": "justinkz@gmail.com",
+        "date": "2015-01-17T14:55:08Z"
+      },
+      "committer": {
+        "name": "Justin M. Keyes",
+        "email": "justinkz@gmail.com",
+        "date": "2015-01-17T14:55:08Z"
+      },
+      "message": "Use :norm for Vim 7.3.100 or later\n\nFixes #23",
+      "tree": {
+        "sha": "baab3b7daf08dc10c6f856753845b7a9f7698014",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/git/trees/baab3b7daf08dc10c6f856753845b7a9f7698014"
+      },
+      "url": "https://api.github.com/repos/tpope/vim-repeat/git/commits/193f4866df114390459739934506b8a0e5ca4ab0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/tpope/vim-repeat/commits/193f4866df114390459739934506b8a0e5ca4ab0",
+    "html_url": "https://github.com/tpope/vim-repeat/commit/193f4866df114390459739934506b8a0e5ca4ab0",
+    "comments_url": "https://api.github.com/repos/tpope/vim-repeat/commits/193f4866df114390459739934506b8a0e5ca4ab0/comments",
+    "author": {
+      "login": "justinmk",
+      "id": 1359421,
+      "node_id": "MDQ6VXNlcjEzNTk0MjE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1359421?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/justinmk",
+      "html_url": "https://github.com/justinmk",
+      "followers_url": "https://api.github.com/users/justinmk/followers",
+      "following_url": "https://api.github.com/users/justinmk/following{/other_user}",
+      "gists_url": "https://api.github.com/users/justinmk/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/justinmk/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/justinmk/subscriptions",
+      "organizations_url": "https://api.github.com/users/justinmk/orgs",
+      "repos_url": "https://api.github.com/users/justinmk/repos",
+      "events_url": "https://api.github.com/users/justinmk/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/justinmk/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "justinmk",
+      "id": 1359421,
+      "node_id": "MDQ6VXNlcjEzNTk0MjE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1359421?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/justinmk",
+      "html_url": "https://github.com/justinmk",
+      "followers_url": "https://api.github.com/users/justinmk/followers",
+      "following_url": "https://api.github.com/users/justinmk/following{/other_user}",
+      "gists_url": "https://api.github.com/users/justinmk/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/justinmk/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/justinmk/subscriptions",
+      "organizations_url": "https://api.github.com/users/justinmk/orgs",
+      "repos_url": "https://api.github.com/users/justinmk/repos",
+      "events_url": "https://api.github.com/users/justinmk/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/justinmk/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5eba0f19c87402643eb8a7e7d20d9d5338fd6d71",
+        "url": "https://api.github.com/repos/tpope/vim-repeat/commits/5eba0f19c87402643eb8a7e7d20d9d5338fd6d71",
+        "html_url": "https://github.com/tpope/vim-repeat/commit/5eba0f19c87402643eb8a7e7d20d9d5338fd6d71"
+      }
+    ]
+  }
+]

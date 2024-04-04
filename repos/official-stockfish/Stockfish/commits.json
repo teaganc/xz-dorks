@@ -1,0 +1,2372 @@
+[
+  {
+    "sha": "0716b845fdef8a20102b07eaec074b8da8162523",
+    "node_id": "C_kwDOAUASCtoAKDA3MTZiODQ1ZmRlZjhhMjAxMDJiMDdlYWVjMDc0YjhkYTgxNjI1MjM",
+    "commit": {
+      "author": {
+        "name": "Viren6",
+        "email": "94880762+Viren6@users.noreply.github.com",
+        "date": "2024-04-02T03:38:54Z"
+      },
+      "committer": {
+        "name": "Joost VandeVondele",
+        "email": "Joost.VandeVondele@gmail.com",
+        "date": "2024-04-02T06:49:48Z"
+      },
+      "message": "Update NNUE architecture to SFNNv9 and net nn-ae6a388e4a1a.nnue\n\nPart 1: PyTorch Training, linrock\n\nTrained with a 10-stage sequence from scratch, starting in May 2023:\nhttps://github.com/linrock/nnue-tools/blob/master/exp-sequences/3072-10stage-SFNNv9.yml\n\nWhile the training methods were similar to the L1-2560 training sequence,\nthe last two stages introduced min-v2 binpacks,\nwhere bestmove capture and in-check position scores were not zeroed during minimization,\nfor compatibility with skipping SEE >= 0 positions and future research.\n\nTraining data can be found at:\nhttps://robotmoon.com/nnue-training-data\n\nThis net was tested at epoch 679 of the 10th training stage:\nhttps://tests.stockfishchess.org/tests/view/65f32e460ec64f0526c48dbc\n\nPart 2: SPSA Training, Viren6\n\nThe net was then SPSA tuned.\nThis consisted of the output weights (32 * 8) and biases (8)\nas well as the L3 biases (32 * 8) and L2 biases (16 * 8), totalling 648 params in total.\n\nThe SPSA tune can be found here:\nhttps://tests.stockfishchess.org/tests/view/65fc33ba0ec64f0526c512e3\n\nWith the help of Disservin , the initial weights were extracted with:\nhttps://github.com/Viren6/Stockfish/tree/new228\n\nThe net was saved with the tuned weights using:\nhttps://github.com/Viren6/Stockfish/tree/new241\n\nEarlier nets of the SPSA failed STC compared to the base 3072 net of part 1:\nhttps://tests.stockfishchess.org/tests/view/65ff356e0ec64f0526c53c98\nTherefore it is suspected that the SPSA at VVLTC has\nadded extra scaling on top of the scaling of increasing the L1 size.\n\nPassed VVLTC 1:\nhttps://tests.stockfishchess.org/tests/view/6604a9020ec64f0526c583da\nLLR: 2.94 (-2.94,2.94) <0.00,2.00>\nTotal: 53042 W: 13554 L: 13256 D: 26232\nPtnml(0-2): 12, 5147, 15903, 5449, 10\n\nPassed VVLTC 2:\nhttps://tests.stockfishchess.org/tests/view/660ad1b60ec64f0526c5dd23\nLLR: 2.94 (-2.94,2.94) <0.50,2.50>\nTotal: 17506 W: 4574 L: 4315 D: 8617\nPtnml(0-2): 1, 1567, 5362, 1818, 5\n\nSTC Elo estimate:\nhttps://tests.stockfishchess.org/tests/view/660b834d01aaec5069f87cb0\nElo: -7.66 ± 3.8 (95%) LOS: 0.0%\nTotal: 9618 W: 2440 L: 2652 D: 4526\nPtnml(0-2): 80, 1281, 2261, 1145, 42\nnElo: -13.94 ± 6.9 (95%) PairsRatio: 0.87\n\ncloses https://tests.stockfishchess.org/tests/view/660b834d01aaec5069f87cb0\n\nbench 1823302\n\nCo-Authored-By: Linmiao Xu <lin@robotmoon.com>",
+      "tree": {
+        "sha": "13c5b835f9b61b843eb6b827b1d851478d5dd4ae",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/13c5b835f9b61b843eb6b827b1d851478d5dd4ae"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/0716b845fdef8a20102b07eaec074b8da8162523",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/0716b845fdef8a20102b07eaec074b8da8162523",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/0716b845fdef8a20102b07eaec074b8da8162523",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/0716b845fdef8a20102b07eaec074b8da8162523/comments",
+    "author": {
+      "login": "Viren6",
+      "id": 94880762,
+      "node_id": "U_kgDOBafD-g",
+      "avatar_url": "https://avatars.githubusercontent.com/u/94880762?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Viren6",
+      "html_url": "https://github.com/Viren6",
+      "followers_url": "https://api.github.com/users/Viren6/followers",
+      "following_url": "https://api.github.com/users/Viren6/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Viren6/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Viren6/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Viren6/subscriptions",
+      "organizations_url": "https://api.github.com/users/Viren6/orgs",
+      "repos_url": "https://api.github.com/users/Viren6/repos",
+      "events_url": "https://api.github.com/users/Viren6/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Viren6/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vondele",
+      "id": 4202567,
+      "node_id": "MDQ6VXNlcjQyMDI1Njc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4202567?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vondele",
+      "html_url": "https://github.com/vondele",
+      "followers_url": "https://api.github.com/users/vondele/followers",
+      "following_url": "https://api.github.com/users/vondele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vondele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vondele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vondele/subscriptions",
+      "organizations_url": "https://api.github.com/users/vondele/orgs",
+      "repos_url": "https://api.github.com/users/vondele/repos",
+      "events_url": "https://api.github.com/users/vondele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vondele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c964942da225ace51e1446deb29e7f43bf21360e",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/c964942da225ace51e1446deb29e7f43bf21360e",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/c964942da225ace51e1446deb29e7f43bf21360e"
+      }
+    ]
+  },
+  {
+    "sha": "c964942da225ace51e1446deb29e7f43bf21360e",
+    "node_id": "C_kwDOAUASCtoAKGM5NjQ5NDJkYTIyNWFjZTUxZTE0NDZkZWIyOWU3ZjQzYmYyMTM2MGU",
+    "commit": {
+      "author": {
+        "name": "Joost VandeVondele",
+        "email": "Joost.VandeVondele@gmail.com",
+        "date": "2024-03-30T09:54:36Z"
+      },
+      "committer": {
+        "name": "Joost VandeVondele",
+        "email": "Joost.VandeVondele@gmail.com",
+        "date": "2024-03-30T11:38:02Z"
+      },
+      "message": "Avoid a note related to an ABI change\n\ncurrent master triggers a gcc note:\nparameter passing for argument of type 'std::pair<double, double>' when C++17 is enabled changed to match C++14 in GCC 10.1\n\nwhile this is inconsequential, and just informative  https://gcc.gnu.org/bugzilla/show_bug.cgi?id=111516 we can easily avoid it.\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5145\n\nNo functional change",
+      "tree": {
+        "sha": "216181bcd636ae82371f9750894386836cf2e59b",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/216181bcd636ae82371f9750894386836cf2e59b"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/c964942da225ace51e1446deb29e7f43bf21360e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/c964942da225ace51e1446deb29e7f43bf21360e",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/c964942da225ace51e1446deb29e7f43bf21360e",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/c964942da225ace51e1446deb29e7f43bf21360e/comments",
+    "author": {
+      "login": "vondele",
+      "id": 4202567,
+      "node_id": "MDQ6VXNlcjQyMDI1Njc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4202567?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vondele",
+      "html_url": "https://github.com/vondele",
+      "followers_url": "https://api.github.com/users/vondele/followers",
+      "following_url": "https://api.github.com/users/vondele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vondele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vondele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vondele/subscriptions",
+      "organizations_url": "https://api.github.com/users/vondele/orgs",
+      "repos_url": "https://api.github.com/users/vondele/repos",
+      "events_url": "https://api.github.com/users/vondele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vondele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vondele",
+      "id": 4202567,
+      "node_id": "MDQ6VXNlcjQyMDI1Njc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4202567?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vondele",
+      "html_url": "https://github.com/vondele",
+      "followers_url": "https://api.github.com/users/vondele/followers",
+      "following_url": "https://api.github.com/users/vondele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vondele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vondele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vondele/subscriptions",
+      "organizations_url": "https://api.github.com/users/vondele/orgs",
+      "repos_url": "https://api.github.com/users/vondele/repos",
+      "events_url": "https://api.github.com/users/vondele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vondele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ec598b380db41fa54100cf3de51fe4be17eaf08b",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/ec598b380db41fa54100cf3de51fe4be17eaf08b",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/ec598b380db41fa54100cf3de51fe4be17eaf08b"
+      }
+    ]
+  },
+  {
+    "sha": "ec598b380db41fa54100cf3de51fe4be17eaf08b",
+    "node_id": "C_kwDOAUASCtoAKGVjNTk4YjM4MGRiNDFmYTU0MTAwY2YzZGU1MWZlNGJlMTdlYWYwOGI",
+    "commit": {
+      "author": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-29T09:49:53Z"
+      },
+      "committer": {
+        "name": "Joost VandeVondele",
+        "email": "Joost.VandeVondele@gmail.com",
+        "date": "2024-03-29T12:13:07Z"
+      },
+      "message": "Improve prerelease creation workflow\n\nIn the last couple of months we sometimes saw duplicated prereleases uploaded to GitHub, possibly due to some racy behavior when concurrent jobs create a prerelease. This now creates an empty prerelease at the beginning of the CI and the binaries are later just attached to this one.\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5144\n\nNo functional change",
+      "tree": {
+        "sha": "a177b7c41206fe2307fb7ecfe6e7755e1f6fbf40",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/a177b7c41206fe2307fb7ecfe6e7755e1f6fbf40"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/ec598b380db41fa54100cf3de51fe4be17eaf08b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/ec598b380db41fa54100cf3de51fe4be17eaf08b",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/ec598b380db41fa54100cf3de51fe4be17eaf08b",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/ec598b380db41fa54100cf3de51fe4be17eaf08b/comments",
+    "author": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vondele",
+      "id": 4202567,
+      "node_id": "MDQ6VXNlcjQyMDI1Njc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4202567?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vondele",
+      "html_url": "https://github.com/vondele",
+      "followers_url": "https://api.github.com/users/vondele/followers",
+      "following_url": "https://api.github.com/users/vondele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vondele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vondele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vondele/subscriptions",
+      "organizations_url": "https://api.github.com/users/vondele/orgs",
+      "repos_url": "https://api.github.com/users/vondele/repos",
+      "events_url": "https://api.github.com/users/vondele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vondele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "68d58d94da15d175269eaa06b3d224062cf72a70",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/68d58d94da15d175269eaa06b3d224062cf72a70",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/68d58d94da15d175269eaa06b3d224062cf72a70"
+      }
+    ]
+  },
+  {
+    "sha": "68d58d94da15d175269eaa06b3d224062cf72a70",
+    "node_id": "C_kwDOAUASCtoAKDY4ZDU4ZDk0ZGExNWQxNzUyNjllYWEwNmIzZDIyNDA2MmNmNzJhNzA",
+    "commit": {
+      "author": {
+        "name": "Joost VandeVondele",
+        "email": "Joost.VandeVondele@gmail.com",
+        "date": "2024-03-29T09:25:41Z"
+      },
+      "committer": {
+        "name": "Joost VandeVondele",
+        "email": "Joost.VandeVondele@gmail.com",
+        "date": "2024-03-29T12:12:20Z"
+      },
+      "message": "Fix usage of abs vs std::abs\n\nclose https://github.com/official-stockfish/Stockfish/pull/5143\n\nNo functional change",
+      "tree": {
+        "sha": "e771bbdd20f6ef3c768322cb0f0e31db6591a492",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/e771bbdd20f6ef3c768322cb0f0e31db6591a492"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/68d58d94da15d175269eaa06b3d224062cf72a70",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/68d58d94da15d175269eaa06b3d224062cf72a70",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/68d58d94da15d175269eaa06b3d224062cf72a70",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/68d58d94da15d175269eaa06b3d224062cf72a70/comments",
+    "author": {
+      "login": "vondele",
+      "id": 4202567,
+      "node_id": "MDQ6VXNlcjQyMDI1Njc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4202567?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vondele",
+      "html_url": "https://github.com/vondele",
+      "followers_url": "https://api.github.com/users/vondele/followers",
+      "following_url": "https://api.github.com/users/vondele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vondele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vondele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vondele/subscriptions",
+      "organizations_url": "https://api.github.com/users/vondele/orgs",
+      "repos_url": "https://api.github.com/users/vondele/repos",
+      "events_url": "https://api.github.com/users/vondele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vondele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vondele",
+      "id": 4202567,
+      "node_id": "MDQ6VXNlcjQyMDI1Njc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4202567?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vondele",
+      "html_url": "https://github.com/vondele",
+      "followers_url": "https://api.github.com/users/vondele/followers",
+      "following_url": "https://api.github.com/users/vondele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vondele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vondele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vondele/subscriptions",
+      "organizations_url": "https://api.github.com/users/vondele/orgs",
+      "repos_url": "https://api.github.com/users/vondele/repos",
+      "events_url": "https://api.github.com/users/vondele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vondele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e13e4cfb8340cdb26a00679681a0f163c6b4f0a9",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/e13e4cfb8340cdb26a00679681a0f163c6b4f0a9",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/e13e4cfb8340cdb26a00679681a0f163c6b4f0a9"
+      }
+    ]
+  },
+  {
+    "sha": "e13e4cfb8340cdb26a00679681a0f163c6b4f0a9",
+    "node_id": "C_kwDOAUASCtoAKGUxM2U0Y2ZiODM0MGNkYjI2YTAwNjc5NjgxYTBmMTYzYzZiNGYwYTk",
+    "commit": {
+      "author": {
+        "name": "Shawn Xu",
+        "email": "xu107288696@gmail.com",
+        "date": "2024-03-27T09:58:59Z"
+      },
+      "committer": {
+        "name": "Joost VandeVondele",
+        "email": "Joost.VandeVondele@gmail.com",
+        "date": "2024-03-29T09:18:40Z"
+      },
+      "message": "Simplify NMP Condition\n\nRemove eval >= ss->staticEval condition for Null Move Pruning.\n\nPassed non-regression STC:\nLLR: 2.93 (-2.94,2.94) <-1.75,0.25>\nTotal: 44000 W: 11420 L: 11202 D: 21378\nPtnml(0-2): 174, 5243, 10978, 5401, 204\nhttps://tests.stockfishchess.org/tests/live_elo/6603ee490ec64f0526c57984\n\nPassed non-regression LTC:\nLLR: 2.94 (-2.94,2.94) <-1.75,0.25>\nTotal: 82956 W: 20978 L: 20818 D: 41160\nPtnml(0-2): 54, 9353, 22499, 9523, 49\nhttps://tests.stockfishchess.org/tests/live_elo/660464b50ec64f0526c5804d\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5142\n\nBench 1759189",
+      "tree": {
+        "sha": "869b72a2668a8d3dd100e51c6a39375b8a6fed50",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/869b72a2668a8d3dd100e51c6a39375b8a6fed50"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/e13e4cfb8340cdb26a00679681a0f163c6b4f0a9",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/e13e4cfb8340cdb26a00679681a0f163c6b4f0a9",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/e13e4cfb8340cdb26a00679681a0f163c6b4f0a9",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/e13e4cfb8340cdb26a00679681a0f163c6b4f0a9/comments",
+    "author": {
+      "login": "xu-shawn",
+      "id": 50402888,
+      "node_id": "MDQ6VXNlcjUwNDAyODg4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/50402888?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/xu-shawn",
+      "html_url": "https://github.com/xu-shawn",
+      "followers_url": "https://api.github.com/users/xu-shawn/followers",
+      "following_url": "https://api.github.com/users/xu-shawn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/xu-shawn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/xu-shawn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/xu-shawn/subscriptions",
+      "organizations_url": "https://api.github.com/users/xu-shawn/orgs",
+      "repos_url": "https://api.github.com/users/xu-shawn/repos",
+      "events_url": "https://api.github.com/users/xu-shawn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/xu-shawn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vondele",
+      "id": 4202567,
+      "node_id": "MDQ6VXNlcjQyMDI1Njc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4202567?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vondele",
+      "html_url": "https://github.com/vondele",
+      "followers_url": "https://api.github.com/users/vondele/followers",
+      "following_url": "https://api.github.com/users/vondele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vondele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vondele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vondele/subscriptions",
+      "organizations_url": "https://api.github.com/users/vondele/orgs",
+      "repos_url": "https://api.github.com/users/vondele/repos",
+      "events_url": "https://api.github.com/users/vondele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vondele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0ef5d05102ce0632d7b076706d26eb4eba7fcb70",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/0ef5d05102ce0632d7b076706d26eb4eba7fcb70",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/0ef5d05102ce0632d7b076706d26eb4eba7fcb70"
+      }
+    ]
+  },
+  {
+    "sha": "0ef5d05102ce0632d7b076706d26eb4eba7fcb70",
+    "node_id": "C_kwDOAUASCtoAKDBlZjVkMDUxMDJjZTA2MzJkN2IwNzY3MDZkMjZlYjRlYmE3ZmNiNzA",
+    "commit": {
+      "author": {
+        "name": "Michael Chaly",
+        "email": "Vizvezdenec@gmail.com",
+        "date": "2024-03-28T21:17:37Z"
+      },
+      "committer": {
+        "name": "Joost VandeVondele",
+        "email": "Joost.VandeVondele@gmail.com",
+        "date": "2024-03-29T09:15:17Z"
+      },
+      "message": "Adjust best value after a pruned quiet move\n\nLogic somewhat similar to how we adjust best value after pruned captures\nin qsearch, but in search this patch does it after pruned quiet moves\nand also to not full scale of futility value but to smth in between\nbest value and futility value.\n\nPassed STC:\nhttps://tests.stockfishchess.org/tests/view/6601cf900ec64f0526c55c30\nLLR: 2.93 (-2.94,2.94) <0.00,2.00>\nTotal: 59936 W: 15722 L: 15369 D: 28845\nPtnml(0-2): 182, 7097, 15112, 7340, 237\n\nPassed LTC:\nhttps://tests.stockfishchess.org/tests/view/66029b2d0ec64f0526c566f1\nLLR: 2.96 (-2.94,2.94) <0.50,2.50>\nTotal: 118362 W: 29953 L: 29460 D: 58949\nPtnml(0-2): 68, 13159, 32249, 13622, 83\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5141\n\nbench 1772608",
+      "tree": {
+        "sha": "ba5bf2d7012905a20497ba733b74f669a2ab91f1",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/ba5bf2d7012905a20497ba733b74f669a2ab91f1"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/0ef5d05102ce0632d7b076706d26eb4eba7fcb70",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/0ef5d05102ce0632d7b076706d26eb4eba7fcb70",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/0ef5d05102ce0632d7b076706d26eb4eba7fcb70",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/0ef5d05102ce0632d7b076706d26eb4eba7fcb70/comments",
+    "author": {
+      "login": "Vizvezdenec",
+      "id": 26898827,
+      "node_id": "MDQ6VXNlcjI2ODk4ODI3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/26898827?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Vizvezdenec",
+      "html_url": "https://github.com/Vizvezdenec",
+      "followers_url": "https://api.github.com/users/Vizvezdenec/followers",
+      "following_url": "https://api.github.com/users/Vizvezdenec/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Vizvezdenec/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Vizvezdenec/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Vizvezdenec/subscriptions",
+      "organizations_url": "https://api.github.com/users/Vizvezdenec/orgs",
+      "repos_url": "https://api.github.com/users/Vizvezdenec/repos",
+      "events_url": "https://api.github.com/users/Vizvezdenec/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Vizvezdenec/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vondele",
+      "id": 4202567,
+      "node_id": "MDQ6VXNlcjQyMDI1Njc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4202567?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vondele",
+      "html_url": "https://github.com/vondele",
+      "followers_url": "https://api.github.com/users/vondele/followers",
+      "following_url": "https://api.github.com/users/vondele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vondele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vondele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vondele/subscriptions",
+      "organizations_url": "https://api.github.com/users/vondele/orgs",
+      "repos_url": "https://api.github.com/users/vondele/repos",
+      "events_url": "https://api.github.com/users/vondele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vondele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e636f73ab83da13fd352658e1eeecd369479c491",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/e636f73ab83da13fd352658e1eeecd369479c491",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/e636f73ab83da13fd352658e1eeecd369479c491"
+      }
+    ]
+  },
+  {
+    "sha": "e636f73ab83da13fd352658e1eeecd369479c491",
+    "node_id": "C_kwDOAUASCtoAKGU2MzZmNzNhYjgzZGExM2ZkMzUyNjU4ZTFlZWVjZDM2OTQ3OWM0OTE",
+    "commit": {
+      "author": {
+        "name": "xoto10",
+        "email": "23479932+xoto10@users.noreply.github.com",
+        "date": "2024-03-27T08:20:49Z"
+      },
+      "committer": {
+        "name": "Joost VandeVondele",
+        "email": "Joost.VandeVondele@gmail.com",
+        "date": "2024-03-29T09:09:42Z"
+      },
+      "message": "Vary time use with eval\n\nAdjust time use depending on the current eval.\n\nPassed STC :\nLLR: 2.94 (-2.94,2.94) <0.00,2.00>\nTotal: 101696 W: 26651 L: 26238 D: 48807\nPtnml(0-2): 400, 11602, 26459, 11959, 428\nhttps://tests.stockfishchess.org/tests/live_elo/660187a50ec64f0526c557f6\n\nPassed LTC :\nLLR: 2.94 (-2.94,2.94) <0.50,2.50>\nTotal: 60648 W: 15550 L: 15187 D: 29911\nPtnml(0-2): 40, 6356, 17171, 6715, 42\nhttps://tests.stockfishchess.org/tests/live_elo/660298ed0ec64f0526c566d0\n\nValues were found using two tunes with the final values taken from the ltc tune after 62k games :\nstc - https://tests.stockfishchess.org/tests/view/65fb526b0ec64f0526c50694\nltc - https://tests.stockfishchess.org/tests/view/65fd36e60ec64f0526c5214b\n\nIdeas for future work;\n\n  * tune these values with the other TM adjustments\n  * try narrower bands\n  * calculate adjustment for exact eval by interpolation\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5138\n\nNo functional change",
+      "tree": {
+        "sha": "ceb83f9853fa788b3187844767faa2af72f81308",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/ceb83f9853fa788b3187844767faa2af72f81308"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/e636f73ab83da13fd352658e1eeecd369479c491",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/e636f73ab83da13fd352658e1eeecd369479c491",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/e636f73ab83da13fd352658e1eeecd369479c491",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/e636f73ab83da13fd352658e1eeecd369479c491/comments",
+    "author": {
+      "login": "xoto10",
+      "id": 23479932,
+      "node_id": "MDQ6VXNlcjIzNDc5OTMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/23479932?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/xoto10",
+      "html_url": "https://github.com/xoto10",
+      "followers_url": "https://api.github.com/users/xoto10/followers",
+      "following_url": "https://api.github.com/users/xoto10/following{/other_user}",
+      "gists_url": "https://api.github.com/users/xoto10/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/xoto10/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/xoto10/subscriptions",
+      "organizations_url": "https://api.github.com/users/xoto10/orgs",
+      "repos_url": "https://api.github.com/users/xoto10/repos",
+      "events_url": "https://api.github.com/users/xoto10/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/xoto10/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vondele",
+      "id": 4202567,
+      "node_id": "MDQ6VXNlcjQyMDI1Njc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4202567?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vondele",
+      "html_url": "https://github.com/vondele",
+      "followers_url": "https://api.github.com/users/vondele/followers",
+      "following_url": "https://api.github.com/users/vondele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vondele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vondele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vondele/subscriptions",
+      "organizations_url": "https://api.github.com/users/vondele/orgs",
+      "repos_url": "https://api.github.com/users/vondele/repos",
+      "events_url": "https://api.github.com/users/vondele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vondele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ed24e3a0a6e6958b26fefc4c43078c0bb46f5376",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/ed24e3a0a6e6958b26fefc4c43078c0bb46f5376",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/ed24e3a0a6e6958b26fefc4c43078c0bb46f5376"
+      }
+    ]
+  },
+  {
+    "sha": "ed24e3a0a6e6958b26fefc4c43078c0bb46f5376",
+    "node_id": "C_kwDOAUASCtoAKGVkMjRlM2EwYTZlNjk1OGIyNmZlZmM0YzQzMDc4YzBiYjQ2ZjUzNzY",
+    "commit": {
+      "author": {
+        "name": "Gahtan Nahdi",
+        "email": "155860115+gahtan-syarif@users.noreply.github.com",
+        "date": "2024-03-22T20:48:44Z"
+      },
+      "committer": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-26T17:17:00Z"
+      },
+      "message": "Remove material imbalance from nnue eval\n\nPassed non-reg STC:\nhttps://tests.stockfishchess.org/tests/view/65fdf11f0ec64f0526c52b57\nLLR: 2.93 (-2.94,2.94) <-1.75,0.25>\nTotal: 76480 W: 19893 L: 19712 D: 36875\nPtnml(0-2): 339, 9107, 19157, 9308, 329\n\nPassed non-reg LTC:\nhttps://tests.stockfishchess.org/tests/view/65fee22e0ec64f0526c53885\nLLR: 2.95 (-2.94,2.94) <-1.75,0.25>\nTotal: 150948 W: 38078 L: 37988 D: 74882\nPtnml(0-2): 111, 16997, 41148, 17127, 91\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5135\n\nBench: 2103324",
+      "tree": {
+        "sha": "7e9c49a2639512a5b9b0a02135064cd4df5ceb9e",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/7e9c49a2639512a5b9b0a02135064cd4df5ceb9e"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/ed24e3a0a6e6958b26fefc4c43078c0bb46f5376",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/ed24e3a0a6e6958b26fefc4c43078c0bb46f5376",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/ed24e3a0a6e6958b26fefc4c43078c0bb46f5376",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/ed24e3a0a6e6958b26fefc4c43078c0bb46f5376/comments",
+    "author": {
+      "login": "gahtan-syarif",
+      "id": 155860115,
+      "node_id": "U_kgDOCUo8kw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/155860115?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahtan-syarif",
+      "html_url": "https://github.com/gahtan-syarif",
+      "followers_url": "https://api.github.com/users/gahtan-syarif/followers",
+      "following_url": "https://api.github.com/users/gahtan-syarif/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahtan-syarif/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahtan-syarif/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahtan-syarif/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahtan-syarif/orgs",
+      "repos_url": "https://api.github.com/users/gahtan-syarif/repos",
+      "events_url": "https://api.github.com/users/gahtan-syarif/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahtan-syarif/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d49b3738bc89353a9318d54af400f02c91d2d69a",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/d49b3738bc89353a9318d54af400f02c91d2d69a",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/d49b3738bc89353a9318d54af400f02c91d2d69a"
+      }
+    ]
+  },
+  {
+    "sha": "d49b3738bc89353a9318d54af400f02c91d2d69a",
+    "node_id": "C_kwDOAUASCtoAKGQ0OWIzNzM4YmM4OTM1M2E5MzE4ZDU0YWY0MDBmMDJjOTFkMmQ2OWE",
+    "commit": {
+      "author": {
+        "name": "FauziAkram",
+        "email": "fauzi.dabat@hotmail.com",
+        "date": "2024-03-24T11:02:27Z"
+      },
+      "committer": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-26T17:17:00Z"
+      },
+      "message": "Tweak the stats bonus and malus\n\nFor depth 1 we don't have a negative score anymore.\n\nPassed STC:\nhttps://tests.stockfishchess.org/tests/view/65fb055c0ec64f0526c5024f\nLLR: 2.95 (-2.94,2.94) <0.00,2.00>\nTotal: 117120 W: 30468 L: 30023 D: 56629\nPtnml(0-2): 526, 13759, 29539, 14216, 520\n\nPassed LTC:\nhttps://tests.stockfishchess.org/tests/view/65fdca4b0ec64f0526c5293f\nLLR: 2.94 (-2.94,2.94) <0.50,2.50>\nTotal: 54816 W: 13955 L: 13595 D: 27266\nPtnml(0-2): 30, 6046, 14897, 6404, 31\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5134\n\nBench: 1876428",
+      "tree": {
+        "sha": "f16e885d6d4ac197ae24ec4adb101c32cdeec0b0",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/f16e885d6d4ac197ae24ec4adb101c32cdeec0b0"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/d49b3738bc89353a9318d54af400f02c91d2d69a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/d49b3738bc89353a9318d54af400f02c91d2d69a",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/d49b3738bc89353a9318d54af400f02c91d2d69a",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/d49b3738bc89353a9318d54af400f02c91d2d69a/comments",
+    "author": {
+      "login": "FauziAkram",
+      "id": 11150271,
+      "node_id": "MDQ6VXNlcjExMTUwMjcx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11150271?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/FauziAkram",
+      "html_url": "https://github.com/FauziAkram",
+      "followers_url": "https://api.github.com/users/FauziAkram/followers",
+      "following_url": "https://api.github.com/users/FauziAkram/following{/other_user}",
+      "gists_url": "https://api.github.com/users/FauziAkram/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/FauziAkram/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/FauziAkram/subscriptions",
+      "organizations_url": "https://api.github.com/users/FauziAkram/orgs",
+      "repos_url": "https://api.github.com/users/FauziAkram/repos",
+      "events_url": "https://api.github.com/users/FauziAkram/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/FauziAkram/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7998570414ba489b3dfe239b424c200041396e7f",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/7998570414ba489b3dfe239b424c200041396e7f",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/7998570414ba489b3dfe239b424c200041396e7f"
+      }
+    ]
+  },
+  {
+    "sha": "7998570414ba489b3dfe239b424c200041396e7f",
+    "node_id": "C_kwDOAUASCtoAKDc5OTg1NzA0MTRiYTQ4OWIzZGZlMjM5YjQyNGMyMDAwNDEzOTZlN2Y",
+    "commit": {
+      "author": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-23T09:34:32Z"
+      },
+      "committer": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-26T17:17:00Z"
+      },
+      "message": "Add functionality to export small net\n\nUsage\n```\nexport_net <filenameBigNet> <filenameSmallNet>\n```\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5133\n\nNo functional change",
+      "tree": {
+        "sha": "56e602e614aa7f24f60ed4164cbcaf2e019d8ca7",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/56e602e614aa7f24f60ed4164cbcaf2e019d8ca7"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/7998570414ba489b3dfe239b424c200041396e7f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/7998570414ba489b3dfe239b424c200041396e7f",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/7998570414ba489b3dfe239b424c200041396e7f",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/7998570414ba489b3dfe239b424c200041396e7f/comments",
+    "author": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5001d49f42033bcf36a6c57401f891791031b4d8",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/5001d49f42033bcf36a6c57401f891791031b4d8",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/5001d49f42033bcf36a6c57401f891791031b4d8"
+      }
+    ]
+  },
+  {
+    "sha": "5001d49f42033bcf36a6c57401f891791031b4d8",
+    "node_id": "C_kwDOAUASCtoAKDUwMDFkNDlmNDIwMzNiY2YzNmE2YzU3NDAxZjg5MTc5MTAzMWI0ZDg",
+    "commit": {
+      "author": {
+        "name": "mstembera",
+        "email": "m_stembera@yahoo.com",
+        "date": "2024-03-21T08:25:59Z"
+      },
+      "committer": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-26T17:06:49Z"
+      },
+      "message": "Update nnue_feature_transformer.h\n\nUnroll update_accumulator_refresh to process two\nactive indices simultaneously.\n\nThe compiler might not unroll effectively because\nthe number of active indices isn't known at\ncompile time.\n\nSTC https://tests.stockfishchess.org/tests/view/65faa8850ec64f0526c4fca9\nLLR: 2.93 (-2.94,2.94) <0.00,2.00>\nTotal: 130464 W: 33882 L: 33431 D: 63151\nPtnml(0-2): 539, 14591, 34501, 15082, 519\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5125\n\nNo functional change",
+      "tree": {
+        "sha": "2317258249434830883e2e5c6dc6875418576ce4",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/2317258249434830883e2e5c6dc6875418576ce4"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/5001d49f42033bcf36a6c57401f891791031b4d8",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/5001d49f42033bcf36a6c57401f891791031b4d8",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/5001d49f42033bcf36a6c57401f891791031b4d8",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/5001d49f42033bcf36a6c57401f891791031b4d8/comments",
+    "author": {
+      "login": "mstembera",
+      "id": 5421953,
+      "node_id": "MDQ6VXNlcjU0MjE5NTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5421953?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mstembera",
+      "html_url": "https://github.com/mstembera",
+      "followers_url": "https://api.github.com/users/mstembera/followers",
+      "following_url": "https://api.github.com/users/mstembera/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mstembera/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mstembera/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mstembera/subscriptions",
+      "organizations_url": "https://api.github.com/users/mstembera/orgs",
+      "repos_url": "https://api.github.com/users/mstembera/repos",
+      "events_url": "https://api.github.com/users/mstembera/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mstembera/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d99f89506bd0ed535fb1c55dbb7cc8f7c29444d4",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/d99f89506bd0ed535fb1c55dbb7cc8f7c29444d4",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/d99f89506bd0ed535fb1c55dbb7cc8f7c29444d4"
+      }
+    ]
+  },
+  {
+    "sha": "d99f89506bd0ed535fb1c55dbb7cc8f7c29444d4",
+    "node_id": "C_kwDOAUASCtoAKGQ5OWY4OTUwNmJkMGVkNTM1ZmIxYzU1ZGJiN2NjOGY3YzI5NDQ0ZDQ",
+    "commit": {
+      "author": {
+        "name": "Muzhen Gaming",
+        "email": "61100393+XInTheDark@users.noreply.github.com",
+        "date": "2024-03-17T03:20:41Z"
+      },
+      "committer": {
+        "name": "Joost VandeVondele",
+        "email": "Joost.VandeVondele@gmail.com",
+        "date": "2024-03-22T15:44:06Z"
+      },
+      "message": "VVLTC search tune\n\nThis set of parameters was derived from 3 tuning attempts:\n\n    https://tests.stockfishchess.org/tests/view/65d19ab61d8e83c78bfd8436 (80+0.8 x8, ~40k games)\n    Then tuned with one of linrock's early L1-3072 nets:\n    https://tests.stockfishchess.org/tests/view/65def7b04b19edc854ebdec8 (VVLTC, ~36k games)\n    Starting from the result of this tuning, the parameters were then tuned with the current master net:\n    https://tests.stockfishchess.org/tests/view/65f11c420ec64f0526c46fc4 (VVLTC, ~45k games)\n\nAdditionally, at the start of the third tuning phase, 2 parameters were manually changed:\n\n    Notably, the triple extension margin was decreased from 78 to 22. This idea was given by Vizvezdenec:\n    https://tests.stockfishchess.org/tests/view/65f0a2360ec64f0526c46752.\n    The PvNode extension margin was also adjusted from 50 to 40.\n\nThis tune also differs from previous tuning attempts by tuning the evaluation thresholds for smallnet and psqt-only.\nThe former was increased through the tuning, and this is hypothesized to scale better at VVLTC,\nalthough there is not much evidence of it.\n\nPassed VVLTC 1st sprt: https://tests.stockfishchess.org/tests/view/65f6761d0ec64f0526c4be88\nLLR: 2.94 (-2.94,2.94) <0.00,2.00>\nTotal: 44688 W: 11421 L: 11140 D: 22127\nPtnml(0-2): 1, 4170, 13722, 4449, 2\n\nPassed VVLTC 2nd sprt: https://tests.stockfishchess.org/tests/view/65fa31a30ec64f0526c4f611\nLLR: 2.94 (-2.94,2.94) <0.50,2.50>\nTotal: 27450 W: 7057 L: 6778 D: 13615\nPtnml(0-2): 4, 2545, 8346, 2828, 2\n\nSTC Elo estimate: https://tests.stockfishchess.org/tests/view/65fd3e540ec64f0526c521ae\nElo: -7.84 ± 1.8 (95%) LOS: 0.0%\nTotal: 40000 W: 9899 L: 10802 D: 19299\nPtnml(0-2): 203, 5221, 10025, 4378, 173\nnElo: -14.91 ± 3.4 (95%) PairsRatio: 0.84\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5130\n\nBench: 1876107",
+      "tree": {
+        "sha": "32b8aa315a98c51c20f3af1964412309b0708b3b",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/32b8aa315a98c51c20f3af1964412309b0708b3b"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/d99f89506bd0ed535fb1c55dbb7cc8f7c29444d4",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/d99f89506bd0ed535fb1c55dbb7cc8f7c29444d4",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/d99f89506bd0ed535fb1c55dbb7cc8f7c29444d4",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/d99f89506bd0ed535fb1c55dbb7cc8f7c29444d4/comments",
+    "author": {
+      "login": "XInTheDark",
+      "id": 61100393,
+      "node_id": "MDQ6VXNlcjYxMTAwMzkz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/61100393?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/XInTheDark",
+      "html_url": "https://github.com/XInTheDark",
+      "followers_url": "https://api.github.com/users/XInTheDark/followers",
+      "following_url": "https://api.github.com/users/XInTheDark/following{/other_user}",
+      "gists_url": "https://api.github.com/users/XInTheDark/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/XInTheDark/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/XInTheDark/subscriptions",
+      "organizations_url": "https://api.github.com/users/XInTheDark/orgs",
+      "repos_url": "https://api.github.com/users/XInTheDark/repos",
+      "events_url": "https://api.github.com/users/XInTheDark/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/XInTheDark/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vondele",
+      "id": 4202567,
+      "node_id": "MDQ6VXNlcjQyMDI1Njc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4202567?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vondele",
+      "html_url": "https://github.com/vondele",
+      "followers_url": "https://api.github.com/users/vondele/followers",
+      "following_url": "https://api.github.com/users/vondele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vondele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vondele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vondele/subscriptions",
+      "organizations_url": "https://api.github.com/users/vondele/orgs",
+      "repos_url": "https://api.github.com/users/vondele/repos",
+      "events_url": "https://api.github.com/users/vondele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vondele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7e427639ce2868cb31f36c9b1de3071f61a63618",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/7e427639ce2868cb31f36c9b1de3071f61a63618",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/7e427639ce2868cb31f36c9b1de3071f61a63618"
+      }
+    ]
+  },
+  {
+    "sha": "7e427639ce2868cb31f36c9b1de3071f61a63618",
+    "node_id": "C_kwDOAUASCtoAKDdlNDI3NjM5Y2UyODY4Y2IzMWYzNmM5YjFkZTMwNzFmNjFhNjM2MTg",
+    "commit": {
+      "author": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-20T15:36:10Z"
+      },
+      "committer": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-20T15:36:18Z"
+      },
+      "message": "Add cmath header to movepick.h\n\nNo functional change",
+      "tree": {
+        "sha": "8583f81e3a85e5409300b56caa3d8b4de22ce130",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/8583f81e3a85e5409300b56caa3d8b4de22ce130"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/7e427639ce2868cb31f36c9b1de3071f61a63618",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/7e427639ce2868cb31f36c9b1de3071f61a63618",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/7e427639ce2868cb31f36c9b1de3071f61a63618",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/7e427639ce2868cb31f36c9b1de3071f61a63618/comments",
+    "author": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8e61d70499a9cebf3b7d97cf74295be5261ac0af",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/8e61d70499a9cebf3b7d97cf74295be5261ac0af",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/8e61d70499a9cebf3b7d97cf74295be5261ac0af"
+      }
+    ]
+  },
+  {
+    "sha": "8e61d70499a9cebf3b7d97cf74295be5261ac0af",
+    "node_id": "C_kwDOAUASCtoAKDhlNjFkNzA0OTlhOWNlYmYzYjdkOTdjZjc0Mjk1YmU1MjYxYWMwYWY",
+    "commit": {
+      "author": {
+        "name": "Gahtan Nahdi",
+        "email": "155860115+gahtan-syarif@users.noreply.github.com",
+        "date": "2024-03-18T19:45:09Z"
+      },
+      "committer": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-20T15:29:35Z"
+      },
+      "message": "Remove reduction increase on repetition\n\nPassed non-reg STC:\nhttps://tests.stockfishchess.org/tests/view/65f89ae30ec64f0526c4e0ff\nLLR: 2.93 (-2.94,2.94) <-1.75,0.25>\nTotal: 173568 W: 45005 L: 44936 D: 83627\nPtnml(0-2): 684, 19878, 45628, 19873, 721\n\nPassed non-reg LTC:\nhttps://tests.stockfishchess.org/tests/view/65fa0f370ec64f0526c4f42d\nLLR: 2.95 (-2.94,2.94) <-1.75,0.25>\nTotal: 21138 W: 5432 L: 5216 D: 10490\nPtnml(0-2): 13, 2107, 6112, 2325, 12\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5123\n\nBench: 2109005",
+      "tree": {
+        "sha": "d512f2ca5f0d61ede7a99e0898594cccccb86640",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/d512f2ca5f0d61ede7a99e0898594cccccb86640"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/8e61d70499a9cebf3b7d97cf74295be5261ac0af",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/8e61d70499a9cebf3b7d97cf74295be5261ac0af",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/8e61d70499a9cebf3b7d97cf74295be5261ac0af",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/8e61d70499a9cebf3b7d97cf74295be5261ac0af/comments",
+    "author": {
+      "login": "gahtan-syarif",
+      "id": 155860115,
+      "node_id": "U_kgDOCUo8kw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/155860115?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahtan-syarif",
+      "html_url": "https://github.com/gahtan-syarif",
+      "followers_url": "https://api.github.com/users/gahtan-syarif/followers",
+      "following_url": "https://api.github.com/users/gahtan-syarif/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahtan-syarif/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahtan-syarif/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahtan-syarif/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahtan-syarif/orgs",
+      "repos_url": "https://api.github.com/users/gahtan-syarif/repos",
+      "events_url": "https://api.github.com/users/gahtan-syarif/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahtan-syarif/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1a6c22c5114c6ae9f916a69e0446b6c9eb864d72",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/1a6c22c5114c6ae9f916a69e0446b6c9eb864d72",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/1a6c22c5114c6ae9f916a69e0446b6c9eb864d72"
+      }
+    ]
+  },
+  {
+    "sha": "1a6c22c5114c6ae9f916a69e0446b6c9eb864d72",
+    "node_id": "C_kwDOAUASCtoAKDFhNmMyMmM1MTE0YzZhZTlmOTE2YTY5ZTA0NDZiNmM5ZWI4NjRkNzI",
+    "commit": {
+      "author": {
+        "name": "Gahtan Nahdi",
+        "email": "155860115+gahtan-syarif@users.noreply.github.com",
+        "date": "2024-03-15T09:50:27Z"
+      },
+      "committer": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-20T15:29:35Z"
+      },
+      "message": "Evaluation adjustment for different eval types\n\nGives different eval scaling parameters for the three different types\nof evaluation (bignet, smallnet, psqtOnly).\n\nPassed STC:\nhttps://tests.stockfishchess.org/tests/view/65f4b0020ec64f0526c4a3bd\nLLR: 2.96 (-2.94,2.94) <0.00,2.00>\nTotal: 168064 W: 43507 L: 42987 D: 81570\nPtnml(0-2): 662, 19871, 42445, 20393, 661\n\nPassed LTC:\nhttps://tests.stockfishchess.org/tests/view/65f6be1a0ec64f0526c4c361\nLLR: 2.94 (-2.94,2.94) <0.50,2.50>\nTotal: 162564 W: 41188 L: 40604 D: 80772\nPtnml(0-2): 120, 18112, 44216, 18732, 102\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5122\n\nBench: 2113576",
+      "tree": {
+        "sha": "da22db8f4e050948da52da6d63d3ce96cf8e034b",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/da22db8f4e050948da52da6d63d3ce96cf8e034b"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/1a6c22c5114c6ae9f916a69e0446b6c9eb864d72",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/1a6c22c5114c6ae9f916a69e0446b6c9eb864d72",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/1a6c22c5114c6ae9f916a69e0446b6c9eb864d72",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/1a6c22c5114c6ae9f916a69e0446b6c9eb864d72/comments",
+    "author": {
+      "login": "gahtan-syarif",
+      "id": 155860115,
+      "node_id": "U_kgDOCUo8kw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/155860115?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahtan-syarif",
+      "html_url": "https://github.com/gahtan-syarif",
+      "followers_url": "https://api.github.com/users/gahtan-syarif/followers",
+      "following_url": "https://api.github.com/users/gahtan-syarif/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahtan-syarif/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahtan-syarif/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahtan-syarif/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahtan-syarif/orgs",
+      "repos_url": "https://api.github.com/users/gahtan-syarif/repos",
+      "events_url": "https://api.github.com/users/gahtan-syarif/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahtan-syarif/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9b92ada935ddf920491156be22f609afaca4d840",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/9b92ada935ddf920491156be22f609afaca4d840",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/9b92ada935ddf920491156be22f609afaca4d840"
+      }
+    ]
+  },
+  {
+    "sha": "9b92ada935ddf920491156be22f609afaca4d840",
+    "node_id": "C_kwDOAUASCtoAKDliOTJhZGE5MzVkZGY5MjA0OTExNTZiZTIyZjYwOWFmYWNhNGQ4NDA",
+    "commit": {
+      "author": {
+        "name": "Robert Nurnberg",
+        "email": "robert.nurnberg@gmx.de",
+        "date": "2024-03-17T14:39:01Z"
+      },
+      "committer": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-20T15:29:35Z"
+      },
+      "message": "Base WDL model on material count and normalize evals dynamically\n\nThis PR proposes to change the parameter dependence of Stockfish's\ninternal WDL model from full move counter to material count. In addition\nit ensures that an evaluation of 100 centipawns always corresponds to a\n50% win probability at fishtest LTC, whereas for master this holds only\nat move number 32. See also\nhttps://github.com/official-stockfish/Stockfish/pull/4920 and the\ndiscussion therein.\n\nThe new model was fitted based on about 340M positions extracted from\n5.6M fishtest LTC games from the last three weeks, involving SF versions\nfrom e67cc979fd2c0e66dfc2b2f2daa0117458cfc462 (SF 16.1) to current\nmaster.\n\nThe involved commands are for\n[WDL_model](https://github.com/official-stockfish/WDL_model) are:\n```\n./updateWDL.sh --firstrev e67cc979fd2c0e66dfc2b2f2daa0117458cfc462\npython scoreWDL.py updateWDL.json --plot save --pgnName update_material.png --momType \"material\" --momTarget 58 --materialMin 10 --modelFitting optimizeProbability\n```\n\nThe anchor `58` for the material count value was chosen to be as close\nas possible to the observed average material count of fishtest LTC games\nat move 32 (`43`), while not changing the value of\n`NormalizeToPawnValue` compared to the move-based WDL model by more than\n1.\n\nThe patch only affects the displayed cp and wdl values.\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5121\n\nNo functional change",
+      "tree": {
+        "sha": "65107bede2c671ce895f5eabc3adc98704a0e3cf",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/65107bede2c671ce895f5eabc3adc98704a0e3cf"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/9b92ada935ddf920491156be22f609afaca4d840",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/9b92ada935ddf920491156be22f609afaca4d840",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/9b92ada935ddf920491156be22f609afaca4d840",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/9b92ada935ddf920491156be22f609afaca4d840/comments",
+    "author": {
+      "login": "robertnurnberg",
+      "id": 28635489,
+      "node_id": "MDQ6VXNlcjI4NjM1NDg5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/28635489?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/robertnurnberg",
+      "html_url": "https://github.com/robertnurnberg",
+      "followers_url": "https://api.github.com/users/robertnurnberg/followers",
+      "following_url": "https://api.github.com/users/robertnurnberg/following{/other_user}",
+      "gists_url": "https://api.github.com/users/robertnurnberg/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/robertnurnberg/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/robertnurnberg/subscriptions",
+      "organizations_url": "https://api.github.com/users/robertnurnberg/orgs",
+      "repos_url": "https://api.github.com/users/robertnurnberg/repos",
+      "events_url": "https://api.github.com/users/robertnurnberg/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/robertnurnberg/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "117e08c26454f2107a13d35945e3508ca6c0de5d",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/117e08c26454f2107a13d35945e3508ca6c0de5d",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/117e08c26454f2107a13d35945e3508ca6c0de5d"
+      }
+    ]
+  },
+  {
+    "sha": "117e08c26454f2107a13d35945e3508ca6c0de5d",
+    "node_id": "C_kwDOAUASCtoAKDExN2UwOGMyNjQ1NGYyMTA3YTEzZDM1OTQ1ZTM1MDhjYTZjMGRlNWQ",
+    "commit": {
+      "author": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-17T11:34:02Z"
+      },
+      "committer": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-20T15:29:35Z"
+      },
+      "message": "Fix header name in Makefile\n\nNo functional change",
+      "tree": {
+        "sha": "773bd7b6082b9c739fa93b06cbb342a595f4f315",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/773bd7b6082b9c739fa93b06cbb342a595f4f315"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/117e08c26454f2107a13d35945e3508ca6c0de5d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/117e08c26454f2107a13d35945e3508ca6c0de5d",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/117e08c26454f2107a13d35945e3508ca6c0de5d",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/117e08c26454f2107a13d35945e3508ca6c0de5d/comments",
+    "author": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "134e6d7bb400a372d168806e0f6f60d5e23a4cbf",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/134e6d7bb400a372d168806e0f6f60d5e23a4cbf",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/134e6d7bb400a372d168806e0f6f60d5e23a4cbf"
+      }
+    ]
+  },
+  {
+    "sha": "134e6d7bb400a372d168806e0f6f60d5e23a4cbf",
+    "node_id": "C_kwDOAUASCtoAKDEzNGU2ZDdiYjQwMGEzNzJkMTY4ODA2ZTBmNmY2MGQ1ZTIzYTRjYmY",
+    "commit": {
+      "author": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-17T09:33:03Z"
+      },
+      "committer": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-20T15:15:37Z"
+      },
+      "message": "Consistent use of anonymous namespace\n\nAlso change `bindThisThread` to match the current code style for function naming.\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5118\n\nNo functional change",
+      "tree": {
+        "sha": "b9e1db7a73f6bf9be558adc4037800239eb459af",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/b9e1db7a73f6bf9be558adc4037800239eb459af"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/134e6d7bb400a372d168806e0f6f60d5e23a4cbf",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/134e6d7bb400a372d168806e0f6f60d5e23a4cbf",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/134e6d7bb400a372d168806e0f6f60d5e23a4cbf",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/134e6d7bb400a372d168806e0f6f60d5e23a4cbf/comments",
+    "author": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ed604600042a4f2c0023ac9a189215e50fc7aa0f",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/ed604600042a4f2c0023ac9a189215e50fc7aa0f",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/ed604600042a4f2c0023ac9a189215e50fc7aa0f"
+      }
+    ]
+  },
+  {
+    "sha": "ed604600042a4f2c0023ac9a189215e50fc7aa0f",
+    "node_id": "C_kwDOAUASCtoAKGVkNjA0NjAwMDQyYTRmMmMwMDIzYWM5YTE4OTIxNWU1MGZjN2FhMGY",
+    "commit": {
+      "author": {
+        "name": "Michael Chaly",
+        "email": "Vizvezdenec@gmail.com",
+        "date": "2024-03-15T15:55:40Z"
+      },
+      "committer": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-20T15:14:00Z"
+      },
+      "message": "Clamp history bonus to stats range\n\nBefore, one always had to keep track of the bonus one assigns to a history to stop\nthe stats from overflowing. This is a quality of life improvement. Since this would often go unnoticed during benching.\n\nPassed non-regression bounds:\nhttps://tests.stockfishchess.org/tests/view/65ef2af40ec64f0526c44cbc\nLLR: 2.94 (-2.94,2.94) <-1.75,0.25>\nTotal: 179232 W: 46513 L: 46450 D: 86269\nPtnml(0-2): 716, 20323, 47452, 20432, 693\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5116\n\nNo functional change",
+      "tree": {
+        "sha": "f52086f965fa271738eefffae80b53f757c19dc4",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/f52086f965fa271738eefffae80b53f757c19dc4"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/ed604600042a4f2c0023ac9a189215e50fc7aa0f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/ed604600042a4f2c0023ac9a189215e50fc7aa0f",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/ed604600042a4f2c0023ac9a189215e50fc7aa0f",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/ed604600042a4f2c0023ac9a189215e50fc7aa0f/comments",
+    "author": {
+      "login": "Vizvezdenec",
+      "id": 26898827,
+      "node_id": "MDQ6VXNlcjI2ODk4ODI3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/26898827?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Vizvezdenec",
+      "html_url": "https://github.com/Vizvezdenec",
+      "followers_url": "https://api.github.com/users/Vizvezdenec/followers",
+      "following_url": "https://api.github.com/users/Vizvezdenec/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Vizvezdenec/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Vizvezdenec/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Vizvezdenec/subscriptions",
+      "organizations_url": "https://api.github.com/users/Vizvezdenec/orgs",
+      "repos_url": "https://api.github.com/users/Vizvezdenec/repos",
+      "events_url": "https://api.github.com/users/Vizvezdenec/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Vizvezdenec/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "fb07281f5590bc216ecbacd468aa0d06fdead70c",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/fb07281f5590bc216ecbacd468aa0d06fdead70c",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/fb07281f5590bc216ecbacd468aa0d06fdead70c"
+      }
+    ]
+  },
+  {
+    "sha": "fb07281f5590bc216ecbacd468aa0d06fdead70c",
+    "node_id": "C_kwDOAUASCtoAKGZiMDcyODFmNTU5MGJjMjE2ZWNiYWNkNDY4YWEwZDA2ZmRlYWQ3MGM",
+    "commit": {
+      "author": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-14T09:38:20Z"
+      },
+      "committer": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-14T21:14:11Z"
+      },
+      "message": "Fix false positives from ThreadSanitizer\n\nSince Linux Kernel 6.5 we are getting false positives from the ci,\nlower the ALSR entropy to disable ALSR, which works as a temporary\nworkaround.\n\nhttps://github.com/google/sanitizers/issues/1716\nhttps://bugs.launchpad.net/ubuntu/+source/linux/+bug/2056762\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5115\n\nNo functional change",
+      "tree": {
+        "sha": "becfe1dfda469fc8bb90b34b74e40f760ac5d1c8",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/becfe1dfda469fc8bb90b34b74e40f760ac5d1c8"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/fb07281f5590bc216ecbacd468aa0d06fdead70c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/fb07281f5590bc216ecbacd468aa0d06fdead70c",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/fb07281f5590bc216ecbacd468aa0d06fdead70c",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/fb07281f5590bc216ecbacd468aa0d06fdead70c/comments",
+    "author": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "abd82396a1ceef4d49c8be30c366964bf18a74e2",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/abd82396a1ceef4d49c8be30c366964bf18a74e2",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/abd82396a1ceef4d49c8be30c366964bf18a74e2"
+      }
+    ]
+  },
+  {
+    "sha": "abd82396a1ceef4d49c8be30c366964bf18a74e2",
+    "node_id": "C_kwDOAUASCtoAKGFiZDgyMzk2YTFjZWVmNGQ0OWM4YmUzMGMzNjY5NjRiZjE4YTc0ZTI",
+    "commit": {
+      "author": {
+        "name": "cj5716",
+        "email": "125858804+cj5716@users.noreply.github.com",
+        "date": "2024-03-13T07:55:56Z"
+      },
+      "committer": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-14T21:13:14Z"
+      },
+      "message": "Make effort part of RootMove struct\n\nAlso includes several small cleanups.\n\nPassed STC:\nhttps://tests.stockfishchess.org/tests/view/65f15cfe0ec64f0526c473a0\nLLR: 2.94 (-2.94,2.94) <-1.75,0.25>\nTotal: 71136 W: 18456 L: 18273 D: 34407\nPtnml(0-2): 311, 8014, 18708, 8251, 284\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5114\n\nNo functional change",
+      "tree": {
+        "sha": "445f40456e169da835951cf9c6e5f21dd22b3cd6",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/445f40456e169da835951cf9c6e5f21dd22b3cd6"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/abd82396a1ceef4d49c8be30c366964bf18a74e2",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/abd82396a1ceef4d49c8be30c366964bf18a74e2",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/abd82396a1ceef4d49c8be30c366964bf18a74e2",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/abd82396a1ceef4d49c8be30c366964bf18a74e2/comments",
+    "author": {
+      "login": "cj5716",
+      "id": 125858804,
+      "node_id": "U_kgDOB4Bz9A",
+      "avatar_url": "https://avatars.githubusercontent.com/u/125858804?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cj5716",
+      "html_url": "https://github.com/cj5716",
+      "followers_url": "https://api.github.com/users/cj5716/followers",
+      "following_url": "https://api.github.com/users/cj5716/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cj5716/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cj5716/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cj5716/subscriptions",
+      "organizations_url": "https://api.github.com/users/cj5716/orgs",
+      "repos_url": "https://api.github.com/users/cj5716/repos",
+      "events_url": "https://api.github.com/users/cj5716/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cj5716/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "23493de08272226394fb69c4f31182b48b0e739e",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/23493de08272226394fb69c4f31182b48b0e739e",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/23493de08272226394fb69c4f31182b48b0e739e"
+      }
+    ]
+  },
+  {
+    "sha": "23493de08272226394fb69c4f31182b48b0e739e",
+    "node_id": "C_kwDOAUASCtoAKDIzNDkzZGUwODI3MjIyNjM5NGZiNjljNGYzMTE4MmI0OGIwZTczOWU",
+    "commit": {
+      "author": {
+        "name": "Lemmy",
+        "email": "10430540+TierynnB@users.noreply.github.com",
+        "date": "2024-03-10T21:57:22Z"
+      },
+      "committer": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-14T21:12:53Z"
+      },
+      "message": "Sudden Death - Improve TM\n\nDue to the 50 estimated move horizon, once a sudden death game got below\n1 second, the time allocation for optimumTime would go into the negative\nand SF would start instamoving.\n\nTo counter this, once limits.time is below 1 second, the move horizon\nwill start decreasing, at a rate of 1 move per 20ms. This was just what\nseemed a reasonable rate of decay.\n\nFishtest sudden death TC 5+0\nhttps://tests.stockfishchess.org/tests/live_elo/65ee2cdf0ec64f0526c43bbb\nLLR: 2.99 (-2.94,2.94) <0.00,2.00>\nTotal: 3348 W: 1070 L: 727 D:1551\nPtnml(0-2): 46, 277, 738, 514, 99\n\nFishtest SD TC 10+0\nhttps://tests.stockfishchess.org/tests/live_elo/65ee401e0ec64f0526c43cf7\nLLR: 2.95 (-2.94,2.94) <0.00,2.00>\nTotal: 3780 W: 1097 L: 808 D: 1875\nPtnml(0-2): 11, 353, 919, 550, 57\n\nNeutral Non-Regression STC 10+0.1\nhttps://tests.stockfishchess.org/tests/live_elo/65ee45ff0ec64f0526c43d68\nLLR: 2.95 (-2.94,2.94) <-1.75, 0.25>\nTotal: 123616 W: 32054 L: 31927 D:59635\nPtnml(0-2): 493, 14323, 32105, 14338, 549\n\nNeutral Non-Regression LTC 60+0.6\nhttps://tests.stockfishchess.org/tests/live_elo/65ef1eec0ec64f0526c44bc4\nLLR: 2.95 (-2.94,2.94) <-1.75, 0.25>\nTotal: 130482 W: 32961 L: 32855 D:64666\nPtnml(0-2): 88, 13412, 38123, 13542, 76\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5112\n\nBench: 2002517",
+      "tree": {
+        "sha": "e034e8595acca6459787decb1cb14e0d7689f36f",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/e034e8595acca6459787decb1cb14e0d7689f36f"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/23493de08272226394fb69c4f31182b48b0e739e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/23493de08272226394fb69c4f31182b48b0e739e",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/23493de08272226394fb69c4f31182b48b0e739e",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/23493de08272226394fb69c4f31182b48b0e739e/comments",
+    "author": {
+      "login": "TierynnB",
+      "id": 10430540,
+      "node_id": "MDQ6VXNlcjEwNDMwNTQw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10430540?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/TierynnB",
+      "html_url": "https://github.com/TierynnB",
+      "followers_url": "https://api.github.com/users/TierynnB/followers",
+      "following_url": "https://api.github.com/users/TierynnB/following{/other_user}",
+      "gists_url": "https://api.github.com/users/TierynnB/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/TierynnB/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/TierynnB/subscriptions",
+      "organizations_url": "https://api.github.com/users/TierynnB/orgs",
+      "repos_url": "https://api.github.com/users/TierynnB/repos",
+      "events_url": "https://api.github.com/users/TierynnB/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/TierynnB/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ee2ee6bdc42af80430e7468da4208e379b40c393",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/ee2ee6bdc42af80430e7468da4208e379b40c393",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/ee2ee6bdc42af80430e7468da4208e379b40c393"
+      }
+    ]
+  },
+  {
+    "sha": "ee2ee6bdc42af80430e7468da4208e379b40c393",
+    "node_id": "C_kwDOAUASCtoAKGVlMmVlNmJkYzQyYWY4MDQzMGU3NDY4ZGE0MjA4ZTM3OWI0MGMzOTM",
+    "commit": {
+      "author": {
+        "name": "Michael Chaly",
+        "email": "Vizvezdenec@gmail.com",
+        "date": "2024-03-13T16:21:13Z"
+      },
+      "committer": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-14T21:08:48Z"
+      },
+      "message": "Give more bonuses to quiet move that caused a fail low\n\nGive extra bonus if search result is far below static evaluation of\nposition.\n\nPassed STC:\nhttps://tests.stockfishchess.org/tests/view/65edf1250ec64f0526c43787\nLLR: 2.95 (-2.94,2.94) <0.00,2.00>\nTotal: 90816 W: 23713 L: 23307 D: 43796\nPtnml(0-2): 401, 10725, 22742, 11147, 393\n\nPassed LTC:\nhttps://tests.stockfishchess.org/tests/view/65ef5ed70ec64f0526c450af\nLLR: 2.94 (-2.94,2.94) <0.50,2.50>\nTotal: 66618 W: 16950 L: 16565 D: 33103\nPtnml(0-2): 35, 7372, 18139, 7699, 64\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5111\n\nBench: 2002517",
+      "tree": {
+        "sha": "f1f30f038bce0f372663d70c8c493f99c0973beb",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/f1f30f038bce0f372663d70c8c493f99c0973beb"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/ee2ee6bdc42af80430e7468da4208e379b40c393",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/ee2ee6bdc42af80430e7468da4208e379b40c393",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/ee2ee6bdc42af80430e7468da4208e379b40c393",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/ee2ee6bdc42af80430e7468da4208e379b40c393/comments",
+    "author": {
+      "login": "Vizvezdenec",
+      "id": 26898827,
+      "node_id": "MDQ6VXNlcjI2ODk4ODI3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/26898827?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Vizvezdenec",
+      "html_url": "https://github.com/Vizvezdenec",
+      "followers_url": "https://api.github.com/users/Vizvezdenec/followers",
+      "following_url": "https://api.github.com/users/Vizvezdenec/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Vizvezdenec/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Vizvezdenec/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Vizvezdenec/subscriptions",
+      "organizations_url": "https://api.github.com/users/Vizvezdenec/orgs",
+      "repos_url": "https://api.github.com/users/Vizvezdenec/repos",
+      "events_url": "https://api.github.com/users/Vizvezdenec/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Vizvezdenec/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "55df0ee00914f6bb5e9ecce4ace47f00b758098c",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/55df0ee00914f6bb5e9ecce4ace47f00b758098c",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/55df0ee00914f6bb5e9ecce4ace47f00b758098c"
+      }
+    ]
+  },
+  {
+    "sha": "55df0ee00914f6bb5e9ecce4ace47f00b758098c",
+    "node_id": "C_kwDOAUASCtoAKDU1ZGYwZWUwMDkxNGY2YmI1ZTllY2NlNGFjZTQ3ZjAwYjc1ODA5OGM",
+    "commit": {
+      "author": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-12T17:20:19Z"
+      },
+      "committer": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-12T18:09:50Z"
+      },
+      "message": "Fix Raspberry Pi Compilation\n\nReported by @Torom over discord.\n\n> dev build fails on Raspberry Pi 5 with clang\n\n```\nclang++ -o stockfish benchmark.o bitboard.o evaluate.o main.o misc.o movegen.o movepick.o position.o search.o thread.o timeman.o tt.o uci.o ucioption.o tune.o tbprobe.o nnue_misc.o half_ka_v2_hm.o network.o  -fprofile-instr-generate -latomic -lpthread  -Wall -Wcast-qual -fno-exceptions -std=c++17 -fprofile-instr-generate  -pedantic -Wextra -Wshadow -Wmissing-prototypes -Wconditional-uninitialized -DUSE_PTHREADS -DNDEBUG -O3 -funroll-loops -DIS_64BIT -DUSE_POPCNT -DUSE_NEON=8 -march=armv8.2-a+dotprod -DUSE_NEON_DOTPROD -DGIT_SHA=627974c9 -DGIT_DATE=20240312 -DARCH=armv8-dotprod -flto=full\n/tmp/lto-llvm-e9300e.o: in function `_GLOBAL__sub_I_network.cpp':\nld-temp.o:(.text.startup+0x704c): relocation truncated to fit: R_AARCH64_LDST64_ABS_LO12_NC against symbol `gEmbeddedNNUEBigEnd' defined in .rodata section in /tmp/lto-llvm-e9300e.o\n/usr/bin/ld: ld-temp.o:(.text.startup+0x704c): warning: one possible cause of this error is that the symbol is being referenced in the indicated code as if it had a larger alignment than was declared where it was defined\nld-temp.o:(.text.startup+0x7068): relocation truncated to fit: R_AARCH64_LDST64_ABS_LO12_NC against symbol `gEmbeddedNNUESmallEnd' defined in .rodata section in /tmp/lto-llvm-e9300e.o\n/usr/bin/ld: ld-temp.o:(.text.startup+0x7068): warning: one possible cause of this error is that the symbol is being referenced in the indicated code as if it had a larger alignment than was declared where it was defined\nclang: error: linker command failed with exit code 1 (use -v to see invocation)\nmake[2]: *** [Makefile:1051: stockfish] Error 1\nmake[2]: Leaving directory '/home/torsten/chess/Stockfish_master/src'\nmake[1]: *** [Makefile:1058: clang-profile-make] Error 2\nmake[1]: Leaving directory '/home/torsten/chess/Stockfish_master/src'\nmake: *** [Makefile:886: profile-build] Error 2\n```\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5106\n\nNo functional change",
+      "tree": {
+        "sha": "712e69f91e4afefe0d3c27a3a3b980319770cdf8",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/712e69f91e4afefe0d3c27a3a3b980319770cdf8"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/55df0ee00914f6bb5e9ecce4ace47f00b758098c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/55df0ee00914f6bb5e9ecce4ace47f00b758098c",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/55df0ee00914f6bb5e9ecce4ace47f00b758098c",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/55df0ee00914f6bb5e9ecce4ace47f00b758098c/comments",
+    "author": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "627974c99fcd5a3dcbd5a8e0eb12f2afeb2d0a9a",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/627974c99fcd5a3dcbd5a8e0eb12f2afeb2d0a9a",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/627974c99fcd5a3dcbd5a8e0eb12f2afeb2d0a9a"
+      }
+    ]
+  },
+  {
+    "sha": "627974c99fcd5a3dcbd5a8e0eb12f2afeb2d0a9a",
+    "node_id": "C_kwDOAUASCtoAKDYyNzk3NGM5OWZjZDVhM2RjYmQ1YThlMGViMTJmMmFmZWIyZDBhOWE",
+    "commit": {
+      "author": {
+        "name": "FauziAkram",
+        "email": "fauzi.dabat@hotmail.com",
+        "date": "2024-03-12T14:10:28Z"
+      },
+      "committer": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-12T15:47:11Z"
+      },
+      "message": "Search + Eval + Movepick Tune\n\nPassed STC:\nhttps://tests.stockfishchess.org/tests/view/65ef15220ec64f0526c44b04\nLLR: 2.94 (-2.94,2.94) <0.00,2.00>\nTotal: 24480 W: 6459 L: 6153 D: 11868\nPtnml(0-2): 101, 2798, 6184, 3008, 149\n\nPassed LTC:\nhttps://tests.stockfishchess.org/tests/view/65ef4bac0ec64f0526c44f50\nLLR: 2.94 (-2.94,2.94) <0.50,2.50>\nTotal: 53316 W: 13561 L: 13203 D: 26552\nPtnml(0-2): 27, 5925, 14408, 6259, 39\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5104\n\nBench: 1715522",
+      "tree": {
+        "sha": "d01bcaa6f086ce48feeec3920ca5f7ab564e9cea",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/d01bcaa6f086ce48feeec3920ca5f7ab564e9cea"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/627974c99fcd5a3dcbd5a8e0eb12f2afeb2d0a9a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/627974c99fcd5a3dcbd5a8e0eb12f2afeb2d0a9a",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/627974c99fcd5a3dcbd5a8e0eb12f2afeb2d0a9a",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/627974c99fcd5a3dcbd5a8e0eb12f2afeb2d0a9a/comments",
+    "author": {
+      "login": "FauziAkram",
+      "id": 11150271,
+      "node_id": "MDQ6VXNlcjExMTUwMjcx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11150271?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/FauziAkram",
+      "html_url": "https://github.com/FauziAkram",
+      "followers_url": "https://api.github.com/users/FauziAkram/followers",
+      "following_url": "https://api.github.com/users/FauziAkram/following{/other_user}",
+      "gists_url": "https://api.github.com/users/FauziAkram/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/FauziAkram/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/FauziAkram/subscriptions",
+      "organizations_url": "https://api.github.com/users/FauziAkram/orgs",
+      "repos_url": "https://api.github.com/users/FauziAkram/repos",
+      "events_url": "https://api.github.com/users/FauziAkram/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/FauziAkram/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "daa3ef9148e8a141d2562900924d578d6462ba72",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/daa3ef9148e8a141d2562900924d578d6462ba72",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/daa3ef9148e8a141d2562900924d578d6462ba72"
+      }
+    ]
+  },
+  {
+    "sha": "daa3ef9148e8a141d2562900924d578d6462ba72",
+    "node_id": "C_kwDOAUASCtoAKGRhYTNlZjkxNDhlOGExNDFkMjU2MjkwMDkyNGQ1NzhkNjQ2MmJhNzI",
+    "commit": {
+      "author": {
+        "name": "FauziAkram",
+        "email": "fauzi.dabat@hotmail.com",
+        "date": "2024-03-09T16:49:59Z"
+      },
+      "committer": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-12T15:43:10Z"
+      },
+      "message": "Simplify increaseDepth to boolean expression\n\nNon-functional Simplification, maintaining the same logic as before. Big thanks\nto @peregrineshahin for helping with the code.\n\nPassed non-regression bounds:\nhttps://tests.stockfishchess.org/tests/view/65ec93860ec64f0526c42375\nLLR: 2.93 (-2.94,2.94) <-1.75,0.25>\nTotal: 101088 W: 26196 L: 26047 D: 48845\nPtnml(0-2): 405, 11580, 26473, 11633, 453\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5103\n\nNo functional change",
+      "tree": {
+        "sha": "91b6cbd4b43c3d8241f262628790bfaf0aa793e4",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/91b6cbd4b43c3d8241f262628790bfaf0aa793e4"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/daa3ef9148e8a141d2562900924d578d6462ba72",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/daa3ef9148e8a141d2562900924d578d6462ba72",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/daa3ef9148e8a141d2562900924d578d6462ba72",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/daa3ef9148e8a141d2562900924d578d6462ba72/comments",
+    "author": {
+      "login": "FauziAkram",
+      "id": 11150271,
+      "node_id": "MDQ6VXNlcjExMTUwMjcx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11150271?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/FauziAkram",
+      "html_url": "https://github.com/FauziAkram",
+      "followers_url": "https://api.github.com/users/FauziAkram/followers",
+      "following_url": "https://api.github.com/users/FauziAkram/following{/other_user}",
+      "gists_url": "https://api.github.com/users/FauziAkram/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/FauziAkram/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/FauziAkram/subscriptions",
+      "organizations_url": "https://api.github.com/users/FauziAkram/orgs",
+      "repos_url": "https://api.github.com/users/FauziAkram/repos",
+      "events_url": "https://api.github.com/users/FauziAkram/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/FauziAkram/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1a26d698de33ed50f182b325b359da61bab67abe",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/1a26d698de33ed50f182b325b359da61bab67abe",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/1a26d698de33ed50f182b325b359da61bab67abe"
+      }
+    ]
+  },
+  {
+    "sha": "1a26d698de33ed50f182b325b359da61bab67abe",
+    "node_id": "C_kwDOAUASCtoAKDFhMjZkNjk4ZGUzM2VkNTBmMTgyYjMyNWIzNTlkYTYxYmFiNjdhYmU",
+    "commit": {
+      "author": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-09T13:42:37Z"
+      },
+      "committer": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-12T15:41:08Z"
+      },
+      "message": "Refactor Network Usage\n\nContinuing from PR #4968, this update improves how Stockfish handles network\nusage, making it easier to manage and modify networks in the future.\n\nWith the introduction of a dedicated Network class, creating networks has become\nstraightforward. See uci.cpp:\n```cpp\nNN::NetworkBig({EvalFileDefaultNameBig, \"None\", \"\"}, NN::embeddedNNUEBig)\n```\n\nThe new `Network` encapsulates all network-related logic, significantly reducing\nthe complexity previously required to support multiple network types, such as\nthe distinction between small and big networks #4915.\n\nNon-Regression STC:\nhttps://tests.stockfishchess.org/tests/view/65edd26c0ec64f0526c43584\nLLR: 2.94 (-2.94,2.94) <-1.75,0.25>\nTotal: 33760 W: 8887 L: 8661 D: 16212\nPtnml(0-2): 143, 3795, 8808, 3961, 173\n\nNon-Regression SMP STC:\nhttps://tests.stockfishchess.org/tests/view/65ed71970ec64f0526c42fdd\nLLR: 2.96 (-2.94,2.94) <-1.75,0.25>\nTotal: 59088 W: 15121 L: 14931 D: 29036\nPtnml(0-2): 110, 6640, 15829, 6880, 85\n\nCompiled with `make -j profile-build`\n```\nbash ./bench_parallel.sh ./stockfish ./stockfish-nnue 13 50\n\nsf_base =  1568540 +/-   7637 (95%)\nsf_test =  1573129 +/-   7301 (95%)\ndiff    =     4589 +/-   8720 (95%)\nspeedup = 0.29260% +/- 0.556% (95%)\n```\n\nCompiled with `make -j build`\n```\nbash ./bench_parallel.sh ./stockfish ./stockfish-nnue 13 50\n\nsf_base =  1472653 +/-   7293 (95%)\nsf_test =  1491928 +/-   7661 (95%)\ndiff    =    19275 +/-   7154 (95%)\nspeedup = 1.30886% +/- 0.486% (95%)\n```\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5100\n\nNo functional change",
+      "tree": {
+        "sha": "a5f6d7b3e412ee272b2aa847e7c5323f14cc89dd",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/a5f6d7b3e412ee272b2aa847e7c5323f14cc89dd"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/1a26d698de33ed50f182b325b359da61bab67abe",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/1a26d698de33ed50f182b325b359da61bab67abe",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/1a26d698de33ed50f182b325b359da61bab67abe",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/1a26d698de33ed50f182b325b359da61bab67abe/comments",
+    "author": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f072634e245774f957b715118ecb586264cf04f1",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/f072634e245774f957b715118ecb586264cf04f1",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/f072634e245774f957b715118ecb586264cf04f1"
+      }
+    ]
+  },
+  {
+    "sha": "f072634e245774f957b715118ecb586264cf04f1",
+    "node_id": "C_kwDOAUASCtoAKGYwNzI2MzRlMjQ1Nzc0Zjk1N2I3MTUxMThlY2I1ODYyNjRjZjA0ZjE",
+    "commit": {
+      "author": {
+        "name": "Gahtan Nahdi",
+        "email": "155860115+gahtan-syarif@users.noreply.github.com",
+        "date": "2024-03-10T23:25:07Z"
+      },
+      "committer": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-11T09:08:40Z"
+      },
+      "message": "Simplify opponentWorsening condition\n\nPassed non-reg STC:\nhttps://tests.stockfishchess.org/tests/view/65ea18650ec64f0526c4033a\nLLR: 2.95 (-2.94,2.94) <-1.75,0.25>\nTotal: 226624 W: 58601 L: 58589 D: 109434\nPtnml(0-2): 1030, 27193, 56819, 27275, 995\n\nPassed non-reg LTC:\nhttps://tests.stockfishchess.org/tests/view/65eb7a220ec64f0526c4161a\nLLR: 2.95 (-2.94,2.94) <-1.75,0.25>\nTotal: 243882 W: 61462 L: 61469 D: 120951\nPtnml(0-2): 197, 27559, 66419, 27586, 180\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5102\n\nBench: 1601012",
+      "tree": {
+        "sha": "509af0054a1fc0f5dd2e3bec96ef83adf555aa73",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/509af0054a1fc0f5dd2e3bec96ef83adf555aa73"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/f072634e245774f957b715118ecb586264cf04f1",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/f072634e245774f957b715118ecb586264cf04f1",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/f072634e245774f957b715118ecb586264cf04f1",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/f072634e245774f957b715118ecb586264cf04f1/comments",
+    "author": {
+      "login": "gahtan-syarif",
+      "id": 155860115,
+      "node_id": "U_kgDOCUo8kw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/155860115?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahtan-syarif",
+      "html_url": "https://github.com/gahtan-syarif",
+      "followers_url": "https://api.github.com/users/gahtan-syarif/followers",
+      "following_url": "https://api.github.com/users/gahtan-syarif/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahtan-syarif/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahtan-syarif/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahtan-syarif/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahtan-syarif/orgs",
+      "repos_url": "https://api.github.com/users/gahtan-syarif/repos",
+      "events_url": "https://api.github.com/users/gahtan-syarif/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahtan-syarif/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "10e27329783c9f92bad8b7bd7fe496382a7fc0cd",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/10e27329783c9f92bad8b7bd7fe496382a7fc0cd",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/10e27329783c9f92bad8b7bd7fe496382a7fc0cd"
+      }
+    ]
+  },
+  {
+    "sha": "10e27329783c9f92bad8b7bd7fe496382a7fc0cd",
+    "node_id": "C_kwDOAUASCtoAKDEwZTI3MzI5NzgzYzlmOTJiYWQ4YjdiZDdmZTQ5NjM4MmE3ZmMwY2Q",
+    "commit": {
+      "author": {
+        "name": "Muzhen Gaming",
+        "email": "61100393+XInTheDark@users.noreply.github.com",
+        "date": "2024-03-11T08:58:21Z"
+      },
+      "committer": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-11T09:04:37Z"
+      },
+      "message": "VVLTC search tune\n\nResult of 32k games of tuning at 60+0.6 8-thread. Link to the tuning\nattempt:\nhttps://tests.stockfishchess.org/tests/view/65def7b04b19edc854ebdec8\n\nPassed VVLTC first SPRT:\nhttps://tests.stockfishchess.org/tests/view/65e51b53416ecd92c162ab7f\nLLR: 2.94 (-2.94,2.94) <0.00,2.00>\nTotal: 37570 W: 9613 L: 9342 D: 18615\nPtnml(0-2): 2, 3454, 11601, 3727, 1\n\nPassed VVLTC second SPRT:\nhttps://tests.stockfishchess.org/tests/view/65e87d1c0ec64f0526c3eb39\nLLR: 2.94 (-2.94,2.94) <0.50,2.50>\nTotal: 123158 W: 31463 L: 31006 D: 60689\nPtnml(0-2): 5, 11589, 37935, 12044, 6\n\nNote: The small net and psqt-only thresholds have been moved to\nevaluate.h. The reasoning is that these values are used in both\n`evaluate.cpp` and `evaluate_nnue.cpp`, and thus unifying their usage\navoids inconsistencies during testing, where one occurrence is changed\nwithout the other (this happened during the search tune SPRT).\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5101\n\nBench: 1741218",
+      "tree": {
+        "sha": "b98d146348a1a4e8a1e99b2ba0a1d0dbd3d7cec2",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/b98d146348a1a4e8a1e99b2ba0a1d0dbd3d7cec2"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/10e27329783c9f92bad8b7bd7fe496382a7fc0cd",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/10e27329783c9f92bad8b7bd7fe496382a7fc0cd",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/10e27329783c9f92bad8b7bd7fe496382a7fc0cd",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/10e27329783c9f92bad8b7bd7fe496382a7fc0cd/comments",
+    "author": {
+      "login": "XInTheDark",
+      "id": 61100393,
+      "node_id": "MDQ6VXNlcjYxMTAwMzkz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/61100393?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/XInTheDark",
+      "html_url": "https://github.com/XInTheDark",
+      "followers_url": "https://api.github.com/users/XInTheDark/followers",
+      "following_url": "https://api.github.com/users/XInTheDark/following{/other_user}",
+      "gists_url": "https://api.github.com/users/XInTheDark/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/XInTheDark/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/XInTheDark/subscriptions",
+      "organizations_url": "https://api.github.com/users/XInTheDark/orgs",
+      "repos_url": "https://api.github.com/users/XInTheDark/repos",
+      "events_url": "https://api.github.com/users/XInTheDark/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/XInTheDark/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b6dfd6bd54979b5ba96716c2b246d84e5fa5b9fb",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/b6dfd6bd54979b5ba96716c2b246d84e5fa5b9fb",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/b6dfd6bd54979b5ba96716c2b246d84e5fa5b9fb"
+      }
+    ]
+  },
+  {
+    "sha": "b6dfd6bd54979b5ba96716c2b246d84e5fa5b9fb",
+    "node_id": "C_kwDOAUASCtoAKGI2ZGZkNmJkNTQ5NzliNWJhOTY3MTZjMmIyNDZkODRlNWZhNWI5ZmI",
+    "commit": {
+      "author": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-09T11:14:57Z"
+      },
+      "committer": {
+        "name": "Disservin",
+        "email": "disservin.social@gmail.com",
+        "date": "2024-03-11T08:02:13Z"
+      },
+      "message": "Assorted cleanups\n\n- fix naming convention for `workingDirectory`\n- use type alias for `EvalFiles` everywhere\n- move `ponderMode` into `LimitsType`\n- move limits parsing into standalone static function\n\ncloses https://github.com/official-stockfish/Stockfish/pull/5098\n\nNo functional change",
+      "tree": {
+        "sha": "63455ea98e0747bce1255e9fc222c2425bd6e315",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/trees/63455ea98e0747bce1255e9fc222c2425bd6e315"
+      },
+      "url": "https://api.github.com/repos/official-stockfish/Stockfish/git/commits/b6dfd6bd54979b5ba96716c2b246d84e5fa5b9fb",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/b6dfd6bd54979b5ba96716c2b246d84e5fa5b9fb",
+    "html_url": "https://github.com/official-stockfish/Stockfish/commit/b6dfd6bd54979b5ba96716c2b246d84e5fa5b9fb",
+    "comments_url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/b6dfd6bd54979b5ba96716c2b246d84e5fa5b9fb/comments",
+    "author": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Disservin",
+      "id": 45608332,
+      "node_id": "MDQ6VXNlcjQ1NjA4MzMy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45608332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Disservin",
+      "html_url": "https://github.com/Disservin",
+      "followers_url": "https://api.github.com/users/Disservin/followers",
+      "following_url": "https://api.github.com/users/Disservin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Disservin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Disservin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Disservin/subscriptions",
+      "organizations_url": "https://api.github.com/users/Disservin/orgs",
+      "repos_url": "https://api.github.com/users/Disservin/repos",
+      "events_url": "https://api.github.com/users/Disservin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Disservin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "632f1c21cd271e7c4c242fdafa328a55ec63b9cb",
+        "url": "https://api.github.com/repos/official-stockfish/Stockfish/commits/632f1c21cd271e7c4c242fdafa328a55ec63b9cb",
+        "html_url": "https://github.com/official-stockfish/Stockfish/commit/632f1c21cd271e7c4c242fdafa328a55ec63b9cb"
+      }
+    ]
+  }
+]

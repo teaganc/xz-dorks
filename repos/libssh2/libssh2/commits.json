@@ -1,0 +1,2372 @@
+[
+  {
+    "sha": "3a6ab70dcfeb87a3acbb5af7ea6fc783c3981e04",
+    "node_id": "C_kwDOAeO6x9oAKDNhNmFiNzBkY2ZlYjg3YTNhY2JiNWFmN2VhNmZjNzgzYzM5ODFlMDQ",
+    "commit": {
+      "author": {
+        "name": "Tejaswikandula",
+        "email": "teju256@gmail.com",
+        "date": "2024-04-03T15:55:48Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-03T15:55:48Z"
+      },
+      "message": "Support RSA SHA2 cert-based authentication (rsa-sha2-512_cert and rsa-sha2-256_cert) (#1314)\n\nReplicating OpenSSH's behavior to handle RSA certificate authentication\r\ndifferently based on the remote server version.\r\n\r\n1. For OpenSSH versions >= 7.8, ascertain server's support for RSA Cert\r\n   types by checking if the certificate's signature type is present in\r\n   the `server-sig-algs`.\r\n\r\n2. For OpenSSH versions < 7.8, Set the \"SSH_BUG_SIGTYPE\" flag when the\r\n   RSA key in question is a certificate to ignore `server-sig-algs` and\r\n   only offer ssh-rsa signature algorithm for RSA certs.\r\n\r\nThis arises from the fact that OpenSSH versions up to 7.7 accept\r\nRSA-SHA2 keys but not RSA-SHA2 certificate types. Although OpenSSH <=7.7\r\nincludes RSA-SHA2 keys in the `server-sig-algs`, versions <=7.7 do not\r\nactually support RSA certs. Therefore, server sending RSA-SHA2 keys in\r\n`server-sig-algs` should not be interpreted as indicating support for\r\nRSA-SHA2 certs. So, `server-sig-algs` are ignored when the RSA key in\r\nquestion is a cert, and the remote server version is 7.7 or below.\r\n\r\nRelevant sections of the OpenSSH source code:\r\n                                                                                          \r\n<https://github.com/openssh/openssh-portable/blob/V_8_9_P1/sshconnect2.c#L1191-L1197>     \r\n<https://github.com/openssh/openssh-portable/blob/master/compat.c#L43>                    \r\n                                                                                          \r\nAssisted-by: Will Cosgrove                                                                \r\nReviewed-by: Viktor Szakats",
+      "tree": {
+        "sha": "210376379b8f9c5bb3b8510fc4d6603d0f0c086c",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/210376379b8f9c5bb3b8510fc4d6603d0f0c086c"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/3a6ab70dcfeb87a3acbb5af7ea6fc783c3981e04",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDXwECRC1aQ7uu5UhlAAAlUAQAFpBgzYU3XD5RZ8V+f5jRrGg\nID/WvC4DZT0HMl/6J8AAzvoPWOhPYVTXmTxqjtapQ119va+so/1E+gFMNFbj+Fuj\nJVnfnFD8o0RruTJYUseQ8ab2cm7IFyrqcsEszv211/oD7K6P6lEdj60Fxsvi/+1Q\nhy2TV+mFZZ9bSjGP4LcEOzqs5VCQ0Jm0u/r0klHPoXC27MGlAKaQi4UazeLtNlme\naDv6ZYYf2MkCECDPMOyM1MawiEmHomSNjkSXTUUMRFo+kHonPJ0OoV7r3jAfgMTk\no51osClO4sCbAkQAeUEf3l0W8sR8beM/11fKYeK9p1o/Yx5DDml4aDWF/xKJlIz5\nsd6BfTUaGrfuksj/opw++RpNSrNiwwYw6N6wYzfwngRYsAbrMyOES5XTwUm7ZaoY\nvMlsKwN5j+7ENuAUTsr6is2J/lrhV2StxDRp6pH3dUUpdiKofAsfZtbVXIdBuy2z\nJDiUI2PBJcf7W1rBHr0jUf03UBRGCUZEmwyZUwGtntfLyRYDC7JKS8vlbllAz2rl\n1PRmlf61A3LqDr2FLC0raT0SregUIx4JRHg82rLqFpWEQqxK53+xvL4SYcL1P+H7\npFteqW+adfVzuz6nd/OJjwsf5se1BK0a+YQFnFVAAnJBlPE5Wdy1zZCuF+8djwAY\niVH6Xqlflr/Vq/z1O8+5\n=mWLW\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 210376379b8f9c5bb3b8510fc4d6603d0f0c086c\nparent 1a74775f3eb7f6ce07928a637c1fd256c02132b6\nauthor Tejaswikandula <teju256@gmail.com> 1712159748 -0700\ncommitter GitHub <noreply@github.com> 1712159748 +0200\n\nSupport RSA SHA2 cert-based authentication (rsa-sha2-512_cert and rsa-sha2-256_cert) (#1314)\n\nReplicating OpenSSH's behavior to handle RSA certificate authentication\r\ndifferently based on the remote server version.\r\n\r\n1. For OpenSSH versions >= 7.8, ascertain server's support for RSA Cert\r\n   types by checking if the certificate's signature type is present in\r\n   the `server-sig-algs`.\r\n\r\n2. For OpenSSH versions < 7.8, Set the \"SSH_BUG_SIGTYPE\" flag when the\r\n   RSA key in question is a certificate to ignore `server-sig-algs` and\r\n   only offer ssh-rsa signature algorithm for RSA certs.\r\n\r\nThis arises from the fact that OpenSSH versions up to 7.7 accept\r\nRSA-SHA2 keys but not RSA-SHA2 certificate types. Although OpenSSH <=7.7\r\nincludes RSA-SHA2 keys in the `server-sig-algs`, versions <=7.7 do not\r\nactually support RSA certs. Therefore, server sending RSA-SHA2 keys in\r\n`server-sig-algs` should not be interpreted as indicating support for\r\nRSA-SHA2 certs. So, `server-sig-algs` are ignored when the RSA key in\r\nquestion is a cert, and the remote server version is 7.7 or below.\r\n\r\nRelevant sections of the OpenSSH source code:\r\n                                                                                          \r\n<https://github.com/openssh/openssh-portable/blob/V_8_9_P1/sshconnect2.c#L1191-L1197>     \r\n<https://github.com/openssh/openssh-portable/blob/master/compat.c#L43>                    \r\n                                                                                          \r\nAssisted-by: Will Cosgrove                                                                \r\nReviewed-by: Viktor Szakats                                                               \r\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/3a6ab70dcfeb87a3acbb5af7ea6fc783c3981e04",
+    "html_url": "https://github.com/libssh2/libssh2/commit/3a6ab70dcfeb87a3acbb5af7ea6fc783c3981e04",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/3a6ab70dcfeb87a3acbb5af7ea6fc783c3981e04/comments",
+    "author": {
+      "login": "Tejaswikandula",
+      "id": 21270894,
+      "node_id": "MDQ6VXNlcjIxMjcwODk0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/21270894?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Tejaswikandula",
+      "html_url": "https://github.com/Tejaswikandula",
+      "followers_url": "https://api.github.com/users/Tejaswikandula/followers",
+      "following_url": "https://api.github.com/users/Tejaswikandula/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Tejaswikandula/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Tejaswikandula/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Tejaswikandula/subscriptions",
+      "organizations_url": "https://api.github.com/users/Tejaswikandula/orgs",
+      "repos_url": "https://api.github.com/users/Tejaswikandula/repos",
+      "events_url": "https://api.github.com/users/Tejaswikandula/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Tejaswikandula/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1a74775f3eb7f6ce07928a637c1fd256c02132b6",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/1a74775f3eb7f6ce07928a637c1fd256c02132b6",
+        "html_url": "https://github.com/libssh2/libssh2/commit/1a74775f3eb7f6ce07928a637c1fd256c02132b6"
+      }
+    ]
+  },
+  {
+    "sha": "1a74775f3eb7f6ce07928a637c1fd256c02132b6",
+    "node_id": "C_kwDOAeO6x9oAKDFhNzQ3NzVmM2ViN2Y2Y2UwNzkyOGE2MzdjMWZkMjU2YzAyMTMyYjY",
+    "commit": {
+      "author": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-04-03T13:36:04Z"
+      },
+      "committer": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-04-03T13:36:06Z"
+      },
+      "message": "RELEASE-NOTES: sync [ci skip]\n\nAlso fix to include 3-digit issue/PR references.",
+      "tree": {
+        "sha": "ed3b437db851a00fbd9734bfb4f42fab23eccfc9",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/ed3b437db851a00fbd9734bfb4f42fab23eccfc9"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/1a74775f3eb7f6ce07928a637c1fd256c02132b6",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niHUEABYKAB0WIQQ7T6bSwSEiOr7Hbz+1q9Fl4q7yAQUCZg1bXAAKCRC1q9Fl4q7y\nAR/3AP4slaMJEpBGTPQREKvIE/zmjtA8FmK/5ph79IUp6B2S6gD/S8KHFYkvsGP2\n91ZIfu+C42ewHm4ssoFBeUFZ77k9lQk=\n=L0Cq\n-----END PGP SIGNATURE-----",
+        "payload": "tree ed3b437db851a00fbd9734bfb4f42fab23eccfc9\nparent 2e4c5ec4627b3ecf4b6da16f365c011dec9a31b4\nauthor Viktor Szakats <commit@vsz.me> 1712151364 +0000\ncommitter Viktor Szakats <commit@vsz.me> 1712151366 +0000\n\nRELEASE-NOTES: sync [ci skip]\n\nAlso fix to include 3-digit issue/PR references.\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/1a74775f3eb7f6ce07928a637c1fd256c02132b6",
+    "html_url": "https://github.com/libssh2/libssh2/commit/1a74775f3eb7f6ce07928a637c1fd256c02132b6",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/1a74775f3eb7f6ce07928a637c1fd256c02132b6/comments",
+    "author": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2e4c5ec4627b3ecf4b6da16f365c011dec9a31b4",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/2e4c5ec4627b3ecf4b6da16f365c011dec9a31b4",
+        "html_url": "https://github.com/libssh2/libssh2/commit/2e4c5ec4627b3ecf4b6da16f365c011dec9a31b4"
+      }
+    ]
+  },
+  {
+    "sha": "2e4c5ec4627b3ecf4b6da16f365c011dec9a31b4",
+    "node_id": "C_kwDOAeO6x9oAKDJlNGM1ZWM0NjI3YjNlY2Y0YjZkYTE2ZjM2NWMwMTFkZWM5YTMxYjQ",
+    "commit": {
+      "author": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-04-03T12:18:02Z"
+      },
+      "committer": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-04-03T13:28:49Z"
+      },
+      "message": "mbedtls: add workaround + FIXME to build with 3.6.0\n\nThis is just a stub to make `_libssh2_mbedtls_ecdsa_new_private`\ncompile.\n\nmbedtls 3.6.0 silently deleted its public API `mbedtls_pk_load_file`,\nwhich this function relies on.\n\nCloses #1349",
+      "tree": {
+        "sha": "6c2cfd61c75c8c33eeed876e645fcfd4006eb4a3",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/6c2cfd61c75c8c33eeed876e645fcfd4006eb4a3"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/2e4c5ec4627b3ecf4b6da16f365c011dec9a31b4",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niHUEABYKAB0WIQQ7T6bSwSEiOr7Hbz+1q9Fl4q7yAQUCZg1ZkQAKCRC1q9Fl4q7y\nAYzcAQCakIB/hS7XoNzRpYBQgi3uo+xqjfnguX7Lv8MgU5tvmgEAtqEeH7SOy5vC\nSkizjR7IaQQSjUGAWNvvMjVFmqHG9g0=\n=KB54\n-----END PGP SIGNATURE-----",
+        "payload": "tree 6c2cfd61c75c8c33eeed876e645fcfd4006eb4a3\nparent 104744f4a523de574ce3767c50948d9b8385be4c\nauthor Viktor Szakats <commit@vsz.me> 1712146682 +0000\ncommitter Viktor Szakats <commit@vsz.me> 1712150929 +0000\n\nmbedtls: add workaround + FIXME to build with 3.6.0\n\nThis is just a stub to make `_libssh2_mbedtls_ecdsa_new_private`\ncompile.\n\nmbedtls 3.6.0 silently deleted its public API `mbedtls_pk_load_file`,\nwhich this function relies on.\n\nCloses #1349\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/2e4c5ec4627b3ecf4b6da16f365c011dec9a31b4",
+    "html_url": "https://github.com/libssh2/libssh2/commit/2e4c5ec4627b3ecf4b6da16f365c011dec9a31b4",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/2e4c5ec4627b3ecf4b6da16f365c011dec9a31b4/comments",
+    "author": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "104744f4a523de574ce3767c50948d9b8385be4c",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/104744f4a523de574ce3767c50948d9b8385be4c",
+        "html_url": "https://github.com/libssh2/libssh2/commit/104744f4a523de574ce3767c50948d9b8385be4c"
+      }
+    ]
+  },
+  {
+    "sha": "104744f4a523de574ce3767c50948d9b8385be4c",
+    "node_id": "C_kwDOAeO6x9oAKDEwNDc0NGY0YTUyM2RlNTc0Y2UzNzY3YzUwOTQ4ZDliODM4NWJlNGM",
+    "commit": {
+      "author": {
+        "name": "Viktor Szakats",
+        "email": "vszakats@users.noreply.github.com",
+        "date": "2024-04-03T11:20:43Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-03T11:20:43Z"
+      },
+      "message": "ci/appveyor: OpenSSL 3 no longer found by CMake, revert to 1.1.1 (#1348)\n\nRef: https://github.com/appveyor/build-images/commit/702e8cdca01f28f6a40687783f493c786cebbe2c\r\nRef: https://github.com/appveyor/build-images/pull/149",
+      "tree": {
+        "sha": "13c7505478b02e7b0f6f1465f3a0c79fd3b7304f",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/13c7505478b02e7b0f6f1465f3a0c79fd3b7304f"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/104744f4a523de574ce3767c50948d9b8385be4c",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDTuLCRC1aQ7uu5UhlAAAynsQAHXH8WOcKVPQHk5vb/n4lZdT\ns5SvJgYM8H1hg5DhJ7SMo6LYIvs690A7sM6jX8q36GA/Ci5Kj8hz1TuASkHQ+Zvh\nvv4RijOdsbMKaMn0kGD30sIKmjEKB02vkRXy/VWGEymEt1es85Pp9EigrXcZ6bOJ\nZABEPKomiPUS/mAWcqWLiQR3LK4TkNrSBe7qYvdpkMkzgaG+ohuHt5dMYrWqQPTf\n+CqZnc/hEjg5+SG7TzgmtvFDRxjSPS4AF1mjHvFWA38MF3E/WANtuUGUU2XEwmXE\n5JSAZrcs6/gFpCpjFeu2Jx5sVJw9p2CmaNnYmV746hTOq14sEDH3nlrC3H9Qa963\nOc5QKXC4Bx8t1lhLMPTOlY3wDkFc6RZjGx1bqUzKGOmY3CUq/rtl5H6/YXByBpyQ\nInoheq8fWzW8OtuEV10pgIWBOsvswsHmCXnvoKKTIj8qSNzzpzAF25c01khkmrHj\nrCclwK8JjRfdx5YAgTqMWfWeXxCiLp3qf8BvGoMoCSmtfYACVvROxRkKdeEVHEVO\ne8BVMd3b5KJ1a4Fksc35kPlwtL4sx7vuisDOI0Ze4EbN1ItIwWMuRl5pOzTbKesn\njIkwZ2EYAUlxuPYhMXZRB9wbtTO9ZQeEvcwdFkiMuT8yFmTcjLI2npe87nVDgfio\nSenWBIQoOJjvNg9b15dt\n=DZ5I\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 13c7505478b02e7b0f6f1465f3a0c79fd3b7304f\nparent 581b72aab750bd7dcb00acdcbb189ddfee8c93fc\nauthor Viktor Szakats <vszakats@users.noreply.github.com> 1712143243 +0200\ncommitter GitHub <noreply@github.com> 1712143243 +0200\n\nci/appveyor: OpenSSL 3 no longer found by CMake, revert to 1.1.1 (#1348)\n\nRef: https://github.com/appveyor/build-images/commit/702e8cdca01f28f6a40687783f493c786cebbe2c\r\nRef: https://github.com/appveyor/build-images/pull/149"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/104744f4a523de574ce3767c50948d9b8385be4c",
+    "html_url": "https://github.com/libssh2/libssh2/commit/104744f4a523de574ce3767c50948d9b8385be4c",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/104744f4a523de574ce3767c50948d9b8385be4c/comments",
+    "author": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "581b72aab750bd7dcb00acdcbb189ddfee8c93fc",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/581b72aab750bd7dcb00acdcbb189ddfee8c93fc",
+        "html_url": "https://github.com/libssh2/libssh2/commit/581b72aab750bd7dcb00acdcbb189ddfee8c93fc"
+      }
+    ]
+  },
+  {
+    "sha": "581b72aab750bd7dcb00acdcbb189ddfee8c93fc",
+    "node_id": "C_kwDOAeO6x9oAKDU4MWI3MmFhYjc1MGJkN2RjYjAwYWNkY2JiMTg5ZGRmZWU4YzkzZmM",
+    "commit": {
+      "author": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-04-03T02:48:37Z"
+      },
+      "committer": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-04-03T11:16:08Z"
+      },
+      "message": "docs: improve `libssh2_userauth_publickey_from*` manpages\n\nReported-by: Lyndon Brown\nAssisted-by: Ryan Kelley\nFixes #652\nCloses #1308\nCloses #xxxx",
+      "tree": {
+        "sha": "7916c6a71059156a9699032705e7e4e216f0e5d3",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/7916c6a71059156a9699032705e7e4e216f0e5d3"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/581b72aab750bd7dcb00acdcbb189ddfee8c93fc",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niHUEABYKAB0WIQQ7T6bSwSEiOr7Hbz+1q9Fl4q7yAQUCZg06eAAKCRC1q9Fl4q7y\nAdhPAQDSrYSOmbMiG2t8qop7Xl3hIFl39v9GMHy9Rdgy6pXDyQD/dRcLqyYMZG1I\nNE3AF9/nNEcOmjZDAll/YMxf6zvowwU=\n=3ugQ\n-----END PGP SIGNATURE-----",
+        "payload": "tree 7916c6a71059156a9699032705e7e4e216f0e5d3\nparent 43983f870921edc90c337d739ccd4e627e56ea99\nauthor Viktor Szakats <commit@vsz.me> 1712112517 +0000\ncommitter Viktor Szakats <commit@vsz.me> 1712142968 +0000\n\ndocs: improve `libssh2_userauth_publickey_from*` manpages\n\nReported-by: Lyndon Brown\nAssisted-by: Ryan Kelley\nFixes #652\nCloses #1308\nCloses #xxxx\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/581b72aab750bd7dcb00acdcbb189ddfee8c93fc",
+    "html_url": "https://github.com/libssh2/libssh2/commit/581b72aab750bd7dcb00acdcbb189ddfee8c93fc",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/581b72aab750bd7dcb00acdcbb189ddfee8c93fc/comments",
+    "author": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "43983f870921edc90c337d739ccd4e627e56ea99",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/43983f870921edc90c337d739ccd4e627e56ea99",
+        "html_url": "https://github.com/libssh2/libssh2/commit/43983f870921edc90c337d739ccd4e627e56ea99"
+      }
+    ]
+  },
+  {
+    "sha": "43983f870921edc90c337d739ccd4e627e56ea99",
+    "node_id": "C_kwDOAeO6x9oAKDQzOTgzZjg3MDkyMWVkYzkwYzMzN2Q3MzljY2Q0ZTYyN2U1NmVhOTk",
+    "commit": {
+      "author": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-04-03T02:12:56Z"
+      },
+      "committer": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-04-03T02:12:56Z"
+      },
+      "message": "RELEASE-NOTES: sync [ci skip]",
+      "tree": {
+        "sha": "0b37cc242bb11c65305fb5bfbda668be2bdcf2df",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/0b37cc242bb11c65305fb5bfbda668be2bdcf2df"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/43983f870921edc90c337d739ccd4e627e56ea99",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niHUEABYKAB0WIQQ7T6bSwSEiOr7Hbz+1q9Fl4q7yAQUCZgy7KAAKCRC1q9Fl4q7y\nAX6XAPwNK5RUWEY2QuPA2tVhG57AqzxOSolEB1R4QRzoJRhW6gEA1MpbmV/rwEYN\n4kOL9m57NlJfvKknETKnG0j3xc7Bmw0=\n=tY5s\n-----END PGP SIGNATURE-----",
+        "payload": "tree 0b37cc242bb11c65305fb5bfbda668be2bdcf2df\nparent 1d815d666c1f764a9296ba8b12a441fb1d2ec995\nauthor Viktor Szakats <commit@vsz.me> 1712110376 +0000\ncommitter Viktor Szakats <commit@vsz.me> 1712110376 +0000\n\nRELEASE-NOTES: sync [ci skip]\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/43983f870921edc90c337d739ccd4e627e56ea99",
+    "html_url": "https://github.com/libssh2/libssh2/commit/43983f870921edc90c337d739ccd4e627e56ea99",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/43983f870921edc90c337d739ccd4e627e56ea99/comments",
+    "author": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1d815d666c1f764a9296ba8b12a441fb1d2ec995",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/1d815d666c1f764a9296ba8b12a441fb1d2ec995",
+        "html_url": "https://github.com/libssh2/libssh2/commit/1d815d666c1f764a9296ba8b12a441fb1d2ec995"
+      }
+    ]
+  },
+  {
+    "sha": "1d815d666c1f764a9296ba8b12a441fb1d2ec995",
+    "node_id": "C_kwDOAeO6x9oAKDFkODE1ZDY2NmMxZjc2NGE5Mjk2YmE4YjEyYTQ0MWZiMWQyZWM5OTU",
+    "commit": {
+      "author": {
+        "name": "Viktor Szakats",
+        "email": "vszakats@users.noreply.github.com",
+        "date": "2024-04-02T19:52:23Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-02T19:52:23Z"
+      },
+      "message": "test debian:testing-slim post xz backdoor removal (#1346)\n\nThe unexplained CI fallouts are gone with the latest debian:testing (20240330).\r\n\r\nRef #1328 #1329 #1338.\r\nCloses #1346",
+      "tree": {
+        "sha": "c0e762bed69ef9cb24a494c00611f2cd6c6cca39",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/c0e762bed69ef9cb24a494c00611f2cd6c6cca39"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/1d815d666c1f764a9296ba8b12a441fb1d2ec995",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDGH3CRC1aQ7uu5UhlAAA3rgQAD6p6gMcs1dA16c3vmWZ5JXc\neYV5cCho7ZNdl2aF7xLdIecTQ8Lo2ygFGvFg8z9n798iSg3UbW9Z6ZHhmGbfM3kI\nBqu5+04U4iRMYsgO++pqCXF9RhbpXVrtI4plqCy45NOcIHD0AfSghebuWS2tSRoW\nrmF4poFE9YKqu43Q/vmXyN1IJE5tU7MKFYwDzNMMU+H6mdKhF2z3imFk0737XdX1\nrRy4sAgqLDCgLKBPVDaFD7diw2ZIH0sjVcBTTOH0I7vjik85fDzwK02k750ldM3k\nOQndWg6F/gegLVaXf/1PGbz0qu2GM9TsikuZVwNEFzoMNRG7+Nr7DWJeeeLJCagy\nWAyPFmaawP+lL40byjLaX4uAhBWNrpw2fHLI/AItMBOPuuQ/LE/PAu3xMMU4Q3wD\nXLWQ2m8S5/EWtPXcCSo/O50bxnj8sxQlgHHCSOF18TqUwInm6dD+HWQXTIYEs6F6\nmv2mtrjhJq2QN9ID61UBQfdW2/goBr2R/w9mT93wLWBlATfIRxv9TtlIZAYa/NmX\nLYkElqrWIIzp0mDx5MzqcOaCsmxBtY893MaBJvD++1sv97CTunPZN5lp/Vh4WNPY\njP44uXZqZRmkSmb1RHUg+84FtTqcBwZTQMC3b5ExEV+HpVIpQSTX36EcNsB8HOTa\nVK1OguLn9hYP1BVogiPu\n=QP39\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree c0e762bed69ef9cb24a494c00611f2cd6c6cca39\nparent 6f86b196da490b0508599da62404d479f8a3dd67\nauthor Viktor Szakats <vszakats@users.noreply.github.com> 1712087543 +0200\ncommitter GitHub <noreply@github.com> 1712087543 +0200\n\ntest debian:testing-slim post xz backdoor removal (#1346)\n\nThe unexplained CI fallouts are gone with the latest debian:testing (20240330).\r\n\r\nRef #1328 #1329 #1338.\r\nCloses #1346\r\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/1d815d666c1f764a9296ba8b12a441fb1d2ec995",
+    "html_url": "https://github.com/libssh2/libssh2/commit/1d815d666c1f764a9296ba8b12a441fb1d2ec995",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/1d815d666c1f764a9296ba8b12a441fb1d2ec995/comments",
+    "author": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6f86b196da490b0508599da62404d479f8a3dd67",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/6f86b196da490b0508599da62404d479f8a3dd67",
+        "html_url": "https://github.com/libssh2/libssh2/commit/6f86b196da490b0508599da62404d479f8a3dd67"
+      }
+    ]
+  },
+  {
+    "sha": "6f86b196da490b0508599da62404d479f8a3dd67",
+    "node_id": "C_kwDOAeO6x9oAKDZmODZiMTk2ZGE0OTBiMDUwODU5OWRhNjI0MDRkNDc5ZjhhM2RkNjc",
+    "commit": {
+      "author": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-03-30T22:50:23Z"
+      },
+      "committer": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-03-30T23:45:00Z"
+      },
+      "message": "ci: use Linux runner for BSDs, add arm64 FreeBSD 14 job\n\n- bump cross-platform-actions to 0.23.0.\n  Ref: https://github.com/cross-platform-actions/action/releases/tag/v0.23.0\n\n- switch to Linux runners (from macOS) for cross-platform-actions.\n  It's significantly faster.\n\n- switch back FreeBSD 14 job to cross-platform-actions.\n  Also switch back to default shell.\n\n- add FreeBSD 14 arm64 job.\n\nCloses #1343",
+      "tree": {
+        "sha": "e8de1b1abb3c271b700d8fdfbd8e5a6f82cc061f",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/e8de1b1abb3c271b700d8fdfbd8e5a6f82cc061f"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/6f86b196da490b0508599da62404d479f8a3dd67",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niHUEABYKAB0WIQQ7T6bSwSEiOr7Hbz+1q9Fl4q7yAQUCZgikCAAKCRC1q9Fl4q7y\nASPNAQD6d//lknkhRDVKXSdQ0XYsU6qOVWI6oXIGroTyjqstIAD/aSQ8Qw4UXvl8\nw19PKBtrZpD8PzUWgZy4oPfxAXKXcww=\n=izPF\n-----END PGP SIGNATURE-----",
+        "payload": "tree e8de1b1abb3c271b700d8fdfbd8e5a6f82cc061f\nparent dd52300890f23c2c854aff6e584ecee34ac05519\nauthor Viktor Szakats <commit@vsz.me> 1711839023 +0000\ncommitter Viktor Szakats <commit@vsz.me> 1711842300 +0000\n\nci: use Linux runner for BSDs, add arm64 FreeBSD 14 job\n\n- bump cross-platform-actions to 0.23.0.\n  Ref: https://github.com/cross-platform-actions/action/releases/tag/v0.23.0\n\n- switch to Linux runners (from macOS) for cross-platform-actions.\n  It's significantly faster.\n\n- switch back FreeBSD 14 job to cross-platform-actions.\n  Also switch back to default shell.\n\n- add FreeBSD 14 arm64 job.\n\nCloses #1343\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/6f86b196da490b0508599da62404d479f8a3dd67",
+    "html_url": "https://github.com/libssh2/libssh2/commit/6f86b196da490b0508599da62404d479f8a3dd67",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/6f86b196da490b0508599da62404d479f8a3dd67/comments",
+    "author": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "dd52300890f23c2c854aff6e584ecee34ac05519",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/dd52300890f23c2c854aff6e584ecee34ac05519",
+        "html_url": "https://github.com/libssh2/libssh2/commit/dd52300890f23c2c854aff6e584ecee34ac05519"
+      }
+    ]
+  },
+  {
+    "sha": "dd52300890f23c2c854aff6e584ecee34ac05519",
+    "node_id": "C_kwDOAeO6x9oAKGRkNTIzMDA4OTBmMjNjMmM4NTRhZmY2ZTU4NGVjZWUzNGFjMDU1MTk",
+    "commit": {
+      "author": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-03-30T23:08:57Z"
+      },
+      "committer": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-03-30T23:08:57Z"
+      },
+      "message": "ci: use single quotes in yaml [ci skip]",
+      "tree": {
+        "sha": "e210964e0d8ab027cc18e8f840f572d0786dfc1a",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/e210964e0d8ab027cc18e8f840f572d0786dfc1a"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/dd52300890f23c2c854aff6e584ecee34ac05519",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niHUEABYKAB0WIQQ7T6bSwSEiOr7Hbz+1q9Fl4q7yAQUCZgibiQAKCRC1q9Fl4q7y\nAZ2XAPwIsVg0xjtFTBGyUdqB8TMrnGurmyvcMHsOVXIihKpbRwD/ToJgp0Da44xA\niYR327gS0IsKILJ8Lc1C/NBSnLtxywI=\n=z7BF\n-----END PGP SIGNATURE-----",
+        "payload": "tree e210964e0d8ab027cc18e8f840f572d0786dfc1a\nparent b6e8bdb444be27adf74e3a75274743aae78c3242\nauthor Viktor Szakats <commit@vsz.me> 1711840137 +0000\ncommitter Viktor Szakats <commit@vsz.me> 1711840137 +0000\n\nci: use single quotes in yaml [ci skip]\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/dd52300890f23c2c854aff6e584ecee34ac05519",
+    "html_url": "https://github.com/libssh2/libssh2/commit/dd52300890f23c2c854aff6e584ecee34ac05519",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/dd52300890f23c2c854aff6e584ecee34ac05519/comments",
+    "author": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b6e8bdb444be27adf74e3a75274743aae78c3242",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/b6e8bdb444be27adf74e3a75274743aae78c3242",
+        "html_url": "https://github.com/libssh2/libssh2/commit/b6e8bdb444be27adf74e3a75274743aae78c3242"
+      }
+    ]
+  },
+  {
+    "sha": "b6e8bdb444be27adf74e3a75274743aae78c3242",
+    "node_id": "C_kwDOAeO6x9oAKGI2ZThiZGI0NDRiZTI3YWRmNzRlM2E3NTI3NDc0M2FhZTc4YzMyNDI",
+    "commit": {
+      "author": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-03-30T22:49:31Z"
+      },
+      "committer": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-03-30T22:49:31Z"
+      },
+      "message": "ci: tidy-up job order [ci skip]",
+      "tree": {
+        "sha": "7cad2306b81a80266a97623d3bcebd7065a01216",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/7cad2306b81a80266a97623d3bcebd7065a01216"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/b6e8bdb444be27adf74e3a75274743aae78c3242",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niHUEABYKAB0WIQQ7T6bSwSEiOr7Hbz+1q9Fl4q7yAQUCZgiW+wAKCRC1q9Fl4q7y\nAawvAP0fiytmeOBX6OmCbmep7S8MyQe36xC1BvNN3lN7vS/nJgD/eeQ338iWQj2J\n4UTg7AWum9ftyNIoXNonuXkQ9M2QLwU=\n=2ToS\n-----END PGP SIGNATURE-----",
+        "payload": "tree 7cad2306b81a80266a97623d3bcebd7065a01216\nparent c452c5cc6e1679253bc9f0c3cf3804a54d8bff43\nauthor Viktor Szakats <commit@vsz.me> 1711838971 +0000\ncommitter Viktor Szakats <commit@vsz.me> 1711838971 +0000\n\nci: tidy-up job order [ci skip]\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/b6e8bdb444be27adf74e3a75274743aae78c3242",
+    "html_url": "https://github.com/libssh2/libssh2/commit/b6e8bdb444be27adf74e3a75274743aae78c3242",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/b6e8bdb444be27adf74e3a75274743aae78c3242/comments",
+    "author": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c452c5cc6e1679253bc9f0c3cf3804a54d8bff43",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/c452c5cc6e1679253bc9f0c3cf3804a54d8bff43",
+        "html_url": "https://github.com/libssh2/libssh2/commit/c452c5cc6e1679253bc9f0c3cf3804a54d8bff43"
+      }
+    ]
+  },
+  {
+    "sha": "c452c5cc6e1679253bc9f0c3cf3804a54d8bff43",
+    "node_id": "C_kwDOAeO6x9oAKGM0NTJjNWNjNmUxNjc5MjUzYmM5ZjBjM2NmMzgwNGE1NGQ4YmZmNDM",
+    "commit": {
+      "author": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-03-29T11:05:57Z"
+      },
+      "committer": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-03-29T13:52:52Z"
+      },
+      "message": "build: drop `-Wformat-nonliteral` warning suppressions\n\nAlso markup a vararg function as such.\n\nIn functions marked up as vararg functions, there is no need to suppress\n`-Wformat-nonliteral` warnings. It's done automatically by the compiler.\n\nCloses #1342",
+      "tree": {
+        "sha": "b48c5328fd821cd98c3239c4f5da6ff5e849f830",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/b48c5328fd821cd98c3239c4f5da6ff5e849f830"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/c452c5cc6e1679253bc9f0c3cf3804a54d8bff43",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niHUEABYKAB0WIQQ7T6bSwSEiOr7Hbz+1q9Fl4q7yAQUCZgbHtAAKCRC1q9Fl4q7y\nAaaNAPoCBDYp86Gv5m3JF5kGuFP4joYMDFk+z1XMUvM03Km8DAD/fmHOmsvctBYW\nJE/Iw9SCt3RvKaU3E4hMEw+vpZDWegE=\n=XHyO\n-----END PGP SIGNATURE-----",
+        "payload": "tree b48c5328fd821cd98c3239c4f5da6ff5e849f830\nparent 576ca7a0678e068521af2ea7ea5740ad4ee8169e\nauthor Viktor Szakats <commit@vsz.me> 1711710357 +0000\ncommitter Viktor Szakats <commit@vsz.me> 1711720372 +0000\n\nbuild: drop `-Wformat-nonliteral` warning suppressions\n\nAlso markup a vararg function as such.\n\nIn functions marked up as vararg functions, there is no need to suppress\n`-Wformat-nonliteral` warnings. It's done automatically by the compiler.\n\nCloses #1342\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/c452c5cc6e1679253bc9f0c3cf3804a54d8bff43",
+    "html_url": "https://github.com/libssh2/libssh2/commit/c452c5cc6e1679253bc9f0c3cf3804a54d8bff43",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/c452c5cc6e1679253bc9f0c3cf3804a54d8bff43/comments",
+    "author": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "576ca7a0678e068521af2ea7ea5740ad4ee8169e",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/576ca7a0678e068521af2ea7ea5740ad4ee8169e",
+        "html_url": "https://github.com/libssh2/libssh2/commit/576ca7a0678e068521af2ea7ea5740ad4ee8169e"
+      }
+    ]
+  },
+  {
+    "sha": "576ca7a0678e068521af2ea7ea5740ad4ee8169e",
+    "node_id": "C_kwDOAeO6x9oAKDU3NmNhN2EwNjc4ZTA2ODUyMWFmMmVhN2VhNTc0MGFkNGVlODE2OWU",
+    "commit": {
+      "author": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-03-29T11:55:04Z"
+      },
+      "committer": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-03-29T11:55:16Z"
+      },
+      "message": "ci: delete flaky FreeBSD 13.2 job\n\nKeep FreeBSD 14.",
+      "tree": {
+        "sha": "c3f9479f38f4111a01727c4f36751af0da4cbef7",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/c3f9479f38f4111a01727c4f36751af0da4cbef7"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/576ca7a0678e068521af2ea7ea5740ad4ee8169e",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niHUEABYKAB0WIQQ7T6bSwSEiOr7Hbz+1q9Fl4q7yAQUCZgasWAAKCRC1q9Fl4q7y\nAYd0AQCVNXpwI2Tnpk+NPql38GJ0bvxPzkcxa4c9N6MOQR2AGQEAta8S62WPc4p0\nyrIjOz23N8C8hpkLmb6mlUpGV/D0bwU=\n=K17Z\n-----END PGP SIGNATURE-----",
+        "payload": "tree c3f9479f38f4111a01727c4f36751af0da4cbef7\nparent 1a7c7fb6c155724fa30abddb156ca61d10848654\nauthor Viktor Szakats <commit@vsz.me> 1711713304 +0000\ncommitter Viktor Szakats <commit@vsz.me> 1711713316 +0000\n\nci: delete flaky FreeBSD 13.2 job\n\nKeep FreeBSD 14.\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/576ca7a0678e068521af2ea7ea5740ad4ee8169e",
+    "html_url": "https://github.com/libssh2/libssh2/commit/576ca7a0678e068521af2ea7ea5740ad4ee8169e",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/576ca7a0678e068521af2ea7ea5740ad4ee8169e/comments",
+    "author": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1a7c7fb6c155724fa30abddb156ca61d10848654",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/1a7c7fb6c155724fa30abddb156ca61d10848654",
+        "html_url": "https://github.com/libssh2/libssh2/commit/1a7c7fb6c155724fa30abddb156ca61d10848654"
+      }
+    ]
+  },
+  {
+    "sha": "1a7c7fb6c155724fa30abddb156ca61d10848654",
+    "node_id": "C_kwDOAeO6x9oAKDFhN2M3ZmI2YzE1NTcyNGZhMzBhYmRkYjE1NmNhNjFkMTA4NDg2NTQ",
+    "commit": {
+      "author": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-03-29T09:15:45Z"
+      },
+      "committer": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-03-29T09:15:45Z"
+      },
+      "message": "RELEASE-NOTES: sync [ci skip]",
+      "tree": {
+        "sha": "c35f98147ddebcaf5283d7f357003ee039a25ea0",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/c35f98147ddebcaf5283d7f357003ee039a25ea0"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/1a7c7fb6c155724fa30abddb156ca61d10848654",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niHUEABYKAB0WIQQ7T6bSwSEiOr7Hbz+1q9Fl4q7yAQUCZgaGwQAKCRC1q9Fl4q7y\nAYNkAP9Cwg54JOnTEQfXp7OhgvMRl1okmBK+QPltaaEYqJoDSQD7B4E0OsBaJlDQ\nvx2mkrVbWyaZytxPdQefV8louLH0lwI=\n=8Ybo\n-----END PGP SIGNATURE-----",
+        "payload": "tree c35f98147ddebcaf5283d7f357003ee039a25ea0\nparent 24503cb9e186ea175058c7e088739f89b8408f8e\nauthor Viktor Szakats <commit@vsz.me> 1711703745 +0000\ncommitter Viktor Szakats <commit@vsz.me> 1711703745 +0000\n\nRELEASE-NOTES: sync [ci skip]\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/1a7c7fb6c155724fa30abddb156ca61d10848654",
+    "html_url": "https://github.com/libssh2/libssh2/commit/1a7c7fb6c155724fa30abddb156ca61d10848654",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/1a7c7fb6c155724fa30abddb156ca61d10848654/comments",
+    "author": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "24503cb9e186ea175058c7e088739f89b8408f8e",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/24503cb9e186ea175058c7e088739f89b8408f8e",
+        "html_url": "https://github.com/libssh2/libssh2/commit/24503cb9e186ea175058c7e088739f89b8408f8e"
+      }
+    ]
+  },
+  {
+    "sha": "24503cb9e186ea175058c7e088739f89b8408f8e",
+    "node_id": "C_kwDOAeO6x9oAKDI0NTAzY2I5ZTE4NmVhMTc1MDU4YzdlMDg4NzM5Zjg5Yjg0MDhmOGU",
+    "commit": {
+      "author": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-03-29T07:48:44Z"
+      },
+      "committer": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-03-29T09:12:10Z"
+      },
+      "message": "example: restore `sys/time.h` for AIX\n\nIn AIX, `time.h` header file doesn't have definitions like\n`fd_set`, `struct timeval`, which are found in `sys/time.h`.\n\nAdd `sys/time.h` to files affected when available.\n\nRegression from e53aae0e16dbf53ddd1a4fcfc50e365a15fcb8b9 #1001.\n\nReported-by: shubhamhii on GitHub\nAssisted-by: shubhamhii on GitHub\nFixes #1334\nFixes #1335\nCloses #1340",
+      "tree": {
+        "sha": "2e34e2b3d3403cc1e10f43a54d876df619cd3db6",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/2e34e2b3d3403cc1e10f43a54d876df619cd3db6"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/24503cb9e186ea175058c7e088739f89b8408f8e",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niHUEABYKAB0WIQQ7T6bSwSEiOr7Hbz+1q9Fl4q7yAQUCZgaF6gAKCRC1q9Fl4q7y\nAaXBAP4ycHFUEAFK+NUU3IdZHiSFuF8+p9JREibUbTnmg2NiAQD/U+xiISDJE4Ac\ntPgAFhTKbLOpNxAFB1cSt61ub1QmIgQ=\n=cPWb\n-----END PGP SIGNATURE-----",
+        "payload": "tree 2e34e2b3d3403cc1e10f43a54d876df619cd3db6\nparent a6a9093b39824a00258f96a5301a844b4d870cdc\nauthor Viktor Szakats <commit@vsz.me> 1711698524 +0000\ncommitter Viktor Szakats <commit@vsz.me> 1711703530 +0000\n\nexample: restore `sys/time.h` for AIX\n\nIn AIX, `time.h` header file doesn't have definitions like\n`fd_set`, `struct timeval`, which are found in `sys/time.h`.\n\nAdd `sys/time.h` to files affected when available.\n\nRegression from e53aae0e16dbf53ddd1a4fcfc50e365a15fcb8b9 #1001.\n\nReported-by: shubhamhii on GitHub\nAssisted-by: shubhamhii on GitHub\nFixes #1334\nFixes #1335\nCloses #1340\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/24503cb9e186ea175058c7e088739f89b8408f8e",
+    "html_url": "https://github.com/libssh2/libssh2/commit/24503cb9e186ea175058c7e088739f89b8408f8e",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/24503cb9e186ea175058c7e088739f89b8408f8e/comments",
+    "author": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a6a9093b39824a00258f96a5301a844b4d870cdc",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/a6a9093b39824a00258f96a5301a844b4d870cdc",
+        "html_url": "https://github.com/libssh2/libssh2/commit/a6a9093b39824a00258f96a5301a844b4d870cdc"
+      }
+    ]
+  },
+  {
+    "sha": "a6a9093b39824a00258f96a5301a844b4d870cdc",
+    "node_id": "C_kwDOAeO6x9oAKGE2YTkwOTNiMzk4MjRhMDAyNThmOTZhNTMwMWE4NDRiNGQ4NzBjZGM",
+    "commit": {
+      "author": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-03-28T16:59:58Z"
+      },
+      "committer": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-03-29T09:11:40Z"
+      },
+      "message": "userauth: avoid oob with huge interactive kbd response\n\n- If the length of a response is `UINT_MAX - 3` or larger, an unsigned\n  integer overflow occurs on 64-bit systems. Avoid such truncation to\n  always allocate enough memory to avoid subsequent out of boundary\n  writes.\n\n  Patch-by: Tobias Stoeckmann\n\n- also add FIXME to bump up length field to `size_t` (ABI break)\n\nCloses #1337",
+      "tree": {
+        "sha": "4988d241c8fc915ff6c310daaed8cf089143dbaa",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/4988d241c8fc915ff6c310daaed8cf089143dbaa"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/a6a9093b39824a00258f96a5301a844b4d870cdc",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niHUEABYKAB0WIQQ7T6bSwSEiOr7Hbz+1q9Fl4q7yAQUCZgaFzAAKCRC1q9Fl4q7y\nAd5NAP9uMqGNtudpLOVxQ3KGpSTAl7mtA6nVw/QKRBM5gMhQCgD+L2VAfaSNGEK6\nJ+Bsx7LcatwJbCB4tGOMFbSVRoWHTAg=\n=2lh0\n-----END PGP SIGNATURE-----",
+        "payload": "tree 4988d241c8fc915ff6c310daaed8cf089143dbaa\nparent bde10825f1271769d56a0e99793da61d37abc23c\nauthor Viktor Szakats <commit@vsz.me> 1711645198 +0000\ncommitter Viktor Szakats <commit@vsz.me> 1711703500 +0000\n\nuserauth: avoid oob with huge interactive kbd response\n\n- If the length of a response is `UINT_MAX - 3` or larger, an unsigned\n  integer overflow occurs on 64-bit systems. Avoid such truncation to\n  always allocate enough memory to avoid subsequent out of boundary\n  writes.\n\n  Patch-by: Tobias Stoeckmann\n\n- also add FIXME to bump up length field to `size_t` (ABI break)\n\nCloses #1337\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/a6a9093b39824a00258f96a5301a844b4d870cdc",
+    "html_url": "https://github.com/libssh2/libssh2/commit/a6a9093b39824a00258f96a5301a844b4d870cdc",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/a6a9093b39824a00258f96a5301a844b4d870cdc/comments",
+    "author": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "bde10825f1271769d56a0e99793da61d37abc23c",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/bde10825f1271769d56a0e99793da61d37abc23c",
+        "html_url": "https://github.com/libssh2/libssh2/commit/bde10825f1271769d56a0e99793da61d37abc23c"
+      }
+    ]
+  },
+  {
+    "sha": "bde10825f1271769d56a0e99793da61d37abc23c",
+    "node_id": "C_kwDOAeO6x9oAKGJkZTEwODI1ZjEyNzE3NjlkNTZhMGU5OTc5M2RhNjFkMzdhYmMyM2M",
+    "commit": {
+      "author": {
+        "name": "Josef Cejka",
+        "email": "jcejka@suse.com",
+        "date": "2024-03-28T22:38:47Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-28T22:38:47Z"
+      },
+      "message": "transport: check ETM on remote end when receiving (#1332)\n\nWe should check if encrypt-then-MAC feature is enabled in remote end's\r\nconfiguration.\r\n\r\nFixes #1331",
+      "tree": {
+        "sha": "a55bd6fa40cfe0a23a04d467df56919c8fc4fca1",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/a55bd6fa40cfe0a23a04d467df56919c8fc4fca1"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/bde10825f1271769d56a0e99793da61d37abc23c",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmBfF3CRC1aQ7uu5UhlAAAHMkQAKU5EhyziO3oLwuU8qLD7p+4\nSgBMq+R06NhIQi3D6RmtuXPwqqYEheR9amxVnARYlLjhTpkcjDw3ue6TjaHLkFj8\n/QGvKGoXP9w7CNc0mTRZBW0vUifuEOGgvLirK/x82f1Yk3Y+aDXNva/nTRk6jLJq\nDKonb6dt1OXp0d95/efA1AD5J0lHfIMzKFYYzRc7Bpk8G0NYHwe4RRvv5jdmrzZY\npRrjGqlCg8YhMAFdjc4NCfGJn69lw7A7QKVDUrFVxJ56goABlX3/2ikNu9E3hFoL\np6ubvb+qwXg7107yLhPg1F3DypqValBT/Wp9SweilsggQvg1MH3PEJiGOc2m5f8L\nKYIkRtaAV8es8GzAxuP6NUtHOlUzk9saP0noefguSbWCFddKFERBO+OuMDYQrNLh\nKhAK2KKbPYaZx9h1zG5M6IKYrl3VBkg3C0ZZiZEeTkWN42G7wWqJ5vWef8XNsfKR\nBg5Q+VcbOvMwbdbl1JjCfJulnF/SbFeMsb5rVtLtl3NGJKVIVeCuPnw10+2dMoIr\nUO2E6vnovIG2+J9D0srjq2FM1i9mBOThMk9WetUbm84tmE15t8bOzbKAVsIZRGtQ\nSJ21E1vGYpLw3i6sQRJUZVATp3bgpcSSQbQBiKo+zxPWuJc10EUKapxjbD6ufvJG\n8GOTJ6M/58d80p6H9Ppc\n=Cvzl\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree a55bd6fa40cfe0a23a04d467df56919c8fc4fca1\nparent 00e2a07e824db8798d94809156e9fb4e70a42f89\nauthor Josef Cejka <jcejka@suse.com> 1711665527 +0100\ncommitter GitHub <noreply@github.com> 1711665527 +0100\n\ntransport: check ETM on remote end when receiving (#1332)\n\nWe should check if encrypt-then-MAC feature is enabled in remote end's\r\nconfiguration.\r\n\r\nFixes #1331\r\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/bde10825f1271769d56a0e99793da61d37abc23c",
+    "html_url": "https://github.com/libssh2/libssh2/commit/bde10825f1271769d56a0e99793da61d37abc23c",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/bde10825f1271769d56a0e99793da61d37abc23c/comments",
+    "author": {
+      "login": "malyzelenyhnus",
+      "id": 19817663,
+      "node_id": "MDQ6VXNlcjE5ODE3NjYz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19817663?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/malyzelenyhnus",
+      "html_url": "https://github.com/malyzelenyhnus",
+      "followers_url": "https://api.github.com/users/malyzelenyhnus/followers",
+      "following_url": "https://api.github.com/users/malyzelenyhnus/following{/other_user}",
+      "gists_url": "https://api.github.com/users/malyzelenyhnus/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/malyzelenyhnus/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/malyzelenyhnus/subscriptions",
+      "organizations_url": "https://api.github.com/users/malyzelenyhnus/orgs",
+      "repos_url": "https://api.github.com/users/malyzelenyhnus/repos",
+      "events_url": "https://api.github.com/users/malyzelenyhnus/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/malyzelenyhnus/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "00e2a07e824db8798d94809156e9fb4e70a42f89",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/00e2a07e824db8798d94809156e9fb4e70a42f89",
+        "html_url": "https://github.com/libssh2/libssh2/commit/00e2a07e824db8798d94809156e9fb4e70a42f89"
+      }
+    ]
+  },
+  {
+    "sha": "00e2a07e824db8798d94809156e9fb4e70a42f89",
+    "node_id": "C_kwDOAeO6x9oAKDAwZTJhMDdlODI0ZGI4Nzk4ZDk0ODA5MTU2ZTlmYjRlNzBhNDJmODk",
+    "commit": {
+      "author": {
+        "name": "Josef Cejka",
+        "email": "jcejka@suse.com",
+        "date": "2024-03-28T22:34:06Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-28T22:34:06Z"
+      },
+      "message": "kex: always add extension indicators to kex_algorithms (#1327)\n\nKEX pseudo-methods \"ext-info-c\" and \"kex-strict-c-v00@openssh.com\"\r\nare in default kex method list but they were lost after configuring\r\ncustom kex method list in libssh2_session_method_pref().\r\n\r\nFixes #1326",
+      "tree": {
+        "sha": "022ab550ac671e07b9effd3324bf09f6e016fa8c",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/022ab550ac671e07b9effd3324bf09f6e016fa8c"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/00e2a07e824db8798d94809156e9fb4e70a42f89",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmBfBeCRC1aQ7uu5UhlAAAK4QQAHiE4FVKYRH59eFc/0cr0Arf\nbNe2VFpmAaNChehksfJOdihMHI/R5drFsRJPsOXAeUk0S9oShKEPNLrD67vNXa+2\nEkvOGG8moJ+uFXfd77flsRrkdelMW11cEM6bKksIhv8lgyvBF6W4A+3D8FkCnLar\n+vNuQe2iUTTKMvz+To1F9PZ1adybapTd7gBaEeQgpR6Tm8hjHJ35V0ysLLcdTCVC\nhPahEnyncc+vlU1t8NlIAaZH2yySr3g9C0c/zlHYpCcaqCii1uAuMtkoyrw/jRQg\n/FxDoX1CVMvlPuB6AU19FWMMm5jbMjnXcBEbiphyyVNm+nKHIpgkjdZF4zYifD4L\nG8UKAv+hrAIa8lTBo0pbLyx8LD02ZdcmFss4xAk5npv5ytkgi7+fzltYPvm8XVNz\nQQ0NC/2/PzkNmW2oDbRv+p9vIjo7bVxbwIe5DaBh6GHembmgIbw33PuGQN7005ds\n0omGgAFmk34qbb4PrOi84NsEtjA4XkGxSM39ydPBHR7hwBMWFBXCcQq1HfOVs52+\nHk6u1Smddm5GK1uvBH5iGFo4QLp4K6CCLYoSkPxWAV4sZ4g6ef/MSTckfH9UoO7E\nDlR3bzvkex7RsGP9jjL7oPWrPpJA0JIyFRN+ondJ9msuD+MnD3mCFzsYOCwGikqR\nE21m8GhDKgfhJ4cQpMSu\n=Us0X\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 022ab550ac671e07b9effd3324bf09f6e016fa8c\nparent 82b09f9b3aae97f641fbcc2d746d2a6383abe857\nauthor Josef Cejka <jcejka@suse.com> 1711665246 +0100\ncommitter GitHub <noreply@github.com> 1711665246 +0100\n\nkex: always add extension indicators to kex_algorithms (#1327)\n\nKEX pseudo-methods \"ext-info-c\" and \"kex-strict-c-v00@openssh.com\"\r\nare in default kex method list but they were lost after configuring\r\ncustom kex method list in libssh2_session_method_pref().\r\n\r\nFixes #1326\r\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/00e2a07e824db8798d94809156e9fb4e70a42f89",
+    "html_url": "https://github.com/libssh2/libssh2/commit/00e2a07e824db8798d94809156e9fb4e70a42f89",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/00e2a07e824db8798d94809156e9fb4e70a42f89/comments",
+    "author": {
+      "login": "malyzelenyhnus",
+      "id": 19817663,
+      "node_id": "MDQ6VXNlcjE5ODE3NjYz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19817663?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/malyzelenyhnus",
+      "html_url": "https://github.com/malyzelenyhnus",
+      "followers_url": "https://api.github.com/users/malyzelenyhnus/followers",
+      "following_url": "https://api.github.com/users/malyzelenyhnus/following{/other_user}",
+      "gists_url": "https://api.github.com/users/malyzelenyhnus/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/malyzelenyhnus/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/malyzelenyhnus/subscriptions",
+      "organizations_url": "https://api.github.com/users/malyzelenyhnus/orgs",
+      "repos_url": "https://api.github.com/users/malyzelenyhnus/repos",
+      "events_url": "https://api.github.com/users/malyzelenyhnus/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/malyzelenyhnus/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "82b09f9b3aae97f641fbcc2d746d2a6383abe857",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/82b09f9b3aae97f641fbcc2d746d2a6383abe857",
+        "html_url": "https://github.com/libssh2/libssh2/commit/82b09f9b3aae97f641fbcc2d746d2a6383abe857"
+      }
+    ]
+  },
+  {
+    "sha": "82b09f9b3aae97f641fbcc2d746d2a6383abe857",
+    "node_id": "C_kwDOAeO6x9oAKDgyYjA5ZjliM2FhZTk3ZjY0MWZiY2MyZDc0NmQyYTYzODNhYmU4NTc",
+    "commit": {
+      "author": {
+        "name": "Jiwoo Park",
+        "email": "jiwoo_90@naver.com",
+        "date": "2024-03-28T22:30:20Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-28T22:30:20Z"
+      },
+      "message": "cmake: use the imported target of FindOpenSSL module (#1322)\n\n* Use the imported target of FindOpenSSL module\r\n* Build libssh2 before test runner\r\n* Use find_package() in the CMake config file\r\n* Use find_dependency() rather than find_package()\r\n* Install CMake module files and use them in the config file\r\n* Use elseif() to choose the crypto backend",
+      "tree": {
+        "sha": "7ff79a7308ef0ebcd1ef716e768c42cbf011d937",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/7ff79a7308ef0ebcd1ef716e768c42cbf011d937"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/82b09f9b3aae97f641fbcc2d746d2a6383abe857",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmBe98CRC1aQ7uu5UhlAAAaxgQAJyPG8kQsvZ4FNZasUD6dGs3\nolnsP+z0Cs7ChslFmXFW+KFqdhlyCK+MJEDaulDLlxWD4UwfPTe39Wwecpdme7Y2\nc7aTJSwHGqtHjsGwQslw9d68ccCoZsxqg+/gxDyOzuLKDkl7sz3jyZkd6U71PE4F\nBNaeGk+NXEUPUmeon3U47cTTFDqUiCdsGmuuW3bSmdpSetRixBVHmu8ZZ4H7pNjN\no81C5Vw3l8NojSdlRmu/5EuZ2+z5EBWEt6CO8gF+vOeHpbnzhwSeFtZQ0/oJ0qtC\nJgqmEbEa1+7N9n6D1Gtg52FyL5rs2o3kYMhq3CJrq2SdovjXxb/2z4bPSyFwr4oD\n6Ql1izqfsT+libwzkLw9Ehk3HTEEqLOE52TFc7DbcG7SuYdbncYt0lwKspFB7dRA\nFgqd1wME+LO/tO0m1k8UyuBAbAlke5yqAqNCCkLqKZLFzkk60plinsEbOTF5lsM5\nJ5l8pvPr0w6RfRPFq9YI1syHFXxWG+TD3vOhIDXVO4GKGSAmfMDD9DhsyT/0wwEA\neo6voJG7IQ5Xft5rug4JmUoyx0aiH45CV7f6wtqiNqfdWpz/TkAyfd/65kpGmdOI\nPBlBXh09FXVc6UJWAmNKS/ibn9RaLS1VI7E6ReIE0gxpC2WGU7IQDJ6yraigApKJ\nWE4rB0CSjyE5LOIhTrIw\n=/SqE\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 7ff79a7308ef0ebcd1ef716e768c42cbf011d937\nparent 2f0efde37adebfed3ed3588c956686e5c61f3e7b\nauthor Jiwoo Park <jiwoo_90@naver.com> 1711665020 +0900\ncommitter GitHub <noreply@github.com> 1711665020 +0100\n\ncmake: use the imported target of FindOpenSSL module (#1322)\n\n* Use the imported target of FindOpenSSL module\r\n* Build libssh2 before test runner\r\n* Use find_package() in the CMake config file\r\n* Use find_dependency() rather than find_package()\r\n* Install CMake module files and use them in the config file\r\n* Use elseif() to choose the crypto backend\r\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/82b09f9b3aae97f641fbcc2d746d2a6383abe857",
+    "html_url": "https://github.com/libssh2/libssh2/commit/82b09f9b3aae97f641fbcc2d746d2a6383abe857",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/82b09f9b3aae97f641fbcc2d746d2a6383abe857/comments",
+    "author": {
+      "login": "jimmy-park",
+      "id": 30493199,
+      "node_id": "MDQ6VXNlcjMwNDkzMTk5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/30493199?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jimmy-park",
+      "html_url": "https://github.com/jimmy-park",
+      "followers_url": "https://api.github.com/users/jimmy-park/followers",
+      "following_url": "https://api.github.com/users/jimmy-park/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jimmy-park/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jimmy-park/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jimmy-park/subscriptions",
+      "organizations_url": "https://api.github.com/users/jimmy-park/orgs",
+      "repos_url": "https://api.github.com/users/jimmy-park/repos",
+      "events_url": "https://api.github.com/users/jimmy-park/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jimmy-park/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2f0efde37adebfed3ed3588c956686e5c61f3e7b",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/2f0efde37adebfed3ed3588c956686e5c61f3e7b",
+        "html_url": "https://github.com/libssh2/libssh2/commit/2f0efde37adebfed3ed3588c956686e5c61f3e7b"
+      }
+    ]
+  },
+  {
+    "sha": "2f0efde37adebfed3ed3588c956686e5c61f3e7b",
+    "node_id": "C_kwDOAeO6x9oAKDJmMGVmZGUzN2FkZWJmZWQzZWQzNTg4Yzk1NjY4NmU1YzYxZjNlN2I",
+    "commit": {
+      "author": {
+        "name": "Andrei Augustin",
+        "email": "36695484+andreiaugustin@users.noreply.github.com",
+        "date": "2024-03-28T22:27:52Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-28T22:27:52Z"
+      },
+      "message": "docs: update INSTALL_AUTOTOOLS (#1316)\n\ncorrected --with-libmbedtls-prefix to current option --with-libmbedcrypto-prefix",
+      "tree": {
+        "sha": "bb67eb175f22dd78900c4eca12015207b8ebdfb8",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/bb67eb175f22dd78900c4eca12015207b8ebdfb8"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/2f0efde37adebfed3ed3588c956686e5c61f3e7b",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmBe7oCRC1aQ7uu5UhlAAA2bIQAEhdL/8kJfLM2DxjH2UfQUZp\na3zmvX3vpiv4mlc7cifFpRsI4jfTGuilFnwunPsRJU0YblYjCyW62vrhFf2qT8vf\nf4p1crFhzCUzrIYyuVhHmkOzYjKOAp+k9OQdQwOxno54CPSmlmlXs3udUYhTKU/k\nTo2L8zvG6i1Qck6geGcZuBlNuIJ2ajotiFCNab721OK80S+Pm2Vt7jc5v8+rYLV1\nujDmcuaCRQarlz44kfZgn+QnXP69Dd5jAGBvmLHqTIjVxxMrcdAvtiJqxcoY0XWD\ni3vmoGrNtPwQsZ5m47FlYY3z/iQcHIgehAmHrVtb/I5D6AHC2fQ9ygxZbbVCqeR9\n6IFVsoArmNobbKmxOtB4lNZLTutQcw7GK2+du0z321xsPDFhuF+8TNevFNjWjLV0\n29Z9Poi0G56q7qC9rcoxkctSjFBG8nEgUU6DVG+RntosNN7Wb4SXWuxRSSn94EmB\nuLdPRtF5Cvwyi7fL6YmOBBVzZfgdV41mPa2jYYCHhSkYiKuidBta6EbAGqYfSXjO\noHaxhw/4IuZwlp5zCZCGNvLZQKpS8R5az9rPbnX2iVSB1z4b4NAj9suX9DMH1l30\n2VX4et3k/meqeNscGkQzeVFqXNJNBhGFLYuNrF8SbXVDn7HSRQnDGJqDAcItXNGF\nl2v2pYEgur2+W2TERZjd\n=q2CI\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree bb67eb175f22dd78900c4eca12015207b8ebdfb8\nparent 5e65dd87dddad878d1293a09b0607ae47c00152e\nauthor Andrei Augustin <36695484+andreiaugustin@users.noreply.github.com> 1711664872 +0200\ncommitter GitHub <noreply@github.com> 1711664872 +0100\n\ndocs: update INSTALL_AUTOTOOLS (#1316)\n\ncorrected --with-libmbedtls-prefix to current option --with-libmbedcrypto-prefix"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/2f0efde37adebfed3ed3588c956686e5c61f3e7b",
+    "html_url": "https://github.com/libssh2/libssh2/commit/2f0efde37adebfed3ed3588c956686e5c61f3e7b",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/2f0efde37adebfed3ed3588c956686e5c61f3e7b/comments",
+    "author": {
+      "login": "andreiaugustin",
+      "id": 36695484,
+      "node_id": "MDQ6VXNlcjM2Njk1NDg0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/36695484?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/andreiaugustin",
+      "html_url": "https://github.com/andreiaugustin",
+      "followers_url": "https://api.github.com/users/andreiaugustin/followers",
+      "following_url": "https://api.github.com/users/andreiaugustin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/andreiaugustin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/andreiaugustin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/andreiaugustin/subscriptions",
+      "organizations_url": "https://api.github.com/users/andreiaugustin/orgs",
+      "repos_url": "https://api.github.com/users/andreiaugustin/repos",
+      "events_url": "https://api.github.com/users/andreiaugustin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/andreiaugustin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5e65dd87dddad878d1293a09b0607ae47c00152e",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/5e65dd87dddad878d1293a09b0607ae47c00152e",
+        "html_url": "https://github.com/libssh2/libssh2/commit/5e65dd87dddad878d1293a09b0607ae47c00152e"
+      }
+    ]
+  },
+  {
+    "sha": "5e65dd87dddad878d1293a09b0607ae47c00152e",
+    "node_id": "C_kwDOAeO6x9oAKDVlNjVkZDg3ZGRkYWQ4NzhkMTI5M2EwOWIwNjA3YWU0N2MwMDE1MmU",
+    "commit": {
+      "author": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-03-28T20:50:01Z"
+      },
+      "committer": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-03-28T22:20:00Z"
+      },
+      "message": "ci: don't parallelize `distcheck` job\n\nA while ago the `distcheck` CI job became flaky. This continued after\nswitching to Debian stable (from testing). Try stabilzing it by running\nit single-threaded.\n\nCloses #1339",
+      "tree": {
+        "sha": "f1c92c77199e60f13dfc8f3fe86819e8d82ad211",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/f1c92c77199e60f13dfc8f3fe86819e8d82ad211"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/5e65dd87dddad878d1293a09b0607ae47c00152e",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niHUEABYKAB0WIQQ7T6bSwSEiOr7Hbz+1q9Fl4q7yAQUCZgXtEwAKCRC1q9Fl4q7y\nAeYBAP41H0iZ4ovkZRVR0e05bxMNJ5uGwPRaYG3jl1EO7GijhwD/ZDyTLtsEzj3r\n+Yt+f+BcwdEjVMfcE1RYgfUWJ0S3EwY=\n=Mb1K\n-----END PGP SIGNATURE-----",
+        "payload": "tree f1c92c77199e60f13dfc8f3fe86819e8d82ad211\nparent 97aa8388aa43fdff262827b9d4266ed582f8f96e\nauthor Viktor Szakats <commit@vsz.me> 1711659001 +0000\ncommitter Viktor Szakats <commit@vsz.me> 1711664400 +0000\n\nci: don't parallelize `distcheck` job\n\nA while ago the `distcheck` CI job became flaky. This continued after\nswitching to Debian stable (from testing). Try stabilzing it by running\nit single-threaded.\n\nCloses #1339\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/5e65dd87dddad878d1293a09b0607ae47c00152e",
+    "html_url": "https://github.com/libssh2/libssh2/commit/5e65dd87dddad878d1293a09b0607ae47c00152e",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/5e65dd87dddad878d1293a09b0607ae47c00152e/comments",
+    "author": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "97aa8388aa43fdff262827b9d4266ed582f8f96e",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/97aa8388aa43fdff262827b9d4266ed582f8f96e",
+        "html_url": "https://github.com/libssh2/libssh2/commit/97aa8388aa43fdff262827b9d4266ed582f8f96e"
+      }
+    ]
+  },
+  {
+    "sha": "97aa8388aa43fdff262827b9d4266ed582f8f96e",
+    "node_id": "C_kwDOAeO6x9oAKDk3YWE4Mzg4YWE0M2ZkZmYyNjI4MjdiOWQ0MjY2ZWQ1ODJmOGY5NmU",
+    "commit": {
+      "author": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-03-28T20:50:01Z"
+      },
+      "committer": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-03-28T22:18:45Z"
+      },
+      "message": "Dockerfile: switch to Debian stable (from testing)\n\nThis fixes flakiness experienced recently with two OpenSSL jobs and one\nlibgcrypt job, and/or intermittently causing all Docker-based tests to\nfail.\n\nReported-by: András Fekete\nFixes #1328\nFixes #1329\nCloses #1338",
+      "tree": {
+        "sha": "ccae3e623301422433991fef7575ee78849a458c",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/ccae3e623301422433991fef7575ee78849a458c"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/97aa8388aa43fdff262827b9d4266ed582f8f96e",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niHUEABYKAB0WIQQ7T6bSwSEiOr7Hbz+1q9Fl4q7yAQUCZgXsxQAKCRC1q9Fl4q7y\nAbmoAQD9VNNNGMAbGyNMWjDQXsZ6CeHqshjfc738mfvEiYe4CQD+NNLoDDkZNhvb\nsRLfatmMDeWwvSr6TWmIIND36tW3sAw=\n=Y8FQ\n-----END PGP SIGNATURE-----",
+        "payload": "tree ccae3e623301422433991fef7575ee78849a458c\nparent b27383918eefe9f49b982a7e553f1dce65639afd\nauthor Viktor Szakats <commit@vsz.me> 1711659001 +0000\ncommitter Viktor Szakats <commit@vsz.me> 1711664325 +0000\n\nDockerfile: switch to Debian stable (from testing)\n\nThis fixes flakiness experienced recently with two OpenSSL jobs and one\nlibgcrypt job, and/or intermittently causing all Docker-based tests to\nfail.\n\nReported-by: András Fekete\nFixes #1328\nFixes #1329\nCloses #1338\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/97aa8388aa43fdff262827b9d4266ed582f8f96e",
+    "html_url": "https://github.com/libssh2/libssh2/commit/97aa8388aa43fdff262827b9d4266ed582f8f96e",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/97aa8388aa43fdff262827b9d4266ed582f8f96e/comments",
+    "author": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b27383918eefe9f49b982a7e553f1dce65639afd",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/b27383918eefe9f49b982a7e553f1dce65639afd",
+        "html_url": "https://github.com/libssh2/libssh2/commit/b27383918eefe9f49b982a7e553f1dce65639afd"
+      }
+    ]
+  },
+  {
+    "sha": "b27383918eefe9f49b982a7e553f1dce65639afd",
+    "node_id": "C_kwDOAeO6x9oAKGIyNzM4MzkxOGVlZmU5ZjQ5Yjk4MmE3ZTU1M2YxZGNlNjU2MzlhZmQ",
+    "commit": {
+      "author": {
+        "name": "Michael Buckley",
+        "email": "michael@buckleyisms.com",
+        "date": "2024-02-22T23:39:12Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-02-22T23:39:12Z"
+      },
+      "message": "Supply empty hash functions for mac_method_hmac_aesgcm to avoid a crash when e.g. setting LIBSSH2_METHOD_CRYPT_CS (#1321)",
+      "tree": {
+        "sha": "1b0d855aa32e24921efb1855b9eb122b8267baf9",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/1b0d855aa32e24921efb1855b9eb122b8267baf9"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/b27383918eefe9f49b982a7e553f1dce65639afd",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl19sgCRC1aQ7uu5UhlAAA0JYQALI0iVJMPCP6fWUwzpFK2jHn\nyhiEtrRrbH8FLk/ASbmTQe2tK6gPruj8RIeh619RoYRmrBWoqYx51KybpvII22L3\nQgwRcXtsQ+pJsa8zkNYmRzyPUV1rm3xE73Ws6RMuvEKqEb+fcm9rnu2354qkUrDN\nptIqoG0XW+EnoRdMteKkkH4DCFxzuRe4387iusbX7qjMYZNbnkt6uErrWhG3En7X\nAaOcYjDg2z/hHCCPXitHNLI95M7VC9Z1xtcWFjKbky4GiS7eAEVoUe0zEZbMc0UL\nHs1mzsbFBo0uc3xu291eJMC8GOrxTl3lpVfmVUxtsiSTumL9qhWHy8JcLnWl6DP2\nCcItZkwm+P6vrh27nFBOfUULyEWmaiUSw2IlwJmMjBsDHfYkPYMciIK1pLj5a4UJ\nkEAwYeNumeJuIowk3X2nzJ8U1MhZnniXd6TOaFjWt/O0RK5sv3us6U6JA77J+QRv\n7Ywg+qdIs316lnjBqt2RnrlnrmrWUklk970lsvH1BV2HaQbxSvtV+rrZcnDSXJ9F\n1gK44UNNpB1fGzT4MWrh1G49eJ5NGTu76pA/7lvpGqJLy9WvMlE9ftc4eDyTOXr+\npwhcVmSz/94/P1k+hZzK/odUbwhgTcbdUcDV0ihO4CD+ayjN0EgH5aO7oW4HpP5R\nDrzwlBAp6apByi/q2ISg\n=ntOJ\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 1b0d855aa32e24921efb1855b9eb122b8267baf9\nparent f1133c75da06a5d329206d9a52cc79a9fcb3a48c\nauthor Michael Buckley <michael@buckleyisms.com> 1708645152 -0800\ncommitter GitHub <noreply@github.com> 1708645152 -0800\n\nSupply empty hash functions for mac_method_hmac_aesgcm to avoid a crash when e.g. setting LIBSSH2_METHOD_CRYPT_CS (#1321)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/b27383918eefe9f49b982a7e553f1dce65639afd",
+    "html_url": "https://github.com/libssh2/libssh2/commit/b27383918eefe9f49b982a7e553f1dce65639afd",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/b27383918eefe9f49b982a7e553f1dce65639afd/comments",
+    "author": {
+      "login": "MichaelBuckley",
+      "id": 50380,
+      "node_id": "MDQ6VXNlcjUwMzgw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/50380?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/MichaelBuckley",
+      "html_url": "https://github.com/MichaelBuckley",
+      "followers_url": "https://api.github.com/users/MichaelBuckley/followers",
+      "following_url": "https://api.github.com/users/MichaelBuckley/following{/other_user}",
+      "gists_url": "https://api.github.com/users/MichaelBuckley/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/MichaelBuckley/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/MichaelBuckley/subscriptions",
+      "organizations_url": "https://api.github.com/users/MichaelBuckley/orgs",
+      "repos_url": "https://api.github.com/users/MichaelBuckley/repos",
+      "events_url": "https://api.github.com/users/MichaelBuckley/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/MichaelBuckley/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f1133c75da06a5d329206d9a52cc79a9fcb3a48c",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/f1133c75da06a5d329206d9a52cc79a9fcb3a48c",
+        "html_url": "https://github.com/libssh2/libssh2/commit/f1133c75da06a5d329206d9a52cc79a9fcb3a48c"
+      }
+    ]
+  },
+  {
+    "sha": "f1133c75da06a5d329206d9a52cc79a9fcb3a48c",
+    "node_id": "C_kwDOAeO6x9oAKGYxMTMzYzc1ZGEwNmE1ZDMyOTIwNmQ5YTUyY2M3OWE5ZmNiM2E0OGM",
+    "commit": {
+      "author": {
+        "name": "Michael Buckley",
+        "email": "michael@buckleyisms.com",
+        "date": "2024-02-21T00:23:03Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-02-21T00:23:03Z"
+      },
+      "message": "gen_publickey_from_dsa: Initialize BIGNUMs to NULL for OpenSSL 3 (#1320)",
+      "tree": {
+        "sha": "32092582effce39ec7014383f603f0862c3c1aa1",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/32092582effce39ec7014383f603f0862c3c1aa1"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/f1133c75da06a5d329206d9a52cc79a9fcb3a48c",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl1UJnCRC1aQ7uu5UhlAAAw9wQAKvS9Anoj/FYMNfr7y27ChGz\nwlvQTd9Pre76V3UHZJCwkLQfBMNuP6SK7hQLeO/sITbICQtJQJiY1q17/zewI/rs\nl29mkHGmNoV+6D2yU4GQ373OU6yGHhY/d/kMbRK1pfPcma879K4zgvEflcspU+OC\nnsStNEgDMzUepX9vH6V7bsOX4wRu76x5WX8zU+EC16tuSMsRqMNyme8K1RmwFDuH\nm+Tx5EKbOMEVMq82V772JdPr/blGCIRRZdz2cTrWh8i4aoXrJ3EO8b2RVQMwkUcs\nqIOi5FO4mdnrda6WVLOxEJwu8hgIUx/30MXqLwv/daZi1nxfqng9bNetjbbm9jL8\nrMqmj68enQpe0X2Umxgh//V0NrANNzJdjlEVY1DxF0ZnmhVZl278VtAp2/vhrlXa\nS9KUXqxom37wB9yTt0urh8AuQYqLWj7aJ+8wOaH2BnqlGBWbl4lMt4aGMlAd5jj6\nTvvUAo5kil5XtNkseU/1P8rxrQy2NSiW5SuN7dlkPzQCDx3NVRgGsdu5cTo3OA4H\nGDxl+ziEDXyOUG38ftIjvFLNDm6FYujpH2Bczo3iyaWS8La8aV/MrMXeM2M6ZhJX\n2L/h/03j+9bYOMUVfg96QugNHz2ez9BFYpld5qAm2yExpLSVdegyRyGaITmU61E9\nHzSQvKUEPQIGa6C8gIfQ\n=EDc0\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 32092582effce39ec7014383f603f0862c3c1aa1\nparent 4bba038eb63dce76e26c01209dab55745e2d4eae\nauthor Michael Buckley <michael@buckleyisms.com> 1708474983 -0800\ncommitter GitHub <noreply@github.com> 1708474983 -0800\n\ngen_publickey_from_dsa: Initialize BIGNUMs to NULL for OpenSSL 3 (#1320)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/f1133c75da06a5d329206d9a52cc79a9fcb3a48c",
+    "html_url": "https://github.com/libssh2/libssh2/commit/f1133c75da06a5d329206d9a52cc79a9fcb3a48c",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/f1133c75da06a5d329206d9a52cc79a9fcb3a48c/comments",
+    "author": {
+      "login": "MichaelBuckley",
+      "id": 50380,
+      "node_id": "MDQ6VXNlcjUwMzgw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/50380?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/MichaelBuckley",
+      "html_url": "https://github.com/MichaelBuckley",
+      "followers_url": "https://api.github.com/users/MichaelBuckley/followers",
+      "following_url": "https://api.github.com/users/MichaelBuckley/following{/other_user}",
+      "gists_url": "https://api.github.com/users/MichaelBuckley/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/MichaelBuckley/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/MichaelBuckley/subscriptions",
+      "organizations_url": "https://api.github.com/users/MichaelBuckley/orgs",
+      "repos_url": "https://api.github.com/users/MichaelBuckley/repos",
+      "events_url": "https://api.github.com/users/MichaelBuckley/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/MichaelBuckley/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4bba038eb63dce76e26c01209dab55745e2d4eae",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/4bba038eb63dce76e26c01209dab55745e2d4eae",
+        "html_url": "https://github.com/libssh2/libssh2/commit/4bba038eb63dce76e26c01209dab55745e2d4eae"
+      }
+    ]
+  },
+  {
+    "sha": "4bba038eb63dce76e26c01209dab55745e2d4eae",
+    "node_id": "C_kwDOAeO6x9oAKDRiYmEwMzhlYjYzZGNlNzZlMjZjMDEyMDlkYWI1NTc0NWUyZDRlYWU",
+    "commit": {
+      "author": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-01-18T23:06:37Z"
+      },
+      "committer": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-01-23T23:10:26Z"
+      },
+      "message": "RELEASE-NOTES: add algo deprecation notices [ci skip]\n\nCloses #1307",
+      "tree": {
+        "sha": "661abccc492ff2ec0c0521ef995cc8d5599aeb7d",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/661abccc492ff2ec0c0521ef995cc8d5599aeb7d"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/4bba038eb63dce76e26c01209dab55745e2d4eae",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niHUEABYKAB0WIQQ7T6bSwSEiOr7Hbz+1q9Fl4q7yAQUCZbBHYgAKCRC1q9Fl4q7y\nAZvKAQC5vxwWNfmxiFwXHqibgW007flFskSJtlsjt0L9797nxwD/aNLQ8D4rodTJ\nAdRCmMXvi5EAicUWvzLTgv3J0NsdBA4=\n=GG1e\n-----END PGP SIGNATURE-----",
+        "payload": "tree 661abccc492ff2ec0c0521ef995cc8d5599aeb7d\nparent cd61734dad079a2bb9dbd598dfa654272a35d2d6\nauthor Viktor Szakats <commit@vsz.me> 1705619197 +0000\ncommitter Viktor Szakats <commit@vsz.me> 1706051426 +0000\n\nRELEASE-NOTES: add algo deprecation notices [ci skip]\n\nCloses #1307\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/4bba038eb63dce76e26c01209dab55745e2d4eae",
+    "html_url": "https://github.com/libssh2/libssh2/commit/4bba038eb63dce76e26c01209dab55745e2d4eae",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/4bba038eb63dce76e26c01209dab55745e2d4eae/comments",
+    "author": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "cd61734dad079a2bb9dbd598dfa654272a35d2d6",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/cd61734dad079a2bb9dbd598dfa654272a35d2d6",
+        "html_url": "https://github.com/libssh2/libssh2/commit/cd61734dad079a2bb9dbd598dfa654272a35d2d6"
+      }
+    ]
+  },
+  {
+    "sha": "cd61734dad079a2bb9dbd598dfa654272a35d2d6",
+    "node_id": "C_kwDOAeO6x9oAKGNkNjE3MzRkYWQwNzlhMmJiOWRiZDU5OGRmYTY1NDI3MmEzNWQyZDY",
+    "commit": {
+      "author": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-01-22T16:46:28Z"
+      },
+      "committer": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-01-22T16:46:28Z"
+      },
+      "message": "RELEASE-NOTES: sync [ci skip]",
+      "tree": {
+        "sha": "d0543622e17eb4428e090e55c40356617cca1ab4",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/d0543622e17eb4428e090e55c40356617cca1ab4"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/cd61734dad079a2bb9dbd598dfa654272a35d2d6",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niHUEABYKAB0WIQQ7T6bSwSEiOr7Hbz+1q9Fl4q7yAQUCZa6b5AAKCRC1q9Fl4q7y\nAWM2AQCuqb3xnos6x0LqO2nHIRinLl2nidooE46NEEEwD0FjWwD/RJjXFqomJvxr\nS/FHkWbySU17hAil28mhJMt1Yf/VwAM=\n=i3HG\n-----END PGP SIGNATURE-----",
+        "payload": "tree d0543622e17eb4428e090e55c40356617cca1ab4\nparent 76e7a68ab060b631b784f6f9f18c8ff553f80f96\nauthor Viktor Szakats <commit@vsz.me> 1705941988 +0000\ncommitter Viktor Szakats <commit@vsz.me> 1705941988 +0000\n\nRELEASE-NOTES: sync [ci skip]\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/cd61734dad079a2bb9dbd598dfa654272a35d2d6",
+    "html_url": "https://github.com/libssh2/libssh2/commit/cd61734dad079a2bb9dbd598dfa654272a35d2d6",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/cd61734dad079a2bb9dbd598dfa654272a35d2d6/comments",
+    "author": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "76e7a68ab060b631b784f6f9f18c8ff553f80f96",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/76e7a68ab060b631b784f6f9f18c8ff553f80f96",
+        "html_url": "https://github.com/libssh2/libssh2/commit/76e7a68ab060b631b784f6f9f18c8ff553f80f96"
+      }
+    ]
+  },
+  {
+    "sha": "76e7a68ab060b631b784f6f9f18c8ff553f80f96",
+    "node_id": "C_kwDOAeO6x9oAKDc2ZTdhNjhhYjA2MGI2MzFiNzg0ZjZmOWYxOGM4ZmY1NTNmODBmOTY",
+    "commit": {
+      "author": {
+        "name": "Juliusz Sosinowicz",
+        "email": "49391366+julek-wolfssl@users.noreply.github.com",
+        "date": "2024-01-22T16:02:19Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-01-22T16:02:19Z"
+      },
+      "message": "wolfssl: enable debug logging in wolfSSL when compiled in (#1310)\n\nCo-authored-by: Viktor Szakats",
+      "tree": {
+        "sha": "978e1d96bb3d72e74d9b831bc900cccd84566e19",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/978e1d96bb3d72e74d9b831bc900cccd84566e19"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/76e7a68ab060b631b784f6f9f18c8ff553f80f96",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJlrpGLCRC1aQ7uu5UhlAAAqUcQAACRIHbYOqf/HsOSx2VC7Bha\nCRQ/zxxm2dfQctlQhfUyHSkI3Ym+L2/pdErWHYXNQq/36zCHnZyahyfT47MkxNy1\nUXPfdZgckEE8Gn9cuqTnrjEIU8s2m20+9q0US8HxIsktrksoj2Xk9IFy5N73jE93\nlsEu/hCis/kj2HBIQ6qLvuV3IHi9z6XZab4+Q98r8SM/2qL5/CXdoo0Dv0ntdomj\nBupHJ9vGnbxrBU3r73r3C7Y3GhVb4pus9PtpxqEV3z0Sf9xicBDZoFxzmeK2zRPs\n1JogeUnC4AJggcUzpgnOLlg6zcKGBlCNFC/c04VoLEAe1o87dgcDNvzZWHt2YPNf\nw0Wu8y3EtACW6fbAztH9fa4nrwgJcwAbCFAqWC9lsYC+vZygSjIFRMIkQHdDlUr4\n5f3YKAXM3C511uTIxNYfjo0+DdZDI0kMBcZ1V38qm0LkBAvmthMXU7MRQ8m5q46n\n8+AlHyyHU5axntsjdpOVLK9IJAYrxhcgYH3DVAhUEWd9BLrg0Natqt8NC8aSYj5/\nM3bTwoldDa39rXYZxdIKQPth0mlOU8X1MoIfkzGK8B1YPEe64bz/QKEaGwnKiUdT\nf/kSZVtQnOvzIrrJd8D2egIVNwHu8RKJC5RUqR9DoFZ7fE62GayNbLXvNI3lZIx0\n9jAZx2B9HYYpjuULWg4k\n=Gxu4\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 978e1d96bb3d72e74d9b831bc900cccd84566e19\nparent 8457c37afdfbbb9f703e7dac7eb68806b0f49444\nauthor Juliusz Sosinowicz <49391366+julek-wolfssl@users.noreply.github.com> 1705939339 +0100\ncommitter GitHub <noreply@github.com> 1705939339 +0100\n\nwolfssl: enable debug logging in wolfSSL when compiled in (#1310)\n\nCo-authored-by: Viktor Szakats"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/76e7a68ab060b631b784f6f9f18c8ff553f80f96",
+    "html_url": "https://github.com/libssh2/libssh2/commit/76e7a68ab060b631b784f6f9f18c8ff553f80f96",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/76e7a68ab060b631b784f6f9f18c8ff553f80f96/comments",
+    "author": {
+      "login": "julek-wolfssl",
+      "id": 49391366,
+      "node_id": "MDQ6VXNlcjQ5MzkxMzY2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/49391366?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/julek-wolfssl",
+      "html_url": "https://github.com/julek-wolfssl",
+      "followers_url": "https://api.github.com/users/julek-wolfssl/followers",
+      "following_url": "https://api.github.com/users/julek-wolfssl/following{/other_user}",
+      "gists_url": "https://api.github.com/users/julek-wolfssl/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/julek-wolfssl/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/julek-wolfssl/subscriptions",
+      "organizations_url": "https://api.github.com/users/julek-wolfssl/orgs",
+      "repos_url": "https://api.github.com/users/julek-wolfssl/repos",
+      "events_url": "https://api.github.com/users/julek-wolfssl/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/julek-wolfssl/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8457c37afdfbbb9f703e7dac7eb68806b0f49444",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/8457c37afdfbbb9f703e7dac7eb68806b0f49444",
+        "html_url": "https://github.com/libssh2/libssh2/commit/8457c37afdfbbb9f703e7dac7eb68806b0f49444"
+      }
+    ]
+  },
+  {
+    "sha": "8457c37afdfbbb9f703e7dac7eb68806b0f49444",
+    "node_id": "C_kwDOAeO6x9oAKDg0NTdjMzdhZmRmYmJiOWY3MDNlN2RhYzdlYjY4ODA2YjBmNDk0NDQ",
+    "commit": {
+      "author": {
+        "name": "monnerat",
+        "email": "monnerat@users.noreply.github.com",
+        "date": "2024-01-19T19:37:34Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-01-19T19:37:34Z"
+      },
+      "message": "os400: maintain up to date (#1309)\n\n- Handle MD5 conditionals in os400qc3.\r\n- Check for errors in os400qc3 pbkdf1.\r\n- Implement an optional build options override file.\r\n- Sync ILE/RPG copy files with current C header files.\r\n- Allow a null session within a string conversion cache.\r\n- Add an ILE/RPG example.\r\n- Adjust outdated copyrights in changed files.",
+      "tree": {
+        "sha": "28a5426d55578d66f770ef54145a7865f8a2bf2b",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/28a5426d55578d66f770ef54145a7865f8a2bf2b"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/8457c37afdfbbb9f703e7dac7eb68806b0f49444",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJlqs9+CRC1aQ7uu5UhlAAAY6oQAAiOhVRReFuzlHRDhFWKeCgO\nal+hzWw+OqoZSKvg5W5CtbrnUC1ikVX0xPeP0vE4ORGyRxgLew5degL4TvBM4xHN\nYTDg+7vApx+hbjhpXQfNvUHl0zabFDLFAVSlhHwa47PnX6M9oiTpil/duX0a9v9K\nRl4SnNGYtlR9pDZckgRV1bH39AMsUBzKRnd8qdUZrZqEizpCGy6oxfwPLBp2VOuy\n/gTUpUpfhYoc2nfoLYrW4pA64rreHRe5yOg+XuZrPP6WpBsDMQsjMwbZYP8eldpi\nRHnbaIZMwKMB0xq9u7kJnR/otNA4VnRM2hrtleXWav6lBQQnLvHLUr3Y8+Y4pEH0\nGimdFqCd21VVM1F+Y5v5aZG7HntdftKDnU7Dn7fcaQxr41/uWWgsIvTtB0jppRnu\nSt+XYq37H4Y/pJPtz8bOAvHdkc5FOMSCfyx2Dq8jBJGMqDTYVe/nPMyI3qYolseh\nJkuavCYKISiwPBbi3QDBtCYjvkfAORnKwiJFtdTE8VLGCVaTDhQ2KvwtEbjNHkP5\nlkxM7ypfHTBoBU+zyA8Fz7w4xMLgMFOzCdDdTj0jSLBZYYW4tQFQ824LjMytAilJ\n9mD8tM1mXD5bR/JC59860BikHx4JhtDCEPodlg5UcQUcmBovliJxqY298ebiDgmi\n2wlv8bcyaTCcITClA+nT\n=LMTk\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 28a5426d55578d66f770ef54145a7865f8a2bf2b\nparent aea63ad99785f1c0489ac632782eecf4a3da1157\nauthor monnerat <monnerat@users.noreply.github.com> 1705693054 +0100\ncommitter GitHub <noreply@github.com> 1705693054 +0100\n\nos400: maintain up to date (#1309)\n\n- Handle MD5 conditionals in os400qc3.\r\n- Check for errors in os400qc3 pbkdf1.\r\n- Implement an optional build options override file.\r\n- Sync ILE/RPG copy files with current C header files.\r\n- Allow a null session within a string conversion cache.\r\n- Add an ILE/RPG example.\r\n- Adjust outdated copyrights in changed files."
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/8457c37afdfbbb9f703e7dac7eb68806b0f49444",
+    "html_url": "https://github.com/libssh2/libssh2/commit/8457c37afdfbbb9f703e7dac7eb68806b0f49444",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/8457c37afdfbbb9f703e7dac7eb68806b0f49444/comments",
+    "author": {
+      "login": "monnerat",
+      "id": 227821,
+      "node_id": "MDQ6VXNlcjIyNzgyMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/227821?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/monnerat",
+      "html_url": "https://github.com/monnerat",
+      "followers_url": "https://api.github.com/users/monnerat/followers",
+      "following_url": "https://api.github.com/users/monnerat/following{/other_user}",
+      "gists_url": "https://api.github.com/users/monnerat/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/monnerat/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/monnerat/subscriptions",
+      "organizations_url": "https://api.github.com/users/monnerat/orgs",
+      "repos_url": "https://api.github.com/users/monnerat/repos",
+      "events_url": "https://api.github.com/users/monnerat/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/monnerat/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "aea63ad99785f1c0489ac632782eecf4a3da1157",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/aea63ad99785f1c0489ac632782eecf4a3da1157",
+        "html_url": "https://github.com/libssh2/libssh2/commit/aea63ad99785f1c0489ac632782eecf4a3da1157"
+      }
+    ]
+  },
+  {
+    "sha": "aea63ad99785f1c0489ac632782eecf4a3da1157",
+    "node_id": "C_kwDOAeO6x9oAKGFlYTYzYWQ5OTc4NWYxYzA0ODlhYzYzMjc4MmVlY2Y0YTNkYTExNTc",
+    "commit": {
+      "author": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-01-18T23:57:28Z"
+      },
+      "committer": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-01-18T23:58:16Z"
+      },
+      "message": "RELEASE-NOTES: sync",
+      "tree": {
+        "sha": "76a0222db5364e12d10813f1dfbd37e84ed4a511",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/76a0222db5364e12d10813f1dfbd37e84ed4a511"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/aea63ad99785f1c0489ac632782eecf4a3da1157",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niHUEABYKAB0WIQQ7T6bSwSEiOr7Hbz+1q9Fl4q7yAQUCZam7GgAKCRC1q9Fl4q7y\nAe5BAP9JX+IW9uMZ4Dsv4upHSDXS3wVtEorWjHKQDJdC1vLSZQD/avk/PB8m7giH\nnrrNRkWsRj0/5bSWZHOn5o3GiC6+bQg=\n=Y3By\n-----END PGP SIGNATURE-----",
+        "payload": "tree 76a0222db5364e12d10813f1dfbd37e84ed4a511\nparent 4718ede4e09e1a0cd593a3908a8af1aadcf6b2a5\nauthor Viktor Szakats <commit@vsz.me> 1705622248 +0000\ncommitter Viktor Szakats <commit@vsz.me> 1705622296 +0000\n\nRELEASE-NOTES: sync\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/aea63ad99785f1c0489ac632782eecf4a3da1157",
+    "html_url": "https://github.com/libssh2/libssh2/commit/aea63ad99785f1c0489ac632782eecf4a3da1157",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/aea63ad99785f1c0489ac632782eecf4a3da1157/comments",
+    "author": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4718ede4e09e1a0cd593a3908a8af1aadcf6b2a5",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/4718ede4e09e1a0cd593a3908a8af1aadcf6b2a5",
+        "html_url": "https://github.com/libssh2/libssh2/commit/4718ede4e09e1a0cd593a3908a8af1aadcf6b2a5"
+      }
+    ]
+  },
+  {
+    "sha": "4718ede4e09e1a0cd593a3908a8af1aadcf6b2a5",
+    "node_id": "C_kwDOAeO6x9oAKDQ3MThlZGU0ZTA5ZTFhMGNkNTkzYTM5MDhhOGFmMWFhZGNmNmIyYTU",
+    "commit": {
+      "author": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-01-10T12:22:21Z"
+      },
+      "committer": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-01-18T23:54:29Z"
+      },
+      "message": "src: check hash update/final success\n\nAlso:\n- delete unused internal macro `libssh2_md5()` where defined.\n- prefix `libssh2_os400qc3_hash*()` function names with underscore.\n  These are public/visible, but internal.\n- add FIXMEs to OS/400 code to verify update/final calls; some OS API,\n  some internal.\n\nRef: https://github.com/libssh2/libssh2/pull/1301#discussion_r1446861650\nReviewed-by: Michael Buckley\nReviewed-by: Patrick Monnerat\nCloses #1303",
+      "tree": {
+        "sha": "a7901dfe9c57edbb873c7ef54181f07638fefdd4",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/a7901dfe9c57edbb873c7ef54181f07638fefdd4"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/4718ede4e09e1a0cd593a3908a8af1aadcf6b2a5",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niHUEABYKAB0WIQQ7T6bSwSEiOr7Hbz+1q9Fl4q7yAQUCZam6NQAKCRC1q9Fl4q7y\nAYcmAQCBzmqMQ4nGIx2SPeQTb/4JHqst5pjUa8yMhw9ZjQM1hgD9HGPJeiBL8ubw\n0nVKZiOFrQUKHwWlZ5k5arc1eFLdrgU=\n=8f/Q\n-----END PGP SIGNATURE-----",
+        "payload": "tree a7901dfe9c57edbb873c7ef54181f07638fefdd4\nparent 4f551d2bac7a59c9f7e1b94cd870f9599c3a3b8e\nauthor Viktor Szakats <commit@vsz.me> 1704889341 +0000\ncommitter Viktor Szakats <commit@vsz.me> 1705622069 +0000\n\nsrc: check hash update/final success\n\nAlso:\n- delete unused internal macro `libssh2_md5()` where defined.\n- prefix `libssh2_os400qc3_hash*()` function names with underscore.\n  These are public/visible, but internal.\n- add FIXMEs to OS/400 code to verify update/final calls; some OS API,\n  some internal.\n\nRef: https://github.com/libssh2/libssh2/pull/1301#discussion_r1446861650\nReviewed-by: Michael Buckley\nReviewed-by: Patrick Monnerat\nCloses #1303\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/4718ede4e09e1a0cd593a3908a8af1aadcf6b2a5",
+    "html_url": "https://github.com/libssh2/libssh2/commit/4718ede4e09e1a0cd593a3908a8af1aadcf6b2a5",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/4718ede4e09e1a0cd593a3908a8af1aadcf6b2a5/comments",
+    "author": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4f551d2bac7a59c9f7e1b94cd870f9599c3a3b8e",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/4f551d2bac7a59c9f7e1b94cd870f9599c3a3b8e",
+        "html_url": "https://github.com/libssh2/libssh2/commit/4f551d2bac7a59c9f7e1b94cd870f9599c3a3b8e"
+      }
+    ]
+  },
+  {
+    "sha": "4f551d2bac7a59c9f7e1b94cd870f9599c3a3b8e",
+    "node_id": "C_kwDOAeO6x9oAKDRmNTUxZDJiYWM3YTU5YzlmN2UxYjk0Y2Q4NzBmOTU5OWMzYTNiOGU",
+    "commit": {
+      "author": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-01-18T21:32:05Z"
+      },
+      "committer": {
+        "name": "Viktor Szakats",
+        "email": "commit@vsz.me",
+        "date": "2024-01-18T21:32:05Z"
+      },
+      "message": "RELEASE-NOTES: sync [ci skip]",
+      "tree": {
+        "sha": "d94ef7deae4adf7aa1676b19f03142400dcaad69",
+        "url": "https://api.github.com/repos/libssh2/libssh2/git/trees/d94ef7deae4adf7aa1676b19f03142400dcaad69"
+      },
+      "url": "https://api.github.com/repos/libssh2/libssh2/git/commits/4f551d2bac7a59c9f7e1b94cd870f9599c3a3b8e",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niHUEABYKAB0WIQQ7T6bSwSEiOr7Hbz+1q9Fl4q7yAQUCZamY1QAKCRC1q9Fl4q7y\nASIBAQDAaNbmff6TJBhKtJ3kfRe8Uu+rldo0dWD+RzXsggvonwEArEYWK/4d9jJN\nzhvx3aMYcZXKbqZqWNli+gWRIxRD8wU=\n=k2Um\n-----END PGP SIGNATURE-----",
+        "payload": "tree d94ef7deae4adf7aa1676b19f03142400dcaad69\nparent f2945905fbae7728869bffb9e034604cafcffb49\nauthor Viktor Szakats <commit@vsz.me> 1705613525 +0000\ncommitter Viktor Szakats <commit@vsz.me> 1705613525 +0000\n\nRELEASE-NOTES: sync [ci skip]\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libssh2/libssh2/commits/4f551d2bac7a59c9f7e1b94cd870f9599c3a3b8e",
+    "html_url": "https://github.com/libssh2/libssh2/commit/4f551d2bac7a59c9f7e1b94cd870f9599c3a3b8e",
+    "comments_url": "https://api.github.com/repos/libssh2/libssh2/commits/4f551d2bac7a59c9f7e1b94cd870f9599c3a3b8e/comments",
+    "author": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vszakats",
+      "id": 1446897,
+      "node_id": "MDQ6VXNlcjE0NDY4OTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1446897?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vszakats",
+      "html_url": "https://github.com/vszakats",
+      "followers_url": "https://api.github.com/users/vszakats/followers",
+      "following_url": "https://api.github.com/users/vszakats/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vszakats/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vszakats/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vszakats/subscriptions",
+      "organizations_url": "https://api.github.com/users/vszakats/orgs",
+      "repos_url": "https://api.github.com/users/vszakats/repos",
+      "events_url": "https://api.github.com/users/vszakats/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vszakats/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f2945905fbae7728869bffb9e034604cafcffb49",
+        "url": "https://api.github.com/repos/libssh2/libssh2/commits/f2945905fbae7728869bffb9e034604cafcffb49",
+        "html_url": "https://github.com/libssh2/libssh2/commit/f2945905fbae7728869bffb9e034604cafcffb49"
+      }
+    ]
+  }
+]

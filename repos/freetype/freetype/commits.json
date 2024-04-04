@@ -1,0 +1,2296 @@
+[
+  {
+    "sha": "f42ce25563b73fed0123d18a2556b9ba01d2c76b",
+    "node_id": "C_kwDOCyVnU9oAKGY0MmNlMjU1NjNiNzNmZWQwMTIzZDE4YTI1NTZiOWJhMDFkMmM3NmI",
+    "commit": {
+      "author": {
+        "name": "Ben Wanger",
+        "email": "bungeman@gmail.com",
+        "date": "2024-03-08T19:55:12Z"
+      },
+      "committer": {
+        "name": "Ben Wanger",
+        "email": "bungeman@gmail.com",
+        "date": "2024-03-08T19:55:12Z"
+      },
+      "message": "[colr] Ensure enough bytes for PaintColrLayers\n\n* src/sfnt/ttcolr.c (read_paint): check that there are five additional\nbytes to be read when reading PaintColrLayers.\n\nReported as\n\n  https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=66566",
+      "tree": {
+        "sha": "c729a53bcf458ec91988987ebdfb5bb0084a1ed5",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/c729a53bcf458ec91988987ebdfb5bb0084a1ed5"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/f42ce25563b73fed0123d18a2556b9ba01d2c76b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/f42ce25563b73fed0123d18a2556b9ba01d2c76b",
+    "html_url": "https://github.com/freetype/freetype/commit/f42ce25563b73fed0123d18a2556b9ba01d2c76b",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/f42ce25563b73fed0123d18a2556b9ba01d2c76b/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "17545d4bf72175a8ea8020dcbd4d462234d2b5d0",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/17545d4bf72175a8ea8020dcbd4d462234d2b5d0",
+        "html_url": "https://github.com/freetype/freetype/commit/17545d4bf72175a8ea8020dcbd4d462234d2b5d0"
+      }
+    ]
+  },
+  {
+    "sha": "17545d4bf72175a8ea8020dcbd4d462234d2b5d0",
+    "node_id": "C_kwDOCyVnU9oAKDE3NTQ1ZDRiZjcyMTc1YThlYTgwMjBkY2JkNGQ0NjIyMzRkMmI1ZDA",
+    "commit": {
+      "author": {
+        "name": "Ben Wagner",
+        "email": "bungeman@gmail.com",
+        "date": "2024-03-01T16:16:48Z"
+      },
+      "committer": {
+        "name": "Werner Lemberg",
+        "email": "wl@gnu.org",
+        "date": "2024-03-08T16:47:43Z"
+      },
+      "message": "Avoid n^2 scanning for binary data.\n\nWhen creating a CID parser the location of the 'StartData' or '/sfnts'\ntokens needs to be known.  However, the token parser requires that the\nentire document be in memory and flattening the entire stream into memory is\nto be avoided.\n\nTo avoid forcing the entire stream into memory, previously this code would\nscan through the stream looking for 'StartData' or '/sfnts' as strings.\nHowever, these strings could have been in a comment or string token, so the\nstream would be read into memory up to that point and the parser run to\ncheck that these strings were actually tokens.  This forced a parser restart\nfrom the beginning each time; as a result, data with many 'StartData'\nnon-tokens would take n^2 time to check.\n\n* src/cid/cidparse.c (cid_parser_new): Change algorithm to make the initial\nscan look for the last possible 'StartData' or '/sfnts' string in the\nstream.  The stream is read forward instead of backward as a typical normal\nCID font will have one 'StartData' toward the beginning of the data and it\nit much faster to read the data from beginning to end instead of end to\nbeginning.  For memory-based fonts the limit is set to the end of the stream\nsince the stream is already in memory.  Then the parser is run once to look\nfor 'StartData' or '/sfnts' tokens.  If they are found the parser is re-set\nto reflect this new information.\n\nReported as\n\n  https://issues.chromium.org/issues/40201695",
+      "tree": {
+        "sha": "56c7656128ca9fa8937581ac9e2620af15ae18d9",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/56c7656128ca9fa8937581ac9e2620af15ae18d9"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/17545d4bf72175a8ea8020dcbd4d462234d2b5d0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/17545d4bf72175a8ea8020dcbd4d462234d2b5d0",
+    "html_url": "https://github.com/freetype/freetype/commit/17545d4bf72175a8ea8020dcbd4d462234d2b5d0",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/17545d4bf72175a8ea8020dcbd4d462234d2b5d0/comments",
+    "author": null,
+    "committer": {
+      "login": "lemzwerg",
+      "id": 1630245,
+      "node_id": "MDQ6VXNlcjE2MzAyNDU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1630245?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lemzwerg",
+      "html_url": "https://github.com/lemzwerg",
+      "followers_url": "https://api.github.com/users/lemzwerg/followers",
+      "following_url": "https://api.github.com/users/lemzwerg/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lemzwerg/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lemzwerg/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lemzwerg/subscriptions",
+      "organizations_url": "https://api.github.com/users/lemzwerg/orgs",
+      "repos_url": "https://api.github.com/users/lemzwerg/repos",
+      "events_url": "https://api.github.com/users/lemzwerg/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lemzwerg/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "660a7017faba70e6806a01447c32d37568ac5ee4",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/660a7017faba70e6806a01447c32d37568ac5ee4",
+        "html_url": "https://github.com/freetype/freetype/commit/660a7017faba70e6806a01447c32d37568ac5ee4"
+      }
+    ]
+  },
+  {
+    "sha": "660a7017faba70e6806a01447c32d37568ac5ee4",
+    "node_id": "C_kwDOCyVnU9oAKDY2MGE3MDE3ZmFiYTcwZTY4MDZhMDE0NDdjMzJkMzc1NjhhYzVlZTQ",
+    "commit": {
+      "author": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2024-03-06T20:08:04Z"
+      },
+      "committer": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2024-03-06T20:08:04Z"
+      },
+      "message": "* CMakeLists.txt: Bump required version to 3.5.\r\n\r\nFixes #1267.",
+      "tree": {
+        "sha": "169f4cd57b9c185fcb8a4b0ea2dd8a58ec3fa56e",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/169f4cd57b9c185fcb8a4b0ea2dd8a58ec3fa56e"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/660a7017faba70e6806a01447c32d37568ac5ee4",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/660a7017faba70e6806a01447c32d37568ac5ee4",
+    "html_url": "https://github.com/freetype/freetype/commit/660a7017faba70e6806a01447c32d37568ac5ee4",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/660a7017faba70e6806a01447c32d37568ac5ee4/comments",
+    "author": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2cc589043ea195f4a398b18f7cc2ec36c0ec0885",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/2cc589043ea195f4a398b18f7cc2ec36c0ec0885",
+        "html_url": "https://github.com/freetype/freetype/commit/2cc589043ea195f4a398b18f7cc2ec36c0ec0885"
+      }
+    ]
+  },
+  {
+    "sha": "2cc589043ea195f4a398b18f7cc2ec36c0ec0885",
+    "node_id": "C_kwDOCyVnU9oAKDJjYzU4OTA0M2VhMTk1ZjRhMzk4YjE4ZjdjYzJlYzM2YzBlYzA4ODU",
+    "commit": {
+      "author": {
+        "name": "Jordan Williams",
+        "email": "jordan@jwillikers.com",
+        "date": "2024-03-04T18:14:51Z"
+      },
+      "committer": {
+        "name": "Jordan Williams",
+        "email": "jordan@jwillikers.com",
+        "date": "2024-03-04T18:46:19Z"
+      },
+      "message": "meson: Use the standard dependency mechanism to find bzip2\n\nThis follows standard conventions in Meson by using the pkg-config file.\nThis change allows Conan to switch to the Meson build system.",
+      "tree": {
+        "sha": "ae809c1bd2612fd977b6dc27c24eeace9fb96bb9",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/ae809c1bd2612fd977b6dc27c24eeace9fb96bb9"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/2cc589043ea195f4a398b18f7cc2ec36c0ec0885",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQIzBAABCAAdFiEEpqtAavXx3gLOo7bwn7QrDn9lfYwFAmXmFvsACgkQn7QrDn9l\nfYzzFRAAzg1gXQzg4BmJ5oaSlQvq2XPGOxm6LDjS934bmMWQa3nNPOs6jJvwW8PH\nPU4T09hYH1PjnO3FHhmIwFbpnfMLj9jzuU0PjPRn4PPiX613uXMpPfqUUWMqmYA+\npYKZRuHIv1Te9MONWzYCLzLcwJjAWusxTEApn7eGPoSCQpy2Vi2fHTrMx7qKO3zu\n/8jq0pv744S6ghtJDNF4m1PKnsA+f/ed8Nb6c44o30Xh2X9Lm/y+BYqU4+k7b4bP\nidJNPvHcTiB9XIOIgeQDasDTMvzVzXzCyDTUKVNFm0knfsn73WmCNk9CDwJNXBDI\n+KAODVkLIsJpz4kpedsYU1eInMc31gGFSDeHTe5Y6oX5dyh5nv9IhKHQkSj2AHYY\n4isCkEVM8H6fmtSD9Y/zXziNtNQf95Tl+YuqrxGPQQf3Q5Jwq4kM5u6f7pAJoUfo\nsDRD+IfFH5Gl7sKfeCQE3AFIKSgWWDrKjZm8kBgjzsz4TQ//9xlb9t/nHQD3NOtZ\nPMaDgNOFyfa17WeZicZjmzAJ6mEgbzWeFFUSuJylYmv5mH6wJVAzZeIL+Wm0slRX\ntvm+RtBZN45qCR1mN14Li+MOgRtH9eO2VRT+l044b8kVMnIWFV0tDzRZWYhZrujQ\nxDMdqW22pG8Y+iJpeFKfqLEOVtVEXJrwRJFjTsRv6QjqZze2vxk=\n=eYTi\n-----END PGP SIGNATURE-----",
+        "payload": "tree ae809c1bd2612fd977b6dc27c24eeace9fb96bb9\nparent 2a790a9f4937c3950028bd3de29e63c6b0d419ce\nauthor Jordan Williams <jordan@jwillikers.com> 1709576091 -0600\ncommitter Jordan Williams <jordan@jwillikers.com> 1709577979 -0600\n\nmeson: Use the standard dependency mechanism to find bzip2\n\nThis follows standard conventions in Meson by using the pkg-config file.\nThis change allows Conan to switch to the Meson build system.\n"
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/2cc589043ea195f4a398b18f7cc2ec36c0ec0885",
+    "html_url": "https://github.com/freetype/freetype/commit/2cc589043ea195f4a398b18f7cc2ec36c0ec0885",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/2cc589043ea195f4a398b18f7cc2ec36c0ec0885/comments",
+    "author": {
+      "login": "jwillikers",
+      "id": 19399197,
+      "node_id": "MDQ6VXNlcjE5Mzk5MTk3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19399197?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jwillikers",
+      "html_url": "https://github.com/jwillikers",
+      "followers_url": "https://api.github.com/users/jwillikers/followers",
+      "following_url": "https://api.github.com/users/jwillikers/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jwillikers/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jwillikers/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jwillikers/subscriptions",
+      "organizations_url": "https://api.github.com/users/jwillikers/orgs",
+      "repos_url": "https://api.github.com/users/jwillikers/repos",
+      "events_url": "https://api.github.com/users/jwillikers/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jwillikers/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jwillikers",
+      "id": 19399197,
+      "node_id": "MDQ6VXNlcjE5Mzk5MTk3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19399197?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jwillikers",
+      "html_url": "https://github.com/jwillikers",
+      "followers_url": "https://api.github.com/users/jwillikers/followers",
+      "following_url": "https://api.github.com/users/jwillikers/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jwillikers/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jwillikers/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jwillikers/subscriptions",
+      "organizations_url": "https://api.github.com/users/jwillikers/orgs",
+      "repos_url": "https://api.github.com/users/jwillikers/repos",
+      "events_url": "https://api.github.com/users/jwillikers/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jwillikers/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2a790a9f4937c3950028bd3de29e63c6b0d419ce",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/2a790a9f4937c3950028bd3de29e63c6b0d419ce",
+        "html_url": "https://github.com/freetype/freetype/commit/2a790a9f4937c3950028bd3de29e63c6b0d419ce"
+      }
+    ]
+  },
+  {
+    "sha": "2a790a9f4937c3950028bd3de29e63c6b0d419ce",
+    "node_id": "C_kwDOCyVnU9oAKDJhNzkwYTlmNDkzN2MzOTUwMDI4YmQzZGUyOWU2M2M2YjBkNDE5Y2U",
+    "commit": {
+      "author": {
+        "name": "Ben Wanger",
+        "email": "bungeman@gmail.com",
+        "date": "2024-02-28T22:45:19Z"
+      },
+      "committer": {
+        "name": "Werner Lemberg",
+        "email": "wl@gnu.org",
+        "date": "2024-02-29T06:06:46Z"
+      },
+      "message": "[cff, truetype] Always set up default variable instance.\n\nFor default variable instances `cff_face_init` did not set the blend.  This\nmostly worked as later use of the unset blend produced the default\nvariation.  However, if a user called `TT_Get_MM_Var` the blend would be\npartially set up, but not fully.  In particular the number of axes, the axis\ndefinitions, and the instance locations would be set up, but not the current\ninstance location (`coords` and `normalizedcoords`).  This could lead to the\ndefault instances of CFF2 fonts erroring on any use of `blend`.\n\nEnsure the default variable instance is fully set up by always calling\n`FT_Set_Named_Instance` on a variable face.\n\n* src/cff/cffobjs.c (cff_face_init): Call `FT_Set_Named_Instance` on\ndefault instances.\n* src/truetype/ttobjs.c (tt_face_init): Ditto.\n\nFixes #1268.",
+      "tree": {
+        "sha": "0a1825f3438d4b34f1fbe60a5818c9bd74ece1b0",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/0a1825f3438d4b34f1fbe60a5818c9bd74ece1b0"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/2a790a9f4937c3950028bd3de29e63c6b0d419ce",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/2a790a9f4937c3950028bd3de29e63c6b0d419ce",
+    "html_url": "https://github.com/freetype/freetype/commit/2a790a9f4937c3950028bd3de29e63c6b0d419ce",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/2a790a9f4937c3950028bd3de29e63c6b0d419ce/comments",
+    "author": null,
+    "committer": {
+      "login": "lemzwerg",
+      "id": 1630245,
+      "node_id": "MDQ6VXNlcjE2MzAyNDU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1630245?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lemzwerg",
+      "html_url": "https://github.com/lemzwerg",
+      "followers_url": "https://api.github.com/users/lemzwerg/followers",
+      "following_url": "https://api.github.com/users/lemzwerg/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lemzwerg/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lemzwerg/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lemzwerg/subscriptions",
+      "organizations_url": "https://api.github.com/users/lemzwerg/orgs",
+      "repos_url": "https://api.github.com/users/lemzwerg/repos",
+      "events_url": "https://api.github.com/users/lemzwerg/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lemzwerg/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "546237e1bbbb1269b5f76a878ea5eed3c8e268b5",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/546237e1bbbb1269b5f76a878ea5eed3c8e268b5",
+        "html_url": "https://github.com/freetype/freetype/commit/546237e1bbbb1269b5f76a878ea5eed3c8e268b5"
+      }
+    ]
+  },
+  {
+    "sha": "546237e1bbbb1269b5f76a878ea5eed3c8e268b5",
+    "node_id": "C_kwDOCyVnU9oAKDU0NjIzN2UxYmJiYjEyNjliNWY3NmE4NzhlYTVlZWQzYzhlMjY4YjU",
+    "commit": {
+      "author": {
+        "name": "Werner Lemberg",
+        "email": "wl@gnu.org",
+        "date": "2024-02-23T10:55:53Z"
+      },
+      "committer": {
+        "name": "Werner Lemberg",
+        "email": "wl@gnu.org",
+        "date": "2024-02-23T10:55:53Z"
+      },
+      "message": "* src/truetype/ttgxvar.c (ft_var_to_normalized): Integer overflow.\n\nReported as\n\n  https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=66543",
+      "tree": {
+        "sha": "e40e6e6ebe868353b97973f9de9d31272df7629e",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/e40e6e6ebe868353b97973f9de9d31272df7629e"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/546237e1bbbb1269b5f76a878ea5eed3c8e268b5",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/546237e1bbbb1269b5f76a878ea5eed3c8e268b5",
+    "html_url": "https://github.com/freetype/freetype/commit/546237e1bbbb1269b5f76a878ea5eed3c8e268b5",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/546237e1bbbb1269b5f76a878ea5eed3c8e268b5/comments",
+    "author": {
+      "login": "lemzwerg",
+      "id": 1630245,
+      "node_id": "MDQ6VXNlcjE2MzAyNDU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1630245?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lemzwerg",
+      "html_url": "https://github.com/lemzwerg",
+      "followers_url": "https://api.github.com/users/lemzwerg/followers",
+      "following_url": "https://api.github.com/users/lemzwerg/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lemzwerg/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lemzwerg/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lemzwerg/subscriptions",
+      "organizations_url": "https://api.github.com/users/lemzwerg/orgs",
+      "repos_url": "https://api.github.com/users/lemzwerg/repos",
+      "events_url": "https://api.github.com/users/lemzwerg/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lemzwerg/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lemzwerg",
+      "id": 1630245,
+      "node_id": "MDQ6VXNlcjE2MzAyNDU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1630245?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lemzwerg",
+      "html_url": "https://github.com/lemzwerg",
+      "followers_url": "https://api.github.com/users/lemzwerg/followers",
+      "following_url": "https://api.github.com/users/lemzwerg/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lemzwerg/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lemzwerg/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lemzwerg/subscriptions",
+      "organizations_url": "https://api.github.com/users/lemzwerg/orgs",
+      "repos_url": "https://api.github.com/users/lemzwerg/repos",
+      "events_url": "https://api.github.com/users/lemzwerg/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lemzwerg/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "47574f7ea445c8bb751da0fa716424c9c29a6807",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/47574f7ea445c8bb751da0fa716424c9c29a6807",
+        "html_url": "https://github.com/freetype/freetype/commit/47574f7ea445c8bb751da0fa716424c9c29a6807"
+      }
+    ]
+  },
+  {
+    "sha": "47574f7ea445c8bb751da0fa716424c9c29a6807",
+    "node_id": "C_kwDOCyVnU9oAKDQ3NTc0ZjdlYTQ0NWM4YmI3NTFkYTBmYTcxNjQyNGM5YzI5YTY4MDc",
+    "commit": {
+      "author": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2024-01-27T16:11:22Z"
+      },
+      "committer": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2024-01-27T16:11:22Z"
+      },
+      "message": "Update all copyright notices.",
+      "tree": {
+        "sha": "9c5d340283da5ad8ebc91fb8ece3e1ac5daa461c",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/9c5d340283da5ad8ebc91fb8ece3e1ac5daa461c"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/47574f7ea445c8bb751da0fa716424c9c29a6807",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/47574f7ea445c8bb751da0fa716424c9c29a6807",
+    "html_url": "https://github.com/freetype/freetype/commit/47574f7ea445c8bb751da0fa716424c9c29a6807",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/47574f7ea445c8bb751da0fa716424c9c29a6807/comments",
+    "author": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4f0256c13fa541dc320975d988d370ba91691fdf",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/4f0256c13fa541dc320975d988d370ba91691fdf",
+        "html_url": "https://github.com/freetype/freetype/commit/4f0256c13fa541dc320975d988d370ba91691fdf"
+      }
+    ]
+  },
+  {
+    "sha": "4f0256c13fa541dc320975d988d370ba91691fdf",
+    "node_id": "C_kwDOCyVnU9oAKDRmMDI1NmMxM2ZhNTQxZGMzMjA5NzVkOTg4ZDM3MGJhOTE2OTFmZGY",
+    "commit": {
+      "author": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2024-01-27T15:47:10Z"
+      },
+      "committer": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2024-01-27T15:47:10Z"
+      },
+      "message": "* src/sfnt/ttgpos.c (tt_gpos_get_glyph_class): Fix warning C4018.",
+      "tree": {
+        "sha": "ea4808689a42b7922a25719352c068f5d2cdd0cf",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/ea4808689a42b7922a25719352c068f5d2cdd0cf"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/4f0256c13fa541dc320975d988d370ba91691fdf",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/4f0256c13fa541dc320975d988d370ba91691fdf",
+    "html_url": "https://github.com/freetype/freetype/commit/4f0256c13fa541dc320975d988d370ba91691fdf",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/4f0256c13fa541dc320975d988d370ba91691fdf/comments",
+    "author": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8f286c86ef9157ababd3294a5fb6a419756fd9d8",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/8f286c86ef9157ababd3294a5fb6a419756fd9d8",
+        "html_url": "https://github.com/freetype/freetype/commit/8f286c86ef9157ababd3294a5fb6a419756fd9d8"
+      }
+    ]
+  },
+  {
+    "sha": "8f286c86ef9157ababd3294a5fb6a419756fd9d8",
+    "node_id": "C_kwDOCyVnU9oAKDhmMjg2Yzg2ZWY5MTU3YWJhYmQzMjk0YTVmYjZhNDE5NzU2ZmQ5ZDg",
+    "commit": {
+      "author": {
+        "name": "David Saltzman",
+        "email": "davidbsaltzman@gmail.com",
+        "date": "2024-01-20T00:42:48Z"
+      },
+      "committer": {
+        "name": "Werner Lemberg",
+        "email": "wl@gnu.org",
+        "date": "2024-01-27T09:55:04Z"
+      },
+      "message": "Add support for kerning from 'GPOS' tables.\n\nThis commit adds support for kerning from 'GPOS' tables, while maintaining\nsupport for basic 'kern' tables.  `FT_HAS_KERNING` will be true for a font\nwith either available and `FT_Get_Kerning` will still use the basic 'kern'\ntable data if avilable, otherwise check the GPOS 'kern' feature.\n\nThis feature is disabled by default; it can be enabled with the\n`TT_CONFIG_OPTION_GPOS_KERNING` flag.\n\nOnly basic kerning (pair positioning with just an x advance) is supported\nfrom the GPOS layout features; support for that was added to make the\nexisting `FT_Get_Kerning` API more consistently functional.  FreeType does\nnot intend to extend itself to further GPOS functionality though; a\nhigher-level library like HarfBuzz can be used instead for that.\n\n* include/freetype/config/ftoption.h, include/devel/ftoption.h\n(TT_CONFIG_OPTION_GPOS_KERNING): New configuration option.\n\n* include/freetype/internal/fttrace.h: Add `ttgpos` trace handler.\n\n* include/freetype/internal/sfnt.h (SFNT_Interface): Add `load_gpos` and\n`get_gpos_kerning` fields.\n(FT_DEFINE_SFNT_INTERFACE): Updated.\n\n* include/freetype/internal/tttypes.h: Include `fttypes.h`.\n(TT_FaceRec) [TT_CONFIG_OPTION_GPOS_KERNING]: Add `gpos_table` and\n`gpos_kerning_available` fields.\n\n* src/sfnt/ttgpos.c, src/sfnt/ttgpos.h: New files.\n\n* src/sfnt/sfdriver.c [TT_CONFIG_OPTION_GPOS_KERNING]: Include `ttgpos.h`.\n(sfnt_interface): Updated.\n\n* src/sfnt/sfnt.c: Include `ttgpos.c`.\n\n* src/sfnt/sfobjs.c [TT_CONFIG_OPTION_GPOS_KERNING]: Include `ttgpos.h`.\n(sfnt_load_face) [TT_CONFIG_OPTION_GPOS_KERNING]: Load and free GPOS kerning\ndata; check GPOS kerning availability.\n\n* src/truetype/ttdriver.c (tt_get_kerning): Use GPOS kerning if there's no\n'kern' table.",
+      "tree": {
+        "sha": "d6190f6da30ec652bcca8b6928f59cf1f03f62c1",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/d6190f6da30ec652bcca8b6928f59cf1f03f62c1"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/8f286c86ef9157ababd3294a5fb6a419756fd9d8",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/8f286c86ef9157ababd3294a5fb6a419756fd9d8",
+    "html_url": "https://github.com/freetype/freetype/commit/8f286c86ef9157ababd3294a5fb6a419756fd9d8",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/8f286c86ef9157ababd3294a5fb6a419756fd9d8/comments",
+    "author": {
+      "login": "davidbsaltzman",
+      "id": 3684071,
+      "node_id": "MDQ6VXNlcjM2ODQwNzE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3684071?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/davidbsaltzman",
+      "html_url": "https://github.com/davidbsaltzman",
+      "followers_url": "https://api.github.com/users/davidbsaltzman/followers",
+      "following_url": "https://api.github.com/users/davidbsaltzman/following{/other_user}",
+      "gists_url": "https://api.github.com/users/davidbsaltzman/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/davidbsaltzman/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/davidbsaltzman/subscriptions",
+      "organizations_url": "https://api.github.com/users/davidbsaltzman/orgs",
+      "repos_url": "https://api.github.com/users/davidbsaltzman/repos",
+      "events_url": "https://api.github.com/users/davidbsaltzman/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/davidbsaltzman/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lemzwerg",
+      "id": 1630245,
+      "node_id": "MDQ6VXNlcjE2MzAyNDU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1630245?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lemzwerg",
+      "html_url": "https://github.com/lemzwerg",
+      "followers_url": "https://api.github.com/users/lemzwerg/followers",
+      "following_url": "https://api.github.com/users/lemzwerg/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lemzwerg/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lemzwerg/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lemzwerg/subscriptions",
+      "organizations_url": "https://api.github.com/users/lemzwerg/orgs",
+      "repos_url": "https://api.github.com/users/lemzwerg/repos",
+      "events_url": "https://api.github.com/users/lemzwerg/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lemzwerg/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "57617782464411201ce7bbc93b086c1b4d7d84a5",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/57617782464411201ce7bbc93b086c1b4d7d84a5",
+        "html_url": "https://github.com/freetype/freetype/commit/57617782464411201ce7bbc93b086c1b4d7d84a5"
+      }
+    ]
+  },
+  {
+    "sha": "57617782464411201ce7bbc93b086c1b4d7d84a5",
+    "node_id": "C_kwDOCyVnU9oAKDU3NjE3NzgyNDY0NDExMjAxY2U3YmJjOTNiMDg2YzFiNGQ3ZDg0YTU",
+    "commit": {
+      "author": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2024-01-14T13:03:51Z"
+      },
+      "committer": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2024-01-14T13:03:51Z"
+      },
+      "message": "[smooth] Remove SSE2.\n\nAs a result of 7b308a29dd10, the regular 64-bit execution is now faster\nthan SSE2. The rendering speed of script fonts at 64 ppem or larger is\nimproved by about 3% without SSE2. See !314 for the testing results.   \n\n* src/smooth/ftgrays.c (gray_render_conic)[FT_INT64]: Remove SSE2 code.",
+      "tree": {
+        "sha": "b9de8ca4377ea56330304e9c2ead3a817133ab9b",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/b9de8ca4377ea56330304e9c2ead3a817133ab9b"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/57617782464411201ce7bbc93b086c1b4d7d84a5",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/57617782464411201ce7bbc93b086c1b4d7d84a5",
+    "html_url": "https://github.com/freetype/freetype/commit/57617782464411201ce7bbc93b086c1b4d7d84a5",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/57617782464411201ce7bbc93b086c1b4d7d84a5/comments",
+    "author": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6d9147263b88781d615689f0c9d4078de956f849",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/6d9147263b88781d615689f0c9d4078de956f849",
+        "html_url": "https://github.com/freetype/freetype/commit/6d9147263b88781d615689f0c9d4078de956f849"
+      }
+    ]
+  },
+  {
+    "sha": "6d9147263b88781d615689f0c9d4078de956f849",
+    "node_id": "C_kwDOCyVnU9oAKDZkOTE0NzI2M2I4ODc4MWQ2MTU2ODlmMGM5ZDQwNzhkZTk1NmY4NDk",
+    "commit": {
+      "author": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2024-01-14T03:28:54Z"
+      },
+      "committer": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2024-01-14T03:28:54Z"
+      },
+      "message": "* CMakeLists.txt: Accommodate MingGW.\n\nSee https://github.com/StephanTLavavej/mingw-distro/issues/97.",
+      "tree": {
+        "sha": "b483096de16ec0738db0564201023cef1f1490c2",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/b483096de16ec0738db0564201023cef1f1490c2"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/6d9147263b88781d615689f0c9d4078de956f849",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/6d9147263b88781d615689f0c9d4078de956f849",
+    "html_url": "https://github.com/freetype/freetype/commit/6d9147263b88781d615689f0c9d4078de956f849",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/6d9147263b88781d615689f0c9d4078de956f849/comments",
+    "author": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7bac4d146a86482c154bf878221ff321faccac4c",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/7bac4d146a86482c154bf878221ff321faccac4c",
+        "html_url": "https://github.com/freetype/freetype/commit/7bac4d146a86482c154bf878221ff321faccac4c"
+      }
+    ]
+  },
+  {
+    "sha": "7bac4d146a86482c154bf878221ff321faccac4c",
+    "node_id": "C_kwDOCyVnU9oAKDdiYWM0ZDE0NmE4NjQ4MmMxNTRiZjg3ODIyMWZmMzIxZmFjY2FjNGM",
+    "commit": {
+      "author": {
+        "name": "Ozkan Sezer",
+        "email": "sezeroz@gmail.com",
+        "date": "2024-01-08T19:25:31Z"
+      },
+      "committer": {
+        "name": "Werner Lemberg",
+        "email": "wl@gnu.org",
+        "date": "2024-01-08T19:27:03Z"
+      },
+      "message": "* src/sfnt/ttcolr.c (find_base_glyph_v1_record): Fix build in C90 mode.",
+      "tree": {
+        "sha": "719952d66b5d79af658d277ba5bf0d2553be420f",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/719952d66b5d79af658d277ba5bf0d2553be420f"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/7bac4d146a86482c154bf878221ff321faccac4c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/7bac4d146a86482c154bf878221ff321faccac4c",
+    "html_url": "https://github.com/freetype/freetype/commit/7bac4d146a86482c154bf878221ff321faccac4c",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/7bac4d146a86482c154bf878221ff321faccac4c/comments",
+    "author": {
+      "login": "sezero",
+      "id": 4222725,
+      "node_id": "MDQ6VXNlcjQyMjI3MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4222725?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/sezero",
+      "html_url": "https://github.com/sezero",
+      "followers_url": "https://api.github.com/users/sezero/followers",
+      "following_url": "https://api.github.com/users/sezero/following{/other_user}",
+      "gists_url": "https://api.github.com/users/sezero/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/sezero/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/sezero/subscriptions",
+      "organizations_url": "https://api.github.com/users/sezero/orgs",
+      "repos_url": "https://api.github.com/users/sezero/repos",
+      "events_url": "https://api.github.com/users/sezero/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/sezero/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lemzwerg",
+      "id": 1630245,
+      "node_id": "MDQ6VXNlcjE2MzAyNDU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1630245?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lemzwerg",
+      "html_url": "https://github.com/lemzwerg",
+      "followers_url": "https://api.github.com/users/lemzwerg/followers",
+      "following_url": "https://api.github.com/users/lemzwerg/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lemzwerg/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lemzwerg/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lemzwerg/subscriptions",
+      "organizations_url": "https://api.github.com/users/lemzwerg/orgs",
+      "repos_url": "https://api.github.com/users/lemzwerg/repos",
+      "events_url": "https://api.github.com/users/lemzwerg/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lemzwerg/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "cc081d7cce78cae1a734e24cb8c245a618d5f3b2",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/cc081d7cce78cae1a734e24cb8c245a618d5f3b2",
+        "html_url": "https://github.com/freetype/freetype/commit/cc081d7cce78cae1a734e24cb8c245a618d5f3b2"
+      }
+    ]
+  },
+  {
+    "sha": "cc081d7cce78cae1a734e24cb8c245a618d5f3b2",
+    "node_id": "C_kwDOCyVnU9oAKGNjMDgxZDdjY2U3OGNhZTFhNzM0ZTI0Y2I4YzI0NWE2MThkNWYzYjI",
+    "commit": {
+      "author": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2024-01-07T00:22:36Z"
+      },
+      "committer": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2024-01-07T00:22:36Z"
+      },
+      "message": "[base] Fix up Mac resource forks and dfonts.\n\n* src/base/ftobjs.c (IsMacResource): Assign `face_index`.\n* src/base/ftmac.c (FT_New_Face_From_Suitcase): Ditto after rework.",
+      "tree": {
+        "sha": "db6bd0fa65fe15dfa69e5fc40153f558f832d26f",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/db6bd0fa65fe15dfa69e5fc40153f558f832d26f"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/cc081d7cce78cae1a734e24cb8c245a618d5f3b2",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/cc081d7cce78cae1a734e24cb8c245a618d5f3b2",
+    "html_url": "https://github.com/freetype/freetype/commit/cc081d7cce78cae1a734e24cb8c245a618d5f3b2",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/cc081d7cce78cae1a734e24cb8c245a618d5f3b2/comments",
+    "author": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4a85ff0b79ebb6a3e70c3b82cb63ffe4a0d4ccf0",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/4a85ff0b79ebb6a3e70c3b82cb63ffe4a0d4ccf0",
+        "html_url": "https://github.com/freetype/freetype/commit/4a85ff0b79ebb6a3e70c3b82cb63ffe4a0d4ccf0"
+      }
+    ]
+  },
+  {
+    "sha": "4a85ff0b79ebb6a3e70c3b82cb63ffe4a0d4ccf0",
+    "node_id": "C_kwDOCyVnU9oAKDRhODVmZjBiNzllYmI2YTNlNzBjM2I4MmNiNjNmZmU0YTBkNGNjZjA",
+    "commit": {
+      "author": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2024-01-05T02:38:51Z"
+      },
+      "committer": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2024-01-05T02:38:51Z"
+      },
+      "message": "[sfnt] Restrict POST version 1.0.\n\nA font has surfaced with `post` version 1.0 and fewer than 258 glyphs.\nIts glyphs did not correspond to their names. We now reject such `post`\nstrictly following specifications.\n\n* src/sfnt/ttpost.c (tt_face_get_ps_name): Check the number of glyphs\nfor version 1.0.",
+      "tree": {
+        "sha": "de69bab30700a36bb7f873c86a8e9388fb612f18",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/de69bab30700a36bb7f873c86a8e9388fb612f18"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/4a85ff0b79ebb6a3e70c3b82cb63ffe4a0d4ccf0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/4a85ff0b79ebb6a3e70c3b82cb63ffe4a0d4ccf0",
+    "html_url": "https://github.com/freetype/freetype/commit/4a85ff0b79ebb6a3e70c3b82cb63ffe4a0d4ccf0",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/4a85ff0b79ebb6a3e70c3b82cb63ffe4a0d4ccf0/comments",
+    "author": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a07ca46cd0fcb4af99ae831dee803d3bddf01dd6",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/a07ca46cd0fcb4af99ae831dee803d3bddf01dd6",
+        "html_url": "https://github.com/freetype/freetype/commit/a07ca46cd0fcb4af99ae831dee803d3bddf01dd6"
+      }
+    ]
+  },
+  {
+    "sha": "a07ca46cd0fcb4af99ae831dee803d3bddf01dd6",
+    "node_id": "C_kwDOCyVnU9oAKGEwN2NhNDZjZDBmY2I0YWY5OWFlODMxZGVlODAzZDNiZGRmMDFkZDY",
+    "commit": {
+      "author": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2024-01-03T14:55:33Z"
+      },
+      "committer": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2024-01-03T14:55:33Z"
+      },
+      "message": "* .gitlab-ci.yml: Use detached CI pipelines.\r\n\r\nSee issue freedesktop/freedesktop#540.",
+      "tree": {
+        "sha": "8fa184d39dff07507515038a57f8060f78d90155",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/8fa184d39dff07507515038a57f8060f78d90155"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/a07ca46cd0fcb4af99ae831dee803d3bddf01dd6",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/a07ca46cd0fcb4af99ae831dee803d3bddf01dd6",
+    "html_url": "https://github.com/freetype/freetype/commit/a07ca46cd0fcb4af99ae831dee803d3bddf01dd6",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/a07ca46cd0fcb4af99ae831dee803d3bddf01dd6/comments",
+    "author": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "57c4252ab5f435c52e66b619bd514068f7a683b0",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/57c4252ab5f435c52e66b619bd514068f7a683b0",
+        "html_url": "https://github.com/freetype/freetype/commit/57c4252ab5f435c52e66b619bd514068f7a683b0"
+      }
+    ]
+  },
+  {
+    "sha": "57c4252ab5f435c52e66b619bd514068f7a683b0",
+    "node_id": "C_kwDOCyVnU9oAKDU3YzQyNTJhYjVmNDM1YzUyZTY2YjYxOWJkNTE0MDY4ZjdhNjgzYjA",
+    "commit": {
+      "author": {
+        "name": "Werner Lemberg",
+        "email": "wl@gnu.org",
+        "date": "2024-01-02T16:55:33Z"
+      },
+      "committer": {
+        "name": "Werner Lemberg",
+        "email": "wl@gnu.org",
+        "date": "2024-01-02T16:55:33Z"
+      },
+      "message": "[sfnt] Guard access in 'COLR' v1 glyph binary search.\n\nReported as\n\n  https://bugs.chromium.org/p/chromium/issues/detail?id=1505216\n\n* src/sfnt/ttcolr.c (find_base_glyph_v1_record): Guard access of the search\npointer during binary search.  The pointer needs to be checked as we go as\nthe test that compares number of v1 glyphs with table size at the time of\nloading the table is not sufficient on its own.\n\nA scenario is possible in which the `BaseGlyphRecord` list extends into\nnon-`BaseGlyphRecord` parts of the 'COLR' v1 table (but passed the size\ncomparison check).  Then, at those locations, invalid glyph ID values are\nread and may provoke an invalid read due to reassigning min and max values\nduring the binary search.",
+      "tree": {
+        "sha": "6fa70319178734802c27cebf2b8a7d1e9a6d7cfd",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/6fa70319178734802c27cebf2b8a7d1e9a6d7cfd"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/57c4252ab5f435c52e66b619bd514068f7a683b0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/57c4252ab5f435c52e66b619bd514068f7a683b0",
+    "html_url": "https://github.com/freetype/freetype/commit/57c4252ab5f435c52e66b619bd514068f7a683b0",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/57c4252ab5f435c52e66b619bd514068f7a683b0/comments",
+    "author": {
+      "login": "lemzwerg",
+      "id": 1630245,
+      "node_id": "MDQ6VXNlcjE2MzAyNDU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1630245?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lemzwerg",
+      "html_url": "https://github.com/lemzwerg",
+      "followers_url": "https://api.github.com/users/lemzwerg/followers",
+      "following_url": "https://api.github.com/users/lemzwerg/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lemzwerg/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lemzwerg/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lemzwerg/subscriptions",
+      "organizations_url": "https://api.github.com/users/lemzwerg/orgs",
+      "repos_url": "https://api.github.com/users/lemzwerg/repos",
+      "events_url": "https://api.github.com/users/lemzwerg/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lemzwerg/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lemzwerg",
+      "id": 1630245,
+      "node_id": "MDQ6VXNlcjE2MzAyNDU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1630245?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lemzwerg",
+      "html_url": "https://github.com/lemzwerg",
+      "followers_url": "https://api.github.com/users/lemzwerg/followers",
+      "following_url": "https://api.github.com/users/lemzwerg/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lemzwerg/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lemzwerg/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lemzwerg/subscriptions",
+      "organizations_url": "https://api.github.com/users/lemzwerg/orgs",
+      "repos_url": "https://api.github.com/users/lemzwerg/repos",
+      "events_url": "https://api.github.com/users/lemzwerg/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lemzwerg/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ca76683b781db5d06ef1a0e2cb62a767e7dbe626",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/ca76683b781db5d06ef1a0e2cb62a767e7dbe626",
+        "html_url": "https://github.com/freetype/freetype/commit/ca76683b781db5d06ef1a0e2cb62a767e7dbe626"
+      }
+    ]
+  },
+  {
+    "sha": "ca76683b781db5d06ef1a0e2cb62a767e7dbe626",
+    "node_id": "C_kwDOCyVnU9oAKGNhNzY2ODNiNzgxZGI1ZDA2ZWYxYTBlMmNiNjJhNzY3ZTdkYmU2MjY",
+    "commit": {
+      "author": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2023-12-18T17:45:05Z"
+      },
+      "committer": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2023-12-18T17:45:05Z"
+      },
+      "message": "[ci] Add support for MSBuild on Windows.\n\nThis adds msbuild job for VS2019 (x64).\n\n* .gitlab-ci.yml: Added \"windows msbuild vs2019 amd64\".",
+      "tree": {
+        "sha": "57fd055299901d371d3cbe71925505441e8fbc67",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/57fd055299901d371d3cbe71925505441e8fbc67"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/ca76683b781db5d06ef1a0e2cb62a767e7dbe626",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/ca76683b781db5d06ef1a0e2cb62a767e7dbe626",
+    "html_url": "https://github.com/freetype/freetype/commit/ca76683b781db5d06ef1a0e2cb62a767e7dbe626",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/ca76683b781db5d06ef1a0e2cb62a767e7dbe626/comments",
+    "author": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8eab511017a65026985523cab14aff07f1bb9746",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/8eab511017a65026985523cab14aff07f1bb9746",
+        "html_url": "https://github.com/freetype/freetype/commit/8eab511017a65026985523cab14aff07f1bb9746"
+      }
+    ]
+  },
+  {
+    "sha": "8eab511017a65026985523cab14aff07f1bb9746",
+    "node_id": "C_kwDOCyVnU9oAKDhlYWI1MTEwMTdhNjUwMjY5ODU1MjNjYWIxNGFmZjA3ZjFiYjk3NDY",
+    "commit": {
+      "author": {
+        "name": "Skef Iterum",
+        "email": "github@skef.org",
+        "date": "2023-12-14T05:59:05Z"
+      },
+      "committer": {
+        "name": "Werner Lemberg",
+        "email": "wl@gnu.org",
+        "date": "2023-12-14T06:17:01Z"
+      },
+      "message": "[CFF] Extract `BlueValues` as `Fixed` rather than `Int`.\n\nThis is a follow-up to commit 26a7f047,\n\n  [cff] Make blend operator work with floats in private dicts.\n\nwhich addressed the 'party baseline' bug.  However, the reporting user\nindicated that the default location and some other points in design space\nrendered OK, but other points in design space still had problems.  The most\nobvious issue being that the x-heights of lower-case letters did not align;\nsee\n\n  https://github.com/adobe-fonts/source-serif/issues/121#issuecomment-1773794136\n\nAfter some analysis we determined that this was due to an interaction\nbetween `BlueValue` rounding and the zone-based algorithm.  In short, for a\npoint to be considered in a zone it must fall within the bounds of the zone.\n(There is a slop factor in some cases, but only a very small one.)  In the\nAdobe-contributed side of the code, point values are not integer-rounded,\ninstead they're kept as (some form of) fixed.  Rounding just the `BlueValues`\nmeans that points that need to be considered within a zone will fall outside\nof it at some points in design space.\n\nThe majority of this patch changes the storage and parsing of `BlueValues`\nto keep them as `FT_Fixed`.  No significant code changes were needed because\nthe values are converted to `Fixed` anyway when stored in `CF_BlueRec`.  No\nattempt was made to address problems in the older pshinter code beyond\nconverting the values from `FT_Fixed` to `FT_Short` when copying the private\ndictionary.  (However, as the point values are also rounded in that code,\nthe problem is much less likely to occur, although inconsistency between\nrounding and truncation could cause an analogous problem.)\n\n* include/freetype/internal/cfftypes.h (CFF_PrivateRec): Use `FT_Fixed` for\n`blue_values`, `other_blues`, `family_blues`, and `family_other_blues`.\n\n* src/cff/cffload.c (cff_blend_doBlend): Updated.\n\n* src/cff/cffobjs.c (CFF_fixedToInt): New macro.\n(cff_make_private_dict): Use it.\n\n* src/cff/cffparse.h (cff_kind_delta_fixed): New enum value.\n\n* src/cff/cffparse.c (do_fixed): Updated.\n(CFF_FIELD_DELTA, CFF_FIELD_DELTA_FIXED, CFF_DELTA_KIND): New set of macros,\nreplacing `CFF_FIELD_DELTA`.\n(cff_parser_run): Updated to handle fixed-float deltas.\n\n* src/cff/cfftoken.h: Updated to use `CFF_FIELD_DELTA_FIXED` for blue\nvalues.\n\n* src/psaux/psblues.c (cf2_blueToFixed): Removed, no longer needed.\n(cf2_blues_init): Updated.\n\n* src/pxaux/psft.c, src/pxaux/psft.h (cf2_getBlueValues, cf2_getOtherBlues,\ncf2_getFamilyBlues, cf2_getFamilyOtherBlues): Updated signatures.\n\n* src/psaux/psobjs.c (t1_make_subfont): Updated.",
+      "tree": {
+        "sha": "8f3d5d1eb7d122e1024ae41f20ff0726a0f011f8",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/8f3d5d1eb7d122e1024ae41f20ff0726a0f011f8"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/8eab511017a65026985523cab14aff07f1bb9746",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/8eab511017a65026985523cab14aff07f1bb9746",
+    "html_url": "https://github.com/freetype/freetype/commit/8eab511017a65026985523cab14aff07f1bb9746",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/8eab511017a65026985523cab14aff07f1bb9746/comments",
+    "author": {
+      "login": "skef",
+      "id": 6175836,
+      "node_id": "MDQ6VXNlcjYxNzU4MzY=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6175836?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skef",
+      "html_url": "https://github.com/skef",
+      "followers_url": "https://api.github.com/users/skef/followers",
+      "following_url": "https://api.github.com/users/skef/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skef/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skef/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skef/subscriptions",
+      "organizations_url": "https://api.github.com/users/skef/orgs",
+      "repos_url": "https://api.github.com/users/skef/repos",
+      "events_url": "https://api.github.com/users/skef/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skef/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lemzwerg",
+      "id": 1630245,
+      "node_id": "MDQ6VXNlcjE2MzAyNDU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1630245?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lemzwerg",
+      "html_url": "https://github.com/lemzwerg",
+      "followers_url": "https://api.github.com/users/lemzwerg/followers",
+      "following_url": "https://api.github.com/users/lemzwerg/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lemzwerg/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lemzwerg/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lemzwerg/subscriptions",
+      "organizations_url": "https://api.github.com/users/lemzwerg/orgs",
+      "repos_url": "https://api.github.com/users/lemzwerg/repos",
+      "events_url": "https://api.github.com/users/lemzwerg/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lemzwerg/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6f2bf6a582eae387566a470353ed8fd6c74f4cca",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/6f2bf6a582eae387566a470353ed8fd6c74f4cca",
+        "html_url": "https://github.com/freetype/freetype/commit/6f2bf6a582eae387566a470353ed8fd6c74f4cca"
+      }
+    ]
+  },
+  {
+    "sha": "6f2bf6a582eae387566a470353ed8fd6c74f4cca",
+    "node_id": "C_kwDOCyVnU9oAKDZmMmJmNmE1ODJlYWUzODc1NjZhNDcwMzUzZWQ4ZmQ2Yzc0ZjRjY2E",
+    "commit": {
+      "author": {
+        "name": "Skef Iterum",
+        "email": "github@skef.org",
+        "date": "2023-12-14T05:55:33Z"
+      },
+      "committer": {
+        "name": "Werner Lemberg",
+        "email": "wl@gnu.org",
+        "date": "2023-12-14T05:55:33Z"
+      },
+      "message": "[psaux] Improve tracing.\n\n* src/psaux/psintrp.c (cf2_doBlend, cf2_interpT2CharString [cf2_cmdBLEND]):\nShow blended values.",
+      "tree": {
+        "sha": "b472273992c59febfd757541cbba1f3d5914f3b4",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/b472273992c59febfd757541cbba1f3d5914f3b4"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/6f2bf6a582eae387566a470353ed8fd6c74f4cca",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/6f2bf6a582eae387566a470353ed8fd6c74f4cca",
+    "html_url": "https://github.com/freetype/freetype/commit/6f2bf6a582eae387566a470353ed8fd6c74f4cca",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/6f2bf6a582eae387566a470353ed8fd6c74f4cca/comments",
+    "author": {
+      "login": "skef",
+      "id": 6175836,
+      "node_id": "MDQ6VXNlcjYxNzU4MzY=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6175836?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/skef",
+      "html_url": "https://github.com/skef",
+      "followers_url": "https://api.github.com/users/skef/followers",
+      "following_url": "https://api.github.com/users/skef/following{/other_user}",
+      "gists_url": "https://api.github.com/users/skef/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/skef/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/skef/subscriptions",
+      "organizations_url": "https://api.github.com/users/skef/orgs",
+      "repos_url": "https://api.github.com/users/skef/repos",
+      "events_url": "https://api.github.com/users/skef/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/skef/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lemzwerg",
+      "id": 1630245,
+      "node_id": "MDQ6VXNlcjE2MzAyNDU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1630245?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lemzwerg",
+      "html_url": "https://github.com/lemzwerg",
+      "followers_url": "https://api.github.com/users/lemzwerg/followers",
+      "following_url": "https://api.github.com/users/lemzwerg/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lemzwerg/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lemzwerg/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lemzwerg/subscriptions",
+      "organizations_url": "https://api.github.com/users/lemzwerg/orgs",
+      "repos_url": "https://api.github.com/users/lemzwerg/repos",
+      "events_url": "https://api.github.com/users/lemzwerg/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lemzwerg/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "af6d210537758e42f3d9d4c9b8689ee76b8c00c6",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/af6d210537758e42f3d9d4c9b8689ee76b8c00c6",
+        "html_url": "https://github.com/freetype/freetype/commit/af6d210537758e42f3d9d4c9b8689ee76b8c00c6"
+      }
+    ]
+  },
+  {
+    "sha": "af6d210537758e42f3d9d4c9b8689ee76b8c00c6",
+    "node_id": "C_kwDOCyVnU9oAKGFmNmQyMTA1Mzc3NThlNDJmM2Q5ZDRjOWI4Njg5ZWU3NmI4YzAwYzY",
+    "commit": {
+      "author": {
+        "name": "Jouk Jansen",
+        "email": "joukj@hrem.nano.tudelft.nl",
+        "date": "2023-12-14T05:21:52Z"
+      },
+      "committer": {
+        "name": "Werner Lemberg",
+        "email": "wl@gnu.org",
+        "date": "2023-12-14T05:21:52Z"
+      },
+      "message": "* vms_make.com: Switch to `clang`.\n\nAlso add proper bzip2 support.",
+      "tree": {
+        "sha": "62974ce724fe5973e6075ad7da340fb075c2cbae",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/62974ce724fe5973e6075ad7da340fb075c2cbae"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/af6d210537758e42f3d9d4c9b8689ee76b8c00c6",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/af6d210537758e42f3d9d4c9b8689ee76b8c00c6",
+    "html_url": "https://github.com/freetype/freetype/commit/af6d210537758e42f3d9d4c9b8689ee76b8c00c6",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/af6d210537758e42f3d9d4c9b8689ee76b8c00c6/comments",
+    "author": {
+      "login": "joukj",
+      "id": 11192357,
+      "node_id": "MDQ6VXNlcjExMTkyMzU3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11192357?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/joukj",
+      "html_url": "https://github.com/joukj",
+      "followers_url": "https://api.github.com/users/joukj/followers",
+      "following_url": "https://api.github.com/users/joukj/following{/other_user}",
+      "gists_url": "https://api.github.com/users/joukj/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/joukj/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/joukj/subscriptions",
+      "organizations_url": "https://api.github.com/users/joukj/orgs",
+      "repos_url": "https://api.github.com/users/joukj/repos",
+      "events_url": "https://api.github.com/users/joukj/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/joukj/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lemzwerg",
+      "id": 1630245,
+      "node_id": "MDQ6VXNlcjE2MzAyNDU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1630245?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lemzwerg",
+      "html_url": "https://github.com/lemzwerg",
+      "followers_url": "https://api.github.com/users/lemzwerg/followers",
+      "following_url": "https://api.github.com/users/lemzwerg/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lemzwerg/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lemzwerg/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lemzwerg/subscriptions",
+      "organizations_url": "https://api.github.com/users/lemzwerg/orgs",
+      "repos_url": "https://api.github.com/users/lemzwerg/repos",
+      "events_url": "https://api.github.com/users/lemzwerg/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lemzwerg/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9bf72966ed75353442df205e82b7080fb8a7bb47",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/9bf72966ed75353442df205e82b7080fb8a7bb47",
+        "html_url": "https://github.com/freetype/freetype/commit/9bf72966ed75353442df205e82b7080fb8a7bb47"
+      }
+    ]
+  },
+  {
+    "sha": "9bf72966ed75353442df205e82b7080fb8a7bb47",
+    "node_id": "C_kwDOCyVnU9oAKDliZjcyOTY2ZWQ3NTM1MzQ0MmRmMjA1ZTgyYjcwODBmYjhhN2JiNDc",
+    "commit": {
+      "author": {
+        "name": "Werner Lemberg",
+        "email": "wl@gnu.org",
+        "date": "2023-12-14T05:11:43Z"
+      },
+      "committer": {
+        "name": "Werner Lemberg",
+        "email": "wl@gnu.org",
+        "date": "2023-12-14T05:14:43Z"
+      },
+      "message": "* src/truetype/ttgxvar.c (ft_var_to_normalized): Fix undefined left-shift.\n\nReported as\n\n  https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=63723",
+      "tree": {
+        "sha": "8c500b17ee74b05ea19e5745375b3d2306c87dc4",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/8c500b17ee74b05ea19e5745375b3d2306c87dc4"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/9bf72966ed75353442df205e82b7080fb8a7bb47",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/9bf72966ed75353442df205e82b7080fb8a7bb47",
+    "html_url": "https://github.com/freetype/freetype/commit/9bf72966ed75353442df205e82b7080fb8a7bb47",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/9bf72966ed75353442df205e82b7080fb8a7bb47/comments",
+    "author": {
+      "login": "lemzwerg",
+      "id": 1630245,
+      "node_id": "MDQ6VXNlcjE2MzAyNDU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1630245?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lemzwerg",
+      "html_url": "https://github.com/lemzwerg",
+      "followers_url": "https://api.github.com/users/lemzwerg/followers",
+      "following_url": "https://api.github.com/users/lemzwerg/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lemzwerg/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lemzwerg/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lemzwerg/subscriptions",
+      "organizations_url": "https://api.github.com/users/lemzwerg/orgs",
+      "repos_url": "https://api.github.com/users/lemzwerg/repos",
+      "events_url": "https://api.github.com/users/lemzwerg/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lemzwerg/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lemzwerg",
+      "id": 1630245,
+      "node_id": "MDQ6VXNlcjE2MzAyNDU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1630245?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lemzwerg",
+      "html_url": "https://github.com/lemzwerg",
+      "followers_url": "https://api.github.com/users/lemzwerg/followers",
+      "following_url": "https://api.github.com/users/lemzwerg/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lemzwerg/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lemzwerg/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lemzwerg/subscriptions",
+      "organizations_url": "https://api.github.com/users/lemzwerg/orgs",
+      "repos_url": "https://api.github.com/users/lemzwerg/repos",
+      "events_url": "https://api.github.com/users/lemzwerg/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lemzwerg/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "50740b37ba5f468316edf6cf6ee97b61f2c7addd",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/50740b37ba5f468316edf6cf6ee97b61f2c7addd",
+        "html_url": "https://github.com/freetype/freetype/commit/50740b37ba5f468316edf6cf6ee97b61f2c7addd"
+      }
+    ]
+  },
+  {
+    "sha": "50740b37ba5f468316edf6cf6ee97b61f2c7addd",
+    "node_id": "C_kwDOCyVnU9oAKDUwNzQwYjM3YmE1ZjQ2ODMxNmVkZjZjZjZlZTk3YjYxZjJjN2FkZGQ",
+    "commit": {
+      "author": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2023-12-07T04:33:32Z"
+      },
+      "committer": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2023-12-07T04:33:32Z"
+      },
+      "message": "[msbuild] Streamline the process.\n\nMSBuild.exe can now be fired from the root folder without options.\n\n* builds/windows/vc2010/freetype.sln: Relocated to...\n* MSBuild.sln: ... here with minor changes.\n* MSBuild.rsp: New file with command line options.\n* docs/INSTALL: Reference `MSBuild.sln`.",
+      "tree": {
+        "sha": "6b5e46ea43052e3da51df2c928e48567c01bb41a",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/6b5e46ea43052e3da51df2c928e48567c01bb41a"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/50740b37ba5f468316edf6cf6ee97b61f2c7addd",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/50740b37ba5f468316edf6cf6ee97b61f2c7addd",
+    "html_url": "https://github.com/freetype/freetype/commit/50740b37ba5f468316edf6cf6ee97b61f2c7addd",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/50740b37ba5f468316edf6cf6ee97b61f2c7addd/comments",
+    "author": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "01f23c39e01d2c739fd8abc69aff9dbf13b46202",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/01f23c39e01d2c739fd8abc69aff9dbf13b46202",
+        "html_url": "https://github.com/freetype/freetype/commit/01f23c39e01d2c739fd8abc69aff9dbf13b46202"
+      }
+    ]
+  },
+  {
+    "sha": "01f23c39e01d2c739fd8abc69aff9dbf13b46202",
+    "node_id": "C_kwDOCyVnU9oAKDAxZjIzYzM5ZTAxZDJjNzM5ZmQ4YWJjNjlhZmY5ZGJmMTNiNDYyMDI",
+    "commit": {
+      "author": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2023-12-02T04:13:28Z"
+      },
+      "committer": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2023-12-02T04:13:28Z"
+      },
+      "message": "* src/raster/ftraster.c (Draw_Sweep): Swap stub conditions.",
+      "tree": {
+        "sha": "cf0ba9624b56695237abe765335fd0f452b9ef81",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/cf0ba9624b56695237abe765335fd0f452b9ef81"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/01f23c39e01d2c739fd8abc69aff9dbf13b46202",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/01f23c39e01d2c739fd8abc69aff9dbf13b46202",
+    "html_url": "https://github.com/freetype/freetype/commit/01f23c39e01d2c739fd8abc69aff9dbf13b46202",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/01f23c39e01d2c739fd8abc69aff9dbf13b46202/comments",
+    "author": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5999d47d682a88d4b682d57fb00699b2d044d94b",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/5999d47d682a88d4b682d57fb00699b2d044d94b",
+        "html_url": "https://github.com/freetype/freetype/commit/5999d47d682a88d4b682d57fb00699b2d044d94b"
+      }
+    ]
+  },
+  {
+    "sha": "5999d47d682a88d4b682d57fb00699b2d044d94b",
+    "node_id": "C_kwDOCyVnU9oAKDU5OTlkNDdkNjgyYTg4ZDRiNjgyZDU3ZmIwMDY5OWIyZDA0NGQ5NGI",
+    "commit": {
+      "author": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2023-12-02T01:50:16Z"
+      },
+      "committer": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2023-12-02T01:50:16Z"
+      },
+      "message": "* src/raster/ftmisc.h (FT_MulDiv): Remove unused copy.",
+      "tree": {
+        "sha": "250f3e3282c0b2e78710d2853fd5996458211710",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/250f3e3282c0b2e78710d2853fd5996458211710"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/5999d47d682a88d4b682d57fb00699b2d044d94b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/5999d47d682a88d4b682d57fb00699b2d044d94b",
+    "html_url": "https://github.com/freetype/freetype/commit/5999d47d682a88d4b682d57fb00699b2d044d94b",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/5999d47d682a88d4b682d57fb00699b2d044d94b/comments",
+    "author": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8f255c89e14219ca2489043f699797ee106ec6e9",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/8f255c89e14219ca2489043f699797ee106ec6e9",
+        "html_url": "https://github.com/freetype/freetype/commit/8f255c89e14219ca2489043f699797ee106ec6e9"
+      }
+    ]
+  },
+  {
+    "sha": "8f255c89e14219ca2489043f699797ee106ec6e9",
+    "node_id": "C_kwDOCyVnU9oAKDhmMjU1Yzg5ZTE0MjE5Y2EyNDg5MDQzZjY5OTc5N2VlMTA2ZWM2ZTk",
+    "commit": {
+      "author": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2023-11-28T03:44:36Z"
+      },
+      "committer": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2023-11-28T03:44:36Z"
+      },
+      "message": "[raster] Speed up Bézier arches with extrema.\n\nWhile it is recommended to have an explicit point at each curve\nextrema, they might be missing or outline could be rotated. This\nleads to excessive bisections in raster to find them.  This change\nhelps to decrease the number of bisections.  The scanline\nintersections remain monotonous, of course.\n\n* src/raster/ftraster.c (Conic_To, Cubic_To): Check that control\npoints cross the scanlines to bisect.",
+      "tree": {
+        "sha": "8d64a8dc4588395c36129544ae5dad3998e0b661",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/8d64a8dc4588395c36129544ae5dad3998e0b661"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/8f255c89e14219ca2489043f699797ee106ec6e9",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/8f255c89e14219ca2489043f699797ee106ec6e9",
+    "html_url": "https://github.com/freetype/freetype/commit/8f255c89e14219ca2489043f699797ee106ec6e9",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/8f255c89e14219ca2489043f699797ee106ec6e9/comments",
+    "author": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1eb04c71ebd807156681b1fbf52514416a83dcee",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/1eb04c71ebd807156681b1fbf52514416a83dcee",
+        "html_url": "https://github.com/freetype/freetype/commit/1eb04c71ebd807156681b1fbf52514416a83dcee"
+      }
+    ]
+  },
+  {
+    "sha": "1eb04c71ebd807156681b1fbf52514416a83dcee",
+    "node_id": "C_kwDOCyVnU9oAKDFlYjA0YzcxZWJkODA3MTU2NjgxYjFmYmY1MjUxNDQxNmE4M2RjZWU",
+    "commit": {
+      "author": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2023-11-25T14:00:11Z"
+      },
+      "committer": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2023-11-25T14:00:11Z"
+      },
+      "message": "* docs/*: Typos.",
+      "tree": {
+        "sha": "93d1b68a03796047f171b332026a44e450cb1e72",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/93d1b68a03796047f171b332026a44e450cb1e72"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/1eb04c71ebd807156681b1fbf52514416a83dcee",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/1eb04c71ebd807156681b1fbf52514416a83dcee",
+    "html_url": "https://github.com/freetype/freetype/commit/1eb04c71ebd807156681b1fbf52514416a83dcee",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/1eb04c71ebd807156681b1fbf52514416a83dcee/comments",
+    "author": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "efbae5476f50c549004cbcf70edcf4dc8179cbf6",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/efbae5476f50c549004cbcf70edcf4dc8179cbf6",
+        "html_url": "https://github.com/freetype/freetype/commit/efbae5476f50c549004cbcf70edcf4dc8179cbf6"
+      }
+    ]
+  },
+  {
+    "sha": "efbae5476f50c549004cbcf70edcf4dc8179cbf6",
+    "node_id": "C_kwDOCyVnU9oAKGVmYmFlNTQ3NmY1MGM1NDkwMDRjYmNmNzBlZGNmNGRjODE3OWNiZjY",
+    "commit": {
+      "author": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2023-11-24T15:23:36Z"
+      },
+      "committer": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2023-11-24T15:23:36Z"
+      },
+      "message": "[raster] Eliminate intensive flow checking.\n\n* src/raster/ftraster.c (Draw_Sweep): Pass the flow increment.\n(Increment): Accept the flow increment.",
+      "tree": {
+        "sha": "52887b6fda8732a45b0db283a62ecb65c2a71ea6",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/52887b6fda8732a45b0db283a62ecb65c2a71ea6"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/efbae5476f50c549004cbcf70edcf4dc8179cbf6",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/efbae5476f50c549004cbcf70edcf4dc8179cbf6",
+    "html_url": "https://github.com/freetype/freetype/commit/efbae5476f50c549004cbcf70edcf4dc8179cbf6",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/efbae5476f50c549004cbcf70edcf4dc8179cbf6/comments",
+    "author": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "63d3a37eb757924f6251accb20d0d0cd33e86e7c",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/63d3a37eb757924f6251accb20d0d0cd33e86e7c",
+        "html_url": "https://github.com/freetype/freetype/commit/63d3a37eb757924f6251accb20d0d0cd33e86e7c"
+      }
+    ]
+  },
+  {
+    "sha": "63d3a37eb757924f6251accb20d0d0cd33e86e7c",
+    "node_id": "C_kwDOCyVnU9oAKDYzZDNhMzdlYjc1NzkyNGY2MjUxYWNjYjIwZDBkMGNkMzNlODZlN2M",
+    "commit": {
+      "author": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2023-11-23T22:50:04Z"
+      },
+      "committer": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2023-11-23T22:50:04Z"
+      },
+      "message": "* src/raster/ftraster.c: Comments, defines, includes, cleanups.",
+      "tree": {
+        "sha": "46cffb16a12e99ad8d98afacae7b3d4e4ef13437",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/46cffb16a12e99ad8d98afacae7b3d4e4ef13437"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/63d3a37eb757924f6251accb20d0d0cd33e86e7c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/63d3a37eb757924f6251accb20d0d0cd33e86e7c",
+    "html_url": "https://github.com/freetype/freetype/commit/63d3a37eb757924f6251accb20d0d0cd33e86e7c",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/63d3a37eb757924f6251accb20d0d0cd33e86e7c/comments",
+    "author": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "df39b017d9b25eb34b396484fc235544cedd0565",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/df39b017d9b25eb34b396484fc235544cedd0565",
+        "html_url": "https://github.com/freetype/freetype/commit/df39b017d9b25eb34b396484fc235544cedd0565"
+      }
+    ]
+  },
+  {
+    "sha": "df39b017d9b25eb34b396484fc235544cedd0565",
+    "node_id": "C_kwDOCyVnU9oAKGRmMzliMDE3ZDliMjVlYjM0YjM5NjQ4NGZjMjM1NTQ0Y2VkZDA1NjU",
+    "commit": {
+      "author": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2023-11-21T18:12:45Z"
+      },
+      "committer": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2023-11-21T18:12:45Z"
+      },
+      "message": "* src/raster/ftraster.c (FT_Outline_Get_CBox ) [STANDALONE_]: Removed.",
+      "tree": {
+        "sha": "e06662bffb3f5f500eb92c8876b4dd6ae9e1b03a",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/e06662bffb3f5f500eb92c8876b4dd6ae9e1b03a"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/df39b017d9b25eb34b396484fc235544cedd0565",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/df39b017d9b25eb34b396484fc235544cedd0565",
+    "html_url": "https://github.com/freetype/freetype/commit/df39b017d9b25eb34b396484fc235544cedd0565",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/df39b017d9b25eb34b396484fc235544cedd0565/comments",
+    "author": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c62027d910167ed81136cbc81e5daa8f37250f5b",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/c62027d910167ed81136cbc81e5daa8f37250f5b",
+        "html_url": "https://github.com/freetype/freetype/commit/c62027d910167ed81136cbc81e5daa8f37250f5b"
+      }
+    ]
+  },
+  {
+    "sha": "c62027d910167ed81136cbc81e5daa8f37250f5b",
+    "node_id": "C_kwDOCyVnU9oAKGM2MjAyN2Q5MTAxNjdlZDgxMTM2Y2JjODFlNWRhYThmMzcyNTBmNWI",
+    "commit": {
+      "author": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2023-11-21T16:54:25Z"
+      },
+      "committer": {
+        "name": "Alexei Podtelezhnikov",
+        "email": "apodtele@gmail.com",
+        "date": "2023-11-21T16:54:25Z"
+      },
+      "message": "* src/raster/ftraster.c (Draw_Sweep): No-fault return.\r\n(Render_Single_Pass): Updated.",
+      "tree": {
+        "sha": "212f44729273bcbecc986e940598c898b98a2146",
+        "url": "https://api.github.com/repos/freetype/freetype/git/trees/212f44729273bcbecc986e940598c898b98a2146"
+      },
+      "url": "https://api.github.com/repos/freetype/freetype/git/commits/c62027d910167ed81136cbc81e5daa8f37250f5b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/freetype/freetype/commits/c62027d910167ed81136cbc81e5daa8f37250f5b",
+    "html_url": "https://github.com/freetype/freetype/commit/c62027d910167ed81136cbc81e5daa8f37250f5b",
+    "comments_url": "https://api.github.com/repos/freetype/freetype/commits/c62027d910167ed81136cbc81e5daa8f37250f5b/comments",
+    "author": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "apodtele",
+      "id": 32550896,
+      "node_id": "MDQ6VXNlcjMyNTUwODk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32550896?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apodtele",
+      "html_url": "https://github.com/apodtele",
+      "followers_url": "https://api.github.com/users/apodtele/followers",
+      "following_url": "https://api.github.com/users/apodtele/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apodtele/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apodtele/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apodtele/subscriptions",
+      "organizations_url": "https://api.github.com/users/apodtele/orgs",
+      "repos_url": "https://api.github.com/users/apodtele/repos",
+      "events_url": "https://api.github.com/users/apodtele/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apodtele/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d77dd24b412951fea1c649c0514670f9eec8888c",
+        "url": "https://api.github.com/repos/freetype/freetype/commits/d77dd24b412951fea1c649c0514670f9eec8888c",
+        "html_url": "https://github.com/freetype/freetype/commit/d77dd24b412951fea1c649c0514670f9eec8888c"
+      }
+    ]
+  }
+]

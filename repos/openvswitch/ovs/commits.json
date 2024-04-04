@@ -1,0 +1,2277 @@
+[
+  {
+    "sha": "b5e6829254cc74ed100392dd22e9db3c93b2974e",
+    "node_id": "C_kwDOARiCBNoAKGI1ZTY4MjkyNTRjYzc0ZWQxMDAzOTJkZDIyZTlkYjNjOTNiMjk3NGU",
+    "commit": {
+      "author": {
+        "name": "Paolo Valerio",
+        "email": "pvalerio@redhat.com",
+        "date": "2024-03-28T16:56:08Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-04-02T20:13:38Z"
+      },
+      "message": "conntrack: Do not use icmp reverse helper for icmpv6.\n\nIn the flush tuple code path, while populating the conn_key,\nreverse_icmp_type() gets called for both icmp and icmpv6 cases,\nwhile, depending on the proto, its respective helper should be\ncalled, instead.\n\nThe above leads to an abort:\n\n[...]\n__GI_abort () at abort.c:79\nreverse_icmp_type (type=128 '\\200') at lib/conntrack.c:1795\ntuple_to_conn_key (...) at lib/conntrack.c:2590\nin conntrack_flush_tuple (...) at lib/conntrack.c:2787\nin dpif_netdev_ct_flush (...) at lib/dpif-netdev.c:9618\nct_dpif_flush_tuple (...) at lib/ct-dpif.c:331\nct_dpif_flush (...) at lib/ct-dpif.c:361\ndpctl_flush_conntrack (...) at lib/dpctl.c:1797\n[...]\n\nFix it by calling reverse_icmp6_type() when needed.\nFurthermore, self tests have been modified in order to exercise and\ncheck this behavior.\n\nFixes: 271e48a0e244 (\"conntrack: Support conntrack flush by ct 5-tuple\")\nReported-at: https://issues.redhat.com/browse/FDP-447\nSigned-off-by: Paolo Valerio <pvalerio@redhat.com>\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "a0e92ac29db74ea2d9695229f0efb9ff84fd0d8f",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/a0e92ac29db74ea2d9695229f0efb9ff84fd0d8f"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/b5e6829254cc74ed100392dd22e9db3c93b2974e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/b5e6829254cc74ed100392dd22e9db3c93b2974e",
+    "html_url": "https://github.com/openvswitch/ovs/commit/b5e6829254cc74ed100392dd22e9db3c93b2974e",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/b5e6829254cc74ed100392dd22e9db3c93b2974e/comments",
+    "author": {
+      "login": "vlrpl",
+      "id": 3935117,
+      "node_id": "MDQ6VXNlcjM5MzUxMTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3935117?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vlrpl",
+      "html_url": "https://github.com/vlrpl",
+      "followers_url": "https://api.github.com/users/vlrpl/followers",
+      "following_url": "https://api.github.com/users/vlrpl/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vlrpl/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vlrpl/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vlrpl/subscriptions",
+      "organizations_url": "https://api.github.com/users/vlrpl/orgs",
+      "repos_url": "https://api.github.com/users/vlrpl/repos",
+      "events_url": "https://api.github.com/users/vlrpl/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vlrpl/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b674e7e04e1d37400c3946f1d3ebe81c99501f7e",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/b674e7e04e1d37400c3946f1d3ebe81c99501f7e",
+        "html_url": "https://github.com/openvswitch/ovs/commit/b674e7e04e1d37400c3946f1d3ebe81c99501f7e"
+      }
+    ]
+  },
+  {
+    "sha": "b674e7e04e1d37400c3946f1d3ebe81c99501f7e",
+    "node_id": "C_kwDOARiCBNoAKGI2NzRlN2UwNGUxZDM3NDAwYzM5NDZmMWQzZWJlODFjOTk1MDFmN2U",
+    "commit": {
+      "author": {
+        "name": "Paolo Valerio",
+        "email": "pvalerio@redhat.com",
+        "date": "2024-03-28T16:18:46Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-04-02T20:01:08Z"
+      },
+      "message": "conntrack: Fix SNAT with exhaustion system test.\n\nRecent kernels introduced a mechanism that allows to evict colliding\nentries in a closing state whereas they were previously considered as\nparts of a non-recoverable clash.\nThis new behavior makes \"conntrack - SNAT with port range with\nexhaustion test\" fail, as it relies on the previous assumptions.\n\nFix it by creating and not advancing the first entry in SYN_SENT to\navoid early eviction.\n\nSuggested-by: Ilya Maximets <i.maximets@ovn.org>\nReported-at: https://issues.redhat.com/browse/FDP-486\nSigned-off-by: Paolo Valerio <pvalerio@redhat.com>\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "08fe5818e97e349634960d4e4f275a003ffc5a73",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/08fe5818e97e349634960d4e4f275a003ffc5a73"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/b674e7e04e1d37400c3946f1d3ebe81c99501f7e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/b674e7e04e1d37400c3946f1d3ebe81c99501f7e",
+    "html_url": "https://github.com/openvswitch/ovs/commit/b674e7e04e1d37400c3946f1d3ebe81c99501f7e",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/b674e7e04e1d37400c3946f1d3ebe81c99501f7e/comments",
+    "author": {
+      "login": "vlrpl",
+      "id": 3935117,
+      "node_id": "MDQ6VXNlcjM5MzUxMTc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3935117?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vlrpl",
+      "html_url": "https://github.com/vlrpl",
+      "followers_url": "https://api.github.com/users/vlrpl/followers",
+      "following_url": "https://api.github.com/users/vlrpl/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vlrpl/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vlrpl/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vlrpl/subscriptions",
+      "organizations_url": "https://api.github.com/users/vlrpl/orgs",
+      "repos_url": "https://api.github.com/users/vlrpl/repos",
+      "events_url": "https://api.github.com/users/vlrpl/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vlrpl/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2324596f115166a771c338cd79ca7fb70cf8d8cb",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/2324596f115166a771c338cd79ca7fb70cf8d8cb",
+        "html_url": "https://github.com/openvswitch/ovs/commit/2324596f115166a771c338cd79ca7fb70cf8d8cb"
+      }
+    ]
+  },
+  {
+    "sha": "2324596f115166a771c338cd79ca7fb70cf8d8cb",
+    "node_id": "C_kwDOARiCBNoAKDIzMjQ1OTZmMTE1MTY2YTc3MWMzMzhjZDc5Y2E3ZmI3MGNmOGQ4Y2I",
+    "commit": {
+      "author": {
+        "name": "Simon Horman",
+        "email": "horms@ovn.org",
+        "date": "2024-03-22T15:56:54Z"
+      },
+      "committer": {
+        "name": "Simon Horman",
+        "email": "horms@ovn.org",
+        "date": "2024-04-02T11:26:12Z"
+      },
+      "message": "Documentation: Update references to kernel datapath in OVS tree.\n\nThe Kernel datapath is no longer present in the primary development\nbranch of the OVS tree. Update documentation to more clearly reflect\nthis.\n\nDocumentation relating to the kernel datapath in the OVS tree can\nbe removed once 2.17 is EOL.\n\nAlso, update wording of affected text as there is more than one upstream\nnetworking maintainer these days.\n\nSigned-off-by: Simon Horman <horms@ovn.org>\nAcked-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "e5c9275e5100d55c192c1532ac9624b94e0f1e14",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/e5c9275e5100d55c192c1532ac9624b94e0f1e14"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/2324596f115166a771c338cd79ca7fb70cf8d8cb",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/2324596f115166a771c338cd79ca7fb70cf8d8cb",
+    "html_url": "https://github.com/openvswitch/ovs/commit/2324596f115166a771c338cd79ca7fb70cf8d8cb",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/2324596f115166a771c338cd79ca7fb70cf8d8cb/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "95ff912edef88160f50f01ddd906869ba6d5b9ba",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/95ff912edef88160f50f01ddd906869ba6d5b9ba",
+        "html_url": "https://github.com/openvswitch/ovs/commit/95ff912edef88160f50f01ddd906869ba6d5b9ba"
+      }
+    ]
+  },
+  {
+    "sha": "95ff912edef88160f50f01ddd906869ba6d5b9ba",
+    "node_id": "C_kwDOARiCBNoAKDk1ZmY5MTJlZGVmODgxNjBmNTBmMDFkZGQ5MDY4NjliYTZkNWI5YmE",
+    "commit": {
+      "author": {
+        "name": "Simon Horman",
+        "email": "horms@ovn.org",
+        "date": "2024-03-22T15:11:17Z"
+      },
+      "committer": {
+        "name": "Simon Horman",
+        "email": "horms@ovn.org",
+        "date": "2024-04-02T11:18:08Z"
+      },
+      "message": "appveyor: Prepare for rename of primary development branch.\n\nRecently OVS adopted a policy of using the inclusive naming word list v1\n[1, 2].  And in keeping with this policy it is intended to rename the\nprimary development branch from master to main [3].\n\nIn order to help facilitate this change allow Appveyor to run\non the main as well as master branch. It is intended that\nmaster branch will be removed from appveyor.yml after the primary branch\nhas been renamed.\n\nAlso, update the string included in artifacts from 'master' to 'main'.\n\n[1] df5e5cf4318a (\"Documentation: Add section on inclusive language.\")\n[2] https://inclusivenaming.org/word-lists/\n[3] https://mail.openvswitch.org/pipermail/ovs-dev/2024-March/412686.html\n\nSigned-off-by: Simon Horman <horms@ovn.org>\nAcked-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "75b95dc54c04b1d264de304ee8932316a1d8df58",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/75b95dc54c04b1d264de304ee8932316a1d8df58"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/95ff912edef88160f50f01ddd906869ba6d5b9ba",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/95ff912edef88160f50f01ddd906869ba6d5b9ba",
+    "html_url": "https://github.com/openvswitch/ovs/commit/95ff912edef88160f50f01ddd906869ba6d5b9ba",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/95ff912edef88160f50f01ddd906869ba6d5b9ba/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "5b9feacfc8ffc06837e965c5f17269e62e0a1668",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/5b9feacfc8ffc06837e965c5f17269e62e0a1668",
+        "html_url": "https://github.com/openvswitch/ovs/commit/5b9feacfc8ffc06837e965c5f17269e62e0a1668"
+      }
+    ]
+  },
+  {
+    "sha": "5b9feacfc8ffc06837e965c5f17269e62e0a1668",
+    "node_id": "C_kwDOARiCBNoAKDViOWZlYWNmYzhmZmMwNjgzN2U5NjVjNWYxNzI2OWU2MmUwYTE2Njg",
+    "commit": {
+      "author": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-26T17:27:13Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-27T20:20:01Z"
+      },
+      "message": "ovsdb: raft: Fix inability to join after leadership change round trip.\n\nConsider the following sequence of events:\n\n 1. Cluster with 2 nodes - A and B.  A is a leader.\n 2. C connects to A and sends a join request.\n 3. A sends an append request to C.  C is in CATCHUP phase for A.\n 4. A looses leadership to B.  Sends join failure notification to C.\n 5. C sends append reply to A.\n 6. A discards append reply (not leader).\n 7. B looses leadership back to A.\n 8. C sends a new join request to A.\n 9. A replies with failure (already in progress).\n 10. GoTo step 8.\n\nAt this point A is waiting for an append reply that it already\ndiscarded at step 6 and fails all the new attempts of C to join with\n'already in progress' verdict.  C stays forever in a joining state\nand in a CATCHUP phase from A's perspective.\n\nThis is a similar case to a sudden disconnect from a leader fixed in\ncommit 999ba294fb4f (\"ovsdb: raft: Fix inability to join the cluster\nafter interrupted attempt.\"), but since we're not disconnecting, the\nservers are not getting destroyed.\n\nFix that by destroying all the servers that are not yet part of the\nconfiguration after leadership is lost.  This way, server C will be\nable to simply re-start the joining process from scratch.\n\nNew failure test command is added in order to simulate leadership\nchange before we receive the append reply, so it gets discarded.\nNew cluster test is added to exercise this scenario.\n\nFixes: 1b1d2e6daa56 (\"ovsdb: Introduce experimental support for clustered databases.\")\nReported-at: https://github.com/ovn-org/ovn/issues/235\nAcked-by: Han Zhou <hzhou@ovn.org>\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "9dfef01abc563b93f4d9a02fd8aeee312eae27f8",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/9dfef01abc563b93f4d9a02fd8aeee312eae27f8"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/5b9feacfc8ffc06837e965c5f17269e62e0a1668",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/5b9feacfc8ffc06837e965c5f17269e62e0a1668",
+    "html_url": "https://github.com/openvswitch/ovs/commit/5b9feacfc8ffc06837e965c5f17269e62e0a1668",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/5b9feacfc8ffc06837e965c5f17269e62e0a1668/comments",
+    "author": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e987af503975d6d1600e59f7da1bb465eb66aca3",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/e987af503975d6d1600e59f7da1bb465eb66aca3",
+        "html_url": "https://github.com/openvswitch/ovs/commit/e987af503975d6d1600e59f7da1bb465eb66aca3"
+      }
+    ]
+  },
+  {
+    "sha": "e987af503975d6d1600e59f7da1bb465eb66aca3",
+    "node_id": "C_kwDOARiCBNoAKGU5ODdhZjUwMzk3NWQ2ZDE2MDBlNTlmN2RhMWJiNDY1ZWI2NmFjYTM",
+    "commit": {
+      "author": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-26T17:27:12Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-27T20:19:58Z"
+      },
+      "message": "ovsdb: raft: Fix assertion when 1-node cluster looses leadership.\n\nSome of the failure tests can make a single-node cluster to\nloose leadership.  In this case the next raft_run() will\ntrigger election with a pre-vote enabled.  This is causing\nan assertion when this server attempts to vote for itself.\n\nFix that by not using pre-voting if there is only one server.\n\nA new failure test introduced in later commit triggers this\nassertion every time.\n\nFixes: 85634fd58004 (\"ovsdb: raft: Support pre-vote mechanism to deal with disruptive server.\")\nAcked-by: Han Zhou <hzhou@ovn.org>\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "53dc47e514f8da3e53790d442c24885cf1764f8d",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/53dc47e514f8da3e53790d442c24885cf1764f8d"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/e987af503975d6d1600e59f7da1bb465eb66aca3",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/e987af503975d6d1600e59f7da1bb465eb66aca3",
+    "html_url": "https://github.com/openvswitch/ovs/commit/e987af503975d6d1600e59f7da1bb465eb66aca3",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/e987af503975d6d1600e59f7da1bb465eb66aca3/comments",
+    "author": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "af5a99737e8af10ce460a190efeccffff1692864",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/af5a99737e8af10ce460a190efeccffff1692864",
+        "html_url": "https://github.com/openvswitch/ovs/commit/af5a99737e8af10ce460a190efeccffff1692864"
+      }
+    ]
+  },
+  {
+    "sha": "af5a99737e8af10ce460a190efeccffff1692864",
+    "node_id": "C_kwDOARiCBNoAKGFmNWE5OTczN2U4YWYxMGNlNDYwYTE5MGVmZWNjZmZmZjE2OTI4NjQ",
+    "commit": {
+      "author": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-26T17:27:11Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-27T20:19:56Z"
+      },
+      "message": "ovsdb: raft: Fix permanent joining state on a cluster member.\n\nConsider the following chain of events:\n\n 1. Have a cluster with 2 members - A and B.  A is a leader.\n 2. C connects to A, sends a request to join the cluster.\n 3. A catches up C, creates an update for the 'servers' list and sends\n    it to B and C to apply.  This entry is not committed yet.\n 4. Before B or C can reply, A looses leadership for some reason.\n 5. A sends a joining failure message to C, C remains in joining state.\n 5. Both B and C have the new version of 'servers', so they recognize\n    each other as valid cluster members.\n 6. B initiates a vote, C (or A) replies and B becomes a new leader.\n 7. B has a new list of servers.  B commits it.  C becomes a committed\n    cluster member.\n 8. A and C receive heartbeats with a new commit index and C is now\n    a committed cluster member for all A, B and C.\n\nHowever, at the end of this process, C is still in joining state\nas it never received a successful reply for a join request, and C is\nstill in a COMMITTING phase for A.  So, C skips some parts of the RAFT\nlife cycle and A will refuse to transfer leadership to C if something\nhappens in the future.\n\nMore interestingly, B can actually transfer leadership to C and vote\nfor it.  A will vote for it just fine as well.  After that, C becomes\na new cluster leader while still in joining state.  In this state C\nwill not commit any changes.  So, we have seemingly stable cluster\nthat doesn't commit any changes!  E.g.:\n\n  s3\n  Address: unix:s3.raft\n  Status: joining cluster\n  Remotes for joining: unix:s3.raft unix:s2.raft unix:s1.raft\n  Role: leader\n  Term: 4\n  Leader: self\n  Vote: self\n\n  Last Election started 30095 ms ago, reason: leadership_transfer\n  Last Election won: 30093 ms ago\n  Election timer: 1000\n  Log: [2, 7]\n  Entries not yet committed: 2\n  Entries not yet applied: 6\n  Connections: ->s1 ->s2 <-s1 <-s2\n  Disconnections: 0\n  Servers:\n    s3 (60cf at unix:s3.raft) (self) next_index=7 match_index=6\n    s2 (46aa at unix:s2.raft) next_index=7 match_index=6 last msg 58 ms ago\n    s1 (28f7 at unix:s1.raft) next_index=7 match_index=6 last msg 59 ms ago\n\nFix the first scenario by examining server changes in committed log\nentries.  This way server A can transition C to a STABLE phase and\nserver C can find itself in the committed list of servers and move out\nfrom a joining state.  This is similar to completing commands without\nreceiving an explicit reply or after the role change from leader to\nfollower.\n\nThe second scenario with a leader in a joining state can be fixed\nwhen the joining server becomes leader.  New leader's log is getting\ncommitted automatically and all servers transition into STABLE phase\nfor it, but it should also move on from a joining state, since it\nleads the cluster now.\nIt is also possible that B transfers leadership to C before the list\nof servers is marked as committed on other servers.  In this case\nC will commit it's own addition to the cluster configuration.\n\nThe added test usually triggers both scenarios, but it will trigger at\nleast one of them.\n\nFixes: 1b1d2e6daa56 (\"ovsdb: Introduce experimental support for clustered databases.\")\nAcked-by: Han Zhou <hzhou@ovn.org>\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "2085b1310d42280104e9cdcf2856d008971a4a19",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/2085b1310d42280104e9cdcf2856d008971a4a19"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/af5a99737e8af10ce460a190efeccffff1692864",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/af5a99737e8af10ce460a190efeccffff1692864",
+    "html_url": "https://github.com/openvswitch/ovs/commit/af5a99737e8af10ce460a190efeccffff1692864",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/af5a99737e8af10ce460a190efeccffff1692864/comments",
+    "author": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "bcad733e2ce36437ab503bc53d87dd80b9d7d336",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/bcad733e2ce36437ab503bc53d87dd80b9d7d336",
+        "html_url": "https://github.com/openvswitch/ovs/commit/bcad733e2ce36437ab503bc53d87dd80b9d7d336"
+      }
+    ]
+  },
+  {
+    "sha": "bcad733e2ce36437ab503bc53d87dd80b9d7d336",
+    "node_id": "C_kwDOARiCBNoAKGJjYWQ3MzNlMmNlMzY0MzdhYjUwM2JjNTNkODdkZDgwYjlkN2QzMzY",
+    "commit": {
+      "author": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-26T17:27:10Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-27T20:19:52Z"
+      },
+      "message": "ovsdb: raft: Fix time intervals for multitasking while joining.\n\nWhile joining, ovsdb-server may not wake up for a duration of a join\ntimer, which is 1 second and is by default 3x larger than a heartbeat\ntimer.  This is causing unnecessary warnings from the cooperative\nmultitasking module that thinks that we missed the heartbeat time by\na lot.\n\nUse join timer (1000) instead while joining.\n\nFixes: d4a15647b917 (\"ovsdb: raft: Enable cooperative multitasking.\")\nAcked-by: Han Zhou <hzhou@ovn.org>\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "2f7f8f8616e8d8e9c6e6db1f17d84de271dea294",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/2f7f8f8616e8d8e9c6e6db1f17d84de271dea294"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/bcad733e2ce36437ab503bc53d87dd80b9d7d336",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/bcad733e2ce36437ab503bc53d87dd80b9d7d336",
+    "html_url": "https://github.com/openvswitch/ovs/commit/bcad733e2ce36437ab503bc53d87dd80b9d7d336",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/bcad733e2ce36437ab503bc53d87dd80b9d7d336/comments",
+    "author": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "aab379ec21c95971fe6a05fb94793d1744a864ce",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/aab379ec21c95971fe6a05fb94793d1744a864ce",
+        "html_url": "https://github.com/openvswitch/ovs/commit/aab379ec21c95971fe6a05fb94793d1744a864ce"
+      }
+    ]
+  },
+  {
+    "sha": "aab379ec21c95971fe6a05fb94793d1744a864ce",
+    "node_id": "C_kwDOARiCBNoAKGFhYjM3OWVjMjFjOTU5NzFmZTZhMDVmYjk0NzkzZDE3NDRhODY0Y2U",
+    "commit": {
+      "author": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-26T17:27:09Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-27T20:19:45Z"
+      },
+      "message": "ovsdb: raft: Avoid transferring leadership to unavailable servers.\n\nCurrent implementation of the leadership transfer just shoots the\nleadership in the general direction of the first stable server in the\nconfiguration.  It doesn't check if the server was active recently or\neven that the connection is established.  This may result in sending\nleadership to a disconnected or otherwise unavailable server.\n\nSuch behavior should not cause log truncation or any other correctness\nissues because the destination server would have all the append\nrequests queued up or the connection will be dropped by the leader.\nIn a worst case we will have a leader-less cluster until the next\nelection timer fires up.  Other servers will notice the absence of the\nleader and will trigger a new leader election normally.\nHowever, the potential wait for the election timer is not good as\nreal-world setups may have high values configured.\n\nFix that by trying to transfer to servers that we know have applied\nthe most changes, i.e., have the highest 'match_index'.  Such servers\nreplied to the most recent append requests, so they have highest\nchances to be healthy.  Choosing the random starting point in the\nlist of such servers so we don't transfer to the same server every\nsingle time.  This slightly improves load distribution, but, most\nimportantly, increases robustness of our test suite, making it cover\nmore cases.  Also checking that the message was actually sent without\nimmediate failure.\n\nIf we fail to transfer to any server with the highest index, try to\njust transfer to any other server that is not behind majority and then\njust any other server that is connected.  We did actually send them\nall the updates (if the connection is open), they just didn't reply\nyet for one reason or another.  It should be better than leaving the\ncluster without a leader.\n\nNote that there is always a chance that transfer will fail, since\nwe're not waiting for it to be acknowledged (and must not wait).\nIn this case, normal election will be triggered after the election\ntimer fires up.\n\nFixes: 1b1d2e6daa56 (\"ovsdb: Introduce experimental support for clustered databases.\")\nAcked-by: Han Zhou <hzhou@ovn.org>\nAcked-by: Felix Huettner <felix.huettner@mail.schwarz>\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "f8d718c860e9a3401b3379a0fd7d3e0e1712cf40",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/f8d718c860e9a3401b3379a0fd7d3e0e1712cf40"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/aab379ec21c95971fe6a05fb94793d1744a864ce",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/aab379ec21c95971fe6a05fb94793d1744a864ce",
+    "html_url": "https://github.com/openvswitch/ovs/commit/aab379ec21c95971fe6a05fb94793d1744a864ce",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/aab379ec21c95971fe6a05fb94793d1744a864ce/comments",
+    "author": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "bf7c0b0a90b2b6154088ec990ec21e41702c015d",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/bf7c0b0a90b2b6154088ec990ec21e41702c015d",
+        "html_url": "https://github.com/openvswitch/ovs/commit/bf7c0b0a90b2b6154088ec990ec21e41702c015d"
+      }
+    ]
+  },
+  {
+    "sha": "bf7c0b0a90b2b6154088ec990ec21e41702c015d",
+    "node_id": "C_kwDOARiCBNoAKGJmN2MwYjBhOTBiMmI2MTU0MDg4ZWM5OTBlYzIxZTQxNzAyYzAxNWQ",
+    "commit": {
+      "author": {
+        "name": "Aaron Conole",
+        "email": "aconole@redhat.com",
+        "date": "2024-03-22T13:40:16Z"
+      },
+      "committer": {
+        "name": "Aaron Conole",
+        "email": "aconole@redhat.com",
+        "date": "2024-03-27T13:25:52Z"
+      },
+      "message": "ofproto-dpif-xlate: Fix continuations with associated metering.\n\nOpen vSwitch supports the ability to invoke a controller action by way\nof a sample action with a specified meter.  In the normal case, this\nsample action is transparently generated during xlate processing.  However,\nwhen executing via a continuation, the logic to generate the sample\naction when finishing the context freeze was missing.  The result is that\nthe behavior when action is 'controller(pause,meter_id=1)' does not match\nthe behavior when action is 'controller(meter_id=1)'.\n\nOVN and other controller solutions may rely on this metering to protect\nthe control path, so it is critical to preserve metering, whether we are\ndoing a plain old send to controller, or a continuation.\n\nFixes: 77ab5fd2a95b (\"Implement serializing the state of packet traversal in \"continuations\".\")\nReported-at: https://issues.redhat.com/browse/FDP-455\nTested-by: Alex Musil <amusil@redhat.com>\nSigned-off-by: Aaron Conole <aconole@redhat.com>\nAcked-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "44201586a71aca5ece1abf9c3710eb0521ed3763",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/44201586a71aca5ece1abf9c3710eb0521ed3763"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/bf7c0b0a90b2b6154088ec990ec21e41702c015d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/bf7c0b0a90b2b6154088ec990ec21e41702c015d",
+    "html_url": "https://github.com/openvswitch/ovs/commit/bf7c0b0a90b2b6154088ec990ec21e41702c015d",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/bf7c0b0a90b2b6154088ec990ec21e41702c015d/comments",
+    "author": {
+      "login": "apconole",
+      "id": 1092926,
+      "node_id": "MDQ6VXNlcjEwOTI5MjY=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1092926?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apconole",
+      "html_url": "https://github.com/apconole",
+      "followers_url": "https://api.github.com/users/apconole/followers",
+      "following_url": "https://api.github.com/users/apconole/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apconole/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apconole/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apconole/subscriptions",
+      "organizations_url": "https://api.github.com/users/apconole/orgs",
+      "repos_url": "https://api.github.com/users/apconole/repos",
+      "events_url": "https://api.github.com/users/apconole/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apconole/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "apconole",
+      "id": 1092926,
+      "node_id": "MDQ6VXNlcjEwOTI5MjY=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1092926?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apconole",
+      "html_url": "https://github.com/apconole",
+      "followers_url": "https://api.github.com/users/apconole/followers",
+      "following_url": "https://api.github.com/users/apconole/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apconole/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apconole/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apconole/subscriptions",
+      "organizations_url": "https://api.github.com/users/apconole/orgs",
+      "repos_url": "https://api.github.com/users/apconole/repos",
+      "events_url": "https://api.github.com/users/apconole/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apconole/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c6538b443984e10c266d7e75e797ef2f1b722d61",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/c6538b443984e10c266d7e75e797ef2f1b722d61",
+        "html_url": "https://github.com/openvswitch/ovs/commit/c6538b443984e10c266d7e75e797ef2f1b722d61"
+      }
+    ]
+  },
+  {
+    "sha": "c6538b443984e10c266d7e75e797ef2f1b722d61",
+    "node_id": "C_kwDOARiCBNoAKGM2NTM4YjQ0Mzk4NGUxMGMyNjZkN2U3NWU3OTdlZjJmMWI3MjJkNjE",
+    "commit": {
+      "author": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-22T14:42:12Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-22T19:45:37Z"
+      },
+      "message": "dpif-netdev: Fix crash due to tunnel offloading on recirculation.\n\nRecirculation involves re-parsing the packet from scratch and that\nprocess is not aware of multiple header levels nor the inner/outer\noffsets.  So, it overwrites offsets with new ones from the outermost\nheaders and sets offloading flags that change their meaning when\nthe packet is marked for tunnel offloading.\n\nFor example:\n\n 1. TCP packet enters OVS.\n 2. TCP packet gets encapsulated into UDP tunnel.\n 3. Recirculation happens.\n 4. Packet is re-parsed after recirculation with miniflow_extract()\n    or similar function.\n 5. Packet is marked for UDP checksumming because we parse the\n    outermost set of headers.  But since it is tunneled, it means\n    inner UDP checksumming.  And that makes no sense, because the\n    inner packet is TCP.\n\nThis is causing packet drops due to malformed packets or even\nassertions and crashes in the code that is trying to fixup checksums\nfor packets using incorrect metadata:\n\n SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior\n\n lib/packets.c:2061:15: runtime error:\n        member access within null pointer of type 'struct udp_header'\n\n  0 0xbe5221 in packet_udp_complete_csum lib/packets.c:2061:15\n  1 0x7e5662 in dp_packet_ol_send_prepare lib/dp-packet.c:638:9\n  2 0x96ef89 in netdev_send lib/netdev.c:940:9\n  3 0x818e94 in dp_netdev_pmd_flush_output_on_port lib/dpif-netdev.c:5577:9\n  4 0x817606 in dp_netdev_pmd_flush_output_packets lib/dpif-netdev.c:5618:27\n  5 0x81cfa5 in dp_netdev_process_rxq_port lib/dpif-netdev.c:5677:9\n  6 0x7eefe4 in dpif_netdev_run lib/dpif-netdev.c:7001:25\n  7 0x610e87 in type_run ofproto/ofproto-dpif.c:367:9\n  8 0x5b9e80 in ofproto_type_run ofproto/ofproto.c:1879:31\n  9 0x55bbb4 in bridge_run__ vswitchd/bridge.c:3281:9\n 10 0x558b6b in bridge_run vswitchd/bridge.c:3346:5\n 11 0x591dc5 in main vswitchd/ovs-vswitchd.c:130:9\n 12 0x172b89 in __libc_start_call_main (/lib64/libc.so.6+0x27b89)\n 13 0x172c4a in __libc_start_main@GLIBC_2.2.5 (/lib64/libc.so.6+0x27c4a)\n 14 0x47eff4 in _start (vswitchd/ovs-vswitchd+0x47eff4)\n\nTests added for both IPv4 and IPv6 cases.  Though IPv6 test doesn't\ntrigger the issue it's better to have a symmetric test.\n\nFixes: 084c8087292c (\"userspace: Support VXLAN and GENEVE TSO.\")\nReported-at: https://mail.openvswitch.org/pipermail/ovs-discuss/2024-March/053014.html\nAcked-by: Mike Pattrick <mkp@redhat.com>\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "79c00845ec182dc8843421e84424879a66a6d64e",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/79c00845ec182dc8843421e84424879a66a6d64e"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/c6538b443984e10c266d7e75e797ef2f1b722d61",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/c6538b443984e10c266d7e75e797ef2f1b722d61",
+    "html_url": "https://github.com/openvswitch/ovs/commit/c6538b443984e10c266d7e75e797ef2f1b722d61",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/c6538b443984e10c266d7e75e797ef2f1b722d61/comments",
+    "author": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e6a8a8e90084a124cad377b73f3f87537d9dba92",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/e6a8a8e90084a124cad377b73f3f87537d9dba92",
+        "html_url": "https://github.com/openvswitch/ovs/commit/e6a8a8e90084a124cad377b73f3f87537d9dba92"
+      }
+    ]
+  },
+  {
+    "sha": "e6a8a8e90084a124cad377b73f3f87537d9dba92",
+    "node_id": "C_kwDOARiCBNoAKGU2YThhOGU5MDA4NGExMjRjYWQzNzdiNzNmM2Y4NzUzN2Q5ZGJhOTI",
+    "commit": {
+      "author": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-22T19:44:43Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-22T19:44:43Z"
+      },
+      "message": "AUTHORS: Add Jun Wang.\n\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "741d5ee53539a91c1407f2f534dca06f2025611a",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/741d5ee53539a91c1407f2f534dca06f2025611a"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/e6a8a8e90084a124cad377b73f3f87537d9dba92",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/e6a8a8e90084a124cad377b73f3f87537d9dba92",
+    "html_url": "https://github.com/openvswitch/ovs/commit/e6a8a8e90084a124cad377b73f3f87537d9dba92",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/e6a8a8e90084a124cad377b73f3f87537d9dba92/comments",
+    "author": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6f93d8e62f13271201cc4b8ab3c8dd121390c94f",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/6f93d8e62f13271201cc4b8ab3c8dd121390c94f",
+        "html_url": "https://github.com/openvswitch/ovs/commit/6f93d8e62f13271201cc4b8ab3c8dd121390c94f"
+      }
+    ]
+  },
+  {
+    "sha": "6f93d8e62f13271201cc4b8ab3c8dd121390c94f",
+    "node_id": "C_kwDOARiCBNoAKDZmOTNkOGU2MmYxMzI3MTIwMWNjNGI4YWIzYzhkZDEyMTM5MGM5NGY",
+    "commit": {
+      "author": {
+        "name": "Jun Wang",
+        "email": "junwang01@cestc.cn",
+        "date": "2024-03-22T08:19:57Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-22T19:36:50Z"
+      },
+      "message": "netdev-dpdk: Disable outer UDP checksum offload for ice/i40e driver.\n\nFixing the issue of incorrect outer UDP checksum in packets sent by\nE810 or X710. We disable RTE_ETH_TX_OFFLOAD_OUTER_UDP_CKSUM,but also\ndisable all the dependent offloads like\nRTE_ETH_TX_OFFLOAD_VXLAN_TNL_TSO and\nRTE_ETH_TX_OFFLOAD_GENEVE_TNL_TSO.\n\nFixes: 084c8087292c (\"userspace: Support VXLAN and GENEVE TSO.\")\nReported-at: https://github.com/openvswitch/ovs-issues/issues/321\nSigned-off-by: Jun Wang <junwang01@cestc.cn>\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "0e5e10a50d35cf3dcf4f24e06a4c37fae6197fc9",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/0e5e10a50d35cf3dcf4f24e06a4c37fae6197fc9"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/6f93d8e62f13271201cc4b8ab3c8dd121390c94f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/6f93d8e62f13271201cc4b8ab3c8dd121390c94f",
+    "html_url": "https://github.com/openvswitch/ovs/commit/6f93d8e62f13271201cc4b8ab3c8dd121390c94f",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/6f93d8e62f13271201cc4b8ab3c8dd121390c94f/comments",
+    "author": {
+      "login": "wangjun0728",
+      "id": 110084619,
+      "node_id": "U_kgDOBo_CCw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/110084619?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/wangjun0728",
+      "html_url": "https://github.com/wangjun0728",
+      "followers_url": "https://api.github.com/users/wangjun0728/followers",
+      "following_url": "https://api.github.com/users/wangjun0728/following{/other_user}",
+      "gists_url": "https://api.github.com/users/wangjun0728/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/wangjun0728/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/wangjun0728/subscriptions",
+      "organizations_url": "https://api.github.com/users/wangjun0728/orgs",
+      "repos_url": "https://api.github.com/users/wangjun0728/repos",
+      "events_url": "https://api.github.com/users/wangjun0728/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/wangjun0728/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3ddb31f60487c9e26102372b56dec4b705368602",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/3ddb31f60487c9e26102372b56dec4b705368602",
+        "html_url": "https://github.com/openvswitch/ovs/commit/3ddb31f60487c9e26102372b56dec4b705368602"
+      }
+    ]
+  },
+  {
+    "sha": "3ddb31f60487c9e26102372b56dec4b705368602",
+    "node_id": "C_kwDOARiCBNoAKDNkZGIzMWY2MDQ4N2M5ZTI2MTAyMzcyYjU2ZGVjNGI3MDUzNjg2MDI",
+    "commit": {
+      "author": {
+        "name": "Mike Pattrick",
+        "email": "mkp@redhat.com",
+        "date": "2024-03-21T13:16:49Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-22T19:35:45Z"
+      },
+      "message": "ovs-monitor-ipsec: LibreSwan autodetect paths.\n\nIn v4.0, LibreSwan changed a default paths that had been hardcoded in\novs-monitor-ipsec, breaking some uses of this script. This patch adds\nsupport for both old and newer versions by auto detecting the version\nof LibreSwan and then choosing the correct path.\n\nReported-at: https://bugzilla.redhat.com/show_bug.cgi?id=1975039\nReported-by: Qijun Ding <qding@redhat.com>\nFixes: d6afbc00d5b3 (\"ipsec: Allow custom file locations.\")\nSigned-off-by: Mike Pattrick <mkp@redhat.com>\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "ff69506811e09ffa178883ab1fc6ee3ebd6a1d89",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/ff69506811e09ffa178883ab1fc6ee3ebd6a1d89"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/3ddb31f60487c9e26102372b56dec4b705368602",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/3ddb31f60487c9e26102372b56dec4b705368602",
+    "html_url": "https://github.com/openvswitch/ovs/commit/3ddb31f60487c9e26102372b56dec4b705368602",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/3ddb31f60487c9e26102372b56dec4b705368602/comments",
+    "author": {
+      "login": "mkp-rh",
+      "id": 92053684,
+      "node_id": "U_kgDOBXygtA",
+      "avatar_url": "https://avatars.githubusercontent.com/u/92053684?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mkp-rh",
+      "html_url": "https://github.com/mkp-rh",
+      "followers_url": "https://api.github.com/users/mkp-rh/followers",
+      "following_url": "https://api.github.com/users/mkp-rh/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mkp-rh/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mkp-rh/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mkp-rh/subscriptions",
+      "organizations_url": "https://api.github.com/users/mkp-rh/orgs",
+      "repos_url": "https://api.github.com/users/mkp-rh/repos",
+      "events_url": "https://api.github.com/users/mkp-rh/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mkp-rh/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "840979663d604e5d8f285bf840b8c800d895bc8d",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/840979663d604e5d8f285bf840b8c800d895bc8d",
+        "html_url": "https://github.com/openvswitch/ovs/commit/840979663d604e5d8f285bf840b8c800d895bc8d"
+      }
+    ]
+  },
+  {
+    "sha": "840979663d604e5d8f285bf840b8c800d895bc8d",
+    "node_id": "C_kwDOARiCBNoAKDg0MDk3OTY2M2Q2MDRlNWQ4ZjI4NWJmODQwYjhjODAwZDg5NWJjOGQ",
+    "commit": {
+      "author": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-20T18:47:21Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-22T19:31:25Z"
+      },
+      "message": "route-table: Avoid routes from non-standard routing tables.\n\nCurrently, ovs-vswitchd is subscribed to all the routing changes in the\nkernel.  On each change, it marks the internal routing table cache as\ninvalid, then resets it and dumps all the routes from the kernel from\nscratch.  The reason for that is kernel routing updates not being\nreliable in a sense that it's hard to tell which route is getting\nremoved or modified.  Userspace application has to track the order in\nwhich route entries are dumped from the kernel.  Updates can get lost\nor even duplicated and the kernel doesn't provide a good mechanism to\ndistinguish one route from another.  To my knowledge, dumping all the\nroutes from a kernel after each change is the only way to keep the\ncache consistent.  Some more info can be found in the following never\naddressed issues:\n  https://bugzilla.redhat.com/1337860\n  https://bugzilla.redhat.com/1337855\n\nIt seems to be believed that NetworkManager \"mostly\" does incremental\nupdates right.  But it is still not completely correct, will re-dump\nthe whole table in certain cases, and it takes a huge amount of very\ncomplicated code to do the accounting and route comparisons.\n\nGoing back to ovs-vswitchd, it currently dumps routes from all the\nrouting tables.  If it will get conflicting routes from multiple\ntables, the cache will not be useful.  The routing cache in userspace\nis primarily used for checking the egress port for tunneled traffic\nand this way also detecting link state changes for a tunnel port.\nFor userspace datapath it is used for actual routing of the packet\nafter sending to a native tunnel.\nWith kernel datapath we don't really have a mechanism to know which\nrouting table will actually be used by the kernel after encapsulation,\nso our lookups on a cache may be incorrect because of this as well.\n\nSo, unless all the relevant routes are in the standard tables, the\nlookup in userspace route cache is unreliable.\n\nLuckily, most setups are not using any complicated routing in\nnon-standard tables that OVS has to be aware of.\n\nIt is possible, but unlikely, that standard routing tables are\ncompletely empty while some other custom table is not, and all the OVS\ntunnel traffic is directed to that table.  That would be the only\nscenario where dumping non-standard tables would make sense.  But it\nseems like this kind of setup will likely need a way to tell OVS from\nwhich table the routes should be taken, or we'll need to dump routing\nrules and keep a separate cache for each table, so we can first match\non rules and then lookup correct routes in a specific table.  I'm not\nsure if trying to implement all that is justified.\n\nFor now, stop considering routes from non-standard tables to avoid\nmixing different tables together and also wasting CPU resources.\n\nThis fixes a high CPU usage in ovs-vswitchd in case a BGP daemon is\nrunning on a same host and in a same network namespace with OVS using\nits own custom routing table.\n\nUnfortunately, there seems to be no way to tell the kernel to send\nupdates only for particular tables.  So, we'll still receive and parse\nall of them.  But they will not result in a full cache invalidation in\nmost cases.\n\nLinux kernel v4.20 introduced filtering support for RTM_GETROUTE dumps.\nSo, we can make use of it and dump only standard tables when we get a\nrelevant route update.  NETLINK_GET_STRICT_CHK has to be enabled on\nthe socket for filtering to work.  There is no reason to not enable it\nby default, if supported.  It is not used outside of NETLINK_ROUTE.\n\nFixes: f0e167f0dbad (\"route-table: Handle route updates more robustly.\")\nFixes: ea83a2fcd0d3 (\"lib: Show tunnel egress interface in ovsdb\")\nReported-at: https://github.com/openvswitch/ovs-issues/issues/185\nReported-at: https://mail.openvswitch.org/pipermail/ovs-discuss/2022-October/052091.html\nAcked-by: Aaron Conole <aconole@redhat.com>\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "6bb82bde128bee24208c330bdb2e3bed1a5755f0",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/6bb82bde128bee24208c330bdb2e3bed1a5755f0"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/840979663d604e5d8f285bf840b8c800d895bc8d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/840979663d604e5d8f285bf840b8c800d895bc8d",
+    "html_url": "https://github.com/openvswitch/ovs/commit/840979663d604e5d8f285bf840b8c800d895bc8d",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/840979663d604e5d8f285bf840b8c800d895bc8d/comments",
+    "author": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3388c3451ff8ab6f0b41db50d35ca0160cc7e800",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/3388c3451ff8ab6f0b41db50d35ca0160cc7e800",
+        "html_url": "https://github.com/openvswitch/ovs/commit/3388c3451ff8ab6f0b41db50d35ca0160cc7e800"
+      }
+    ]
+  },
+  {
+    "sha": "3388c3451ff8ab6f0b41db50d35ca0160cc7e800",
+    "node_id": "C_kwDOARiCBNoAKDMzODhjMzQ1MWZmOGFiNmYwYjQxZGI1MGQzNWNhMDE2MGNjN2U4MDA",
+    "commit": {
+      "author": {
+        "name": "Daniel Ding",
+        "email": "danieldin186@gmail.com",
+        "date": "2024-03-20T02:54:07Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-22T19:27:07Z"
+      },
+      "message": "ovs-tcpdump: Fix cleanup mirror failed with twice fatal signals.\n\nAfter running ovs-tcpdump and inputs multiple CTRL+C, the program will\nraise the following exception.\n\nError in atexit._run_exitfuncs:\nTraceback (most recent call last):\n  File \"/usr/bin/ovs-tcpdump\", line 421, in cleanup_mirror\n    ovsdb = OVSDB(db_sock)\n  File \"/usr/bin/ovs-tcpdump\", line 168, in __init__\n    OVSDB.wait_for_db_change(self._idl_conn)  # Initial Sync with DB\n  File \"/usr/bin/ovs-tcpdump\", line 155, in wait_for_db_change\n    while idl.change_seqno == seq and not idl.run():\n\nThe default handler of SIGINT is default_int_handler, so it was not\nregistered to the signal handler. When received CTRL+C again, the program\nwas broken, and calling hook could not be executed completely.\n\nSigned-off-by: Daniel Ding <danieldin186@gmail.com>\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "528c29c8aca2d0ff29c679727bba8c2b8f1a24fa",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/528c29c8aca2d0ff29c679727bba8c2b8f1a24fa"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/3388c3451ff8ab6f0b41db50d35ca0160cc7e800",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/3388c3451ff8ab6f0b41db50d35ca0160cc7e800",
+    "html_url": "https://github.com/openvswitch/ovs/commit/3388c3451ff8ab6f0b41db50d35ca0160cc7e800",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/3388c3451ff8ab6f0b41db50d35ca0160cc7e800/comments",
+    "author": {
+      "login": "danieldin95",
+      "id": 12085357,
+      "node_id": "MDQ6VXNlcjEyMDg1MzU3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12085357?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/danieldin95",
+      "html_url": "https://github.com/danieldin95",
+      "followers_url": "https://api.github.com/users/danieldin95/followers",
+      "following_url": "https://api.github.com/users/danieldin95/following{/other_user}",
+      "gists_url": "https://api.github.com/users/danieldin95/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/danieldin95/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/danieldin95/subscriptions",
+      "organizations_url": "https://api.github.com/users/danieldin95/orgs",
+      "repos_url": "https://api.github.com/users/danieldin95/repos",
+      "events_url": "https://api.github.com/users/danieldin95/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/danieldin95/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9d0a40120f9f71ed9ddf32d37d1b03b0fd7f4703",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/9d0a40120f9f71ed9ddf32d37d1b03b0fd7f4703",
+        "html_url": "https://github.com/openvswitch/ovs/commit/9d0a40120f9f71ed9ddf32d37d1b03b0fd7f4703"
+      }
+    ]
+  },
+  {
+    "sha": "9d0a40120f9f71ed9ddf32d37d1b03b0fd7f4703",
+    "node_id": "C_kwDOARiCBNoAKDlkMGE0MDEyMGY5ZjcxZWQ5ZGRmMzJkMzdkMWIwM2IwZmQ3ZjQ3MDM",
+    "commit": {
+      "author": {
+        "name": "Tao Liu",
+        "email": "taoliu828@163.com",
+        "date": "2024-03-12T14:04:11Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-19T19:25:02Z"
+      },
+      "message": "ofproto-dpif: Fix tunnel with different name del/add failure.\n\nReproduce:\n  ovs-vsctl add-port br-int p0 \\\n    -- set interface p0 type=vxlan options:remote_ip=10.10.10.1\n\n  sleep 2\n\n  ovs-vsctl --if-exists del-port p0 \\\n    -- add-port br-int p1 \\\n    -- set interface p1 type=vxlan options:remote_ip=10.10.10.1\n  ovs-vsctl: Error detected while setting up 'p1': could not add\n  network device p1 to ofproto (File exists).\n\nvswitchd log:\n  bridge|INFO|bridge br-int: added interface p0 on port 1106\n  bridge|INFO|bridge br-int: deleted interface p0 on port 1106\n  tunnel|WARN|p1: attempting to add tunnel port with same config as\n              port 'p0' (::->10.10.10.1, key=0, legacy_l2, dp port=122)\n  ofproto|WARN|br-int: could not add port p1 (File exists)\n  bridge|WARN|could not add network device p1 to ofproto (File exists)\n\nCallTrace:\n  bridge_reconfigure\n    bridge_del_ports\n      port_destroy\n        iface_destroy__\n          netdev_remove\t\t<------ netdev p0 removed\n    bridge_delete_or_reconfigure_ports\n      OFPROTO_PORT_FOR_EACH\n        ofproto_port_dump_next\n          port_dump_next\n          port_query_by_name\t<------ netdev_shash do not contain p0\n        ofproto_port_del\t<------ p0 do not del in ofproto\n    bridge_add_ports\n      bridge_add_ports__\n        iface_create\n          iface_do_create\n            ofproto_port_add\t<------ p1 add failed\n\nFixes: fe83f81df977 (\"netdev: Remove netdev from global shash when the user is changing interface configuration.\")\nAcked-by: Han Zhou <hzhou@ovn.org>\nTested-by: Han Zhou <hzhou@ovn.org>\nSigned-off-by: Tao Liu <taoliu828@163.com>\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "bd413cdd611672897c7721ee8bd7d1c04c850527",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/bd413cdd611672897c7721ee8bd7d1c04c850527"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/9d0a40120f9f71ed9ddf32d37d1b03b0fd7f4703",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/9d0a40120f9f71ed9ddf32d37d1b03b0fd7f4703",
+    "html_url": "https://github.com/openvswitch/ovs/commit/9d0a40120f9f71ed9ddf32d37d1b03b0fd7f4703",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/9d0a40120f9f71ed9ddf32d37d1b03b0fd7f4703/comments",
+    "author": null,
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5339ce386f3cccc4972bc49c3f68272138d58511",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/5339ce386f3cccc4972bc49c3f68272138d58511",
+        "html_url": "https://github.com/openvswitch/ovs/commit/5339ce386f3cccc4972bc49c3f68272138d58511"
+      }
+    ]
+  },
+  {
+    "sha": "5339ce386f3cccc4972bc49c3f68272138d58511",
+    "node_id": "C_kwDOARiCBNoAKDUzMzljZTM4NmYzY2NjYzQ5NzJiYzQ5YzNmNjgyNzIxMzhkNTg1MTE",
+    "commit": {
+      "author": {
+        "name": "Ales Musil",
+        "email": "amusil@redhat.com",
+        "date": "2024-03-07T15:01:51Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-19T19:19:14Z"
+      },
+      "message": "ofpbuf: Prevent undefined behavior in ofpbuf_clone.\n\nThe new_buffer data pointer is NULL when the size of the cloned\nbuffer is 0. This is fine as there is no need to allocate space.\nHowever, the cloned buffer header/msg might be the same pointer\nas data. This causes undefined behavior by adding 0 to NULL pointer.\nCheck if the data buffer is not NULL before attempting to apply the\nheader/msg offset.\n\nThis was caught by OVN system test:\n\nlib/ofpbuf.c:203:56: runtime error: applying zero offset to null pointer\n  0 0xa012fc in ofpbuf_clone_with_headroom /ovs/lib/ofpbuf.c:203:56\n  1 0x635fd4 in put_remote_port_redirect_overlay /controller/physical.c:397:40\n  2 0x635fd4 in consider_port_binding /controller/physical.c:1951:9\n  3 0x62e046 in physical_run /controller/physical.c:2447:9\n  4 0x601d98 in en_pflow_output_run /controller/ovn-controller.c:4690:5\n  5 0x707769 in engine_recompute /lib/inc-proc-eng.c:415:5\n  6 0x7060eb in engine_compute /lib/inc-proc-eng.c:454:17\n  7 0x7060eb in engine_run_node /lib/inc-proc-eng.c:503:14\n  8 0x7060eb in engine_run /lib/inc-proc-eng.c:528:9\n  9 0x5f9f26 in main /controller/ovn-controller.c\n\nSigned-off-by: Ales Musil <amusil@redhat.com>\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "4cee8e785e3f0acb2731366ac3e13c1f1bcb7389",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/4cee8e785e3f0acb2731366ac3e13c1f1bcb7389"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/5339ce386f3cccc4972bc49c3f68272138d58511",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/5339ce386f3cccc4972bc49c3f68272138d58511",
+    "html_url": "https://github.com/openvswitch/ovs/commit/5339ce386f3cccc4972bc49c3f68272138d58511",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/5339ce386f3cccc4972bc49c3f68272138d58511/comments",
+    "author": {
+      "login": "almusil",
+      "id": 30824037,
+      "node_id": "MDQ6VXNlcjMwODI0MDM3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/30824037?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/almusil",
+      "html_url": "https://github.com/almusil",
+      "followers_url": "https://api.github.com/users/almusil/followers",
+      "following_url": "https://api.github.com/users/almusil/following{/other_user}",
+      "gists_url": "https://api.github.com/users/almusil/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/almusil/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/almusil/subscriptions",
+      "organizations_url": "https://api.github.com/users/almusil/orgs",
+      "repos_url": "https://api.github.com/users/almusil/repos",
+      "events_url": "https://api.github.com/users/almusil/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/almusil/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "679b068ac78dd55891ddd0bedc9d1fa5d8138c3d",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/679b068ac78dd55891ddd0bedc9d1fa5d8138c3d",
+        "html_url": "https://github.com/openvswitch/ovs/commit/679b068ac78dd55891ddd0bedc9d1fa5d8138c3d"
+      }
+    ]
+  },
+  {
+    "sha": "679b068ac78dd55891ddd0bedc9d1fa5d8138c3d",
+    "node_id": "C_kwDOARiCBNoAKDY3OWIwNjhhYzc4ZGQ1NTg5MWRkZDBiZWRjOWQxZmE1ZDgxMzhjM2Q",
+    "commit": {
+      "author": {
+        "name": "Eelco Chaudron",
+        "email": "echaudro@redhat.com",
+        "date": "2024-03-19T15:24:33Z"
+      },
+      "committer": {
+        "name": "Eelco Chaudron",
+        "email": "echaudro@redhat.com",
+        "date": "2024-03-19T15:26:33Z"
+      },
+      "message": "AUTHORS: Add Kevin Sprague.\n\nSigned-off-by: Eelco Chaudron <echaudro@redhat.com>",
+      "tree": {
+        "sha": "0cb45e890464ce052ad0b5867ac43af9245f90f4",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/0cb45e890464ce052ad0b5867ac43af9245f90f4"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/679b068ac78dd55891ddd0bedc9d1fa5d8138c3d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/679b068ac78dd55891ddd0bedc9d1fa5d8138c3d",
+    "html_url": "https://github.com/openvswitch/ovs/commit/679b068ac78dd55891ddd0bedc9d1fa5d8138c3d",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/679b068ac78dd55891ddd0bedc9d1fa5d8138c3d/comments",
+    "author": {
+      "login": "chaudron",
+      "id": 18258026,
+      "node_id": "MDQ6VXNlcjE4MjU4MDI2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18258026?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/chaudron",
+      "html_url": "https://github.com/chaudron",
+      "followers_url": "https://api.github.com/users/chaudron/followers",
+      "following_url": "https://api.github.com/users/chaudron/following{/other_user}",
+      "gists_url": "https://api.github.com/users/chaudron/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/chaudron/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/chaudron/subscriptions",
+      "organizations_url": "https://api.github.com/users/chaudron/orgs",
+      "repos_url": "https://api.github.com/users/chaudron/repos",
+      "events_url": "https://api.github.com/users/chaudron/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/chaudron/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "chaudron",
+      "id": 18258026,
+      "node_id": "MDQ6VXNlcjE4MjU4MDI2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18258026?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/chaudron",
+      "html_url": "https://github.com/chaudron",
+      "followers_url": "https://api.github.com/users/chaudron/followers",
+      "following_url": "https://api.github.com/users/chaudron/following{/other_user}",
+      "gists_url": "https://api.github.com/users/chaudron/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/chaudron/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/chaudron/subscriptions",
+      "organizations_url": "https://api.github.com/users/chaudron/orgs",
+      "repos_url": "https://api.github.com/users/chaudron/repos",
+      "events_url": "https://api.github.com/users/chaudron/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/chaudron/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b89a6b81451ec878316d2cc15f0a64e6aeeeffc7",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/b89a6b81451ec878316d2cc15f0a64e6aeeeffc7",
+        "html_url": "https://github.com/openvswitch/ovs/commit/b89a6b81451ec878316d2cc15f0a64e6aeeeffc7"
+      }
+    ]
+  },
+  {
+    "sha": "b89a6b81451ec878316d2cc15f0a64e6aeeeffc7",
+    "node_id": "C_kwDOARiCBNoAKGI4OWE2YjgxNDUxZWM4NzgzMTZkMmNjMTVmMGE2NGU2YWVlZWZmYzc",
+    "commit": {
+      "author": {
+        "name": "Aaron Conole",
+        "email": "aconole@redhat.com",
+        "date": "2024-03-05T15:44:42Z"
+      },
+      "committer": {
+        "name": "Eelco Chaudron",
+        "email": "echaudro@redhat.com",
+        "date": "2024-03-19T14:34:53Z"
+      },
+      "message": "rhel: Enable USDT scripts by default in Fedora builds.\n\nAll supported versions of Fedora do package libbpf, so it\nmakes sense to enable USDT support.\n\nAcked-by: Simon Horman <horms@ovn.org>\nSigned-off-by: Aaron Conole <aconole@redhat.com>\nSigned-off-by: Eelco Chaudron <echaudro@redhat.com>",
+      "tree": {
+        "sha": "7a5220a9e584fe7b748de50a008ca31414d14eed",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/7a5220a9e584fe7b748de50a008ca31414d14eed"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/b89a6b81451ec878316d2cc15f0a64e6aeeeffc7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/b89a6b81451ec878316d2cc15f0a64e6aeeeffc7",
+    "html_url": "https://github.com/openvswitch/ovs/commit/b89a6b81451ec878316d2cc15f0a64e6aeeeffc7",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/b89a6b81451ec878316d2cc15f0a64e6aeeeffc7/comments",
+    "author": {
+      "login": "apconole",
+      "id": 1092926,
+      "node_id": "MDQ6VXNlcjEwOTI5MjY=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1092926?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/apconole",
+      "html_url": "https://github.com/apconole",
+      "followers_url": "https://api.github.com/users/apconole/followers",
+      "following_url": "https://api.github.com/users/apconole/following{/other_user}",
+      "gists_url": "https://api.github.com/users/apconole/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/apconole/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/apconole/subscriptions",
+      "organizations_url": "https://api.github.com/users/apconole/orgs",
+      "repos_url": "https://api.github.com/users/apconole/repos",
+      "events_url": "https://api.github.com/users/apconole/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/apconole/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "chaudron",
+      "id": 18258026,
+      "node_id": "MDQ6VXNlcjE4MjU4MDI2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18258026?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/chaudron",
+      "html_url": "https://github.com/chaudron",
+      "followers_url": "https://api.github.com/users/chaudron/followers",
+      "following_url": "https://api.github.com/users/chaudron/following{/other_user}",
+      "gists_url": "https://api.github.com/users/chaudron/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/chaudron/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/chaudron/subscriptions",
+      "organizations_url": "https://api.github.com/users/chaudron/orgs",
+      "repos_url": "https://api.github.com/users/chaudron/repos",
+      "events_url": "https://api.github.com/users/chaudron/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/chaudron/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "86b9e653ef226985b0fef1be7c03d8be305fa0b7",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/86b9e653ef226985b0fef1be7c03d8be305fa0b7",
+        "html_url": "https://github.com/openvswitch/ovs/commit/86b9e653ef226985b0fef1be7c03d8be305fa0b7"
+      }
+    ]
+  },
+  {
+    "sha": "86b9e653ef226985b0fef1be7c03d8be305fa0b7",
+    "node_id": "C_kwDOARiCBNoAKDg2YjllNjUzZWYyMjY5ODViMGZlZjFiZTdjMDNkOGJlMzA1ZmEwYjc",
+    "commit": {
+      "author": {
+        "name": "Kevin Sprague",
+        "email": "ksprague0711@gmail.com",
+        "date": "2024-03-05T15:44:41Z"
+      },
+      "committer": {
+        "name": "Eelco Chaudron",
+        "email": "echaudro@redhat.com",
+        "date": "2024-03-19T14:34:53Z"
+      },
+      "message": "revalidator: Add a USDT probe during flow deletion with purge reason.\n\nDuring normal operations, it is useful to understand when a particular flow\ngets removed from the system. This can be useful when debugging performance\nissues tied to ofproto flow changes, trying to determine deployed traffic\npatterns, or while debugging dynamic systems where ports come and go.\n\nPrior to this change, there was a lack of visibility around flow expiration.\nThe existing debugging infrastructure could tell us when a flow was added to\nthe datapath, but not when it was removed or why.\n\nThis change introduces a USDT probe at the point where the revalidator\ndetermines that the flow should be removed.  Additionally, we track the\nreason for the flow eviction and provide that information as well.  With\nthis change, we can track the complete flow lifecycle for the netlink\ndatapath by hooking the upcall tracepoint in kernel, the flow put USDT, and\nthe revalidator USDT, letting us watch as flows are added and removed from\nthe kernel datapath.\n\nThis change only enables this information via USDT probe, so it won't be\npossible to access this information any other way (see:\nDocumentation/topics/usdt-probes.rst).\n\nAlso included is a script (utilities/usdt-scripts/flow_reval_monitor.py)\nwhich serves as a demonstration of how the new USDT probe might be used\ngoing forward.\n\nCo-authored-by: Aaron Conole <aconole@redhat.com>\nAcked-by: Han Zhou <hzhou@ovn.org>\nSigned-off-by: Aaron Conole <aconole@redhat.com>\nSigned-off-by: Kevin Sprague <ksprague0711@gmail.com>\nSigned-off-by: Eelco Chaudron <echaudro@redhat.com>",
+      "tree": {
+        "sha": "f66d3553d700d225942e789b0c40c4657375b5f2",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/f66d3553d700d225942e789b0c40c4657375b5f2"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/86b9e653ef226985b0fef1be7c03d8be305fa0b7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/86b9e653ef226985b0fef1be7c03d8be305fa0b7",
+    "html_url": "https://github.com/openvswitch/ovs/commit/86b9e653ef226985b0fef1be7c03d8be305fa0b7",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/86b9e653ef226985b0fef1be7c03d8be305fa0b7/comments",
+    "author": {
+      "login": "kevinsprague",
+      "id": 78178500,
+      "node_id": "MDQ6VXNlcjc4MTc4NTAw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/78178500?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/kevinsprague",
+      "html_url": "https://github.com/kevinsprague",
+      "followers_url": "https://api.github.com/users/kevinsprague/followers",
+      "following_url": "https://api.github.com/users/kevinsprague/following{/other_user}",
+      "gists_url": "https://api.github.com/users/kevinsprague/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/kevinsprague/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/kevinsprague/subscriptions",
+      "organizations_url": "https://api.github.com/users/kevinsprague/orgs",
+      "repos_url": "https://api.github.com/users/kevinsprague/repos",
+      "events_url": "https://api.github.com/users/kevinsprague/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/kevinsprague/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "chaudron",
+      "id": 18258026,
+      "node_id": "MDQ6VXNlcjE4MjU4MDI2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18258026?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/chaudron",
+      "html_url": "https://github.com/chaudron",
+      "followers_url": "https://api.github.com/users/chaudron/followers",
+      "following_url": "https://api.github.com/users/chaudron/following{/other_user}",
+      "gists_url": "https://api.github.com/users/chaudron/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/chaudron/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/chaudron/subscriptions",
+      "organizations_url": "https://api.github.com/users/chaudron/orgs",
+      "repos_url": "https://api.github.com/users/chaudron/repos",
+      "events_url": "https://api.github.com/users/chaudron/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/chaudron/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0ce82ac45e6828c5e1531b2ada044b7abbbadea5",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/0ce82ac45e6828c5e1531b2ada044b7abbbadea5",
+        "html_url": "https://github.com/openvswitch/ovs/commit/0ce82ac45e6828c5e1531b2ada044b7abbbadea5"
+      }
+    ]
+  },
+  {
+    "sha": "0ce82ac45e6828c5e1531b2ada044b7abbbadea5",
+    "node_id": "C_kwDOARiCBNoAKDBjZTgyYWM0NWU2ODI4YzVlMTUzMWIyYWRhMDQ0YjdhYmJiYWRlYTU",
+    "commit": {
+      "author": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-13T17:29:45Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-16T01:06:20Z"
+      },
+      "message": "netdev-dpdk: Fix tunnel type check during Tx offload preparation.\n\nTunnel types are not flags, but 4-bit fields, so checking them with\na simple binary 'and' is incorrect and may produce false-positive\nmatches.\n\nWhile the current implementation is unlikely to cause any issues today,\nsince both RTE_MBUF_F_TX_TUNNEL_VXLAN and RTE_MBUF_F_TX_TUNNEL_GENEVE\nonly have 1 bit set, it is risky to have this code and it may lead\nto problems if we add support for other tunnel types in the future.\n\nUse proper field checks instead.  Also adding a warning for unexpected\ntunnel types in case something goes wrong.\n\nFixes: 084c8087292c (\"userspace: Support VXLAN and GENEVE TSO.\")\nAcked-by: Mike Pattrick <mkp@redhat.com>\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "c188bd0743c39f36672afd28aea8efafbed514e6",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/c188bd0743c39f36672afd28aea8efafbed514e6"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/0ce82ac45e6828c5e1531b2ada044b7abbbadea5",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/0ce82ac45e6828c5e1531b2ada044b7abbbadea5",
+    "html_url": "https://github.com/openvswitch/ovs/commit/0ce82ac45e6828c5e1531b2ada044b7abbbadea5",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/0ce82ac45e6828c5e1531b2ada044b7abbbadea5/comments",
+    "author": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "05e9f05d146a2a635542c40d3146b2c20ab72805",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/05e9f05d146a2a635542c40d3146b2c20ab72805",
+        "html_url": "https://github.com/openvswitch/ovs/commit/05e9f05d146a2a635542c40d3146b2c20ab72805"
+      }
+    ]
+  },
+  {
+    "sha": "05e9f05d146a2a635542c40d3146b2c20ab72805",
+    "node_id": "C_kwDOARiCBNoAKDA1ZTlmMDVkMTQ2YTJhNjM1NTQyYzQwZDMxNDZiMmMyMGFiNzI4MDU",
+    "commit": {
+      "author": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-13T17:29:44Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-16T01:06:20Z"
+      },
+      "message": "netdev-dpdk: Fix TCP check during Tx offload preparation.\n\nRTE_MBUF_F_TX_TCP_CKSUM is not a flag, but a 2-bit field, so checking\nit with a simple binary 'and' is incorrect.  For example, this check\nwill succeed for a packet with UDP checksum requested as well.\n\nFix the check to avoid wrongly initializing tso_segz and potentially\naccessing UDP header via TCP structure pointer.\n\nThe IPv4 checksum flag has to be set for any L4 checksum request,\nregardless of the type, so moving this check out of the TCP condition.\n\nFixes: 8b5fe2dc6080 (\"userspace: Add Generic Segmentation Offloading.\")\nAcked-by: Mike Pattrick <mkp@redhat.com>\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "192fef7662c63ed7248c15dd7b1f3af704c2c1c9",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/192fef7662c63ed7248c15dd7b1f3af704c2c1c9"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/05e9f05d146a2a635542c40d3146b2c20ab72805",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/05e9f05d146a2a635542c40d3146b2c20ab72805",
+    "html_url": "https://github.com/openvswitch/ovs/commit/05e9f05d146a2a635542c40d3146b2c20ab72805",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/05e9f05d146a2a635542c40d3146b2c20ab72805/comments",
+    "author": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f8809760fcc237ca0677b81166831400b141878f",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/f8809760fcc237ca0677b81166831400b141878f",
+        "html_url": "https://github.com/openvswitch/ovs/commit/f8809760fcc237ca0677b81166831400b141878f"
+      }
+    ]
+  },
+  {
+    "sha": "f8809760fcc237ca0677b81166831400b141878f",
+    "node_id": "C_kwDOARiCBNoAKGY4ODA5NzYwZmNjMjM3Y2EwNjc3YjgxMTY2ODMxNDAwYjE0MTg3OGY",
+    "commit": {
+      "author": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-13T17:29:43Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-16T01:06:20Z"
+      },
+      "message": "netdev-dpdk: Clear inner packet marks if no inner offloads requested.\n\nIn some cases only outer offloads may be requested for a tunneled\npacket.  In this case there is no need to mark the type of an\ninner packet.  Clean these flags up to avoid potential confusion\nof DPDK drivers.\n\nFixes: 084c8087292c (\"userspace: Support VXLAN and GENEVE TSO.\")\nAcked-by: Mike Pattrick <mkp@redhat.com>\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "18651d4dae53e70f695b2b52bfee391ae9e38ebc",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/18651d4dae53e70f695b2b52bfee391ae9e38ebc"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/f8809760fcc237ca0677b81166831400b141878f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/f8809760fcc237ca0677b81166831400b141878f",
+    "html_url": "https://github.com/openvswitch/ovs/commit/f8809760fcc237ca0677b81166831400b141878f",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/f8809760fcc237ca0677b81166831400b141878f/comments",
+    "author": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7df30c86ce12833cf7f9bfc71c166c34692ceff4",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/7df30c86ce12833cf7f9bfc71c166c34692ceff4",
+        "html_url": "https://github.com/openvswitch/ovs/commit/7df30c86ce12833cf7f9bfc71c166c34692ceff4"
+      }
+    ]
+  },
+  {
+    "sha": "7df30c86ce12833cf7f9bfc71c166c34692ceff4",
+    "node_id": "C_kwDOARiCBNoAKDdkZjMwYzg2Y2UxMjgzM2NmN2Y5YmZjNzFjMTY2YzM0NjkyY2VmZjQ",
+    "commit": {
+      "author": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-11T18:32:30Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-13T15:29:25Z"
+      },
+      "message": "netdev-dpdk: Clean up all marker flags if no offloads requested.\n\nSome drivers (primarily, Intel ones) do not expect any marking flags\nbeing set if no offloads are requested.  If these flags are present,\ndriver will fail Tx preparation or behave abnormally.\n\nFor example, ixgbe driver will refuse to process the packet with\nonly RTE_MBUF_F_TX_TUNNEL_GENEVE and RTE_MBUF_F_TX_OUTER_IPV4 set.\nThis pretty much breaks Geneve tunnels on these cards.\n\nAn extra check is added to make sure we don't have any unexpected\nTx offload flags set.\n\nFixes: 084c8087292c (\"userspace: Support VXLAN and GENEVE TSO.\")\nReported-at: https://github.com/openvswitch/ovs-issues/issues/321\nAcked-by: Mike Pattrick <mkp@redhat.com>\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "1629ea2a5bce4dec19c40dacb59258e178f2ecb2",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/1629ea2a5bce4dec19c40dacb59258e178f2ecb2"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/7df30c86ce12833cf7f9bfc71c166c34692ceff4",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/7df30c86ce12833cf7f9bfc71c166c34692ceff4",
+    "html_url": "https://github.com/openvswitch/ovs/commit/7df30c86ce12833cf7f9bfc71c166c34692ceff4",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/7df30c86ce12833cf7f9bfc71c166c34692ceff4/comments",
+    "author": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "fa0dfa18d5344c82bc8387b4f79f4257a59d6f58",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/fa0dfa18d5344c82bc8387b4f79f4257a59d6f58",
+        "html_url": "https://github.com/openvswitch/ovs/commit/fa0dfa18d5344c82bc8387b4f79f4257a59d6f58"
+      }
+    ]
+  },
+  {
+    "sha": "fa0dfa18d5344c82bc8387b4f79f4257a59d6f58",
+    "node_id": "C_kwDOARiCBNoAKGZhMGRmYTE4ZDUzNDRjODJiYzgzODdiNGY3OWY0MjU3YTU5ZDZmNTg",
+    "commit": {
+      "author": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-12T00:50:46Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-12T14:00:20Z"
+      },
+      "message": "github: Reduce ASLR entropy to be compatible with asan in llvm 14.\n\nStarting with image version 20240310.1.0, GitHub runners are using\n32-bit entropy for ASLR:\n\n  $ sudo sysctl -a | grep vm.mmap.rnd\n  vm.mmap_rnd_bits = 32\n  vm.mmap_rnd_compat_bits = 16\n\nThis breaks all the asan-enabled builds, because older asan gets\nconfused by memory mappings and crashes with segmentation fault.\n\nThe issue is fixed in newer releases of llvm:\n  https://github.com/llvm/llvm-project/commit/fb77ca05ffb4f8e666878f2f6718a9fb4d686839\n  https://reviews.llvm.org/D148280\n\nBut these are not available in Ubuntu 22.04 image.\n\nThis should be fixed by GitHub, but until new images are available\nreducing ASLR entropy manually to 28 bits to make builds work.\n\nReported-at: https://github.com/actions/runner-images/issues/9491\nAcked-by: Eelco Chaudron <echaudro@redhat.com>\nAcked-by: Dumitru Ceara <dceara@redhat.com>\nAcked-by: Aaron Conole <aconole@redhat.com>\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "c477d8eac0281ca016e98aba59cb17862a5fcc18",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/c477d8eac0281ca016e98aba59cb17862a5fcc18"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/fa0dfa18d5344c82bc8387b4f79f4257a59d6f58",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/fa0dfa18d5344c82bc8387b4f79f4257a59d6f58",
+    "html_url": "https://github.com/openvswitch/ovs/commit/fa0dfa18d5344c82bc8387b4f79f4257a59d6f58",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/fa0dfa18d5344c82bc8387b4f79f4257a59d6f58/comments",
+    "author": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "33f45ded67a2d524ccf54cf4bb79a38d8140f14b",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/33f45ded67a2d524ccf54cf4bb79a38d8140f14b",
+        "html_url": "https://github.com/openvswitch/ovs/commit/33f45ded67a2d524ccf54cf4bb79a38d8140f14b"
+      }
+    ]
+  },
+  {
+    "sha": "33f45ded67a2d524ccf54cf4bb79a38d8140f14b",
+    "node_id": "C_kwDOARiCBNoAKDMzZjQ1ZGVkNjdhMmQ1MjRjY2Y1NGNmNGJiNzlhMzhkODE0MGYxNGI",
+    "commit": {
+      "author": {
+        "name": "Mike Pattrick",
+        "email": "mkp@redhat.com",
+        "date": "2024-03-06T21:40:18Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-08T19:21:27Z"
+      },
+      "message": "ovsdb: Don't iterate over rows on empty mutation.\n\nPreviously when an empty mutation was used to count the number of rows\nin a table, OVSDB would iterate over all rows twice. First to perform an\nRBAC check, and then to perform the no-operation.\n\nThis change adds a short circuit to mutate operations with no conditions\nand an empty mutation set, returning immediately. One notable change in\nfunctionality is not performing the RBAC check in this condition, as no\nmutation actually takes place.\n\nReported-by: Terry Wilson <twilson@redhat.com>\nReported-at: https://issues.redhat.com/browse/FDP-359\nSigned-off-by: Mike Pattrick <mkp@redhat.com>\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "a4ccb995fb529fbc3632cb12452d6b2150fb0047",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/a4ccb995fb529fbc3632cb12452d6b2150fb0047"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/33f45ded67a2d524ccf54cf4bb79a38d8140f14b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/33f45ded67a2d524ccf54cf4bb79a38d8140f14b",
+    "html_url": "https://github.com/openvswitch/ovs/commit/33f45ded67a2d524ccf54cf4bb79a38d8140f14b",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/33f45ded67a2d524ccf54cf4bb79a38d8140f14b/comments",
+    "author": {
+      "login": "mkp-rh",
+      "id": 92053684,
+      "node_id": "U_kgDOBXygtA",
+      "avatar_url": "https://avatars.githubusercontent.com/u/92053684?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mkp-rh",
+      "html_url": "https://github.com/mkp-rh",
+      "followers_url": "https://api.github.com/users/mkp-rh/followers",
+      "following_url": "https://api.github.com/users/mkp-rh/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mkp-rh/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mkp-rh/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mkp-rh/subscriptions",
+      "organizations_url": "https://api.github.com/users/mkp-rh/orgs",
+      "repos_url": "https://api.github.com/users/mkp-rh/repos",
+      "events_url": "https://api.github.com/users/mkp-rh/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mkp-rh/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2c4ffd2f8a23bed1f2141e81abcc68ccba129e3f",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/2c4ffd2f8a23bed1f2141e81abcc68ccba129e3f",
+        "html_url": "https://github.com/openvswitch/ovs/commit/2c4ffd2f8a23bed1f2141e81abcc68ccba129e3f"
+      }
+    ]
+  },
+  {
+    "sha": "2c4ffd2f8a23bed1f2141e81abcc68ccba129e3f",
+    "node_id": "C_kwDOARiCBNoAKDJjNGZmZDJmOGEyM2JlZDFmMjE0MWU4MWFiY2M2OGNjYmExMjllM2Y",
+    "commit": {
+      "author": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-07T19:39:41Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-08T19:19:54Z"
+      },
+      "message": "netdev-dpdk: Dump packets that fail Tx preparation.\n\nIt's hard to debug situations where driver rejects packets for some\nreason.  Dumping out the mbuf should help with that.\n\nSample output looks like this:\n\n  |netdev_dpdk(pmd-c03/id:8)|DBG|ovs-p1: First invalid packet:\n  dump mbuf at 0x1180bce140, iova=0x2cb7ce400, buf_len=2176\n    pkt_len=64, ol_flags=0x2, nb_segs=1, port=65535, ptype=0\n    segment at 0x1180bce140, data=0x1180bce580, len=90, off=384, refcnt=1\n    Dump data at [0x1180bce580], len=64\n  00000000: 33 33 00 00 00 16 AA 27 91 F9 4D 96 86 DD 60 00 | 33.....'..M...`.\n  00000010: 00 00 00 24 00 01 00 00 00 00 00 00 00 00 00 00 | ...$............\n  00000020: 00 00 00 00 00 00 FF 02 00 00 00 00 00 00 00 00 | ................\n  00000030: 00 00 00 00 00 16 3A 00 05 02 00 00 01 00 8F 00 | ......:.........\n\nAcked-by: Eelco Chaudron <echaudro@redhat.com>\nAcked-by: Kevin Traynor <ktraynor@redhat.com>\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "55897b89729a93aeb126e694696f9ca7bcf6665a",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/55897b89729a93aeb126e694696f9ca7bcf6665a"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/2c4ffd2f8a23bed1f2141e81abcc68ccba129e3f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/2c4ffd2f8a23bed1f2141e81abcc68ccba129e3f",
+    "html_url": "https://github.com/openvswitch/ovs/commit/2c4ffd2f8a23bed1f2141e81abcc68ccba129e3f",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/2c4ffd2f8a23bed1f2141e81abcc68ccba129e3f/comments",
+    "author": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "07c2ef5cd00ae416ef2ebefeab3cbc4def745275",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/07c2ef5cd00ae416ef2ebefeab3cbc4def745275",
+        "html_url": "https://github.com/openvswitch/ovs/commit/07c2ef5cd00ae416ef2ebefeab3cbc4def745275"
+      }
+    ]
+  },
+  {
+    "sha": "07c2ef5cd00ae416ef2ebefeab3cbc4def745275",
+    "node_id": "C_kwDOARiCBNoAKDA3YzJlZjVjZDAwYWU0MTZlZjJlYmVmZWFiM2NiYzRkZWY3NDUyNzU",
+    "commit": {
+      "author": {
+        "name": "Timothy Redaelli",
+        "email": "tredaelli@redhat.com",
+        "date": "2024-03-05T20:37:31Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-08T19:18:05Z"
+      },
+      "message": "bfd: Improve state change log message.\n\nA log message like this one:\n\n2024-01-09T06:45:17.201Z|00071|bfd(handler2)|INFO|ovn-0af536-0: BFD state\nchange: down->up \"Neighbor Signaled Session Down\"->\"Neighbor Signaled Session\nDown\".\n\ncan be hard to read since '->' usually represents a status change, but\nin this case the diagnostic code stays constant. Update the log message to\navoid such ambiguity. The log message for the above event become:\n\n2024-01-09T06:45:16.211Z|00026|bfd(handler3)|INFO|ovn-0af536-0: BFD state\nchange: (bfd.SessionState: down, bfd.LocalDiag: \"Neighbor Signaled Session\nDown\") -> (bfd.SessionState: up, bfd.LocalDiag: \"Neighbor Signaled Session\nDown\")\n\nReported-by: Alex Stupnikov <astupnik@redhat.com>\nReported-at: https://bugzilla.redhat.com/2258496\nAcked-by: Eelco Chaudron <echaudro@redhat.com>\nSigned-off-by: Timothy Redaelli <tredaelli@redhat.com>\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "b4d652596fbeceb0b49495a435f6efd02f400129",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/b4d652596fbeceb0b49495a435f6efd02f400129"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/07c2ef5cd00ae416ef2ebefeab3cbc4def745275",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/07c2ef5cd00ae416ef2ebefeab3cbc4def745275",
+    "html_url": "https://github.com/openvswitch/ovs/commit/07c2ef5cd00ae416ef2ebefeab3cbc4def745275",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/07c2ef5cd00ae416ef2ebefeab3cbc4def745275/comments",
+    "author": {
+      "login": "drizzt",
+      "id": 211316,
+      "node_id": "MDQ6VXNlcjIxMTMxNg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/211316?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/drizzt",
+      "html_url": "https://github.com/drizzt",
+      "followers_url": "https://api.github.com/users/drizzt/followers",
+      "following_url": "https://api.github.com/users/drizzt/following{/other_user}",
+      "gists_url": "https://api.github.com/users/drizzt/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/drizzt/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/drizzt/subscriptions",
+      "organizations_url": "https://api.github.com/users/drizzt/orgs",
+      "repos_url": "https://api.github.com/users/drizzt/repos",
+      "events_url": "https://api.github.com/users/drizzt/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/drizzt/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d2a42f396338210ff7382fc3be9e6306d627db96",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/d2a42f396338210ff7382fc3be9e6306d627db96",
+        "html_url": "https://github.com/openvswitch/ovs/commit/d2a42f396338210ff7382fc3be9e6306d627db96"
+      }
+    ]
+  },
+  {
+    "sha": "d2a42f396338210ff7382fc3be9e6306d627db96",
+    "node_id": "C_kwDOARiCBNoAKGQyYTQyZjM5NjMzODIxMGZmNzM4MmZjM2JlOWU2MzA2ZDYyN2RiOTY",
+    "commit": {
+      "author": {
+        "name": "Timothy Redaelli",
+        "email": "tredaelli@redhat.com",
+        "date": "2024-03-05T18:55:51Z"
+      },
+      "committer": {
+        "name": "Ilya Maximets",
+        "email": "i.maximets@ovn.org",
+        "date": "2024-03-08T19:15:44Z"
+      },
+      "message": "tests: Fix \"SSL db: Implementation\" test with openssl > 3.2.0.\n\nIn OpenSSL 3.2.0 (81b741f) all the \"alert\" error messages were updated to\nreplace \"sslv3\" with \"ssl/tls\".\n\nThis commit updates the \"SSL db: implementation\" test to support both the\npre-openssl 3.2.0 error message: \"sslv3 alert certificate unknown\" and the\npost-openssl 3.2.0 error message: \"ssl/tls alert certificate unknown\".\n\nAcked-by: Eelco Chaudron <echaudro@redhat.com>\nSigned-off-by: Timothy Redaelli <tredaelli@redhat.com>\nSigned-off-by: Ilya Maximets <i.maximets@ovn.org>",
+      "tree": {
+        "sha": "03957c8726057764be25e69127cb91a22f7ec2d9",
+        "url": "https://api.github.com/repos/openvswitch/ovs/git/trees/03957c8726057764be25e69127cb91a22f7ec2d9"
+      },
+      "url": "https://api.github.com/repos/openvswitch/ovs/git/commits/d2a42f396338210ff7382fc3be9e6306d627db96",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openvswitch/ovs/commits/d2a42f396338210ff7382fc3be9e6306d627db96",
+    "html_url": "https://github.com/openvswitch/ovs/commit/d2a42f396338210ff7382fc3be9e6306d627db96",
+    "comments_url": "https://api.github.com/repos/openvswitch/ovs/commits/d2a42f396338210ff7382fc3be9e6306d627db96/comments",
+    "author": {
+      "login": "drizzt",
+      "id": 211316,
+      "node_id": "MDQ6VXNlcjIxMTMxNg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/211316?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/drizzt",
+      "html_url": "https://github.com/drizzt",
+      "followers_url": "https://api.github.com/users/drizzt/followers",
+      "following_url": "https://api.github.com/users/drizzt/following{/other_user}",
+      "gists_url": "https://api.github.com/users/drizzt/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/drizzt/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/drizzt/subscriptions",
+      "organizations_url": "https://api.github.com/users/drizzt/orgs",
+      "repos_url": "https://api.github.com/users/drizzt/repos",
+      "events_url": "https://api.github.com/users/drizzt/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/drizzt/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "igsilya",
+      "id": 11501231,
+      "node_id": "MDQ6VXNlcjExNTAxMjMx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11501231?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/igsilya",
+      "html_url": "https://github.com/igsilya",
+      "followers_url": "https://api.github.com/users/igsilya/followers",
+      "following_url": "https://api.github.com/users/igsilya/following{/other_user}",
+      "gists_url": "https://api.github.com/users/igsilya/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/igsilya/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/igsilya/subscriptions",
+      "organizations_url": "https://api.github.com/users/igsilya/orgs",
+      "repos_url": "https://api.github.com/users/igsilya/repos",
+      "events_url": "https://api.github.com/users/igsilya/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/igsilya/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6c082a8310d5aa1bcbeb70c5d15d6bf74b0e224e",
+        "url": "https://api.github.com/repos/openvswitch/ovs/commits/6c082a8310d5aa1bcbeb70c5d15d6bf74b0e224e",
+        "html_url": "https://github.com/openvswitch/ovs/commit/6c082a8310d5aa1bcbeb70c5d15d6bf74b0e224e"
+      }
+    ]
+  }
+]

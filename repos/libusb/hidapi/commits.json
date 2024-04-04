@@ -1,0 +1,2353 @@
+[
+  {
+    "sha": "d0732cda906ad07b7e1ef93f1919035643620435",
+    "node_id": "C_kwDOC1dfZtoAKGQwNzMyY2RhOTA2YWQwN2I3ZTFlZjkzZjE5MTkwMzU2NDM2MjA0MzU",
+    "commit": {
+      "author": {
+        "name": "Sam Lantinga",
+        "email": "slouken@libsdl.org",
+        "date": "2024-03-05T12:56:29Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-05T12:56:29Z"
+      },
+      "message": "hidapi/windows: do not wait in GetOverlappedResult() in hid_read_timeout() (#577)\n\nThis is unsafe because the event is auto-reset, therefore the call to\r\nWaitForSingleObject() resets the event which GetOverlappedResult() will\r\ntry to wait on.\r\n\r\nEven though the overlapped operation is guaranteed to be completed at\r\nthe point we call GetOverlappedResult(), it will still wait on the event\r\nhandle for a short time to trigger the reset for auto-reset events. This\r\namounts to roughly a 100 ms sleep each time GetOverlappedResult() is called\r\nfor a completed I/O with a non-signalled event.\r\n\r\nIn the context of HIDAPI, this extra sleep means that callers that loop\r\non hid_read_timeout() with timeout=0 will loop forever, since the 100 ms\r\nsleep each iteration ensures ReadFile() will always have new data.\r\n\r\nSigned-off-by: Cameron Gutman <aicommander@gmail.com>\r\nSigned-off-by: Sam Lantinga <slouken@libsdl.org>",
+      "tree": {
+        "sha": "d746735348fd12fcc4f1c0d88d3e11b484d1e955",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/d746735348fd12fcc4f1c0d88d3e11b484d1e955"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/d0732cda906ad07b7e1ef93f1919035643620435",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl5xZ9CRC1aQ7uu5UhlAAAcUIQABzpTKEu/fsOsPIGAvzvkEmj\noD6QtWVlwIZ6v6Jpy0MJ2Z0usZB2i3lFW9IRqhfcOp4/ErMsNFAAXsIYpVqSSgXV\nf6xnOX+oIAvMrHZtRfQedxCfAQjnNoVOJJvAMHhKcaj7JDDVLvvuXShKbFvgDJ1S\nZ9npbxQdGfBSlEvYXAt83+XyCu8Q4HtynQ+SUmgVhG1qhy6HCWV/VieMEwh1H9jV\n9JaUwFo/SshjkvLg7tgZ7kBHedd0rCVJXZx0Vn/Rd2dBTHvEwISA1JSjaohQ38P+\nBxJu3BHrltp7sARZGjz/FUi7ijY2f1/j/1VClxs2pbe79tHW07dclh36NGV9KJen\nhLu0R1otzYcBtmaK+gljkY2G/L70CJBaiGJoJpwuOv/TErrr9xTUYl9jtCJUge6s\neb0ETlQbTJZ2cNarBjfyMAhd2DPPQ0kgypzgq6kuqFi4n+WVusroDo+bBIfSfief\nrOVHBtEiLj052CAEMApYJdWPQmH8aHrlUxd+o8yPbAr6ZNrj2tpy2gOKMtGaIbG0\nygXQGhwnAyXYAPXB3PCHQCu8r8DfdF9Bfea6tCtgB1PI72rx9HoW1Lk0ok0g5lB6\naQSqfN2VKSX9FMIWK1WX32XZFtCBxoMdTbY9vg03Hm0xTkou7DxMsHD4EZfBuc5u\nsS21KydihRRICJz84bZZ\n=M9/6\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree d746735348fd12fcc4f1c0d88d3e11b484d1e955\nparent 76462bd767c97f92830cb5ca6929d22d9d9e56b8\nauthor Sam Lantinga <slouken@libsdl.org> 1709643389 -0800\ncommitter GitHub <noreply@github.com> 1709643389 +0200\n\nhidapi/windows: do not wait in GetOverlappedResult() in hid_read_timeout() (#577)\n\nThis is unsafe because the event is auto-reset, therefore the call to\r\nWaitForSingleObject() resets the event which GetOverlappedResult() will\r\ntry to wait on.\r\n\r\nEven though the overlapped operation is guaranteed to be completed at\r\nthe point we call GetOverlappedResult(), it will still wait on the event\r\nhandle for a short time to trigger the reset for auto-reset events. This\r\namounts to roughly a 100 ms sleep each time GetOverlappedResult() is called\r\nfor a completed I/O with a non-signalled event.\r\n\r\nIn the context of HIDAPI, this extra sleep means that callers that loop\r\non hid_read_timeout() with timeout=0 will loop forever, since the 100 ms\r\nsleep each iteration ensures ReadFile() will always have new data.\r\n\r\nSigned-off-by: Cameron Gutman <aicommander@gmail.com>\r\nSigned-off-by: Sam Lantinga <slouken@libsdl.org>"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/d0732cda906ad07b7e1ef93f1919035643620435",
+    "html_url": "https://github.com/libusb/hidapi/commit/d0732cda906ad07b7e1ef93f1919035643620435",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/d0732cda906ad07b7e1ef93f1919035643620435/comments",
+    "author": {
+      "login": "slouken",
+      "id": 2100061,
+      "node_id": "MDQ6VXNlcjIxMDAwNjE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2100061?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/slouken",
+      "html_url": "https://github.com/slouken",
+      "followers_url": "https://api.github.com/users/slouken/followers",
+      "following_url": "https://api.github.com/users/slouken/following{/other_user}",
+      "gists_url": "https://api.github.com/users/slouken/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/slouken/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/slouken/subscriptions",
+      "organizations_url": "https://api.github.com/users/slouken/orgs",
+      "repos_url": "https://api.github.com/users/slouken/repos",
+      "events_url": "https://api.github.com/users/slouken/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/slouken/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "76462bd767c97f92830cb5ca6929d22d9d9e56b8",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/76462bd767c97f92830cb5ca6929d22d9d9e56b8",
+        "html_url": "https://github.com/libusb/hidapi/commit/76462bd767c97f92830cb5ca6929d22d9d9e56b8"
+      }
+    ]
+  },
+  {
+    "sha": "76462bd767c97f92830cb5ca6929d22d9d9e56b8",
+    "node_id": "C_kwDOC1dfZtoAKDc2NDYyYmQ3NjdjOTdmOTI4MzBjYjVjYTY5MjlkMjJkOWQ5ZTU2Yjg",
+    "commit": {
+      "author": {
+        "name": "Ihor Dutchak",
+        "email": "ihor.youw@gmail.com",
+        "date": "2024-03-05T11:26:01Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-05T11:26:01Z"
+      },
+      "message": "Avoid CMake backward compatibility warning (#663)\n\nAvoid a message:\r\n```\r\nCompatibility with CMake < 3.5 will be removed from a future version of CMake.\r\n\r\nUpdate the VERSION argument <min> value or use a ...<max> suffix to tell\r\nCMake that the project does not need compatibility with older versions.\r\n```\r\n\r\nFixes: #642",
+      "tree": {
+        "sha": "f8d8efc87b4cbb39ffa21925bade83300ddace0e",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/f8d8efc87b4cbb39ffa21925bade83300ddace0e"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/76462bd767c97f92830cb5ca6929d22d9d9e56b8",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl5wFJCRC1aQ7uu5UhlAAAoH0QACpuM9zYPEDLwxS6ky2aPAyo\nCUhaM4eWkG1Goyjc8ONCZlJYUI5axoXYTW7UowOpCcqEkmKzghR2a/2MR0r3OVLq\nubj7gl3VttqcblE6dUFYIh+XMANxAIqC5/EucISOaoYdryDvEd2z+BxdBojjlnJM\noHLgYFltfBZCEctNg7Bbvow7E5tlS/SCDLxJOI7F75A4G0wygLrGhD0v1islu4QE\nk4lZHWosbmiZs5qFtAUMNSc8Qtcj85lS4mkNSr8Nfl8CcH9UUo4C9O6za1FE6StP\neO4xUzMQGGO5KUk5l33wwvV6L2VXwRuS8PCGGRAx0hBUUkof5Ufw8Yy5046br0op\nWhzIFxcNtTAWdJeCedxgkwuqn/AGrbnY5YmVQPMnEXXrNHFT59FrcOG2JOYZfDZL\nuYwgRhPsFalQf4wJ+nSDDq4sgtlvkeF86HvFjTWIgvaBfHB8MdZA5NvKIyFm0Jlr\ni2lfATUgV6BDx0APPIUgoeiG0C65za5FYujOvo1K2bBRIzViPhZW04MpNzoB9Yr1\nlksCiZP+fKfTCTHtalam06TacI34brU5M8WqCJe5AfBQ6CSqmFlwm92zoWf1ysj7\nUBb0xpqQMc4CsufHX0tY10pyQVe4mNfKG0EzanV7/Wug2S58wQzkVHzLqqPvNPxS\n2MZLJYDLU+gcKh4dxpSV\n=KF6R\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree f8d8efc87b4cbb39ffa21925bade83300ddace0e\nparent 4f2e91bae80cc48e567a80bd9ae3dc53dc5b73c6\nauthor Ihor Dutchak <ihor.youw@gmail.com> 1709637961 +0200\ncommitter GitHub <noreply@github.com> 1709637961 +0200\n\nAvoid CMake backward compatibility warning (#663)\n\nAvoid a message:\r\n```\r\nCompatibility with CMake < 3.5 will be removed from a future version of CMake.\r\n\r\nUpdate the VERSION argument <min> value or use a ...<max> suffix to tell\r\nCMake that the project does not need compatibility with older versions.\r\n```\r\n\r\nFixes: #642"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/76462bd767c97f92830cb5ca6929d22d9d9e56b8",
+    "html_url": "https://github.com/libusb/hidapi/commit/76462bd767c97f92830cb5ca6929d22d9d9e56b8",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/76462bd767c97f92830cb5ca6929d22d9d9e56b8/comments",
+    "author": {
+      "login": "Youw",
+      "id": 5939659,
+      "node_id": "MDQ6VXNlcjU5Mzk2NTk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5939659?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Youw",
+      "html_url": "https://github.com/Youw",
+      "followers_url": "https://api.github.com/users/Youw/followers",
+      "following_url": "https://api.github.com/users/Youw/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Youw/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Youw/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Youw/subscriptions",
+      "organizations_url": "https://api.github.com/users/Youw/orgs",
+      "repos_url": "https://api.github.com/users/Youw/repos",
+      "events_url": "https://api.github.com/users/Youw/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Youw/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4f2e91bae80cc48e567a80bd9ae3dc53dc5b73c6",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/4f2e91bae80cc48e567a80bd9ae3dc53dc5b73c6",
+        "html_url": "https://github.com/libusb/hidapi/commit/4f2e91bae80cc48e567a80bd9ae3dc53dc5b73c6"
+      }
+    ]
+  },
+  {
+    "sha": "4f2e91bae80cc48e567a80bd9ae3dc53dc5b73c6",
+    "node_id": "C_kwDOC1dfZtoAKDRmMmU5MWJhZTgwY2M0OGU1NjdhODBiZDlhZTNkYzUzZGM1YjczYzY",
+    "commit": {
+      "author": {
+        "name": "Vladimir Gladkov",
+        "email": "vovkos@gmail.com",
+        "date": "2024-03-04T11:08:57Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-04T11:08:57Z"
+      },
+      "message": "windows: change MAX_STRING_WCHARS to 126 (#627)\n\nWin32 HID API doc says: For USB devices, the maximum string length is 126 wide characters (not including the terminating NULL character).\r\n\r\nFor certain USB devices, using a buffer larger or equal to 127 wchars results in successful completion of HID API functions, but a broken string is stored in the output buffer. This behaviour persists even if HID API is bypassed and HID IOCTLs are passed to the HID driver directly (IOCTL_HID_GET_MANUFACTURER_STRING, IOCTL_HID_GET_PRODUCT_STRING, etc).\r\n\r\nSo, the buffer MUST NOT exceed 126 wchars.\r\n\r\nwindows: refactor ULONGLONG hid_internal_get_info(...) -> hid_internal_detect_bus_type_result hid_internal_detect_bus_type(...)\r\n\r\nhid_internal_detect_bus_type is now only responsible for detection of the bus type; rename it accordingly. Also, mixing an internal flag and DEV_INST into an ULONGLONG retval feels kinda hackish; use a cleaner approach instead (add an internal flag to help distinguishing between BLUETOOTH and BLE devices, then clear it once we are done).",
+      "tree": {
+        "sha": "a3135b70777103f41269dcdbf378884ac21e5d33",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/a3135b70777103f41269dcdbf378884ac21e5d33"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/4f2e91bae80cc48e567a80bd9ae3dc53dc5b73c6",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl5avJCRC1aQ7uu5UhlAAAqBUQAKmqF8nOM36BChiZwOyoCeSS\nJEJvWTG1BcBMP8AgCcWS9Y1z6M30OEeZI4lErNTLBN3emxiyrCIP1ARvAn7yuo+A\n/s8v0Ol96bulRKVKAmAlvySC52MaGf0lhudbzmguHKUJmmPu+FkNORyKYKWRFjFd\nXcvRmVDPH2LOug+jnBnvyKTzWmuk+6Ukl05Li/hFcJZyahLMjYABCVM782mf1M72\ntpzZQodERKd12ADbeLvLohDcyUba2nECXIHBs9bAuu9v2DhcsZnMXDJ/c3lF+HEq\nQpLovLPErMQqhbBE0X8KXqmNyS7Uc8fRxDp1aXHms6mMf/fr+MhxXgy0xzupAZVf\n4Yjqe0TU6p0LK6rQCEnW9NeNQltgkanjegWm45TQ0Gt2MEkVsQ8/XoZA1WYYYEbn\n+M9e51lDTwzpdgUmSbFvfB8X/AQUqcDYFFYJSRH6sHhVkxKnnxwlICKpSxZ5Euc1\nu/55J1d8aVyeaAQGmEuAYQG9ka2kyUDqmddabKB2IZeBCaccvtGjmKVDJRfBjR+E\ncIJVtgplC42R7cpTsQnOofD32LZ1FMlZbZt8RupctuXvhHEvSGswVsqI43GGXbDv\nZ53Gr85k04wjbOsKvLXpUmJ9PQ3XV56qZV6mxDbzkOQJplQgpvwxDC62jVC1uAO2\nVyMWyinPiIyIOoNZIi2O\n=aw5/\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree a3135b70777103f41269dcdbf378884ac21e5d33\nparent 7011fa98af2dde00c298105735e470de800288c7\nauthor Vladimir Gladkov <vovkos@gmail.com> 1709550537 +0800\ncommitter GitHub <noreply@github.com> 1709550537 +0200\n\nwindows: change MAX_STRING_WCHARS to 126 (#627)\n\nWin32 HID API doc says: For USB devices, the maximum string length is 126 wide characters (not including the terminating NULL character).\r\n\r\nFor certain USB devices, using a buffer larger or equal to 127 wchars results in successful completion of HID API functions, but a broken string is stored in the output buffer. This behaviour persists even if HID API is bypassed and HID IOCTLs are passed to the HID driver directly (IOCTL_HID_GET_MANUFACTURER_STRING, IOCTL_HID_GET_PRODUCT_STRING, etc).\r\n\r\nSo, the buffer MUST NOT exceed 126 wchars.\r\n\r\nwindows: refactor ULONGLONG hid_internal_get_info(...) -> hid_internal_detect_bus_type_result hid_internal_detect_bus_type(...)\r\n\r\nhid_internal_detect_bus_type is now only responsible for detection of the bus type; rename it accordingly. Also, mixing an internal flag and DEV_INST into an ULONGLONG retval feels kinda hackish; use a cleaner approach instead (add an internal flag to help distinguishing between BLUETOOTH and BLE devices, then clear it once we are done)."
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/4f2e91bae80cc48e567a80bd9ae3dc53dc5b73c6",
+    "html_url": "https://github.com/libusb/hidapi/commit/4f2e91bae80cc48e567a80bd9ae3dc53dc5b73c6",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/4f2e91bae80cc48e567a80bd9ae3dc53dc5b73c6/comments",
+    "author": {
+      "login": "vovkos",
+      "id": 1272029,
+      "node_id": "MDQ6VXNlcjEyNzIwMjk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1272029?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vovkos",
+      "html_url": "https://github.com/vovkos",
+      "followers_url": "https://api.github.com/users/vovkos/followers",
+      "following_url": "https://api.github.com/users/vovkos/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vovkos/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vovkos/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vovkos/subscriptions",
+      "organizations_url": "https://api.github.com/users/vovkos/orgs",
+      "repos_url": "https://api.github.com/users/vovkos/repos",
+      "events_url": "https://api.github.com/users/vovkos/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vovkos/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7011fa98af2dde00c298105735e470de800288c7",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/7011fa98af2dde00c298105735e470de800288c7",
+        "html_url": "https://github.com/libusb/hidapi/commit/7011fa98af2dde00c298105735e470de800288c7"
+      }
+    ]
+  },
+  {
+    "sha": "7011fa98af2dde00c298105735e470de800288c7",
+    "node_id": "C_kwDOC1dfZtoAKDcwMTFmYTk4YWYyZGRlMDBjMjk4MTA1NzM1ZTQ3MGRlODAwMjg4Yzc",
+    "commit": {
+      "author": {
+        "name": "Ihor Dutchak",
+        "email": "ihor.youw@gmail.com",
+        "date": "2023-11-22T10:26:16Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-11-22T10:26:16Z"
+      },
+      "message": "pthread_barrier_wait: properly check the wait condition (#644)\n\n- minor code-style fixes;",
+      "tree": {
+        "sha": "e7d4bfbedf2cc96f0b77b530739b1df21922d7a8",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/e7d4bfbedf2cc96f0b77b530739b1df21922d7a8"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/7011fa98af2dde00c298105735e470de800288c7",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlXddICRBK7hj4Ov3rIwAANRAIAD/7CTTwI2uSRrGZ1+sXLrNd\nPoJDBtACrW6Kwv6VwB+IbVYZbuI5C4FuqRkjn6NVm5Wedb8+baKTJxfkMyxI79R1\nXvHgZqRtmkuWG61ZeN+z0/QL3iGOfoLxdhoWQTnotTIQpBz13vm9eU4z0Nd0o+54\neg3iASywJbqaKAbfcqZSmYiSM6E9WY+jACoMs/GqbC+rqEgqyhFXfeT9dSRCEe4c\n9wB9K8LCIBgKYQSfi7xtTAz+ujQJ/rdsP+SIt1hfUJyaRtyiUAK0kB4gxyaOWRTe\nXrMf3lY5jCmLuY7AkQz65EzP85G2LcD61L8wDhH2aIIzwDFhtCYnEbSakWu9qCY=\n=rOaX\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree e7d4bfbedf2cc96f0b77b530739b1df21922d7a8\nparent 4168d875213c6739c4e66f863a9300585c9a0682\nauthor Ihor Dutchak <ihor.youw@gmail.com> 1700648776 +0200\ncommitter GitHub <noreply@github.com> 1700648776 +0200\n\npthread_barrier_wait: properly check the wait condition (#644)\n\n- minor code-style fixes;"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/7011fa98af2dde00c298105735e470de800288c7",
+    "html_url": "https://github.com/libusb/hidapi/commit/7011fa98af2dde00c298105735e470de800288c7",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/7011fa98af2dde00c298105735e470de800288c7/comments",
+    "author": {
+      "login": "Youw",
+      "id": 5939659,
+      "node_id": "MDQ6VXNlcjU5Mzk2NTk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5939659?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Youw",
+      "html_url": "https://github.com/Youw",
+      "followers_url": "https://api.github.com/users/Youw/followers",
+      "following_url": "https://api.github.com/users/Youw/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Youw/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Youw/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Youw/subscriptions",
+      "organizations_url": "https://api.github.com/users/Youw/orgs",
+      "repos_url": "https://api.github.com/users/Youw/repos",
+      "events_url": "https://api.github.com/users/Youw/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Youw/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4168d875213c6739c4e66f863a9300585c9a0682",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/4168d875213c6739c4e66f863a9300585c9a0682",
+        "html_url": "https://github.com/libusb/hidapi/commit/4168d875213c6739c4e66f863a9300585c9a0682"
+      }
+    ]
+  },
+  {
+    "sha": "4168d875213c6739c4e66f863a9300585c9a0682",
+    "node_id": "C_kwDOC1dfZtoAKDQxNjhkODc1MjEzYzY3MzljNGU2NmY4NjNhOTMwMDU4NWM5YTA2ODI",
+    "commit": {
+      "author": {
+        "name": "Moritz 'Morty' Strübe",
+        "email": "moritz.struebe@mathema.de",
+        "date": "2023-11-17T11:59:40Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-11-17T11:59:40Z"
+      },
+      "message": "Fix the windows build by fixing printf related issues (#641)\n\n- Fix printf/string-related issues\r\n- CI: Turn on -Wformat-signedness for GNU-cc\r\n- Windows: Assert that struct has the correct size",
+      "tree": {
+        "sha": "f143d4598030e45c2b374310b62ee12d185e4804",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/f143d4598030e45c2b374310b62ee12d185e4804"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/4168d875213c6739c4e66f863a9300585c9a0682",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlV1WsCRBK7hj4Ov3rIwAAwngIACdqvWSm21Py8+Iz85A8/G9b\nvVGqs94v4SjWE99OTaYIGQB/w3sSUe4O7sixprIol0fTNFyRl+QdH+uDlLBXw1vH\nwq9Hu72isYNQUds3UlKPKoAIA4mQdNfOA4Rqm11tucJHGWDnlZ4Dx0tzqMUSWHDx\n30J5CmkOsZt3Tg229n1ac36RZudmhsgpo3FnU98IgIxtR0htAGmnty6ZITUYzDV2\nAEvRIPiFiWtK8UxXF+gAa2ODFvDsHwqHWd2+IzZuoPpklax1EKPKpyahU7XkTDpX\nch/Jxi+A6uts9KQb2n4guaT/gSXXH3qhc4+iuIXx+pf7JPW3hF+pl1LQGCfIEy8=\n=0fZ2\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree f143d4598030e45c2b374310b62ee12d185e4804\nparent 02c0f78d05b671dfc315f09fe030c539fddfca87\nauthor Moritz 'Morty' Strübe <moritz.struebe@mathema.de> 1700222380 +0100\ncommitter GitHub <noreply@github.com> 1700222380 +0200\n\nFix the windows build by fixing printf related issues (#641)\n\n- Fix printf/string-related issues\r\n- CI: Turn on -Wformat-signedness for GNU-cc\r\n- Windows: Assert that struct has the correct size"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/4168d875213c6739c4e66f863a9300585c9a0682",
+    "html_url": "https://github.com/libusb/hidapi/commit/4168d875213c6739c4e66f863a9300585c9a0682",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/4168d875213c6739c4e66f863a9300585c9a0682/comments",
+    "author": {
+      "login": "cmorty",
+      "id": 2370091,
+      "node_id": "MDQ6VXNlcjIzNzAwOTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2370091?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cmorty",
+      "html_url": "https://github.com/cmorty",
+      "followers_url": "https://api.github.com/users/cmorty/followers",
+      "following_url": "https://api.github.com/users/cmorty/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cmorty/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cmorty/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cmorty/subscriptions",
+      "organizations_url": "https://api.github.com/users/cmorty/orgs",
+      "repos_url": "https://api.github.com/users/cmorty/repos",
+      "events_url": "https://api.github.com/users/cmorty/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cmorty/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "02c0f78d05b671dfc315f09fe030c539fddfca87",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/02c0f78d05b671dfc315f09fe030c539fddfca87",
+        "html_url": "https://github.com/libusb/hidapi/commit/02c0f78d05b671dfc315f09fe030c539fddfca87"
+      }
+    ]
+  },
+  {
+    "sha": "02c0f78d05b671dfc315f09fe030c539fddfca87",
+    "node_id": "C_kwDOC1dfZtoAKDAyYzBmNzhkMDViNjcxZGZjMzE1ZjA5ZmUwMzBjNTM5ZmRkZmNhODc",
+    "commit": {
+      "author": {
+        "name": "Moritz 'Morty' Strübe",
+        "email": "moritz.struebe@mathema.de",
+        "date": "2023-11-17T11:45:47Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-11-17T11:45:47Z"
+      },
+      "message": "Doc: Fix target documentation (#640)",
+      "tree": {
+        "sha": "2c6f7a67996b6092b88bd4c2d2fbfe47de2462c6",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/2c6f7a67996b6092b88bd4c2d2fbfe47de2462c6"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/02c0f78d05b671dfc315f09fe030c539fddfca87",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlV1JrCRBK7hj4Ov3rIwAA3tUIAHzA/1IjYkPAW5qury/kFZxo\nGcnpJYg0g1efK99XG31rPsADQeLAmSTJnZh8nGJ0JUKugexd+W0+T65rSTev9QGD\n1W6qDcwL0BhNF0R8wNY9tV7tMpEL4EBiaCA7nHZ/EWBkeIXHkh0jhBisjN503raF\ndJJgP2uxff/2s9c/z9HoG/zS229aSLnQJplqjLFPBw6q+qJ/osxaO+wXChjRhJn5\ncSXD/9tVQzx2DVU5Q5BBEFEAWDbUAYNghnTe3Yt4RE5iTfev054VTon0DMA74e6h\ndH12xObtjjGt7/BYAnxGSHBAwAXbDqKBHZkpajyg9kPzlPz6azfKHjQ2AVraSrw=\n=Zx0i\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 2c6f7a67996b6092b88bd4c2d2fbfe47de2462c6\nparent 9b507edd8ab66bd8c16cbd9379f6c26ca72d6465\nauthor Moritz 'Morty' Strübe <moritz.struebe@mathema.de> 1700221547 +0100\ncommitter GitHub <noreply@github.com> 1700221547 +0200\n\nDoc: Fix target documentation (#640)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/02c0f78d05b671dfc315f09fe030c539fddfca87",
+    "html_url": "https://github.com/libusb/hidapi/commit/02c0f78d05b671dfc315f09fe030c539fddfca87",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/02c0f78d05b671dfc315f09fe030c539fddfca87/comments",
+    "author": {
+      "login": "cmorty",
+      "id": 2370091,
+      "node_id": "MDQ6VXNlcjIzNzAwOTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2370091?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cmorty",
+      "html_url": "https://github.com/cmorty",
+      "followers_url": "https://api.github.com/users/cmorty/followers",
+      "following_url": "https://api.github.com/users/cmorty/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cmorty/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cmorty/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cmorty/subscriptions",
+      "organizations_url": "https://api.github.com/users/cmorty/orgs",
+      "repos_url": "https://api.github.com/users/cmorty/repos",
+      "events_url": "https://api.github.com/users/cmorty/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cmorty/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9b507edd8ab66bd8c16cbd9379f6c26ca72d6465",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/9b507edd8ab66bd8c16cbd9379f6c26ca72d6465",
+        "html_url": "https://github.com/libusb/hidapi/commit/9b507edd8ab66bd8c16cbd9379f6c26ca72d6465"
+      }
+    ]
+  },
+  {
+    "sha": "9b507edd8ab66bd8c16cbd9379f6c26ca72d6465",
+    "node_id": "C_kwDOC1dfZtoAKDliNTA3ZWRkOGFiNjZiZDhjMTZjYmQ5Mzc5ZjZjMjZjYTcyZDY0NjU",
+    "commit": {
+      "author": {
+        "name": "Moritz 'Morty' Strübe",
+        "email": "morty@gmx.net",
+        "date": "2023-11-16T13:19:02Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-11-16T13:19:02Z"
+      },
+      "message": "CMake: optionally install pkgconfig (#639)\n\nIf HIDAPI_INSTALL_TARGETS is set to off, pkgconfig is still installed.\r\nThis a problem when statically linking against hidapi and then using\r\nCMake's install-feature.",
+      "tree": {
+        "sha": "e7ba12c2bffc2d6027b3b215828300e2240433f5",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/e7ba12c2bffc2d6027b3b215828300e2240433f5"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/9b507edd8ab66bd8c16cbd9379f6c26ca72d6465",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlVhbGCRBK7hj4Ov3rIwAARy0IAEZkrIOD1lOiDJpP0D9jk7pf\nRVN6iKfO2JnMOQmDg5fkgwUVuJg7j5ZZGZnaRD4vq1eRBicNjlQdkABCeCBMuvr/\nPlSy2BIeZPCZb/z5j8nDWtffJBNq1697o2AN5gpm37t9xC0LXpxN7eg5YY6MLhq8\nd8HkJjEcl/kc6EkXLKu8+77ay33rropoe9oLKYUOEod0N+ZvciT67PSb2wZuxoD1\nz1dWVb2fFNYxMgIg31uCW2FzTEi0LhzeDJsSPppMmdbG4HdPth0rMVqywjEfmVhP\nq8+bBz2XDD2eeKM5rgGsZgXb+lCm3mlRR+e5dh18kJOEdM9J84cNWIrPYDipEP4=\n=RYJR\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree e7ba12c2bffc2d6027b3b215828300e2240433f5\nparent eea8cac0793754b9a160c064646c9a6da7545a55\nauthor Moritz 'Morty' Strübe <morty@gmx.net> 1700140742 +0100\ncommitter GitHub <noreply@github.com> 1700140742 +0200\n\nCMake: optionally install pkgconfig (#639)\n\nIf HIDAPI_INSTALL_TARGETS is set to off, pkgconfig is still installed.\r\nThis a problem when statically linking against hidapi and then using\r\nCMake's install-feature."
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/9b507edd8ab66bd8c16cbd9379f6c26ca72d6465",
+    "html_url": "https://github.com/libusb/hidapi/commit/9b507edd8ab66bd8c16cbd9379f6c26ca72d6465",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/9b507edd8ab66bd8c16cbd9379f6c26ca72d6465/comments",
+    "author": {
+      "login": "cmorty",
+      "id": 2370091,
+      "node_id": "MDQ6VXNlcjIzNzAwOTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2370091?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cmorty",
+      "html_url": "https://github.com/cmorty",
+      "followers_url": "https://api.github.com/users/cmorty/followers",
+      "following_url": "https://api.github.com/users/cmorty/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cmorty/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cmorty/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cmorty/subscriptions",
+      "organizations_url": "https://api.github.com/users/cmorty/orgs",
+      "repos_url": "https://api.github.com/users/cmorty/repos",
+      "events_url": "https://api.github.com/users/cmorty/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cmorty/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "eea8cac0793754b9a160c064646c9a6da7545a55",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/eea8cac0793754b9a160c064646c9a6da7545a55",
+        "html_url": "https://github.com/libusb/hidapi/commit/eea8cac0793754b9a160c064646c9a6da7545a55"
+      }
+    ]
+  },
+  {
+    "sha": "eea8cac0793754b9a160c064646c9a6da7545a55",
+    "node_id": "C_kwDOC1dfZtoAKGVlYThjYWMwNzkzNzU0YjlhMTYwYzA2NDY0NmM5YTZkYTc1NDVhNTU",
+    "commit": {
+      "author": {
+        "name": "Ryan C. Gordon",
+        "email": "icculus@icculus.org",
+        "date": "2023-11-12T16:26:05Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-11-12T16:26:05Z"
+      },
+      "message": "Don't try to memcpy() to a NULL destination. (#637)\n\nThis function is called with a literal NULL for that pointer later in\r\nthe file.",
+      "tree": {
+        "sha": "76b0c90d77a8c6f2665ea7124f271f04ecec8329",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/76b0c90d77a8c6f2665ea7124f271f04ecec8329"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/eea8cac0793754b9a160c064646c9a6da7545a55",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlUPydCRBK7hj4Ov3rIwAAmf4IAKz9zXJNUeFRY/pxvxJFSgwO\nEoX2jdc0v1LBrIhTP+19KdJ70CJRXnRcM2qcuSODMFcX97Gf/agaGf1XepvLNu86\nGPGVXcfG+scRXqUIr1yykuW/b92AMcgXcLmyzb9rghYN14IjhsAAaY49Q3VTdFAC\n/Jm3FWymTCySw8v5azKYHaNrrzXXx4ItgwuWpzmYbTLeekXmIEc3vcWCRlYi6pdq\n5jkwUtsNVzYe86upl55YAH/kYJ/jlUOMYMy/YZonjPmwwWKIOsK5lUYLfcE4jqAQ\n2Wn2Vzr/vd9f7OZ+VIrNsgGd6NYjt3sHna2Ka61iHnx75XGUdoi3nhwUFs9a9NU=\n=Y68K\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 76b0c90d77a8c6f2665ea7124f271f04ecec8329\nparent 86b056fe70eff4befe91559785836328e694e825\nauthor Ryan C. Gordon <icculus@icculus.org> 1699806365 -0500\ncommitter GitHub <noreply@github.com> 1699806365 +0200\n\nDon't try to memcpy() to a NULL destination. (#637)\n\nThis function is called with a literal NULL for that pointer later in\r\nthe file."
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/eea8cac0793754b9a160c064646c9a6da7545a55",
+    "html_url": "https://github.com/libusb/hidapi/commit/eea8cac0793754b9a160c064646c9a6da7545a55",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/eea8cac0793754b9a160c064646c9a6da7545a55/comments",
+    "author": {
+      "login": "icculus",
+      "id": 673562,
+      "node_id": "MDQ6VXNlcjY3MzU2Mg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/673562?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/icculus",
+      "html_url": "https://github.com/icculus",
+      "followers_url": "https://api.github.com/users/icculus/followers",
+      "following_url": "https://api.github.com/users/icculus/following{/other_user}",
+      "gists_url": "https://api.github.com/users/icculus/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/icculus/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/icculus/subscriptions",
+      "organizations_url": "https://api.github.com/users/icculus/orgs",
+      "repos_url": "https://api.github.com/users/icculus/repos",
+      "events_url": "https://api.github.com/users/icculus/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/icculus/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "86b056fe70eff4befe91559785836328e694e825",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/86b056fe70eff4befe91559785836328e694e825",
+        "html_url": "https://github.com/libusb/hidapi/commit/86b056fe70eff4befe91559785836328e694e825"
+      }
+    ]
+  },
+  {
+    "sha": "86b056fe70eff4befe91559785836328e694e825",
+    "node_id": "C_kwDOC1dfZtoAKDg2YjA1NmZlNzBlZmY0YmVmZTkxNTU5Nzg1ODM2MzI4ZTY5NGU4MjU",
+    "commit": {
+      "author": {
+        "name": "JoergAtGithub",
+        "email": "64457745+JoergAtGithub@users.noreply.github.com",
+        "date": "2023-10-26T23:19:38Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-10-26T23:19:38Z"
+      },
+      "message": "Fix two C++-Builder 11 issues (#634)\n\n* Invert preprocessor condition, as the Microsoft compiler seems to be the special case - not the other way around\r\n\r\n* Removed redefinition of typedef 'PHIDP_PREPARSED_DATA' in hidapi_hidsdi.h to match the original hidsdi.h\r\n\r\nAs reported in #630",
+      "tree": {
+        "sha": "2975b8d7200bb39fd4a9f009d54e9d8fc3e4ef27",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/2975b8d7200bb39fd4a9f009d54e9d8fc3e4ef27"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/86b056fe70eff4befe91559785836328e694e825",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlOvQKCRBK7hj4Ov3rIwAApjIIAAzpwEz9HwAU6TMPq4oqGd0H\npW0dImGQcqdU3ClPxQSLUMl4gxqIjV3sFn7pwicyjM7OxgpOqD/U6LneUs4AEGTy\nyEEibrPcxBsI6tdPMBZvvgxRYeKKT7P72JelHGL8YPb7KFe/r24B4iYXW4on6ODy\nV/R5PCtGa4QHTUk6wCvMdCjhsianJe3zFfTqFJOYWEWUsIw5E7VWvZPKytPl4YXJ\nCD02N8ksd3WcUpesKzpEiZqeuUUCrUseVoMacoL1YSjjY1Hpc0Vo7gi99razC0tc\nvk2Omw2bxHvbNIfVFm813Zm6EYR487ILA3qVynBi+P+jvFpcIYDCMP6shinMmLY=\n=PQml\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 2975b8d7200bb39fd4a9f009d54e9d8fc3e4ef27\nparent 3c04eacbcaf68989bc4c391a7233f0a3c2bbda02\nauthor JoergAtGithub <64457745+JoergAtGithub@users.noreply.github.com> 1698362378 +0200\ncommitter GitHub <noreply@github.com> 1698362378 +0300\n\nFix two C++-Builder 11 issues (#634)\n\n* Invert preprocessor condition, as the Microsoft compiler seems to be the special case - not the other way around\r\n\r\n* Removed redefinition of typedef 'PHIDP_PREPARSED_DATA' in hidapi_hidsdi.h to match the original hidsdi.h\r\n\r\nAs reported in #630"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/86b056fe70eff4befe91559785836328e694e825",
+    "html_url": "https://github.com/libusb/hidapi/commit/86b056fe70eff4befe91559785836328e694e825",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/86b056fe70eff4befe91559785836328e694e825/comments",
+    "author": {
+      "login": "JoergAtGithub",
+      "id": 64457745,
+      "node_id": "MDQ6VXNlcjY0NDU3NzQ1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/64457745?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/JoergAtGithub",
+      "html_url": "https://github.com/JoergAtGithub",
+      "followers_url": "https://api.github.com/users/JoergAtGithub/followers",
+      "following_url": "https://api.github.com/users/JoergAtGithub/following{/other_user}",
+      "gists_url": "https://api.github.com/users/JoergAtGithub/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/JoergAtGithub/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/JoergAtGithub/subscriptions",
+      "organizations_url": "https://api.github.com/users/JoergAtGithub/orgs",
+      "repos_url": "https://api.github.com/users/JoergAtGithub/repos",
+      "events_url": "https://api.github.com/users/JoergAtGithub/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/JoergAtGithub/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3c04eacbcaf68989bc4c391a7233f0a3c2bbda02",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/3c04eacbcaf68989bc4c391a7233f0a3c2bbda02",
+        "html_url": "https://github.com/libusb/hidapi/commit/3c04eacbcaf68989bc4c391a7233f0a3c2bbda02"
+      }
+    ]
+  },
+  {
+    "sha": "3c04eacbcaf68989bc4c391a7233f0a3c2bbda02",
+    "node_id": "C_kwDOC1dfZtoAKDNjMDRlYWNiY2FmNjg5ODliYzRjMzkxYTcyMzNmMGEzYzJiYmRhMDI",
+    "commit": {
+      "author": {
+        "name": "JoergAtGithub",
+        "email": "64457745+JoergAtGithub@users.noreply.github.com",
+        "date": "2023-10-26T17:02:01Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-10-26T17:02:01Z"
+      },
+      "message": "Added clang-cl build to CI  (#631)\n\n- Using -G\"NMake Makefiles\", because I couldn't get the other generators to work with clang-cl\r\n- ASAN=off because it's not supported by clang-cl yet",
+      "tree": {
+        "sha": "bc7ef36cf1a70d318b0e5b31fd5c7bc379ed2124",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/bc7ef36cf1a70d318b0e5b31fd5c7bc379ed2124"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/3c04eacbcaf68989bc4c391a7233f0a3c2bbda02",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlOpuJCRBK7hj4Ov3rIwAA80MIAB2jWPRHlidyD6EHbNHOFLd3\nPf+qZ0lYW8lE6Wob/aL2ykAb/JAsy81OGxyGEj8MkIY3fGCdiNbZJwcgPWimqppr\nknQPV7yq3+CBoyHpWUWZhA7scJtcAJ1EsHmrYuwhI0iPh7n2d/26WdfA6dhw91yr\noglzcwD5rohsHcJCprIlt/vZgoiFPDzAQ3fkO2zZi5YE7OEX3apv6Lh336qppkpu\nZVUIjhQMJdDTetODVkUX0m0azG6yXdtpjQiMS1OpA0DErB/jhigiJ+JJVxCbPZHo\nJEqd2gvBWOxcGYoPbTQmcRHSmsliXKD6xM5DIhKxmvX6JgIlouF0Ud0jVWoD6jo=\n=aE5S\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree bc7ef36cf1a70d318b0e5b31fd5c7bc379ed2124\nparent baa0dab6114e8654161478e10a20c67cf5d1a1a3\nauthor JoergAtGithub <64457745+JoergAtGithub@users.noreply.github.com> 1698339721 +0200\ncommitter GitHub <noreply@github.com> 1698339721 +0300\n\nAdded clang-cl build to CI  (#631)\n\n- Using -G\"NMake Makefiles\", because I couldn't get the other generators to work with clang-cl\r\n- ASAN=off because it's not supported by clang-cl yet"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/3c04eacbcaf68989bc4c391a7233f0a3c2bbda02",
+    "html_url": "https://github.com/libusb/hidapi/commit/3c04eacbcaf68989bc4c391a7233f0a3c2bbda02",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/3c04eacbcaf68989bc4c391a7233f0a3c2bbda02/comments",
+    "author": {
+      "login": "JoergAtGithub",
+      "id": 64457745,
+      "node_id": "MDQ6VXNlcjY0NDU3NzQ1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/64457745?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/JoergAtGithub",
+      "html_url": "https://github.com/JoergAtGithub",
+      "followers_url": "https://api.github.com/users/JoergAtGithub/followers",
+      "following_url": "https://api.github.com/users/JoergAtGithub/following{/other_user}",
+      "gists_url": "https://api.github.com/users/JoergAtGithub/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/JoergAtGithub/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/JoergAtGithub/subscriptions",
+      "organizations_url": "https://api.github.com/users/JoergAtGithub/orgs",
+      "repos_url": "https://api.github.com/users/JoergAtGithub/repos",
+      "events_url": "https://api.github.com/users/JoergAtGithub/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/JoergAtGithub/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "baa0dab6114e8654161478e10a20c67cf5d1a1a3",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/baa0dab6114e8654161478e10a20c67cf5d1a1a3",
+        "html_url": "https://github.com/libusb/hidapi/commit/baa0dab6114e8654161478e10a20c67cf5d1a1a3"
+      }
+    ]
+  },
+  {
+    "sha": "baa0dab6114e8654161478e10a20c67cf5d1a1a3",
+    "node_id": "C_kwDOC1dfZtoAKGJhYTBkYWI2MTE0ZTg2NTQxNjE0NzhlMTBhMjBjNjdjZjVkMWExYTM",
+    "commit": {
+      "author": {
+        "name": "Sam Lantinga",
+        "email": "slouken@libsdl.org",
+        "date": "2023-09-24T21:54:40Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-09-24T21:54:40Z"
+      },
+      "message": "Only enumerate each interface once (#625)\n\nIf a device has multiple altsettings, like an Xbox Series X controller, make sure we only enumerate each interface once, not once for each altsetting.",
+      "tree": {
+        "sha": "538b6aa4999946883df34b1210bf46e72a64a917",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/538b6aa4999946883df34b1210bf46e72a64a917"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/baa0dab6114e8654161478e10a20c67cf5d1a1a3",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlELAgCRBK7hj4Ov3rIwAA5xsIALKeIFBpW6H9yv92mnAFfeHB\nDlFo913uJJKBoucr0sd2wdiPpo1TUCZv/awLtPMpXYvB6GA3yA3SemSxuVQSAe8G\nhOS0SJMKRVyDe4JZiKLY7EGh9airBEJrisQ+sYcV97+owiYk4vaEIsEO1FPBND/g\nJYASS50AVdmVoQTkeidcIunjznnyQR0wpdiUwQKMfdCJY5Ua4P31jsV3I8jbV6sA\nQRV4l24ZfpuFDv0uVGGAkCz6bxmvukDilCLjOjQpForeFszsd2NS9m7Fi2r7Murg\nomGiufKENyl2+LdRBY8W7F02bMw+y+U1vlr3bf9rEZwvbH8BVmaOWRZw41cyW2M=\n=E8y7\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 538b6aa4999946883df34b1210bf46e72a64a917\nparent 1ba21cee743b927004e641409b87e5fcc50f3736\nauthor Sam Lantinga <slouken@libsdl.org> 1695592480 -0700\ncommitter GitHub <noreply@github.com> 1695592480 +0300\n\nOnly enumerate each interface once (#625)\n\nIf a device has multiple altsettings, like an Xbox Series X controller, make sure we only enumerate each interface once, not once for each altsetting."
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/baa0dab6114e8654161478e10a20c67cf5d1a1a3",
+    "html_url": "https://github.com/libusb/hidapi/commit/baa0dab6114e8654161478e10a20c67cf5d1a1a3",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/baa0dab6114e8654161478e10a20c67cf5d1a1a3/comments",
+    "author": {
+      "login": "slouken",
+      "id": 2100061,
+      "node_id": "MDQ6VXNlcjIxMDAwNjE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2100061?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/slouken",
+      "html_url": "https://github.com/slouken",
+      "followers_url": "https://api.github.com/users/slouken/followers",
+      "following_url": "https://api.github.com/users/slouken/following{/other_user}",
+      "gists_url": "https://api.github.com/users/slouken/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/slouken/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/slouken/subscriptions",
+      "organizations_url": "https://api.github.com/users/slouken/orgs",
+      "repos_url": "https://api.github.com/users/slouken/repos",
+      "events_url": "https://api.github.com/users/slouken/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/slouken/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1ba21cee743b927004e641409b87e5fcc50f3736",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/1ba21cee743b927004e641409b87e5fcc50f3736",
+        "html_url": "https://github.com/libusb/hidapi/commit/1ba21cee743b927004e641409b87e5fcc50f3736"
+      }
+    ]
+  },
+  {
+    "sha": "1ba21cee743b927004e641409b87e5fcc50f3736",
+    "node_id": "C_kwDOC1dfZtoAKDFiYTIxY2VlNzQzYjkyNzAwNGU2NDE0MDliODdlNWZjYzUwZjM3MzY",
+    "commit": {
+      "author": {
+        "name": "Ihor Dutchak",
+        "email": "ihor.youw@gmail.com",
+        "date": "2023-09-18T11:27:20Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-09-18T11:27:20Z"
+      },
+      "message": "Fix Ubuntu Coverity check (#626)",
+      "tree": {
+        "sha": "bfe9f0abdac4275e832f26f840e92f522706fbca",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/bfe9f0abdac4275e832f26f840e92f522706fbca"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/1ba21cee743b927004e641409b87e5fcc50f3736",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlCDQXCRBK7hj4Ov3rIwAAc/IIAINxwDgvwUziX2nZyrxZw8/0\nZEANXzldzfqy0+aij7q1Wjy9+E4kjEcQpabpR84BSyy8ASBKdcHjUZkJi4K0YWSD\ni80oVXIaWSvW/I8n5VyqOTRGiql0Lfn6+DydRsQYJEv2fSE774Ng5efv454NkiJk\nwtAbjYYD4mg1W3hK8j0z/eK01z+Lzo/MfGsyAiq7+ZDu9MFV5nYU5L4DztN149cu\nErScnMb8E0NS3vdqI1BC2iAiEQkTWP1ZjjL16lrdyufvjG9Qv/B5CKiHk7rAKeoD\nB6nPRiJl1EO2h5XvRGh7Xa2rYQA95sodfjqGVqWofxivcjzlke0jLl7GFtKFivg=\n=gV+i\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree bfe9f0abdac4275e832f26f840e92f522706fbca\nparent 116bda5d47c554c20c36be47c63d5c3e04a3b0d7\nauthor Ihor Dutchak <ihor.youw@gmail.com> 1695036440 +0300\ncommitter GitHub <noreply@github.com> 1695036440 +0300\n\nFix Ubuntu Coverity check (#626)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/1ba21cee743b927004e641409b87e5fcc50f3736",
+    "html_url": "https://github.com/libusb/hidapi/commit/1ba21cee743b927004e641409b87e5fcc50f3736",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/1ba21cee743b927004e641409b87e5fcc50f3736/comments",
+    "author": {
+      "login": "Youw",
+      "id": 5939659,
+      "node_id": "MDQ6VXNlcjU5Mzk2NTk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5939659?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Youw",
+      "html_url": "https://github.com/Youw",
+      "followers_url": "https://api.github.com/users/Youw/followers",
+      "following_url": "https://api.github.com/users/Youw/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Youw/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Youw/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Youw/subscriptions",
+      "organizations_url": "https://api.github.com/users/Youw/orgs",
+      "repos_url": "https://api.github.com/users/Youw/repos",
+      "events_url": "https://api.github.com/users/Youw/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Youw/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "116bda5d47c554c20c36be47c63d5c3e04a3b0d7",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/116bda5d47c554c20c36be47c63d5c3e04a3b0d7",
+        "html_url": "https://github.com/libusb/hidapi/commit/116bda5d47c554c20c36be47c63d5c3e04a3b0d7"
+      }
+    ]
+  },
+  {
+    "sha": "116bda5d47c554c20c36be47c63d5c3e04a3b0d7",
+    "node_id": "C_kwDOC1dfZtoAKDExNmJkYTVkNDdjNTU0YzIwYzM2YmU0N2M2M2Q1YzNlMDRhM2IwZDc",
+    "commit": {
+      "author": {
+        "name": "Ihor Dutchak",
+        "email": "ihor.youw@gmail.com",
+        "date": "2023-09-17T05:33:03Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-09-17T05:33:03Z"
+      },
+      "message": "Update BUILD.autotools.md (#624)\n\n* Update BUILD.autotools.md\r\n\r\nDo not recommend using in-source Autotools build.\r\n\r\nCloses: #621",
+      "tree": {
+        "sha": "8f938dcae791710eb800d11fd6762b9804e3701a",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/8f938dcae791710eb800d11fd6762b9804e3701a"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/116bda5d47c554c20c36be47c63d5c3e04a3b0d7",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlBo+PCRBK7hj4Ov3rIwAA5IUIAAajjmoE4aoJdy3W6NR0JN5D\nwmMH6RnXMHc+W+0EJ4P5OGOPl31IFuPRyfQxxXOHGCoDYbyH5HROaIK+wwkc8Emc\nG0mAOLhGhPnM1acpLrPYjszRLggfjZJ9i0CbVGDoHPxkFFH/esTADOivR9jIU2Q+\nHxh12KncbG/auy5JWl0xPdhraj8hPtI7jLN2pKSq7qQvkoPC5T2heMJO02nCrqk1\n/iFnGHfyRMgv5SEiGKnAMrsqugDbZRqwev3wb7IFDeQclIlDU/I4TxWP9cfE0bUh\nRTyYT8hxONT8b03e92uR2wubdA2HIP8moUQxDShNmI+fnMsP5VAm205FjUYxuis=\n=/BFD\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 8f938dcae791710eb800d11fd6762b9804e3701a\nparent c19ae126d8856b55af34d64ee11641920475961c\nauthor Ihor Dutchak <ihor.youw@gmail.com> 1694928783 +0300\ncommitter GitHub <noreply@github.com> 1694928783 +0300\n\nUpdate BUILD.autotools.md (#624)\n\n* Update BUILD.autotools.md\r\n\r\nDo not recommend using in-source Autotools build.\r\n\r\nCloses: #621"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/116bda5d47c554c20c36be47c63d5c3e04a3b0d7",
+    "html_url": "https://github.com/libusb/hidapi/commit/116bda5d47c554c20c36be47c63d5c3e04a3b0d7",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/116bda5d47c554c20c36be47c63d5c3e04a3b0d7/comments",
+    "author": {
+      "login": "Youw",
+      "id": 5939659,
+      "node_id": "MDQ6VXNlcjU5Mzk2NTk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5939659?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Youw",
+      "html_url": "https://github.com/Youw",
+      "followers_url": "https://api.github.com/users/Youw/followers",
+      "following_url": "https://api.github.com/users/Youw/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Youw/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Youw/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Youw/subscriptions",
+      "organizations_url": "https://api.github.com/users/Youw/orgs",
+      "repos_url": "https://api.github.com/users/Youw/repos",
+      "events_url": "https://api.github.com/users/Youw/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Youw/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c19ae126d8856b55af34d64ee11641920475961c",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/c19ae126d8856b55af34d64ee11641920475961c",
+        "html_url": "https://github.com/libusb/hidapi/commit/c19ae126d8856b55af34d64ee11641920475961c"
+      }
+    ]
+  },
+  {
+    "sha": "c19ae126d8856b55af34d64ee11641920475961c",
+    "node_id": "C_kwDOC1dfZtoAKGMxOWFlMTI2ZDg4NTZiNTVhZjM0ZDY0ZWUxMTY0MTkyMDQ3NTk2MWM",
+    "commit": {
+      "author": {
+        "name": "braewoods",
+        "email": "59875102+braewoods@users.noreply.github.com",
+        "date": "2023-09-04T09:25:53Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-09-04T09:25:53Z"
+      },
+      "message": "NetBSD: Initial UHID native backend implementation (#612)",
+      "tree": {
+        "sha": "46a9f2f31c9123c23ad5c1ce92e345749fda3c1e",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/46a9f2f31c9123c23ad5c1ce92e345749fda3c1e"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/c19ae126d8856b55af34d64ee11641920475961c",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJk9aKhCRBK7hj4Ov3rIwAAKNMIAAWJ/XEGW+RDpNqFMx3niJ4D\naT/1mUMkQV7sdrG3w4l9KFWDtvOElKXSCwq6gHaQ7topeCMiAPcYOZ8KTzY4BOWg\nNV03+ArgDQhru6ajLZFiEgeS3FAar7gRVKetSqVvaFeG/veMflyRWu7HltU0JZxY\nJUzbzEUcIdHdgWiTFCCRWplaBi7ePyvM2lzRLmPavL0FpbLbjL6+MJD6BDc3hoVE\nJ9rdYW0T6eWSWbK6CXV/5REBDkrCgLTgMK02rbf9rckmga7EL0zB+chc9JyspbgQ\nzcVWoL60pDPtWsHWoh2cWIBFZrr70RiWfqjwFsh2Nk58Gc4dcMkRYD2ET9IvfAU=\n=N1xq\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 46a9f2f31c9123c23ad5c1ce92e345749fda3c1e\nparent 4009466d59c41f0ef487afb2e36a8d22afc31322\nauthor braewoods <59875102+braewoods@users.noreply.github.com> 1693819553 -0500\ncommitter GitHub <noreply@github.com> 1693819553 +0300\n\nNetBSD: Initial UHID native backend implementation (#612)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/c19ae126d8856b55af34d64ee11641920475961c",
+    "html_url": "https://github.com/libusb/hidapi/commit/c19ae126d8856b55af34d64ee11641920475961c",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/c19ae126d8856b55af34d64ee11641920475961c/comments",
+    "author": null,
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4009466d59c41f0ef487afb2e36a8d22afc31322",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/4009466d59c41f0ef487afb2e36a8d22afc31322",
+        "html_url": "https://github.com/libusb/hidapi/commit/4009466d59c41f0ef487afb2e36a8d22afc31322"
+      }
+    ]
+  },
+  {
+    "sha": "4009466d59c41f0ef487afb2e36a8d22afc31322",
+    "node_id": "C_kwDOC1dfZtoAKDQwMDk0NjZkNTljNDFmMGVmNDg3YWZiMmUzNmE4ZDIyYWZjMzEzMjI",
+    "commit": {
+      "author": {
+        "name": "Brendan Shanks",
+        "email": "bshanks@codeweavers.com",
+        "date": "2023-08-27T14:28:01Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-08-27T14:28:01Z"
+      },
+      "message": "macOS: Check for macOS 10.10 using kCFCoreFoundationVersionNumber instead of AppKit (#611)\n\nEffectivelty removes the dependency on AppKit for HIDAPI.\r\n\r\nFixes: #587",
+      "tree": {
+        "sha": "08885b8fca7c41e9c72686b5922e5fe32e04f2c6",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/08885b8fca7c41e9c72686b5922e5fe32e04f2c6"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/4009466d59c41f0ef487afb2e36a8d22afc31322",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJk611xCRBK7hj4Ov3rIwAAiv0IAJm2Jxv742Pz6vXU3DoP6VQB\nuRYt+3vtO8LYt0/Nx7I0AXPaiD3cJq9h0aAlFjlK0ygCcegA2cU4g9Vg8kdsLg42\n7ENUfxClxnWZLXIUNNfRXj56pyIjpExUthXzwPplxrvPP94saRGPAIC4Yz5ZdeK7\nq7iinfQJJCHGeBZHc43Yy4Fw5JCRYJrB705TS8a3c4G9hr/vnaCP0sO6jqOWPhJe\n/xmUowcH27g5W82R35WV7gEkMyica+5xtDRHwmFDIpn51BMB1BqICgIHoj58xcjS\nXA/dNLUKTqTjSO/w6HisGaY3ouP7JtAfUOENxz0L6vVz2TEMUUYJmNcQLciA0rc=\n=Z8Cv\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 08885b8fca7c41e9c72686b5922e5fe32e04f2c6\nparent 8a4de63b56f1425732c8f1379d000f048eef1c65\nauthor Brendan Shanks <bshanks@codeweavers.com> 1693146481 -0700\ncommitter GitHub <noreply@github.com> 1693146481 +0300\n\nmacOS: Check for macOS 10.10 using kCFCoreFoundationVersionNumber instead of AppKit (#611)\n\nEffectivelty removes the dependency on AppKit for HIDAPI.\r\n\r\nFixes: #587"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/4009466d59c41f0ef487afb2e36a8d22afc31322",
+    "html_url": "https://github.com/libusb/hidapi/commit/4009466d59c41f0ef487afb2e36a8d22afc31322",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/4009466d59c41f0ef487afb2e36a8d22afc31322/comments",
+    "author": {
+      "login": "mrpippy",
+      "id": 780632,
+      "node_id": "MDQ6VXNlcjc4MDYzMg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/780632?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mrpippy",
+      "html_url": "https://github.com/mrpippy",
+      "followers_url": "https://api.github.com/users/mrpippy/followers",
+      "following_url": "https://api.github.com/users/mrpippy/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mrpippy/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mrpippy/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mrpippy/subscriptions",
+      "organizations_url": "https://api.github.com/users/mrpippy/orgs",
+      "repos_url": "https://api.github.com/users/mrpippy/repos",
+      "events_url": "https://api.github.com/users/mrpippy/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mrpippy/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8a4de63b56f1425732c8f1379d000f048eef1c65",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/8a4de63b56f1425732c8f1379d000f048eef1c65",
+        "html_url": "https://github.com/libusb/hidapi/commit/8a4de63b56f1425732c8f1379d000f048eef1c65"
+      }
+    ]
+  },
+  {
+    "sha": "8a4de63b56f1425732c8f1379d000f048eef1c65",
+    "node_id": "C_kwDOC1dfZtoAKDhhNGRlNjNiNTZmMTQyNTczMmM4ZjEzNzlkMDAwZjA0OGVlZjFjNjU",
+    "commit": {
+      "author": {
+        "name": "Ihor Dutchak",
+        "email": "ihor.youw@gmail.com",
+        "date": "2023-08-26T08:02:42Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-08-26T08:02:42Z"
+      },
+      "message": "hidraw: report only Top-Level Usage_page/Usage pairs as 'unique' devices  (#601)\n\n- unique Top-Level Usage_page/Usage: to be consistent with Windows/macOS (OS-level implementations).\r\n- support for single Usage Page item for several UsageIDs; \r\n- support for 32bit Usage items;\r\n\r\nFixes: #298\r\nFixes: #454",
+      "tree": {
+        "sha": "3d7caeae14300d0cd4fe143cbf612efedd820b31",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/3d7caeae14300d0cd4fe143cbf612efedd820b31"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/8a4de63b56f1425732c8f1379d000f048eef1c65",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJk6bGiCRBK7hj4Ov3rIwAAwZUIAB0gHqEg6ZTWLK1xzCGVeybp\nKAd/cLc55UlVNSlS7nuRX+ai2J/Zq5IcErHIetnnKb8i0FiCFOtmWSEWeuhZplgl\nN96/uvmADjnFR164S7ACWrG2treebsigzrYQY959yWzK4vkqTe6FU47BNQHXfWMN\n+xokLb+86SpV1+uShQt4rkYSPpVKqmiM9jK/vz1algdlXg+Qv2m3K7oMST3ua/jz\nZVz2ghGKEblRifgJDPfQNgTn66MVCYrPC2XafQakQ5515DwMmZh11Huhj1V3N88t\nQqUoBfd6zYfk/nR/qOoriDeGk/STxiMA3X4bL+nD1t5NhlynE7k8RqBFEjsFxo4=\n=6+xL\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 3d7caeae14300d0cd4fe143cbf612efedd820b31\nparent 09ab35ffa9dce60a993f4e55cdeaf0952645f9b7\nauthor Ihor Dutchak <ihor.youw@gmail.com> 1693036962 +0300\ncommitter GitHub <noreply@github.com> 1693036962 +0300\n\nhidraw: report only Top-Level Usage_page/Usage pairs as 'unique' devices  (#601)\n\n- unique Top-Level Usage_page/Usage: to be consistent with Windows/macOS (OS-level implementations).\r\n- support for single Usage Page item for several UsageIDs; \r\n- support for 32bit Usage items;\r\n\r\nFixes: #298\r\nFixes: #454"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/8a4de63b56f1425732c8f1379d000f048eef1c65",
+    "html_url": "https://github.com/libusb/hidapi/commit/8a4de63b56f1425732c8f1379d000f048eef1c65",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/8a4de63b56f1425732c8f1379d000f048eef1c65/comments",
+    "author": {
+      "login": "Youw",
+      "id": 5939659,
+      "node_id": "MDQ6VXNlcjU5Mzk2NTk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5939659?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Youw",
+      "html_url": "https://github.com/Youw",
+      "followers_url": "https://api.github.com/users/Youw/followers",
+      "following_url": "https://api.github.com/users/Youw/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Youw/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Youw/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Youw/subscriptions",
+      "organizations_url": "https://api.github.com/users/Youw/orgs",
+      "repos_url": "https://api.github.com/users/Youw/repos",
+      "events_url": "https://api.github.com/users/Youw/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Youw/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "09ab35ffa9dce60a993f4e55cdeaf0952645f9b7",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/09ab35ffa9dce60a993f4e55cdeaf0952645f9b7",
+        "html_url": "https://github.com/libusb/hidapi/commit/09ab35ffa9dce60a993f4e55cdeaf0952645f9b7"
+      }
+    ]
+  },
+  {
+    "sha": "09ab35ffa9dce60a993f4e55cdeaf0952645f9b7",
+    "node_id": "C_kwDOC1dfZtoAKDA5YWIzNWZmYTlkY2U2MGE5OTNmNGU1NWNkZWFmMDk1MjY0NWY5Yjc",
+    "commit": {
+      "author": {
+        "name": "Ihor Dutchak",
+        "email": "ihor.youw@gmail.com",
+        "date": "2023-08-14T10:10:17Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-08-14T10:10:17Z"
+      },
+      "message": "CI: Fix Archlinux build (#610)\n\nApparently when installing/upgrading packages on Archlinux - need to explicitly make sure `glibc` is upgraded as well.\r\n\r\nFixes: #607",
+      "tree": {
+        "sha": "72183fe78df089c540cb058ae815502323aa81ce",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/72183fe78df089c540cb058ae815502323aa81ce"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/09ab35ffa9dce60a993f4e55cdeaf0952645f9b7",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJk2f2JCRBK7hj4Ov3rIwAAHroIAFh9TQ3YXnTuZYeDmI/M4chE\nNKuFi13H0UNrry+od4tIuBoykxyNi1A+Suxs5q7t9XVRkx7TpRM/IxUUr5i/L6co\n1NV/M2mMkHdXVTvLIFqtvRu7U9VgSLBZGBaG2sKUieMoqoctpFgh2zB8B9c1hF0t\nBI96jF0mJcsDhCxI6Yn8OYSIjRYb7iIImITFieDi40pTB8gv36gslFQR8/ZMXTni\nk7ufe0MnMYDc49vj+C+HLflL3HxnyVTWzu3MWR6X/2+Pd7elAYVZ3l+dM0mrY1Tb\nKPLbD4rwy8s25Q2ddtvJiRHBnvX4Uq9FPH/oiDN/oYg4ZMO1H1ZWEdbNZvEBhfs=\n=JtUJ\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 72183fe78df089c540cb058ae815502323aa81ce\nparent 5fd7a79b37ee4981a699558e280ba3102c463770\nauthor Ihor Dutchak <ihor.youw@gmail.com> 1692007817 +0300\ncommitter GitHub <noreply@github.com> 1692007817 +0300\n\nCI: Fix Archlinux build (#610)\n\nApparently when installing/upgrading packages on Archlinux - need to explicitly make sure `glibc` is upgraded as well.\r\n\r\nFixes: #607"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/09ab35ffa9dce60a993f4e55cdeaf0952645f9b7",
+    "html_url": "https://github.com/libusb/hidapi/commit/09ab35ffa9dce60a993f4e55cdeaf0952645f9b7",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/09ab35ffa9dce60a993f4e55cdeaf0952645f9b7/comments",
+    "author": {
+      "login": "Youw",
+      "id": 5939659,
+      "node_id": "MDQ6VXNlcjU5Mzk2NTk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5939659?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Youw",
+      "html_url": "https://github.com/Youw",
+      "followers_url": "https://api.github.com/users/Youw/followers",
+      "following_url": "https://api.github.com/users/Youw/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Youw/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Youw/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Youw/subscriptions",
+      "organizations_url": "https://api.github.com/users/Youw/orgs",
+      "repos_url": "https://api.github.com/users/Youw/repos",
+      "events_url": "https://api.github.com/users/Youw/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Youw/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5fd7a79b37ee4981a699558e280ba3102c463770",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/5fd7a79b37ee4981a699558e280ba3102c463770",
+        "html_url": "https://github.com/libusb/hidapi/commit/5fd7a79b37ee4981a699558e280ba3102c463770"
+      }
+    ]
+  },
+  {
+    "sha": "5fd7a79b37ee4981a699558e280ba3102c463770",
+    "node_id": "C_kwDOC1dfZtoAKDVmZDdhNzliMzdlZTQ5ODFhNjk5NTU4ZTI4MGJhMzEwMmM0NjM3NzA",
+    "commit": {
+      "author": {
+        "name": "Ihor Dutchak",
+        "email": "ihor.youw@gmail.com",
+        "date": "2023-08-05T13:19:00Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-08-05T13:19:00Z"
+      },
+      "message": "Refine CTest args (#606)\n\n- don't use `--rerun-failed` - it only makes sense on subsequent runs of the test, when checking of failed tests got fixed;\r\n- add `--no-compress-output` - to avoid stripping test's output of failure;",
+      "tree": {
+        "sha": "beb02a7d18014e465838cae9e236f455d70e36ca",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/beb02a7d18014e465838cae9e236f455d70e36ca"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/5fd7a79b37ee4981a699558e280ba3102c463770",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkzkxECRBK7hj4Ov3rIwAAW3AIAEXaVeBwBAAn9vMTTZED7wOQ\nWibaJ17SpSf1sd/YEPBvIH2DNtmc1EYsRwIxVUiGwxvpfvxlXPOyKGJ4rldO/KFQ\nAfQctX/IMbp0FTTPoGVtUE5SV6ePCMju9Xp5arQhNNzzU7D4cwnrwNSzbNnCX0bW\nO2sanyHFQ91tir95pcfqHQytSkMn5+zEmBmQGgYCxqmtLEN6VVOYNPBVksWXplqF\nJDbVnbQRVIr8c+17UxAk4RNNMOjkqh+ioGRQXydHRd1Ipnglu05NL0eTbKCu6ua3\nbGjroQR1bscW9rEvha1DDovgKxswtIfLdeN4wbBx/yrqGxLk0PguYfAuOfacI70=\n=MbsQ\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree beb02a7d18014e465838cae9e236f455d70e36ca\nparent 98ab22a33d326e5f3b139d16fd0859fb811c548a\nauthor Ihor Dutchak <ihor.youw@gmail.com> 1691241540 +0300\ncommitter GitHub <noreply@github.com> 1691241540 +0300\n\nRefine CTest args (#606)\n\n- don't use `--rerun-failed` - it only makes sense on subsequent runs of the test, when checking of failed tests got fixed;\r\n- add `--no-compress-output` - to avoid stripping test's output of failure;"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/5fd7a79b37ee4981a699558e280ba3102c463770",
+    "html_url": "https://github.com/libusb/hidapi/commit/5fd7a79b37ee4981a699558e280ba3102c463770",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/5fd7a79b37ee4981a699558e280ba3102c463770/comments",
+    "author": {
+      "login": "Youw",
+      "id": 5939659,
+      "node_id": "MDQ6VXNlcjU5Mzk2NTk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5939659?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Youw",
+      "html_url": "https://github.com/Youw",
+      "followers_url": "https://api.github.com/users/Youw/followers",
+      "following_url": "https://api.github.com/users/Youw/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Youw/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Youw/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Youw/subscriptions",
+      "organizations_url": "https://api.github.com/users/Youw/orgs",
+      "repos_url": "https://api.github.com/users/Youw/repos",
+      "events_url": "https://api.github.com/users/Youw/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Youw/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "98ab22a33d326e5f3b139d16fd0859fb811c548a",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/98ab22a33d326e5f3b139d16fd0859fb811c548a",
+        "html_url": "https://github.com/libusb/hidapi/commit/98ab22a33d326e5f3b139d16fd0859fb811c548a"
+      }
+    ]
+  },
+  {
+    "sha": "98ab22a33d326e5f3b139d16fd0859fb811c548a",
+    "node_id": "C_kwDOC1dfZtoAKDk4YWIyMmEzM2QzMjZlNWYzYjEzOWQxNmZkMDg1OWZiODExYzU0OGE",
+    "commit": {
+      "author": {
+        "name": "Sam Lantinga",
+        "email": "slouken@libsdl.org",
+        "date": "2023-07-29T17:09:20Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-07-29T17:09:20Z"
+      },
+      "message": "Suppress Visual C++ warning C4214: nonstandard extension used: bit field types other than int (#602)",
+      "tree": {
+        "sha": "226987ccead66beef0cdfdcad1afd5c4eb4a9ba7",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/226987ccead66beef0cdfdcad1afd5c4eb4a9ba7"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/98ab22a33d326e5f3b139d16fd0859fb811c548a",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkxUfACRBK7hj4Ov3rIwAAS/IIALJ/yabiNYrdJVc8om2PGv20\nlXiij6jgKqr0Vodg02aiJWtuBac2jPaNkxZWfjmwFvcnkxOnz9keoAIBtMKlm+iQ\nG08h/dYfL8Aht/A54452LaAj6FRjOZkAhCBRMEblTBrPcb4arJ4rqiRjoU7x+IXg\nJFllv5ZO6Fu82x6lYpcmbw4VY2YRkAUO/VbmnV7/hA1DeQjm/dPzv4PdgAeHcyJ6\ntwzwTn13dSCOsVTtavkFUmLLRd9K4JIOvgKNH4T576j84pPsBQuxBIKQayejB3HO\nqYxWxhuWEzqXJhk1cuMplkE9a1cqIFs/Ly+XQXUueG7oQw7FqcM+5TAeAnNZw/4=\n=nu74\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 226987ccead66beef0cdfdcad1afd5c4eb4a9ba7\nparent 4c932622e8cb5a529afff1678414a6daec7d173d\nauthor Sam Lantinga <slouken@libsdl.org> 1690650560 -0700\ncommitter GitHub <noreply@github.com> 1690650560 +0300\n\nSuppress Visual C++ warning C4214: nonstandard extension used: bit field types other than int (#602)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/98ab22a33d326e5f3b139d16fd0859fb811c548a",
+    "html_url": "https://github.com/libusb/hidapi/commit/98ab22a33d326e5f3b139d16fd0859fb811c548a",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/98ab22a33d326e5f3b139d16fd0859fb811c548a/comments",
+    "author": {
+      "login": "slouken",
+      "id": 2100061,
+      "node_id": "MDQ6VXNlcjIxMDAwNjE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2100061?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/slouken",
+      "html_url": "https://github.com/slouken",
+      "followers_url": "https://api.github.com/users/slouken/followers",
+      "following_url": "https://api.github.com/users/slouken/following{/other_user}",
+      "gists_url": "https://api.github.com/users/slouken/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/slouken/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/slouken/subscriptions",
+      "organizations_url": "https://api.github.com/users/slouken/orgs",
+      "repos_url": "https://api.github.com/users/slouken/repos",
+      "events_url": "https://api.github.com/users/slouken/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/slouken/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4c932622e8cb5a529afff1678414a6daec7d173d",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/4c932622e8cb5a529afff1678414a6daec7d173d",
+        "html_url": "https://github.com/libusb/hidapi/commit/4c932622e8cb5a529afff1678414a6daec7d173d"
+      }
+    ]
+  },
+  {
+    "sha": "4c932622e8cb5a529afff1678414a6daec7d173d",
+    "node_id": "C_kwDOC1dfZtoAKDRjOTMyNjIyZThjYjVhNTI5YWZmZjE2Nzg0MTRhNmRhZWM3ZDE3M2Q",
+    "commit": {
+      "author": {
+        "name": "Sam Lantinga",
+        "email": "slouken@libsdl.org",
+        "date": "2023-07-23T09:57:49Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-07-23T09:57:49Z"
+      },
+      "message": "hidapi/libusb: enable support for Xbox 360 and Xbox One controllers (#572)\n\nXbox controllers are not technically HID devices, but you can talk to them directly using libusb, and [SDL](https://github.com/libsdl-org/SDL) uses this to talk to controllers which may not have OS-level support.",
+      "tree": {
+        "sha": "64897ade5c68e463f06cb3260b7408fdb8aefbe0",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/64897ade5c68e463f06cb3260b7408fdb8aefbe0"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/4c932622e8cb5a529afff1678414a6daec7d173d",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkvPmdCRBK7hj4Ov3rIwAABMAIACjAL9Dbr9+KzK9xdeAd6t4v\nzzRRL/OYhDQveE89Oh2wtbZBjb68/xaJwww/48HbAUL9ZlIJQjH9HgEC1+VQtx2x\noVIRLfRBgcfFIUve7uzWzj2R1V+XeVL7CyseDO/ni19pXR2LrvdOEmHDkBmBEJT2\nLFudBA7Bu3nYASUyb7b3urDLmUaVCkf93TsnjyxJM0gBRZYemfF2pcB8lL08MfEh\nusdtbLbecqAVJPieTSuguTDcfKeMbplZcX3ICYnp7E0U+uoAvX8L6iK/s1mPv9tf\n2U77rlTd0o0IqojQQ7THYWCiF31tr0GbDKUZs8hp/l1JLGAsHq+mFD8ZsyccxPo=\n=SHYn\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 64897ade5c68e463f06cb3260b7408fdb8aefbe0\nparent d0856c05cecbb1522c24fd2f1ed1e144b001f349\nauthor Sam Lantinga <slouken@libsdl.org> 1690106269 -0700\ncommitter GitHub <noreply@github.com> 1690106269 +0300\n\nhidapi/libusb: enable support for Xbox 360 and Xbox One controllers (#572)\n\nXbox controllers are not technically HID devices, but you can talk to them directly using libusb, and [SDL](https://github.com/libsdl-org/SDL) uses this to talk to controllers which may not have OS-level support."
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/4c932622e8cb5a529afff1678414a6daec7d173d",
+    "html_url": "https://github.com/libusb/hidapi/commit/4c932622e8cb5a529afff1678414a6daec7d173d",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/4c932622e8cb5a529afff1678414a6daec7d173d/comments",
+    "author": {
+      "login": "slouken",
+      "id": 2100061,
+      "node_id": "MDQ6VXNlcjIxMDAwNjE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2100061?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/slouken",
+      "html_url": "https://github.com/slouken",
+      "followers_url": "https://api.github.com/users/slouken/followers",
+      "following_url": "https://api.github.com/users/slouken/following{/other_user}",
+      "gists_url": "https://api.github.com/users/slouken/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/slouken/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/slouken/subscriptions",
+      "organizations_url": "https://api.github.com/users/slouken/orgs",
+      "repos_url": "https://api.github.com/users/slouken/repos",
+      "events_url": "https://api.github.com/users/slouken/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/slouken/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d0856c05cecbb1522c24fd2f1ed1e144b001f349",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/d0856c05cecbb1522c24fd2f1ed1e144b001f349",
+        "html_url": "https://github.com/libusb/hidapi/commit/d0856c05cecbb1522c24fd2f1ed1e144b001f349"
+      }
+    ]
+  },
+  {
+    "sha": "d0856c05cecbb1522c24fd2f1ed1e144b001f349",
+    "node_id": "C_kwDOC1dfZtoAKGQwODU2YzA1Y2VjYmIxNTIyYzI0ZmQyZjFlZDFlMTQ0YjAwMWYzNDk",
+    "commit": {
+      "author": {
+        "name": "Ihor Dutchak",
+        "email": "ihor.youw@gmail.com",
+        "date": "2023-07-03T14:27:27Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-07-03T14:27:27Z"
+      },
+      "message": "Fix Windows CI (#598)\n\n`refreshenv` stopped working in PowerShell context",
+      "tree": {
+        "sha": "8c20582ef50e3a2f30a16c53519e3a2d7c069204",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/8c20582ef50e3a2f30a16c53519e3a2d7c069204"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/d0856c05cecbb1522c24fd2f1ed1e144b001f349",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkotrPCRBK7hj4Ov3rIwAA57EIALNR4lyObHLDcyt6M8CrsvhZ\n4ODoCDHDaj6SKAmXD8cmSjHJTil8oLdh420GegIGyRHNpyiUcxideO/bW1f1pyMs\n5VWNkGcOOvnZElTlPiLI97LPW6crwVP75pZORztUlkzEUAnoz/+cx7oKvqliESkr\nSzylA3SzaN26M28jYc2IgqrWPj+z4mcjdFUVDrbIGmam5szII5h76wiOGtbiqt5i\n2jFTqHmAf/zmslP+HS4Qy76AKMOA2tEwqwTUP58b5eVxdIwG2B3TdK4VsZGs6x3z\nscspqxUxa2A6o1jknJwfNi9ihyPENxBylwwoyNwliKEaw72mgfLqxUQ7lGyXMqM=\n=70CN\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 8c20582ef50e3a2f30a16c53519e3a2d7c069204\nparent 849c8a909904ecd33bc23a3dc3d9c40867145fbd\nauthor Ihor Dutchak <ihor.youw@gmail.com> 1688394447 +0300\ncommitter GitHub <noreply@github.com> 1688394447 +0300\n\nFix Windows CI (#598)\n\n`refreshenv` stopped working in PowerShell context"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/d0856c05cecbb1522c24fd2f1ed1e144b001f349",
+    "html_url": "https://github.com/libusb/hidapi/commit/d0856c05cecbb1522c24fd2f1ed1e144b001f349",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/d0856c05cecbb1522c24fd2f1ed1e144b001f349/comments",
+    "author": {
+      "login": "Youw",
+      "id": 5939659,
+      "node_id": "MDQ6VXNlcjU5Mzk2NTk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5939659?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Youw",
+      "html_url": "https://github.com/Youw",
+      "followers_url": "https://api.github.com/users/Youw/followers",
+      "following_url": "https://api.github.com/users/Youw/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Youw/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Youw/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Youw/subscriptions",
+      "organizations_url": "https://api.github.com/users/Youw/orgs",
+      "repos_url": "https://api.github.com/users/Youw/repos",
+      "events_url": "https://api.github.com/users/Youw/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Youw/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "849c8a909904ecd33bc23a3dc3d9c40867145fbd",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/849c8a909904ecd33bc23a3dc3d9c40867145fbd",
+        "html_url": "https://github.com/libusb/hidapi/commit/849c8a909904ecd33bc23a3dc3d9c40867145fbd"
+      }
+    ]
+  },
+  {
+    "sha": "849c8a909904ecd33bc23a3dc3d9c40867145fbd",
+    "node_id": "C_kwDOC1dfZtoAKDg0OWM4YTkwOTkwNGVjZDMzYmMyM2EzZGMzZDljNDA4NjcxNDVmYmQ",
+    "commit": {
+      "author": {
+        "name": "luzpaz",
+        "email": "luzpaz@users.noreply.github.com",
+        "date": "2023-07-03T14:18:54Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-07-03T14:18:54Z"
+      },
+      "message": "Fix various typo (#597)\n\nFound via `codespell -q 3 -L childs,fo,xwindows`\r\nEncountered in downstream https://github.com/libsdl-org/SDL",
+      "tree": {
+        "sha": "1d9b6ca29f48a8934c23c2b3a44ba68b255fb5cf",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/1d9b6ca29f48a8934c23c2b3a44ba68b255fb5cf"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/849c8a909904ecd33bc23a3dc3d9c40867145fbd",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkotjOCRBK7hj4Ov3rIwAAFzwIAFK9PHUcXrpds7f7Exr0Scu+\nepYYZ2FKZlDTlmJTnAoHZ+cJS1sLzD88U0gV/ihTlh0cKKGvNIOzx8DswqK92+yH\nWo+n0qjTGK4CmZIyBA5O8MMSfCUV0HYHPvWxt0n3Qy6rxvFQ/BjUk3vqE+nXPo9D\nR4hYKetk30aJNMMv6PT/qt2YebqdYctRnCDTNn5P7xMprh8AWdkVTevgKDCQWEWV\n7s4rGjhM/q+QhbbMMDU8IKzWwVWm/o+pJL4MZ82DQLhzN5ADf0+mIgTdp9SQJpx/\nAMJ6D3kSWxTIKDsFI4JqcDTDkixxmx8rW7OoyLzuV9cciwusjLrE8O/D5AZrHpA=\n=beUx\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 1d9b6ca29f48a8934c23c2b3a44ba68b255fb5cf\nparent 80e8d62bc1cc70876d57fed7e76d7478757b4da8\nauthor luzpaz <luzpaz@users.noreply.github.com> 1688393934 -0400\ncommitter GitHub <noreply@github.com> 1688393934 +0300\n\nFix various typo (#597)\n\nFound via `codespell -q 3 -L childs,fo,xwindows`\r\nEncountered in downstream https://github.com/libsdl-org/SDL"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/849c8a909904ecd33bc23a3dc3d9c40867145fbd",
+    "html_url": "https://github.com/libusb/hidapi/commit/849c8a909904ecd33bc23a3dc3d9c40867145fbd",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/849c8a909904ecd33bc23a3dc3d9c40867145fbd/comments",
+    "author": {
+      "login": "luzpaz",
+      "id": 4140247,
+      "node_id": "MDQ6VXNlcjQxNDAyNDc=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4140247?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/luzpaz",
+      "html_url": "https://github.com/luzpaz",
+      "followers_url": "https://api.github.com/users/luzpaz/followers",
+      "following_url": "https://api.github.com/users/luzpaz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/luzpaz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/luzpaz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/luzpaz/subscriptions",
+      "organizations_url": "https://api.github.com/users/luzpaz/orgs",
+      "repos_url": "https://api.github.com/users/luzpaz/repos",
+      "events_url": "https://api.github.com/users/luzpaz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/luzpaz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "80e8d62bc1cc70876d57fed7e76d7478757b4da8",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/80e8d62bc1cc70876d57fed7e76d7478757b4da8",
+        "html_url": "https://github.com/libusb/hidapi/commit/80e8d62bc1cc70876d57fed7e76d7478757b4da8"
+      }
+    ]
+  },
+  {
+    "sha": "80e8d62bc1cc70876d57fed7e76d7478757b4da8",
+    "node_id": "C_kwDOC1dfZtoAKDgwZThkNjJiYzFjYzcwODc2ZDU3ZmVkN2U3NmQ3NDc4NzU3YjRkYTg",
+    "commit": {
+      "author": {
+        "name": "Sam Lantinga",
+        "email": "slouken@libsdl.org",
+        "date": "2023-06-07T08:54:10Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-06-07T08:54:10Z"
+      },
+      "message": "libusb: same logic to get the config descriptor for hid_open_path() and hid_enumerate() (#568)",
+      "tree": {
+        "sha": "f340c19bca921290fe2c955e7076dcced3db94ad",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/f340c19bca921290fe2c955e7076dcced3db94ad"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/80e8d62bc1cc70876d57fed7e76d7478757b4da8",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkgEWyCRBK7hj4Ov3rIwAAl0AIAJjdYsCEHdaLwPSGo5QkP/B+\nsiBt203GPwMLsTzOchZ1JhTNfEScfFXlHFr9xX+FX1p7eKPU3SyQMFMU8hU9eUfo\nUlu1BSIeqjk+Bm+lnjW8GUoGA0/opCi30pQXDefb4omnqAIJl9nWynwC43oI0RdR\nPBoNgCtkGqETmZB6cTUsKchycP3Lh5G/NrAFKKCpWLk8dHztcJJ7Ogr3N5LXmb+G\nBCTAuqm+nTAtKql+o/hVWooJVZaq51aImJN5lqxkfRV9RWkPizd5JWYmKi11H2dP\nkaEFq6vI/kJkqFeZ4lMb55Rln5hNQQp2pxHCLpQm0uundVb9tOl96vc36RBiycA=\n=yYXJ\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree f340c19bca921290fe2c955e7076dcced3db94ad\nparent c6c4dd0243e89ec06c9a30ce3ab25afb36732f98\nauthor Sam Lantinga <slouken@libsdl.org> 1686128050 -0700\ncommitter GitHub <noreply@github.com> 1686128050 +0300\n\nlibusb: same logic to get the config descriptor for hid_open_path() and hid_enumerate() (#568)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/80e8d62bc1cc70876d57fed7e76d7478757b4da8",
+    "html_url": "https://github.com/libusb/hidapi/commit/80e8d62bc1cc70876d57fed7e76d7478757b4da8",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/80e8d62bc1cc70876d57fed7e76d7478757b4da8/comments",
+    "author": {
+      "login": "slouken",
+      "id": 2100061,
+      "node_id": "MDQ6VXNlcjIxMDAwNjE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2100061?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/slouken",
+      "html_url": "https://github.com/slouken",
+      "followers_url": "https://api.github.com/users/slouken/followers",
+      "following_url": "https://api.github.com/users/slouken/following{/other_user}",
+      "gists_url": "https://api.github.com/users/slouken/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/slouken/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/slouken/subscriptions",
+      "organizations_url": "https://api.github.com/users/slouken/orgs",
+      "repos_url": "https://api.github.com/users/slouken/repos",
+      "events_url": "https://api.github.com/users/slouken/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/slouken/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c6c4dd0243e89ec06c9a30ce3ab25afb36732f98",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/c6c4dd0243e89ec06c9a30ce3ab25afb36732f98",
+        "html_url": "https://github.com/libusb/hidapi/commit/c6c4dd0243e89ec06c9a30ce3ab25afb36732f98"
+      }
+    ]
+  },
+  {
+    "sha": "c6c4dd0243e89ec06c9a30ce3ab25afb36732f98",
+    "node_id": "C_kwDOC1dfZtoAKGM2YzRkZDAyNDNlODllYzA2YzlhMzBjZTNhYjI1YWZiMzY3MzJmOTg",
+    "commit": {
+      "author": {
+        "name": "Sam Lantinga",
+        "email": "slouken@libsdl.org",
+        "date": "2023-06-07T08:53:05Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-06-07T08:53:05Z"
+      },
+      "message": "macOS: fix crash when IOHIDDevice property is not a string (#573)\n\n- fixed crash on macOS when AirPods are connected (reported to happen with some AirPods on some macOS version);",
+      "tree": {
+        "sha": "09be7fb41a377ec9dd18abafd27d0bea4a1ea953",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/09be7fb41a377ec9dd18abafd27d0bea4a1ea953"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/c6c4dd0243e89ec06c9a30ce3ab25afb36732f98",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkgEVxCRBK7hj4Ov3rIwAAx0AIAFMQYim+rC/A8Rhtwx3VIa3F\nnTn89mVylskpOxGW9+ogCFhKQZm8m/kJbgWGx++T2wvh2wRbgkGhLpRuxnpjYNE7\n80cpO1whVpvXL/6c9VNwLGcpnQZ25G1MH5Au9TUQymjrz1yG+Rb0Q8zVObUpYnh8\nk5tb5iOOtUApKLHVWnFVrJg9SgqQOjszFwa2QqRh0/1Bv7dCSGOXK4i4UhGQi9Lh\nVdRdmq6E3BpH3irAptaDXDiUKzJvKS/rfGqU5cS1NgzN3IZaw0pHaEZJhYH5u0al\nZxoIS100XCTwg6L6+l/w8nEj9H0PO0BF8dW58inN7ZbfCVmCgKGC4NtDWG6qz9s=\n=5I7j\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 09be7fb41a377ec9dd18abafd27d0bea4a1ea953\nparent fea2357cc5ff0f3d47ae61f7a9ad4e7d213f4db4\nauthor Sam Lantinga <slouken@libsdl.org> 1686127985 -0700\ncommitter GitHub <noreply@github.com> 1686127985 +0300\n\nmacOS: fix crash when IOHIDDevice property is not a string (#573)\n\n- fixed crash on macOS when AirPods are connected (reported to happen with some AirPods on some macOS version);"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/c6c4dd0243e89ec06c9a30ce3ab25afb36732f98",
+    "html_url": "https://github.com/libusb/hidapi/commit/c6c4dd0243e89ec06c9a30ce3ab25afb36732f98",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/c6c4dd0243e89ec06c9a30ce3ab25afb36732f98/comments",
+    "author": {
+      "login": "slouken",
+      "id": 2100061,
+      "node_id": "MDQ6VXNlcjIxMDAwNjE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2100061?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/slouken",
+      "html_url": "https://github.com/slouken",
+      "followers_url": "https://api.github.com/users/slouken/followers",
+      "following_url": "https://api.github.com/users/slouken/following{/other_user}",
+      "gists_url": "https://api.github.com/users/slouken/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/slouken/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/slouken/subscriptions",
+      "organizations_url": "https://api.github.com/users/slouken/orgs",
+      "repos_url": "https://api.github.com/users/slouken/repos",
+      "events_url": "https://api.github.com/users/slouken/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/slouken/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "fea2357cc5ff0f3d47ae61f7a9ad4e7d213f4db4",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/fea2357cc5ff0f3d47ae61f7a9ad4e7d213f4db4",
+        "html_url": "https://github.com/libusb/hidapi/commit/fea2357cc5ff0f3d47ae61f7a9ad4e7d213f4db4"
+      }
+    ]
+  },
+  {
+    "sha": "fea2357cc5ff0f3d47ae61f7a9ad4e7d213f4db4",
+    "node_id": "C_kwDOC1dfZtoAKGZlYTIzNTdjYzVmZjBmM2Q0N2FlNjFmN2E5YWQ0ZTdkMjEzZjRkYjQ",
+    "commit": {
+      "author": {
+        "name": "Sam Lantinga",
+        "email": "slouken@libsdl.org",
+        "date": "2023-06-06T22:05:42Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-06-06T22:05:42Z"
+      },
+      "message": "libusb: use LIBUSB_CALL for the read_callback function (#569)",
+      "tree": {
+        "sha": "91173efc5f71753d18e565e533677a5a7234509a",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/91173efc5f71753d18e565e533677a5a7234509a"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/fea2357cc5ff0f3d47ae61f7a9ad4e7d213f4db4",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkf622CRBK7hj4Ov3rIwAAQbEIAIrMpl943P0LI8VtoYGx+YMJ\nJ/rGIQHbuT2avh8rmcvDXDJdWnuqdKbud2OkSdbBP519JHa5AWxP/K0KFYkP+6pO\nirCkHNglkmbO1c6Qn1L18IfIpymLcIyw647pfEitrGyDMdRezd5FYZkXaAE5tsNi\nc8M6UzxW6ECGvMqhtNtSEn8no30DXd9jPiS5tI5lL7+jnd9btWza2EBqy9zoMcDP\nNE58OsrvtSOKH8jfRI0NetECzH2c8fB4jflYMoTNmYdk5+hO57yecvkC9T8NHJyq\nSxjd9ilnNYUUvSLPL0kDebOFE43jqY6N9+UF8NaMvdHOD0Oouj1BuVGtHhoDX9g=\n=upUW\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 91173efc5f71753d18e565e533677a5a7234509a\nparent 5eb55443746ec05e22d0ed05349f0e41b7ab7d8e\nauthor Sam Lantinga <slouken@libsdl.org> 1686089142 -0700\ncommitter GitHub <noreply@github.com> 1686089142 +0300\n\nlibusb: use LIBUSB_CALL for the read_callback function (#569)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/fea2357cc5ff0f3d47ae61f7a9ad4e7d213f4db4",
+    "html_url": "https://github.com/libusb/hidapi/commit/fea2357cc5ff0f3d47ae61f7a9ad4e7d213f4db4",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/fea2357cc5ff0f3d47ae61f7a9ad4e7d213f4db4/comments",
+    "author": {
+      "login": "slouken",
+      "id": 2100061,
+      "node_id": "MDQ6VXNlcjIxMDAwNjE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2100061?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/slouken",
+      "html_url": "https://github.com/slouken",
+      "followers_url": "https://api.github.com/users/slouken/followers",
+      "following_url": "https://api.github.com/users/slouken/following{/other_user}",
+      "gists_url": "https://api.github.com/users/slouken/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/slouken/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/slouken/subscriptions",
+      "organizations_url": "https://api.github.com/users/slouken/orgs",
+      "repos_url": "https://api.github.com/users/slouken/repos",
+      "events_url": "https://api.github.com/users/slouken/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/slouken/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5eb55443746ec05e22d0ed05349f0e41b7ab7d8e",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/5eb55443746ec05e22d0ed05349f0e41b7ab7d8e",
+        "html_url": "https://github.com/libusb/hidapi/commit/5eb55443746ec05e22d0ed05349f0e41b7ab7d8e"
+      }
+    ]
+  },
+  {
+    "sha": "5eb55443746ec05e22d0ed05349f0e41b7ab7d8e",
+    "node_id": "C_kwDOC1dfZtoAKDVlYjU1NDQzNzQ2ZWMwNWUyMmQwZWQwNTM0OWYwZTQxYjdhYjdkOGU",
+    "commit": {
+      "author": {
+        "name": "Sam Lantinga",
+        "email": "slouken@libsdl.org",
+        "date": "2023-06-06T22:04:48Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-06-06T22:04:48Z"
+      },
+      "message": "libusb: Allow building using non-POSIX runtime (#582)",
+      "tree": {
+        "sha": "1adaa65946a42c89100fb5afd8e3d898e45f73a1",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/1adaa65946a42c89100fb5afd8e3d898e45f73a1"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/5eb55443746ec05e22d0ed05349f0e41b7ab7d8e",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkf62ACRBK7hj4Ov3rIwAA2W8IABhj291o6VxJBdUc24qgE3aq\nP5263yed11nuMaTakQvivYeXOfaMyQoOnK0eE3uxJwb43d8h+QWVlXyLF2iLYOCj\nLScdKyPJF/86GdgE+cHQjMpqZpNWr9J7ess8ktBaFV/9I7KJIKhzSnsjCt+Xtrth\nI3f604FZuvoOH72Y9dTUgLXBYUQz0HEVsrzfrZbnuiPuSGbpOV6f9R5n0WwQUs26\n1/tKtRK4n5d7eV6z272uyQ3QuJaLBjFwtDmbPurfrOpBr0tvoREJoPTXlIyiKKGm\nIyIS8GVbGP5yY9tmAa71uX25aLAUsN5ik0cDq56o4wf4V9/nwYcSf5pbynvtiPQ=\n=EENb\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 1adaa65946a42c89100fb5afd8e3d898e45f73a1\nparent a88805e01338d27f9831b26140e07687619028fe\nauthor Sam Lantinga <slouken@libsdl.org> 1686089088 -0700\ncommitter GitHub <noreply@github.com> 1686089088 +0300\n\nlibusb: Allow building using non-POSIX runtime (#582)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/5eb55443746ec05e22d0ed05349f0e41b7ab7d8e",
+    "html_url": "https://github.com/libusb/hidapi/commit/5eb55443746ec05e22d0ed05349f0e41b7ab7d8e",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/5eb55443746ec05e22d0ed05349f0e41b7ab7d8e/comments",
+    "author": {
+      "login": "slouken",
+      "id": 2100061,
+      "node_id": "MDQ6VXNlcjIxMDAwNjE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2100061?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/slouken",
+      "html_url": "https://github.com/slouken",
+      "followers_url": "https://api.github.com/users/slouken/followers",
+      "following_url": "https://api.github.com/users/slouken/following{/other_user}",
+      "gists_url": "https://api.github.com/users/slouken/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/slouken/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/slouken/subscriptions",
+      "organizations_url": "https://api.github.com/users/slouken/orgs",
+      "repos_url": "https://api.github.com/users/slouken/repos",
+      "events_url": "https://api.github.com/users/slouken/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/slouken/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a88805e01338d27f9831b26140e07687619028fe",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/a88805e01338d27f9831b26140e07687619028fe",
+        "html_url": "https://github.com/libusb/hidapi/commit/a88805e01338d27f9831b26140e07687619028fe"
+      }
+    ]
+  },
+  {
+    "sha": "a88805e01338d27f9831b26140e07687619028fe",
+    "node_id": "C_kwDOC1dfZtoAKGE4ODgwNWUwMTMzOGQyN2Y5ODMxYjI2MTQwZTA3Njg3NjE5MDI4ZmU",
+    "commit": {
+      "author": {
+        "name": "Sam Lantinga",
+        "email": "slouken@libsdl.org",
+        "date": "2023-05-31T17:38:48Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-05-31T17:38:48Z"
+      },
+      "message": "hidraw: fixed crash if uevent info isn't available (#580)\n\nSigned-off-by: Sam Lantinga <slouken@libsdl.org>",
+      "tree": {
+        "sha": "8d39da7f1b89403511299f5dd8327fc31f35cfd5",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/8d39da7f1b89403511299f5dd8327fc31f35cfd5"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/a88805e01338d27f9831b26140e07687619028fe",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkd4YoCRBK7hj4Ov3rIwAAWZkIABYcPtJCIju4YjmJo1hsvUkC\nmhvFkn5NneUditJIs/r2UNl9/nH/r+j1a6wRiCFKDbHNWq918DJBC/e8Hdb3ET65\n3ZpFqztAZ0gUh9tsMIjhe/poeewpWVSDMZCH4wHtR/+hjWo86XPsN6Oq0d5fR4kQ\noX7j+arpmKoSD672NOyl7+nNqQkXIe1iTtDpYMeXhNmJroxtminmMjki6/O8ZUmS\nZFhJ94YEBcNUmexFASHJt5Qc3qwv84mnSXbkWcnn5LMeEIF6qmOKCRa7pn/Y2cg+\ns8QSwlgZZo9Y/FAbsMFghwwffVglc+reMJKNAk43b1PLXCIuq7+RDxQnyLAri28=\n=cRdt\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 8d39da7f1b89403511299f5dd8327fc31f35cfd5\nparent b8ab253464ad0c1e28cdf0740d713dfe97c28995\nauthor Sam Lantinga <slouken@libsdl.org> 1685554728 -0700\ncommitter GitHub <noreply@github.com> 1685554728 +0300\n\nhidraw: fixed crash if uevent info isn't available (#580)\n\nSigned-off-by: Sam Lantinga <slouken@libsdl.org>"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/a88805e01338d27f9831b26140e07687619028fe",
+    "html_url": "https://github.com/libusb/hidapi/commit/a88805e01338d27f9831b26140e07687619028fe",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/a88805e01338d27f9831b26140e07687619028fe/comments",
+    "author": {
+      "login": "slouken",
+      "id": 2100061,
+      "node_id": "MDQ6VXNlcjIxMDAwNjE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2100061?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/slouken",
+      "html_url": "https://github.com/slouken",
+      "followers_url": "https://api.github.com/users/slouken/followers",
+      "following_url": "https://api.github.com/users/slouken/following{/other_user}",
+      "gists_url": "https://api.github.com/users/slouken/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/slouken/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/slouken/subscriptions",
+      "organizations_url": "https://api.github.com/users/slouken/orgs",
+      "repos_url": "https://api.github.com/users/slouken/repos",
+      "events_url": "https://api.github.com/users/slouken/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/slouken/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b8ab253464ad0c1e28cdf0740d713dfe97c28995",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/b8ab253464ad0c1e28cdf0740d713dfe97c28995",
+        "html_url": "https://github.com/libusb/hidapi/commit/b8ab253464ad0c1e28cdf0740d713dfe97c28995"
+      }
+    ]
+  },
+  {
+    "sha": "b8ab253464ad0c1e28cdf0740d713dfe97c28995",
+    "node_id": "C_kwDOC1dfZtoAKGI4YWIyNTM0NjRhZDBjMWUyOGNkZjA3NDBkNzEzZGZlOTdjMjg5OTU",
+    "commit": {
+      "author": {
+        "name": "Sam Lantinga",
+        "email": "slouken@libsdl.org",
+        "date": "2023-05-31T16:58:44Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-05-31T16:58:44Z"
+      },
+      "message": "Fixed parameter documentation mismatch (#570)",
+      "tree": {
+        "sha": "c4a204a887297e0d5d52db9f77fd6501bf387077",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/c4a204a887297e0d5d52db9f77fd6501bf387077"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/b8ab253464ad0c1e28cdf0740d713dfe97c28995",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkd3zECRBK7hj4Ov3rIwAA81sIAIdSniiWKgrMXRkKWj6U7RQN\nMw/87M30TEo20+K+WDwnC+4LToL7CUpzJWRGcWMTMSp8mCJZZ7ErC8pGmZVuoIAv\nT425u6CeUZg1qPAWSULTCYBzbAL8ZVEcGZMsqFBGg9GRfcUxWK6nJD/O5hRhanok\nkt4Y2Z2F7ODfVkAET9vaktYOm2LAtRmIwm52EcXQQF+A1xXLnQcRAnl4+jrQMeU2\nGBJVYLwxtfI/9unerby8Ah7sytHjC+T08w9DLQ4G1i4I/MINS6+dVc1luIXzlVGf\nK2kpThs9F0Gy7VtjgwyLrjyF6rmHQfIHzaoO/g4uVhWFAG6JzfFz1+Gav7YWuec=\n=dq6r\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree c4a204a887297e0d5d52db9f77fd6501bf387077\nparent d3013f0af3f4029d82872c1a9487ea461a56dee4\nauthor Sam Lantinga <slouken@libsdl.org> 1685552324 -0700\ncommitter GitHub <noreply@github.com> 1685552324 +0300\n\nFixed parameter documentation mismatch (#570)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/b8ab253464ad0c1e28cdf0740d713dfe97c28995",
+    "html_url": "https://github.com/libusb/hidapi/commit/b8ab253464ad0c1e28cdf0740d713dfe97c28995",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/b8ab253464ad0c1e28cdf0740d713dfe97c28995/comments",
+    "author": {
+      "login": "slouken",
+      "id": 2100061,
+      "node_id": "MDQ6VXNlcjIxMDAwNjE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2100061?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/slouken",
+      "html_url": "https://github.com/slouken",
+      "followers_url": "https://api.github.com/users/slouken/followers",
+      "following_url": "https://api.github.com/users/slouken/following{/other_user}",
+      "gists_url": "https://api.github.com/users/slouken/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/slouken/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/slouken/subscriptions",
+      "organizations_url": "https://api.github.com/users/slouken/orgs",
+      "repos_url": "https://api.github.com/users/slouken/repos",
+      "events_url": "https://api.github.com/users/slouken/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/slouken/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d3013f0af3f4029d82872c1a9487ea461a56dee4",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/d3013f0af3f4029d82872c1a9487ea461a56dee4",
+        "html_url": "https://github.com/libusb/hidapi/commit/d3013f0af3f4029d82872c1a9487ea461a56dee4"
+      }
+    ]
+  },
+  {
+    "sha": "d3013f0af3f4029d82872c1a9487ea461a56dee4",
+    "node_id": "C_kwDOC1dfZtoAKGQzMDEzZjBhZjNmNDAyOWQ4Mjg3MmMxYTk0ODdlYTQ2MWE1NmRlZTQ",
+    "commit": {
+      "author": {
+        "name": "Ihor Dutchak",
+        "email": "ihor.youw@gmail.com",
+        "date": "2023-05-22T10:50:06Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-05-22T10:50:06Z"
+      },
+      "message": "Weekly runs for Coverity Scan (#565)",
+      "tree": {
+        "sha": "62f6be3a8d5ad341cbb2d3925641c0f0924db6b8",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/62f6be3a8d5ad341cbb2d3925641c0f0924db6b8"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/d3013f0af3f4029d82872c1a9487ea461a56dee4",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJka0jeCRBK7hj4Ov3rIwAA7rEIACPRZcNGTAreT/iTgTWPdeHX\nrssW9GtleWZZYPI6YVffX37facF5HR2z/HcWxaGMnnXmmTPZtwh2EUsEN21sXINc\n/8NLRssSBAOhmM1ps/If3GB4SMHKpVgzSroFETUkFMoXUzDZKHpZXr9ddenJw1e6\ngAWLANzptJ28o2NZtOpgrN7OQLW8DBC60MtCdUErWBQFbZO4BrCXyv9TnNr36+30\nlV50tFHa8Wyy64i20T8+xgBYnGsW6W5jrNxdx2j+WNtY5G8gk0mK7Gg+OxRPJ8CC\nmNediEUeHhONtamjUPRj9cHjJ5kvNHB7QxDc8QysF6kxyJuTIAAmoq88KnjPn0A=\n=CbSj\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 62f6be3a8d5ad341cbb2d3925641c0f0924db6b8\nparent 24e0a874ecd30e3088242e7f0fd702fd19b50d74\nauthor Ihor Dutchak <ihor.youw@gmail.com> 1684752606 +0300\ncommitter GitHub <noreply@github.com> 1684752606 +0300\n\nWeekly runs for Coverity Scan (#565)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/d3013f0af3f4029d82872c1a9487ea461a56dee4",
+    "html_url": "https://github.com/libusb/hidapi/commit/d3013f0af3f4029d82872c1a9487ea461a56dee4",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/d3013f0af3f4029d82872c1a9487ea461a56dee4/comments",
+    "author": {
+      "login": "Youw",
+      "id": 5939659,
+      "node_id": "MDQ6VXNlcjU5Mzk2NTk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5939659?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Youw",
+      "html_url": "https://github.com/Youw",
+      "followers_url": "https://api.github.com/users/Youw/followers",
+      "following_url": "https://api.github.com/users/Youw/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Youw/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Youw/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Youw/subscriptions",
+      "organizations_url": "https://api.github.com/users/Youw/orgs",
+      "repos_url": "https://api.github.com/users/Youw/repos",
+      "events_url": "https://api.github.com/users/Youw/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Youw/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "24e0a874ecd30e3088242e7f0fd702fd19b50d74",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/24e0a874ecd30e3088242e7f0fd702fd19b50d74",
+        "html_url": "https://github.com/libusb/hidapi/commit/24e0a874ecd30e3088242e7f0fd702fd19b50d74"
+      }
+    ]
+  },
+  {
+    "sha": "24e0a874ecd30e3088242e7f0fd702fd19b50d74",
+    "node_id": "C_kwDOC1dfZtoAKDI0ZTBhODc0ZWNkMzBlMzA4ODI0MmU3ZjBmZDcwMmZkMTliNTBkNzQ",
+    "commit": {
+      "author": {
+        "name": "Ihor Dutchak",
+        "email": "ihor.youw@gmail.com",
+        "date": "2023-05-22T10:34:57Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-05-22T10:34:57Z"
+      },
+      "message": "Add Coverity check to README (#564)",
+      "tree": {
+        "sha": "8c7dbe5ad45c5a2feaeecc59d4c5ccff4c396e6e",
+        "url": "https://api.github.com/repos/libusb/hidapi/git/trees/8c7dbe5ad45c5a2feaeecc59d4c5ccff4c396e6e"
+      },
+      "url": "https://api.github.com/repos/libusb/hidapi/git/commits/24e0a874ecd30e3088242e7f0fd702fd19b50d74",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJka0VRCRBK7hj4Ov3rIwAAaTAIAAu2sBO404NpEUo2Atmvu188\nL6fyQVlHtHyqCTsveoQmZjTepyajifv60Q1wwEk1duF3dIYTVlz7aAplYP+qLeUL\n+iJT764zbOtw8PllLJQArBtwgmHbky+oxvtwsM8fLY5mqPzdfHZn8CI3vbRBhZoP\ny3I9cBNrjOImKbuplOIta2vWrdfFPoQ5hi+oSgR+O6Xt8VdFqVBWpBJdwbLTtIMM\nIAg3BIgoYRn/NZOpC75Ocw/mqhIiFBwKSLxpfx8/XpHfWe5bkAI7xW/3aYPqxT0W\noYSYY+57Gy+3F6f7dDCB4pgTLP8+lJOPhlQWgjmTakAPM5sdsVG/Wkstp3cl3ok=\n=UTdv\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 8c7dbe5ad45c5a2feaeecc59d4c5ccff4c396e6e\nparent ca8373a5b7d53cfa63162b0f19ca13f268ad9688\nauthor Ihor Dutchak <ihor.youw@gmail.com> 1684751697 +0300\ncommitter GitHub <noreply@github.com> 1684751697 +0300\n\nAdd Coverity check to README (#564)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/libusb/hidapi/commits/24e0a874ecd30e3088242e7f0fd702fd19b50d74",
+    "html_url": "https://github.com/libusb/hidapi/commit/24e0a874ecd30e3088242e7f0fd702fd19b50d74",
+    "comments_url": "https://api.github.com/repos/libusb/hidapi/commits/24e0a874ecd30e3088242e7f0fd702fd19b50d74/comments",
+    "author": {
+      "login": "Youw",
+      "id": 5939659,
+      "node_id": "MDQ6VXNlcjU5Mzk2NTk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5939659?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Youw",
+      "html_url": "https://github.com/Youw",
+      "followers_url": "https://api.github.com/users/Youw/followers",
+      "following_url": "https://api.github.com/users/Youw/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Youw/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Youw/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Youw/subscriptions",
+      "organizations_url": "https://api.github.com/users/Youw/orgs",
+      "repos_url": "https://api.github.com/users/Youw/repos",
+      "events_url": "https://api.github.com/users/Youw/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Youw/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ca8373a5b7d53cfa63162b0f19ca13f268ad9688",
+        "url": "https://api.github.com/repos/libusb/hidapi/commits/ca8373a5b7d53cfa63162b0f19ca13f268ad9688",
+        "html_url": "https://github.com/libusb/hidapi/commit/ca8373a5b7d53cfa63162b0f19ca13f268ad9688"
+      }
+    ]
+  }
+]

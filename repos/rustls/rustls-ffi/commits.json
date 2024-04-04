@@ -1,0 +1,2372 @@
+[
+  {
+    "sha": "ee10ac49afaa3837668fb30446a598249ab7d645",
+    "node_id": "C_kwDOExNEQNoAKGVlMTBhYzQ5YWZhYTM4Mzc2NjhmYjMwNDQ2YTU5ODI0OWFiN2Q2NDU",
+    "commit": {
+      "author": {
+        "name": "kpcyrd",
+        "email": "git@rxv.cc",
+        "date": "2024-04-03T16:54:45Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-04-03T17:13:06Z"
+      },
+      "message": "README: Add packaging status badge",
+      "tree": {
+        "sha": "c0d079e4aae660b71fb19a68ac21623742af3bda",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/c0d079e4aae660b71fb19a68ac21623742af3bda"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/ee10ac49afaa3837668fb30446a598249ab7d645",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/ee10ac49afaa3837668fb30446a598249ab7d645",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/ee10ac49afaa3837668fb30446a598249ab7d645",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/ee10ac49afaa3837668fb30446a598249ab7d645/comments",
+    "author": {
+      "login": "kpcyrd",
+      "id": 7763184,
+      "node_id": "MDQ6VXNlcjc3NjMxODQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7763184?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/kpcyrd",
+      "html_url": "https://github.com/kpcyrd",
+      "followers_url": "https://api.github.com/users/kpcyrd/followers",
+      "following_url": "https://api.github.com/users/kpcyrd/following{/other_user}",
+      "gists_url": "https://api.github.com/users/kpcyrd/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/kpcyrd/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/kpcyrd/subscriptions",
+      "organizations_url": "https://api.github.com/users/kpcyrd/orgs",
+      "repos_url": "https://api.github.com/users/kpcyrd/repos",
+      "events_url": "https://api.github.com/users/kpcyrd/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/kpcyrd/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f935f306c81f1408d7dae6061425c993bf51791a",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/f935f306c81f1408d7dae6061425c993bf51791a",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/f935f306c81f1408d7dae6061425c993bf51791a"
+      }
+    ]
+  },
+  {
+    "sha": "f935f306c81f1408d7dae6061425c993bf51791a",
+    "node_id": "C_kwDOExNEQNoAKGY5MzVmMzA2YzgxZjE0MDhkN2RhZTYwNjE0MjVjOTkzYmY1MTc5MWE",
+    "commit": {
+      "author": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-29T01:33:28Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-04-02T14:14:24Z"
+      },
+      "message": "null-safe set_boxed_mut_ptr/set_arc_mut_ptr\n\nPreviously the `set_boxed_mut_ptr()` and `set_arc_mut_ptr()` helper fns\nused for assigning out parameters across the FFI boundary took `*mut\n*mut C` and `*mut *const C` for the destination argument `dst`. Using\nthese safely required callers always verify that `dst != NULL`. In\npractice it's very easy to forget to do this and danger lurks!\n\nWe could modify these helpers to do the check itself, but we tend to use\nthese fns near the end of a function to assign a result in a success\ncase and we would prefer `NULL` checking happen at the beginning of the\nfunction.\n\nOne proposed solution is to modify these setter functions to take `&mut\n*mut C` and `&mut *const C`. By using new helper fns to carefully\nconstruct a `&mut` from the input double pointer we can front-load\nthe `NULL` check and the assignment in the set fns can proceed knowing\nthere's no possibility for a `NULL` outer pointer.\n\nThis commit implements this strategy, updating the argument type of\n`set_boxed_mut_ptr` and `set_arc_mut_ptr` to take `&mut (*const|*mut)\nC`. New `try_mut_from_ptr_ptr` and `try_ref_from_ptr_ptr` macros allow\nconverting from `*mut *mut C` and `*mut *const C` to the reference\ntypes, bailing early for `NULL`.",
+      "tree": {
+        "sha": "ce283db5bbe4777c983b712f08a4393dac7968b6",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/ce283db5bbe4777c983b712f08a4393dac7968b6"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/f935f306c81f1408d7dae6061425c993bf51791a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/f935f306c81f1408d7dae6061425c993bf51791a",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/f935f306c81f1408d7dae6061425c993bf51791a",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/f935f306c81f1408d7dae6061425c993bf51791a/comments",
+    "author": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2316cca872a791bad2c7cd8ef1144fa22792daf7",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/2316cca872a791bad2c7cd8ef1144fa22792daf7",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/2316cca872a791bad2c7cd8ef1144fa22792daf7"
+      }
+    ]
+  },
+  {
+    "sha": "2316cca872a791bad2c7cd8ef1144fa22792daf7",
+    "node_id": "C_kwDOExNEQNoAKDIzMTZjY2E4NzJhNzkxYmFkMmM3Y2Q4ZWYxMTQ0ZmEyMjc5MmRhZjc",
+    "commit": {
+      "author": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-31T23:28:34Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-04-02T13:50:58Z"
+      },
+      "message": "docs: fix mod_tls link in README\n\nPreviously the README linked to `https://github.com/icing/mod_tls`, but\nthis repo has been removed and the code is now upstreamed into Apache\nHTTPD.\n\nThis commit replaces it with a pointer to the docs for `mod_tls`, which\nin turn lists the relevant source file.",
+      "tree": {
+        "sha": "525923cf47bda6393d791566a91eb109ae523cca",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/525923cf47bda6393d791566a91eb109ae523cca"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/2316cca872a791bad2c7cd8ef1144fa22792daf7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/2316cca872a791bad2c7cd8ef1144fa22792daf7",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/2316cca872a791bad2c7cd8ef1144fa22792daf7",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/2316cca872a791bad2c7cd8ef1144fa22792daf7/comments",
+    "author": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1dec438490266ccad18db3477555759face1c080",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/1dec438490266ccad18db3477555759face1c080",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/1dec438490266ccad18db3477555759face1c080"
+      }
+    ]
+  },
+  {
+    "sha": "1dec438490266ccad18db3477555759face1c080",
+    "node_id": "C_kwDOExNEQNoAKDFkZWM0Mzg0OTAyNjZjY2FkMThkYjM0Nzc1NTU3NTlmYWNlMWMwODA",
+    "commit": {
+      "author": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-29T13:39:08Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-29T19:58:10Z"
+      },
+      "message": "docs: add 0.12.2 release to CHANGELOG",
+      "tree": {
+        "sha": "c51b6496e9a53937c74b89d121673f9e964259d4",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/c51b6496e9a53937c74b89d121673f9e964259d4"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/1dec438490266ccad18db3477555759face1c080",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/1dec438490266ccad18db3477555759face1c080",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/1dec438490266ccad18db3477555759face1c080",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/1dec438490266ccad18db3477555759face1c080/comments",
+    "author": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5700454570cb1641c18d6f9663086671dc695487",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/5700454570cb1641c18d6f9663086671dc695487",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/5700454570cb1641c18d6f9663086671dc695487"
+      }
+    ]
+  },
+  {
+    "sha": "5700454570cb1641c18d6f9663086671dc695487",
+    "node_id": "C_kwDOExNEQNoAKDU3MDA0NTQ1NzBjYjE2NDFjMThkNmY5NjYzMDg2NjcxZGM2OTU0ODc",
+    "commit": {
+      "author": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-28T19:13:19Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-29T13:26:01Z"
+      },
+      "message": "docs: update CHANGELOG\n\n* Corrects the 0.13.0 release date.\n* Updates the rustls version referenced for 0.13.0.\n* Adds a mention of the cargo-c build change.",
+      "tree": {
+        "sha": "da76e15066ff82887a380052deb3fc2052cbe775",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/da76e15066ff82887a380052deb3fc2052cbe775"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/5700454570cb1641c18d6f9663086671dc695487",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/5700454570cb1641c18d6f9663086671dc695487",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/5700454570cb1641c18d6f9663086671dc695487",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/5700454570cb1641c18d6f9663086671dc695487/comments",
+    "author": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8a581cb96d8466be050bb2b104294b7297787fc6",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/8a581cb96d8466be050bb2b104294b7297787fc6",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/8a581cb96d8466be050bb2b104294b7297787fc6"
+      }
+    ]
+  },
+  {
+    "sha": "8a581cb96d8466be050bb2b104294b7297787fc6",
+    "node_id": "C_kwDOExNEQNoAKDhhNTgxY2I5NmQ4NDY2YmUwNTBiYjJiMTA0Mjk0YjcyOTc3ODdmYzY",
+    "commit": {
+      "author": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-28T19:11:00Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-29T13:26:01Z"
+      },
+      "message": "Cargo: rustls 0.23.1 -> 0.23.4",
+      "tree": {
+        "sha": "cf87501b288b0f28ce1fc2c631a1603bcff5f3c0",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/cf87501b288b0f28ce1fc2c631a1603bcff5f3c0"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/8a581cb96d8466be050bb2b104294b7297787fc6",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/8a581cb96d8466be050bb2b104294b7297787fc6",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/8a581cb96d8466be050bb2b104294b7297787fc6",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/8a581cb96d8466be050bb2b104294b7297787fc6/comments",
+    "author": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c5b0eb1e624334037f1476480e0940100ad2cd37",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/c5b0eb1e624334037f1476480e0940100ad2cd37",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/c5b0eb1e624334037f1476480e0940100ad2cd37"
+      }
+    ]
+  },
+  {
+    "sha": "c5b0eb1e624334037f1476480e0940100ad2cd37",
+    "node_id": "C_kwDOExNEQNoAKGM1YjBlYjFlNjI0MzM0MDM3ZjE0NzY0ODBlMDk0MDEwMGFkMmNkMzc",
+    "commit": {
+      "author": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-11T18:38:56Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-28T21:25:52Z"
+      },
+      "message": "proj: remove Makefile.Windows\n\nCMake is the recommended way to build rustls-ffi for Windows platforms.\nThis commit removes the manually curated Makefile specific to Windows to\nreduce maintenance burden.",
+      "tree": {
+        "sha": "242a0e5f636794cc2724ca2ff471839462643749",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/242a0e5f636794cc2724ca2ff471839462643749"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/c5b0eb1e624334037f1476480e0940100ad2cd37",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/c5b0eb1e624334037f1476480e0940100ad2cd37",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/c5b0eb1e624334037f1476480e0940100ad2cd37",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/c5b0eb1e624334037f1476480e0940100ad2cd37/comments",
+    "author": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "86abdbbbec3783da2b96c073d9c3c3d2ee9e1a59",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/86abdbbbec3783da2b96c073d9c3c3d2ee9e1a59",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/86abdbbbec3783da2b96c073d9c3c3d2ee9e1a59"
+      }
+    ]
+  },
+  {
+    "sha": "86abdbbbec3783da2b96c073d9c3c3d2ee9e1a59",
+    "node_id": "C_kwDOExNEQNoAKDg2YWJkYmJiZWMzNzgzZGEyYjk2YzA3M2Q5YzNjM2QyZWU5ZTFhNTk",
+    "commit": {
+      "author": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-28T01:08:16Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-28T19:08:02Z"
+      },
+      "message": "Cargo: configure cargo-c to use vendored .h\n\nPresently we pre-generate the rustls.h header file using `cbindgen`,\ncommit the result to `src/rustls.h`, and check that the generated result\nmatches the checked-in result in CI.\n\nThe new experimental cargo-c build regenerates its own header file using\n`cbindgen` by default unless told to do otherwise. We'd prefer it didn't\ndo this because we're using a `cbindgen` feature that requires nightly\nrust.\n\nThis commit updates the `Cargo.toml` capi metadata to tell cargo-c to\nskip generation of its own header file. We then configure the\npre-generated checked-in header file as an asset to be copied into the\ninstall include directory.\n\nThis better matches how the `Makefile` build allowed building the static\nlib without needing nightly rust or `cbindgen`.",
+      "tree": {
+        "sha": "22118e858e420359efce231e76ad07fbca669904",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/22118e858e420359efce231e76ad07fbca669904"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/86abdbbbec3783da2b96c073d9c3c3d2ee9e1a59",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/86abdbbbec3783da2b96c073d9c3c3d2ee9e1a59",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/86abdbbbec3783da2b96c073d9c3c3d2ee9e1a59",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/86abdbbbec3783da2b96c073d9c3c3d2ee9e1a59/comments",
+    "author": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2bc49f43c5f67c60ff9b908f80e9796b1af58c37",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/2bc49f43c5f67c60ff9b908f80e9796b1af58c37",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/2bc49f43c5f67c60ff9b908f80e9796b1af58c37"
+      }
+    ]
+  },
+  {
+    "sha": "2bc49f43c5f67c60ff9b908f80e9796b1af58c37",
+    "node_id": "C_kwDOExNEQNoAKDJiYzQ5ZjQzYzVmNjdjNjBmZjliOTA4ZjgwZTk3OTZiMWFmNThjMzc",
+    "commit": {
+      "author": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-11T18:24:13Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-28T19:04:19Z"
+      },
+      "message": "proj: prepare 0.13.0 release",
+      "tree": {
+        "sha": "10680f667de615c91a696d4c861bb26e13fce93b",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/10680f667de615c91a696d4c861bb26e13fce93b"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/2bc49f43c5f67c60ff9b908f80e9796b1af58c37",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/2bc49f43c5f67c60ff9b908f80e9796b1af58c37",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/2bc49f43c5f67c60ff9b908f80e9796b1af58c37",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/2bc49f43c5f67c60ff9b908f80e9796b1af58c37/comments",
+    "author": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "eec6424c32939db3b11fad64cc99ab8c98b2a349",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/eec6424c32939db3b11fad64cc99ab8c98b2a349",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/eec6424c32939db3b11fad64cc99ab8c98b2a349"
+      }
+    ]
+  },
+  {
+    "sha": "eec6424c32939db3b11fad64cc99ab8c98b2a349",
+    "node_id": "C_kwDOExNEQNoAKGVlYzY0MjRjMzI5MzlkYjNiMTFmYWQ2NGNjOTlhYjhjOThiMmEzNDk",
+    "commit": {
+      "author": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-28T18:37:17Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-28T19:04:19Z"
+      },
+      "message": "proj: check for null out parameters consistently\n\nMany of the places where we used `set_boxed_mut_ptr` did not check that\nthe `dest` pointer was not null, but `set_boxed_mut_ptr` says: `dst`\nmust not be `NULL`.\n\nThis commit introduces checks for each of the call-sites missing one.",
+      "tree": {
+        "sha": "f65db2e5e62fa124effa007d73c59ce97d1c56b4",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/f65db2e5e62fa124effa007d73c59ce97d1c56b4"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/eec6424c32939db3b11fad64cc99ab8c98b2a349",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/eec6424c32939db3b11fad64cc99ab8c98b2a349",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/eec6424c32939db3b11fad64cc99ab8c98b2a349",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/eec6424c32939db3b11fad64cc99ab8c98b2a349/comments",
+    "author": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4a807e4eea1014668072b8fb76e75aab1d419857",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/4a807e4eea1014668072b8fb76e75aab1d419857",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/4a807e4eea1014668072b8fb76e75aab1d419857"
+      }
+    ]
+  },
+  {
+    "sha": "4a807e4eea1014668072b8fb76e75aab1d419857",
+    "node_id": "C_kwDOExNEQNoAKDRhODA3ZTRlZWExMDE0NjY4MDcyYjhmYjc2ZTc1YWFiMWQ0MTk4NTc",
+    "commit": {
+      "author": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-02-28T18:19:54Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-28T19:04:19Z"
+      },
+      "message": "update rustls 0.22 -> 0.23\n\nAddresses upstream breaking API changes and updates associated Rustls\ndependencies to use the newest Rustls release.\n\nMost notable for rustls-ffi are the changes in the\n`rustls_acceptor_accept` and `rustls_accepted_into_connection`\nfunctions where a new `rustls_accepted_alert` out parameter is added.\n\nThis type wraps the upstream `AcceptedAlert` type and allows the caller\nto gather any to-be-written TLS data (most notably, TLS alerts) that was\nproduced while trying to accept the client connection. The caller should\nhandle the to-be-written TLS bytes by calling\n`rustls_accepted_alert_write_tls` and providing\na `rustls_write_callback` to handle writing the queued bytes to the\nconnection before calling `rustls_accepted_alert_free`.",
+      "tree": {
+        "sha": "e6d3e8ba5c29f9f22e906b8b0fbd0c90a45b5799",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/e6d3e8ba5c29f9f22e906b8b0fbd0c90a45b5799"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/4a807e4eea1014668072b8fb76e75aab1d419857",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/4a807e4eea1014668072b8fb76e75aab1d419857",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/4a807e4eea1014668072b8fb76e75aab1d419857",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/4a807e4eea1014668072b8fb76e75aab1d419857/comments",
+    "author": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c17b5c18bd997827ebd6febd540c611127bc9990",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/c17b5c18bd997827ebd6febd540c611127bc9990",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/c17b5c18bd997827ebd6febd540c611127bc9990"
+      }
+    ]
+  },
+  {
+    "sha": "c17b5c18bd997827ebd6febd540c611127bc9990",
+    "node_id": "C_kwDOExNEQNoAKGMxN2I1YzE4YmQ5OTc4MjdlYmQ2ZmViZDU0MGM2MTExMjdiYzk5OTA",
+    "commit": {
+      "author": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-28T01:36:02Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-28T13:08:45Z"
+      },
+      "message": "server: fix clippy::manual_unwrap_or_default finding\n\n```\nwarning: match can be simplified with `.unwrap_or_default()`\n   --> src/server.rs:486:13\n    |\n486 | /             match client_hello.server_name() {\n487 | |                 Some(c) => c,\n488 | |                 None => \"\",\n489 | |             }\n    | |_____________^ help: replace it with: `client_hello.server_name().unwrap_or_default()`\n    |\n    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#manual_unwrap_or_default\n    = note: `#[warn(clippy::manual_unwrap_or_default)]` on by default\n```",
+      "tree": {
+        "sha": "2bd43983cf8b67c92c2650f3a82a367940767f34",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/2bd43983cf8b67c92c2650f3a82a367940767f34"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/c17b5c18bd997827ebd6febd540c611127bc9990",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/c17b5c18bd997827ebd6febd540c611127bc9990",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/c17b5c18bd997827ebd6febd540c611127bc9990",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/c17b5c18bd997827ebd6febd540c611127bc9990/comments",
+    "author": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "47d7b0ff1ae214b596648914c01d2be6bd88b9d5",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/47d7b0ff1ae214b596648914c01d2be6bd88b9d5",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/47d7b0ff1ae214b596648914c01d2be6bd88b9d5"
+      }
+    ]
+  },
+  {
+    "sha": "47d7b0ff1ae214b596648914c01d2be6bd88b9d5",
+    "node_id": "C_kwDOExNEQNoAKDQ3ZDdiMGZmMWFlMjE0YjU5NjY0ODkxNGMwMWQyYmU2YmQ4OGI5ZDU",
+    "commit": {
+      "author": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-11T15:40:29Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-21T17:58:42Z"
+      },
+      "message": "proj: prepare 0.12.1 release",
+      "tree": {
+        "sha": "4ba59037c856c0d8faa25c9b653247552f2ffeb9",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/4ba59037c856c0d8faa25c9b653247552f2ffeb9"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/47d7b0ff1ae214b596648914c01d2be6bd88b9d5",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/47d7b0ff1ae214b596648914c01d2be6bd88b9d5",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/47d7b0ff1ae214b596648914c01d2be6bd88b9d5",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/47d7b0ff1ae214b596648914c01d2be6bd88b9d5/comments",
+    "author": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a639124907e01bc94121b5c07a7fa22e00a655bd",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/a639124907e01bc94121b5c07a7fa22e00a655bd",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/a639124907e01bc94121b5c07a7fa22e00a655bd"
+      }
+    ]
+  },
+  {
+    "sha": "a639124907e01bc94121b5c07a7fa22e00a655bd",
+    "node_id": "C_kwDOExNEQNoAKGE2MzkxMjQ5MDdlMDFiYzk0MTIxYjVjMDdhN2ZhMjJlMDBhNjU1YmQ",
+    "commit": {
+      "author": {
+        "name": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2024-03-11T02:56:49Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-21T17:58:42Z"
+      },
+      "message": "build(deps): bump actions/checkout from 3 to 4\n\nBumps [actions/checkout](https://github.com/actions/checkout) from 3 to 4.\n- [Release notes](https://github.com/actions/checkout/releases)\n- [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/actions/checkout/compare/v3...v4)\n\n---\nupdated-dependencies:\n- dependency-name: actions/checkout\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+      "tree": {
+        "sha": "f37e48fe193b736fe2b0d23b2a375686998ff839",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/f37e48fe193b736fe2b0d23b2a375686998ff839"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/a639124907e01bc94121b5c07a7fa22e00a655bd",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/a639124907e01bc94121b5c07a7fa22e00a655bd",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/a639124907e01bc94121b5c07a7fa22e00a655bd",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/a639124907e01bc94121b5c07a7fa22e00a655bd/comments",
+    "author": {
+      "login": "dependabot[bot]",
+      "id": 49699333,
+      "node_id": "MDM6Qm90NDk2OTkzMzM=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/29110?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dependabot%5Bbot%5D",
+      "html_url": "https://github.com/apps/dependabot",
+      "followers_url": "https://api.github.com/users/dependabot%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/dependabot%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dependabot%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dependabot%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dependabot%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/dependabot%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/dependabot%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/dependabot%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dependabot%5Bbot%5D/received_events",
+      "type": "Bot",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "439e47399ee4b95de4aff9218fead8b80db4691a",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/439e47399ee4b95de4aff9218fead8b80db4691a",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/439e47399ee4b95de4aff9218fead8b80db4691a"
+      }
+    ]
+  },
+  {
+    "sha": "439e47399ee4b95de4aff9218fead8b80db4691a",
+    "node_id": "C_kwDOExNEQNoAKDQzOWU0NzM5OWVlNGI5NWRlNGFmZjkyMThmZWFkOGI4MGRiNDY5MWE",
+    "commit": {
+      "author": {
+        "name": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2024-03-04T02:57:47Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-21T17:58:42Z"
+      },
+      "message": "build(deps): bump rustls-pemfile from 2.0.0 to 2.1.1\n\nBumps [rustls-pemfile](https://github.com/rustls/pemfile) from 2.0.0 to 2.1.1.\n- [Release notes](https://github.com/rustls/pemfile/releases)\n- [Commits](https://github.com/rustls/pemfile/compare/v/2.0.0...v/2.1.1)\n\n---\nupdated-dependencies:\n- dependency-name: rustls-pemfile\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+      "tree": {
+        "sha": "dd979374a4296e5e5b50f002d6b0e86ad477abba",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/dd979374a4296e5e5b50f002d6b0e86ad477abba"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/439e47399ee4b95de4aff9218fead8b80db4691a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/439e47399ee4b95de4aff9218fead8b80db4691a",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/439e47399ee4b95de4aff9218fead8b80db4691a",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/439e47399ee4b95de4aff9218fead8b80db4691a/comments",
+    "author": {
+      "login": "dependabot[bot]",
+      "id": 49699333,
+      "node_id": "MDM6Qm90NDk2OTkzMzM=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/29110?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dependabot%5Bbot%5D",
+      "html_url": "https://github.com/apps/dependabot",
+      "followers_url": "https://api.github.com/users/dependabot%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/dependabot%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dependabot%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dependabot%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dependabot%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/dependabot%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/dependabot%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/dependabot%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dependabot%5Bbot%5D/received_events",
+      "type": "Bot",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "71619ea8e2e1297663cf1806d133e5c4a26fa819",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/71619ea8e2e1297663cf1806d133e5c4a26fa819",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/71619ea8e2e1297663cf1806d133e5c4a26fa819"
+      }
+    ]
+  },
+  {
+    "sha": "71619ea8e2e1297663cf1806d133e5c4a26fa819",
+    "node_id": "C_kwDOExNEQNoAKDcxNjE5ZWE4ZTJlMTI5NzY2M2NmMTgwNmQxMzNlNWM0YTI2ZmE4MTk",
+    "commit": {
+      "author": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-02-29T14:52:34Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-21T17:58:42Z"
+      },
+      "message": "deps: log 0.4.20 -> 0.4.21",
+      "tree": {
+        "sha": "8e711e24615a77f3bd50d7eeb03ec76ad19c91e0",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/8e711e24615a77f3bd50d7eeb03ec76ad19c91e0"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/71619ea8e2e1297663cf1806d133e5c4a26fa819",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/71619ea8e2e1297663cf1806d133e5c4a26fa819",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/71619ea8e2e1297663cf1806d133e5c4a26fa819",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/71619ea8e2e1297663cf1806d133e5c4a26fa819/comments",
+    "author": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "358137fe5f64c429f16f170add87eb22d57dd06b",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/358137fe5f64c429f16f170add87eb22d57dd06b",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/358137fe5f64c429f16f170add87eb22d57dd06b"
+      }
+    ]
+  },
+  {
+    "sha": "358137fe5f64c429f16f170add87eb22d57dd06b",
+    "node_id": "C_kwDOExNEQNoAKDM1ODEzN2ZlNWY2NGM0MjlmMTZmMTcwYWRkODdlYjIyZDU3ZGQwNmI",
+    "commit": {
+      "author": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-02-28T19:09:24Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-21T17:58:42Z"
+      },
+      "message": "chore: fixup cargo clippy redundant import findings",
+      "tree": {
+        "sha": "e8071a9f3166f7244fbc493b1041f5a8490d240c",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/e8071a9f3166f7244fbc493b1041f5a8490d240c"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/358137fe5f64c429f16f170add87eb22d57dd06b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/358137fe5f64c429f16f170add87eb22d57dd06b",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/358137fe5f64c429f16f170add87eb22d57dd06b",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/358137fe5f64c429f16f170add87eb22d57dd06b/comments",
+    "author": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f0c433dd683200dfa55829b55c3ae45b2a549268",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/f0c433dd683200dfa55829b55c3ae45b2a549268",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/f0c433dd683200dfa55829b55c3ae45b2a549268"
+      }
+    ]
+  },
+  {
+    "sha": "f0c433dd683200dfa55829b55c3ae45b2a549268",
+    "node_id": "C_kwDOExNEQNoAKGYwYzQzM2RkNjgzMjAwZGZhNTU4MjliNTVjM2FlNDViMmE1NDkyNjg",
+    "commit": {
+      "author": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-02-28T19:49:07Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-03-21T17:58:42Z"
+      },
+      "message": "ci: add Synchronization.lib to Cmake target_link_libraries\n\nThis avoids unresolved external symbol errors:\n\n```\nunresolved external symbol __imp_WakeByAddressSingle\nunresolved external symbol __imp_WaitOnAddress\n```\n\nhttps://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-wakebyaddresssingle",
+      "tree": {
+        "sha": "111c663467882cf7edeb16f52d483aacb68d6324",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/111c663467882cf7edeb16f52d483aacb68d6324"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/f0c433dd683200dfa55829b55c3ae45b2a549268",
+      "comment_count": 2,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/f0c433dd683200dfa55829b55c3ae45b2a549268",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/f0c433dd683200dfa55829b55c3ae45b2a549268",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/f0c433dd683200dfa55829b55c3ae45b2a549268/comments",
+    "author": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a2adbd1901e0a04344c1d27509f065d1c41ee88d",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/a2adbd1901e0a04344c1d27509f065d1c41ee88d",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/a2adbd1901e0a04344c1d27509f065d1c41ee88d"
+      }
+    ]
+  },
+  {
+    "sha": "a2adbd1901e0a04344c1d27509f065d1c41ee88d",
+    "node_id": "C_kwDOExNEQNoAKGEyYWRiZDE5MDFlMGEwNDM0NGMxZDI3NTA5ZjA2NWQxYzQxZWU4OGQ",
+    "commit": {
+      "author": {
+        "name": "Jacob Hoffman-Andrews",
+        "email": "github@hoffman-andrews.com",
+        "date": "2024-03-08T20:09:37Z"
+      },
+      "committer": {
+        "name": "Jacob Hoffman-Andrews",
+        "email": "github@hoffman-andrews.com",
+        "date": "2024-03-08T20:58:23Z"
+      },
+      "message": "README nits",
+      "tree": {
+        "sha": "c7ad6d6a2bc191f511b92fdfee9a736f023a28a9",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/c7ad6d6a2bc191f511b92fdfee9a736f023a28a9"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/a2adbd1901e0a04344c1d27509f065d1c41ee88d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/a2adbd1901e0a04344c1d27509f065d1c41ee88d",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/a2adbd1901e0a04344c1d27509f065d1c41ee88d",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/a2adbd1901e0a04344c1d27509f065d1c41ee88d/comments",
+    "author": {
+      "login": "jsha",
+      "id": 220205,
+      "node_id": "MDQ6VXNlcjIyMDIwNQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/220205?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jsha",
+      "html_url": "https://github.com/jsha",
+      "followers_url": "https://api.github.com/users/jsha/followers",
+      "following_url": "https://api.github.com/users/jsha/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jsha/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jsha/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jsha/subscriptions",
+      "organizations_url": "https://api.github.com/users/jsha/orgs",
+      "repos_url": "https://api.github.com/users/jsha/repos",
+      "events_url": "https://api.github.com/users/jsha/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jsha/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jsha",
+      "id": 220205,
+      "node_id": "MDQ6VXNlcjIyMDIwNQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/220205?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jsha",
+      "html_url": "https://github.com/jsha",
+      "followers_url": "https://api.github.com/users/jsha/followers",
+      "following_url": "https://api.github.com/users/jsha/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jsha/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jsha/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jsha/subscriptions",
+      "organizations_url": "https://api.github.com/users/jsha/orgs",
+      "repos_url": "https://api.github.com/users/jsha/repos",
+      "events_url": "https://api.github.com/users/jsha/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jsha/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8160f84207c65a79a50bcd77d0c259bd48849804",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/8160f84207c65a79a50bcd77d0c259bd48849804",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/8160f84207c65a79a50bcd77d0c259bd48849804"
+      }
+    ]
+  },
+  {
+    "sha": "8160f84207c65a79a50bcd77d0c259bd48849804",
+    "node_id": "C_kwDOExNEQNoAKDgxNjBmODQyMDdjNjVhNzlhNTBiY2Q3N2QwYzI1OWJkNDg4NDk4MDQ",
+    "commit": {
+      "author": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2023-10-17T20:00:43Z"
+      },
+      "committer": {
+        "name": "Jacob Hoffman-Andrews",
+        "email": "github@hoffman-andrews.com",
+        "date": "2024-03-08T20:58:23Z"
+      },
+      "message": "docs: add static vs dynamic docs, cargo-c instructions\n\nThis commit details our current thinking w.r.t static vs dynamic linking\nfor rustls-ffi. It also adds initial documentation of using `cargo-c` to\nbuild a dynamic library. In particular we emphasize that:\n\na) we make **no** ABI stability guarantees\nb) the dynamic library/cargo-c support is considered experimental",
+      "tree": {
+        "sha": "9efa4c230a170ff4eaa2d4ff5221b3b221aa74f8",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/9efa4c230a170ff4eaa2d4ff5221b3b221aa74f8"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/8160f84207c65a79a50bcd77d0c259bd48849804",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/8160f84207c65a79a50bcd77d0c259bd48849804",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/8160f84207c65a79a50bcd77d0c259bd48849804",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/8160f84207c65a79a50bcd77d0c259bd48849804/comments",
+    "author": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jsha",
+      "id": 220205,
+      "node_id": "MDQ6VXNlcjIyMDIwNQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/220205?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jsha",
+      "html_url": "https://github.com/jsha",
+      "followers_url": "https://api.github.com/users/jsha/followers",
+      "following_url": "https://api.github.com/users/jsha/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jsha/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jsha/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jsha/subscriptions",
+      "organizations_url": "https://api.github.com/users/jsha/orgs",
+      "repos_url": "https://api.github.com/users/jsha/repos",
+      "events_url": "https://api.github.com/users/jsha/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jsha/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0c8100fe6c94c5376492921dcd2c05f6ee6f7cd0",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/0c8100fe6c94c5376492921dcd2c05f6ee6f7cd0",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/0c8100fe6c94c5376492921dcd2c05f6ee6f7cd0"
+      }
+    ]
+  },
+  {
+    "sha": "0c8100fe6c94c5376492921dcd2c05f6ee6f7cd0",
+    "node_id": "C_kwDOExNEQNoAKDBjODEwMGZlNmM5NGM1Mzc2NDkyOTIxZGNkMmMwNWY2ZWU2ZjdjZDA",
+    "commit": {
+      "author": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2023-08-02T13:01:51Z"
+      },
+      "committer": {
+        "name": "Jacob Hoffman-Andrews",
+        "email": "github@hoffman-andrews.com",
+        "date": "2024-03-08T20:58:23Z"
+      },
+      "message": "ci: add task for cargo-c.\n\nThis will prevent bitrot with the cargo-c support.",
+      "tree": {
+        "sha": "fe585925d38191d57086380922c7d76dc8a3af1a",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/fe585925d38191d57086380922c7d76dc8a3af1a"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/0c8100fe6c94c5376492921dcd2c05f6ee6f7cd0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/0c8100fe6c94c5376492921dcd2c05f6ee6f7cd0",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/0c8100fe6c94c5376492921dcd2c05f6ee6f7cd0",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/0c8100fe6c94c5376492921dcd2c05f6ee6f7cd0/comments",
+    "author": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jsha",
+      "id": 220205,
+      "node_id": "MDQ6VXNlcjIyMDIwNQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/220205?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jsha",
+      "html_url": "https://github.com/jsha",
+      "followers_url": "https://api.github.com/users/jsha/followers",
+      "following_url": "https://api.github.com/users/jsha/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jsha/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jsha/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jsha/subscriptions",
+      "organizations_url": "https://api.github.com/users/jsha/orgs",
+      "repos_url": "https://api.github.com/users/jsha/repos",
+      "events_url": "https://api.github.com/users/jsha/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jsha/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "11e25a09168a3fcd3e9269eba8b26b46ff011170",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/11e25a09168a3fcd3e9269eba8b26b46ff011170",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/11e25a09168a3fcd3e9269eba8b26b46ff011170"
+      }
+    ]
+  },
+  {
+    "sha": "11e25a09168a3fcd3e9269eba8b26b46ff011170",
+    "node_id": "C_kwDOExNEQNoAKDExZTI1YTA5MTY4YTNmY2QzZTkyNjllYmE4YjI2YjQ2ZmYwMTExNzA",
+    "commit": {
+      "author": {
+        "name": "Luca Barbato",
+        "email": "lu_zero@gentoo.org",
+        "date": "2022-12-10T11:29:23Z"
+      },
+      "committer": {
+        "name": "Jacob Hoffman-Andrews",
+        "email": "github@hoffman-andrews.com",
+        "date": "2024-03-08T20:58:23Z"
+      },
+      "message": "Initial cargo-c support",
+      "tree": {
+        "sha": "3fe527fb17e6c2e38398b27806d00e786c46f827",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/3fe527fb17e6c2e38398b27806d00e786c46f827"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/11e25a09168a3fcd3e9269eba8b26b46ff011170",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/11e25a09168a3fcd3e9269eba8b26b46ff011170",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/11e25a09168a3fcd3e9269eba8b26b46ff011170",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/11e25a09168a3fcd3e9269eba8b26b46ff011170/comments",
+    "author": {
+      "login": "lu-zero",
+      "id": 239012,
+      "node_id": "MDQ6VXNlcjIzOTAxMg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/239012?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lu-zero",
+      "html_url": "https://github.com/lu-zero",
+      "followers_url": "https://api.github.com/users/lu-zero/followers",
+      "following_url": "https://api.github.com/users/lu-zero/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lu-zero/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lu-zero/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lu-zero/subscriptions",
+      "organizations_url": "https://api.github.com/users/lu-zero/orgs",
+      "repos_url": "https://api.github.com/users/lu-zero/repos",
+      "events_url": "https://api.github.com/users/lu-zero/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lu-zero/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jsha",
+      "id": 220205,
+      "node_id": "MDQ6VXNlcjIyMDIwNQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/220205?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jsha",
+      "html_url": "https://github.com/jsha",
+      "followers_url": "https://api.github.com/users/jsha/followers",
+      "following_url": "https://api.github.com/users/jsha/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jsha/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jsha/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jsha/subscriptions",
+      "organizations_url": "https://api.github.com/users/jsha/orgs",
+      "repos_url": "https://api.github.com/users/jsha/repos",
+      "events_url": "https://api.github.com/users/jsha/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jsha/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b1fcb705957f87c60400f358e5e3691c59e5e686",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/b1fcb705957f87c60400f358e5e3691c59e5e686",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/b1fcb705957f87c60400f358e5e3691c59e5e686"
+      }
+    ]
+  },
+  {
+    "sha": "b1fcb705957f87c60400f358e5e3691c59e5e686",
+    "node_id": "C_kwDOExNEQNoAKGIxZmNiNzA1OTU3Zjg3YzYwNDAwZjM1OGU1ZTM2OTFjNTllNWU2ODY",
+    "commit": {
+      "author": {
+        "name": "Luca Barbato",
+        "email": "lu_zero@gentoo.org",
+        "date": "2022-12-10T11:00:41Z"
+      },
+      "committer": {
+        "name": "Jacob Hoffman-Andrews",
+        "email": "github@hoffman-andrews.com",
+        "date": "2024-03-08T20:58:23Z"
+      },
+      "message": "Move the language configuration to cbindgen.toml",
+      "tree": {
+        "sha": "ac3d6622e953077812a11e66c7ffb177d4783836",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/ac3d6622e953077812a11e66c7ffb177d4783836"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/b1fcb705957f87c60400f358e5e3691c59e5e686",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/b1fcb705957f87c60400f358e5e3691c59e5e686",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/b1fcb705957f87c60400f358e5e3691c59e5e686",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/b1fcb705957f87c60400f358e5e3691c59e5e686/comments",
+    "author": {
+      "login": "lu-zero",
+      "id": 239012,
+      "node_id": "MDQ6VXNlcjIzOTAxMg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/239012?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lu-zero",
+      "html_url": "https://github.com/lu-zero",
+      "followers_url": "https://api.github.com/users/lu-zero/followers",
+      "following_url": "https://api.github.com/users/lu-zero/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lu-zero/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lu-zero/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lu-zero/subscriptions",
+      "organizations_url": "https://api.github.com/users/lu-zero/orgs",
+      "repos_url": "https://api.github.com/users/lu-zero/repos",
+      "events_url": "https://api.github.com/users/lu-zero/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lu-zero/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jsha",
+      "id": 220205,
+      "node_id": "MDQ6VXNlcjIyMDIwNQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/220205?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jsha",
+      "html_url": "https://github.com/jsha",
+      "followers_url": "https://api.github.com/users/jsha/followers",
+      "following_url": "https://api.github.com/users/jsha/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jsha/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jsha/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jsha/subscriptions",
+      "organizations_url": "https://api.github.com/users/jsha/orgs",
+      "repos_url": "https://api.github.com/users/jsha/repos",
+      "events_url": "https://api.github.com/users/jsha/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jsha/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b34f6f9e5eda7eac51d5ba4d1059dbe4c319dda5",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/b34f6f9e5eda7eac51d5ba4d1059dbe4c319dda5",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/b34f6f9e5eda7eac51d5ba4d1059dbe4c319dda5"
+      }
+    ]
+  },
+  {
+    "sha": "b34f6f9e5eda7eac51d5ba4d1059dbe4c319dda5",
+    "node_id": "C_kwDOExNEQNoAKGIzNGY2ZjllNWVkYTdlYWM1MWQ1YmE0ZDEwNTlkYmU0YzMxOWRkYTU",
+    "commit": {
+      "author": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-02-14T14:18:23Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-02-28T19:26:02Z"
+      },
+      "message": "lib: fix false positive dead_code trait\n\nThe `OwnershipMarker` trait is used as an associated type in other\ntraits, serving as a marker. Clippy nightly thinks it is unused. This\ncommit adds an allow dead_code annotation to fix that finding.",
+      "tree": {
+        "sha": "7688856217d432f34fc39fc432adfc04762667c3",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/7688856217d432f34fc39fc432adfc04762667c3"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/b34f6f9e5eda7eac51d5ba4d1059dbe4c319dda5",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/b34f6f9e5eda7eac51d5ba4d1059dbe4c319dda5",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/b34f6f9e5eda7eac51d5ba4d1059dbe4c319dda5",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/b34f6f9e5eda7eac51d5ba4d1059dbe4c319dda5/comments",
+    "author": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "757b5de49ced8e67053f4c3eef5476d64318e218",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/757b5de49ced8e67053f4c3eef5476d64318e218",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/757b5de49ced8e67053f4c3eef5476d64318e218"
+      }
+    ]
+  },
+  {
+    "sha": "757b5de49ced8e67053f4c3eef5476d64318e218",
+    "node_id": "C_kwDOExNEQNoAKDc1N2I1ZGU0OWNlZDhlNjcwNTNmNGMzZWVmNTQ3NmQ2NDMxOGUyMTg",
+    "commit": {
+      "author": {
+        "name": "dependabot[bot]",
+        "email": "49699333+dependabot[bot]@users.noreply.github.com",
+        "date": "2024-02-01T02:50:28Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-02-07T17:32:15Z"
+      },
+      "message": "build(deps): bump libc from 0.2.152 to 0.2.153\n\nBumps [libc](https://github.com/rust-lang/libc) from 0.2.152 to 0.2.153.\n- [Release notes](https://github.com/rust-lang/libc/releases)\n- [Commits](https://github.com/rust-lang/libc/compare/0.2.152...0.2.153)\n\n---\nupdated-dependencies:\n- dependency-name: libc\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+      "tree": {
+        "sha": "cb8f1a65bd3d966aff4b820ce822bb7956286b9f",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/cb8f1a65bd3d966aff4b820ce822bb7956286b9f"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/757b5de49ced8e67053f4c3eef5476d64318e218",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/757b5de49ced8e67053f4c3eef5476d64318e218",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/757b5de49ced8e67053f4c3eef5476d64318e218",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/757b5de49ced8e67053f4c3eef5476d64318e218/comments",
+    "author": {
+      "login": "dependabot[bot]",
+      "id": 49699333,
+      "node_id": "MDM6Qm90NDk2OTkzMzM=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/29110?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dependabot%5Bbot%5D",
+      "html_url": "https://github.com/apps/dependabot",
+      "followers_url": "https://api.github.com/users/dependabot%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/dependabot%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dependabot%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dependabot%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dependabot%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/dependabot%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/dependabot%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/dependabot%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dependabot%5Bbot%5D/received_events",
+      "type": "Bot",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0678075f00def29020a8489bfe6f7b656acd03a6",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/0678075f00def29020a8489bfe6f7b656acd03a6",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/0678075f00def29020a8489bfe6f7b656acd03a6"
+      }
+    ]
+  },
+  {
+    "sha": "0678075f00def29020a8489bfe6f7b656acd03a6",
+    "node_id": "C_kwDOExNEQNoAKDA2NzgwNzVmMDBkZWYyOTAyMGE4NDg5YmZlNmY3YjY1NmFjZDAzYTY",
+    "commit": {
+      "author": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-02-07T17:15:45Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-02-07T17:31:55Z"
+      },
+      "message": "tests: fix maybe-uninitialized warning\n\nFixes:\n\n```\n[daniel@blanc:~/Code/Rust/rustls-ffi]$ make test\ngcc -o target/client.o -c tests/client.c -Werror -Wall -Wextra -Wpedantic -g -I src/ -O3\ntests/client.c: In function ‘make_conn’:\ntests/client.c:70:5: error: ‘connect_result’ may be used uninitialized [-Werror=maybe-uninitialized]\n   70 |   if(connect_result < 0) {\n      |     ^\ntests/client.c:47:7: note: ‘connect_result’ was declared here\n   47 |   int connect_result;\n      |       ^~~~~~~~~~~~~~\ncc1: all warnings being treated as errors\nmake: *** [Makefile:47: target/client.o] Error 1\n```",
+      "tree": {
+        "sha": "f7b6c9919b53a247c36f1d31dff93e685954910e",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/f7b6c9919b53a247c36f1d31dff93e685954910e"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/0678075f00def29020a8489bfe6f7b656acd03a6",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/0678075f00def29020a8489bfe6f7b656acd03a6",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/0678075f00def29020a8489bfe6f7b656acd03a6",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/0678075f00def29020a8489bfe6f7b656acd03a6/comments",
+    "author": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "65f45f3cb62cabc6d558952e7088adceed30fd23",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/65f45f3cb62cabc6d558952e7088adceed30fd23",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/65f45f3cb62cabc6d558952e7088adceed30fd23"
+      }
+    ]
+  },
+  {
+    "sha": "65f45f3cb62cabc6d558952e7088adceed30fd23",
+    "node_id": "C_kwDOExNEQNoAKDY1ZjQ1ZjNjYjYyY2FiYzZkNTU4OTUyZTcwODhhZGNlZWQzMGZkMjM",
+    "commit": {
+      "author": {
+        "name": "Joseph Birr-Pixton",
+        "email": "jpixton@gmail.com",
+        "date": "2024-01-17T17:15:03Z"
+      },
+      "committer": {
+        "name": "Joe Birr-Pixton",
+        "email": "jpixton@gmail.com",
+        "date": "2024-01-17T17:39:08Z"
+      },
+      "message": "`cargo fmt` inside of ffi_panic_boundary! invocations",
+      "tree": {
+        "sha": "566a582be4e258c072d54309aaabdbdcf1499f9a",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/566a582be4e258c072d54309aaabdbdcf1499f9a"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/65f45f3cb62cabc6d558952e7088adceed30fd23",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/65f45f3cb62cabc6d558952e7088adceed30fd23",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/65f45f3cb62cabc6d558952e7088adceed30fd23",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/65f45f3cb62cabc6d558952e7088adceed30fd23/comments",
+    "author": {
+      "login": "ctz",
+      "id": 579363,
+      "node_id": "MDQ6VXNlcjU3OTM2Mw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/579363?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ctz",
+      "html_url": "https://github.com/ctz",
+      "followers_url": "https://api.github.com/users/ctz/followers",
+      "following_url": "https://api.github.com/users/ctz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ctz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ctz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ctz/subscriptions",
+      "organizations_url": "https://api.github.com/users/ctz/orgs",
+      "repos_url": "https://api.github.com/users/ctz/repos",
+      "events_url": "https://api.github.com/users/ctz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ctz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ctz",
+      "id": 579363,
+      "node_id": "MDQ6VXNlcjU3OTM2Mw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/579363?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ctz",
+      "html_url": "https://github.com/ctz",
+      "followers_url": "https://api.github.com/users/ctz/followers",
+      "following_url": "https://api.github.com/users/ctz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ctz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ctz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ctz/subscriptions",
+      "organizations_url": "https://api.github.com/users/ctz/orgs",
+      "repos_url": "https://api.github.com/users/ctz/repos",
+      "events_url": "https://api.github.com/users/ctz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ctz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1a768746b3c73f0f0bfd66ecb2c798ac9affe4af",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/1a768746b3c73f0f0bfd66ecb2c798ac9affe4af",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/1a768746b3c73f0f0bfd66ecb2c798ac9affe4af"
+      }
+    ]
+  },
+  {
+    "sha": "1a768746b3c73f0f0bfd66ecb2c798ac9affe4af",
+    "node_id": "C_kwDOExNEQNoAKDFhNzY4NzQ2YjNjNzNmMGYwYmZkNjZlY2IyYzc5OGFjOWFmZmU0YWY",
+    "commit": {
+      "author": {
+        "name": "Joseph Birr-Pixton",
+        "email": "jpixton@gmail.com",
+        "date": "2024-01-12T16:56:00Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-01-16T16:01:29Z"
+      },
+      "message": "Disable clippy nightly warning about const TLS\n\nThis complains:\n\n> warning: initializer for `thread_local` value can be made `const`\n\nBut doing the suggested fix breaks the build on our MSRV, with:\n\n> warning: a `const` item should never be interior mutable\n\nSo we can't really win.",
+      "tree": {
+        "sha": "b6d761cdaff4f4493be9644953edb571cdc4677e",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/b6d761cdaff4f4493be9644953edb571cdc4677e"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/1a768746b3c73f0f0bfd66ecb2c798ac9affe4af",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/1a768746b3c73f0f0bfd66ecb2c798ac9affe4af",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/1a768746b3c73f0f0bfd66ecb2c798ac9affe4af",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/1a768746b3c73f0f0bfd66ecb2c798ac9affe4af/comments",
+    "author": {
+      "login": "ctz",
+      "id": 579363,
+      "node_id": "MDQ6VXNlcjU3OTM2Mw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/579363?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ctz",
+      "html_url": "https://github.com/ctz",
+      "followers_url": "https://api.github.com/users/ctz/followers",
+      "following_url": "https://api.github.com/users/ctz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ctz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ctz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ctz/subscriptions",
+      "organizations_url": "https://api.github.com/users/ctz/orgs",
+      "repos_url": "https://api.github.com/users/ctz/repos",
+      "events_url": "https://api.github.com/users/ctz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ctz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c8c02d9c212ff49bc7d6ac3731d49116806f5bd2",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/c8c02d9c212ff49bc7d6ac3731d49116806f5bd2",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/c8c02d9c212ff49bc7d6ac3731d49116806f5bd2"
+      }
+    ]
+  },
+  {
+    "sha": "c8c02d9c212ff49bc7d6ac3731d49116806f5bd2",
+    "node_id": "C_kwDOExNEQNoAKGM4YzAyZDljMjEyZmY0OWJjN2Q2YWMzNzMxZDQ5MTE2ODA2ZjViZDI",
+    "commit": {
+      "author": {
+        "name": "Joseph Birr-Pixton",
+        "email": "jpixton@gmail.com",
+        "date": "2024-01-12T16:46:24Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-01-16T16:01:29Z"
+      },
+      "message": "Clippy: use stable toolchain",
+      "tree": {
+        "sha": "c4e5fa5dc88a70f71dade5fdec5da4ecf3a52134",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/c4e5fa5dc88a70f71dade5fdec5da4ecf3a52134"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/c8c02d9c212ff49bc7d6ac3731d49116806f5bd2",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/c8c02d9c212ff49bc7d6ac3731d49116806f5bd2",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/c8c02d9c212ff49bc7d6ac3731d49116806f5bd2",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/c8c02d9c212ff49bc7d6ac3731d49116806f5bd2/comments",
+    "author": {
+      "login": "ctz",
+      "id": 579363,
+      "node_id": "MDQ6VXNlcjU3OTM2Mw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/579363?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ctz",
+      "html_url": "https://github.com/ctz",
+      "followers_url": "https://api.github.com/users/ctz/followers",
+      "following_url": "https://api.github.com/users/ctz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ctz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ctz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ctz/subscriptions",
+      "organizations_url": "https://api.github.com/users/ctz/orgs",
+      "repos_url": "https://api.github.com/users/ctz/repos",
+      "events_url": "https://api.github.com/users/ctz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ctz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "eafa7ba26dd6ffd597cccc738246449111362611",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/eafa7ba26dd6ffd597cccc738246449111362611",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/eafa7ba26dd6ffd597cccc738246449111362611"
+      }
+    ]
+  },
+  {
+    "sha": "eafa7ba26dd6ffd597cccc738246449111362611",
+    "node_id": "C_kwDOExNEQNoAKGVhZmE3YmEyNmRkNmZmZDU5N2NjY2M3MzgyNDY0NDkxMTEzNjI2MTE",
+    "commit": {
+      "author": {
+        "name": "Joseph Birr-Pixton",
+        "email": "jpixton@gmail.com",
+        "date": "2024-01-12T16:44:55Z"
+      },
+      "committer": {
+        "name": "Daniel McCarney",
+        "email": "daniel@binaryparadox.net",
+        "date": "2024-01-16T16:01:29Z"
+      },
+      "message": "Prefer ubuntu-latest to ubuntu-20.04",
+      "tree": {
+        "sha": "561cebd6e16e82dc510ddf39350acc2b30e65bd5",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/git/trees/561cebd6e16e82dc510ddf39350acc2b30e65bd5"
+      },
+      "url": "https://api.github.com/repos/rustls/rustls-ffi/git/commits/eafa7ba26dd6ffd597cccc738246449111362611",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/eafa7ba26dd6ffd597cccc738246449111362611",
+    "html_url": "https://github.com/rustls/rustls-ffi/commit/eafa7ba26dd6ffd597cccc738246449111362611",
+    "comments_url": "https://api.github.com/repos/rustls/rustls-ffi/commits/eafa7ba26dd6ffd597cccc738246449111362611/comments",
+    "author": {
+      "login": "ctz",
+      "id": 579363,
+      "node_id": "MDQ6VXNlcjU3OTM2Mw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/579363?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ctz",
+      "html_url": "https://github.com/ctz",
+      "followers_url": "https://api.github.com/users/ctz/followers",
+      "following_url": "https://api.github.com/users/ctz/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ctz/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ctz/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ctz/subscriptions",
+      "organizations_url": "https://api.github.com/users/ctz/orgs",
+      "repos_url": "https://api.github.com/users/ctz/repos",
+      "events_url": "https://api.github.com/users/ctz/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ctz/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cpu",
+      "id": 292650,
+      "node_id": "MDQ6VXNlcjI5MjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/292650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cpu",
+      "html_url": "https://github.com/cpu",
+      "followers_url": "https://api.github.com/users/cpu/followers",
+      "following_url": "https://api.github.com/users/cpu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cpu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cpu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cpu/subscriptions",
+      "organizations_url": "https://api.github.com/users/cpu/orgs",
+      "repos_url": "https://api.github.com/users/cpu/repos",
+      "events_url": "https://api.github.com/users/cpu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cpu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "68d01f9ac90387989cadb2faa848ca4331abfcbf",
+        "url": "https://api.github.com/repos/rustls/rustls-ffi/commits/68d01f9ac90387989cadb2faa848ca4331abfcbf",
+        "html_url": "https://github.com/rustls/rustls-ffi/commit/68d01f9ac90387989cadb2faa848ca4331abfcbf"
+      }
+    ]
+  }
+]

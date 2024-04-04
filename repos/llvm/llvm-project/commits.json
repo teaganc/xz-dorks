@@ -1,0 +1,2372 @@
+[
+  {
+    "sha": "d89914f30bc7c180fe349a5aa0f03438ae6c20a4",
+    "node_id": "C_kwDOBITxeNoAKGQ4OTkxNGYzMGJjN2MxODBmZTM0OWE1YWEwZjAzNDM4YWU2YzIwYTQ",
+    "commit": {
+      "author": {
+        "name": "Kazu Hirata",
+        "email": "kazu@google.com",
+        "date": "2024-04-04T04:48:38Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-04T04:48:38Z"
+      },
+      "message": "[memprof] Add Version2 of IndexedMemProfRecord serialization (#87455)\n\nI'm currently developing a new version of the indexed memprof format\r\nwhere we deduplicate call stacks in IndexedAllocationInfo::CallStack\r\nand IndexedMemProfRecord::CallSites.  We refer to call stacks with\r\ninteger IDs, namely CallStackId, just as we refer to Frame with\r\nFrameId.  The deduplication will cut down the profile file size by 80%\r\nin a large memprof file of mine.\r\n\r\nAs a step toward the goal, this patch teaches\r\nIndexedMemProfRecord::{serialize,deserialize} to speak Version2.  A\r\nsubsequent patch will add Version2 support to llvm-profdata.\r\n\r\nThe essense of the patch is to replace the serialization of a call\r\nstack, a vector of FrameIDs, with that of a CallStackId.  That is:\r\n\r\n  const IndexedAllocationInfo &N = ...;\r\n  ...\r\n  LE.write<uint64_t>(N.CallStack.size());\r\n  for (const FrameId &Id : N.CallStack)\r\n    LE.write<FrameId>(Id);\r\n\r\nbecomes:\r\n\r\n  LE.write<CallStackId>(N.CSId);",
+      "tree": {
+        "sha": "bd2319e84ed6e6cd439d6f97c12c137d96179ce5",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/bd2319e84ed6e6cd439d6f97c12c137d96179ce5"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/d89914f30bc7c180fe349a5aa0f03438ae6c20a4",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDjEmCRC1aQ7uu5UhlAAA96kQAGZGrTReVnOE5KLZAB9QbI3B\nSvSV5uFFl7cBtAhH+3tIHH9NGFdKUbOs4utsjtm22told3HlUClBoMADXmoVfxQb\n+W+vfGI2qjl5HK/O23CC9y8CFxHimLyaYQEJtJ5jtpqaqPINbfCCbnTqnO/845iD\nRdQFmBVYKeEhVX9jGQklatd38++wJIi/vEcHL1LjgcGq0tHcYd4L2rhYfqCwBf3G\nOJ9WGsnhncDZtHhRofoUAmWAg035gvui7Bs0Tyh0U/du9dk3rXzz/qte5jznjZmP\nRtOp2p6AGCR0uNuo0hv1ehvv7tlq1I+rUOrk0kVSeRJPqTPspLz9BFNQWX6Xcd5j\n1FI4+90ZVC/QpMehL37EcsJnM5SQ13p9gNVfd+l2ZQ7rxiFKpo2qY79o7LdqxBiD\nqiV9mpgd9wutCe8AWSt+v02Imz7J0XdRANliehUbVPruUGUba586QN8VLQ4RzkGV\nGbQr2W2xqDicsVswtW1hVgFwT9LS54UeN8RNxy/UtX5Ff9Puha0zptODG8r1L+3s\niY0cVJiDBXSZ8dk7VHTJOsfvqC7zplV6LNEHp7wziWcc4Fw/y7PMirZvPKOFRMye\nFiiADV5iiluzqcqRVKUPE4VDe8U+xAZIzhNp4l40ogPauSRBmeQZdXfq1HIYd7rY\n+nDwb1McmMWliAfhM79L\n=SXjc\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree bd2319e84ed6e6cd439d6f97c12c137d96179ce5\nparent 3a7b5223a6639e497c856368da11b5d74ec9d6e8\nauthor Kazu Hirata <kazu@google.com> 1712206118 -0700\ncommitter GitHub <noreply@github.com> 1712206118 -0700\n\n[memprof] Add Version2 of IndexedMemProfRecord serialization (#87455)\n\nI'm currently developing a new version of the indexed memprof format\r\nwhere we deduplicate call stacks in IndexedAllocationInfo::CallStack\r\nand IndexedMemProfRecord::CallSites.  We refer to call stacks with\r\ninteger IDs, namely CallStackId, just as we refer to Frame with\r\nFrameId.  The deduplication will cut down the profile file size by 80%\r\nin a large memprof file of mine.\r\n\r\nAs a step toward the goal, this patch teaches\r\nIndexedMemProfRecord::{serialize,deserialize} to speak Version2.  A\r\nsubsequent patch will add Version2 support to llvm-profdata.\r\n\r\nThe essense of the patch is to replace the serialization of a call\r\nstack, a vector of FrameIDs, with that of a CallStackId.  That is:\r\n\r\n  const IndexedAllocationInfo &N = ...;\r\n  ...\r\n  LE.write<uint64_t>(N.CallStack.size());\r\n  for (const FrameId &Id : N.CallStack)\r\n    LE.write<FrameId>(Id);\r\n\r\nbecomes:\r\n\r\n  LE.write<CallStackId>(N.CSId);"
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/d89914f30bc7c180fe349a5aa0f03438ae6c20a4",
+    "html_url": "https://github.com/llvm/llvm-project/commit/d89914f30bc7c180fe349a5aa0f03438ae6c20a4",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/d89914f30bc7c180fe349a5aa0f03438ae6c20a4/comments",
+    "author": {
+      "login": "kazutakahirata",
+      "id": 57370056,
+      "node_id": "MDQ6VXNlcjU3MzcwMDU2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/57370056?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/kazutakahirata",
+      "html_url": "https://github.com/kazutakahirata",
+      "followers_url": "https://api.github.com/users/kazutakahirata/followers",
+      "following_url": "https://api.github.com/users/kazutakahirata/following{/other_user}",
+      "gists_url": "https://api.github.com/users/kazutakahirata/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/kazutakahirata/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/kazutakahirata/subscriptions",
+      "organizations_url": "https://api.github.com/users/kazutakahirata/orgs",
+      "repos_url": "https://api.github.com/users/kazutakahirata/repos",
+      "events_url": "https://api.github.com/users/kazutakahirata/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/kazutakahirata/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3a7b5223a6639e497c856368da11b5d74ec9d6e8",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/3a7b5223a6639e497c856368da11b5d74ec9d6e8",
+        "html_url": "https://github.com/llvm/llvm-project/commit/3a7b5223a6639e497c856368da11b5d74ec9d6e8"
+      }
+    ]
+  },
+  {
+    "sha": "3a7b5223a6639e497c856368da11b5d74ec9d6e8",
+    "node_id": "C_kwDOBITxeNoAKDNhN2I1MjIzYTY2MzllNDk3Yzg1NjM2OGRhMTFiNWQ3NGVjOWQ2ZTg",
+    "commit": {
+      "author": {
+        "name": "Luke Lau",
+        "email": "luke@igalia.com",
+        "date": "2024-04-04T04:36:15Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-04T04:36:15Z"
+      },
+      "message": "[DAGCombiner][RISCV] Handle truncating splats in isNeutralConstant (#87338)\n\nOn RV64, we legalize zexts of i1s to (vselect m, (splat_vector i64 1),\r\n(splat_vector i64 0)), where the splat_vectors are implicitly\r\ntruncating.\r\n\r\nWhen the vselect is used by a binop we want to pull the vselect out via\r\nfoldSelectWithIdentityConstant. But because vectors with an element size\r\n< i64 will truncate, isNeutralConstant will return false.\r\n\r\nThis patch handles truncating splats by getting the APInt value and\r\ntruncating it. We almost don't need to do this since most of the neutral\r\nelements are either one/zero/all ones, but it will make a difference for\r\nsmax and smin.\r\n\r\nI wasn't able to figure out a way to write the tests in terms of select,\r\nsince we need the i1 zext legalization to create a truncating\r\nsplat_vector.\r\n\r\nThis supercedes #87236. Fixed vectors are unfortunately not handled by\r\nthis patch (since they get legalized to _VL nodes), but they don't seem\r\nto appear in the wild.",
+      "tree": {
+        "sha": "3cec2530ff3c97ea71315c5ff4d7b326c91640b5",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/3cec2530ff3c97ea71315c5ff4d7b326c91640b5"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/3a7b5223a6639e497c856368da11b5d74ec9d6e8",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDi4/CRC1aQ7uu5UhlAAADm4QAElVqFe2LtapvU4f6r3NQjMf\nem4nMkwgId5I4Cu3p8ULvZAoB6BOqn0tRZd2Eu8xAx2cAr3zFtSPiU1UnrvEzxGs\nvzSpeYPUG8qSBCMLUUou98z7/BrVG6o8VZGfi8lBKl9ZlmAWyMJyFagchdDx5r8V\npAChvQ+EV8Dmqym5fFhUbvVU/4TY0uUp4M5te2+/f7blSLvWYKNCVs2Kr0yrwsr1\nrKgSw5HijkCGXyim9TjkFNIxxBYUZCBiVo47ScRXYMe8nXzSbK3AFeM9pAuzsS1C\nr/7KcQSayaBUlFOKYiggHlCfL7DZxrkqyPRBOa14yq4PTTPjjWToFl5bX6EKp/zO\nzjvbqE/R31NJZSQq8aFJVot90vM1kIUpmSUcq07OnXedAP10LuTXdw1W+I8f/Ap7\nu6e+fCvv5hL3HMyCYLz9iDpmDVX3qZRAnA4VVUUpE4IbbeIV4G2dY1fitHofDH5g\nasq1ZF4ZaIvbwFV20cWXqcy7heTpOI1kuTRQuUNb0YkbyyTkDLPLX+0gnuzFFqLq\n4T6A7Rp/zUuQhWvxXo+30sUJWwM23u/qnJV+SxqP5gYiEP+tK/S8OVWTv+VcFMQ6\nXr0w4UB4oAx//bkbu3B6L2zn7blBgqwxOB18YjV9nAwzWe3uHl+T3CuMecGK5pg/\n9D2ETz52kfe/8omMNLMS\n=jpN9\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 3cec2530ff3c97ea71315c5ff4d7b326c91640b5\nparent e8aaa3eaedc3b5519747a68e772f0bc664b89154\nauthor Luke Lau <luke@igalia.com> 1712205375 +0800\ncommitter GitHub <noreply@github.com> 1712205375 +0800\n\n[DAGCombiner][RISCV] Handle truncating splats in isNeutralConstant (#87338)\n\nOn RV64, we legalize zexts of i1s to (vselect m, (splat_vector i64 1),\r\n(splat_vector i64 0)), where the splat_vectors are implicitly\r\ntruncating.\r\n\r\nWhen the vselect is used by a binop we want to pull the vselect out via\r\nfoldSelectWithIdentityConstant. But because vectors with an element size\r\n< i64 will truncate, isNeutralConstant will return false.\r\n\r\nThis patch handles truncating splats by getting the APInt value and\r\ntruncating it. We almost don't need to do this since most of the neutral\r\nelements are either one/zero/all ones, but it will make a difference for\r\nsmax and smin.\r\n\r\nI wasn't able to figure out a way to write the tests in terms of select,\r\nsince we need the i1 zext legalization to create a truncating\r\nsplat_vector.\r\n\r\nThis supercedes #87236. Fixed vectors are unfortunately not handled by\r\nthis patch (since they get legalized to _VL nodes), but they don't seem\r\nto appear in the wild."
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/3a7b5223a6639e497c856368da11b5d74ec9d6e8",
+    "html_url": "https://github.com/llvm/llvm-project/commit/3a7b5223a6639e497c856368da11b5d74ec9d6e8",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/3a7b5223a6639e497c856368da11b5d74ec9d6e8/comments",
+    "author": {
+      "login": "lukel97",
+      "id": 2488460,
+      "node_id": "MDQ6VXNlcjI0ODg0NjA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2488460?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lukel97",
+      "html_url": "https://github.com/lukel97",
+      "followers_url": "https://api.github.com/users/lukel97/followers",
+      "following_url": "https://api.github.com/users/lukel97/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lukel97/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lukel97/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lukel97/subscriptions",
+      "organizations_url": "https://api.github.com/users/lukel97/orgs",
+      "repos_url": "https://api.github.com/users/lukel97/repos",
+      "events_url": "https://api.github.com/users/lukel97/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lukel97/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e8aaa3eaedc3b5519747a68e772f0bc664b89154",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/e8aaa3eaedc3b5519747a68e772f0bc664b89154",
+        "html_url": "https://github.com/llvm/llvm-project/commit/e8aaa3eaedc3b5519747a68e772f0bc664b89154"
+      }
+    ]
+  },
+  {
+    "sha": "e8aaa3eaedc3b5519747a68e772f0bc664b89154",
+    "node_id": "C_kwDOBITxeNoAKGU4YWFhM2VhZWRjM2I1NTE5NzQ3YTY4ZTc3MmYwYmM2NjRiODkxNTQ",
+    "commit": {
+      "author": {
+        "name": "Gulfem Savrun Yeniceri",
+        "email": "gulfem@google.com",
+        "date": "2024-04-04T04:12:36Z"
+      },
+      "committer": {
+        "name": "Gulfem Savrun Yeniceri",
+        "email": "gulfem@google.com",
+        "date": "2024-04-04T04:12:36Z"
+      },
+      "message": "Revert \"[libc] Added transitive bindings for OffsetType (#87397)\"\n\nThis reverts commit 3ee93f486293420852fb9ec95af9c5f54cecdb08\nbecause it broke Fuchsia Clang toolchain builders:\nhttps://logs.chromium.org/logs/fuchsia/buildbucket/cr-buildbucket/8751633430491432833/+/u/clang/build/stdout",
+      "tree": {
+        "sha": "17469d1556ab968295971eb5aeeb410fb57eed31",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/17469d1556ab968295971eb5aeeb410fb57eed31"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/e8aaa3eaedc3b5519747a68e772f0bc664b89154",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/e8aaa3eaedc3b5519747a68e772f0bc664b89154",
+    "html_url": "https://github.com/llvm/llvm-project/commit/e8aaa3eaedc3b5519747a68e772f0bc664b89154",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/e8aaa3eaedc3b5519747a68e772f0bc664b89154/comments",
+    "author": {
+      "login": "gulfemsavrun",
+      "id": 8526989,
+      "node_id": "MDQ6VXNlcjg1MjY5ODk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8526989?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gulfemsavrun",
+      "html_url": "https://github.com/gulfemsavrun",
+      "followers_url": "https://api.github.com/users/gulfemsavrun/followers",
+      "following_url": "https://api.github.com/users/gulfemsavrun/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gulfemsavrun/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gulfemsavrun/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gulfemsavrun/subscriptions",
+      "organizations_url": "https://api.github.com/users/gulfemsavrun/orgs",
+      "repos_url": "https://api.github.com/users/gulfemsavrun/repos",
+      "events_url": "https://api.github.com/users/gulfemsavrun/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gulfemsavrun/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "gulfemsavrun",
+      "id": 8526989,
+      "node_id": "MDQ6VXNlcjg1MjY5ODk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8526989?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gulfemsavrun",
+      "html_url": "https://github.com/gulfemsavrun",
+      "followers_url": "https://api.github.com/users/gulfemsavrun/followers",
+      "following_url": "https://api.github.com/users/gulfemsavrun/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gulfemsavrun/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gulfemsavrun/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gulfemsavrun/subscriptions",
+      "organizations_url": "https://api.github.com/users/gulfemsavrun/orgs",
+      "repos_url": "https://api.github.com/users/gulfemsavrun/repos",
+      "events_url": "https://api.github.com/users/gulfemsavrun/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gulfemsavrun/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "698bf3dafcc0dfa15540ae7f1f9b72208a578bd2",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/698bf3dafcc0dfa15540ae7f1f9b72208a578bd2",
+        "html_url": "https://github.com/llvm/llvm-project/commit/698bf3dafcc0dfa15540ae7f1f9b72208a578bd2"
+      }
+    ]
+  },
+  {
+    "sha": "698bf3dafcc0dfa15540ae7f1f9b72208a578bd2",
+    "node_id": "C_kwDOBITxeNoAKDY5OGJmM2RhZmNjMGRmYTE1NTQwYWU3ZjFmOWI3MjIwOGE1NzhiZDI",
+    "commit": {
+      "author": {
+        "name": "Sourabh Singh Tomar",
+        "email": "sourabhsingh.tomar@amd.com",
+        "date": "2024-04-04T03:57:57Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-04T03:57:57Z"
+      },
+      "message": "[flang][OpenMP] Fix for #86393 (#87452)",
+      "tree": {
+        "sha": "a288f6194c668bd0c68111a9b587fcc07fc514ad",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/a288f6194c668bd0c68111a9b587fcc07fc514ad"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/698bf3dafcc0dfa15540ae7f1f9b72208a578bd2",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDiVFCRC1aQ7uu5UhlAAA8N8QAK9xzXppqJhGdbQD+MvNn4Na\nC7BUKwcmZVWFWLLYsS3hAPTHrCjZvcCfltwL7qIMaXPACXWDE4PQ31yNOs5QDxwH\n6FvqNJgXVdhV5fQKQS3W0f/6FIetARkc+EcC+qRu3h8sUCCE1+XVlL3NcwPGwabC\nh0LwJOe4viLp4E4w6jy/1Wo1v093gFsOug+WbWF1UGrO4Iw5PFAiJ8N8fvwVcsFx\nYpvd0raIV20hIXl5kv2Pu49f8+xQYm7XzrDBzlFFiCqysB9Zo+fH9RPvZVf6NJ/j\nE3yhzev9Em9kSBk2yxImpHmaZbcqUxjULpoxD+1bymlAiCDb3hEQ6VwsGU7AiMu3\nviqSc0NsADV8g8ltUTNHkiD5Aitulfu43DuRQmfDJcRzD3/lNEjE5+bLLW3AuSCh\nEEl4mKgGILYEBqabF9VVjodnIAq/S9lH2iC8QDrzjwQBGd6DdeG6jjTZPSarU0sd\nygk14F4CmLWm3wY6ul/h7CxnWHxcr8lPG18JLMS3xz0ZDoG5fh7NPfZW9ytm3rZo\ntzLh/MCfGShIY7lO1HiIlTT/cXq+iQ+MpyWVcklSfqKbT6sG3fuMhma0hUR4w6aX\nxxxtcX0619YD1etIYicg6p/5Y1WhNP4P079zEV8YVKImD3KXdPoycQxJpcrEFsBB\nLPfg5K7eH1+Y7s3hZDwd\n=fDcF\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree a288f6194c668bd0c68111a9b587fcc07fc514ad\nparent 07d5f491867d390b9aee33035c187e27cf0746a0\nauthor Sourabh Singh Tomar <sourabhsingh.tomar@amd.com> 1712203077 +0530\ncommitter GitHub <noreply@github.com> 1712203077 +0530\n\n[flang][OpenMP] Fix for #86393 (#87452)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/698bf3dafcc0dfa15540ae7f1f9b72208a578bd2",
+    "html_url": "https://github.com/llvm/llvm-project/commit/698bf3dafcc0dfa15540ae7f1f9b72208a578bd2",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/698bf3dafcc0dfa15540ae7f1f9b72208a578bd2/comments",
+    "author": {
+      "login": "SouraVX",
+      "id": 25852705,
+      "node_id": "MDQ6VXNlcjI1ODUyNzA1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25852705?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/SouraVX",
+      "html_url": "https://github.com/SouraVX",
+      "followers_url": "https://api.github.com/users/SouraVX/followers",
+      "following_url": "https://api.github.com/users/SouraVX/following{/other_user}",
+      "gists_url": "https://api.github.com/users/SouraVX/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/SouraVX/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/SouraVX/subscriptions",
+      "organizations_url": "https://api.github.com/users/SouraVX/orgs",
+      "repos_url": "https://api.github.com/users/SouraVX/repos",
+      "events_url": "https://api.github.com/users/SouraVX/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/SouraVX/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "07d5f491867d390b9aee33035c187e27cf0746a0",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/07d5f491867d390b9aee33035c187e27cf0746a0",
+        "html_url": "https://github.com/llvm/llvm-project/commit/07d5f491867d390b9aee33035c187e27cf0746a0"
+      }
+    ]
+  },
+  {
+    "sha": "07d5f491867d390b9aee33035c187e27cf0746a0",
+    "node_id": "C_kwDOBITxeNoAKDA3ZDVmNDkxODY3ZDM5MGI5YWVlMzMwMzVjMTg3ZTI3Y2YwNzQ2YTA",
+    "commit": {
+      "author": {
+        "name": "Luke Lau",
+        "email": "luke@igalia.com",
+        "date": "2024-04-04T03:30:23Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-04T03:30:23Z"
+      },
+      "message": "[RISCV] Add patterns for fixed vector vwsll (#87316)\n\nFixed vectors have their sext/zext operands legalized to _VL nodes, so\r\nwe need to handle them in the patterns.\r\n\r\nThis adds a riscv_ext_vl_oneuse pattern since we don't care about the\r\ntype of extension used for the shift amount, and extends\r\nLow8BitsSplatPat to handle other _VL nodes. We don't actually need to\r\ncheck the mask or VL there since none of the _VL nodes have passthru\r\noperands.\r\n\r\nThe remaining test cases that are widening from i8->i64 need to be\r\nhandled by extending combineBinOp_VLToVWBinOp_VL.\r\n\r\nThis also fixes Low8BitsSplatPat incorrectly checking the vector size\r\ninstead of the element size to determine if the splat value might have\r\nbeen truncated below 8 bits.",
+      "tree": {
+        "sha": "0454eaed81b63e78a1d8e1d353114e105657078a",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/0454eaed81b63e78a1d8e1d353114e105657078a"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/07d5f491867d390b9aee33035c187e27cf0746a0",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDh7PCRC1aQ7uu5UhlAAAM9QQABPKWiUHtw/OBAfWkmXuVwHa\neu2wq7R0oMYExrRXyx517OaC4c9LOEqRdXpJ9pySkctqy/OSI1vAMYckfMC+MloC\nK43fotLGXLRnJnaY536/AGUDnXXkdNaDSDcZ1NiFGxF4DWvmhrGIYaRN2WuU7AOy\n3JzH03fPjrja+tTecpI271xjcqGYi5tdXjaQHLP+Sint8J9GAJFTI+D/mtyn03wf\npLL+xv1Qt42Qa4C8xCl7IRXahBRYdaP8oiA/dsX9qVvriv2MkrZoOYToWWTl4hm3\nXTqRDxEWz3vXEXOk8MAqGTdhzXsie06zGWnuYvuvuuIVMtjutlHtLbvnOtmLnZga\nuFFIZqUaXEcJTtSMUkG0ZpJc7lEvsWXZtywJFSOpEVwrRTAidRAQNukvQsV/t1bx\nLzOk1BL8RZWAaxAMZzeFCMnN8EbELOpib8DVfvRVLOLkM+wfgFb4BAB80HZ5QTLB\nBje58pWKfY2Rre/fz22oxhRspsajYRahgqmocOopPuCKMOAPwGdlrxUTO084s5kp\nKd93UZbX+GTaMvo3DvmQyPVCiphg+CpFAIPPMeYIrO99tMAHbGku45Idn4VOKC2m\nNn9YXhiJ1DCS6LlxVygOzfUWgxcLwpRPwnmfDYnamhQS3Wf6y+XI5MPfGu8YCoUE\n8fAETM1UB+WE1qIF/LQp\n=IEsu\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 0454eaed81b63e78a1d8e1d353114e105657078a\nparent fb635be0b8a3e14ca38f3f74e8224f9e0f716a10\nauthor Luke Lau <luke@igalia.com> 1712201423 +0800\ncommitter GitHub <noreply@github.com> 1712201423 +0800\n\n[RISCV] Add patterns for fixed vector vwsll (#87316)\n\nFixed vectors have their sext/zext operands legalized to _VL nodes, so\r\nwe need to handle them in the patterns.\r\n\r\nThis adds a riscv_ext_vl_oneuse pattern since we don't care about the\r\ntype of extension used for the shift amount, and extends\r\nLow8BitsSplatPat to handle other _VL nodes. We don't actually need to\r\ncheck the mask or VL there since none of the _VL nodes have passthru\r\noperands.\r\n\r\nThe remaining test cases that are widening from i8->i64 need to be\r\nhandled by extending combineBinOp_VLToVWBinOp_VL.\r\n\r\nThis also fixes Low8BitsSplatPat incorrectly checking the vector size\r\ninstead of the element size to determine if the splat value might have\r\nbeen truncated below 8 bits."
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/07d5f491867d390b9aee33035c187e27cf0746a0",
+    "html_url": "https://github.com/llvm/llvm-project/commit/07d5f491867d390b9aee33035c187e27cf0746a0",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/07d5f491867d390b9aee33035c187e27cf0746a0/comments",
+    "author": {
+      "login": "lukel97",
+      "id": 2488460,
+      "node_id": "MDQ6VXNlcjI0ODg0NjA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2488460?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lukel97",
+      "html_url": "https://github.com/lukel97",
+      "followers_url": "https://api.github.com/users/lukel97/followers",
+      "following_url": "https://api.github.com/users/lukel97/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lukel97/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lukel97/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lukel97/subscriptions",
+      "organizations_url": "https://api.github.com/users/lukel97/orgs",
+      "repos_url": "https://api.github.com/users/lukel97/repos",
+      "events_url": "https://api.github.com/users/lukel97/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lukel97/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "fb635be0b8a3e14ca38f3f74e8224f9e0f716a10",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/fb635be0b8a3e14ca38f3f74e8224f9e0f716a10",
+        "html_url": "https://github.com/llvm/llvm-project/commit/fb635be0b8a3e14ca38f3f74e8224f9e0f716a10"
+      }
+    ]
+  },
+  {
+    "sha": "fb635be0b8a3e14ca38f3f74e8224f9e0f716a10",
+    "node_id": "C_kwDOBITxeNoAKGZiNjM1YmUwYjhhM2UxNGNhMzhmM2Y3NGU4MjI0ZjllMGY3MTZhMTA",
+    "commit": {
+      "author": {
+        "name": "Hristo Hristov",
+        "email": "hghristov.rmm@gmail.com",
+        "date": "2024-04-04T03:03:00Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-04T03:03:00Z"
+      },
+      "message": "[libc++] P2867R1: Remove Deprecated `strstream`s From C++26 (#87107)\n\nImplements: https://wg21.link/P2867R2\r\n\r\n---------\r\n\r\nCo-authored-by: Hristo Hristov <zingam@outlook.com>",
+      "tree": {
+        "sha": "01f621237911623e8aa7b859fdda8126bf80c464",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/01f621237911623e8aa7b859fdda8126bf80c464"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/fb635be0b8a3e14ca38f3f74e8224f9e0f716a10",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDhhkCRC1aQ7uu5UhlAAA7WMQAJ7F5Urck0Mbdv3SOHWacB4x\nRyT+2o72RxmQqksuqyS95qPvwmsPt6NWjBKd76+153W0gATssp1V8+fBMM5d1u7W\ngCfSwchDXWvbMTKcS+659mMkT3TzkNrI//b4PuX5+q+57bMVnr6VHCO/njpTwsvL\nfxiHBB2et0g8QMhUtHLWiGUfqytJEKq8LaAdMEsWYYtcU8Zrq7O2AR+RbPkGLu54\nBIqFWw59GK8k4Kz8mB+gtx02jYqN4RpcT4P2To1X78y2Pe9F9zSDWUe/2J2XkDat\nwG98C7F3sZOp1A50VwbeEWiu0UziOzDemQHcIiXpVoKUXi1oqQtxb/znCvvG7gj1\nLLYtgJDymTK0wqbj9H0XPHG3jHt8MmnXiYV8/BiJ9w/g6dV/AQ3HiOLODZuE2N6X\nEs8Zy5Lw5JSZcdlmnQFxX1j885p9S8ZH8dJ+3oRJYhPxhjMV3NuuWO0S+TcxIfRx\nPyDmuXjRV+jdlGRp0OZi4scT5WoaOHIUm4lK+4boKSlNm1Yb2SuQ+JjUVdndJoQq\n2QXK+1XxpKjQT5wyPgwuBNWQjENJ+OQFEppwJF/XpQuPgamPLgUkPiVRU07EB1q4\nWFrAtqk0IA/95T1iiTEnGGt6v7sK7Oo6X77hgVSF4PTH7ynorgeoxTjdn/7oYoZC\neLKqzUFteR8kx5GBEgK1\n=O5LU\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 01f621237911623e8aa7b859fdda8126bf80c464\nparent a4c470555b5c311770e6cb58494c573c4efe53d6\nauthor Hristo Hristov <hghristov.rmm@gmail.com> 1712199780 +0300\ncommitter GitHub <noreply@github.com> 1712199780 +0300\n\n[libc++] P2867R1: Remove Deprecated `strstream`s From C++26 (#87107)\n\nImplements: https://wg21.link/P2867R2\r\n\r\n---------\r\n\r\nCo-authored-by: Hristo Hristov <zingam@outlook.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/fb635be0b8a3e14ca38f3f74e8224f9e0f716a10",
+    "html_url": "https://github.com/llvm/llvm-project/commit/fb635be0b8a3e14ca38f3f74e8224f9e0f716a10",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/fb635be0b8a3e14ca38f3f74e8224f9e0f716a10/comments",
+    "author": {
+      "login": "H-G-Hristov",
+      "id": 47526411,
+      "node_id": "MDQ6VXNlcjQ3NTI2NDEx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/47526411?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/H-G-Hristov",
+      "html_url": "https://github.com/H-G-Hristov",
+      "followers_url": "https://api.github.com/users/H-G-Hristov/followers",
+      "following_url": "https://api.github.com/users/H-G-Hristov/following{/other_user}",
+      "gists_url": "https://api.github.com/users/H-G-Hristov/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/H-G-Hristov/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/H-G-Hristov/subscriptions",
+      "organizations_url": "https://api.github.com/users/H-G-Hristov/orgs",
+      "repos_url": "https://api.github.com/users/H-G-Hristov/repos",
+      "events_url": "https://api.github.com/users/H-G-Hristov/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/H-G-Hristov/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a4c470555b5c311770e6cb58494c573c4efe53d6",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/a4c470555b5c311770e6cb58494c573c4efe53d6",
+        "html_url": "https://github.com/llvm/llvm-project/commit/a4c470555b5c311770e6cb58494c573c4efe53d6"
+      }
+    ]
+  },
+  {
+    "sha": "a4c470555b5c311770e6cb58494c573c4efe53d6",
+    "node_id": "C_kwDOBITxeNoAKGE0YzQ3MDU1NWI1YzMxMTc3MGU2Y2I1ODQ5NGM1NzNjNGVmZTUzZDY",
+    "commit": {
+      "author": {
+        "name": "Matthias Springer",
+        "email": "me@m-sp.org",
+        "date": "2024-04-04T02:17:59Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-04T02:17:59Z"
+      },
+      "message": "[mlir][linalg] Fix builder API usage in `RegionBuilderHelper` (#87451)\n\nOperations must be created with the supplied builder. Otherwise, the\r\ndialect conversion / greedy pattern rewrite driver can break.\r\n\r\nThis commit fixes a crash in the dialect conversion:\r\n```\r\nwithin split at llvm-project/mlir/test/Conversion/TosaToLinalg/tosa-to-linalg-invalid.mlir:1 offset :8:8: error: failed to legalize operation 'tosa.add'\r\n  %0 = tosa.add %1, %arg2 : (tensor<10x10xf32>, tensor<*xf32>) -> tensor<*xf32>\r\n       ^\r\nwithin split at llvm-project/mlir/test/Conversion/TosaToLinalg/tosa-to-linalg-invalid.mlir:1 offset :8:8: note: see current operation: %9 = \"tosa.add\"(%8, %arg2) : (tensor<10x10xf32>, tensor<*xf32>) -> tensor<*xf32>\r\nmlir-opt: llvm-project/mlir/include/mlir/IR/UseDefLists.h:198: mlir::IRObjectWithUseList<mlir::OpOperand>::~IRObjectWithUseList() [OperandType = mlir::OpOperand]: Assertion `use_empty() && \"Cannot destroy a value that still has uses!\"' failed.\r\n```\r\n\r\nThis commit is the proper fix for #87297 (which was reverted).",
+      "tree": {
+        "sha": "faa7da2928339c3ff0b304f08f41145f8adb07f6",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/faa7da2928339c3ff0b304f08f41145f8adb07f6"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/a4c470555b5c311770e6cb58494c573c4efe53d6",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDg3XCRC1aQ7uu5UhlAAAcUAQAGtSCDe4MXVXZGaOs6zJ5UXZ\nsEBKRLHrqQmShCdgTTtoYUGAuI/6h+IB11E47moLQ+kUMP38G87efpUHhpCwj8DN\nTtz5MvTo+XbbDvO69wNDs6rHJwBTsSeKpnRQvD84kZVR3+nOeA5xT7eYbgwE5lgo\nlSTUaLDlSTUxBZOScUY9FeDvDektFIaRAeZ/YeVG9ZIXa9No7CyZ2rHLmA+lrC1J\nCSml6ye2VtIY+nJG3FotsBP8GGA9PoZA57zZxmfHdawDAlkMLiATpGBOyf9C3Lhn\nP3hL7TfDxozAzv93zJRhpgjf7/7Comj7dLX8Ppqr6Zt4IiY5ZNdwlqxrjsxD+BIC\nZUe9dgFT+/D0uEdvI5UnEBu+7t2ikuVzD5JKXI7KWMB4VKpKTDKklHMsKY8HT/0v\nhIoEYb7DQTDytzKZrtjGrkliZmVQLa+b3l3UEny5zd1+05UjvWyQSud4jZlhjCUy\nTGNY7Mur6FDi6/Aea+La7EnwalcWIF9Uz3F7FoeQVTMwqyCFsKICh/pzTjCs0zAN\n0Scom/+YIxsWOkS0xPpzFHHgFVgBL9jSn+r7q7g4GGCzOmIu7Q1KhEUYbtyRV24z\nEpll6bJB/6425F09XKsjWzbs0DaHPei/mZvBHsCfcxPiE75FLsIkI5S9buYjOy2v\n2qCj9rP1X3cBsbMcOSUt\n=/KTb\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree faa7da2928339c3ff0b304f08f41145f8adb07f6\nparent a853d79963c6ac09154817690a8c317157345876\nauthor Matthias Springer <me@m-sp.org> 1712197079 +0900\ncommitter GitHub <noreply@github.com> 1712197079 +0900\n\n[mlir][linalg] Fix builder API usage in `RegionBuilderHelper` (#87451)\n\nOperations must be created with the supplied builder. Otherwise, the\r\ndialect conversion / greedy pattern rewrite driver can break.\r\n\r\nThis commit fixes a crash in the dialect conversion:\r\n```\r\nwithin split at llvm-project/mlir/test/Conversion/TosaToLinalg/tosa-to-linalg-invalid.mlir:1 offset :8:8: error: failed to legalize operation 'tosa.add'\r\n  %0 = tosa.add %1, %arg2 : (tensor<10x10xf32>, tensor<*xf32>) -> tensor<*xf32>\r\n       ^\r\nwithin split at llvm-project/mlir/test/Conversion/TosaToLinalg/tosa-to-linalg-invalid.mlir:1 offset :8:8: note: see current operation: %9 = \"tosa.add\"(%8, %arg2) : (tensor<10x10xf32>, tensor<*xf32>) -> tensor<*xf32>\r\nmlir-opt: llvm-project/mlir/include/mlir/IR/UseDefLists.h:198: mlir::IRObjectWithUseList<mlir::OpOperand>::~IRObjectWithUseList() [OperandType = mlir::OpOperand]: Assertion `use_empty() && \"Cannot destroy a value that still has uses!\"' failed.\r\n```\r\n\r\nThis commit is the proper fix for #87297 (which was reverted)."
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/a4c470555b5c311770e6cb58494c573c4efe53d6",
+    "html_url": "https://github.com/llvm/llvm-project/commit/a4c470555b5c311770e6cb58494c573c4efe53d6",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/a4c470555b5c311770e6cb58494c573c4efe53d6/comments",
+    "author": {
+      "login": "matthias-springer",
+      "id": 2033320,
+      "node_id": "MDQ6VXNlcjIwMzMzMjA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2033320?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/matthias-springer",
+      "html_url": "https://github.com/matthias-springer",
+      "followers_url": "https://api.github.com/users/matthias-springer/followers",
+      "following_url": "https://api.github.com/users/matthias-springer/following{/other_user}",
+      "gists_url": "https://api.github.com/users/matthias-springer/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/matthias-springer/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/matthias-springer/subscriptions",
+      "organizations_url": "https://api.github.com/users/matthias-springer/orgs",
+      "repos_url": "https://api.github.com/users/matthias-springer/repos",
+      "events_url": "https://api.github.com/users/matthias-springer/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/matthias-springer/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a853d79963c6ac09154817690a8c317157345876",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/a853d79963c6ac09154817690a8c317157345876",
+        "html_url": "https://github.com/llvm/llvm-project/commit/a853d79963c6ac09154817690a8c317157345876"
+      }
+    ]
+  },
+  {
+    "sha": "a853d79963c6ac09154817690a8c317157345876",
+    "node_id": "C_kwDOBITxeNoAKGE4NTNkNzk5NjNjNmFjMDkxNTQ4MTc2OTBhOGMzMTcxNTczNDU4NzY",
+    "commit": {
+      "author": {
+        "name": "Craig Topper",
+        "email": "craig.topper@sifive.com",
+        "date": "2024-04-04T01:48:30Z"
+      },
+      "committer": {
+        "name": "Craig Topper",
+        "email": "craig.topper@sifive.com",
+        "date": "2024-04-04T01:49:55Z"
+      },
+      "message": "[RISCV][GISel] Don't check for FP uses of of IMPLICIT_DEF if the type is vector. NFC\n\nIf the type is vector, we can immediately know to use vector mapping.\nPreviously we searched for FP uses, but then replaced it if the type\nwas vector.",
+      "tree": {
+        "sha": "49bc92420e04194ca0f8ac328411a41711711b9d",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/49bc92420e04194ca0f8ac328411a41711711b9d"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/a853d79963c6ac09154817690a8c317157345876",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/a853d79963c6ac09154817690a8c317157345876",
+    "html_url": "https://github.com/llvm/llvm-project/commit/a853d79963c6ac09154817690a8c317157345876",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/a853d79963c6ac09154817690a8c317157345876/comments",
+    "author": {
+      "login": "topperc",
+      "id": 22566570,
+      "node_id": "MDQ6VXNlcjIyNTY2NTcw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22566570?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/topperc",
+      "html_url": "https://github.com/topperc",
+      "followers_url": "https://api.github.com/users/topperc/followers",
+      "following_url": "https://api.github.com/users/topperc/following{/other_user}",
+      "gists_url": "https://api.github.com/users/topperc/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/topperc/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/topperc/subscriptions",
+      "organizations_url": "https://api.github.com/users/topperc/orgs",
+      "repos_url": "https://api.github.com/users/topperc/repos",
+      "events_url": "https://api.github.com/users/topperc/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/topperc/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "topperc",
+      "id": 22566570,
+      "node_id": "MDQ6VXNlcjIyNTY2NTcw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22566570?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/topperc",
+      "html_url": "https://github.com/topperc",
+      "followers_url": "https://api.github.com/users/topperc/followers",
+      "following_url": "https://api.github.com/users/topperc/following{/other_user}",
+      "gists_url": "https://api.github.com/users/topperc/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/topperc/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/topperc/subscriptions",
+      "organizations_url": "https://api.github.com/users/topperc/orgs",
+      "repos_url": "https://api.github.com/users/topperc/repos",
+      "events_url": "https://api.github.com/users/topperc/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/topperc/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1f01c580444ea2daef67f95ffc5fde2de5a37cec",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/1f01c580444ea2daef67f95ffc5fde2de5a37cec",
+        "html_url": "https://github.com/llvm/llvm-project/commit/1f01c580444ea2daef67f95ffc5fde2de5a37cec"
+      }
+    ]
+  },
+  {
+    "sha": "1f01c580444ea2daef67f95ffc5fde2de5a37cec",
+    "node_id": "C_kwDOBITxeNoAKDFmMDFjNTgwNDQ0ZWEyZGFlZjY3Zjk1ZmZjNWZkZTJkZTVhMzdjZWM",
+    "commit": {
+      "author": {
+        "name": "darkbuck",
+        "email": "michael.hliao@gmail.com",
+        "date": "2024-04-04T00:52:21Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-04T00:52:21Z"
+      },
+      "message": "[GlobalISel] Fix the infinite loop issue in `commute_int_constant_to_rhs`\n\n- When both operands are constant, the matcher runs into an infinite\n  loop as the commutation should be applied only when LHS is a constant\n  and RHS is not.\n\nReviewers: arsenm\n\nReviewed By: arsenm\n\nPull Request: https://github.com/llvm/llvm-project/pull/87426",
+      "tree": {
+        "sha": "8f09e9c56f0682ddddff1ddf74143750a8d554ec",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/8f09e9c56f0682ddddff1ddf74143750a8d554ec"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/1f01c580444ea2daef67f95ffc5fde2de5a37cec",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDfnFCRC1aQ7uu5UhlAAAcMAQAF8dMswzholzrws1hZFG1pB7\nWG97Kvdxlxo9Js5A0P8qv+v135HwfGR16B5uaE7tPAx304A71+yqzW2FpXcR8Qna\n+dmau94f60ilRg1MKoOVDZU2B7i4VgTm7W7oWqWfrrpqdOV0yHCdTiTjM2pbDGVY\n4HgwduyqYoB0tPDUVAqN0GvQeLnNXuJUS/1/dtmrAKxJgzu59+jBOnT6qXY7tKCS\nHQucKE69dUWlU4aEbnpAldrEcVQnLZhnCv0zroCIngc5Ff87hsq0MctGFjU8dc1f\nVr/mUXq06MBbSZUuK4XDGtoVwom6QWdp+TYhunFQg4XKKVgKDCrzThg+71YJXuuw\nSfcYg2EXtR569cUcI19e1puN8lg5C1b8ZeGXAg/QdYgo/8jkyI7saQXedLUYOtWy\nw/UPfbhxIREL7Eq5wAOjuPfwGTe8IrGdhVR7fKmIm18Y20jp3A28UriYV17/giLl\n5m+o8QOQ/EH+FuXpjg7R+yBZ6Da5jMdSb3HFWWN+gir3iG+RR5pcOKK5j9ZtJmxp\n1nyhAtN4bYvG/SkD6XaOungMs8rGDuqJXFAaJ+JWQUYg1e75usPIBFYpnFnHzJ7s\n1/h/LDQYcjtZYJpt4KbHmwRUnWOzIX6Z0k9/QCOKQqB+ObKS118M0r036eU2X6ue\nKpsZHLzDx2CuXKO3mqId\n=73CV\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 8f09e9c56f0682ddddff1ddf74143750a8d554ec\nparent abd05eb4a53e6c7760496620da417733f52d4bf9\nauthor darkbuck <michael.hliao@gmail.com> 1712191941 -0400\ncommitter GitHub <noreply@github.com> 1712191941 -0400\n\n[GlobalISel] Fix the infinite loop issue in `commute_int_constant_to_rhs`\n\n- When both operands are constant, the matcher runs into an infinite\n  loop as the commutation should be applied only when LHS is a constant\n  and RHS is not.\n\nReviewers: arsenm\n\nReviewed By: arsenm\n\nPull Request: https://github.com/llvm/llvm-project/pull/87426\n"
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/1f01c580444ea2daef67f95ffc5fde2de5a37cec",
+    "html_url": "https://github.com/llvm/llvm-project/commit/1f01c580444ea2daef67f95ffc5fde2de5a37cec",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/1f01c580444ea2daef67f95ffc5fde2de5a37cec/comments",
+    "author": {
+      "login": "darkbuck",
+      "id": 127584,
+      "node_id": "MDQ6VXNlcjEyNzU4NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/127584?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/darkbuck",
+      "html_url": "https://github.com/darkbuck",
+      "followers_url": "https://api.github.com/users/darkbuck/followers",
+      "following_url": "https://api.github.com/users/darkbuck/following{/other_user}",
+      "gists_url": "https://api.github.com/users/darkbuck/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/darkbuck/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/darkbuck/subscriptions",
+      "organizations_url": "https://api.github.com/users/darkbuck/orgs",
+      "repos_url": "https://api.github.com/users/darkbuck/repos",
+      "events_url": "https://api.github.com/users/darkbuck/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/darkbuck/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "abd05eb4a53e6c7760496620da417733f52d4bf9",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/abd05eb4a53e6c7760496620da417733f52d4bf9",
+        "html_url": "https://github.com/llvm/llvm-project/commit/abd05eb4a53e6c7760496620da417733f52d4bf9"
+      }
+    ]
+  },
+  {
+    "sha": "abd05eb4a53e6c7760496620da417733f52d4bf9",
+    "node_id": "C_kwDOBITxeNoAKGFiZDA1ZWI0YTUzZTZjNzc2MDQ5NjYyMGRhNDE3NzMzZjUyZDRiZjk",
+    "commit": {
+      "author": {
+        "name": "Vitaly Buka",
+        "email": "vitalybuka@google.com",
+        "date": "2024-04-04T00:34:09Z"
+      },
+      "committer": {
+        "name": "Vitaly Buka",
+        "email": "vitalybuka@google.com",
+        "date": "2024-04-04T00:48:25Z"
+      },
+      "message": "[clang] Init fields added by #87357",
+      "tree": {
+        "sha": "e48bff50836081a6ef7a47777cbb03a8cea45077",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/e48bff50836081a6ef7a47777cbb03a8cea45077"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/abd05eb4a53e6c7760496620da417733f52d4bf9",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/abd05eb4a53e6c7760496620da417733f52d4bf9",
+    "html_url": "https://github.com/llvm/llvm-project/commit/abd05eb4a53e6c7760496620da417733f52d4bf9",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/abd05eb4a53e6c7760496620da417733f52d4bf9/comments",
+    "author": {
+      "login": "vitalybuka",
+      "id": 1531415,
+      "node_id": "MDQ6VXNlcjE1MzE0MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1531415?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vitalybuka",
+      "html_url": "https://github.com/vitalybuka",
+      "followers_url": "https://api.github.com/users/vitalybuka/followers",
+      "following_url": "https://api.github.com/users/vitalybuka/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vitalybuka/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vitalybuka/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vitalybuka/subscriptions",
+      "organizations_url": "https://api.github.com/users/vitalybuka/orgs",
+      "repos_url": "https://api.github.com/users/vitalybuka/repos",
+      "events_url": "https://api.github.com/users/vitalybuka/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vitalybuka/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "vitalybuka",
+      "id": 1531415,
+      "node_id": "MDQ6VXNlcjE1MzE0MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1531415?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vitalybuka",
+      "html_url": "https://github.com/vitalybuka",
+      "followers_url": "https://api.github.com/users/vitalybuka/followers",
+      "following_url": "https://api.github.com/users/vitalybuka/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vitalybuka/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vitalybuka/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vitalybuka/subscriptions",
+      "organizations_url": "https://api.github.com/users/vitalybuka/orgs",
+      "repos_url": "https://api.github.com/users/vitalybuka/repos",
+      "events_url": "https://api.github.com/users/vitalybuka/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vitalybuka/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "97523e5321be2542e8e117443ddea10b3f572ae7",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/97523e5321be2542e8e117443ddea10b3f572ae7",
+        "html_url": "https://github.com/llvm/llvm-project/commit/97523e5321be2542e8e117443ddea10b3f572ae7"
+      }
+    ]
+  },
+  {
+    "sha": "97523e5321be2542e8e117443ddea10b3f572ae7",
+    "node_id": "C_kwDOBITxeNoAKDk3NTIzZTUzMjFiZTI1NDJlOGUxMTc0NDNkZGVhMTBiM2Y1NzJhZTc",
+    "commit": {
+      "author": {
+        "name": "Shih-Po Hung",
+        "email": "shihpo.hung@sifive.com",
+        "date": "2024-04-04T00:30:15Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-04T00:30:15Z"
+      },
+      "message": "[RISCV][TTI] Scale the cost of intrinsic stepvector with LMUL (#87301)\n\nUse the return type to measure the LMUL size for latency/throughput cost",
+      "tree": {
+        "sha": "3d70980894dbe60650cd06c53360076c0b26b4bc",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/3d70980894dbe60650cd06c53360076c0b26b4bc"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/97523e5321be2542e8e117443ddea10b3f572ae7",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDfSXCRC1aQ7uu5UhlAAA2K0QAF/wY14x2YGKxoYlcujnHQSp\nV8aJ5U6fnD5BSERj/QWp2/y4/Ph+H7Nr223nhCynEEx60bPU2KhbeFLATcIGONkY\n37KKSRgAjV84lZzjeH43zOCu7/I7tPmwmKcLPRkVn8DCROoRcyuowirJYhlvrMrv\nY9iMVtPHVs6HtnezWIhGJCJ1b5ePIM6K/p5fZKzzShWXKzKfmqmBOw3OGjiP5izL\no1Z4GpaORztDb6lJNec/SCvQOZSXAdGoGgXU4wFnTg5Cb0Mcd5eY+Ax0V73Jau51\ncQPErfczFGmS36Xz33974nP/taPeGvXCOZIVi+VZ6wquHpD1anfUZrCZ00fvSW65\nVvOptjA4jTfxHH/HvNAdc5okqUDESdFg+gPIFrixCUIRAKzH8zYAejBo9gWy+MPi\noPJWwy8AWNkGowCcKqkgEJFg7bsXBFbgrRCkxnJS+FUzgyiLlVS7yLP6exuaZPzn\n5CSMo4eHGkq43nGISpj3knt53/dAuQNvdFzem5PvNqIp0UY7mpyQE0trzmnqorVu\n8FcMOkAcdw67Q1mT6hIBB4MNQ6KMNO4NOXR1nXaoDsC24DcA61bhl1Jn7ywQgxH+\nikeM3lvNa0dBXBLZrWEJCrvtnWRsKVQVmMQ/AmLnvkNB9ZaQwUmm80qTmSddEeIv\n6aLsIqU1qGR/poKrJ5QG\n=hnie\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 3d70980894dbe60650cd06c53360076c0b26b4bc\nparent 7e2a1d6f23cb604203324b47237f8e463704a497\nauthor Shih-Po Hung <shihpo.hung@sifive.com> 1712190615 +0800\ncommitter GitHub <noreply@github.com> 1712190615 +0800\n\n[RISCV][TTI] Scale the cost of intrinsic stepvector with LMUL (#87301)\n\nUse the return type to measure the LMUL size for latency/throughput cost"
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/97523e5321be2542e8e117443ddea10b3f572ae7",
+    "html_url": "https://github.com/llvm/llvm-project/commit/97523e5321be2542e8e117443ddea10b3f572ae7",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/97523e5321be2542e8e117443ddea10b3f572ae7/comments",
+    "author": {
+      "login": "arcbbb",
+      "id": 3256853,
+      "node_id": "MDQ6VXNlcjMyNTY4NTM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3256853?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/arcbbb",
+      "html_url": "https://github.com/arcbbb",
+      "followers_url": "https://api.github.com/users/arcbbb/followers",
+      "following_url": "https://api.github.com/users/arcbbb/following{/other_user}",
+      "gists_url": "https://api.github.com/users/arcbbb/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/arcbbb/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/arcbbb/subscriptions",
+      "organizations_url": "https://api.github.com/users/arcbbb/orgs",
+      "repos_url": "https://api.github.com/users/arcbbb/repos",
+      "events_url": "https://api.github.com/users/arcbbb/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/arcbbb/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7e2a1d6f23cb604203324b47237f8e463704a497",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/7e2a1d6f23cb604203324b47237f8e463704a497",
+        "html_url": "https://github.com/llvm/llvm-project/commit/7e2a1d6f23cb604203324b47237f8e463704a497"
+      }
+    ]
+  },
+  {
+    "sha": "7e2a1d6f23cb604203324b47237f8e463704a497",
+    "node_id": "C_kwDOBITxeNoAKDdlMmExZDZmMjNjYjYwNDIwMzMyNGI0NzIzN2Y4ZTQ2MzcwNGE0OTc",
+    "commit": {
+      "author": {
+        "name": "Craig Topper",
+        "email": "craig.topper@sifive.com",
+        "date": "2024-04-04T00:11:45Z"
+      },
+      "committer": {
+        "name": "Craig Topper",
+        "email": "craig.topper@sifive.com",
+        "date": "2024-04-04T00:16:33Z"
+      },
+      "message": "[RISCV] Remove G_TRUNC/ZEXT/SEXT/ANYEXT from the first switch in RISCVRegisterBankInfo::getInstrMapping.\n\nThis removes the special case for vectors. The default case in the\nsecond switch can handle GPR in addition to vectors. We just won't\nuse the static ValueMapping entry.",
+      "tree": {
+        "sha": "4ea7bdc02c5d6af5ee305d957ed291f43ad1f986",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/4ea7bdc02c5d6af5ee305d957ed291f43ad1f986"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/7e2a1d6f23cb604203324b47237f8e463704a497",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/7e2a1d6f23cb604203324b47237f8e463704a497",
+    "html_url": "https://github.com/llvm/llvm-project/commit/7e2a1d6f23cb604203324b47237f8e463704a497",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/7e2a1d6f23cb604203324b47237f8e463704a497/comments",
+    "author": {
+      "login": "topperc",
+      "id": 22566570,
+      "node_id": "MDQ6VXNlcjIyNTY2NTcw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22566570?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/topperc",
+      "html_url": "https://github.com/topperc",
+      "followers_url": "https://api.github.com/users/topperc/followers",
+      "following_url": "https://api.github.com/users/topperc/following{/other_user}",
+      "gists_url": "https://api.github.com/users/topperc/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/topperc/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/topperc/subscriptions",
+      "organizations_url": "https://api.github.com/users/topperc/orgs",
+      "repos_url": "https://api.github.com/users/topperc/repos",
+      "events_url": "https://api.github.com/users/topperc/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/topperc/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "topperc",
+      "id": 22566570,
+      "node_id": "MDQ6VXNlcjIyNTY2NTcw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22566570?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/topperc",
+      "html_url": "https://github.com/topperc",
+      "followers_url": "https://api.github.com/users/topperc/followers",
+      "following_url": "https://api.github.com/users/topperc/following{/other_user}",
+      "gists_url": "https://api.github.com/users/topperc/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/topperc/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/topperc/subscriptions",
+      "organizations_url": "https://api.github.com/users/topperc/orgs",
+      "repos_url": "https://api.github.com/users/topperc/repos",
+      "events_url": "https://api.github.com/users/topperc/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/topperc/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ef5a7109116c1615a9c99c8dba6577853beb6c73",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/ef5a7109116c1615a9c99c8dba6577853beb6c73",
+        "html_url": "https://github.com/llvm/llvm-project/commit/ef5a7109116c1615a9c99c8dba6577853beb6c73"
+      }
+    ]
+  },
+  {
+    "sha": "ef5a7109116c1615a9c99c8dba6577853beb6c73",
+    "node_id": "C_kwDOBITxeNoAKGVmNWE3MTA5MTE2YzE2MTVhOWM5OWM4ZGJhNjU3Nzg1M2JlYjZjNzM",
+    "commit": {
+      "author": {
+        "name": "Han-Chung Wang",
+        "email": "hanhan0912@gmail.com",
+        "date": "2024-04-04T00:00:56Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-04T00:00:56Z"
+      },
+      "message": "[mlir][vector] Skip 0D vectors in vector linearization. (#87577)",
+      "tree": {
+        "sha": "709a737538e30a9ac3f7836502b471f838d70d2e",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/709a737538e30a9ac3f7836502b471f838d70d2e"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/ef5a7109116c1615a9c99c8dba6577853beb6c73",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDe24CRC1aQ7uu5UhlAAAXiYQACV0SzDbI49K9ODhy7ZwDSe7\n4iSQ1zXhlbnyTiEcl6Fcgl2M7cj7+sftEK8NrQ5JcmQY1aBNVrOr1UPv1kBp1xc4\ncDiM5vRu8+roB+BFRbjDw/tA1kLVx9mP7UuwIjn6keTqC6D+7gm0YmgTi0PdnJzQ\nymf/Sx67veFghZuA18WUV/hytlAOn4efIn35WH9kemchVX90RVe6fYFp3jhvV+9p\np0Pgo3qpqa50rNVkDvTIq7Er7VkTDUFRQxgOuZYq+x8sPI6aanIRKqviL3apP1jX\nZJ0DVJvLXx2S/FkflHBSf30aRmmNARqkpKgkDc7341xJhJ1tZe4GG2CtntlwZTgv\nyVjmnupsjoZRtYDQIo52qYGjHA/zcIH8cUK9uM/HnvkD1laWDdgm3PMPinuxm1qK\nvmpa75YjoZ7gSWgm533ctYGlhLyD9noUT/fPMJJRC2WFOywo4Ni1kKrPgkJCoHMM\nDaivTcvMFUNSj+9vRwdefIUih3LBVSq+GWKwqvnN+hUmjjxjV3ATGlTdxmrw6zM6\n0lrD/Tmv9u0+PyqSaajh+EMpaiGUQSkDbLm6EFX9cG2WdCtp5khnngT38f5Y62sy\nOgotq/ENRMLY/XfWO3s8iMrSrJ18U3KB3q++ya8PhfkpMKeGvYut4rOEKIwtGV/W\nkWr5rt4XeHrGOLVKVx+a\n=3mgq\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 709a737538e30a9ac3f7836502b471f838d70d2e\nparent 622851a9059694487811a7f6078312fc2cce5486\nauthor Han-Chung Wang <hanhan0912@gmail.com> 1712188856 -0700\ncommitter GitHub <noreply@github.com> 1712188856 -0700\n\n[mlir][vector] Skip 0D vectors in vector linearization. (#87577)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/ef5a7109116c1615a9c99c8dba6577853beb6c73",
+    "html_url": "https://github.com/llvm/llvm-project/commit/ef5a7109116c1615a9c99c8dba6577853beb6c73",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/ef5a7109116c1615a9c99c8dba6577853beb6c73/comments",
+    "author": {
+      "login": "hanhanW",
+      "id": 6949191,
+      "node_id": "MDQ6VXNlcjY5NDkxOTE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6949191?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/hanhanW",
+      "html_url": "https://github.com/hanhanW",
+      "followers_url": "https://api.github.com/users/hanhanW/followers",
+      "following_url": "https://api.github.com/users/hanhanW/following{/other_user}",
+      "gists_url": "https://api.github.com/users/hanhanW/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/hanhanW/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/hanhanW/subscriptions",
+      "organizations_url": "https://api.github.com/users/hanhanW/orgs",
+      "repos_url": "https://api.github.com/users/hanhanW/repos",
+      "events_url": "https://api.github.com/users/hanhanW/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/hanhanW/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "622851a9059694487811a7f6078312fc2cce5486",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/622851a9059694487811a7f6078312fc2cce5486",
+        "html_url": "https://github.com/llvm/llvm-project/commit/622851a9059694487811a7f6078312fc2cce5486"
+      }
+    ]
+  },
+  {
+    "sha": "622851a9059694487811a7f6078312fc2cce5486",
+    "node_id": "C_kwDOBITxeNoAKDYyMjg1MWE5MDU5Njk0NDg3ODExYTdmNjA3ODMxMmZjMmNjZTU0ODY",
+    "commit": {
+      "author": {
+        "name": "Jason Molenda",
+        "email": "jmolenda@apple.com",
+        "date": "2024-04-03T23:40:34Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-03T23:40:34Z"
+      },
+      "message": "[lldb] Set static Module's load addresses via ObjectFile (#87439)\n\nThis is a followup to\r\nhttps://github.com/llvm/llvm-project/pull/86359\r\n\"[lldb] [ObjectFileMachO] LLVM_COV is not mapped into firmware memory\r\n(#86359)\"\r\n\r\nwhere I treat LLVM_COV segments in a Mach-O binary as non-loadable.\r\nThere is another codepath in\r\n`DynamicLoaderStatic::LoadAllImagesAtFileAddresses` which is called to\r\nset the load addresses for a Module to the file addresses. It has no\r\nlogic to detect a segment that is not loaded in virtual memory\r\n(ObjectFileMachO::SectionIsLoadable), so it would set the load address\r\nfor this LLVM_COV segment to the file address and shadow actual code,\r\nbreaking lldb behavior.\r\n\r\nThis method currently sets the load address for any section that doesn't\r\nhave a load address set already. This presumes that a Module was added\r\nto the Target, some mechanism set the correct load address for SOME\r\nsegments, and then this method is going to set the other segments to a\r\nno-slide value, assuming they were forgotten.\r\n\r\nObjectFile base class doesn't, today, vend a SectionIsLoadable method,\r\nbut we do have ObjectFile::SetLoadAddress and at a higher level,\r\nModule::SetLoadAddress, when we're setting the same slide to all\r\nsegments.\r\n\r\nThat's the behavior we want in this method. If any section has a load\r\naddress, we don't touch this Module. Otherwise we set all sections to\r\nhave a load address that is the same as the file address.\r\n\r\nI also audited the other parts of lldb that are calling\r\nSectionList::SectionLoadAddress and looked if they should be more\r\ncorrectly using Module::SetLoadAddress for the entire binary. But in\r\nmost cases, we have the potential for different slides for different\r\nsections so this section-by-section approach must be taken.\r\n\r\nrdar://125800290",
+      "tree": {
+        "sha": "27c9c3f65ba21df4d5030a30c90248034a6955f8",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/27c9c3f65ba21df4d5030a30c90248034a6955f8"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/622851a9059694487811a7f6078312fc2cce5486",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDejyCRC1aQ7uu5UhlAAAnl4QAIOxklmzagEJAbIdOH+Sb+g5\n64XoLsAK8iCMbFO0MDmFGR7QrGKa0r0NBLDl7bOehvRhhrg8Tx6dw77gG6AK2csA\nWHb99o8kVUNEGMpOf4BtxMAo2cvQKPaU75Gw3NxxU5dfZZQLCYjWtfsIg8/EIn79\nAuW3Y5i+F2DXkKlCH6yVA5Wanya3322EZulyYTpMvVFttmA12vCpySCDoUwUiAgb\n7F9T5cEwmxatUKyT74Yi3apMIIkIHcp566E1+xakO1GgFSEd/JP8G70zFUp6+jON\neJuVw+MTZfvBtAIkMqlpDPOrEGV4iMvovtupjJIW1LWB8hZ/UvUvPuL/oi2l4s2U\nr7UYstJJ9vYQ6RMjAYHFNgW0W03yjCYJ/QPwJNQuP+25T6ocfkS85OulH3ZfUXiq\ngHgWll4jsMdtgRcVjiq57LwrxGx8xX/hqBJ2SaqAHBmyAwfK61rwwpcKm/zYjZ+g\nvcs1EdBmTswfVTk1IyP2ltEUFZPtJIuF7A5cO5ecwj21FuBOiay97Drk7xAdeFiP\nJTMdKoiLNZ6IwPWvWptj3AXCGNonHKh3cDQlvF1CmRVXAfLKn2Tet/DKxK4Gf/jJ\ngbksDxaiTJqtN+ZoaSWeMgEYGAOoOUlUYbeD3hn0BmHI8VwDavXQ+VzdArOeNawg\nyrOOu3eVgjlxtaQlegzh\n=N/NR\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 27c9c3f65ba21df4d5030a30c90248034a6955f8\nparent 750843875254b1d493f4d7c3d3921c1bced55b7c\nauthor Jason Molenda <jmolenda@apple.com> 1712187634 -0700\ncommitter GitHub <noreply@github.com> 1712187634 -0700\n\n[lldb] Set static Module's load addresses via ObjectFile (#87439)\n\nThis is a followup to\r\nhttps://github.com/llvm/llvm-project/pull/86359\r\n\"[lldb] [ObjectFileMachO] LLVM_COV is not mapped into firmware memory\r\n(#86359)\"\r\n\r\nwhere I treat LLVM_COV segments in a Mach-O binary as non-loadable.\r\nThere is another codepath in\r\n`DynamicLoaderStatic::LoadAllImagesAtFileAddresses` which is called to\r\nset the load addresses for a Module to the file addresses. It has no\r\nlogic to detect a segment that is not loaded in virtual memory\r\n(ObjectFileMachO::SectionIsLoadable), so it would set the load address\r\nfor this LLVM_COV segment to the file address and shadow actual code,\r\nbreaking lldb behavior.\r\n\r\nThis method currently sets the load address for any section that doesn't\r\nhave a load address set already. This presumes that a Module was added\r\nto the Target, some mechanism set the correct load address for SOME\r\nsegments, and then this method is going to set the other segments to a\r\nno-slide value, assuming they were forgotten.\r\n\r\nObjectFile base class doesn't, today, vend a SectionIsLoadable method,\r\nbut we do have ObjectFile::SetLoadAddress and at a higher level,\r\nModule::SetLoadAddress, when we're setting the same slide to all\r\nsegments.\r\n\r\nThat's the behavior we want in this method. If any section has a load\r\naddress, we don't touch this Module. Otherwise we set all sections to\r\nhave a load address that is the same as the file address.\r\n\r\nI also audited the other parts of lldb that are calling\r\nSectionList::SectionLoadAddress and looked if they should be more\r\ncorrectly using Module::SetLoadAddress for the entire binary. But in\r\nmost cases, we have the potential for different slides for different\r\nsections so this section-by-section approach must be taken.\r\n\r\nrdar://125800290"
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/622851a9059694487811a7f6078312fc2cce5486",
+    "html_url": "https://github.com/llvm/llvm-project/commit/622851a9059694487811a7f6078312fc2cce5486",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/622851a9059694487811a7f6078312fc2cce5486/comments",
+    "author": {
+      "login": "jasonmolenda",
+      "id": 15320389,
+      "node_id": "MDQ6VXNlcjE1MzIwMzg5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/15320389?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jasonmolenda",
+      "html_url": "https://github.com/jasonmolenda",
+      "followers_url": "https://api.github.com/users/jasonmolenda/followers",
+      "following_url": "https://api.github.com/users/jasonmolenda/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jasonmolenda/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jasonmolenda/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jasonmolenda/subscriptions",
+      "organizations_url": "https://api.github.com/users/jasonmolenda/orgs",
+      "repos_url": "https://api.github.com/users/jasonmolenda/repos",
+      "events_url": "https://api.github.com/users/jasonmolenda/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jasonmolenda/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "750843875254b1d493f4d7c3d3921c1bced55b7c",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/750843875254b1d493f4d7c3d3921c1bced55b7c",
+        "html_url": "https://github.com/llvm/llvm-project/commit/750843875254b1d493f4d7c3d3921c1bced55b7c"
+      }
+    ]
+  },
+  {
+    "sha": "750843875254b1d493f4d7c3d3921c1bced55b7c",
+    "node_id": "C_kwDOBITxeNoAKDc1MDg0Mzg3NTI1NGIxZDQ5M2Y0ZDdjM2QzOTIxYzFiY2VkNTViN2M",
+    "commit": {
+      "author": {
+        "name": "Yeoul Na",
+        "email": "yeoul_na@apple.com",
+        "date": "2024-04-03T23:35:11Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-03T23:35:11Z"
+      },
+      "message": "[BoundsSafety] Minor fixes on counted_by (#87559)\n\nDeclRef to field must be marked as LValue to be consistent with how the\r\nfield decl will be evaluated.\r\n\r\nT->desugar() is unnecessary to call ->isArrayType().",
+      "tree": {
+        "sha": "a04c4c296867ae9eb1a916dba1ccb155a54f90d3",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/a04c4c296867ae9eb1a916dba1ccb155a54f90d3"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/750843875254b1d493f4d7c3d3921c1bced55b7c",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDeevCRC1aQ7uu5UhlAAAwEgQAF03FOcDN8LKu5H2+CTwkVji\n2DkxJs/NeZALm/tbQ64IAluim4N9hRZtnFwH9j/u/dpePeoHPrQvT3o6ZrnspCTK\nCj1xpw04fPL6Q8zUM1W5SyY5xF8I8GcgzkU6T515LgV83DhLvupq8cJzd2HdFvGM\nUBtBqDrqTRsAEEDZmni8waNtZgWh+LdvEj8fqIJXls9yu6VujrbYqHwh6/HNey+V\nFj2GGD5pbHFq86aFpvhCa9sQKlv4RzXbUH4iRS/mbhi1ut/s82TZevA6yHV/WemS\n4U3PUQdZHsU5hrYs3dl3GEHKhu+Pps+kenY3zs5PdrBVibeTUUmF1++Jxj5Ti+u8\nAeHV3OorDAnjDLaLqvyPEW+D8+9NWRPhqzNN7CM7pz4a91rucIAk2ExNmReLALog\n0cf9LfXxJyNcqn60Rjh/dvovdlGKyVx/LKTUFnpLcVYKfyv85FvXwa0pU+FoxMzG\nGoMr03MF85zOICUzRjnYZjqyjlT0ihBWGA2Iq4gCjdEdnzZKe2C9sY0KY/f2ZzD3\nZS89/+FZoJjD2EY6o/n6QzRQaQwRWPx2zPdq4ca5EF2Yp8s4lv5Ve+vTXjFYR+J3\ntc2a43lvK+kPsulGlVpVzakeFwLNsGnG22cq7VlYbkRpEEo897yIep/9cnAbejsa\na7Ehk5pvbC3W6aPfAxnD\n=bI1r\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree a04c4c296867ae9eb1a916dba1ccb155a54f90d3\nparent 20433e9b2483d64843310e97062541dd73f54436\nauthor Yeoul Na <yeoul_na@apple.com> 1712187311 -0700\ncommitter GitHub <noreply@github.com> 1712187311 -0700\n\n[BoundsSafety] Minor fixes on counted_by (#87559)\n\nDeclRef to field must be marked as LValue to be consistent with how the\r\nfield decl will be evaluated.\r\n\r\nT->desugar() is unnecessary to call ->isArrayType()."
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/750843875254b1d493f4d7c3d3921c1bced55b7c",
+    "html_url": "https://github.com/llvm/llvm-project/commit/750843875254b1d493f4d7c3d3921c1bced55b7c",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/750843875254b1d493f4d7c3d3921c1bced55b7c/comments",
+    "author": {
+      "login": "rapidsna",
+      "id": 17426825,
+      "node_id": "MDQ6VXNlcjE3NDI2ODI1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17426825?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rapidsna",
+      "html_url": "https://github.com/rapidsna",
+      "followers_url": "https://api.github.com/users/rapidsna/followers",
+      "following_url": "https://api.github.com/users/rapidsna/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rapidsna/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rapidsna/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rapidsna/subscriptions",
+      "organizations_url": "https://api.github.com/users/rapidsna/orgs",
+      "repos_url": "https://api.github.com/users/rapidsna/repos",
+      "events_url": "https://api.github.com/users/rapidsna/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rapidsna/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "20433e9b2483d64843310e97062541dd73f54436",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/20433e9b2483d64843310e97062541dd73f54436",
+        "html_url": "https://github.com/llvm/llvm-project/commit/20433e9b2483d64843310e97062541dd73f54436"
+      }
+    ]
+  },
+  {
+    "sha": "20433e9b2483d64843310e97062541dd73f54436",
+    "node_id": "C_kwDOBITxeNoAKDIwNDMzZTliMjQ4M2Q2NDg0MzMxMGU5NzA2MjU0MWRkNzNmNTQ0MzY",
+    "commit": {
+      "author": {
+        "name": "Chelsea Cassanova",
+        "email": "chelsea_cassanova@apple.com",
+        "date": "2024-04-03T23:34:03Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-03T23:34:03Z"
+      },
+      "message": "Revert \"DebugInfoD issues, take 2\" (#87583)\n\nReverts llvm/llvm-project#86812. \r\n\r\nThis commit caused a regression on the x86_64 MacOS buildbot:\r\nhttps://green.lab.llvm.org/job/llvm.org/view/LLDB/job/lldb-cmake/784/",
+      "tree": {
+        "sha": "c839a15fd0fe29b8a312d06eb945cb5064da569c",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/c839a15fd0fe29b8a312d06eb945cb5064da569c"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/20433e9b2483d64843310e97062541dd73f54436",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDedrCRC1aQ7uu5UhlAAAgqEQAKInqnYMwbsxeQvWiz3C8GMS\ngtRrqzYXt5U8ED+rSrP3a54H3GFU3dlY8JsqScFyjIaWUnvv4TQTJx8TWISpX7JF\n6mAN1lG2ncOy2llxm+8d+0aPIDvkxxEE3OTXaUFbD6VrYN9E8AF+Cyr193ijGQt+\noPHsqF0C6w8x+JC9O596y/yUOX7vCo49N2YgEDIva2e37EZ8ZI7RdTgOthi9J1XS\nGcnIRl+i3jRwy2bS8dvTah68JN1jHWq1RwVwcTDel0dWK7bvKcNUuFsals+JxICL\neMc1T8kBrpYOLDlPdHRW1cjHx2py/YQ8EYkRgK8/rARIewpsoDS54FT3Bz+4yNRs\neJQGfeArj1msmFHlhWzBli5ZxIQJmvK5Mibb8sFBJiFFVvvBvsxpv36SoxVFi4WY\nw6iZmXjUa02ein9tLWe5qcsqB7PCg4978FY4KXA/nzIJHL+GQ8nhaPyeMOMaW9RQ\nfMgTQhXA6l7HHpnRfsMmXbKX3CZl2ZTLbHwoitIiJ0V82nNlcoL0T0I41OztOSCQ\nmtjtegaGZ0Himk4gVsKQQZXsbm+Ou+IojcnPPBEF9VQ+7pN1tTFz1B34ONO7RcCz\nIj4eDTYUzTEROtxSaQqG7TOpInc/xR8gGGnAho1B37wfxETrjSq8qsWz8GVuenCC\nJmuF5bOJjq10BRGCut8m\n=AC05\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree c839a15fd0fe29b8a312d06eb945cb5064da569c\nparent 5e3da75c80db749b3000c4a9e930da4784bcfc6f\nauthor Chelsea Cassanova <chelsea_cassanova@apple.com> 1712187243 -0700\ncommitter GitHub <noreply@github.com> 1712187243 -0700\n\nRevert \"DebugInfoD issues, take 2\" (#87583)\n\nReverts llvm/llvm-project#86812. \r\n\r\nThis commit caused a regression on the x86_64 MacOS buildbot:\r\nhttps://green.lab.llvm.org/job/llvm.org/view/LLDB/job/lldb-cmake/784/"
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/20433e9b2483d64843310e97062541dd73f54436",
+    "html_url": "https://github.com/llvm/llvm-project/commit/20433e9b2483d64843310e97062541dd73f54436",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/20433e9b2483d64843310e97062541dd73f54436/comments",
+    "author": {
+      "login": "chelcassanova",
+      "id": 21184907,
+      "node_id": "MDQ6VXNlcjIxMTg0OTA3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/21184907?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/chelcassanova",
+      "html_url": "https://github.com/chelcassanova",
+      "followers_url": "https://api.github.com/users/chelcassanova/followers",
+      "following_url": "https://api.github.com/users/chelcassanova/following{/other_user}",
+      "gists_url": "https://api.github.com/users/chelcassanova/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/chelcassanova/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/chelcassanova/subscriptions",
+      "organizations_url": "https://api.github.com/users/chelcassanova/orgs",
+      "repos_url": "https://api.github.com/users/chelcassanova/repos",
+      "events_url": "https://api.github.com/users/chelcassanova/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/chelcassanova/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5e3da75c80db749b3000c4a9e930da4784bcfc6f",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/5e3da75c80db749b3000c4a9e930da4784bcfc6f",
+        "html_url": "https://github.com/llvm/llvm-project/commit/5e3da75c80db749b3000c4a9e930da4784bcfc6f"
+      }
+    ]
+  },
+  {
+    "sha": "5e3da75c80db749b3000c4a9e930da4784bcfc6f",
+    "node_id": "C_kwDOBITxeNoAKDVlM2RhNzVjODBkYjc0OWIzMDAwYzRhOWU5MzBkYTQ3ODRiY2ZjNmY",
+    "commit": {
+      "author": {
+        "name": "Dan Liew",
+        "email": "delcypher@gmail.com",
+        "date": "2024-04-03T23:28:54Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-03T23:28:54Z"
+      },
+      "message": "[Bounds-Safety][NFC] Clean up leading space emission for CountAttributedType (#87582)\n\nPreviously the leading space was added in each string constant. This\r\npatch moves the leading space out of the string constants and is instead\r\nexplicitly added to add clarity to the code.",
+      "tree": {
+        "sha": "494355aa99f013b5f3efb77e2ef494f0890f33d9",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/494355aa99f013b5f3efb77e2ef494f0890f33d9"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/5e3da75c80db749b3000c4a9e930da4784bcfc6f",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDeY2CRC1aQ7uu5UhlAAAZQ0QAHdV85PeXPBQ+xLzsTgJ5wVX\nQede13TKVytsFDiHpyZ1BRaR3Zugddg0VKiD05SHMtbnj7D9jzHv/qrvLZ6n4+Li\nf8vfehEv8ImVeKoLh3a6khjX03pzbnKo5p+beWhQ8y0Wmr2e1IoVxqnK16BoO4kq\nNSMGtS4sFpsYTUubtrZVXN15KAa9eXFRTx+rHHSuTKdDafuazEKqYjJcLbiUA7ig\nlNu7SxodcBZTXeRzH3vLu5c0h4+EnAUaAocrAi2173MppviO5q8fm9VSudB8mba+\n6m8p249U0yQ3RGpazw18JMexLkSOUq5+Bl/E6Llbx6A3TUkt4CRY86VCEhY09jn6\nf4tH/sBl+r/TaQpoogtB71sPwr0ZLqWRd5b4r2/PWbJGx4LZNzRxtvIBPjd2A6AT\nSwe056lqTlMWlS9T8lVIQVnRZTenDyN4NBQnWAcujYQrRYV3K04EqxA99B2SKnDM\n5uWdlQpm5ARTq9i3bNbBFStUhmVgw4PIwPHdhzwKO8UcRGlWIBqEd4phvHD7+R9Y\n9jsBcGi2S4YPYpgQV7yd5rw2PLKYg3jS76UJ/ZG7VmXqCCi1mFN4WIzuvo155jcs\n4M1KqfjjyqGiE7byiFP1PlYarkShw5HEK1KWmAjZD9VofNqjAgc+8vbMwlKoca/t\nEeHNi6eYWK9UqkM6YwjE\n=sXkK\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 494355aa99f013b5f3efb77e2ef494f0890f33d9\nparent 66fed33db014bd705433e4b4f1ea766a8d71cadf\nauthor Dan Liew <delcypher@gmail.com> 1712186934 -0700\ncommitter GitHub <noreply@github.com> 1712186934 -0700\n\n[Bounds-Safety][NFC] Clean up leading space emission for CountAttributedType (#87582)\n\nPreviously the leading space was added in each string constant. This\r\npatch moves the leading space out of the string constants and is instead\r\nexplicitly added to add clarity to the code."
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/5e3da75c80db749b3000c4a9e930da4784bcfc6f",
+    "html_url": "https://github.com/llvm/llvm-project/commit/5e3da75c80db749b3000c4a9e930da4784bcfc6f",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/5e3da75c80db749b3000c4a9e930da4784bcfc6f/comments",
+    "author": {
+      "login": "delcypher",
+      "id": 511795,
+      "node_id": "MDQ6VXNlcjUxMTc5NQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/511795?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/delcypher",
+      "html_url": "https://github.com/delcypher",
+      "followers_url": "https://api.github.com/users/delcypher/followers",
+      "following_url": "https://api.github.com/users/delcypher/following{/other_user}",
+      "gists_url": "https://api.github.com/users/delcypher/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/delcypher/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/delcypher/subscriptions",
+      "organizations_url": "https://api.github.com/users/delcypher/orgs",
+      "repos_url": "https://api.github.com/users/delcypher/repos",
+      "events_url": "https://api.github.com/users/delcypher/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/delcypher/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "66fed33db014bd705433e4b4f1ea766a8d71cadf",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/66fed33db014bd705433e4b4f1ea766a8d71cadf",
+        "html_url": "https://github.com/llvm/llvm-project/commit/66fed33db014bd705433e4b4f1ea766a8d71cadf"
+      }
+    ]
+  },
+  {
+    "sha": "66fed33db014bd705433e4b4f1ea766a8d71cadf",
+    "node_id": "C_kwDOBITxeNoAKDY2ZmVkMzNkYjAxNGJkNzA1NDMzZTRiNGYxZWE3NjZhOGQ3MWNhZGY",
+    "commit": {
+      "author": {
+        "name": "Kojo Acquah",
+        "email": "KoolJBlack@users.noreply.github.com",
+        "date": "2024-04-03T23:27:01Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-03T23:27:01Z"
+      },
+      "message": "[mlir][vector] Update `castAwayContractionLeadingOneDim` to omit transposes solely on leading unit dims.  (#85694)\n\nUpdates `castAwayContractionLeadingOneDim` to check for leading unit\r\ndimensions before inserting `vector.transpose` ops.\r\n\r\nCurrently `castAwayContractionLeadingOneDim` removes all leading unit\r\ndims based on the accumulator and transpose any subsequent operands to\r\nmatch the accumulator indexing. This does not take into account if the\r\ntranspose is strictly necessary, for instance when given this\r\nvector-matrix contract:\r\n```mlir\r\n  %result = vector.contract {indexing_maps = [affine_map<(d0, d1, d2, d3) -> (d0, d1, d3)>, affine_map<(d0, d1, d2, d3) -> (d0, d2, d3)>, affine_map<(d0, d1, d2, d3) -> (d1, d2)>], iterator_types = [\"parallel\", \"parallel\", \"parallel\", \"reduction\"], kind = #vector.kind<add>} %lhs, %rhs, %acc : vector<1x1x8xi32>, vector<1x8x8xi32> into vector<1x8xi32>\r\n```\r\nPassing this through `castAwayContractionLeadingOneDim` pattern produces\r\nthe following:\r\n```mlir\r\n    %0 = vector.transpose %arg0, [1, 0, 2] : vector<1x1x8xi32> to vector<1x1x8xi32>\r\n    %1 = vector.extract %0[0] : vector<1x8xi32> from vector<1x1x8xi32>\r\n    %2 = vector.extract %arg2[0] : vector<8xi32> from vector<1x8xi32>\r\n    %3 = vector.contract {indexing_maps = [affine_map<(d0, d1, d2) -> (d0, d2)>, affine_map<(d0, d1, d2) -> (d0, d1, d2)>, affine_map<(d0, d1, d2) -> (d1)>], iterator_types = [\"parallel\", \"parallel\", \"reduction\"], kind = #vector.kind<add>} %1, %arg1, %2 : vector<1x8xi32>, vector<1x8x8xi32> into vector<8xi32>\r\n    %4 = vector.broadcast %3 : vector<8xi32> to vector<1x8xi32>\r\n```\r\nThe `vector.transpose` introduced does not affect the underlying data\r\nlayout (effectively a no op), but it cannot be folded automatically.\r\nThis change avoids inserting transposes when only leading unit\r\ndimensions are involved.\r\n\r\nFixes #85691",
+      "tree": {
+        "sha": "f25d9ff5165be7d333dfe30917bc292ece8ddb29",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/f25d9ff5165be7d333dfe30917bc292ece8ddb29"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/66fed33db014bd705433e4b4f1ea766a8d71cadf",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDeXFCRC1aQ7uu5UhlAAAhtsQAIo4LGPn1fz+fHV6DmU+UuTk\nY95LJYfNtzzDScO0BVOhIj/FNJt4V893R6hKR0VERno7S6sK/Bo+fq2jWsYf3MZR\nPV4c7c39d+DYUaiBFdFOX/tWFK84OJLfKGPsbKI7xXMLhnyP52sphQjUfRBrm25Y\ncmk9PqTVWjmN4dnm3pjywMzdSCuJIAhUQC46IHepEny+LppIdf1PsHVxxaQCrmCJ\nF2i1lkd5HJlq/s2SI1z12KS/JQH+4qB5+mk5WENAjSrOJp6CMIw97+QLDt2bKdvD\nwOdohdZHGy4Yt4j4tO6RcrxYrVYKw+pTC090Fa0BSrvnrG2G/45hbEfRTX2BCosp\nY0YTpKNKuDO7jjzgsYvIGM/6Roq/k1dIOvjxPxpLff61sOp6l9lyxLrRIquM4QQa\n7+XBPgeWiiBcmYO8/8SCAPGugs9vJTL2vXZ/xJ9z2w55E8OTA7+GM5lQy725KFda\nkNile15qQsqILcTVBYgJgo0JsIhOPNlsSmT22utwD2maTzyEN0W9eAs0fwr0QOqN\n/TW3VlvYi6+vNY5FJ7FYrJPwnC9CUJ5I2oxdW6emdLxZIGoA9bMyuZm7n6JsoQxF\nZdJs2IsNjPqmqd9mb68pbsAWCO81TVdt22SYdHI7SNbox49n5du0hebj+ZCrUYwE\nPN6Lhqr9VRWnXzCieyLw\n=aC9t\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree f25d9ff5165be7d333dfe30917bc292ece8ddb29\nparent c511c90680eecae2e4adb87f442f41d465feb0f2\nauthor Kojo Acquah <KoolJBlack@users.noreply.github.com> 1712186821 -0700\ncommitter GitHub <noreply@github.com> 1712186821 -0400\n\n[mlir][vector] Update `castAwayContractionLeadingOneDim` to omit transposes solely on leading unit dims.  (#85694)\n\nUpdates `castAwayContractionLeadingOneDim` to check for leading unit\r\ndimensions before inserting `vector.transpose` ops.\r\n\r\nCurrently `castAwayContractionLeadingOneDim` removes all leading unit\r\ndims based on the accumulator and transpose any subsequent operands to\r\nmatch the accumulator indexing. This does not take into account if the\r\ntranspose is strictly necessary, for instance when given this\r\nvector-matrix contract:\r\n```mlir\r\n  %result = vector.contract {indexing_maps = [affine_map<(d0, d1, d2, d3) -> (d0, d1, d3)>, affine_map<(d0, d1, d2, d3) -> (d0, d2, d3)>, affine_map<(d0, d1, d2, d3) -> (d1, d2)>], iterator_types = [\"parallel\", \"parallel\", \"parallel\", \"reduction\"], kind = #vector.kind<add>} %lhs, %rhs, %acc : vector<1x1x8xi32>, vector<1x8x8xi32> into vector<1x8xi32>\r\n```\r\nPassing this through `castAwayContractionLeadingOneDim` pattern produces\r\nthe following:\r\n```mlir\r\n    %0 = vector.transpose %arg0, [1, 0, 2] : vector<1x1x8xi32> to vector<1x1x8xi32>\r\n    %1 = vector.extract %0[0] : vector<1x8xi32> from vector<1x1x8xi32>\r\n    %2 = vector.extract %arg2[0] : vector<8xi32> from vector<1x8xi32>\r\n    %3 = vector.contract {indexing_maps = [affine_map<(d0, d1, d2) -> (d0, d2)>, affine_map<(d0, d1, d2) -> (d0, d1, d2)>, affine_map<(d0, d1, d2) -> (d1)>], iterator_types = [\"parallel\", \"parallel\", \"reduction\"], kind = #vector.kind<add>} %1, %arg1, %2 : vector<1x8xi32>, vector<1x8x8xi32> into vector<8xi32>\r\n    %4 = vector.broadcast %3 : vector<8xi32> to vector<1x8xi32>\r\n```\r\nThe `vector.transpose` introduced does not affect the underlying data\r\nlayout (effectively a no op), but it cannot be folded automatically.\r\nThis change avoids inserting transposes when only leading unit\r\ndimensions are involved.\r\n\r\nFixes #85691"
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/66fed33db014bd705433e4b4f1ea766a8d71cadf",
+    "html_url": "https://github.com/llvm/llvm-project/commit/66fed33db014bd705433e4b4f1ea766a8d71cadf",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/66fed33db014bd705433e4b4f1ea766a8d71cadf/comments",
+    "author": {
+      "login": "KoolJBlack",
+      "id": 1041731,
+      "node_id": "MDQ6VXNlcjEwNDE3MzE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1041731?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/KoolJBlack",
+      "html_url": "https://github.com/KoolJBlack",
+      "followers_url": "https://api.github.com/users/KoolJBlack/followers",
+      "following_url": "https://api.github.com/users/KoolJBlack/following{/other_user}",
+      "gists_url": "https://api.github.com/users/KoolJBlack/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/KoolJBlack/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/KoolJBlack/subscriptions",
+      "organizations_url": "https://api.github.com/users/KoolJBlack/orgs",
+      "repos_url": "https://api.github.com/users/KoolJBlack/repos",
+      "events_url": "https://api.github.com/users/KoolJBlack/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/KoolJBlack/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c511c90680eecae2e4adb87f442f41d465feb0f2",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/c511c90680eecae2e4adb87f442f41d465feb0f2",
+        "html_url": "https://github.com/llvm/llvm-project/commit/c511c90680eecae2e4adb87f442f41d465feb0f2"
+      }
+    ]
+  },
+  {
+    "sha": "c511c90680eecae2e4adb87f442f41d465feb0f2",
+    "node_id": "C_kwDOBITxeNoAKGM1MTFjOTA2ODBlZWNhZTJlNGFkYjg3ZjQ0MmY0MWQ0NjVmZWIwZjI",
+    "commit": {
+      "author": {
+        "name": "Kojo Acquah",
+        "email": "KoolJBlack@users.noreply.github.com",
+        "date": "2024-04-03T23:24:18Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-03T23:24:18Z"
+      },
+      "message": "[mlir][ArmNeon] Updates LowerContractionToSMMLAPattern with vecmat unroll patterns (#86005)\n\nUpdates smmla unrolling patterns to handle vecmat contracts where `dimM=1`. This includes explicit vecmats in the form: `<1x8xi8> x <8x8xi8> --> <1x8xi32>` or implied with the leading dim folded: `<8xi8> x <8x8xi8> --> <8xi32>` \r\n\r\nSince the smmla operates on two `<2x8xi8>` input vectors to produce `<2x2xi8>` accumulators, half of each 2x2 accumulator tile is dummy data not pertinent to the computation, resulting in half throughput.",
+      "tree": {
+        "sha": "ffe39303a4582cae2e4f1c87688a8d6fe4f250b6",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/ffe39303a4582cae2e4f1c87688a8d6fe4f250b6"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/c511c90680eecae2e4adb87f442f41d465feb0f2",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDeUiCRC1aQ7uu5UhlAAAj/EQAB5WS/BnBtL7V92WaYb7GQdi\nZNtAL3dTg5DL7Igw7BxiKXcpVeAsZt6Qth0OiBfnwmxxK5DTcyWpyR3i/vVwIwKv\nCjT2JsWDaPkmAerUBSv66T/zOeIYWmbEpG2tpoPXv/IBzUoEM8FQViKmPNUoC25i\n4+QaOSxJSI88zxlM0Y04iMbUjTQmtUe3mio816IByzZqgMSnDZZQUzdfNPjPE10q\nnSsK11WPx2THzpus3BSG0GmeTPOMznFes6wCM2L+E/qneOejmjoAx4IGMLBGj+ND\nDvZvT7mBkQZpTOPD7Dc4yjScAHq9dekjVRd9mpAJveFIUbOwhvddhG5iqMYgLRlL\ndPEf4/3PMOaNSr1T5Ry6wpZ3UI0bbUQmPjZL6Ul3dCdj5fC/DwgUDEBT0xr2yQjG\niM1aJCsTnJxVPtBajbufM+FyVczGXDXwLQ+olIhK8y+ueRS7YJz1abAh84auADve\nEcC/u0Pzzt4PXwsV/3lMDXDBGPTBcWE6LuWk//g81iPoss2TnQvALopv8xHnbfq8\n7hBlD2r722k0wy7bMkw69DLkZ8W4InTbt5zDYxJPR4ThphS/NGBL8wPd/O2BXMXa\nHjKNKq9t2vHFKRrQaOx7PVnAv4jMcmhnTP3+LygSuPHoKulB9kW8nQxq1//Mbt9e\nk0k4L8yoWdc/tVb4NZbp\n=BcIm\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree ffe39303a4582cae2e4f1c87688a8d6fe4f250b6\nparent be57c90feff81d067c83be1ab8927fb345c761cc\nauthor Kojo Acquah <KoolJBlack@users.noreply.github.com> 1712186658 -0700\ncommitter GitHub <noreply@github.com> 1712186658 -0400\n\n[mlir][ArmNeon] Updates LowerContractionToSMMLAPattern with vecmat unroll patterns (#86005)\n\nUpdates smmla unrolling patterns to handle vecmat contracts where `dimM=1`. This includes explicit vecmats in the form: `<1x8xi8> x <8x8xi8> --> <1x8xi32>` or implied with the leading dim folded: `<8xi8> x <8x8xi8> --> <8xi32>` \r\n\r\nSince the smmla operates on two `<2x8xi8>` input vectors to produce `<2x2xi8>` accumulators, half of each 2x2 accumulator tile is dummy data not pertinent to the computation, resulting in half throughput."
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/c511c90680eecae2e4adb87f442f41d465feb0f2",
+    "html_url": "https://github.com/llvm/llvm-project/commit/c511c90680eecae2e4adb87f442f41d465feb0f2",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/c511c90680eecae2e4adb87f442f41d465feb0f2/comments",
+    "author": {
+      "login": "KoolJBlack",
+      "id": 1041731,
+      "node_id": "MDQ6VXNlcjEwNDE3MzE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1041731?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/KoolJBlack",
+      "html_url": "https://github.com/KoolJBlack",
+      "followers_url": "https://api.github.com/users/KoolJBlack/followers",
+      "following_url": "https://api.github.com/users/KoolJBlack/following{/other_user}",
+      "gists_url": "https://api.github.com/users/KoolJBlack/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/KoolJBlack/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/KoolJBlack/subscriptions",
+      "organizations_url": "https://api.github.com/users/KoolJBlack/orgs",
+      "repos_url": "https://api.github.com/users/KoolJBlack/repos",
+      "events_url": "https://api.github.com/users/KoolJBlack/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/KoolJBlack/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "be57c90feff81d067c83be1ab8927fb345c761cc",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/be57c90feff81d067c83be1ab8927fb345c761cc",
+        "html_url": "https://github.com/llvm/llvm-project/commit/be57c90feff81d067c83be1ab8927fb345c761cc"
+      }
+    ]
+  },
+  {
+    "sha": "be57c90feff81d067c83be1ab8927fb345c761cc",
+    "node_id": "C_kwDOBITxeNoAKGJlNTdjOTBmZWZmODFkMDY3YzgzYmUxYWI4OTI3ZmIzNDVjNzYxY2M",
+    "commit": {
+      "author": {
+        "name": "Gulfem Savrun Yeniceri",
+        "email": "gulfem@google.com",
+        "date": "2024-04-03T23:14:31Z"
+      },
+      "committer": {
+        "name": "Gulfem Savrun Yeniceri",
+        "email": "gulfem@google.com",
+        "date": "2024-04-03T23:14:31Z"
+      },
+      "message": "Revert \"dsymutil: Re-add missing -latomic (#85380)\"\n\nThis reverts commit 23616c65e7d632e750ddb67d55cc39098a69a8a6\nbecause it breaks Fuchsia Clang toolchain builders.\nhttps://luci-milo.appspot.com/ui/p/fuchsia/builders/toolchain.ci/clang-linux-x64/b8751656876289840849/overview",
+      "tree": {
+        "sha": "220f5550632bdf6be13afd14b0b045848eb0862c",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/220f5550632bdf6be13afd14b0b045848eb0862c"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/be57c90feff81d067c83be1ab8927fb345c761cc",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/be57c90feff81d067c83be1ab8927fb345c761cc",
+    "html_url": "https://github.com/llvm/llvm-project/commit/be57c90feff81d067c83be1ab8927fb345c761cc",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/be57c90feff81d067c83be1ab8927fb345c761cc/comments",
+    "author": {
+      "login": "gulfemsavrun",
+      "id": 8526989,
+      "node_id": "MDQ6VXNlcjg1MjY5ODk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8526989?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gulfemsavrun",
+      "html_url": "https://github.com/gulfemsavrun",
+      "followers_url": "https://api.github.com/users/gulfemsavrun/followers",
+      "following_url": "https://api.github.com/users/gulfemsavrun/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gulfemsavrun/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gulfemsavrun/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gulfemsavrun/subscriptions",
+      "organizations_url": "https://api.github.com/users/gulfemsavrun/orgs",
+      "repos_url": "https://api.github.com/users/gulfemsavrun/repos",
+      "events_url": "https://api.github.com/users/gulfemsavrun/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gulfemsavrun/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "gulfemsavrun",
+      "id": 8526989,
+      "node_id": "MDQ6VXNlcjg1MjY5ODk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8526989?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gulfemsavrun",
+      "html_url": "https://github.com/gulfemsavrun",
+      "followers_url": "https://api.github.com/users/gulfemsavrun/followers",
+      "following_url": "https://api.github.com/users/gulfemsavrun/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gulfemsavrun/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gulfemsavrun/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gulfemsavrun/subscriptions",
+      "organizations_url": "https://api.github.com/users/gulfemsavrun/orgs",
+      "repos_url": "https://api.github.com/users/gulfemsavrun/repos",
+      "events_url": "https://api.github.com/users/gulfemsavrun/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gulfemsavrun/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "63c925ca808f216f805b76873743450456e350f2",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/63c925ca808f216f805b76873743450456e350f2",
+        "html_url": "https://github.com/llvm/llvm-project/commit/63c925ca808f216f805b76873743450456e350f2"
+      }
+    ]
+  },
+  {
+    "sha": "63c925ca808f216f805b76873743450456e350f2",
+    "node_id": "C_kwDOBITxeNoAKDYzYzkyNWNhODA4ZjIxNmY4MDViNzY4NzM3NDM0NTA0NTZlMzUwZjI",
+    "commit": {
+      "author": {
+        "name": "Michael Maitland",
+        "email": "michaeltmaitland@gmail.com",
+        "date": "2024-03-15T14:52:41Z"
+      },
+      "committer": {
+        "name": "Michael Maitland",
+        "email": "michaeltmaitland@gmail.com",
+        "date": "2024-04-03T22:56:08Z"
+      },
+      "message": "[RISCV][GISEL] Instruction selection for G_ZEXT, G_SEXT, and G_ANYEXT with scalable vector type",
+      "tree": {
+        "sha": "79ab17303697e5d3abdfd4f47066b890f77ae6dc",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/79ab17303697e5d3abdfd4f47066b890f77ae6dc"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/63c925ca808f216f805b76873743450456e350f2",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/63c925ca808f216f805b76873743450456e350f2",
+    "html_url": "https://github.com/llvm/llvm-project/commit/63c925ca808f216f805b76873743450456e350f2",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/63c925ca808f216f805b76873743450456e350f2/comments",
+    "author": {
+      "login": "michaelmaitland",
+      "id": 6876996,
+      "node_id": "MDQ6VXNlcjY4NzY5OTY=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6876996?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelmaitland",
+      "html_url": "https://github.com/michaelmaitland",
+      "followers_url": "https://api.github.com/users/michaelmaitland/followers",
+      "following_url": "https://api.github.com/users/michaelmaitland/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelmaitland/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelmaitland/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelmaitland/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelmaitland/orgs",
+      "repos_url": "https://api.github.com/users/michaelmaitland/repos",
+      "events_url": "https://api.github.com/users/michaelmaitland/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelmaitland/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "michaelmaitland",
+      "id": 6876996,
+      "node_id": "MDQ6VXNlcjY4NzY5OTY=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6876996?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelmaitland",
+      "html_url": "https://github.com/michaelmaitland",
+      "followers_url": "https://api.github.com/users/michaelmaitland/followers",
+      "following_url": "https://api.github.com/users/michaelmaitland/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelmaitland/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelmaitland/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelmaitland/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelmaitland/orgs",
+      "repos_url": "https://api.github.com/users/michaelmaitland/repos",
+      "events_url": "https://api.github.com/users/michaelmaitland/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelmaitland/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "188ca374ee601a50b6f5f6c1cf7e7dc3998e3a62",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/188ca374ee601a50b6f5f6c1cf7e7dc3998e3a62",
+        "html_url": "https://github.com/llvm/llvm-project/commit/188ca374ee601a50b6f5f6c1cf7e7dc3998e3a62"
+      }
+    ]
+  },
+  {
+    "sha": "188ca374ee601a50b6f5f6c1cf7e7dc3998e3a62",
+    "node_id": "C_kwDOBITxeNoAKDE4OGNhMzc0ZWU2MDFhNTBiNmY1ZjZjMWNmN2U3ZGMzOTk4ZTNhNjI",
+    "commit": {
+      "author": {
+        "name": "Michael Maitland",
+        "email": "michaeltmaitland@gmail.com",
+        "date": "2024-03-15T14:35:55Z"
+      },
+      "committer": {
+        "name": "Michael Maitland",
+        "email": "michaeltmaitland@gmail.com",
+        "date": "2024-04-03T22:56:04Z"
+      },
+      "message": "[RISCV][GISEL] Regbankselect for G_ZEXT, G_SEXT, and G_ANYEXT with scalable vector type",
+      "tree": {
+        "sha": "18fd8403f1e45bf9b2596b782bdd2c1a84e58d09",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/18fd8403f1e45bf9b2596b782bdd2c1a84e58d09"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/188ca374ee601a50b6f5f6c1cf7e7dc3998e3a62",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/188ca374ee601a50b6f5f6c1cf7e7dc3998e3a62",
+    "html_url": "https://github.com/llvm/llvm-project/commit/188ca374ee601a50b6f5f6c1cf7e7dc3998e3a62",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/188ca374ee601a50b6f5f6c1cf7e7dc3998e3a62/comments",
+    "author": {
+      "login": "michaelmaitland",
+      "id": 6876996,
+      "node_id": "MDQ6VXNlcjY4NzY5OTY=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6876996?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelmaitland",
+      "html_url": "https://github.com/michaelmaitland",
+      "followers_url": "https://api.github.com/users/michaelmaitland/followers",
+      "following_url": "https://api.github.com/users/michaelmaitland/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelmaitland/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelmaitland/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelmaitland/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelmaitland/orgs",
+      "repos_url": "https://api.github.com/users/michaelmaitland/repos",
+      "events_url": "https://api.github.com/users/michaelmaitland/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelmaitland/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "michaelmaitland",
+      "id": 6876996,
+      "node_id": "MDQ6VXNlcjY4NzY5OTY=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6876996?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelmaitland",
+      "html_url": "https://github.com/michaelmaitland",
+      "followers_url": "https://api.github.com/users/michaelmaitland/followers",
+      "following_url": "https://api.github.com/users/michaelmaitland/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelmaitland/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelmaitland/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelmaitland/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelmaitland/orgs",
+      "repos_url": "https://api.github.com/users/michaelmaitland/repos",
+      "events_url": "https://api.github.com/users/michaelmaitland/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelmaitland/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "35a9393a3f775d4e1506965b9cfeedd45599f1a7",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/35a9393a3f775d4e1506965b9cfeedd45599f1a7",
+        "html_url": "https://github.com/llvm/llvm-project/commit/35a9393a3f775d4e1506965b9cfeedd45599f1a7"
+      }
+    ]
+  },
+  {
+    "sha": "35a9393a3f775d4e1506965b9cfeedd45599f1a7",
+    "node_id": "C_kwDOBITxeNoAKDM1YTkzOTNhM2Y3NzVkNGUxNTA2OTY1YjljZmVlZGQ0NTU5OWYxYTc",
+    "commit": {
+      "author": {
+        "name": "Michael Maitland",
+        "email": "michaeltmaitland@gmail.com",
+        "date": "2024-03-15T17:00:22Z"
+      },
+      "committer": {
+        "name": "Michael Maitland",
+        "email": "michaeltmaitland@gmail.com",
+        "date": "2024-04-03T22:47:34Z"
+      },
+      "message": "[RISCV][GISEL] Instruction selection for G_ICMP",
+      "tree": {
+        "sha": "7ff4033d5cb8998efc4afeb95873e4e97f962e9d",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/7ff4033d5cb8998efc4afeb95873e4e97f962e9d"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/35a9393a3f775d4e1506965b9cfeedd45599f1a7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/35a9393a3f775d4e1506965b9cfeedd45599f1a7",
+    "html_url": "https://github.com/llvm/llvm-project/commit/35a9393a3f775d4e1506965b9cfeedd45599f1a7",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/35a9393a3f775d4e1506965b9cfeedd45599f1a7/comments",
+    "author": {
+      "login": "michaelmaitland",
+      "id": 6876996,
+      "node_id": "MDQ6VXNlcjY4NzY5OTY=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6876996?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelmaitland",
+      "html_url": "https://github.com/michaelmaitland",
+      "followers_url": "https://api.github.com/users/michaelmaitland/followers",
+      "following_url": "https://api.github.com/users/michaelmaitland/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelmaitland/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelmaitland/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelmaitland/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelmaitland/orgs",
+      "repos_url": "https://api.github.com/users/michaelmaitland/repos",
+      "events_url": "https://api.github.com/users/michaelmaitland/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelmaitland/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "michaelmaitland",
+      "id": 6876996,
+      "node_id": "MDQ6VXNlcjY4NzY5OTY=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6876996?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelmaitland",
+      "html_url": "https://github.com/michaelmaitland",
+      "followers_url": "https://api.github.com/users/michaelmaitland/followers",
+      "following_url": "https://api.github.com/users/michaelmaitland/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelmaitland/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelmaitland/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelmaitland/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelmaitland/orgs",
+      "repos_url": "https://api.github.com/users/michaelmaitland/repos",
+      "events_url": "https://api.github.com/users/michaelmaitland/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelmaitland/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "05f673bcefb0912a38a67b0026cad3768b2f85d2",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/05f673bcefb0912a38a67b0026cad3768b2f85d2",
+        "html_url": "https://github.com/llvm/llvm-project/commit/05f673bcefb0912a38a67b0026cad3768b2f85d2"
+      }
+    ]
+  },
+  {
+    "sha": "05f673bcefb0912a38a67b0026cad3768b2f85d2",
+    "node_id": "C_kwDOBITxeNoAKDA1ZjY3M2JjZWZiMDkxMmEzOGE2N2IwMDI2Y2FkMzc2OGIyZjg1ZDI",
+    "commit": {
+      "author": {
+        "name": "Michael Maitland",
+        "email": "michaeltmaitland@gmail.com",
+        "date": "2024-03-14T14:20:23Z"
+      },
+      "committer": {
+        "name": "Michael Maitland",
+        "email": "michaeltmaitland@gmail.com",
+        "date": "2024-04-03T22:47:34Z"
+      },
+      "message": "[RISCV][GISEL] Regbank select for scalable vector G_ICMP",
+      "tree": {
+        "sha": "d96c20271ebdd6fa53c2ba0fbe24d82d2c898c93",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/d96c20271ebdd6fa53c2ba0fbe24d82d2c898c93"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/05f673bcefb0912a38a67b0026cad3768b2f85d2",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/05f673bcefb0912a38a67b0026cad3768b2f85d2",
+    "html_url": "https://github.com/llvm/llvm-project/commit/05f673bcefb0912a38a67b0026cad3768b2f85d2",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/05f673bcefb0912a38a67b0026cad3768b2f85d2/comments",
+    "author": {
+      "login": "michaelmaitland",
+      "id": 6876996,
+      "node_id": "MDQ6VXNlcjY4NzY5OTY=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6876996?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelmaitland",
+      "html_url": "https://github.com/michaelmaitland",
+      "followers_url": "https://api.github.com/users/michaelmaitland/followers",
+      "following_url": "https://api.github.com/users/michaelmaitland/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelmaitland/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelmaitland/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelmaitland/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelmaitland/orgs",
+      "repos_url": "https://api.github.com/users/michaelmaitland/repos",
+      "events_url": "https://api.github.com/users/michaelmaitland/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelmaitland/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "michaelmaitland",
+      "id": 6876996,
+      "node_id": "MDQ6VXNlcjY4NzY5OTY=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6876996?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelmaitland",
+      "html_url": "https://github.com/michaelmaitland",
+      "followers_url": "https://api.github.com/users/michaelmaitland/followers",
+      "following_url": "https://api.github.com/users/michaelmaitland/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelmaitland/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelmaitland/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelmaitland/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelmaitland/orgs",
+      "repos_url": "https://api.github.com/users/michaelmaitland/repos",
+      "events_url": "https://api.github.com/users/michaelmaitland/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelmaitland/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8aa3a77eaf198afb7e01453e6daf6566b687945d",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/8aa3a77eaf198afb7e01453e6daf6566b687945d",
+        "html_url": "https://github.com/llvm/llvm-project/commit/8aa3a77eaf198afb7e01453e6daf6566b687945d"
+      }
+    ]
+  },
+  {
+    "sha": "8aa3a77eaf198afb7e01453e6daf6566b687945d",
+    "node_id": "C_kwDOBITxeNoAKDhhYTNhNzdlYWYxOThhZmI3ZTAxNDUzZTZkYWY2NTY2YjY4Nzk0NWQ",
+    "commit": {
+      "author": {
+        "name": "Michael Maitland",
+        "email": "michaeltmaitland@gmail.com",
+        "date": "2024-03-07T21:40:30Z"
+      },
+      "committer": {
+        "name": "Michael Maitland",
+        "email": "michaeltmaitland@gmail.com",
+        "date": "2024-04-03T22:27:15Z"
+      },
+      "message": "[RISCV][GISEL] Legalize G_ZEXT, G_SEXT, and G_ANYEXT, G_SPLAT_VECTOR, and G_ICMP for scalable vector types\n\nThis patch legalizes G_ZEXT, G_SEXT, and G_ANYEXT. If the type is a\nlegal mask type, then the instruction is legalized as the element-wise\nselect, where the condition on the select is the mask typed source\noperand, and the true and false values are 1 or -1 (for\nzero/any-extension and sign extension) and zero. If the type is a legal integer\nor vector integer type, then the instruction is marked as legal.\n\nThe legalization of the extends may introduce a G_SPLAT_VECTOR, which\nneeds to be legalized in this patch for the extend test cases to pass.\n\nA G_SPLAT_VECTOR is legal if the vector type is a legal integer or\nfloating point vector type and the source operand is sXLen type. This is\nbecause the SelectionDAG patterns only support sXLen typed\nISD::SPLAT_VECTORS, and we'd like to reuse those patterns. A\nG_SPLAT_VECTOR is cutom legalized if it has a legal s1 element vector\ntype and s1 scalar operand. It is legalized to G_VMSET_VL or G_VMCLR_VL\nif the splat is all ones or all zeros respectivley. In the case of a\nnon-constant mask splat, we legalize by promoting the scalar value to\ns8.\n\nIn order to get the s8 element vector back into s1 vector, we use a\nG_ICMP. In order for the splat vector and extend tests to pass, we also\nneed to legalize G_ICMP in this patch.\n\nA G_ICMP is legal if the destination type is a legal bool vector and the LHS and\nRHS are legal integer vector types.",
+      "tree": {
+        "sha": "3ed76260eef3f1a787ec5198725e2ebbf78f424b",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/3ed76260eef3f1a787ec5198725e2ebbf78f424b"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/8aa3a77eaf198afb7e01453e6daf6566b687945d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/8aa3a77eaf198afb7e01453e6daf6566b687945d",
+    "html_url": "https://github.com/llvm/llvm-project/commit/8aa3a77eaf198afb7e01453e6daf6566b687945d",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/8aa3a77eaf198afb7e01453e6daf6566b687945d/comments",
+    "author": {
+      "login": "michaelmaitland",
+      "id": 6876996,
+      "node_id": "MDQ6VXNlcjY4NzY5OTY=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6876996?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelmaitland",
+      "html_url": "https://github.com/michaelmaitland",
+      "followers_url": "https://api.github.com/users/michaelmaitland/followers",
+      "following_url": "https://api.github.com/users/michaelmaitland/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelmaitland/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelmaitland/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelmaitland/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelmaitland/orgs",
+      "repos_url": "https://api.github.com/users/michaelmaitland/repos",
+      "events_url": "https://api.github.com/users/michaelmaitland/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelmaitland/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "michaelmaitland",
+      "id": 6876996,
+      "node_id": "MDQ6VXNlcjY4NzY5OTY=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6876996?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelmaitland",
+      "html_url": "https://github.com/michaelmaitland",
+      "followers_url": "https://api.github.com/users/michaelmaitland/followers",
+      "following_url": "https://api.github.com/users/michaelmaitland/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelmaitland/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelmaitland/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelmaitland/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelmaitland/orgs",
+      "repos_url": "https://api.github.com/users/michaelmaitland/repos",
+      "events_url": "https://api.github.com/users/michaelmaitland/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelmaitland/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "029e1d751503268e3d8b01db769e710835c3010d",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/029e1d751503268e3d8b01db769e710835c3010d",
+        "html_url": "https://github.com/llvm/llvm-project/commit/029e1d751503268e3d8b01db769e710835c3010d"
+      }
+    ]
+  },
+  {
+    "sha": "029e1d751503268e3d8b01db769e710835c3010d",
+    "node_id": "C_kwDOBITxeNoAKDAyOWUxZDc1MTUwMzI2OGUzZDhiMDFkYjc2OWU3MTA4MzVjMzAxMGQ",
+    "commit": {
+      "author": {
+        "name": "Vitaly Buka",
+        "email": "vitalybuka@google.com",
+        "date": "2024-04-03T22:19:03Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-03T22:19:03Z"
+      },
+      "message": "Revert \"Revert \"Revert \"[clang][UBSan] Add implicit conversion check for bitfields\"\"\" (#87562)\n\nReverts llvm/llvm-project#87529\r\n\r\nReverts #87518\r\n\r\nhttps://lab.llvm.org/buildbot/#/builders/37/builds/33262 is still broken",
+      "tree": {
+        "sha": "4e8ecaf2da18b33165c7569114a96164f40ab7d1",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/4e8ecaf2da18b33165c7569114a96164f40ab7d1"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/029e1d751503268e3d8b01db769e710835c3010d",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDdXXCRC1aQ7uu5UhlAAASyUQAB8pYw/P9nOWgUlvNpbMSAs5\nG11dNC1IMdRzkjbBKvuAug67SsqKTzVUFHcxxu/iZBIR1B5KQ6+KDa7pQVuWpwe+\nu1EhE5CvHTU2XOYjbvGcS1W3pcS6IfZpBnzGfdTZU2xEvCxWiQFGbaMaPzyiKiMG\n1a1YGgc8rViJ12VVw4XG/LuOor446FRsxD37A0isg/NDahfqP3CqU5glgq5xmV88\nOcFp9nRvAx8usH1jJQaRKf89AsJrPE7myGb1EavDC8eYcqm/4wXK4MY58gCczHsu\nXhD2bS4rIsQKiVihd2gemOxQzNPqf6S2WJD2jEHdNoe9WIP7O7MvwT4sZVdq6Kex\ncbIrBlUkVEHuCm/ZQoD5rc2kQcOl+Vt1Rk5DPOXgHKPnXEMm/9+1UkWTdyvvjVui\nE+TJv4HqDJr4L8h3YgTHIK76fgB+ql6C3n4xV7Ra8nII09gmRO//6aC9OZpyG86v\ncgDx291bf3f9Mg5jhMcg/a+c8kQxZSe+/xzkayrNWtPSHGqZ4Cq2vobaKqS5clNb\n2CiM3ljQXtWgpV3/tNhlAy9Ynhq2hfVhuBicg0NvVve6+sDHGrFQrufTFbE09M77\nhdqpuvEa5hwK90f/ien+by6TJHTrojWh5PxD9mSiGMIrARxUQ2w+veMuAT6Rvzpo\nfjgCkRNUSq/tAZ2tb8dM\n=B2aU\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 4e8ecaf2da18b33165c7569114a96164f40ab7d1\nparent 4078763e2e73b4ef3f9e728f66cdf9e429d3f7a4\nauthor Vitaly Buka <vitalybuka@google.com> 1712182743 -0700\ncommitter GitHub <noreply@github.com> 1712182743 -0700\n\nRevert \"Revert \"Revert \"[clang][UBSan] Add implicit conversion check for bitfields\"\"\" (#87562)\n\nReverts llvm/llvm-project#87529\r\n\r\nReverts #87518\r\n\r\nhttps://lab.llvm.org/buildbot/#/builders/37/builds/33262 is still broken"
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/029e1d751503268e3d8b01db769e710835c3010d",
+    "html_url": "https://github.com/llvm/llvm-project/commit/029e1d751503268e3d8b01db769e710835c3010d",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/029e1d751503268e3d8b01db769e710835c3010d/comments",
+    "author": {
+      "login": "vitalybuka",
+      "id": 1531415,
+      "node_id": "MDQ6VXNlcjE1MzE0MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1531415?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vitalybuka",
+      "html_url": "https://github.com/vitalybuka",
+      "followers_url": "https://api.github.com/users/vitalybuka/followers",
+      "following_url": "https://api.github.com/users/vitalybuka/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vitalybuka/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vitalybuka/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vitalybuka/subscriptions",
+      "organizations_url": "https://api.github.com/users/vitalybuka/orgs",
+      "repos_url": "https://api.github.com/users/vitalybuka/repos",
+      "events_url": "https://api.github.com/users/vitalybuka/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vitalybuka/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4078763e2e73b4ef3f9e728f66cdf9e429d3f7a4",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/4078763e2e73b4ef3f9e728f66cdf9e429d3f7a4",
+        "html_url": "https://github.com/llvm/llvm-project/commit/4078763e2e73b4ef3f9e728f66cdf9e429d3f7a4"
+      }
+    ]
+  },
+  {
+    "sha": "4078763e2e73b4ef3f9e728f66cdf9e429d3f7a4",
+    "node_id": "C_kwDOBITxeNoAKDQwNzg3NjNlMmU3M2I0ZWYzZjllNzI4ZjY2Y2RmOWU0MjlkM2Y3YTQ",
+    "commit": {
+      "author": {
+        "name": "Damien L-G",
+        "email": "dalg24+github@gmail.com",
+        "date": "2024-04-03T21:51:46Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-03T21:51:46Z"
+      },
+      "message": "[libc++] Fix copy/pasta error in atomic tests for `atomic_compare_exchange_{weak,strong}` (#87135)\n\nSpotted this minor mistake in the tests as I was looking into testing\r\nmore thoroughly `atomic_ref`.\r\n\r\nThe two argument overloads are tested just above. The names of the\r\nlambda clearly indicates that the intent was to test the one argument\r\noverload.",
+      "tree": {
+        "sha": "fd670cea62d2f013c26cd2a359497f2e1c23c06f",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/fd670cea62d2f013c26cd2a359497f2e1c23c06f"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/4078763e2e73b4ef3f9e728f66cdf9e429d3f7a4",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDc9yCRC1aQ7uu5UhlAAAPIUQAELM1URtyLFrXRvqRRSa13NP\nuRA8LaQqpwt+MPwdR22/y0tKNOGwFSjPfrvNKokqJIHdcbu5V9e+RX0VIB74l7L0\nXcnWhS/G2Dd+8w+QCo8ozC1PeWv4TnXv8h1tkbHBAHCTqmeho8TbFVwuv5TyL1LZ\n7ByxGeUE50f1NBkk3RHaRS4mPQVW6WO8tG1ZJ3FUfS6nhml3T/TrSxXhqJRDQOKp\nbUVA0lgrmBnpXIM8z5ceDEuk05Swr8OH9mac14qvN8osJWt3rITLQ+lpS9BNAY2A\nFfb5mDNDku3NboqATgSnIGF5AHnrFGsfw0QDJeVe7ih5T6CX287KICip9gID7GP6\n0lGigl3WQC5iAXOv5p+BkrNKBDbSYAeBoihKis9a2w8iMXMaQY+Znk+qIpYBXDvz\ne8udsn/pUkTQjxMJbQuOt4IpbYBXFaoCrMcY/48At04h9pfhPnWkOKrx294irZgw\nwhdbU2Wg/NyDYlJIU+scEFrrXjCO/69OLyrFJMgDEQTS48l69o2dw7AhP9kWUshQ\nWoN/SOUaE/qomZvhh0VLL6MxPJe0pMDjdWGZWtp1j0CzrJaiS/4Fy+Nwk6/iTpbe\nc74rZxmS9g9ha8p8TmWp7qBOj6wMERpZ6pD/I/sR9/LaVL7/YunSyIt1M43SXQMZ\nSBPbeeZ7Y/ASEjLbMjQ4\n=pKvm\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree fd670cea62d2f013c26cd2a359497f2e1c23c06f\nparent 718638d44d3f1033c1ea395244c07d971ec33a90\nauthor Damien L-G <dalg24+github@gmail.com> 1712181106 -0400\ncommitter GitHub <noreply@github.com> 1712181106 -0400\n\n[libc++] Fix copy/pasta error in atomic tests for `atomic_compare_exchange_{weak,strong}` (#87135)\n\nSpotted this minor mistake in the tests as I was looking into testing\r\nmore thoroughly `atomic_ref`.\r\n\r\nThe two argument overloads are tested just above. The names of the\r\nlambda clearly indicates that the intent was to test the one argument\r\noverload."
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/4078763e2e73b4ef3f9e728f66cdf9e429d3f7a4",
+    "html_url": "https://github.com/llvm/llvm-project/commit/4078763e2e73b4ef3f9e728f66cdf9e429d3f7a4",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/4078763e2e73b4ef3f9e728f66cdf9e429d3f7a4/comments",
+    "author": {
+      "login": "dalg24",
+      "id": 296978,
+      "node_id": "MDQ6VXNlcjI5Njk3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/296978?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dalg24",
+      "html_url": "https://github.com/dalg24",
+      "followers_url": "https://api.github.com/users/dalg24/followers",
+      "following_url": "https://api.github.com/users/dalg24/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dalg24/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dalg24/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dalg24/subscriptions",
+      "organizations_url": "https://api.github.com/users/dalg24/orgs",
+      "repos_url": "https://api.github.com/users/dalg24/repos",
+      "events_url": "https://api.github.com/users/dalg24/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dalg24/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "718638d44d3f1033c1ea395244c07d971ec33a90",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/718638d44d3f1033c1ea395244c07d971ec33a90",
+        "html_url": "https://github.com/llvm/llvm-project/commit/718638d44d3f1033c1ea395244c07d971ec33a90"
+      }
+    ]
+  },
+  {
+    "sha": "718638d44d3f1033c1ea395244c07d971ec33a90",
+    "node_id": "C_kwDOBITxeNoAKDcxODYzOGQ0NGQzZjEwMzNjMWVhMzk1MjQ0YzA3ZDk3MWVjMzNhOTA",
+    "commit": {
+      "author": {
+        "name": "Slava Zakharin",
+        "email": "szakharin@nvidia.com",
+        "date": "2024-04-03T21:49:39Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-03T21:49:39Z"
+      },
+      "message": "[flang][runtime] Enable I/O APIs in F18 runtime offload builds. (#87543)",
+      "tree": {
+        "sha": "4018c96d3727b96adf6ccfec60167058bdcbe87b",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/4018c96d3727b96adf6ccfec60167058bdcbe87b"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/718638d44d3f1033c1ea395244c07d971ec33a90",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDc7zCRC1aQ7uu5UhlAAAWNoQAFTd8yVk05N0STcbyBjqt8Uw\nSm18HxmgPQbGVAr5h16iT4QGMmbPHtrrYz8nz3b2BbEm086/MgpjpBjPrVE1g22X\ngQZp9dERPn/UzCDu2g6INd2jYTyV3r4ys5GRBr/uh4V6IhEcVtfK1quUqcjxK7Xk\nRvZJDx1i1TGgqF8fCEG0lFA5PEfg3FifKp8Twg7hv7N89nf2jzYrCzFdbwHcsZBl\nHPd5mqPCmy4hfQ2/ElbzmwPmji19aVaN476tO4rnRaxBfdMV6sZOpgSkP2We5oCf\n3HcltYzAwAwdwhdYARXi6iT1r2bAjaCw1pDHkDWtpi8iJA+rne4cSiNcxGeP46b2\npPWhIDP3Y9ce1eD1zsKYucYQhF/UFu79VEP9yuaCZJKaoxOY1n80GLERRrauHKub\nVMiWd6xCdobdW0EMxUGolXPlyhEwjyFusMeDGZFiIQ1gEdYg1lXP0tU358+LYlKg\n3adzUjdHVMRIFg231CyurWQQtB0TiE3wD5gi3GQ1LHVlSSGLsUpV9xBGOclE41Kz\nsdWQ/mw7T2TyfazQXteqQl0uPWUAXczMeOM+jAc+TaElUhg+wZzL4ZkOoPnsv3eh\nDzAp3GcvSosSWu/xp+klkHroJWf0ABWrn5u1vxZd8+wDRTdVpB6qjKSm60o4jaUH\nBypfSsewE+gX5u9hsaaF\n=4+M+\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 4018c96d3727b96adf6ccfec60167058bdcbe87b\nparent d53b8291bff4542a9c3e2f1df050deafbe295fff\nauthor Slava Zakharin <szakharin@nvidia.com> 1712180979 -0700\ncommitter GitHub <noreply@github.com> 1712180979 -0700\n\n[flang][runtime] Enable I/O APIs in F18 runtime offload builds. (#87543)\n\n"
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/718638d44d3f1033c1ea395244c07d971ec33a90",
+    "html_url": "https://github.com/llvm/llvm-project/commit/718638d44d3f1033c1ea395244c07d971ec33a90",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/718638d44d3f1033c1ea395244c07d971ec33a90/comments",
+    "author": {
+      "login": "vzakhari",
+      "id": 51766749,
+      "node_id": "MDQ6VXNlcjUxNzY2NzQ5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/51766749?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/vzakhari",
+      "html_url": "https://github.com/vzakhari",
+      "followers_url": "https://api.github.com/users/vzakhari/followers",
+      "following_url": "https://api.github.com/users/vzakhari/following{/other_user}",
+      "gists_url": "https://api.github.com/users/vzakhari/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/vzakhari/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/vzakhari/subscriptions",
+      "organizations_url": "https://api.github.com/users/vzakhari/orgs",
+      "repos_url": "https://api.github.com/users/vzakhari/repos",
+      "events_url": "https://api.github.com/users/vzakhari/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/vzakhari/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d53b8291bff4542a9c3e2f1df050deafbe295fff",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/d53b8291bff4542a9c3e2f1df050deafbe295fff",
+        "html_url": "https://github.com/llvm/llvm-project/commit/d53b8291bff4542a9c3e2f1df050deafbe295fff"
+      }
+    ]
+  },
+  {
+    "sha": "d53b8291bff4542a9c3e2f1df050deafbe295fff",
+    "node_id": "C_kwDOBITxeNoAKGQ1M2I4MjkxYmZmNDU0MmE5YzNlMmYxZGYwNTBkZWFmYmUyOTVmZmY",
+    "commit": {
+      "author": {
+        "name": "Simon Pilgrim",
+        "email": "llvm-dev@redking.me.uk",
+        "date": "2024-04-03T21:14:30Z"
+      },
+      "committer": {
+        "name": "Simon Pilgrim",
+        "email": "llvm-dev@redking.me.uk",
+        "date": "2024-04-03T21:27:14Z"
+      },
+      "message": "[VectorCombine][X86] shuffle-of-casts.ll - adjust zext nneg tests to improve costs for testing\n\nImproves SSE vs AVX test results for #87510",
+      "tree": {
+        "sha": "e2a98752fdb57be7dcf991c748033ae32af32ba8",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/e2a98752fdb57be7dcf991c748033ae32af32ba8"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/d53b8291bff4542a9c3e2f1df050deafbe295fff",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/d53b8291bff4542a9c3e2f1df050deafbe295fff",
+    "html_url": "https://github.com/llvm/llvm-project/commit/d53b8291bff4542a9c3e2f1df050deafbe295fff",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/d53b8291bff4542a9c3e2f1df050deafbe295fff/comments",
+    "author": {
+      "login": "RKSimon",
+      "id": 2175834,
+      "node_id": "MDQ6VXNlcjIxNzU4MzQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2175834?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/RKSimon",
+      "html_url": "https://github.com/RKSimon",
+      "followers_url": "https://api.github.com/users/RKSimon/followers",
+      "following_url": "https://api.github.com/users/RKSimon/following{/other_user}",
+      "gists_url": "https://api.github.com/users/RKSimon/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/RKSimon/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/RKSimon/subscriptions",
+      "organizations_url": "https://api.github.com/users/RKSimon/orgs",
+      "repos_url": "https://api.github.com/users/RKSimon/repos",
+      "events_url": "https://api.github.com/users/RKSimon/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/RKSimon/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "RKSimon",
+      "id": 2175834,
+      "node_id": "MDQ6VXNlcjIxNzU4MzQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2175834?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/RKSimon",
+      "html_url": "https://github.com/RKSimon",
+      "followers_url": "https://api.github.com/users/RKSimon/followers",
+      "following_url": "https://api.github.com/users/RKSimon/following{/other_user}",
+      "gists_url": "https://api.github.com/users/RKSimon/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/RKSimon/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/RKSimon/subscriptions",
+      "organizations_url": "https://api.github.com/users/RKSimon/orgs",
+      "repos_url": "https://api.github.com/users/RKSimon/repos",
+      "events_url": "https://api.github.com/users/RKSimon/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/RKSimon/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "42cbceb0f0160d67145723613fda325dbd129308",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/42cbceb0f0160d67145723613fda325dbd129308",
+        "html_url": "https://github.com/llvm/llvm-project/commit/42cbceb0f0160d67145723613fda325dbd129308"
+      }
+    ]
+  },
+  {
+    "sha": "42cbceb0f0160d67145723613fda325dbd129308",
+    "node_id": "C_kwDOBITxeNoAKDQyY2JjZWIwZjAxNjBkNjcxNDU3MjM2MTNmZGEzMjVkYmQxMjkzMDg",
+    "commit": {
+      "author": {
+        "name": "Alexey Bataev",
+        "email": "a.bataev@outlook.com",
+        "date": "2024-04-03T19:58:58Z"
+      },
+      "committer": {
+        "name": "Alexey Bataev",
+        "email": "a.bataev@outlook.com",
+        "date": "2024-04-03T21:18:45Z"
+      },
+      "message": "[SLP]Improve minbitwidth analysis for operands of IToFP and ICmp instructions.\n\nCompiler can improve analysis for operands of UIToFP/SIToFP instructions\nand operands of ICmp instruction.\n\nReviewers: RKSimon\n\nReviewed By: RKSimon\n\nPull Request: https://github.com/llvm/llvm-project/pull/85966",
+      "tree": {
+        "sha": "d92eec8e4ec3f510864f6c82b1bc49ba508df139",
+        "url": "https://api.github.com/repos/llvm/llvm-project/git/trees/d92eec8e4ec3f510864f6c82b1bc49ba508df139"
+      },
+      "url": "https://api.github.com/repos/llvm/llvm-project/git/commits/42cbceb0f0160d67145723613fda325dbd129308",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/llvm/llvm-project/commits/42cbceb0f0160d67145723613fda325dbd129308",
+    "html_url": "https://github.com/llvm/llvm-project/commit/42cbceb0f0160d67145723613fda325dbd129308",
+    "comments_url": "https://api.github.com/repos/llvm/llvm-project/commits/42cbceb0f0160d67145723613fda325dbd129308/comments",
+    "author": {
+      "login": "alexey-bataev",
+      "id": 5361294,
+      "node_id": "MDQ6VXNlcjUzNjEyOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5361294?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/alexey-bataev",
+      "html_url": "https://github.com/alexey-bataev",
+      "followers_url": "https://api.github.com/users/alexey-bataev/followers",
+      "following_url": "https://api.github.com/users/alexey-bataev/following{/other_user}",
+      "gists_url": "https://api.github.com/users/alexey-bataev/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/alexey-bataev/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/alexey-bataev/subscriptions",
+      "organizations_url": "https://api.github.com/users/alexey-bataev/orgs",
+      "repos_url": "https://api.github.com/users/alexey-bataev/repos",
+      "events_url": "https://api.github.com/users/alexey-bataev/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/alexey-bataev/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "alexey-bataev",
+      "id": 5361294,
+      "node_id": "MDQ6VXNlcjUzNjEyOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5361294?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/alexey-bataev",
+      "html_url": "https://github.com/alexey-bataev",
+      "followers_url": "https://api.github.com/users/alexey-bataev/followers",
+      "following_url": "https://api.github.com/users/alexey-bataev/following{/other_user}",
+      "gists_url": "https://api.github.com/users/alexey-bataev/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/alexey-bataev/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/alexey-bataev/subscriptions",
+      "organizations_url": "https://api.github.com/users/alexey-bataev/orgs",
+      "repos_url": "https://api.github.com/users/alexey-bataev/repos",
+      "events_url": "https://api.github.com/users/alexey-bataev/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/alexey-bataev/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3ee93f486293420852fb9ec95af9c5f54cecdb08",
+        "url": "https://api.github.com/repos/llvm/llvm-project/commits/3ee93f486293420852fb9ec95af9c5f54cecdb08",
+        "html_url": "https://github.com/llvm/llvm-project/commit/3ee93f486293420852fb9ec95af9c5f54cecdb08"
+      }
+    ]
+  }
+]

@@ -1,0 +1,2412 @@
+[
+  {
+    "sha": "34862063d05909fab35c44db1b96995d64854765",
+    "node_id": "C_kwDOAA4bh9oAKDM0ODYyMDYzZDA1OTA5ZmFiMzVjNDRkYjFiOTY5OTVkNjQ4NTQ3NjU",
+    "commit": {
+      "author": {
+        "name": "David Ansari",
+        "email": "david.ansari@gmx.de",
+        "date": "2024-04-03T17:00:33Z"
+      },
+      "committer": {
+        "name": "David Ansari",
+        "email": "david.ansari@gmx.de",
+        "date": "2024-04-03T17:14:35Z"
+      },
+      "message": "Skip flaky mixed version test\n\n```\nbazel test //deps/rabbit:amqp_client_SUITE-mixed -t- --test_sharding_strategy=disabled --test_env FOCUS=\"-group [cluster_size_3] -case async_notify_unsettled_classic_queue\" --config=rbe-26 --runs_per_test=40\n```\nwas failing 8 out of 40 times.\n\nSkip this test as we know that link flow control with classic queues is\nbroken in 3.13:\nhttps://github.com/rabbitmq/rabbitmq-server/issues/2597\n\nCredit API v2 in RabbitMQ 4.0 fixes this bug.",
+      "tree": {
+        "sha": "86ff050d09dbe4c2d5dd5b850d2d322ef27a44cd",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/86ff050d09dbe4c2d5dd5b850d2d322ef27a44cd"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/34862063d05909fab35c44db1b96995d64854765",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/34862063d05909fab35c44db1b96995d64854765",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/34862063d05909fab35c44db1b96995d64854765",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/34862063d05909fab35c44db1b96995d64854765/comments",
+    "author": {
+      "login": "ansd",
+      "id": 12648310,
+      "node_id": "MDQ6VXNlcjEyNjQ4MzEw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12648310?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ansd",
+      "html_url": "https://github.com/ansd",
+      "followers_url": "https://api.github.com/users/ansd/followers",
+      "following_url": "https://api.github.com/users/ansd/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ansd/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ansd/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ansd/subscriptions",
+      "organizations_url": "https://api.github.com/users/ansd/orgs",
+      "repos_url": "https://api.github.com/users/ansd/repos",
+      "events_url": "https://api.github.com/users/ansd/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ansd/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ansd",
+      "id": 12648310,
+      "node_id": "MDQ6VXNlcjEyNjQ4MzEw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12648310?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ansd",
+      "html_url": "https://github.com/ansd",
+      "followers_url": "https://api.github.com/users/ansd/followers",
+      "following_url": "https://api.github.com/users/ansd/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ansd/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ansd/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ansd/subscriptions",
+      "organizations_url": "https://api.github.com/users/ansd/orgs",
+      "repos_url": "https://api.github.com/users/ansd/repos",
+      "events_url": "https://api.github.com/users/ansd/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ansd/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2815c71f86fac2cc32e13a8ed13977eca523628a",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/2815c71f86fac2cc32e13a8ed13977eca523628a",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/2815c71f86fac2cc32e13a8ed13977eca523628a"
+      }
+    ]
+  },
+  {
+    "sha": "2815c71f86fac2cc32e13a8ed13977eca523628a",
+    "node_id": "C_kwDOAA4bh9oAKDI4MTVjNzFmODZmYWMyY2MzMmUxM2E4ZWQxMzk3N2VjYTUyMzYyOGE",
+    "commit": {
+      "author": {
+        "name": "David Ansari",
+        "email": "david.ansari@gmx.de",
+        "date": "2024-04-03T13:47:01Z"
+      },
+      "committer": {
+        "name": "David Ansari",
+        "email": "david.ansari@gmx.de",
+        "date": "2024-04-03T15:51:53Z"
+      },
+      "message": "Skip test assertion\n\nNot only are quorum queues wrongly implemented, but also classic queues\nwhen draining in 3.13.\n\nLike quorum queues, classsic queues reply with a send_drained event\nbefore delivering the message(s).\n\nTherefore, we have to skip the drain test in such mixed version\nclusters where the leader runs on the old (3.13.1) node.\n\nThe new 4.0 implementation with credit API v2 fixes this bug.",
+      "tree": {
+        "sha": "5fd7cc297b4263dfc8a752de1554174e2003b07b",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/5fd7cc297b4263dfc8a752de1554174e2003b07b"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/2815c71f86fac2cc32e13a8ed13977eca523628a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/2815c71f86fac2cc32e13a8ed13977eca523628a",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/2815c71f86fac2cc32e13a8ed13977eca523628a",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/2815c71f86fac2cc32e13a8ed13977eca523628a/comments",
+    "author": {
+      "login": "ansd",
+      "id": 12648310,
+      "node_id": "MDQ6VXNlcjEyNjQ4MzEw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12648310?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ansd",
+      "html_url": "https://github.com/ansd",
+      "followers_url": "https://api.github.com/users/ansd/followers",
+      "following_url": "https://api.github.com/users/ansd/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ansd/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ansd/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ansd/subscriptions",
+      "organizations_url": "https://api.github.com/users/ansd/orgs",
+      "repos_url": "https://api.github.com/users/ansd/repos",
+      "events_url": "https://api.github.com/users/ansd/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ansd/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ansd",
+      "id": 12648310,
+      "node_id": "MDQ6VXNlcjEyNjQ4MzEw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12648310?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ansd",
+      "html_url": "https://github.com/ansd",
+      "followers_url": "https://api.github.com/users/ansd/followers",
+      "following_url": "https://api.github.com/users/ansd/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ansd/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ansd/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ansd/subscriptions",
+      "organizations_url": "https://api.github.com/users/ansd/orgs",
+      "repos_url": "https://api.github.com/users/ansd/repos",
+      "events_url": "https://api.github.com/users/ansd/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ansd/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "65c8456f2c2772f45dab6d8ff865398b1108b273",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/65c8456f2c2772f45dab6d8ff865398b1108b273",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/65c8456f2c2772f45dab6d8ff865398b1108b273"
+      }
+    ]
+  },
+  {
+    "sha": "65c8456f2c2772f45dab6d8ff865398b1108b273",
+    "node_id": "C_kwDOAA4bh9oAKDY1Yzg0NTZmMmMyNzcyZjQ1ZGFiNmQ4ZmY4NjUzOThiMTEwOGIyNzM",
+    "commit": {
+      "author": {
+        "name": "David Ansari",
+        "email": "david.ansari@gmx.de",
+        "date": "2024-04-03T10:32:58Z"
+      },
+      "committer": {
+        "name": "David Ansari",
+        "email": "david.ansari@gmx.de",
+        "date": "2024-04-03T15:51:53Z"
+      },
+      "message": "Fix failing mixed version test\n\nPrior to this commit, mixed version test classic_queue_on_old_node\nof amqp_client_SUITE was failing.\n\nCommit https://github.com/rabbitmq/rabbitmq-server/pull/9022/commits/02c29ac1c026472b8fe31f0d8a31c2a74912346f\nmust make sure that the new (4.0) AMQP 1.0 classic queue client\ncontinues to convey RabbitMQ internal credit flow control information\nback to the old (3.13.1) classic queue server.\n\nOtherwise, the old classic queue server will stop sending more messages\nto the new classic queue client after exactly 200 messages, which caused\nthis mixed version test to fail.",
+      "tree": {
+        "sha": "d465f3b65b58fb860e8c13b404d867759525472c",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/d465f3b65b58fb860e8c13b404d867759525472c"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/65c8456f2c2772f45dab6d8ff865398b1108b273",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/65c8456f2c2772f45dab6d8ff865398b1108b273",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/65c8456f2c2772f45dab6d8ff865398b1108b273",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/65c8456f2c2772f45dab6d8ff865398b1108b273/comments",
+    "author": {
+      "login": "ansd",
+      "id": 12648310,
+      "node_id": "MDQ6VXNlcjEyNjQ4MzEw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12648310?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ansd",
+      "html_url": "https://github.com/ansd",
+      "followers_url": "https://api.github.com/users/ansd/followers",
+      "following_url": "https://api.github.com/users/ansd/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ansd/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ansd/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ansd/subscriptions",
+      "organizations_url": "https://api.github.com/users/ansd/orgs",
+      "repos_url": "https://api.github.com/users/ansd/repos",
+      "events_url": "https://api.github.com/users/ansd/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ansd/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ansd",
+      "id": 12648310,
+      "node_id": "MDQ6VXNlcjEyNjQ4MzEw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12648310?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ansd",
+      "html_url": "https://github.com/ansd",
+      "followers_url": "https://api.github.com/users/ansd/followers",
+      "following_url": "https://api.github.com/users/ansd/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ansd/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ansd/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ansd/subscriptions",
+      "organizations_url": "https://api.github.com/users/ansd/orgs",
+      "repos_url": "https://api.github.com/users/ansd/repos",
+      "events_url": "https://api.github.com/users/ansd/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ansd/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "697ffc2b1a30173e2be1202e9a5d41c125ae097d",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/697ffc2b1a30173e2be1202e9a5d41c125ae097d",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/697ffc2b1a30173e2be1202e9a5d41c125ae097d"
+      }
+    ]
+  },
+  {
+    "sha": "697ffc2b1a30173e2be1202e9a5d41c125ae097d",
+    "node_id": "C_kwDOAA4bh9oAKDY5N2ZmYzJiMWEzMDE3M2UyYmUxMjAyZTlhNWQ0MWMxMjVhZTA5N2Q",
+    "commit": {
+      "author": {
+        "name": "David Ansari",
+        "email": "david.ansari@gmx.de",
+        "date": "2024-02-27T16:43:39Z"
+      },
+      "committer": {
+        "name": "David Ansari",
+        "email": "david.ansari@gmx.de",
+        "date": "2024-04-03T15:51:53Z"
+      },
+      "message": "Use 3.13.1 as secondary umbrella\n\nfor mixed version tests",
+      "tree": {
+        "sha": "6e60e80d3095e9390a2d48429562c43089f96ad1",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/6e60e80d3095e9390a2d48429562c43089f96ad1"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/697ffc2b1a30173e2be1202e9a5d41c125ae097d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/697ffc2b1a30173e2be1202e9a5d41c125ae097d",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/697ffc2b1a30173e2be1202e9a5d41c125ae097d",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/697ffc2b1a30173e2be1202e9a5d41c125ae097d/comments",
+    "author": {
+      "login": "ansd",
+      "id": 12648310,
+      "node_id": "MDQ6VXNlcjEyNjQ4MzEw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12648310?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ansd",
+      "html_url": "https://github.com/ansd",
+      "followers_url": "https://api.github.com/users/ansd/followers",
+      "following_url": "https://api.github.com/users/ansd/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ansd/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ansd/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ansd/subscriptions",
+      "organizations_url": "https://api.github.com/users/ansd/orgs",
+      "repos_url": "https://api.github.com/users/ansd/repos",
+      "events_url": "https://api.github.com/users/ansd/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ansd/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ansd",
+      "id": 12648310,
+      "node_id": "MDQ6VXNlcjEyNjQ4MzEw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12648310?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ansd",
+      "html_url": "https://github.com/ansd",
+      "followers_url": "https://api.github.com/users/ansd/followers",
+      "following_url": "https://api.github.com/users/ansd/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ansd/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ansd/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ansd/subscriptions",
+      "organizations_url": "https://api.github.com/users/ansd/orgs",
+      "repos_url": "https://api.github.com/users/ansd/repos",
+      "events_url": "https://api.github.com/users/ansd/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ansd/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c9ab302e79b1e56e2c89405bab0e0cb90b4555e6",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/c9ab302e79b1e56e2c89405bab0e0cb90b4555e6",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/c9ab302e79b1e56e2c89405bab0e0cb90b4555e6"
+      }
+    ]
+  },
+  {
+    "sha": "c9ab302e79b1e56e2c89405bab0e0cb90b4555e6",
+    "node_id": "C_kwDOAA4bh9oAKGM5YWIzMDJlNzliMWU1NmUyYzg5NDA1YmFiMGUwY2I5MGI0NTU1ZTY",
+    "commit": {
+      "author": {
+        "name": "Rin Kuryloski",
+        "email": "rin.kuryloski@broadcom.com",
+        "date": "2024-04-02T17:04:38Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-02T17:04:38Z"
+      },
+      "message": "Remove rules_docker in favor of rules_oci (#10869)\n\nLocal builds of images are extremely slow, but buildbuddy runners\r\ndon't have the emulator available",
+      "tree": {
+        "sha": "0bfefcd23da1f0e1e6f7d318643c9d2eb20b18e8",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/0bfefcd23da1f0e1e6f7d318643c9d2eb20b18e8"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/c9ab302e79b1e56e2c89405bab0e0cb90b4555e6",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmDDqmCRC1aQ7uu5UhlAAAmw4QACl+Gs7R6ig4thEde8RODax7\nxcHOTeqjqRuUIqPowq7C/B8UH0JQGMgujoMoMbA3myW1csMffL7ZGlTFhCEe3vr6\nYiUSe4bfZgrIlWkrNYRhaaYH4SPluDsHbogRO9EDhSa2mU5sRm4NKBjkhKFxKqMk\n/Q6facsIPe8NLDZJQi+sJ7qKOpbD7gBZGTs3eZytpydFSQuzWA9EFrUUl992Y6+e\n5GfDQQMtQY9b1BsMB1jlBA4NNpPFo6tWCrlA1Y7qIhiJG8WIOVQA58X35HvXTFB/\nx9qiSKLpdHF+bq1xMAdZ8EsCzmD/duCTzBEBwcdhbFBkDFxyJgqqJkkGVk53hR2c\nnj6ENwe+2n0rr0jOSWmVNznGE0TKHYzxBKfnXsq2ci6d4M/FfNA7f4EO5j+YDNVk\n8VsXp9obBxUfMjmQyONU6fFQ4NvIAp1RI1LcgMLWfPF/z0W0aewArDQYrdxX5I8z\nlWV1s7ZTcYyo+9CvblS2wt1/azdtGjEzBoLxzyGtuZl7yXP1hnd4fFdaJ8WhVxQC\nlHvxNzfLSw9lTMGANQKbKtZEaKuokBfKbLk6IZN9JA0AT466jCDCKftCB4mJnqC6\nvPCIgN7eVefIgzx0zQfkXqVl2cO6bS2MasXgKsnZf9WLGpddWo0UflXqtJulHzuo\n6ZFL5FVxD79+nsqVC+Yh\n=p5au\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 0bfefcd23da1f0e1e6f7d318643c9d2eb20b18e8\nparent a81f40966a6cf4b94fa0d9b95412c6c99f7002a1\nauthor Rin Kuryloski <rin.kuryloski@broadcom.com> 1712077478 +0200\ncommitter GitHub <noreply@github.com> 1712077478 +0200\n\nRemove rules_docker in favor of rules_oci (#10869)\n\nLocal builds of images are extremely slow, but buildbuddy runners\r\ndon't have the emulator available"
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/c9ab302e79b1e56e2c89405bab0e0cb90b4555e6",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/c9ab302e79b1e56e2c89405bab0e0cb90b4555e6",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/c9ab302e79b1e56e2c89405bab0e0cb90b4555e6/comments",
+    "author": {
+      "login": "pjk25",
+      "id": 217064,
+      "node_id": "MDQ6VXNlcjIxNzA2NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/217064?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/pjk25",
+      "html_url": "https://github.com/pjk25",
+      "followers_url": "https://api.github.com/users/pjk25/followers",
+      "following_url": "https://api.github.com/users/pjk25/following{/other_user}",
+      "gists_url": "https://api.github.com/users/pjk25/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/pjk25/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/pjk25/subscriptions",
+      "organizations_url": "https://api.github.com/users/pjk25/orgs",
+      "repos_url": "https://api.github.com/users/pjk25/repos",
+      "events_url": "https://api.github.com/users/pjk25/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/pjk25/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a81f40966a6cf4b94fa0d9b95412c6c99f7002a1",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/a81f40966a6cf4b94fa0d9b95412c6c99f7002a1",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/a81f40966a6cf4b94fa0d9b95412c6c99f7002a1"
+      }
+    ]
+  },
+  {
+    "sha": "a81f40966a6cf4b94fa0d9b95412c6c99f7002a1",
+    "node_id": "C_kwDOAA4bh9oAKGE4MWY0MDk2NmE2Y2Y0Yjk0ZmEwZDliOTU0MTJjNmM5OWY3MDAyYTE",
+    "commit": {
+      "author": {
+        "name": "Arnaud Cogoluègnes",
+        "email": "acogoluegnes@gmail.com",
+        "date": "2024-04-02T16:09:23Z"
+      },
+      "committer": {
+        "name": "Arnaud Cogoluègnes",
+        "email": "acogoluegnes@gmail.com",
+        "date": "2024-04-02T16:09:23Z"
+      },
+      "message": "Remove stream resource section\n\nFiles are no longer available.",
+      "tree": {
+        "sha": "ac95ee8a115ef49b7f653c4aa099d0a7790cfc97",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/ac95ee8a115ef49b7f653c4aa099d0a7790cfc97"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/a81f40966a6cf4b94fa0d9b95412c6c99f7002a1",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQJLBAABCgA1FiEEgf0ah1/QGz9hb0ce1cjE361Dr6gFAmYMLcEXHGFjb2dvbHVl\nZ25lc0BnbWFpbC5jb20ACgkQ1cjE361Dr6jSlg//Za3NVaDqBMP6DXzJVKGPvvGS\nEmnJxledyj2qeerXVcJwbiA5rf/CeYg9cPOaU2sYKMctJ7XRt87hNOWJvLoAOYv9\nuSmGiBGm+mhqcUfvhxigw5h0awjSeWsM7WJ2YzWPTur8wtHO38L0eMprMMDbw33P\ng+7KPA+yLsJd6Blgnn9fMCkb7taSk4K04x026ls49Z3JUghKP60t+k6095JRWgLz\nA+vezkR3OQkpIJj45mzlqhx2UdDFxS/kI9Ueor+KiVNCDRQF1wSRJzS3lhJT6yJl\nupHmVn8UzA0BBo/9YUy4+HEx3RU0GCtnCcJ27pNIidUhlOiAP3TV9OiNoxweIrpz\nrAWY7XFZ9N8pYp2WyHdwsM12VBVI7xYI2x5cr/Ffzyxb8clxCKg+j5Er2M+yiBf4\nz0/rXWr6FXMIwJgtDCKbnPXfmS8cjj5vdVXYatMrcTPJ3F6rWtadJ+4lYNlRIVYu\nVnpU0YhNeBKCh6Id/olP8vCioDr+I8de/wiAGZSf6Jc/9s6LYMXwHRl/u5efQY6L\nWUbsJQgFKOLlUunC3yIWLb1InxrGnfCGiKd/WgGD9ja7CFvmFrtQvN0mryecQWkR\nNJ6MReFooqHTRXNEeqKrOvUj6AO0UmNAnt3SlSF+VsRCaIqBKSPIngLet6GSLRd+\nzRsAbpC+mdTTM52TVqE=\n=swfy\n-----END PGP SIGNATURE-----",
+        "payload": "tree ac95ee8a115ef49b7f653c4aa099d0a7790cfc97\nparent e4da70da362dfef50128c30166365da3e238335d\nauthor Arnaud Cogoluègnes <acogoluegnes@gmail.com> 1712074163 +0200\ncommitter Arnaud Cogoluègnes <acogoluegnes@gmail.com> 1712074163 +0200\n\nRemove stream resource section\n\nFiles are no longer available.\n"
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/a81f40966a6cf4b94fa0d9b95412c6c99f7002a1",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/a81f40966a6cf4b94fa0d9b95412c6c99f7002a1",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/a81f40966a6cf4b94fa0d9b95412c6c99f7002a1/comments",
+    "author": {
+      "login": "acogoluegnes",
+      "id": 514737,
+      "node_id": "MDQ6VXNlcjUxNDczNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/514737?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/acogoluegnes",
+      "html_url": "https://github.com/acogoluegnes",
+      "followers_url": "https://api.github.com/users/acogoluegnes/followers",
+      "following_url": "https://api.github.com/users/acogoluegnes/following{/other_user}",
+      "gists_url": "https://api.github.com/users/acogoluegnes/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/acogoluegnes/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/acogoluegnes/subscriptions",
+      "organizations_url": "https://api.github.com/users/acogoluegnes/orgs",
+      "repos_url": "https://api.github.com/users/acogoluegnes/repos",
+      "events_url": "https://api.github.com/users/acogoluegnes/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/acogoluegnes/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "acogoluegnes",
+      "id": 514737,
+      "node_id": "MDQ6VXNlcjUxNDczNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/514737?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/acogoluegnes",
+      "html_url": "https://github.com/acogoluegnes",
+      "followers_url": "https://api.github.com/users/acogoluegnes/followers",
+      "following_url": "https://api.github.com/users/acogoluegnes/following{/other_user}",
+      "gists_url": "https://api.github.com/users/acogoluegnes/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/acogoluegnes/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/acogoluegnes/subscriptions",
+      "organizations_url": "https://api.github.com/users/acogoluegnes/orgs",
+      "repos_url": "https://api.github.com/users/acogoluegnes/repos",
+      "events_url": "https://api.github.com/users/acogoluegnes/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/acogoluegnes/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e4da70da362dfef50128c30166365da3e238335d",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/e4da70da362dfef50128c30166365da3e238335d",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/e4da70da362dfef50128c30166365da3e238335d"
+      }
+    ]
+  },
+  {
+    "sha": "e4da70da362dfef50128c30166365da3e238335d",
+    "node_id": "C_kwDOAA4bh9oAKGU0ZGE3MGRhMzYyZGZlZjUwMTI4YzMwMTY2MzY1ZGEzZTIzODMzNWQ",
+    "commit": {
+      "author": {
+        "name": "Michael Klishin",
+        "email": "klishinm@vmware.com",
+        "date": "2024-04-02T05:14:44Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-02T05:14:44Z"
+      },
+      "message": "Merge pull request #10896 from rabbitmq/tomyouyou-rabbitmq_put_vhost\n\nBe more defensive when importing definitions where some virtual hosts do not have a default queue type",
+      "tree": {
+        "sha": "8dad08ae1f74b7678f2a65689856af438742b672",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/8dad08ae1f74b7678f2a65689856af438742b672"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/e4da70da362dfef50128c30166365da3e238335d",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmC5RECRC1aQ7uu5UhlAAAfEQQAIYf8+nfnlEfP5IRsVExQOWi\nn5bq57k/k/KQcFbfhImaEAGqLXlwF4Zpm4EQKAtbdw13X2wKS//xkrUY69YrD2jm\nbUVzUmbfPXHgtevMwLPYkMmPo03NNVvhUQojpzKUpSVrN9k0Gc74q1ng9VPoU8NJ\n4WgsDXUdwotKa469eMVkHUQMb4nKSkU0ny/4RjomR3gmN+FYESSeTu/5jtSdji6R\nFdMaZt26Z6g54FZ79GhFRg2bygaUsaCYAz9xnYZqdY9r11eMZC4CWUuJLpgFMvXq\nwmMVh2oFChUrvSlLtIF2B/y6DSIOgX1h+l9t+R1XKkoFLRwAgLao85ouaBf/Ayhd\nCNboKmOuzqrslXCkpT1mXVMwMqqmjojJQG5IBSrA7JdYmc7WBYzPtja5E/aAG1OT\ndoC6vgBxSaP5iGI4umtLHK95hR6yZglQxEZMH8Y63I75kbMF8+ZB7g7wN9osZmjs\n6tIxKac1xKG0avQOt2SyrrKSFdL21F+L7f1y2Rodqtqf7TBuvNhHefZcsKvut9Bn\nxyclWKLzOXQgDJoHltd3KpLsRiCSmhQs+r9iEO56+m17p85BEath0eUPgGrNuIVp\nf/KZSp6bpRIJz7SPLuLTc33oy8PZVWnwDdiiIVWi/PQbuWTGJKBgEZA5hLvh3fBP\nQvSulJL0fNVE468RHdqk\n=3S/g\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 8dad08ae1f74b7678f2a65689856af438742b672\nparent dd5686ad71c22d5c2ae0a8eb68f796d524d76abc\nparent fb05a5124fd740d24b42d659e2d7e9a3fae5d5e9\nauthor Michael Klishin <klishinm@vmware.com> 1712034884 -0400\ncommitter GitHub <noreply@github.com> 1712034884 -0400\n\nMerge pull request #10896 from rabbitmq/tomyouyou-rabbitmq_put_vhost\n\nBe more defensive when importing definitions where some virtual hosts do not have a default queue type"
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/e4da70da362dfef50128c30166365da3e238335d",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/e4da70da362dfef50128c30166365da3e238335d",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/e4da70da362dfef50128c30166365da3e238335d/comments",
+    "author": {
+      "login": "michaelklishin",
+      "id": 1090,
+      "node_id": "MDQ6VXNlcjEwOTA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1090?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelklishin",
+      "html_url": "https://github.com/michaelklishin",
+      "followers_url": "https://api.github.com/users/michaelklishin/followers",
+      "following_url": "https://api.github.com/users/michaelklishin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelklishin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelklishin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelklishin/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelklishin/orgs",
+      "repos_url": "https://api.github.com/users/michaelklishin/repos",
+      "events_url": "https://api.github.com/users/michaelklishin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelklishin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "dd5686ad71c22d5c2ae0a8eb68f796d524d76abc",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/dd5686ad71c22d5c2ae0a8eb68f796d524d76abc",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/dd5686ad71c22d5c2ae0a8eb68f796d524d76abc"
+      },
+      {
+        "sha": "fb05a5124fd740d24b42d659e2d7e9a3fae5d5e9",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/fb05a5124fd740d24b42d659e2d7e9a3fae5d5e9",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/fb05a5124fd740d24b42d659e2d7e9a3fae5d5e9"
+      }
+    ]
+  },
+  {
+    "sha": "fb05a5124fd740d24b42d659e2d7e9a3fae5d5e9",
+    "node_id": "C_kwDOAA4bh9oAKGZiMDVhNTEyNGZkNzQwZDI0YjQyZDY1OWUyZDdlOWEzZmFlNWQ1ZTk",
+    "commit": {
+      "author": {
+        "name": "Michael Klishin",
+        "email": "michael@clojurewerkz.org",
+        "date": "2024-04-01T18:34:30Z"
+      },
+      "committer": {
+        "name": "Michael Klishin",
+        "email": "michael@clojurewerkz.org",
+        "date": "2024-04-01T18:34:30Z"
+      },
+      "message": "Cosmetics #10891",
+      "tree": {
+        "sha": "8dad08ae1f74b7678f2a65689856af438742b672",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/8dad08ae1f74b7678f2a65689856af438742b672"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/fb05a5124fd740d24b42d659e2d7e9a3fae5d5e9",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/fb05a5124fd740d24b42d659e2d7e9a3fae5d5e9",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/fb05a5124fd740d24b42d659e2d7e9a3fae5d5e9",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/fb05a5124fd740d24b42d659e2d7e9a3fae5d5e9/comments",
+    "author": {
+      "login": "michaelklishin",
+      "id": 1090,
+      "node_id": "MDQ6VXNlcjEwOTA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1090?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelklishin",
+      "html_url": "https://github.com/michaelklishin",
+      "followers_url": "https://api.github.com/users/michaelklishin/followers",
+      "following_url": "https://api.github.com/users/michaelklishin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelklishin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelklishin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelklishin/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelklishin/orgs",
+      "repos_url": "https://api.github.com/users/michaelklishin/repos",
+      "events_url": "https://api.github.com/users/michaelklishin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelklishin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "michaelklishin",
+      "id": 1090,
+      "node_id": "MDQ6VXNlcjEwOTA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1090?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelklishin",
+      "html_url": "https://github.com/michaelklishin",
+      "followers_url": "https://api.github.com/users/michaelklishin/followers",
+      "following_url": "https://api.github.com/users/michaelklishin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelklishin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelklishin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelklishin/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelklishin/orgs",
+      "repos_url": "https://api.github.com/users/michaelklishin/repos",
+      "events_url": "https://api.github.com/users/michaelklishin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelklishin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "94701c68b48cb0fbbd4d1a24e7534dfb9105126c",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/94701c68b48cb0fbbd4d1a24e7534dfb9105126c",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/94701c68b48cb0fbbd4d1a24e7534dfb9105126c"
+      }
+    ]
+  },
+  {
+    "sha": "94701c68b48cb0fbbd4d1a24e7534dfb9105126c",
+    "node_id": "C_kwDOAA4bh9oAKDk0NzAxYzY4YjQ4Y2IwZmJiZDRkMWEyNGU3NTM0ZGZiOTEwNTEyNmM",
+    "commit": {
+      "author": {
+        "name": "tomyouyou",
+        "email": "yxszyn@163.com",
+        "date": "2024-04-01T07:20:06Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-01T07:20:06Z"
+      },
+      "message": "An exception occurred while declaring a queue, after importing definitions\n\nthe version of erlang is erlang-25.3.2.6-1.el8.x86_64.\r\nthe version of rabbitmq-server is rabbitmq-server-3.12.10-1.\r\n\r\nTo reproduce the exception as follows:\r\n1. rabbitmqctl export_definitions def.json\r\n2. rabbitmqctl import_definitions def.json\r\n3. The result of ''rabbit_definitions:list_vhosts()' is:\r\n[root@c1 ssl]#  rabbitmqctl eval 'rabbit_definitions:list_vhosts().'\r\n[#{<<\"limits\">> => [],\r\n   <<\"metadata\">> =>\r\n       #{default_queue_type => undefined,\r\n         description => <<\"Default virtual host\">>,tags => []},\r\n   <<\"name\">> => <<\"/\">>}\r\n\r\n4. rabbitmqctl export_definitions def.json\r\n5. rabbitmqctl import_definitions def.json\r\n6. The result of ''rabbit_definitions:list_vhosts()' is:\r\n[root@c1 ssl]#  rabbitmqctl eval 'rabbit_definitions:list_vhosts().'\r\n[#{<<\"limits\">> => [],\r\n   <<\"metadata\">> =>\r\n       #{default_queue_type => <<\"undefined\">>,\r\n         description => <<\"Default virtual host\">>,tags => []},\r\n   <<\"name\">> => <<\"/\">>}\r\n7. Declare a queue and an exception will appear, as shown below:\r\n2024-03-29 17:38:09.696 [error] <0.1441.0> ** Generic server <0.1441.0> terminating, ** Last message in was {'$gen_cast', {method, {'queue.declare',0,<<\"q12\">>,false,false, false,false,false,[]}, none,noflow}}, ** When Server state == {ch, {conf,running,rabbit_framing_amqp_0_9_1,1, <0.1432.0>,<0.1439.0>,<0.1432.0>, <<\"10.225.80.5:40388 -> 10.225.80.5:5673\">>, undefined, {user,<<\"guest\">>, [administrator], [{rabbit_auth_backend_internal, #Fun<rabbit_auth_backend_internal.3.2577553>}]}, <<\"/\">>,<<>>,<0.1433.0>, [{<<\"authentication_failure_close\">>,bool,true}, {<<\"basic.nack\">>,bool,true}, {<<\"connection.blocked\">>,bool,true}, {<<\"consumer_cancel_notify\">>,bool,true}, {<<\"publisher_confirms\">>,bool,true}], none,0,134217728,1800000,#{},1000000000,false}, {lstate,<0.1440.0>,false}, none,1, {0,[],[]}, {state,#{},erlang}, #{},#{}, {state,fine,30000, #Ref<0.3663679405.4218945538.136240>}, true,1, {rabbit_confirms,undefined,#{}}, [],[],none,flow,[], {rabbit_queue_type,#{}}, #Ref<0.3663679405.4218945537.194739>,false, {erlang,#Ref<0.3663679405.4218945537.194740>}, \"none\",false}, ** Reason for termination == , ** {function_clause, [{rabbit_queue_type,discover, [<<\"undefined\">>], [{file,\"rabbit_queue_type.erl\"},{line,225}]}, {rabbit_amqqueue,augment_declare_args,5, [{file,\"rabbit_amqqueue.erl\"},{line,804}]}, {rabbit_channel,handle_method,6, [{file,\"rabbit_channel.erl\"},{line,2762}]}, {rabbit_channel,handle_method,3, [{file,\"rabbit_channel.erl\"},{line,1828}]}, {rabbit_channel,handle_cast,2, [{file,\"rabbit_channel.erl\"},{line,728}]}, {gen_server2,handle_msg,2,[{file,\"gen_server2.erl\"},{line,1056}]}, {proc_lib,init_p_do_apply,3,[{file,\"proc_lib.erl\"},{line,240}]}]},",
+      "tree": {
+        "sha": "a04d12e1e0b62403de032f2d561d5f29e355c343",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/a04d12e1e0b62403de032f2d561d5f29e355c343"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/94701c68b48cb0fbbd4d1a24e7534dfb9105126c",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmCmAmCRC1aQ7uu5UhlAAAzc8QAEZHeh0U2WQskoJgpUOMqou6\nzOUwOH0DGb65g50gWot98yqJvLkjEyDFO0SdORM+bJjBKJTtgPZOr4DU2rM47ijj\nQO6hVZ0/mUqyz18ToHq3VSdl4jIe7GyyXn2wJJdSqSuEgUid5ejhCx6abFe+gAhg\nqUQ9qbWuj32TC0b0DYBfFEckV+EL2yfJ4QuwA/47Z6c/Kz3s5jXCUFayH29+rmXV\nN+fhedIktQjVZH5rCixJ/9vTjCPmXBLHU29dHsdOlfiG6haSehdraInxJVX452Ow\nMddFCFPVfWyIte8aH3/FtFhmNWuH2QqopFYfEZJcYx+nCEiB6/lFqQ8cstj3d12+\nIx3zj2GUXHEsyUP1SZkPV23C5qGlXZGtaNOT7vJvXyL5kxtVbsCevR1YyRINUJX6\nrvQVeQgpPUjWxhP9R2GMM4vsQ6v8gNe8cmk3QrhnyJmp8/rXKWEPQ3Q//38i/BY1\ng5a9DiFwhNQnXjFnatz8OceDrcXdLehVMd4Wds9+w6YwiRqQJ2+tuob++70hJjCK\nVlIA/Mla9OoCGxZdYHbkIrFH9dyQ7zm0BPiG+ujd0N6OYsCYb6tBg+N1M0RgKw3Y\nE35WC1/pmYGZYXeIURYz9/TOR6KcT+WLQFzRdNC0vJWdfZZ9nlksSbsFyQUtvccU\nZdGX2y4ufhYIMuzccVcx\n=fPoz\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree a04d12e1e0b62403de032f2d561d5f29e355c343\nparent dd5686ad71c22d5c2ae0a8eb68f796d524d76abc\nauthor tomyouyou <yxszyn@163.com> 1711956006 +0800\ncommitter GitHub <noreply@github.com> 1711956006 +0800\n\nAn exception occurred while declaring a queue, after importing definitions\n\nthe version of erlang is erlang-25.3.2.6-1.el8.x86_64.\r\nthe version of rabbitmq-server is rabbitmq-server-3.12.10-1.\r\n\r\nTo reproduce the exception as follows:\r\n1. rabbitmqctl export_definitions def.json\r\n2. rabbitmqctl import_definitions def.json\r\n3. The result of ''rabbit_definitions:list_vhosts()' is:\r\n[root@c1 ssl]#  rabbitmqctl eval 'rabbit_definitions:list_vhosts().'\r\n[#{<<\"limits\">> => [],\r\n   <<\"metadata\">> =>\r\n       #{default_queue_type => undefined,\r\n         description => <<\"Default virtual host\">>,tags => []},\r\n   <<\"name\">> => <<\"/\">>}\r\n\r\n4. rabbitmqctl export_definitions def.json\r\n5. rabbitmqctl import_definitions def.json\r\n6. The result of ''rabbit_definitions:list_vhosts()' is:\r\n[root@c1 ssl]#  rabbitmqctl eval 'rabbit_definitions:list_vhosts().'\r\n[#{<<\"limits\">> => [],\r\n   <<\"metadata\">> =>\r\n       #{default_queue_type => <<\"undefined\">>,\r\n         description => <<\"Default virtual host\">>,tags => []},\r\n   <<\"name\">> => <<\"/\">>}\r\n7. Declare a queue and an exception will appear, as shown below:\r\n2024-03-29 17:38:09.696 [error] <0.1441.0> ** Generic server <0.1441.0> terminating, ** Last message in was {'$gen_cast', {method, {'queue.declare',0,<<\"q12\">>,false,false, false,false,false,[]}, none,noflow}}, ** When Server state == {ch, {conf,running,rabbit_framing_amqp_0_9_1,1, <0.1432.0>,<0.1439.0>,<0.1432.0>, <<\"10.225.80.5:40388 -> 10.225.80.5:5673\">>, undefined, {user,<<\"guest\">>, [administrator], [{rabbit_auth_backend_internal, #Fun<rabbit_auth_backend_internal.3.2577553>}]}, <<\"/\">>,<<>>,<0.1433.0>, [{<<\"authentication_failure_close\">>,bool,true}, {<<\"basic.nack\">>,bool,true}, {<<\"connection.blocked\">>,bool,true}, {<<\"consumer_cancel_notify\">>,bool,true}, {<<\"publisher_confirms\">>,bool,true}], none,0,134217728,1800000,#{},1000000000,false}, {lstate,<0.1440.0>,false}, none,1, {0,[],[]}, {state,#{},erlang}, #{},#{}, {state,fine,30000, #Ref<0.3663679405.4218945538.136240>}, true,1, {rabbit_confirms,undefined,#{}}, [],[],none,flow,[], {rabbit_queue_type,#{}}, #Ref<0.3663679405.4218945537.194739>,false, {erlang,#Ref<0.3663679405.4218945537.194740>}, \"none\",false}, ** Reason for termination == , ** {function_clause, [{rabbit_queue_type,discover, [<<\"undefined\">>], [{file,\"rabbit_queue_type.erl\"},{line,225}]}, {rabbit_amqqueue,augment_declare_args,5, [{file,\"rabbit_amqqueue.erl\"},{line,804}]}, {rabbit_channel,handle_method,6, [{file,\"rabbit_channel.erl\"},{line,2762}]}, {rabbit_channel,handle_method,3, [{file,\"rabbit_channel.erl\"},{line,1828}]}, {rabbit_channel,handle_cast,2, [{file,\"rabbit_channel.erl\"},{line,728}]}, {gen_server2,handle_msg,2,[{file,\"gen_server2.erl\"},{line,1056}]}, {proc_lib,init_p_do_apply,3,[{file,\"proc_lib.erl\"},{line,240}]}]},"
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/94701c68b48cb0fbbd4d1a24e7534dfb9105126c",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/94701c68b48cb0fbbd4d1a24e7534dfb9105126c",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/94701c68b48cb0fbbd4d1a24e7534dfb9105126c/comments",
+    "author": {
+      "login": "tomyouyou",
+      "id": 16316838,
+      "node_id": "MDQ6VXNlcjE2MzE2ODM4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16316838?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tomyouyou",
+      "html_url": "https://github.com/tomyouyou",
+      "followers_url": "https://api.github.com/users/tomyouyou/followers",
+      "following_url": "https://api.github.com/users/tomyouyou/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tomyouyou/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tomyouyou/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tomyouyou/subscriptions",
+      "organizations_url": "https://api.github.com/users/tomyouyou/orgs",
+      "repos_url": "https://api.github.com/users/tomyouyou/repos",
+      "events_url": "https://api.github.com/users/tomyouyou/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tomyouyou/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "dd5686ad71c22d5c2ae0a8eb68f796d524d76abc",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/dd5686ad71c22d5c2ae0a8eb68f796d524d76abc",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/dd5686ad71c22d5c2ae0a8eb68f796d524d76abc"
+      }
+    ]
+  },
+  {
+    "sha": "dd5686ad71c22d5c2ae0a8eb68f796d524d76abc",
+    "node_id": "C_kwDOAA4bh9oAKGRkNTY4NmFkNzFjMjJkNWMyYWUwYThlYjY4Zjc5NmQ1MjRkNzZhYmM",
+    "commit": {
+      "author": {
+        "name": "Michael Klishin",
+        "email": "michael@clojurewerkz.org",
+        "date": "2024-03-31T22:35:02Z"
+      },
+      "committer": {
+        "name": "Michael Klishin",
+        "email": "michael@clojurewerkz.org",
+        "date": "2024-03-31T22:35:02Z"
+      },
+      "message": "3.13.0 release notes: use new style rabbitmq.com doc guide paths",
+      "tree": {
+        "sha": "3687a6e8a48ae92c1e87911ad3315aa6c10c0aba",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/3687a6e8a48ae92c1e87911ad3315aa6c10c0aba"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/dd5686ad71c22d5c2ae0a8eb68f796d524d76abc",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/dd5686ad71c22d5c2ae0a8eb68f796d524d76abc",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/dd5686ad71c22d5c2ae0a8eb68f796d524d76abc",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/dd5686ad71c22d5c2ae0a8eb68f796d524d76abc/comments",
+    "author": {
+      "login": "michaelklishin",
+      "id": 1090,
+      "node_id": "MDQ6VXNlcjEwOTA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1090?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelklishin",
+      "html_url": "https://github.com/michaelklishin",
+      "followers_url": "https://api.github.com/users/michaelklishin/followers",
+      "following_url": "https://api.github.com/users/michaelklishin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelklishin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelklishin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelklishin/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelklishin/orgs",
+      "repos_url": "https://api.github.com/users/michaelklishin/repos",
+      "events_url": "https://api.github.com/users/michaelklishin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelklishin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "michaelklishin",
+      "id": 1090,
+      "node_id": "MDQ6VXNlcjEwOTA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1090?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelklishin",
+      "html_url": "https://github.com/michaelklishin",
+      "followers_url": "https://api.github.com/users/michaelklishin/followers",
+      "following_url": "https://api.github.com/users/michaelklishin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelklishin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelklishin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelklishin/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelklishin/orgs",
+      "repos_url": "https://api.github.com/users/michaelklishin/repos",
+      "events_url": "https://api.github.com/users/michaelklishin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelklishin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "499658dd6a1d11b5e90b152b99bc84f69d1a7bb8",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/499658dd6a1d11b5e90b152b99bc84f69d1a7bb8",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/499658dd6a1d11b5e90b152b99bc84f69d1a7bb8"
+      }
+    ]
+  },
+  {
+    "sha": "499658dd6a1d11b5e90b152b99bc84f69d1a7bb8",
+    "node_id": "C_kwDOAA4bh9oAKDQ5OTY1OGRkNmExZDExYjVlOTBiMTUyYjk5YmM4NGY2OWQxYTdiYjg",
+    "commit": {
+      "author": {
+        "name": "Michael Klishin",
+        "email": "michael@clojurewerkz.org",
+        "date": "2024-03-30T22:04:26Z"
+      },
+      "committer": {
+        "name": "Michael Klishin",
+        "email": "michael@clojurewerkz.org",
+        "date": "2024-03-31T22:27:10Z"
+      },
+      "message": "3.13.0 release notes: mention Erlang 26 TLS default changes",
+      "tree": {
+        "sha": "c80f1a5f5ff478d1c7b75c1768b77c4fc9f473a0",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/c80f1a5f5ff478d1c7b75c1768b77c4fc9f473a0"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/499658dd6a1d11b5e90b152b99bc84f69d1a7bb8",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/499658dd6a1d11b5e90b152b99bc84f69d1a7bb8",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/499658dd6a1d11b5e90b152b99bc84f69d1a7bb8",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/499658dd6a1d11b5e90b152b99bc84f69d1a7bb8/comments",
+    "author": {
+      "login": "michaelklishin",
+      "id": 1090,
+      "node_id": "MDQ6VXNlcjEwOTA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1090?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelklishin",
+      "html_url": "https://github.com/michaelklishin",
+      "followers_url": "https://api.github.com/users/michaelklishin/followers",
+      "following_url": "https://api.github.com/users/michaelklishin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelklishin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelklishin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelklishin/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelklishin/orgs",
+      "repos_url": "https://api.github.com/users/michaelklishin/repos",
+      "events_url": "https://api.github.com/users/michaelklishin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelklishin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "michaelklishin",
+      "id": 1090,
+      "node_id": "MDQ6VXNlcjEwOTA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1090?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelklishin",
+      "html_url": "https://github.com/michaelklishin",
+      "followers_url": "https://api.github.com/users/michaelklishin/followers",
+      "following_url": "https://api.github.com/users/michaelklishin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelklishin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelklishin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelklishin/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelklishin/orgs",
+      "repos_url": "https://api.github.com/users/michaelklishin/repos",
+      "events_url": "https://api.github.com/users/michaelklishin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelklishin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "fe77730259b00420b80333bd2bedae8b7400005f",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/fe77730259b00420b80333bd2bedae8b7400005f",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/fe77730259b00420b80333bd2bedae8b7400005f"
+      }
+    ]
+  },
+  {
+    "sha": "fe77730259b00420b80333bd2bedae8b7400005f",
+    "node_id": "C_kwDOAA4bh9oAKGZlNzc3MzAyNTliMDA0MjBiODAzMzNiZDJiZWRhZThiNzQwMDAwNWY",
+    "commit": {
+      "author": {
+        "name": "Michael Klishin",
+        "email": "michael@clojurewerkz.org",
+        "date": "2024-03-29T08:04:44Z"
+      },
+      "committer": {
+        "name": "Michael Klishin",
+        "email": "michael@clojurewerkz.org",
+        "date": "2024-03-29T08:04:44Z"
+      },
+      "message": "3.13.1 release notes: Cowboy was also bumped",
+      "tree": {
+        "sha": "efb1ef052cb98b717679d3af0a24172d950da2e5",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/efb1ef052cb98b717679d3af0a24172d950da2e5"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/fe77730259b00420b80333bd2bedae8b7400005f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/fe77730259b00420b80333bd2bedae8b7400005f",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/fe77730259b00420b80333bd2bedae8b7400005f",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/fe77730259b00420b80333bd2bedae8b7400005f/comments",
+    "author": {
+      "login": "michaelklishin",
+      "id": 1090,
+      "node_id": "MDQ6VXNlcjEwOTA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1090?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelklishin",
+      "html_url": "https://github.com/michaelklishin",
+      "followers_url": "https://api.github.com/users/michaelklishin/followers",
+      "following_url": "https://api.github.com/users/michaelklishin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelklishin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelklishin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelklishin/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelklishin/orgs",
+      "repos_url": "https://api.github.com/users/michaelklishin/repos",
+      "events_url": "https://api.github.com/users/michaelklishin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelklishin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "michaelklishin",
+      "id": 1090,
+      "node_id": "MDQ6VXNlcjEwOTA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1090?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelklishin",
+      "html_url": "https://github.com/michaelklishin",
+      "followers_url": "https://api.github.com/users/michaelklishin/followers",
+      "following_url": "https://api.github.com/users/michaelklishin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelklishin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelklishin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelklishin/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelklishin/orgs",
+      "repos_url": "https://api.github.com/users/michaelklishin/repos",
+      "events_url": "https://api.github.com/users/michaelklishin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelklishin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e9b5bd2155a70340b3b4504fb31268d71f8ebe41",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/e9b5bd2155a70340b3b4504fb31268d71f8ebe41",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/e9b5bd2155a70340b3b4504fb31268d71f8ebe41"
+      }
+    ]
+  },
+  {
+    "sha": "e9b5bd2155a70340b3b4504fb31268d71f8ebe41",
+    "node_id": "C_kwDOAA4bh9oAKGU5YjViZDIxNTVhNzAzNDBiM2I0NTA0ZmIzMTI2OGQ3MWY4ZWJlNDE",
+    "commit": {
+      "author": {
+        "name": "Michael Klishin",
+        "email": "michael@clojurewerkz.org",
+        "date": "2024-03-29T08:00:16Z"
+      },
+      "committer": {
+        "name": "Michael Klishin",
+        "email": "michael@clojurewerkz.org",
+        "date": "2024-03-29T08:00:16Z"
+      },
+      "message": "3.13.1 release notes: add an example for channel_max_per_node",
+      "tree": {
+        "sha": "42885671c14e9b8c3d68203ee455495a72c876b0",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/42885671c14e9b8c3d68203ee455495a72c876b0"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/e9b5bd2155a70340b3b4504fb31268d71f8ebe41",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/e9b5bd2155a70340b3b4504fb31268d71f8ebe41",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/e9b5bd2155a70340b3b4504fb31268d71f8ebe41",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/e9b5bd2155a70340b3b4504fb31268d71f8ebe41/comments",
+    "author": {
+      "login": "michaelklishin",
+      "id": 1090,
+      "node_id": "MDQ6VXNlcjEwOTA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1090?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelklishin",
+      "html_url": "https://github.com/michaelklishin",
+      "followers_url": "https://api.github.com/users/michaelklishin/followers",
+      "following_url": "https://api.github.com/users/michaelklishin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelklishin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelklishin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelklishin/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelklishin/orgs",
+      "repos_url": "https://api.github.com/users/michaelklishin/repos",
+      "events_url": "https://api.github.com/users/michaelklishin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelklishin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "michaelklishin",
+      "id": 1090,
+      "node_id": "MDQ6VXNlcjEwOTA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1090?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelklishin",
+      "html_url": "https://github.com/michaelklishin",
+      "followers_url": "https://api.github.com/users/michaelklishin/followers",
+      "following_url": "https://api.github.com/users/michaelklishin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelklishin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelklishin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelklishin/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelklishin/orgs",
+      "repos_url": "https://api.github.com/users/michaelklishin/repos",
+      "events_url": "https://api.github.com/users/michaelklishin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelklishin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8539806a6b38399d7271fddf935bb1f2dea4a92e",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/8539806a6b38399d7271fddf935bb1f2dea4a92e",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/8539806a6b38399d7271fddf935bb1f2dea4a92e"
+      }
+    ]
+  },
+  {
+    "sha": "8539806a6b38399d7271fddf935bb1f2dea4a92e",
+    "node_id": "C_kwDOAA4bh9oAKDg1Mzk4MDZhNmIzODM5OWQ3MjcxZmRkZjkzNWJiMWYyZGVhNGE5MmU",
+    "commit": {
+      "author": {
+        "name": "Michael Klishin",
+        "email": "michael@clojurewerkz.org",
+        "date": "2024-03-29T07:42:59Z"
+      },
+      "committer": {
+        "name": "Michael Klishin",
+        "email": "michael@clojurewerkz.org",
+        "date": "2024-03-29T07:42:59Z"
+      },
+      "message": "3.13.1 release notes: cosmetics",
+      "tree": {
+        "sha": "3a399fe047bb70285effc88a0aa01f6df3dd6c31",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/3a399fe047bb70285effc88a0aa01f6df3dd6c31"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/8539806a6b38399d7271fddf935bb1f2dea4a92e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/8539806a6b38399d7271fddf935bb1f2dea4a92e",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/8539806a6b38399d7271fddf935bb1f2dea4a92e",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/8539806a6b38399d7271fddf935bb1f2dea4a92e/comments",
+    "author": {
+      "login": "michaelklishin",
+      "id": 1090,
+      "node_id": "MDQ6VXNlcjEwOTA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1090?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelklishin",
+      "html_url": "https://github.com/michaelklishin",
+      "followers_url": "https://api.github.com/users/michaelklishin/followers",
+      "following_url": "https://api.github.com/users/michaelklishin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelklishin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelklishin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelklishin/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelklishin/orgs",
+      "repos_url": "https://api.github.com/users/michaelklishin/repos",
+      "events_url": "https://api.github.com/users/michaelklishin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelklishin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "michaelklishin",
+      "id": 1090,
+      "node_id": "MDQ6VXNlcjEwOTA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1090?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelklishin",
+      "html_url": "https://github.com/michaelklishin",
+      "followers_url": "https://api.github.com/users/michaelklishin/followers",
+      "following_url": "https://api.github.com/users/michaelklishin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelklishin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelklishin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelklishin/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelklishin/orgs",
+      "repos_url": "https://api.github.com/users/michaelklishin/repos",
+      "events_url": "https://api.github.com/users/michaelklishin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelklishin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5ddf2cf85a53cdac5a2a90a6516214dbebae6eb6",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/5ddf2cf85a53cdac5a2a90a6516214dbebae6eb6",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/5ddf2cf85a53cdac5a2a90a6516214dbebae6eb6"
+      }
+    ]
+  },
+  {
+    "sha": "5ddf2cf85a53cdac5a2a90a6516214dbebae6eb6",
+    "node_id": "C_kwDOAA4bh9oAKDVkZGYyY2Y4NWE1M2NkYWM1YTJhOTBhNjUxNjIxNGRiZWJhZTZlYjY",
+    "commit": {
+      "author": {
+        "name": "Michael Klishin",
+        "email": "klishinm@vmware.com",
+        "date": "2024-03-29T07:41:11Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-29T07:41:11Z"
+      },
+      "message": "Merge pull request #10884 from rabbitmq/mk-3.13.1-release-notes\n\n3.13.1 release notes",
+      "tree": {
+        "sha": "54894ebade4e86067fb087607a5269d1471c8101",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/54894ebade4e86067fb087607a5269d1471c8101"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/5ddf2cf85a53cdac5a2a90a6516214dbebae6eb6",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmBnCXCRC1aQ7uu5UhlAAALRgQAGT95UIbwZiigG0I15fTRF3D\nQNS6cmN79I5w0TCkH8/4eDrg8kC7R5mz7/V95C/eVHmtH9Q5xMKcqlAHHnqrjCz4\nJ0ddJ6MZvvEh1grmxpajo9mXtcOG9lCs/CAvSfF0g+u6iJxSOhMVvRZehapv7apz\nRr7fYAt6s6L81ytTfe9156M8X4UCrC03O0dODj3ceAj16PQienc4z3tVFtfX96sx\nx2lnHBhrTL893WgCE8fxaSV/D3AEWaBmyORN8m8dH4KDpz1CW1H4LimqD2nuUru7\nPSd/VEa/ErwJBD7EKLUvxJpF/oVOr5XXJI1/8ASrHrB7cUvbJn20g8Y2rWCbGcba\ncynlgWVWpXoLjw848451tm2TwVPm/bge/+TtUclcbyTncaEg/AoWYYIAL2MZuDRw\nLAvBra4fE66pkWa1lnH4kBWmGvcS4II3rm85+CtLbhKmMZMepVrjjNzhiD9rP1Yl\neuub7LLGeqx2OFo49WtucDP16+q476ZHdds9/xsPyTjP+0nAOg9r56TW8hf4JMON\nHbOlAUrbiMBlw/1QOU9gBtpscQvZxDMu7L7nvLL6O3kQqUvcJwdcDIJuZ7S5/xWo\nUOcK4eY4PRBuTJpJYqpCJ+k86M54Rhb1YEkF9Zd1MWL4XeLraYQIV/tsT/w14osm\nhGckoEjkRjzBly4QFOKI\n=tFNr\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 54894ebade4e86067fb087607a5269d1471c8101\nparent 6e7b8d87624974c3c1df14520db60e36c55a57a4\nparent 12a401d798420edd59ce94c00e6027bca812cdc1\nauthor Michael Klishin <klishinm@vmware.com> 1711698071 -0400\ncommitter GitHub <noreply@github.com> 1711698071 -0400\n\nMerge pull request #10884 from rabbitmq/mk-3.13.1-release-notes\n\n3.13.1 release notes"
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/5ddf2cf85a53cdac5a2a90a6516214dbebae6eb6",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/5ddf2cf85a53cdac5a2a90a6516214dbebae6eb6",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/5ddf2cf85a53cdac5a2a90a6516214dbebae6eb6/comments",
+    "author": {
+      "login": "michaelklishin",
+      "id": 1090,
+      "node_id": "MDQ6VXNlcjEwOTA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1090?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelklishin",
+      "html_url": "https://github.com/michaelklishin",
+      "followers_url": "https://api.github.com/users/michaelklishin/followers",
+      "following_url": "https://api.github.com/users/michaelklishin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelklishin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelklishin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelklishin/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelklishin/orgs",
+      "repos_url": "https://api.github.com/users/michaelklishin/repos",
+      "events_url": "https://api.github.com/users/michaelklishin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelklishin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6e7b8d87624974c3c1df14520db60e36c55a57a4",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/6e7b8d87624974c3c1df14520db60e36c55a57a4",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/6e7b8d87624974c3c1df14520db60e36c55a57a4"
+      },
+      {
+        "sha": "12a401d798420edd59ce94c00e6027bca812cdc1",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/12a401d798420edd59ce94c00e6027bca812cdc1",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/12a401d798420edd59ce94c00e6027bca812cdc1"
+      }
+    ]
+  },
+  {
+    "sha": "12a401d798420edd59ce94c00e6027bca812cdc1",
+    "node_id": "C_kwDOAA4bh9oAKDEyYTQwMWQ3OTg0MjBlZGQ1OWNlOTRjMDBlNjAyN2JjYTgxMmNkYzE",
+    "commit": {
+      "author": {
+        "name": "Michael Klishin",
+        "email": "michael@clojurewerkz.org",
+        "date": "2024-03-29T07:40:54Z"
+      },
+      "committer": {
+        "name": "Michael Klishin",
+        "email": "michael@clojurewerkz.org",
+        "date": "2024-03-29T07:40:54Z"
+      },
+      "message": "3.13.1 release notes",
+      "tree": {
+        "sha": "54894ebade4e86067fb087607a5269d1471c8101",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/54894ebade4e86067fb087607a5269d1471c8101"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/12a401d798420edd59ce94c00e6027bca812cdc1",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/12a401d798420edd59ce94c00e6027bca812cdc1",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/12a401d798420edd59ce94c00e6027bca812cdc1",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/12a401d798420edd59ce94c00e6027bca812cdc1/comments",
+    "author": {
+      "login": "michaelklishin",
+      "id": 1090,
+      "node_id": "MDQ6VXNlcjEwOTA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1090?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelklishin",
+      "html_url": "https://github.com/michaelklishin",
+      "followers_url": "https://api.github.com/users/michaelklishin/followers",
+      "following_url": "https://api.github.com/users/michaelklishin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelklishin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelklishin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelklishin/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelklishin/orgs",
+      "repos_url": "https://api.github.com/users/michaelklishin/repos",
+      "events_url": "https://api.github.com/users/michaelklishin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelklishin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "michaelklishin",
+      "id": 1090,
+      "node_id": "MDQ6VXNlcjEwOTA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1090?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelklishin",
+      "html_url": "https://github.com/michaelklishin",
+      "followers_url": "https://api.github.com/users/michaelklishin/followers",
+      "following_url": "https://api.github.com/users/michaelklishin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelklishin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelklishin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelklishin/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelklishin/orgs",
+      "repos_url": "https://api.github.com/users/michaelklishin/repos",
+      "events_url": "https://api.github.com/users/michaelklishin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelklishin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6e7b8d87624974c3c1df14520db60e36c55a57a4",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/6e7b8d87624974c3c1df14520db60e36c55a57a4",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/6e7b8d87624974c3c1df14520db60e36c55a57a4"
+      }
+    ]
+  },
+  {
+    "sha": "6e7b8d87624974c3c1df14520db60e36c55a57a4",
+    "node_id": "C_kwDOAA4bh9oAKDZlN2I4ZDg3NjI0OTc0YzNjMWRmMTQ1MjBkYjYwZTM2YzU1YTU3YTQ",
+    "commit": {
+      "author": {
+        "name": "Michael Klishin",
+        "email": "klishinm@vmware.com",
+        "date": "2024-03-28T21:12:43Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-28T21:12:43Z"
+      },
+      "message": "Merge pull request #10875 from Ayanda-D/test-server-10865-and-10870\n\nTests for rabbitmq-plugins list: --silent and --quiet options",
+      "tree": {
+        "sha": "717c276779b5dc68f2cd2be295168ac78ef538fd",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/717c276779b5dc68f2cd2be295168ac78ef538fd"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/6e7b8d87624974c3c1df14520db60e36c55a57a4",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmBd1LCRC1aQ7uu5UhlAAAfioQAB+tOijWUb32RMBaHr2lOK4x\n2PDnvcOen4osuNOt3f1MuBK2SWbqNnRG5lbu3nYkHnVg5/Q+b5S1uxK7TfylQHC1\nhOP2ZopFftVd6JKbgZINpi9qynOJShlQKm0YCpU2jqv9+Z7TxRKdWf0JBXbTKFqa\nYy6Q1nfPE4XAmBqb7x+pcsTzNmZQIAC7BBppB9938MpCtO/5zGpDt1Zt6WwAmdGG\ng2PcYFKO7ykIKCFMriQbVIC7iwaqS86bTHbOsHywl8h1Fg9b9Cn52dTE1oS9BOHi\nL2BOAYTHac18IQkILg0nH+fzTRaKWeKspdqDiHb4qfwGzlyFcUZ2yLXD+C9Uxdom\n19fl1NHnULzH+Lh7iarFZh2ZH2mbQ9A+VrbEGTppJibwHGqzLAGAfk0jgACU/LqI\nt2Y3IB5G09CUWfNxBwgCQwuF4+rJpPlLXhP65prtp68R6FrvXCVuC2BhQdWbc0jM\naPXDynzABCxkhpGfr3c4HSQa9juzrilfSoLz0ARcKhZrNYZ7Iaf1dFDNeAacYbie\nH9+LC+bzm62BLWVv3rktH5F5Z8xOSfhLNbGcNf+7DACivi9kJPe2WurEcGFmTJSt\n9be/s32sIB3sQmEdSdojHAhOu4GAExRp7NmZxgMpsyzDGwGWgUeNiCvVINWYENNK\nmgRcCadoIKiT3Eu1odO1\n=r4GM\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 717c276779b5dc68f2cd2be295168ac78ef538fd\nparent 2534ed7217b7fcc2a848ca85c5f920616e501e93\nparent 9391e48b3012935c1de6eea192c3ed348b706f69\nauthor Michael Klishin <klishinm@vmware.com> 1711660363 -0400\ncommitter GitHub <noreply@github.com> 1711660363 -0400\n\nMerge pull request #10875 from Ayanda-D/test-server-10865-and-10870\n\nTests for rabbitmq-plugins list: --silent and --quiet options"
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/6e7b8d87624974c3c1df14520db60e36c55a57a4",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/6e7b8d87624974c3c1df14520db60e36c55a57a4",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/6e7b8d87624974c3c1df14520db60e36c55a57a4/comments",
+    "author": {
+      "login": "michaelklishin",
+      "id": 1090,
+      "node_id": "MDQ6VXNlcjEwOTA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1090?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelklishin",
+      "html_url": "https://github.com/michaelklishin",
+      "followers_url": "https://api.github.com/users/michaelklishin/followers",
+      "following_url": "https://api.github.com/users/michaelklishin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelklishin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelklishin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelklishin/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelklishin/orgs",
+      "repos_url": "https://api.github.com/users/michaelklishin/repos",
+      "events_url": "https://api.github.com/users/michaelklishin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelklishin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2534ed7217b7fcc2a848ca85c5f920616e501e93",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/2534ed7217b7fcc2a848ca85c5f920616e501e93",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/2534ed7217b7fcc2a848ca85c5f920616e501e93"
+      },
+      {
+        "sha": "9391e48b3012935c1de6eea192c3ed348b706f69",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/9391e48b3012935c1de6eea192c3ed348b706f69",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/9391e48b3012935c1de6eea192c3ed348b706f69"
+      }
+    ]
+  },
+  {
+    "sha": "2534ed7217b7fcc2a848ca85c5f920616e501e93",
+    "node_id": "C_kwDOAA4bh9oAKDI1MzRlZDcyMTdiN2ZjYzJhODQ4Y2E4NWM1ZjkyMDYxNmU1MDFlOTM",
+    "commit": {
+      "author": {
+        "name": "Michael Klishin",
+        "email": "klishinm@vmware.com",
+        "date": "2024-03-28T19:56:00Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-28T19:56:00Z"
+      },
+      "message": "Merge pull request #10880 from Ayanda-D/deprecated-classic-queue-gc-config\n\nRemove deprecated queue_explicit_gc_run_operation_threshold config",
+      "tree": {
+        "sha": "253460aaaff7510e6815475f407fba990695255a",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/253460aaaff7510e6815475f407fba990695255a"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/2534ed7217b7fcc2a848ca85c5f920616e501e93",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmBctQCRC1aQ7uu5UhlAAA/PIQABCefxIwwL7BlUq/25jGaGWN\n3VxJy8ovyww8VIOop/1MfQ8CdZDq53ZLNcQ6fQLpZ5xbuBP9TdveACtaFhT1HO9g\nuQ062CKYTKxct5sCzoEp2YFHnXMjtiULOJaOgsOH8TO2NDcIjY4pPDktExvZiH8z\nUAIRaYlABoF/LKU2MO35+f2du9q/2rYu5nTYiefv6dzHbm3NDkZrgIPqnEdaTsAd\nKCzzX1vJd8A9TpEi3vbjxKfM5kl7NnJMRnj3W2xengQyny5jtK7KwBTPU7A1sUky\njJrj8u2M8bXhN88zLSnnoOVvN066Uuh9o5kjVoyQqtaRS3LWMENeZ9jLXnuMVmuV\nbYKHj1rUu1P+zv1h+f9ui2eP0CrhK/ptDVXiUSPVI52x6b1xE7wG8Ie8SN+bLfKx\ndTDFIRWsQoeZMzcRxlrQ9xXUeZHy8DPYXfIYhq4nQCIp/XrGtu2vJSnXUn1/961O\no3fMfaq3MARpURSV/p7FChqoaYvkvKyYeDcz/G7U1mzprDzlIq15gOeElGrhD7af\n2KLrZWWpBTq+72Ya3/JEsrFTg9NApTT1LGVm0bfGbID3Oca4iu9ajEa4lD1gF89X\n5Oz+0Zyczsgozix7ks5a/hf35ftB6C7Ew4mFa2Nvtyln91/I6YI6GZKfLnfPZcP5\nvxHouI04EQfij4GgR7sM\n=XCAF\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 253460aaaff7510e6815475f407fba990695255a\nparent d0e871247a37f4cc2b38b081d1f370bebaac46b9\nparent 3a16d4d03ebd43d48df50c47854c4ecce896b1c5\nauthor Michael Klishin <klishinm@vmware.com> 1711655760 -0400\ncommitter GitHub <noreply@github.com> 1711655760 -0400\n\nMerge pull request #10880 from Ayanda-D/deprecated-classic-queue-gc-config\n\nRemove deprecated queue_explicit_gc_run_operation_threshold config"
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/2534ed7217b7fcc2a848ca85c5f920616e501e93",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/2534ed7217b7fcc2a848ca85c5f920616e501e93",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/2534ed7217b7fcc2a848ca85c5f920616e501e93/comments",
+    "author": {
+      "login": "michaelklishin",
+      "id": 1090,
+      "node_id": "MDQ6VXNlcjEwOTA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1090?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelklishin",
+      "html_url": "https://github.com/michaelklishin",
+      "followers_url": "https://api.github.com/users/michaelklishin/followers",
+      "following_url": "https://api.github.com/users/michaelklishin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelklishin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelklishin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelklishin/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelklishin/orgs",
+      "repos_url": "https://api.github.com/users/michaelklishin/repos",
+      "events_url": "https://api.github.com/users/michaelklishin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelklishin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d0e871247a37f4cc2b38b081d1f370bebaac46b9",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/d0e871247a37f4cc2b38b081d1f370bebaac46b9",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/d0e871247a37f4cc2b38b081d1f370bebaac46b9"
+      },
+      {
+        "sha": "3a16d4d03ebd43d48df50c47854c4ecce896b1c5",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/3a16d4d03ebd43d48df50c47854c4ecce896b1c5",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/3a16d4d03ebd43d48df50c47854c4ecce896b1c5"
+      }
+    ]
+  },
+  {
+    "sha": "3a16d4d03ebd43d48df50c47854c4ecce896b1c5",
+    "node_id": "C_kwDOAA4bh9oAKDNhMTZkNGQwM2ViZDQzZDQ4ZGY1MGM0Nzg1NGM0ZWNjZTg5NmIxYzU",
+    "commit": {
+      "author": {
+        "name": "Ayanda Dube",
+        "email": "adube14@bloomberg.net",
+        "date": "2024-03-28T15:31:32Z"
+      },
+      "committer": {
+        "name": "Ayanda Dube",
+        "email": "adube14@bloomberg.net",
+        "date": "2024-03-28T15:32:36Z"
+      },
+      "message": "remove deprecated queue_explicit_gc_run_operation_threshold config",
+      "tree": {
+        "sha": "253460aaaff7510e6815475f407fba990695255a",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/253460aaaff7510e6815475f407fba990695255a"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/3a16d4d03ebd43d48df50c47854c4ecce896b1c5",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/3a16d4d03ebd43d48df50c47854c4ecce896b1c5",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/3a16d4d03ebd43d48df50c47854c4ecce896b1c5",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/3a16d4d03ebd43d48df50c47854c4ecce896b1c5/comments",
+    "author": {
+      "login": "Ayanda-D",
+      "id": 12154951,
+      "node_id": "MDQ6VXNlcjEyMTU0OTUx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12154951?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Ayanda-D",
+      "html_url": "https://github.com/Ayanda-D",
+      "followers_url": "https://api.github.com/users/Ayanda-D/followers",
+      "following_url": "https://api.github.com/users/Ayanda-D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Ayanda-D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Ayanda-D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Ayanda-D/subscriptions",
+      "organizations_url": "https://api.github.com/users/Ayanda-D/orgs",
+      "repos_url": "https://api.github.com/users/Ayanda-D/repos",
+      "events_url": "https://api.github.com/users/Ayanda-D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Ayanda-D/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Ayanda-D",
+      "id": 12154951,
+      "node_id": "MDQ6VXNlcjEyMTU0OTUx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12154951?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Ayanda-D",
+      "html_url": "https://github.com/Ayanda-D",
+      "followers_url": "https://api.github.com/users/Ayanda-D/followers",
+      "following_url": "https://api.github.com/users/Ayanda-D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Ayanda-D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Ayanda-D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Ayanda-D/subscriptions",
+      "organizations_url": "https://api.github.com/users/Ayanda-D/orgs",
+      "repos_url": "https://api.github.com/users/Ayanda-D/repos",
+      "events_url": "https://api.github.com/users/Ayanda-D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Ayanda-D/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d0e871247a37f4cc2b38b081d1f370bebaac46b9",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/d0e871247a37f4cc2b38b081d1f370bebaac46b9",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/d0e871247a37f4cc2b38b081d1f370bebaac46b9"
+      }
+    ]
+  },
+  {
+    "sha": "d0e871247a37f4cc2b38b081d1f370bebaac46b9",
+    "node_id": "C_kwDOAA4bh9oAKGQwZTg3MTI0N2EzN2Y0Y2MyYjM4YjA4MWQxZjM3MGJlYmFhYzQ2Yjk",
+    "commit": {
+      "author": {
+        "name": "Michael Davis",
+        "email": "mcarsondavis@gmail.com",
+        "date": "2024-03-28T14:50:59Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-28T14:50:59Z"
+      },
+      "message": "Merge pull request #10868 from rabbitmq/md/khepri/bump-to-0.13.0\n\nBump Khepri to v0.13.0",
+      "tree": {
+        "sha": "fc7d96036b200c7a97ac378a8e994be9ead57631",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/fc7d96036b200c7a97ac378a8e994be9ead57631"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/d0e871247a37f4cc2b38b081d1f370bebaac46b9",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmBYPTCRC1aQ7uu5UhlAAAKgQQAJkJedUZGjkO5soEwZ4CVw3L\nuBdVkGo12ydVuVW3Q2cw/TBRcw6T2ZMIQDAo6uplqALjCQJ4nSEoz2OTrWhle2cI\nOSXUnLEth3taIS7K6g8nuDV9u7d4umFmB7HhPrboT+B3p2OxS5TqHhGqduS3zAEo\n43EfL7cIiVLI70z62FNU/KKiBBk/E1wPH8SGS2kgI6dG6jLoJuHUznGIRvQpDOo4\nGxKb99MV5qTBUNsC3BSdLEUuNTRkft+z76j/B878qsQ5pjYkvhy/2ATbjUZvylFo\nud9EzUl07ypWBwluC9pZreC7lcr2ZIJURIcVv8yL/V+u0uTQmagG57AnV1JXDA/B\nwJHdmPXM7xDXh1FkanKbcVq47wCe6FZ9mqkRrbya/a7Y0pMwUz/aYoOw+Z/mRhD9\nAAuV4QdWus16sEFzGnIIPSIrWQmwiigru+B2SX4Ms+5C5xeSXqQFYK4QK21LdgNd\n5+U1OSuZfUpUooLZBPj0ybUYO0XQNM/V2xufIZfrpwoCM1n99sO3Pqy/QJZUBciP\n92LWRruKsRnFPlWXlTXrV5c6ll0SKYcw6/M8LXewjCcjKmD7OHgecHNx+ApuRcyL\ncZn3CbSH2+Sz+4QIuMcZUGudi+nndK7dubVECtqKFHE3e/fLlfWKnAoeMHeRw38W\nC/OP/nAsMu7pJX2XYaIA\n=zLnD\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree fc7d96036b200c7a97ac378a8e994be9ead57631\nparent a59fdea3d67dab465347a901594bc4b7ac344188\nparent b83efd414b461acec9ec6be606c4e7ef43b94eba\nauthor Michael Davis <mcarsondavis@gmail.com> 1711637459 -0400\ncommitter GitHub <noreply@github.com> 1711637459 -0400\n\nMerge pull request #10868 from rabbitmq/md/khepri/bump-to-0.13.0\n\nBump Khepri to v0.13.0"
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/d0e871247a37f4cc2b38b081d1f370bebaac46b9",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/d0e871247a37f4cc2b38b081d1f370bebaac46b9",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/d0e871247a37f4cc2b38b081d1f370bebaac46b9/comments",
+    "author": {
+      "login": "the-mikedavis",
+      "id": 21230295,
+      "node_id": "MDQ6VXNlcjIxMjMwMjk1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/21230295?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/the-mikedavis",
+      "html_url": "https://github.com/the-mikedavis",
+      "followers_url": "https://api.github.com/users/the-mikedavis/followers",
+      "following_url": "https://api.github.com/users/the-mikedavis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/the-mikedavis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/the-mikedavis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/the-mikedavis/subscriptions",
+      "organizations_url": "https://api.github.com/users/the-mikedavis/orgs",
+      "repos_url": "https://api.github.com/users/the-mikedavis/repos",
+      "events_url": "https://api.github.com/users/the-mikedavis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/the-mikedavis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a59fdea3d67dab465347a901594bc4b7ac344188",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/a59fdea3d67dab465347a901594bc4b7ac344188",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/a59fdea3d67dab465347a901594bc4b7ac344188"
+      },
+      {
+        "sha": "b83efd414b461acec9ec6be606c4e7ef43b94eba",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/b83efd414b461acec9ec6be606c4e7ef43b94eba",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/b83efd414b461acec9ec6be606c4e7ef43b94eba"
+      }
+    ]
+  },
+  {
+    "sha": "b83efd414b461acec9ec6be606c4e7ef43b94eba",
+    "node_id": "C_kwDOAA4bh9oAKGI4M2VmZDQxNGI0NjFhY2VjOWVjNmJlNjA2YzRlN2VmNDNiOTRlYmE",
+    "commit": {
+      "author": {
+        "name": "Michael Davis",
+        "email": "mcarsondavis@gmail.com",
+        "date": "2024-03-27T16:39:47Z"
+      },
+      "committer": {
+        "name": "Michael Davis",
+        "email": "mcarsondavis@gmail.com",
+        "date": "2024-03-28T14:13:05Z"
+      },
+      "message": "Bump Khepri to v0.13.0\n\nKhepri v0.13.0 contains a fix for how projections are handled during\nregistration and recovery. The error returned from\n`khepri:register_projection/1,2,3` has also been updated to use the\n`?khepri_error(..)` helper macro.\n\nCo-authored-by: Jean-Sébastien Pédron <jean-sebastien.pedron@dumbbell.fr>",
+      "tree": {
+        "sha": "c6229a9a165dfd9ec9cca69877869d8ed8dcc15a",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/c6229a9a165dfd9ec9cca69877869d8ed8dcc15a"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/b83efd414b461acec9ec6be606c4e7ef43b94eba",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN SSH SIGNATURE-----\nU1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgzuUbUnZNA1qoksqoDNNBDzIcEC\nubij2T955pgtKsO6gAAAADZ2l0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5\nAAAAQOCHCHiFSACagnEGGinZVS5y7pungZHO7Zcm52mf/bjJuN87ebAVSsj+ysD6q94Ecx\nloOF8SvRbBuR6nmuEMEAM=\n-----END SSH SIGNATURE-----",
+        "payload": "tree c6229a9a165dfd9ec9cca69877869d8ed8dcc15a\nparent 6531bb45b9fa05fe48ec8dd0e36074eb2e13d174\nauthor Michael Davis <mcarsondavis@gmail.com> 1711557587 -0400\ncommitter Michael Davis <mcarsondavis@gmail.com> 1711635185 -0400\n\nBump Khepri to v0.13.0\n\nKhepri v0.13.0 contains a fix for how projections are handled during\nregistration and recovery. The error returned from\n`khepri:register_projection/1,2,3` has also been updated to use the\n`?khepri_error(..)` helper macro.\n\nCo-authored-by: Jean-Sébastien Pédron <jean-sebastien.pedron@dumbbell.fr>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/b83efd414b461acec9ec6be606c4e7ef43b94eba",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/b83efd414b461acec9ec6be606c4e7ef43b94eba",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/b83efd414b461acec9ec6be606c4e7ef43b94eba/comments",
+    "author": {
+      "login": "the-mikedavis",
+      "id": 21230295,
+      "node_id": "MDQ6VXNlcjIxMjMwMjk1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/21230295?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/the-mikedavis",
+      "html_url": "https://github.com/the-mikedavis",
+      "followers_url": "https://api.github.com/users/the-mikedavis/followers",
+      "following_url": "https://api.github.com/users/the-mikedavis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/the-mikedavis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/the-mikedavis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/the-mikedavis/subscriptions",
+      "organizations_url": "https://api.github.com/users/the-mikedavis/orgs",
+      "repos_url": "https://api.github.com/users/the-mikedavis/repos",
+      "events_url": "https://api.github.com/users/the-mikedavis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/the-mikedavis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "the-mikedavis",
+      "id": 21230295,
+      "node_id": "MDQ6VXNlcjIxMjMwMjk1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/21230295?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/the-mikedavis",
+      "html_url": "https://github.com/the-mikedavis",
+      "followers_url": "https://api.github.com/users/the-mikedavis/followers",
+      "following_url": "https://api.github.com/users/the-mikedavis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/the-mikedavis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/the-mikedavis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/the-mikedavis/subscriptions",
+      "organizations_url": "https://api.github.com/users/the-mikedavis/orgs",
+      "repos_url": "https://api.github.com/users/the-mikedavis/repos",
+      "events_url": "https://api.github.com/users/the-mikedavis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/the-mikedavis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6531bb45b9fa05fe48ec8dd0e36074eb2e13d174",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/6531bb45b9fa05fe48ec8dd0e36074eb2e13d174",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/6531bb45b9fa05fe48ec8dd0e36074eb2e13d174"
+      }
+    ]
+  },
+  {
+    "sha": "9391e48b3012935c1de6eea192c3ed348b706f69",
+    "node_id": "C_kwDOAA4bh9oAKDkzOTFlNDhiMzAxMjkzNWMxZGU2ZWVhMTkyYzNlZDM0OGI3MDZmNjk",
+    "commit": {
+      "author": {
+        "name": "Ayanda Dube",
+        "email": "adube14@bloomberg.net",
+        "date": "2024-03-28T12:46:19Z"
+      },
+      "committer": {
+        "name": "Ayanda Dube",
+        "email": "adube14@bloomberg.net",
+        "date": "2024-03-28T12:46:19Z"
+      },
+      "message": "test plugin list supressed warnings, refs: #10865 and #10870",
+      "tree": {
+        "sha": "891348a8d3766ecf719bf18c806675557a677002",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/891348a8d3766ecf719bf18c806675557a677002"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/9391e48b3012935c1de6eea192c3ed348b706f69",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/9391e48b3012935c1de6eea192c3ed348b706f69",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/9391e48b3012935c1de6eea192c3ed348b706f69",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/9391e48b3012935c1de6eea192c3ed348b706f69/comments",
+    "author": {
+      "login": "Ayanda-D",
+      "id": 12154951,
+      "node_id": "MDQ6VXNlcjEyMTU0OTUx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12154951?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Ayanda-D",
+      "html_url": "https://github.com/Ayanda-D",
+      "followers_url": "https://api.github.com/users/Ayanda-D/followers",
+      "following_url": "https://api.github.com/users/Ayanda-D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Ayanda-D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Ayanda-D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Ayanda-D/subscriptions",
+      "organizations_url": "https://api.github.com/users/Ayanda-D/orgs",
+      "repos_url": "https://api.github.com/users/Ayanda-D/repos",
+      "events_url": "https://api.github.com/users/Ayanda-D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Ayanda-D/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "Ayanda-D",
+      "id": 12154951,
+      "node_id": "MDQ6VXNlcjEyMTU0OTUx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12154951?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Ayanda-D",
+      "html_url": "https://github.com/Ayanda-D",
+      "followers_url": "https://api.github.com/users/Ayanda-D/followers",
+      "following_url": "https://api.github.com/users/Ayanda-D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Ayanda-D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Ayanda-D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Ayanda-D/subscriptions",
+      "organizations_url": "https://api.github.com/users/Ayanda-D/orgs",
+      "repos_url": "https://api.github.com/users/Ayanda-D/repos",
+      "events_url": "https://api.github.com/users/Ayanda-D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Ayanda-D/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a59fdea3d67dab465347a901594bc4b7ac344188",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/a59fdea3d67dab465347a901594bc4b7ac344188",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/a59fdea3d67dab465347a901594bc4b7ac344188"
+      }
+    ]
+  },
+  {
+    "sha": "a59fdea3d67dab465347a901594bc4b7ac344188",
+    "node_id": "C_kwDOAA4bh9oAKGE1OWZkZWEzZDY3ZGFiNDY1MzQ3YTkwMTU5NGJjNGI3YWMzNDQxODg",
+    "commit": {
+      "author": {
+        "name": "David Ansari",
+        "email": "david.ansari@gmx.de",
+        "date": "2024-03-26T11:10:01Z"
+      },
+      "committer": {
+        "name": "David Ansari",
+        "email": "david.ansari@gmx.de",
+        "date": "2024-03-28T10:36:56Z"
+      },
+      "message": "Allow for extra unknown fields\n\nApply the following PR feedback:\n> The data returned is strongly validated; there can't be an extra unknown field.\n> I would suggest ignoring field names that are not known as this allows for better\n> extensibility. On the other hand, there should be a check that all required fields\n> are found.",
+      "tree": {
+        "sha": "99bfdb05980e60ad6ecf32d1ebd2954d7e459752",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/99bfdb05980e60ad6ecf32d1ebd2954d7e459752"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/a59fdea3d67dab465347a901594bc4b7ac344188",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/a59fdea3d67dab465347a901594bc4b7ac344188",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/a59fdea3d67dab465347a901594bc4b7ac344188",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/a59fdea3d67dab465347a901594bc4b7ac344188/comments",
+    "author": {
+      "login": "ansd",
+      "id": 12648310,
+      "node_id": "MDQ6VXNlcjEyNjQ4MzEw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12648310?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ansd",
+      "html_url": "https://github.com/ansd",
+      "followers_url": "https://api.github.com/users/ansd/followers",
+      "following_url": "https://api.github.com/users/ansd/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ansd/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ansd/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ansd/subscriptions",
+      "organizations_url": "https://api.github.com/users/ansd/orgs",
+      "repos_url": "https://api.github.com/users/ansd/repos",
+      "events_url": "https://api.github.com/users/ansd/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ansd/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ansd",
+      "id": 12648310,
+      "node_id": "MDQ6VXNlcjEyNjQ4MzEw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12648310?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ansd",
+      "html_url": "https://github.com/ansd",
+      "followers_url": "https://api.github.com/users/ansd/followers",
+      "following_url": "https://api.github.com/users/ansd/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ansd/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ansd/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ansd/subscriptions",
+      "organizations_url": "https://api.github.com/users/ansd/orgs",
+      "repos_url": "https://api.github.com/users/ansd/repos",
+      "events_url": "https://api.github.com/users/ansd/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ansd/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8a3f3c6f34bd63def9d584b632e52a9119fcc121",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/8a3f3c6f34bd63def9d584b632e52a9119fcc121",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/8a3f3c6f34bd63def9d584b632e52a9119fcc121"
+      }
+    ]
+  },
+  {
+    "sha": "8a3f3c6f34bd63def9d584b632e52a9119fcc121",
+    "node_id": "C_kwDOAA4bh9oAKDhhM2YzYzZmMzRiZDYzZGVmOWQ1ODRiNjMyZTUyYTkxMTlmY2MxMjE",
+    "commit": {
+      "author": {
+        "name": "David Ansari",
+        "email": "david.ansari@gmx.de",
+        "date": "2024-02-07T17:26:13Z"
+      },
+      "committer": {
+        "name": "David Ansari",
+        "email": "david.ansari@gmx.de",
+        "date": "2024-03-28T10:36:56Z"
+      },
+      "message": "Enable AMQP 1.0 clients to manage topologies\n\n ## What?\n\n* Allow AMQP 1.0 clients to dynamically create and delete RabbitMQ\n  topologies (exchanges, queues, bindings).\n* Provide an Erlang AMQP 1.0 client that manages topologies.\n\n ## Why?\n\nToday, RabbitMQ topologies can be created via:\n* [Management HTTP API](https://www.rabbitmq.com/docs/management#http-api)\n  (including Management UI and\n  [messaging-topology-operator](https://github.com/rabbitmq/messaging-topology-operator))\n* [Definition Import](https://www.rabbitmq.com/docs/definitions#import)\n* AMQP 0.9.1 clients\n\nUp to RabbitMQ 3.13 the RabbitMQ AMQP 1.0 plugin auto creates queues\nand bindings depending on the terminus [address\nformat](https://github.com/rabbitmq/rabbitmq-server/tree/v3.13.x/deps/rabbitmq_amqp1_0#routing-and-addressing).\n\nSuch implicit creation of topologies is limiting and obscure.\nFor some address formats, queues will be created, but not deleted.\n\nSome of RabbitMQ's success is due to its flexible routing topologies\nthat AMQP 0.9.1 clients can create and delete dynamically.\n\nThis commit allows dynamic management of topologies for AMQP 1.0 clients.\nThis commit builds on top of Native AMQP 1.0 (PR #9022) and will be\navailable in RabbitMQ 4.0.\n\n ## How?\n\nThis commits adds the following management operations for AMQP 1.0 clients:\n* declare queue\n* delete queue\n* purge queue\n* bind queue to exchange\n* unbind queue from exchange\n* declare exchange\n* delete exchange\n* bind exchange to exchange\n* unbind exchange from exchange\n\nHence, at least the AMQP 0.9.1 management operations are supported for\nAMQP 1.0 clients.\n\nIn addition the operation\n* get queue\n\nis provided which - similar to `declare queue` - returns queue\ninformation including the current leader and replicas.\nThis allows clients to publish or consume locally on the node that hosts\nthe queue.\n\nCompared to AMQP 0.9.1 whose commands and command fields are fixed, the\nnew AMQP Management API is extensible: New operations and new fields can\neasily be added in the future.\n\nThere are different design options how management operations could be\nsupported for AMQP 1.0 clients:\n1. Use a special exchange type as done in https://github.com/rabbitmq/rabbitmq-management-exchange\n  This has the advantage that any protocol client (e.g. also STOMP clients) could\n  dynamically manage topologies. However, a special exchange type is the wrong abstraction.\n2. Clients could send \"special\" messages with special headers that the broker interprets.\n\nThis commit decided for a variation of the 2nd option using a more\nstandardized way by re-using a subest of the following latest AMQP 1.0 extension\nspecifications:\n* [AMQP Request-Response Messaging with Link Pairing Version 1.0 - Committee Specification 01](https://docs.oasis-open.org/amqp/linkpair/v1.0/cs01/linkpair-v1.0-cs01.html) (February 2021)\n* [HTTP Semantics and Content over AMQP Version 1.0 - Working Draft 06](https://groups.oasis-open.org/higherlogic/ws/public/document?document_id=65571) (July 2019)\n* [AMQP Management Version 1.0 - Working Draft 16](https://groups.oasis-open.org/higherlogic/ws/public/document?document_id=65575) (July 2019)\n\nAn important goal is to keep the interaction between AMQP 1.0 client and RabbitMQ\nsimple to increase usage, development and adoptability of future RabbitMQ AMQP 1.0\nclient library wrappers.\n\nThe AMQP 1.0 client has to create a link pair to the special `/management` node.\nThis allows the client to send and receive from the management node.\nSimilar to AMQP 0.9.1, there is no need for a reply queue since the reply\nwill be sent directly to the client.\n\nRequests and responses are modelled via HTTP, but sent via AMQP using\nthe `HTTP Semantics and Content over AMQP` extension (henceforth `HTTP\nover AMQP` extension).\n\nThis commit tries to follow the `HTTP over AMQP` extension as much as\npossible but deviates where this draft spec doesn't make sense.\n\nThe projected mode §4.1 is used as opposed to tunneled mode §4.2.\nA named relay `/management` is used (§6.3) where the message field `to` is the URL.\n\nDeviations are\n* §3.1 mandates that URIs are not encoded in an AMQP message.\n  However, we percent encode URIs in the AMQP message. Otherwise there\n  is for example no way to distinguish a `/` in a queue name from the\n  URI path separator `/`.\n* §4.1.4 mandates a data section. This commit uses an amqp-value section\n  as it's a better fit given that the content is AMQP encoded data.\n\nUsing an HTTP API allows for a common well understood interface and future extensibility.\nInstead of re-using the current RabbitMQ HTTP API, this commit uses a\nnew HTTP API (let's call it v2) which could be used as a future API for\nplain HTTP clients.\n\n ### HTTP API v1\n\nThe current HTTP API (let's call it v1) is **not** used since v1\ncomes with a couple of weaknesses:\n\n1. Deep level of nesting becomes confusing and difficult to manage.\n\nExamples of deep nesting in v1:\n```\n/api/bindings/vhost/e/source/e/destination/props\n/api/bindings/vhost/e/exchange/q/queue/props\n```\n\n2. Redundant endpoints returning the same resources\n\nv1 has 9 endpoints to list binding(s):\n```\n/api/exchanges/vhost/name/bindings/source\n/api/exchanges/vhost/name/bindings/destination\n/api/queues/vhost/name/bindings\n/api/bindings\n/api/bindings/vhost\n/api/bindings/vhost/e/exchange/q/queue\n/api/bindings/vhost/e/exchange/q/queue/props\n/api/bindings/vhost/e/source/e/destination\n/api/bindings/vhost/e/source/e/destination/props\n```\n\n3. Verbs in path names\nPath names should be nouns instead.\nv1 contains verbs:\n```\n/api/queues/vhost/name/get\n/api/exchanges/vhost/name/publish\n```\n\n ### AMQP Management extension\n\nOnly few aspects of the AMQP Management extension are used.\n\nThe central idea of the AMQP management spec is **dynamic discovery** such that broker independent AMQP 1.0\nclients can discover objects, types, operations, and HTTP endpoints of specific brokers.\nIn fact, clients are only conformant if:\n> All request addresses are dynamically discovered starting from the discovery document.\n> A requesting container MUST NOT use fixed assumptions about the addressing structure of the management API.\n\nWhile this is a nice and powerful idea, no AMQP 1.0 client and no AMQP 1.0 server implement the\nlatest AMQP 1.0 management spec from 2019, partly presumably due to its complexity.\nTherefore, the idea of such dynamic discovery has failed to be implemented in practice.\n\nThe AMQP management spec mandates that the management endpoint returns a discovery document containing\nbroker specific collections, types, configuration, and operations including their endpoints.\n\nThe API endpoints of the AMQP management spec are therefore all designed around dynamic discovery.\n\nFor example, to create either a queue or an exchange, the client has to\n```\nPOST /$management/entities\n```\nwhich shows that the entities collection acts as a generic factory, see section 2.2.\nThe server will then create the resource and reply with a location header containing a URI pointing to the resource.\nFor RabbitMQ, we don’t need such a generic factory to create queues or exchanges.\n\nTo list bindings for a queue Q1, the spec suggests\n```\nGET /$management/Queues/Q1/$management/entities\n```\nwhich again shows the generic entities endpoint as well as a `$management` endpoint under Q1 to\nallow a queue to return a discovery document.\nFor RabbitMQ, we don’t need such generic endpoints and discovery documents.\n\nGiven we aim for our own thin RabbitMQ AMQP 1.0 client wrapper libraries which expose\nthe RabbitMQ model to the developer, we can directly use fixed HTTP endpoint assumptions\nin our RabbitMQ specific libraries.\n\nThis is by far simpler than using the dynamic endpoints of the management spec.\nSimplicity leads to higher adoption and enables more developers to write RabbitMQ AMQP 1.0 client\nlibrary wrappers.\n\nThe AMQP Management extension also suffers from deep level of nesting in paths\nExamples:\n```\n/$management/Queues/Q1/$management/entities\n/$management/Queues/Q1/Bindings/Binding1\n```\nas well as verbs in path names: Section 7.1.4 suggests using verbs in path names,\nfor example “purge”, due to the dynamic operations discovery document.\n\n ### HTTP API v2\n\nThis commit introduces a new HTTP API v2 following best practices.\nIt could serve as a future API for plain HTTP clients.\n\nThis commit and RabbitMQ 4.0 will only implement a minimal set of\nHTTP API v2 endpoints and only for HTTP over AMQP.\nIn other words, the existing HTTP API v1 Cowboy handlers will continue to be\nused for all plain HTTP requests in RabbitMQ 4.0 and will remain untouched for RabbitMQ 4.0.\nOver time, after 4.0 shipped, we could ship a pure HTTP API implementation for HTTP API v2.\nHence, the new HTTP API v2 endpoints for HTTP over AMQP should be designed such that they\ncan be re-used in the future for a pure HTTP implementation.\n\nThe minimal set of endpoints for RabbitMQ 4.0 are:\n\n``\nGET / PUT / DELETE\n/vhosts/:vhost/queues/:queue\n```\nread, create, delete a queue\n\n```\nDELETE\n/vhosts/:vhost/queues/:queue/messages\n```\npurges a queue\n\n```\nGET / DELETE\n/vhosts/:vhost/bindings/:binding\n```\nread, delete bindings\nwhere `:binding` is a binding ID of the following path segment:\n```\nsrc=e1;dstq=q2;key=my-key;args=\n```\nBinding arguments `args` has an empty value by default, i.e. there are no binding arguments.\nIf the binding includes binding arguments, `args` will be an Erlang portable term hash\nprovided by the server similar to what’s provided in HTTP API v1 today.\nAlternatively, we could use an arguments scheme of:\n```\nargs=k1,utf8,v1&k2,uint,3\n```\nHowever, such a scheme leads to long URIs when there are many binding arguments.\nNote that it’s perfectly fine for URI producing applications to include URI\nreserved characters `=` / `;` / `,` / `$` in a path segment.\n\nTo create a binding, the client therefore needs to POST to a bindings factory URI:\n```\nPOST\n/vhosts/:vhost/bindings\n```\n\nTo list all bindings between a source exchange e1 and destination exchange e2 with binding key k1:\n```\nGET\n/vhosts/:vhost/bindings?src=e1&dste=e2&key=k1\n```\n\nThis endpoint will be called by the RabbitMQ AMQP 1.0 client library to unbind a\nbinding with non-empty binding arguments to get the binding ID before invoking a\n```\nDELETE\n/vhosts/:vhost/bindings/:binding\n```\n\nIn future, after RabbitMQ 4.0 shipped, new API endpoints could be added.\nThe following is up for discussion and is only meant to show the clean and simple design of HTTP API v2.\n\nBindings endpoint can be queried as follows:\n\nto list all bindings for a given source exchange e1:\n```\nGET\n/vhosts/:vhost/bindings?src=e1\n```\n\nto list all bindings for a given destination queue q1:\n```\nGET\n/vhosts/:vhost/bindings?dstq=q1\n```\n\nto list all bindings between a source exchange e1 and destination queue q1:\n```\nGET\n/vhosts/:vhost/bindings?src=e1&dstq=q1\n```\n\nmultiple bindings between source exchange e1 and destination queue q1 could be deleted at once as follows:\n```\nDELETE /vhosts/:vhost/bindings?src=e1&dstq=q1\n```\n\nGET could be supported globally across all vhosts:\n```\n/exchanges\n/queues\n/bindings\n```\n\nPublish a message:\n```\nPOST\n/vhosts/:vhost/queues/:queue/messages\n```\n\nConsume or peek a message (depending on query parameters):\n```\nGET\n/vhosts/:vhost/queues/:queue/messages\n```\n\nNote that the AMQP 1.0 client omits the `/vhost/:vhost` path prefix.\nSince an AMQP connection belongs to a single vhost, there is no need to\nadditionally include the vhost in every HTTP request.\n\nPros of HTTP API v2:\n\n1. Low level of nesting\n\nQueues, exchanges, bindings are top level entities directly under vhosts.\nAlthough the HTTP API doesn’t have to reflect how resources are stored in the database,\nv2 does nicely reflect the Khepri tree structure.\n\n2. Nouns instead of verbs\nHTTP API v2 is very simple to read and understand as shown by\n```\nPOST    /vhosts/:vhost/queues/:queue/messages\tto post messages, i.e. publish to a queue.\nGET     /vhosts/:vhost/queues/:queue/messages\tto get messages, i.e. consume or peek from a queue.\nDELETE  /vhosts/:vhost/queues/:queue/messages\tto delete messages, i.e. purge a queue.\n```\n\nA separate new HTTP API v2 allows us to ship only handlers for HTTP over AMQP for RabbitMQ 4.0\nand therefore move faster while still keeping the option on the table to re-use the new v2 API\nfor pure HTTP in the future.\nIn contrast, re-using the HTTP API v1 for HTTP over AMQP is possible, but dirty because separate handlers\n(HTTP over AMQP and pure HTTP) replying differently will be needed for the same v1 endpoints.",
+      "tree": {
+        "sha": "ab56731e2c29802e0414aa7f39ad48841a689629",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/ab56731e2c29802e0414aa7f39ad48841a689629"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/8a3f3c6f34bd63def9d584b632e52a9119fcc121",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/8a3f3c6f34bd63def9d584b632e52a9119fcc121",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/8a3f3c6f34bd63def9d584b632e52a9119fcc121",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/8a3f3c6f34bd63def9d584b632e52a9119fcc121/comments",
+    "author": {
+      "login": "ansd",
+      "id": 12648310,
+      "node_id": "MDQ6VXNlcjEyNjQ4MzEw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12648310?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ansd",
+      "html_url": "https://github.com/ansd",
+      "followers_url": "https://api.github.com/users/ansd/followers",
+      "following_url": "https://api.github.com/users/ansd/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ansd/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ansd/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ansd/subscriptions",
+      "organizations_url": "https://api.github.com/users/ansd/orgs",
+      "repos_url": "https://api.github.com/users/ansd/repos",
+      "events_url": "https://api.github.com/users/ansd/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ansd/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ansd",
+      "id": 12648310,
+      "node_id": "MDQ6VXNlcjEyNjQ4MzEw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12648310?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ansd",
+      "html_url": "https://github.com/ansd",
+      "followers_url": "https://api.github.com/users/ansd/followers",
+      "following_url": "https://api.github.com/users/ansd/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ansd/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ansd/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ansd/subscriptions",
+      "organizations_url": "https://api.github.com/users/ansd/orgs",
+      "repos_url": "https://api.github.com/users/ansd/repos",
+      "events_url": "https://api.github.com/users/ansd/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ansd/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "be30abf480846952753862c62c06b6179325d159",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/be30abf480846952753862c62c06b6179325d159",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/be30abf480846952753862c62c06b6179325d159"
+      }
+    ]
+  },
+  {
+    "sha": "be30abf480846952753862c62c06b6179325d159",
+    "node_id": "C_kwDOAA4bh9oAKGJlMzBhYmY0ODA4NDY5NTI3NTM4NjJjNjJjMDZiNjE3OTMyNWQxNTk",
+    "commit": {
+      "author": {
+        "name": "Michael Klishin",
+        "email": "klishinm@vmware.com",
+        "date": "2024-03-28T02:55:42Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-28T02:55:42Z"
+      },
+      "message": "Merge pull request #10870 from rabbitmq/rabbitmq-server-10865\n\nrabbitmq-plugins list: respect --silent and --quiet",
+      "tree": {
+        "sha": "0c18d01f78332c94e8387ea73d2abf6181d44455",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/0c18d01f78332c94e8387ea73d2abf6181d44455"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/be30abf480846952753862c62c06b6179325d159",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmBNwuCRC1aQ7uu5UhlAAAcNYQAFps5rO2xY9zpLvIlds9B8cX\nW/3b6TEOUCk9qrzocOKurM/W1mnHjmwQqD85lnUxcZqmfN0Eq5rdfEUrv9lKl60l\ndDVnPozDvfeJPLQl8QeOEVYDmcTHvHzfdRz0rgQqZj7RqwnzUpYWbnCea4CdaPOf\nyz9hhV9Cx7eVALc6f+RG/Z/3W+donu4BHjvFX4lx2fYs+KiwqKehOIGZYIlrv86K\nLNhrvG9zWBLsJFRM86khpT8MU4JmJ4fq9he1SCM87nd7YxAHOLy1fs9qtb/HkKYQ\nmR80j+JCwbqPw9seTgvMshQllHBh+zpuqEMMbQquIrzc3ikCAeKTTnkYdzifk09K\nhLymB9qcDZXsFoqExs6y8N55c6eBeWvtbDLqYobV+/Bl1izVnaXXXSSiUpgePJXE\nNS4mryg6xXCtKKqzl/eoi0drSdsQPHTWGGq6PioQeJi/UW8FsoKqRM+ci6EauU0R\naZ5HVxgrpS+nWWVo7+shfY2MuogaHDOR6qRROC6IFa52mhfACXvtN6CvARO7nvK8\nI5+jPyYMoUrp/FOTGH6YW7ycz3qTdP0j0lQwab8MS3NYnDz+cT8nBy0sDY5vDVTf\n0DaIIHXkPhRhAxYZ10HQBkjdOV2g6PhS22F4cPkQqD4cZTQxulBpVYXDrThz+ssC\nerX4SsCcU+QhqARowaqt\n=bpOK\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 0c18d01f78332c94e8387ea73d2abf6181d44455\nparent 6531bb45b9fa05fe48ec8dd0e36074eb2e13d174\nparent c0187ec15591b70d9916fda0d3a5b97530281427\nauthor Michael Klishin <klishinm@vmware.com> 1711594542 -0400\ncommitter GitHub <noreply@github.com> 1711594542 -0400\n\nMerge pull request #10870 from rabbitmq/rabbitmq-server-10865\n\nrabbitmq-plugins list: respect --silent and --quiet"
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/be30abf480846952753862c62c06b6179325d159",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/be30abf480846952753862c62c06b6179325d159",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/be30abf480846952753862c62c06b6179325d159/comments",
+    "author": {
+      "login": "michaelklishin",
+      "id": 1090,
+      "node_id": "MDQ6VXNlcjEwOTA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1090?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelklishin",
+      "html_url": "https://github.com/michaelklishin",
+      "followers_url": "https://api.github.com/users/michaelklishin/followers",
+      "following_url": "https://api.github.com/users/michaelklishin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelklishin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelklishin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelklishin/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelklishin/orgs",
+      "repos_url": "https://api.github.com/users/michaelklishin/repos",
+      "events_url": "https://api.github.com/users/michaelklishin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelklishin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6531bb45b9fa05fe48ec8dd0e36074eb2e13d174",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/6531bb45b9fa05fe48ec8dd0e36074eb2e13d174",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/6531bb45b9fa05fe48ec8dd0e36074eb2e13d174"
+      },
+      {
+        "sha": "c0187ec15591b70d9916fda0d3a5b97530281427",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/c0187ec15591b70d9916fda0d3a5b97530281427",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/c0187ec15591b70d9916fda0d3a5b97530281427"
+      }
+    ]
+  },
+  {
+    "sha": "c0187ec15591b70d9916fda0d3a5b97530281427",
+    "node_id": "C_kwDOAA4bh9oAKGMwMTg3ZWMxNTU5MWI3MGQ5OTE2ZmRhMGQzYTViOTc1MzAyODE0Mjc",
+    "commit": {
+      "author": {
+        "name": "Michael Klishin",
+        "email": "michael@clojurewerkz.org",
+        "date": "2024-03-27T23:06:10Z"
+      },
+      "committer": {
+        "name": "Michael Klishin",
+        "email": "michael@clojurewerkz.org",
+        "date": "2024-03-28T01:36:53Z"
+      },
+      "message": "Reuse --silent and --quiet in #10865",
+      "tree": {
+        "sha": "0c18d01f78332c94e8387ea73d2abf6181d44455",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/0c18d01f78332c94e8387ea73d2abf6181d44455"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/c0187ec15591b70d9916fda0d3a5b97530281427",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/c0187ec15591b70d9916fda0d3a5b97530281427",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/c0187ec15591b70d9916fda0d3a5b97530281427",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/c0187ec15591b70d9916fda0d3a5b97530281427/comments",
+    "author": {
+      "login": "michaelklishin",
+      "id": 1090,
+      "node_id": "MDQ6VXNlcjEwOTA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1090?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelklishin",
+      "html_url": "https://github.com/michaelklishin",
+      "followers_url": "https://api.github.com/users/michaelklishin/followers",
+      "following_url": "https://api.github.com/users/michaelklishin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelklishin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelklishin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelklishin/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelklishin/orgs",
+      "repos_url": "https://api.github.com/users/michaelklishin/repos",
+      "events_url": "https://api.github.com/users/michaelklishin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelklishin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "michaelklishin",
+      "id": 1090,
+      "node_id": "MDQ6VXNlcjEwOTA=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1090?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelklishin",
+      "html_url": "https://github.com/michaelklishin",
+      "followers_url": "https://api.github.com/users/michaelklishin/followers",
+      "following_url": "https://api.github.com/users/michaelklishin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelklishin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelklishin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelklishin/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelklishin/orgs",
+      "repos_url": "https://api.github.com/users/michaelklishin/repos",
+      "events_url": "https://api.github.com/users/michaelklishin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelklishin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6531bb45b9fa05fe48ec8dd0e36074eb2e13d174",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/6531bb45b9fa05fe48ec8dd0e36074eb2e13d174",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/6531bb45b9fa05fe48ec8dd0e36074eb2e13d174"
+      }
+    ]
+  },
+  {
+    "sha": "6531bb45b9fa05fe48ec8dd0e36074eb2e13d174",
+    "node_id": "C_kwDOAA4bh9oAKDY1MzFiYjQ1YjlmYTA1ZmU0OGVjOGRkMGUzNjA3NGViMmUxM2QxNzQ",
+    "commit": {
+      "author": {
+        "name": "Rin Kuryloski",
+        "email": "rin.kuryloski@broadcom.com",
+        "date": "2024-03-27T14:45:04Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-27T14:45:04Z"
+      },
+      "message": "Merge pull request #10849 from rabbitmq/rin/windows-no_focus_no_shard\n\nUse rules_erlang 3.15.1",
+      "tree": {
+        "sha": "d6a53bdf4d6501fa7ea928417318f87a20fd82e7",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/d6a53bdf4d6501fa7ea928417318f87a20fd82e7"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/6531bb45b9fa05fe48ec8dd0e36074eb2e13d174",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmBDDwCRC1aQ7uu5UhlAAA/kYQAIydt943vKmynoftWsEgKC2s\nBcvGqvIq++fctFAdmdHjikknju/QEzDWUDjGkwCLzLpzw/LcGnNzksDu8bZkz0J5\nJ3ZHw/U2YZqRlGzsmGRC6QxRbSUm1OJZLdNBkMfLJ35HeNA9LWpnNsgKso/5Lxrn\nUIUp2jCCmNWzzrk82wwaIyWXGP2T+ou9s9uyGWbX8rKOaN5S47gqwqj3OSAUuuey\nItBcv6s86+BkZNlGR3yfoOKMENwcFvyN7zrsdNOrBVtdS7M72cjzzAogPOKkHqkP\nyzCAOcmVMv1KU1fjix+nezdel/uPQ6qHwsW/7CJsfe69bH/o4C999kUfgnjpb/UV\nvpw+KevjScGRQ8Yh2g2/laqUMjg6p+Ys3MGlfeq3Iwgf4xKFqDX9wmBvkrOp1yQo\nKFp/vWepJUHqckNxrD6VuaKayx38W2mla3iW/quJ4bA9U2WfNTmMDUs7o2/F9YNz\nTUHb256o5C+i8wO7gC44setIefzklSBIj4aCCbkZWBrCBPogHcAEHbrJh8zI9kxW\nT7cTZZZiG9E+RRdVJ4UNWDtkL2LBjAO5ZioJCd6RaKKh9z5vhDJ1vE+tk3KjdEZ2\nFH2AT0o8uDWUksYRtm+ldWulOwHK4yWoPIGAv4Zp7A8rj2PoMorRuL5SJF94idue\nY9zf28Q9gRGWveKQbHuy\n=sc7x\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree d6a53bdf4d6501fa7ea928417318f87a20fd82e7\nparent 76fa13414e530cbaa1abda321e75700cd971a33a\nparent d59a27acc95e7495381fad3fb79e68eaa057360e\nauthor Rin Kuryloski <rin.kuryloski@broadcom.com> 1711550704 +0100\ncommitter GitHub <noreply@github.com> 1711550704 +0100\n\nMerge pull request #10849 from rabbitmq/rin/windows-no_focus_no_shard\n\nUse rules_erlang 3.15.1"
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/6531bb45b9fa05fe48ec8dd0e36074eb2e13d174",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/6531bb45b9fa05fe48ec8dd0e36074eb2e13d174",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/6531bb45b9fa05fe48ec8dd0e36074eb2e13d174/comments",
+    "author": {
+      "login": "pjk25",
+      "id": 217064,
+      "node_id": "MDQ6VXNlcjIxNzA2NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/217064?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/pjk25",
+      "html_url": "https://github.com/pjk25",
+      "followers_url": "https://api.github.com/users/pjk25/followers",
+      "following_url": "https://api.github.com/users/pjk25/following{/other_user}",
+      "gists_url": "https://api.github.com/users/pjk25/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/pjk25/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/pjk25/subscriptions",
+      "organizations_url": "https://api.github.com/users/pjk25/orgs",
+      "repos_url": "https://api.github.com/users/pjk25/repos",
+      "events_url": "https://api.github.com/users/pjk25/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/pjk25/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "76fa13414e530cbaa1abda321e75700cd971a33a",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/76fa13414e530cbaa1abda321e75700cd971a33a",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/76fa13414e530cbaa1abda321e75700cd971a33a"
+      },
+      {
+        "sha": "d59a27acc95e7495381fad3fb79e68eaa057360e",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/d59a27acc95e7495381fad3fb79e68eaa057360e",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/d59a27acc95e7495381fad3fb79e68eaa057360e"
+      }
+    ]
+  },
+  {
+    "sha": "76fa13414e530cbaa1abda321e75700cd971a33a",
+    "node_id": "C_kwDOAA4bh9oAKDc2ZmExMzQxNGU1MzBjYmFhMWFiZGEzMjFlNzU3MDBjZDk3MWEzM2E",
+    "commit": {
+      "author": {
+        "name": "Rin Kuryloski",
+        "email": "rin.kuryloski@broadcom.com",
+        "date": "2024-03-27T11:47:29Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-27T11:47:29Z"
+      },
+      "message": "Merge pull request #10862 from rabbitmq/bump-otp-26.1\n\nAdopt otp 26.1.2",
+      "tree": {
+        "sha": "f0805e1bdb28cc90e38fe9003758ee06c69bcff3",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/f0805e1bdb28cc90e38fe9003758ee06c69bcff3"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/76fa13414e530cbaa1abda321e75700cd971a33a",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmBAdRCRC1aQ7uu5UhlAAA2nsQAEzZ2cgxAw/u6yODC0FeMBr8\nWsn8Z0csEum1kCNfizDDiRzXx79xuL37IAO9uRjXSEhkvtCoTO/OZ6VKEOSBlTYQ\ng2NUJnWL2v69niuCbO7nSvRIT6dvXZHfXNztsb31RXAWPrGo4kr/0NrtCCuF6CQq\nWBdJM/jPosdaMbI/jQV8IXrlc5aYJWchbFDsnWMsxZJqzfbG92pjr2wXg4NKC1Y8\nZEvKoDOZ4tYTNFzQmEZynvBZ6dYRe0gzsdbNAo9d9WpkSZpT/Dmg74P6EKzHjOYO\nJkFG8eVqcryZD9xlwntxV+PTEYlHMg8dfZ86pPrghSSEa/t9tJUeIrhF7O7myXzv\nAVaNDA1Jhuiz6yWjpAp+XiuCMzlcjA3fIrB0bugPjEmp1i0HrOuKeZVNg1IekBtN\nzRN4JgDuVc62oRx0mZH9e70i/zTCWv/kxSXibic/SfSlWa272zbld2DtArUyBWcq\nNhn01dB/WKz0/mtQYElmoplajDnTabCuM/7VD9BLB/LTm5XBJO0z7oeF24bMX5Vd\n2M+ODZvX+vocCFnXPeVlBtLwJt3Ktq9L4wFWnxc4Yj/RS292SCOcpflHFkROtv8z\nPo8lSR1uJG6kGmxkM9lDkUuIXFWLe3/Zx2quot8tyj/JTVSxK10IcKqxbgY013Ho\nom13fwia7CKEs71QNdsj\n=v3eH\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree f0805e1bdb28cc90e38fe9003758ee06c69bcff3\nparent d59e8435402777f9fe6a78b53652e382c8600693\nparent caa63bb5105ebb6c883d551b93e599d34c8725b0\nauthor Rin Kuryloski <rin.kuryloski@broadcom.com> 1711540049 +0100\ncommitter GitHub <noreply@github.com> 1711540049 +0100\n\nMerge pull request #10862 from rabbitmq/bump-otp-26.1\n\nAdopt otp 26.1.2"
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/76fa13414e530cbaa1abda321e75700cd971a33a",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/76fa13414e530cbaa1abda321e75700cd971a33a",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/76fa13414e530cbaa1abda321e75700cd971a33a/comments",
+    "author": {
+      "login": "pjk25",
+      "id": 217064,
+      "node_id": "MDQ6VXNlcjIxNzA2NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/217064?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/pjk25",
+      "html_url": "https://github.com/pjk25",
+      "followers_url": "https://api.github.com/users/pjk25/followers",
+      "following_url": "https://api.github.com/users/pjk25/following{/other_user}",
+      "gists_url": "https://api.github.com/users/pjk25/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/pjk25/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/pjk25/subscriptions",
+      "organizations_url": "https://api.github.com/users/pjk25/orgs",
+      "repos_url": "https://api.github.com/users/pjk25/repos",
+      "events_url": "https://api.github.com/users/pjk25/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/pjk25/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d59e8435402777f9fe6a78b53652e382c8600693",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/d59e8435402777f9fe6a78b53652e382c8600693",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/d59e8435402777f9fe6a78b53652e382c8600693"
+      },
+      {
+        "sha": "caa63bb5105ebb6c883d551b93e599d34c8725b0",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/caa63bb5105ebb6c883d551b93e599d34c8725b0",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/caa63bb5105ebb6c883d551b93e599d34c8725b0"
+      }
+    ]
+  },
+  {
+    "sha": "d59a27acc95e7495381fad3fb79e68eaa057360e",
+    "node_id": "C_kwDOAA4bh9oAKGQ1OWEyN2FjYzk1ZTc0OTUzODFmYWQzZmI3OWU2OGVhYTA1NzM2MGU",
+    "commit": {
+      "author": {
+        "name": "Rin Kuryloski",
+        "email": "rin.kuryloski@broadcom.com",
+        "date": "2024-03-27T11:46:10Z"
+      },
+      "committer": {
+        "name": "Rin Kuryloski",
+        "email": "rin.kuryloski@broadcom.com",
+        "date": "2024-03-27T11:46:10Z"
+      },
+      "message": "Use rules_erlang 3.15.1",
+      "tree": {
+        "sha": "9c703111fe23469379e2f72b5c86d7c106f4f110",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/9c703111fe23469379e2f72b5c86d7c106f4f110"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/d59a27acc95e7495381fad3fb79e68eaa057360e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/d59a27acc95e7495381fad3fb79e68eaa057360e",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/d59a27acc95e7495381fad3fb79e68eaa057360e",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/d59a27acc95e7495381fad3fb79e68eaa057360e/comments",
+    "author": {
+      "login": "pjk25",
+      "id": 217064,
+      "node_id": "MDQ6VXNlcjIxNzA2NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/217064?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/pjk25",
+      "html_url": "https://github.com/pjk25",
+      "followers_url": "https://api.github.com/users/pjk25/followers",
+      "following_url": "https://api.github.com/users/pjk25/following{/other_user}",
+      "gists_url": "https://api.github.com/users/pjk25/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/pjk25/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/pjk25/subscriptions",
+      "organizations_url": "https://api.github.com/users/pjk25/orgs",
+      "repos_url": "https://api.github.com/users/pjk25/repos",
+      "events_url": "https://api.github.com/users/pjk25/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/pjk25/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "pjk25",
+      "id": 217064,
+      "node_id": "MDQ6VXNlcjIxNzA2NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/217064?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/pjk25",
+      "html_url": "https://github.com/pjk25",
+      "followers_url": "https://api.github.com/users/pjk25/followers",
+      "following_url": "https://api.github.com/users/pjk25/following{/other_user}",
+      "gists_url": "https://api.github.com/users/pjk25/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/pjk25/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/pjk25/subscriptions",
+      "organizations_url": "https://api.github.com/users/pjk25/orgs",
+      "repos_url": "https://api.github.com/users/pjk25/repos",
+      "events_url": "https://api.github.com/users/pjk25/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/pjk25/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "86211f240aec6654c2c765bb790c0d541500a785",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/86211f240aec6654c2c765bb790c0d541500a785",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/86211f240aec6654c2c765bb790c0d541500a785"
+      }
+    ]
+  },
+  {
+    "sha": "caa63bb5105ebb6c883d551b93e599d34c8725b0",
+    "node_id": "C_kwDOAA4bh9oAKGNhYTYzYmI1MTA1ZWJiNmM4ODNkNTUxYjkzZTU5OWQzNGM4NzI1YjA",
+    "commit": {
+      "author": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-27T10:24:05Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-27T10:24:05Z"
+      },
+      "message": "Adopt otp 26.1.2",
+      "tree": {
+        "sha": "f0805e1bdb28cc90e38fe9003758ee06c69bcff3",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/trees/f0805e1bdb28cc90e38fe9003758ee06c69bcff3"
+      },
+      "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/git/commits/caa63bb5105ebb6c883d551b93e599d34c8725b0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/caa63bb5105ebb6c883d551b93e599d34c8725b0",
+    "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/caa63bb5105ebb6c883d551b93e599d34c8725b0",
+    "comments_url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/caa63bb5105ebb6c883d551b93e599d34c8725b0/comments",
+    "author": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d59e8435402777f9fe6a78b53652e382c8600693",
+        "url": "https://api.github.com/repos/rabbitmq/rabbitmq-server/commits/d59e8435402777f9fe6a78b53652e382c8600693",
+        "html_url": "https://github.com/rabbitmq/rabbitmq-server/commit/d59e8435402777f9fe6a78b53652e382c8600693"
+      }
+    ]
+  }
+]

@@ -1,0 +1,2372 @@
+[
+  {
+    "sha": "1f7d3654498e17e0a91c83f57e6265e08628d5fe",
+    "node_id": "C_kwDOB0YD4toAKDFmN2QzNjU0NDk4ZTE3ZTBhOTFjODNmNTdlNjI2NWUwODYyOGQ1ZmU",
+    "commit": {
+      "author": {
+        "name": "Sv. Lockal",
+        "email": "lockalsash@gmail.com",
+        "date": "2024-01-27T10:44:55Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2024-01-27T18:04:16Z"
+      },
+      "message": "Fix SIGSEGV in gtest death tests due to small stack\n\nIn https://github.com/google/googletest/blob/v1.14.0/googletest/src/gtest-death-test.cc#L1307\non x86-64 gtest sallocates 8192 bytes for `clone`:\n\n```\nstatic pid_t ExecDeathTestSpawnChild(char* const* argv, int close_fd) {\n    const auto stack_size = static_cast<size_t>(getpagesize() * 2);\n    ...\n    child_pid = clone(&ExecDeathTestChildMain, stack_top, SIGCHLD, &args);\n```\n\nAfter that attempt to call execv is intercepted by libsandbox.so, which\nallocates 8192 + more bytes multiple times on stack, causing SIGSEGV\n(instead of expected types of crashes).\n\nThis PR moves all allocations for related function to heap, so now\ncall path fits `getpagesize() * 2` with large margin.\n\nBug: https://bugs.gentoo.org/923013\nCloses: https://github.com/gentoo/sandbox/pull/26\nSigned-off-by: Sv. Lockal <lockalsash@gmail.com>\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "07f1f2554f394aec8f1daa2631cc8fbab0fa6bd3",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/07f1f2554f394aec8f1daa2631cc8fbab0fa6bd3"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/1f7d3654498e17e0a91c83f57e6265e08628d5fe",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmW1RbYACgkQfliimPQv\nnM2GtwgAlqzKMo2w06n6Lvs9VHjc8bN/qevhj2FErPx52j+FtYS1R5yettosbET8\n5fdMyN8UKYlKE8BLbRYyN/ByfQw5QlIy/v4NwUFCXhOYUYUmlQPs9xs2fQdmnBhj\n9w48hSMVz/PDgEIDdmJHjsIxOd8ZnuLdb99rdlvKoLBwovCM8uqrzxXHA2CCLg0s\nIn9/cNE7gowTXYVNN7PbdGTeL/bjf2U0F2b++BbjTEziM1YFtQ1uMN+lqRoJHMnH\nPtgKwSWw8gHuaXeCg4JRLjBJunhx/+aYgzqtHq+hSYxZKdm/eGh/t85pZWo7h9uU\nlYd/2EF97QjKNZEhmBNoHJyetkqLPQ==\n=Ztza\n-----END PGP SIGNATURE-----",
+        "payload": "tree 07f1f2554f394aec8f1daa2631cc8fbab0fa6bd3\nparent ef9208bea4e0f0dff5abf358002565f36e4d7a8d\nauthor Sv. Lockal <lockalsash@gmail.com> 1706352295 +0000\ncommitter Mike Gilbert <floppym@gentoo.org> 1706378656 -0500\n\nFix SIGSEGV in gtest death tests due to small stack\n\nIn https://github.com/google/googletest/blob/v1.14.0/googletest/src/gtest-death-test.cc#L1307\non x86-64 gtest sallocates 8192 bytes for `clone`:\n\n```\nstatic pid_t ExecDeathTestSpawnChild(char* const* argv, int close_fd) {\n    const auto stack_size = static_cast<size_t>(getpagesize() * 2);\n    ...\n    child_pid = clone(&ExecDeathTestChildMain, stack_top, SIGCHLD, &args);\n```\n\nAfter that attempt to call execv is intercepted by libsandbox.so, which\nallocates 8192 + more bytes multiple times on stack, causing SIGSEGV\n(instead of expected types of crashes).\n\nThis PR moves all allocations for related function to heap, so now\ncall path fits `getpagesize() * 2` with large margin.\n\nBug: https://bugs.gentoo.org/923013\nCloses: https://github.com/gentoo/sandbox/pull/26\nSigned-off-by: Sv. Lockal <lockalsash@gmail.com>\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/1f7d3654498e17e0a91c83f57e6265e08628d5fe",
+    "html_url": "https://github.com/gentoo/sandbox/commit/1f7d3654498e17e0a91c83f57e6265e08628d5fe",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/1f7d3654498e17e0a91c83f57e6265e08628d5fe/comments",
+    "author": {
+      "login": "AngryLoki",
+      "id": 108563,
+      "node_id": "MDQ6VXNlcjEwODU2Mw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/108563?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/AngryLoki",
+      "html_url": "https://github.com/AngryLoki",
+      "followers_url": "https://api.github.com/users/AngryLoki/followers",
+      "following_url": "https://api.github.com/users/AngryLoki/following{/other_user}",
+      "gists_url": "https://api.github.com/users/AngryLoki/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/AngryLoki/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/AngryLoki/subscriptions",
+      "organizations_url": "https://api.github.com/users/AngryLoki/orgs",
+      "repos_url": "https://api.github.com/users/AngryLoki/repos",
+      "events_url": "https://api.github.com/users/AngryLoki/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/AngryLoki/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ef9208bea4e0f0dff5abf358002565f36e4d7a8d",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/ef9208bea4e0f0dff5abf358002565f36e4d7a8d",
+        "html_url": "https://github.com/gentoo/sandbox/commit/ef9208bea4e0f0dff5abf358002565f36e4d7a8d"
+      }
+    ]
+  },
+  {
+    "sha": "ef9208bea4e0f0dff5abf358002565f36e4d7a8d",
+    "node_id": "C_kwDOB0YD4toAKGVmOTIwOGJlYTRlMGYwZGZmNWFiZjM1ODAwMjU2NWYzNmU0ZDdhOGQ",
+    "commit": {
+      "author": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2024-01-08T19:59:35Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2024-01-08T20:04:09Z"
+      },
+      "message": "libsandbox: stat the original path for EEXIST hackaround\n\nResolves an issue that can occur with paths that contain parent\ndirectory references (/../).\n\nIf part of the path does not exist, the sandboxed program should get ENOENT,\nnot EEXIST. If we use the canonicalized path, intermediate paths will be\neliminated and we produce the wrong result.\n\nBug: https://bugs.gentoo.org/921581\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "1659b3aac87b4f0d87f4cd80c4e4befd3c061889",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/1659b3aac87b4f0d87f4cd80c4e4befd3c061889"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/ef9208bea4e0f0dff5abf358002565f36e4d7a8d",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmWcVT0ACgkQfliimPQv\nnM2lAQf+PnzeOS8fVnPbgyj1XKxy9issZlJCSyLXMiI8dPaalxWmradJjfBPKCBy\nZUs99QI+rs1KJTRyLtq47Pg/bBBL8HKaZA9V7LLXOatiEPX7b/rvn1Ma11LKADmb\nHqID8mqn5wvGwlXXjpJwoXUslbKbLi2ShveyXVCrMFAc8m7vNqhr+JvctL6QHon4\nQTqB/mmu/O9yd7y7pjXc7/vw6pn8K5AMiTqNcKqJCilC9dvNuwhATXonRelJQkHq\nT/2Cq8E/pLRLxNsP/+hvRPFj7t7xOyn/EJJy8jO94aVZBDqu67rsYxKHnWVbXuFX\n1f8SikjXbvzah8KSKapPvvOGX6KLSg==\n=4Lgr\n-----END PGP SIGNATURE-----",
+        "payload": "tree 1659b3aac87b4f0d87f4cd80c4e4befd3c061889\nparent 4d85608b67803f8f861910590830fcb8c2220b06\nauthor Mike Gilbert <floppym@gentoo.org> 1704743975 -0500\ncommitter Mike Gilbert <floppym@gentoo.org> 1704744249 -0500\n\nlibsandbox: stat the original path for EEXIST hackaround\n\nResolves an issue that can occur with paths that contain parent\ndirectory references (/../).\n\nIf part of the path does not exist, the sandboxed program should get ENOENT,\nnot EEXIST. If we use the canonicalized path, intermediate paths will be\neliminated and we produce the wrong result.\n\nBug: https://bugs.gentoo.org/921581\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/ef9208bea4e0f0dff5abf358002565f36e4d7a8d",
+    "html_url": "https://github.com/gentoo/sandbox/commit/ef9208bea4e0f0dff5abf358002565f36e4d7a8d",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/ef9208bea4e0f0dff5abf358002565f36e4d7a8d/comments",
+    "author": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4d85608b67803f8f861910590830fcb8c2220b06",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/4d85608b67803f8f861910590830fcb8c2220b06",
+        "html_url": "https://github.com/gentoo/sandbox/commit/4d85608b67803f8f861910590830fcb8c2220b06"
+      }
+    ]
+  },
+  {
+    "sha": "4d85608b67803f8f861910590830fcb8c2220b06",
+    "node_id": "C_kwDOB0YD4toAKDRkODU2MDhiNjc4MDNmOGY4NjE5MTA1OTA4MzBmY2I4YzIyMjBiMDY",
+    "commit": {
+      "author": {
+        "name": "Sam James",
+        "email": "sam@gentoo.org",
+        "date": "2023-08-06T00:20:14Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-08-08T15:29:39Z"
+      },
+      "message": "src: fix -Wold-style-declaration\n\nSigned-off-by: Sam James <sam@gentoo.org>\nCloses: https://github.com/gentoo/sandbox/pull/23\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "cbb2366d3da2851361767c31cdaa8b89c2679c9d",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/cbb2366d3da2851361767c31cdaa8b89c2679c9d"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/4d85608b67803f8f861910590830fcb8c2220b06",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmTSX34ACgkQfliimPQv\nnM2b8gf/SEsqZHpmuJ9ReyGbFOXS2up56Rlx9gYX1hdDcSYVyrvuz9rIT/BH1Dup\nEWuqeKaPypQ9u0tP4cVLQTJl6Q3qNaHvdNKhw9tKS7SRNR5DRCyw3PcanTRgV6XG\nqjoSvtzmwzks2QKFtlmGyEYcKg+UblGhzNopQLn5+johsXBV0YyVWF4N6tTXS38x\nsxevaPNfzmDw5kspf+1svCwUpbj9Du6eGR+jo69bmOxCn9ybP+bgBJ5BzpZuzzAL\nvBqtwPKKpPqtCXAD6yWh4d0CUdoso6GQSb7gEOX5B+5e2jwgJ8CToj8pkxtIeGKg\n6unQpGX8OMjm6hM6wBr/13hTElHyiw==\n=ReUp\n-----END PGP SIGNATURE-----",
+        "payload": "tree cbb2366d3da2851361767c31cdaa8b89c2679c9d\nparent 3bdb6de54f80f7ddd9fa52f9181b3ab9dde87790\nauthor Sam James <sam@gentoo.org> 1691281214 +0100\ncommitter Mike Gilbert <floppym@gentoo.org> 1691508579 -0400\n\nsrc: fix -Wold-style-declaration\n\nSigned-off-by: Sam James <sam@gentoo.org>\nCloses: https://github.com/gentoo/sandbox/pull/23\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/4d85608b67803f8f861910590830fcb8c2220b06",
+    "html_url": "https://github.com/gentoo/sandbox/commit/4d85608b67803f8f861910590830fcb8c2220b06",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/4d85608b67803f8f861910590830fcb8c2220b06/comments",
+    "author": {
+      "login": "thesamesam",
+      "id": 11667869,
+      "node_id": "MDQ6VXNlcjExNjY3ODY5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11667869?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/thesamesam",
+      "html_url": "https://github.com/thesamesam",
+      "followers_url": "https://api.github.com/users/thesamesam/followers",
+      "following_url": "https://api.github.com/users/thesamesam/following{/other_user}",
+      "gists_url": "https://api.github.com/users/thesamesam/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/thesamesam/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/thesamesam/subscriptions",
+      "organizations_url": "https://api.github.com/users/thesamesam/orgs",
+      "repos_url": "https://api.github.com/users/thesamesam/repos",
+      "events_url": "https://api.github.com/users/thesamesam/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/thesamesam/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3bdb6de54f80f7ddd9fa52f9181b3ab9dde87790",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/3bdb6de54f80f7ddd9fa52f9181b3ab9dde87790",
+        "html_url": "https://github.com/gentoo/sandbox/commit/3bdb6de54f80f7ddd9fa52f9181b3ab9dde87790"
+      }
+    ]
+  },
+  {
+    "sha": "3bdb6de54f80f7ddd9fa52f9181b3ab9dde87790",
+    "node_id": "C_kwDOB0YD4toAKDNiZGI2ZGU1NGY4MGY3ZGRkOWZhNTJmOTE4MWIzYWI5ZGRlODc3OTA",
+    "commit": {
+      "author": {
+        "name": "Sam James",
+        "email": "sam@gentoo.org",
+        "date": "2023-08-06T00:20:01Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-08-08T15:29:35Z"
+      },
+      "message": "libsbutil: fix -Wold-style-declaration\n\nSigned-off-by: Sam James <sam@gentoo.org>\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "eb7441250f4c09c7706b3b50ccc99cc72dd00e0c",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/eb7441250f4c09c7706b3b50ccc99cc72dd00e0c"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/3bdb6de54f80f7ddd9fa52f9181b3ab9dde87790",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmTSX2MACgkQfliimPQv\nnM3PgAf+PWuy2QAu5K3y7bIuouajcqbfYwlW6J42tSwq3o0scAIIfzKunfFqXoUw\n69D4C8sSmjLRIqOjIsSOuLDvoKf/+ZPfDKP8ZfEOn7kcm8d4QGFtD8fA9W6mFTVW\n+S6j7DFlkneckHwueomYzU5LoI+GrK/KPigM6GbE2mZWB0+upsKEwn1GVC9S/ZSy\nlZ6pBMURFyPxWd2X809lREXXETjK20RTWuY7ddtn/F3wry1Ywlq2i4gI7ju0tlha\n11EGZ21yi5NLgkeGSRjL5C+60K+w68I75saPYAwm8qQpkeD9sY5NFFiXRfDSJ5ba\nWImPTeAYEbxf1Hup49KafQgazrzNiQ==\n=kuw6\n-----END PGP SIGNATURE-----",
+        "payload": "tree eb7441250f4c09c7706b3b50ccc99cc72dd00e0c\nparent d4d11afa436f1a0b4e4defc021c24e5992b0645f\nauthor Sam James <sam@gentoo.org> 1691281201 +0100\ncommitter Mike Gilbert <floppym@gentoo.org> 1691508575 -0400\n\nlibsbutil: fix -Wold-style-declaration\n\nSigned-off-by: Sam James <sam@gentoo.org>\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/3bdb6de54f80f7ddd9fa52f9181b3ab9dde87790",
+    "html_url": "https://github.com/gentoo/sandbox/commit/3bdb6de54f80f7ddd9fa52f9181b3ab9dde87790",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/3bdb6de54f80f7ddd9fa52f9181b3ab9dde87790/comments",
+    "author": {
+      "login": "thesamesam",
+      "id": 11667869,
+      "node_id": "MDQ6VXNlcjExNjY3ODY5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11667869?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/thesamesam",
+      "html_url": "https://github.com/thesamesam",
+      "followers_url": "https://api.github.com/users/thesamesam/followers",
+      "following_url": "https://api.github.com/users/thesamesam/following{/other_user}",
+      "gists_url": "https://api.github.com/users/thesamesam/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/thesamesam/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/thesamesam/subscriptions",
+      "organizations_url": "https://api.github.com/users/thesamesam/orgs",
+      "repos_url": "https://api.github.com/users/thesamesam/repos",
+      "events_url": "https://api.github.com/users/thesamesam/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/thesamesam/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d4d11afa436f1a0b4e4defc021c24e5992b0645f",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/d4d11afa436f1a0b4e4defc021c24e5992b0645f",
+        "html_url": "https://github.com/gentoo/sandbox/commit/d4d11afa436f1a0b4e4defc021c24e5992b0645f"
+      }
+    ]
+  },
+  {
+    "sha": "d4d11afa436f1a0b4e4defc021c24e5992b0645f",
+    "node_id": "C_kwDOB0YD4toAKGQ0ZDExYWZhNDM2ZjFhMGI0ZTRkZWZjMDIxYzI0ZTU5OTJiMDY0NWY",
+    "commit": {
+      "author": {
+        "name": "Oskari Pirhonen",
+        "email": "xxc3ncoredxx@gmail.com",
+        "date": "2023-08-07T00:58:11Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-08-08T15:27:09Z"
+      },
+      "message": "egetcwd: fix some edge cases\n\n- Ensure all potentially 21 chars + NUL from \"/proc/%i/cwd\" fit in its\n  buffer\n- Use snprintf(3) instead of sprintf(3) to fill in the buffer\n- readlink(2) does not add a NUL terminator, so ensure it only writes up\n  to the allocated length - 1\n- Use a more descriptive name for the return value of readlink(2)\n\nSigned-off-by: Oskari Pirhonen <xxc3ncoredxx@gmail.com>\nCloses: https://github.com/gentoo/sandbox/pull/24\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "1b7e203f0484904d869bc5292e483c6a239ebc32",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/1b7e203f0484904d869bc5292e483c6a239ebc32"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/d4d11afa436f1a0b4e4defc021c24e5992b0645f",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmTSXtkACgkQfliimPQv\nnM2CIgf+OynktCkkDnM4svlMv1F+0+Tc3MFTEXiehPbv1lUEk8Kz+FHSSNTbxCIP\nwygZ66FtbMK4ZiYaBdc5IuDJN6k8LgKo8HBjcVrshXy4iHBzGaBQuIm3yAs18F0X\nbzGpb0EFH5ho8go/QlOCqCuuNNMNJeKZLlTvJauZpSisOX05uDHCQ7Khr8Ylh6Vj\nGG4lHVsuXDXNTIsSYProEvtEWg+DW5n93SrST9rIQUCnHVgn5FX3SW8likh9WIWc\nHFa8WK+NOl3NszajwXAMlgf2C5srV4DZF4Si4FyAcgO3Jv0uAgwu36gPVAML8JfE\novzMvlOkDufhD/WFiJFkPPhtkNTSSA==\n=I0Oa\n-----END PGP SIGNATURE-----",
+        "payload": "tree 1b7e203f0484904d869bc5292e483c6a239ebc32\nparent 4b27824ee27013c672f75bce2066c950a71280d2\nauthor Oskari Pirhonen <xxc3ncoredxx@gmail.com> 1691369891 -0500\ncommitter Mike Gilbert <floppym@gentoo.org> 1691508429 -0400\n\negetcwd: fix some edge cases\n\n- Ensure all potentially 21 chars + NUL from \"/proc/%i/cwd\" fit in its\n  buffer\n- Use snprintf(3) instead of sprintf(3) to fill in the buffer\n- readlink(2) does not add a NUL terminator, so ensure it only writes up\n  to the allocated length - 1\n- Use a more descriptive name for the return value of readlink(2)\n\nSigned-off-by: Oskari Pirhonen <xxc3ncoredxx@gmail.com>\nCloses: https://github.com/gentoo/sandbox/pull/24\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/d4d11afa436f1a0b4e4defc021c24e5992b0645f",
+    "html_url": "https://github.com/gentoo/sandbox/commit/d4d11afa436f1a0b4e4defc021c24e5992b0645f",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/d4d11afa436f1a0b4e4defc021c24e5992b0645f/comments",
+    "author": {
+      "login": "xxc3nsoredxx",
+      "id": 16514409,
+      "node_id": "MDQ6VXNlcjE2NTE0NDA5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16514409?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/xxc3nsoredxx",
+      "html_url": "https://github.com/xxc3nsoredxx",
+      "followers_url": "https://api.github.com/users/xxc3nsoredxx/followers",
+      "following_url": "https://api.github.com/users/xxc3nsoredxx/following{/other_user}",
+      "gists_url": "https://api.github.com/users/xxc3nsoredxx/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/xxc3nsoredxx/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/xxc3nsoredxx/subscriptions",
+      "organizations_url": "https://api.github.com/users/xxc3nsoredxx/orgs",
+      "repos_url": "https://api.github.com/users/xxc3nsoredxx/repos",
+      "events_url": "https://api.github.com/users/xxc3nsoredxx/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/xxc3nsoredxx/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4b27824ee27013c672f75bce2066c950a71280d2",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/4b27824ee27013c672f75bce2066c950a71280d2",
+        "html_url": "https://github.com/gentoo/sandbox/commit/4b27824ee27013c672f75bce2066c950a71280d2"
+      }
+    ]
+  },
+  {
+    "sha": "4b27824ee27013c672f75bce2066c950a71280d2",
+    "node_id": "C_kwDOB0YD4toAKDRiMjc4MjRlZTI3MDEzYzY3MmY3NWJjZTIwNjZjOTUwYTcxMjgwZDI",
+    "commit": {
+      "author": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-08-05T19:39:21Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-08-05T20:08:11Z"
+      },
+      "message": "resolve_dirfd_path: use separate buffer for readlink\n\nFixes a compile warning:\n```\nwarning: passing argument 2 to 'restrict'-qualified parameter aliases with argument 1 [-Wrestrict]\n```\n\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "6c630ec4c24d4f61849e158b64621068f7e68141",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/6c630ec4c24d4f61849e158b64621068f7e68141"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/4b27824ee27013c672f75bce2066c950a71280d2",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmTOrCsACgkQfliimPQv\nnM2Vwwf/STn21WlwYVabOam7sYqI40JQe6X0HwZAGy6Vq2tXAWEZVLY8P7WgrAoc\nFst/tMA8LRLxqNzXigvnJi76iQxreUhLJ20cfFC3yus8ya4JK454dki/HkTTSQx4\naXQNqVuMYz59qjJ+Ze3MukNUIvJam2i2NfjhsHrjau9oHHqAGhswfRbi7ljXBdQL\n4hu2bmnLQCk2JQieq/mdUeyiXR29f6P4YEpgzIOZE/AAYtRAE+lvtr6zAGmXeDIM\nioN5n2i9DV+fwBoD/ADpMnIgNG3zEg7S+OjIHZenKSrLM34d5+JAEZT1DeJHaGJG\nHF6necT7MRpl70RtXLsp2EpvqGCwAw==\n=Jd2M\n-----END PGP SIGNATURE-----",
+        "payload": "tree 6c630ec4c24d4f61849e158b64621068f7e68141\nparent 8c3bc21729c3ad13295b586cd185b2b5da686731\nauthor Mike Gilbert <floppym@gentoo.org> 1691264361 -0400\ncommitter Mike Gilbert <floppym@gentoo.org> 1691266091 -0400\n\nresolve_dirfd_path: use separate buffer for readlink\n\nFixes a compile warning:\n```\nwarning: passing argument 2 to 'restrict'-qualified parameter aliases with argument 1 [-Wrestrict]\n```\n\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/4b27824ee27013c672f75bce2066c950a71280d2",
+    "html_url": "https://github.com/gentoo/sandbox/commit/4b27824ee27013c672f75bce2066c950a71280d2",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/4b27824ee27013c672f75bce2066c950a71280d2/comments",
+    "author": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8c3bc21729c3ad13295b586cd185b2b5da686731",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/8c3bc21729c3ad13295b586cd185b2b5da686731",
+        "html_url": "https://github.com/gentoo/sandbox/commit/8c3bc21729c3ad13295b586cd185b2b5da686731"
+      }
+    ]
+  },
+  {
+    "sha": "8c3bc21729c3ad13295b586cd185b2b5da686731",
+    "node_id": "C_kwDOB0YD4toAKDhjM2JjMjE3MjljM2FkMTMyOTViNTg2Y2QxODViMmI1ZGE2ODY3MzE",
+    "commit": {
+      "author": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-08-05T19:18:53Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-08-05T20:08:11Z"
+      },
+      "message": "erealpath: use separate buffer for readlink\n\nFixes a compiler warning:\n```\nwarning: passing argument 2 to 'restrict'-qualified parameter aliases with argument 1 [-Wrestrict]\n```\n\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "98911272cbf335d57ce75b400d13820f1e40cb22",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/98911272cbf335d57ce75b400d13820f1e40cb22"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/8c3bc21729c3ad13295b586cd185b2b5da686731",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmTOrCsACgkQfliimPQv\nnM0ANwf/d1BKgjy+53DByigG5xzQBghMSu7ebvpVKLoZp/H+M8tThow41MHmPis8\nolja8w2aLFteLOaVwuDpVmjBREcq8Zdj1d07knyBI6CdDU4Bd9h5JkEeIMUSXmkn\nA1i+C5K2z+QEcu/UHqVySECnNdkt9Vupe/u+MabuynKEivIlGh6PevQyDkHTJAYb\nW7wrWSkCnjk6kFdInmBlcr69wI6qu7YbMss2o0a75OSq7uRP9we+x+KZpPl3mDlU\nRmlSLl58J+nRYJxNlW8BD19LNKXXTZWWDxJuXS6SOs8q4bDVZ0xHUf7eJhoQ4ScV\neKodocATBsZcCsCQ2RyiRWgt/XmVBQ==\n=icc5\n-----END PGP SIGNATURE-----",
+        "payload": "tree 98911272cbf335d57ce75b400d13820f1e40cb22\nparent 1c9a17d40de6dd3ea5b7aacaa76878357350881b\nauthor Mike Gilbert <floppym@gentoo.org> 1691263133 -0400\ncommitter Mike Gilbert <floppym@gentoo.org> 1691266091 -0400\n\nerealpath: use separate buffer for readlink\n\nFixes a compiler warning:\n```\nwarning: passing argument 2 to 'restrict'-qualified parameter aliases with argument 1 [-Wrestrict]\n```\n\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/8c3bc21729c3ad13295b586cd185b2b5da686731",
+    "html_url": "https://github.com/gentoo/sandbox/commit/8c3bc21729c3ad13295b586cd185b2b5da686731",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/8c3bc21729c3ad13295b586cd185b2b5da686731/comments",
+    "author": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1c9a17d40de6dd3ea5b7aacaa76878357350881b",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/1c9a17d40de6dd3ea5b7aacaa76878357350881b",
+        "html_url": "https://github.com/gentoo/sandbox/commit/1c9a17d40de6dd3ea5b7aacaa76878357350881b"
+      }
+    ]
+  },
+  {
+    "sha": "1c9a17d40de6dd3ea5b7aacaa76878357350881b",
+    "node_id": "C_kwDOB0YD4toAKDFjOWExN2Q0MGRlNmRkM2VhNWI3YWFjYWE3Njg3ODM1NzM1MDg4MWI",
+    "commit": {
+      "author": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-08-05T19:14:09Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-08-05T20:08:10Z"
+      },
+      "message": "erealpath: leave space for a trailing '\\0' in readlink's buffer\n\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "f170cf8b8189382208c882b2261c19a81f1af9cb",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/f170cf8b8189382208c882b2261c19a81f1af9cb"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/1c9a17d40de6dd3ea5b7aacaa76878357350881b",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmTOrCoACgkQfliimPQv\nnM1fxgf9F8PLWII+FXYitaeiD7lWJvcu7mYAIFdE7ASxF1N4tQibDFlby0X4dvgM\nTtE2WeGLQD0tTm3BRy84bRAvwQ58OgXfaaTkvrMdMmAqcZWJNBZPU1FM1HWWeOmW\nNNopbm6wHnRLwcjIVZwAOASNVHUa/OI2rlB1RcCuuR2+c8iclTrkXmKENu2Gh+5+\noyawWfG2s1cM4jnsO1P51F6H3OtP2bW2BUXicbwp4PcgiEUL+KRdWNt2EYg74V75\nuvn4uZWCuvCkMsYo70glat2X6ABWMtkMmbplz/XZ/rXdGHaQhIY8BxwwAPqBLP6O\nDN9/1fNpCWZKmQxg75r1NwYQy+fJgA==\n=Twhh\n-----END PGP SIGNATURE-----",
+        "payload": "tree f170cf8b8189382208c882b2261c19a81f1af9cb\nparent 128d5b32b301a552299feff7cc64e5f8f7c4fee7\nauthor Mike Gilbert <floppym@gentoo.org> 1691262849 -0400\ncommitter Mike Gilbert <floppym@gentoo.org> 1691266090 -0400\n\nerealpath: leave space for a trailing '\\0' in readlink's buffer\n\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/1c9a17d40de6dd3ea5b7aacaa76878357350881b",
+    "html_url": "https://github.com/gentoo/sandbox/commit/1c9a17d40de6dd3ea5b7aacaa76878357350881b",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/1c9a17d40de6dd3ea5b7aacaa76878357350881b/comments",
+    "author": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "128d5b32b301a552299feff7cc64e5f8f7c4fee7",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/128d5b32b301a552299feff7cc64e5f8f7c4fee7",
+        "html_url": "https://github.com/gentoo/sandbox/commit/128d5b32b301a552299feff7cc64e5f8f7c4fee7"
+      }
+    ]
+  },
+  {
+    "sha": "128d5b32b301a552299feff7cc64e5f8f7c4fee7",
+    "node_id": "C_kwDOB0YD4toAKDEyOGQ1YjMyYjMwMWE1NTIyOTlmZWZmN2NjNjRlNWY4ZjdjNGZlZTc",
+    "commit": {
+      "author": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-08-05T19:11:58Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-08-05T20:08:10Z"
+      },
+      "message": "erealpath: drop unused path_max variable\n\nThe SB_PATH_MAX macro is always defined, so this variable was pointless.\n\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "0151f58d2f2a0c6cc7cc9df17d19f6d0eff88a03",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/0151f58d2f2a0c6cc7cc9df17d19f6d0eff88a03"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/128d5b32b301a552299feff7cc64e5f8f7c4fee7",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmTOrCoACgkQfliimPQv\nnM2kuQgAkDVje6blkrVWf1HqS1MriYhq/p66JdY5OVwNUbRAwl8pdFfweFNaDBWi\n+Cae30O8jjMYxeF6GreOY/aEW80SAE95fBsp75dOxJrWRh33z3FyWlgqc1AxILof\nq/JEjFNPCsbqKi+KrT745JV8E4FPNmG3Tykv4XIvFFHLIDbDXfPAOJFQ4XW1dfRF\ne45Gn5sPsFv1SdvNF7JkKrAUfDkVKwzL/4kZRDAXniztrtwYGGRN9d0n5c6FYRZA\nMBXp1WbhVfUObOGex3bnDpsFgwYc6tQqkRPSBxRf8the91mpTeLdsAAOHkQG4pNO\ncB/uslNcQcll/pDtaUJV2RwuBUJxCw==\n=Qnmv\n-----END PGP SIGNATURE-----",
+        "payload": "tree 0151f58d2f2a0c6cc7cc9df17d19f6d0eff88a03\nparent 7f230519475c2aaea91df75b0165d8b6c03b9fa9\nauthor Mike Gilbert <floppym@gentoo.org> 1691262718 -0400\ncommitter Mike Gilbert <floppym@gentoo.org> 1691266090 -0400\n\nerealpath: drop unused path_max variable\n\nThe SB_PATH_MAX macro is always defined, so this variable was pointless.\n\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/128d5b32b301a552299feff7cc64e5f8f7c4fee7",
+    "html_url": "https://github.com/gentoo/sandbox/commit/128d5b32b301a552299feff7cc64e5f8f7c4fee7",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/128d5b32b301a552299feff7cc64e5f8f7c4fee7/comments",
+    "author": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7f230519475c2aaea91df75b0165d8b6c03b9fa9",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/7f230519475c2aaea91df75b0165d8b6c03b9fa9",
+        "html_url": "https://github.com/gentoo/sandbox/commit/7f230519475c2aaea91df75b0165d8b6c03b9fa9"
+      }
+    ]
+  },
+  {
+    "sha": "7f230519475c2aaea91df75b0165d8b6c03b9fa9",
+    "node_id": "C_kwDOB0YD4toAKDdmMjMwNTE5NDc1YzJhYWVhOTFkZjc1YjAxNjVkOGI2YzAzYjlmYTk",
+    "commit": {
+      "author": {
+        "name": "gto2023",
+        "email": "gto7052@mailbox.org",
+        "date": "2023-07-13T11:59:24Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-08-05T20:07:55Z"
+      },
+      "message": "sandbox: do not compare array to NULL\n\nFixes a compiler warning:\n```\nsrc/environ.c:211:19: warning: the comparison will always evaluate as ‘true’ for the address of ‘work_dir’ will never be NULL [-Waddress]\n```\n\nBug: https://bugs.gentoo.org/906234\nSigned-off-by: gto2023 <gto7052@mailbox.org>\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "8b707bc2ec831a5bc533701c7a961dd023600409",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/8b707bc2ec831a5bc533701c7a961dd023600409"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/7f230519475c2aaea91df75b0165d8b6c03b9fa9",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmTOrCgACgkQfliimPQv\nnM3+DQf7BimSMpOvadZ3+KKQ1y9wd8qTKIAucotP4I+tUm1E7jNjv8APSinWA6FQ\nbY6gFevvFCV0yyAVM+Cjjmo1GkfBI30ilNt/BrT5THviYlqGFfK4M1e2Ohtl+yqp\n55ol8YOnfGJ6NUW99kTt6o/amtZdpns+7cAtC7nyPK6xKlzhEkdtP6AbLtk2RCqZ\nBnjQDIENcgU3OeKmISOebKw9tEj0dMhMROs72Y8A+CauWYOTw5WQSUZuKSAnYFBJ\nSfS3HtLPzq4R0yEp3CK75a33sayqN5beCtSUxWM3fvGctPmlD6cqkj2+aDTscmZt\nqcifW6AH2Y70h9Gd4Xr77JodgWG2fA==\n=uZKO\n-----END PGP SIGNATURE-----",
+        "payload": "tree 8b707bc2ec831a5bc533701c7a961dd023600409\nparent 5d13985d6ec4ceeced9b9b45f00bc19c69efbb8f\nauthor gto2023 <gto7052@mailbox.org> 1689249564 +0200\ncommitter Mike Gilbert <floppym@gentoo.org> 1691266075 -0400\n\nsandbox: do not compare array to NULL\n\nFixes a compiler warning:\n```\nsrc/environ.c:211:19: warning: the comparison will always evaluate as ‘true’ for the address of ‘work_dir’ will never be NULL [-Waddress]\n```\n\nBug: https://bugs.gentoo.org/906234\nSigned-off-by: gto2023 <gto7052@mailbox.org>\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/7f230519475c2aaea91df75b0165d8b6c03b9fa9",
+    "html_url": "https://github.com/gentoo/sandbox/commit/7f230519475c2aaea91df75b0165d8b6c03b9fa9",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/7f230519475c2aaea91df75b0165d8b6c03b9fa9/comments",
+    "author": {
+      "login": "gto2023",
+      "id": 139162673,
+      "node_id": "U_kgDOCEt0MQ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/139162673?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gto2023",
+      "html_url": "https://github.com/gto2023",
+      "followers_url": "https://api.github.com/users/gto2023/followers",
+      "following_url": "https://api.github.com/users/gto2023/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gto2023/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gto2023/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gto2023/subscriptions",
+      "organizations_url": "https://api.github.com/users/gto2023/orgs",
+      "repos_url": "https://api.github.com/users/gto2023/repos",
+      "events_url": "https://api.github.com/users/gto2023/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gto2023/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5d13985d6ec4ceeced9b9b45f00bc19c69efbb8f",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/5d13985d6ec4ceeced9b9b45f00bc19c69efbb8f",
+        "html_url": "https://github.com/gentoo/sandbox/commit/5d13985d6ec4ceeced9b9b45f00bc19c69efbb8f"
+      }
+    ]
+  },
+  {
+    "sha": "5d13985d6ec4ceeced9b9b45f00bc19c69efbb8f",
+    "node_id": "C_kwDOB0YD4toAKDVkMTM5ODVkNmVjNGNlZWNlZDliOWI0NWYwMGJjMTljNjllZmJiOGY",
+    "commit": {
+      "author": {
+        "name": "gto2023",
+        "email": "gto7052@mailbox.org",
+        "date": "2023-07-13T11:55:09Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-08-05T18:04:53Z"
+      },
+      "message": "sandbox: prevent possible use of uninitialized members of sandbox_info struct\n\nSigned-off-by: gto2023 <gto7052@mailbox.org>\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "f17144c3e3278e5ba7fe13a93b5a307a6564b8d9",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/f17144c3e3278e5ba7fe13a93b5a307a6564b8d9"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/5d13985d6ec4ceeced9b9b45f00bc19c69efbb8f",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmTOj08ACgkQfliimPQv\nnM2Ftwf/edm5UGhlnzPqTEs24z6KnEZ4RuFHhBu2ZgV1/lYm+87BBXvH5MW1qacD\nkN4QEq7C5f0XyBGJq/ICssjaOpYeFfu8zFqvhpaw4auM2wiKNgko5R9iKGshEIX3\ng54gZP7s4peJPRhXmkyEybi10yqd8BEHmT4wQz60DR7/opi7SL+ALHfvC2bS1OlS\ny8oIqVRFcGJTKOyPeWt9yRNGCFAHJaX5ZL0BHl3sE2ihB8RX0tCxsJ5Mjn6ShAZX\nUHtEsbUgXUO0f12107kJ+dIJlFZ05YLKf2IVnLEoJ0dAB68qTH8ZsXq9w6vvapuj\nJCK8fbGfbJGrNi9MIN+X1EoeQ/Q7sA==\n=5+mD\n-----END PGP SIGNATURE-----",
+        "payload": "tree f17144c3e3278e5ba7fe13a93b5a307a6564b8d9\nparent 62ce93feaa51f9e3a490ef522e0bad91f666ebe1\nauthor gto2023 <gto7052@mailbox.org> 1689249309 +0200\ncommitter Mike Gilbert <floppym@gentoo.org> 1691258693 -0400\n\nsandbox: prevent possible use of uninitialized members of sandbox_info struct\n\nSigned-off-by: gto2023 <gto7052@mailbox.org>\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/5d13985d6ec4ceeced9b9b45f00bc19c69efbb8f",
+    "html_url": "https://github.com/gentoo/sandbox/commit/5d13985d6ec4ceeced9b9b45f00bc19c69efbb8f",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/5d13985d6ec4ceeced9b9b45f00bc19c69efbb8f/comments",
+    "author": {
+      "login": "gto2023",
+      "id": 139162673,
+      "node_id": "U_kgDOCEt0MQ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/139162673?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gto2023",
+      "html_url": "https://github.com/gto2023",
+      "followers_url": "https://api.github.com/users/gto2023/followers",
+      "following_url": "https://api.github.com/users/gto2023/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gto2023/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gto2023/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gto2023/subscriptions",
+      "organizations_url": "https://api.github.com/users/gto2023/orgs",
+      "repos_url": "https://api.github.com/users/gto2023/repos",
+      "events_url": "https://api.github.com/users/gto2023/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gto2023/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "62ce93feaa51f9e3a490ef522e0bad91f666ebe1",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/62ce93feaa51f9e3a490ef522e0bad91f666ebe1",
+        "html_url": "https://github.com/gentoo/sandbox/commit/62ce93feaa51f9e3a490ef522e0bad91f666ebe1"
+      }
+    ]
+  },
+  {
+    "sha": "62ce93feaa51f9e3a490ef522e0bad91f666ebe1",
+    "node_id": "C_kwDOB0YD4toAKDYyY2U5M2ZlYWE1MWY5ZTNhNDkwZWY1MjJlMGJhZDkxZjY2NmViZTE",
+    "commit": {
+      "author": {
+        "name": "Sam James",
+        "email": "sam@gentoo.org",
+        "date": "2023-07-21T15:05:56Z"
+      },
+      "committer": {
+        "name": "Sam James",
+        "email": "sam@gentoo.org",
+        "date": "2023-08-05T04:32:14Z"
+      },
+      "message": "configure.ac: fix whitespace\n\nSigned-off-by: Sam James <sam@gentoo.org>",
+      "tree": {
+        "sha": "6c972dc2e6bd3d0a5a78cc76fdd41a944ec22be4",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/6c972dc2e6bd3d0a5a78cc76fdd41a944ec22be4"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/62ce93feaa51f9e3a490ef522e0bad91f666ebe1",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niOUEABYKAI0WIQQlpruI3Zt2TGtVQcJzhAn1IN+RkAUCZM3Qzl8UgAAAAAAuAChp\nc3N1ZXItZnByQG5vdGF0aW9ucy5vcGVucGdwLmZpZnRoaG9yc2VtYW4ubmV0MjVB\nNkJCODhERDlCNzY0QzZCNTU0MUMyNzM4NDA5RjUyMERGOTE5MA8cc2FtQGdlbnRv\nby5vcmcACgkQc4QJ9SDfkZA+wwD/V1qh0ob5JFuUvUoT8XJtCrFlMUIUnqdneNdm\nwypJhDgA/1HpdOHfT9lT+cx+rj28ylRoNMjIsrOO5/JXlkJv38AM\n=DhfZ\n-----END PGP SIGNATURE-----",
+        "payload": "tree 6c972dc2e6bd3d0a5a78cc76fdd41a944ec22be4\nparent 4f42e1984227012797030839b5e757a6da147141\nauthor Sam James <sam@gentoo.org> 1689951956 +0100\ncommitter Sam James <sam@gentoo.org> 1691209934 +0100\n\nconfigure.ac: fix whitespace\n\nSigned-off-by: Sam James <sam@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/62ce93feaa51f9e3a490ef522e0bad91f666ebe1",
+    "html_url": "https://github.com/gentoo/sandbox/commit/62ce93feaa51f9e3a490ef522e0bad91f666ebe1",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/62ce93feaa51f9e3a490ef522e0bad91f666ebe1/comments",
+    "author": {
+      "login": "thesamesam",
+      "id": 11667869,
+      "node_id": "MDQ6VXNlcjExNjY3ODY5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11667869?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/thesamesam",
+      "html_url": "https://github.com/thesamesam",
+      "followers_url": "https://api.github.com/users/thesamesam/followers",
+      "following_url": "https://api.github.com/users/thesamesam/following{/other_user}",
+      "gists_url": "https://api.github.com/users/thesamesam/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/thesamesam/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/thesamesam/subscriptions",
+      "organizations_url": "https://api.github.com/users/thesamesam/orgs",
+      "repos_url": "https://api.github.com/users/thesamesam/repos",
+      "events_url": "https://api.github.com/users/thesamesam/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/thesamesam/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "thesamesam",
+      "id": 11667869,
+      "node_id": "MDQ6VXNlcjExNjY3ODY5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11667869?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/thesamesam",
+      "html_url": "https://github.com/thesamesam",
+      "followers_url": "https://api.github.com/users/thesamesam/followers",
+      "following_url": "https://api.github.com/users/thesamesam/following{/other_user}",
+      "gists_url": "https://api.github.com/users/thesamesam/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/thesamesam/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/thesamesam/subscriptions",
+      "organizations_url": "https://api.github.com/users/thesamesam/orgs",
+      "repos_url": "https://api.github.com/users/thesamesam/repos",
+      "events_url": "https://api.github.com/users/thesamesam/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/thesamesam/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4f42e1984227012797030839b5e757a6da147141",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/4f42e1984227012797030839b5e757a6da147141",
+        "html_url": "https://github.com/gentoo/sandbox/commit/4f42e1984227012797030839b5e757a6da147141"
+      }
+    ]
+  },
+  {
+    "sha": "4f42e1984227012797030839b5e757a6da147141",
+    "node_id": "C_kwDOB0YD4toAKDRmNDJlMTk4NDIyNzAxMjc5NzAzMDgzOWI1ZTc1N2E2ZGExNDcxNDE",
+    "commit": {
+      "author": {
+        "name": "Sam James",
+        "email": "sam@gentoo.org",
+        "date": "2023-07-21T15:04:23Z"
+      },
+      "committer": {
+        "name": "Sam James",
+        "email": "sam@gentoo.org",
+        "date": "2023-08-05T04:32:14Z"
+      },
+      "message": "configure.ac: cleanup error messages\n\nSigned-off-by: Sam James <sam@gentoo.org>",
+      "tree": {
+        "sha": "9b6d3e534e97d7250b861338275a46c17e6446ac",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/9b6d3e534e97d7250b861338275a46c17e6446ac"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/4f42e1984227012797030839b5e757a6da147141",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niOUEABYKAI0WIQQlpruI3Zt2TGtVQcJzhAn1IN+RkAUCZM3Qzl8UgAAAAAAuAChp\nc3N1ZXItZnByQG5vdGF0aW9ucy5vcGVucGdwLmZpZnRoaG9yc2VtYW4ubmV0MjVB\nNkJCODhERDlCNzY0QzZCNTU0MUMyNzM4NDA5RjUyMERGOTE5MA8cc2FtQGdlbnRv\nby5vcmcACgkQc4QJ9SDfkZAlxwEAofhSZz5/dMLOF5j6EQ61+mQZwUGgL2I88XeB\nXUpcjmUBAKP/LwJT/GY2HGMrDJIPpWIGLTjxLKAzONTNSuLaHr4F\n=7y29\n-----END PGP SIGNATURE-----",
+        "payload": "tree 9b6d3e534e97d7250b861338275a46c17e6446ac\nparent f342efa52fb54c55f009b694af1899e431300629\nauthor Sam James <sam@gentoo.org> 1689951863 +0100\ncommitter Sam James <sam@gentoo.org> 1691209934 +0100\n\nconfigure.ac: cleanup error messages\n\nSigned-off-by: Sam James <sam@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/4f42e1984227012797030839b5e757a6da147141",
+    "html_url": "https://github.com/gentoo/sandbox/commit/4f42e1984227012797030839b5e757a6da147141",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/4f42e1984227012797030839b5e757a6da147141/comments",
+    "author": {
+      "login": "thesamesam",
+      "id": 11667869,
+      "node_id": "MDQ6VXNlcjExNjY3ODY5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11667869?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/thesamesam",
+      "html_url": "https://github.com/thesamesam",
+      "followers_url": "https://api.github.com/users/thesamesam/followers",
+      "following_url": "https://api.github.com/users/thesamesam/following{/other_user}",
+      "gists_url": "https://api.github.com/users/thesamesam/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/thesamesam/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/thesamesam/subscriptions",
+      "organizations_url": "https://api.github.com/users/thesamesam/orgs",
+      "repos_url": "https://api.github.com/users/thesamesam/repos",
+      "events_url": "https://api.github.com/users/thesamesam/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/thesamesam/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "thesamesam",
+      "id": 11667869,
+      "node_id": "MDQ6VXNlcjExNjY3ODY5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11667869?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/thesamesam",
+      "html_url": "https://github.com/thesamesam",
+      "followers_url": "https://api.github.com/users/thesamesam/followers",
+      "following_url": "https://api.github.com/users/thesamesam/following{/other_user}",
+      "gists_url": "https://api.github.com/users/thesamesam/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/thesamesam/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/thesamesam/subscriptions",
+      "organizations_url": "https://api.github.com/users/thesamesam/orgs",
+      "repos_url": "https://api.github.com/users/thesamesam/repos",
+      "events_url": "https://api.github.com/users/thesamesam/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/thesamesam/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f342efa52fb54c55f009b694af1899e431300629",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/f342efa52fb54c55f009b694af1899e431300629",
+        "html_url": "https://github.com/gentoo/sandbox/commit/f342efa52fb54c55f009b694af1899e431300629"
+      }
+    ]
+  },
+  {
+    "sha": "f342efa52fb54c55f009b694af1899e431300629",
+    "node_id": "C_kwDOB0YD4toAKGYzNDJlZmE1MmZiNTRjNTVmMDA5YjY5NGFmMTg5OWU0MzEzMDA2Mjk",
+    "commit": {
+      "author": {
+        "name": "Sam James",
+        "email": "sam@gentoo.org",
+        "date": "2023-07-21T14:57:05Z"
+      },
+      "committer": {
+        "name": "Sam James",
+        "email": "sam@gentoo.org",
+        "date": "2023-08-05T04:32:14Z"
+      },
+      "message": "Rename multiple personalities feature\n\n\"schizo\" isn't a particularly sensitive term, and it's not very clear what it\nmeans to non-native English speakers anyway. Name it after what the feature\nreally does: multiple (Linux) personality support using ptrace.\n\nSigned-off-by: Sam James <sam@gentoo.org>",
+      "tree": {
+        "sha": "c817c32b45bf447d63032c8858ad08d518db4151",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/c817c32b45bf447d63032c8858ad08d518db4151"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/f342efa52fb54c55f009b694af1899e431300629",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niOUEABYKAI0WIQQlpruI3Zt2TGtVQcJzhAn1IN+RkAUCZM3Qzl8UgAAAAAAuAChp\nc3N1ZXItZnByQG5vdGF0aW9ucy5vcGVucGdwLmZpZnRoaG9yc2VtYW4ubmV0MjVB\nNkJCODhERDlCNzY0QzZCNTU0MUMyNzM4NDA5RjUyMERGOTE5MA8cc2FtQGdlbnRv\nby5vcmcACgkQc4QJ9SDfkZDZYgEAwsXPhGlHRbs9p8d2iiWqZAyKoae2WQtbVaXc\nhdOVZKAA/ic/c+/mqdf9xTqbOqNX7uFtzZpdvbM1tBHYFIdwrWMM\n=naku\n-----END PGP SIGNATURE-----",
+        "payload": "tree c817c32b45bf447d63032c8858ad08d518db4151\nparent 0317bbe09fe23e4bd972ee254f14817def701731\nauthor Sam James <sam@gentoo.org> 1689951425 +0100\ncommitter Sam James <sam@gentoo.org> 1691209934 +0100\n\nRename multiple personalities feature\n\n\"schizo\" isn't a particularly sensitive term, and it's not very clear what it\nmeans to non-native English speakers anyway. Name it after what the feature\nreally does: multiple (Linux) personality support using ptrace.\n\nSigned-off-by: Sam James <sam@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/f342efa52fb54c55f009b694af1899e431300629",
+    "html_url": "https://github.com/gentoo/sandbox/commit/f342efa52fb54c55f009b694af1899e431300629",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/f342efa52fb54c55f009b694af1899e431300629/comments",
+    "author": {
+      "login": "thesamesam",
+      "id": 11667869,
+      "node_id": "MDQ6VXNlcjExNjY3ODY5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11667869?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/thesamesam",
+      "html_url": "https://github.com/thesamesam",
+      "followers_url": "https://api.github.com/users/thesamesam/followers",
+      "following_url": "https://api.github.com/users/thesamesam/following{/other_user}",
+      "gists_url": "https://api.github.com/users/thesamesam/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/thesamesam/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/thesamesam/subscriptions",
+      "organizations_url": "https://api.github.com/users/thesamesam/orgs",
+      "repos_url": "https://api.github.com/users/thesamesam/repos",
+      "events_url": "https://api.github.com/users/thesamesam/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/thesamesam/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "thesamesam",
+      "id": 11667869,
+      "node_id": "MDQ6VXNlcjExNjY3ODY5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11667869?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/thesamesam",
+      "html_url": "https://github.com/thesamesam",
+      "followers_url": "https://api.github.com/users/thesamesam/followers",
+      "following_url": "https://api.github.com/users/thesamesam/following{/other_user}",
+      "gists_url": "https://api.github.com/users/thesamesam/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/thesamesam/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/thesamesam/subscriptions",
+      "organizations_url": "https://api.github.com/users/thesamesam/orgs",
+      "repos_url": "https://api.github.com/users/thesamesam/repos",
+      "events_url": "https://api.github.com/users/thesamesam/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/thesamesam/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0317bbe09fe23e4bd972ee254f14817def701731",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/0317bbe09fe23e4bd972ee254f14817def701731",
+        "html_url": "https://github.com/gentoo/sandbox/commit/0317bbe09fe23e4bd972ee254f14817def701731"
+      }
+    ]
+  },
+  {
+    "sha": "0317bbe09fe23e4bd972ee254f14817def701731",
+    "node_id": "C_kwDOB0YD4toAKDAzMTdiYmUwOWZlMjNlNGJkOTcyZWUyNTRmMTQ4MTdkZWY3MDE3MzE",
+    "commit": {
+      "author": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-07-17T15:03:13Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-08-04T00:20:37Z"
+      },
+      "message": "libsbutil: add sbio_faccessat and use it in sb_exists\n\nsbio_faccessat allows libsbutil to access the unwrapped version of\nfaccessat when called from libsandbox.\n\nUsing faccessat in place of fstatat seems to give a small boost in\nperformance.\n\nPass AT_EACCESS faccessat to enable a faster path if uid != euid.\n\nBug: https://bugs.gentoo.org/910273\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "2a20bfab92c5aef7d090a7aac364a195b263f6a9",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/2a20bfab92c5aef7d090a7aac364a195b263f6a9"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/0317bbe09fe23e4bd972ee254f14817def701731",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmTMRIsACgkQfliimPQv\nnM0/zwgAmpKhrhR9ONExQUv7IRa44QKD0Qck69MHyMYocrJ2cY1H5d5i+uQy+jWy\nh2P8k+lmLRHdbdWmKxrY72Nl/H3J7ezff8UFdvyodKluQADDmZy2v9SZCOnUa87H\nFQA3iRZLULw7he1HPqA8+VlxBmNNLhR/cfO3z7RCPrKu4BJWF7BVZdqwpRkmL7Q0\nbAWnVCbumpZ/ggHcNV1i4gqQ+4DNQUmMdt5G7mTNIB+6+9nzBivBEd41FW2f3NJL\n/myz36yrEoTkbM/hiXZB0pUXvHUa4dbPdMD+SCLten5UZrlixCE0oU8v7/tDP7Qn\nEUK3Lqm1582n1JaUV8ZNdrNGo1Q2PQ==\n=ol3n\n-----END PGP SIGNATURE-----",
+        "payload": "tree 2a20bfab92c5aef7d090a7aac364a195b263f6a9\nparent 8d6a4839ebd909903691e4a71d6a94b3809adc82\nauthor Mike Gilbert <floppym@gentoo.org> 1689606193 -0400\ncommitter Mike Gilbert <floppym@gentoo.org> 1691108437 -0400\n\nlibsbutil: add sbio_faccessat and use it in sb_exists\n\nsbio_faccessat allows libsbutil to access the unwrapped version of\nfaccessat when called from libsandbox.\n\nUsing faccessat in place of fstatat seems to give a small boost in\nperformance.\n\nPass AT_EACCESS faccessat to enable a faster path if uid != euid.\n\nBug: https://bugs.gentoo.org/910273\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/0317bbe09fe23e4bd972ee254f14817def701731",
+    "html_url": "https://github.com/gentoo/sandbox/commit/0317bbe09fe23e4bd972ee254f14817def701731",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/0317bbe09fe23e4bd972ee254f14817def701731/comments",
+    "author": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8d6a4839ebd909903691e4a71d6a94b3809adc82",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/8d6a4839ebd909903691e4a71d6a94b3809adc82",
+        "html_url": "https://github.com/gentoo/sandbox/commit/8d6a4839ebd909903691e4a71d6a94b3809adc82"
+      }
+    ]
+  },
+  {
+    "sha": "8d6a4839ebd909903691e4a71d6a94b3809adc82",
+    "node_id": "C_kwDOB0YD4toAKDhkNmE0ODM5ZWJkOTA5OTAzNjkxZTRhNzFkNmE5NGIzODA5YWRjODI",
+    "commit": {
+      "author": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-07-17T14:55:27Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-08-03T19:12:42Z"
+      },
+      "message": "libsandbox: skip checking access() without W_OK or R_OK mode\n\nIf access/faccessat is called with F_OK or X_OK in the mode argument,\nthere is no need to check the path.\n\nBug: https://bugs.gentoo.org/910273\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "0b91e47dda8fcf34c1a91a9d8794d06b1a1282f7",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/0b91e47dda8fcf34c1a91a9d8794d06b1a1282f7"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/8d6a4839ebd909903691e4a71d6a94b3809adc82",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmTL/CoACgkQfliimPQv\nnM0dZwf/Q5WsfE8cGxAGkyVr5p0fgbJoSHjTBF3H1HezKFafx+QAbmuTFSVmgoZy\nFslOWGLQB71l5MR2sGCqz7gbNTigxrN6tuHkdQ0k4ekQFV3ut3p0C5dGPNHw0jOD\nYJr1OZaJrp9swXfvzqY0awRMBhduA4C3aT0XxIN8r0/CXHB6d0b4NsQv0MTCS1zh\nqqOQrPRZcCJ6CSD3Q28Sq8gybuehW7QC7DjkHUXSj/gn9qaWEQ675wzYAoqCXzJJ\nWKKtuJ3nYVk5i7vY79pOaW/ki8il+9rTKgUB2C7m2D63VOFi2bBldT4lpIBfXcaR\nftcFoogmgPs5R5NAFwDCH274Cv7Yzw==\n=7lFE\n-----END PGP SIGNATURE-----",
+        "payload": "tree 0b91e47dda8fcf34c1a91a9d8794d06b1a1282f7\nparent 27232d52fee4abecd5f709acc616fa1296e0464f\nauthor Mike Gilbert <floppym@gentoo.org> 1689605727 -0400\ncommitter Mike Gilbert <floppym@gentoo.org> 1691089962 -0400\n\nlibsandbox: skip checking access() without W_OK or R_OK mode\n\nIf access/faccessat is called with F_OK or X_OK in the mode argument,\nthere is no need to check the path.\n\nBug: https://bugs.gentoo.org/910273\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/8d6a4839ebd909903691e4a71d6a94b3809adc82",
+    "html_url": "https://github.com/gentoo/sandbox/commit/8d6a4839ebd909903691e4a71d6a94b3809adc82",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/8d6a4839ebd909903691e4a71d6a94b3809adc82/comments",
+    "author": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "27232d52fee4abecd5f709acc616fa1296e0464f",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/27232d52fee4abecd5f709acc616fa1296e0464f",
+        "html_url": "https://github.com/gentoo/sandbox/commit/27232d52fee4abecd5f709acc616fa1296e0464f"
+      }
+    ]
+  },
+  {
+    "sha": "27232d52fee4abecd5f709acc616fa1296e0464f",
+    "node_id": "C_kwDOB0YD4toAKDI3MjMyZDUyZmVlNGFiZWNkNWY3MDlhY2M2MTZmYTEyOTZlMDQ2NGY",
+    "commit": {
+      "author": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-07-31T15:39:40Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-07-31T15:42:59Z"
+      },
+      "message": "libsandbox: always permit access to '/memfd:'\n\nFor memfd objects, the kernel populates the target for symlinks under\n/proc/$PID/fd as \"/memfd:name\". Said target does not actually exist.\n\nIt is unfortunate that the kernel includes the leading slash, but we\nwill just have to work around it.\n\nBug: https://bugs.gentoo.org/910561\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "4a3623e6bc70ddd55a5a12e0b490deb209d56a23",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/4a3623e6bc70ddd55a5a12e0b490deb209d56a23"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/27232d52fee4abecd5f709acc616fa1296e0464f",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmTH1o8ACgkQfliimPQv\nnM3y9wf9HECbPP825TNYnLXZWtshr9pwAtjPzaEdojSVecdRgKYodN4IH2hPlC19\nym94ei30QieQfLWzKxpJpI2l9jp3zfvESQk4XJKjdt7UsHT88gGEBLpYMR+Q6q/u\nDf2zYA6g/CalKr8WeK7Pi92b5HaSdNfuJDTxn+5DzZCr2pD/FEQHSbmom25fpsZ2\n5em4xq5iz9jnb+7orNL7K2rvuytIf5yYN7MUmPZbpL9LGapqIlH25jbEU0T0NhFL\n3DP1h9cqlYwXDWfCXIgRdLSS/Ifz4b+GgWMLRpc+lepVcVpRKmtVo0PADd8kqTJW\nObIeAvFeejqwYj8hsfoMGY0dISsxKw==\n=97Oc\n-----END PGP SIGNATURE-----",
+        "payload": "tree 4a3623e6bc70ddd55a5a12e0b490deb209d56a23\nparent 6a6a6a6c9680e5868544887a7ab4d141833abfb6\nauthor Mike Gilbert <floppym@gentoo.org> 1690817980 -0400\ncommitter Mike Gilbert <floppym@gentoo.org> 1690818179 -0400\n\nlibsandbox: always permit access to '/memfd:'\n\nFor memfd objects, the kernel populates the target for symlinks under\n/proc/$PID/fd as \"/memfd:name\". Said target does not actually exist.\n\nIt is unfortunate that the kernel includes the leading slash, but we\nwill just have to work around it.\n\nBug: https://bugs.gentoo.org/910561\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/27232d52fee4abecd5f709acc616fa1296e0464f",
+    "html_url": "https://github.com/gentoo/sandbox/commit/27232d52fee4abecd5f709acc616fa1296e0464f",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/27232d52fee4abecd5f709acc616fa1296e0464f/comments",
+    "author": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6a6a6a6c9680e5868544887a7ab4d141833abfb6",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/6a6a6a6c9680e5868544887a7ab4d141833abfb6",
+        "html_url": "https://github.com/gentoo/sandbox/commit/6a6a6a6c9680e5868544887a7ab4d141833abfb6"
+      }
+    ]
+  },
+  {
+    "sha": "6a6a6a6c9680e5868544887a7ab4d141833abfb6",
+    "node_id": "C_kwDOB0YD4toAKDZhNmE2YTZjOTY4MGU1ODY4NTQ0ODg3YTdhYjRkMTQxODMzYWJmYjY",
+    "commit": {
+      "author": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-07-17T13:43:51Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-07-17T13:43:51Z"
+      },
+      "message": "sb_exists: drop use of faccessat\n\nfaccessat appears to perform quite poorly under certain conditions.\nGo back to using fstatat until this can be debugged.\n\nBug: https://bugs.gentoo.org/910273\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "b9e134feee6ba670fa4af6329fd7b6a5d5f79bf3",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/b9e134feee6ba670fa4af6329fd7b6a5d5f79bf3"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/6a6a6a6c9680e5868544887a7ab4d141833abfb6",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmS1RgcACgkQfliimPQv\nnM2U2gf+O6gxDj/VzlbcKciBx4X+I2/EVduXxxOo5eTo5a1Pk9de/NVuNDhQJRWN\nj48EuZelDfsW03j6g1eMpY658/xs89lzH1x9E+sj4utZzmfOU7+AAYgndqnRnTxR\nvzXqjY7UszJ6siWM3R8TSO4DPob0m2EYWTZKZW6mM1JPCILTAgLcmAZOLPNxjBkE\nn1FCjo/fhGk6kwWZceWUromT8l/3RTumpbpDa6/K/KoVV3D/6xlQDfqNJkqdyw7n\nQ++qjgNHv7xrCjHvWnQkFMdYryC8GKqTM2A1XQkQBYhIAUiCEQQey6+OBBGhxL+t\nmv90nt0N7QBglOFmt+8bnHPc+FKekQ==\n=2X4z\n-----END PGP SIGNATURE-----",
+        "payload": "tree b9e134feee6ba670fa4af6329fd7b6a5d5f79bf3\nparent 12c24e7f990dec058563ca1ef954bfd8264f2f96\nauthor Mike Gilbert <floppym@gentoo.org> 1689601431 -0400\ncommitter Mike Gilbert <floppym@gentoo.org> 1689601431 -0400\n\nsb_exists: drop use of faccessat\n\nfaccessat appears to perform quite poorly under certain conditions.\nGo back to using fstatat until this can be debugged.\n\nBug: https://bugs.gentoo.org/910273\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/6a6a6a6c9680e5868544887a7ab4d141833abfb6",
+    "html_url": "https://github.com/gentoo/sandbox/commit/6a6a6a6c9680e5868544887a7ab4d141833abfb6",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/6a6a6a6c9680e5868544887a7ab4d141833abfb6/comments",
+    "author": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "12c24e7f990dec058563ca1ef954bfd8264f2f96",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/12c24e7f990dec058563ca1ef954bfd8264f2f96",
+        "html_url": "https://github.com/gentoo/sandbox/commit/12c24e7f990dec058563ca1ef954bfd8264f2f96"
+      }
+    ]
+  },
+  {
+    "sha": "12c24e7f990dec058563ca1ef954bfd8264f2f96",
+    "node_id": "C_kwDOB0YD4toAKDEyYzI0ZTdmOTkwZGVjMDU4NTYzY2ExZWY5NTRiZmQ4MjY0ZjJmOTY",
+    "commit": {
+      "author": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-07-10T15:11:41Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-07-10T15:47:36Z"
+      },
+      "message": "libsandbox/trace: cast NT_ARM_SYSTEM_CALL to avoid warnings\n\nBug: https://bugs.gentoo.org/910195\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "f2f86d5b081a537b4ac77a1c5faf67d3e9b6c1f0",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/f2f86d5b081a537b4ac77a1c5faf67d3e9b6c1f0"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/12c24e7f990dec058563ca1ef954bfd8264f2f96",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmSsKCcACgkQfliimPQv\nnM24Rgf/X+oJBeGfXIYDZ/wDXMYzVRHWINKYv1g670u2BjyfndO7a9rrlblqmKJv\ntjTVLa2jCJVGkJiXf3kfwxDMZsDdNdEgcx8Z4am+zQhFyTsIcVJ6DSairMPejg4E\n/gVeBlsEItRkfhTZ24pKlL8U8xsqX4dQZsDcLsmtNLuL2MUOJ6W+4JEKLqQC5gKD\nQr291ec+6cC4UhR/rMfhZ2KVj4BFDxyR9znAuX6/HcDqtS7tGOhdQIQ+EyVkGT1S\nxYUBxo0BWCZl3fz8uerPLUCtNBSL+PHdjVnWNkwkDMzdYGTAJP/JMDNMv3lepxCc\neybi5WfO0i1dzoY3L9lIeN9H6arqBw==\n=HLmE\n-----END PGP SIGNATURE-----",
+        "payload": "tree f2f86d5b081a537b4ac77a1c5faf67d3e9b6c1f0\nparent f4c6bf434459d2d7b57c003e4eab81f2f8c21f51\nauthor Mike Gilbert <floppym@gentoo.org> 1689001901 -0400\ncommitter Mike Gilbert <floppym@gentoo.org> 1689004056 -0400\n\nlibsandbox/trace: cast NT_ARM_SYSTEM_CALL to avoid warnings\n\nBug: https://bugs.gentoo.org/910195\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/12c24e7f990dec058563ca1ef954bfd8264f2f96",
+    "html_url": "https://github.com/gentoo/sandbox/commit/12c24e7f990dec058563ca1ef954bfd8264f2f96",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/12c24e7f990dec058563ca1ef954bfd8264f2f96/comments",
+    "author": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f4c6bf434459d2d7b57c003e4eab81f2f8c21f51",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/f4c6bf434459d2d7b57c003e4eab81f2f8c21f51",
+        "html_url": "https://github.com/gentoo/sandbox/commit/f4c6bf434459d2d7b57c003e4eab81f2f8c21f51"
+      }
+    ]
+  },
+  {
+    "sha": "f4c6bf434459d2d7b57c003e4eab81f2f8c21f51",
+    "node_id": "C_kwDOB0YD4toAKGY0YzZiZjQzNDQ1OWQyZDdiNTdjMDAzZTRlYWI4MWYyZjhjMjFmNTE",
+    "commit": {
+      "author": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-07-08T02:50:02Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-07-08T03:05:11Z"
+      },
+      "message": "libsandbox/trace: fix syscall cancellation on arm64\n\narm64 has a dedicated regset to manipulate the system call number.\nSee kernel commit 766a85d7bc5d7f1ddd6de28bdb844eae45ec63b0.\n\nBug: https://bugs.gentoo.org/909416\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "6cf1904a614f6908afbe84297cbbf3e309a4727c",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/6cf1904a614f6908afbe84297cbbf3e309a4727c"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/f4c6bf434459d2d7b57c003e4eab81f2f8c21f51",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmSo0nEACgkQfliimPQv\nnM1Uawf9FYy/c/wdFoK5bqMpRG+YGTDdJuSMutA23ZIDy4+RVBgO4SFjQtFCxbSb\n5PPMxTI0Y/ThfdcQCIAY1RpyEw4b/U5HK0qv5snrhqn36+YMzZ++NFvmE8GdKbKG\nZDZxrIZRRa6RwzmHYiFdEvcc0ntGtWYP7hKe9ebLTbt/DICgBBq6O6Ft/+zB2dIF\nO164ewxmDqzlE74jhCIsqS1B1dtVCcBoGmUCTw2AFuNOuo8lpNvuyvYIGOPGe5PH\nKo6XcDXSoY7GBPs9E6QJjHwpcpJIbfQLh+TVj1bNoq+/gNZoMPButH1mt/YSHJ6D\n73QIV3QRWcZ1Lk0QG4bdBSdgVZXdiA==\n=AEvB\n-----END PGP SIGNATURE-----",
+        "payload": "tree 6cf1904a614f6908afbe84297cbbf3e309a4727c\nparent e5032c6b89621db0475e36fb06c2905b6a9c024c\nauthor Mike Gilbert <floppym@gentoo.org> 1688784602 -0400\ncommitter Mike Gilbert <floppym@gentoo.org> 1688785511 -0400\n\nlibsandbox/trace: fix syscall cancellation on arm64\n\narm64 has a dedicated regset to manipulate the system call number.\nSee kernel commit 766a85d7bc5d7f1ddd6de28bdb844eae45ec63b0.\n\nBug: https://bugs.gentoo.org/909416\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/f4c6bf434459d2d7b57c003e4eab81f2f8c21f51",
+    "html_url": "https://github.com/gentoo/sandbox/commit/f4c6bf434459d2d7b57c003e4eab81f2f8c21f51",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/f4c6bf434459d2d7b57c003e4eab81f2f8c21f51/comments",
+    "author": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e5032c6b89621db0475e36fb06c2905b6a9c024c",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/e5032c6b89621db0475e36fb06c2905b6a9c024c",
+        "html_url": "https://github.com/gentoo/sandbox/commit/e5032c6b89621db0475e36fb06c2905b6a9c024c"
+      }
+    ]
+  },
+  {
+    "sha": "e5032c6b89621db0475e36fb06c2905b6a9c024c",
+    "node_id": "C_kwDOB0YD4toAKGU1MDMyYzZiODk2MjFkYjA0NzVlMzZmYjA2YzI5MDViNmE5YzAyNGM",
+    "commit": {
+      "author": {
+        "name": "Michael Orlitzky",
+        "email": "mjo@gentoo.org",
+        "date": "2023-07-01T20:52:34Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-07-01T23:51:18Z"
+      },
+      "message": "tests: use explicit adddeny() calls in fchmod and fchown tests.\n\nWhen running the test suite under portage, the entire build directory\nwill be writable because portage adds PORTAGE_TMPDIR to SANDBOX_WRITE\n(thanks floppym). This breaks the tests for these two wrappers, since\nthey expect to fail when trying to write above $PWD.\n\nTo avoid that, we create a new file to call fchown/fchmod on, and then\nexplicitly deny access to it.\n\nCloses: https://bugs.gentoo.org/909445\nSigned-off-by: Michael Orlitzky <mjo@gentoo.org>\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "96a84ed22ee28b761ce1e5fbeb2a8bdf2937d4ce",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/96a84ed22ee28b761ce1e5fbeb2a8bdf2937d4ce"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/e5032c6b89621db0475e36fb06c2905b6a9c024c",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmSgu/YACgkQfliimPQv\nnM0msgf/Syj0R8WktPlifkdovEywmJNeiJtw49ctUGtTkW+TWcoGUxKYpThE/m+V\noVqVRe/9PterLlkJzHM8euwHEnrcl8jmycCRI1rk4kzUXqKAsCSUx3iyie8sgYgG\nsw0qoXYRe6XhFs4UWzky/OYrQMReA0JITparia3w0ZsHN5QrNZuier0SAx2HOiuZ\nXP61WdHWL2eimJkQeUoV7NfrwPcVGBHUDsmao1AuQmBqk2+finMlvsF43WvVN91o\n+9+uGMX0x6EbYzcMULP7cXOpv9ccNgWDPOIBKKxnCq/xTCFUEnx92ALRrKxEwQcz\nctYKok8Wf2TbQt6ZLDwTjYUF87GHEw==\n=GjVV\n-----END PGP SIGNATURE-----",
+        "payload": "tree 96a84ed22ee28b761ce1e5fbeb2a8bdf2937d4ce\nparent e2f8b0382aef54fd0827c61f05589b82ddfa8331\nauthor Michael Orlitzky <mjo@gentoo.org> 1688244754 -0400\ncommitter Mike Gilbert <floppym@gentoo.org> 1688255478 -0400\n\ntests: use explicit adddeny() calls in fchmod and fchown tests.\n\nWhen running the test suite under portage, the entire build directory\nwill be writable because portage adds PORTAGE_TMPDIR to SANDBOX_WRITE\n(thanks floppym). This breaks the tests for these two wrappers, since\nthey expect to fail when trying to write above $PWD.\n\nTo avoid that, we create a new file to call fchown/fchmod on, and then\nexplicitly deny access to it.\n\nCloses: https://bugs.gentoo.org/909445\nSigned-off-by: Michael Orlitzky <mjo@gentoo.org>\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/e5032c6b89621db0475e36fb06c2905b6a9c024c",
+    "html_url": "https://github.com/gentoo/sandbox/commit/e5032c6b89621db0475e36fb06c2905b6a9c024c",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/e5032c6b89621db0475e36fb06c2905b6a9c024c/comments",
+    "author": {
+      "login": "orlitzky",
+      "id": 1432135,
+      "node_id": "MDQ6VXNlcjE0MzIxMzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1432135?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/orlitzky",
+      "html_url": "https://github.com/orlitzky",
+      "followers_url": "https://api.github.com/users/orlitzky/followers",
+      "following_url": "https://api.github.com/users/orlitzky/following{/other_user}",
+      "gists_url": "https://api.github.com/users/orlitzky/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/orlitzky/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/orlitzky/subscriptions",
+      "organizations_url": "https://api.github.com/users/orlitzky/orgs",
+      "repos_url": "https://api.github.com/users/orlitzky/repos",
+      "events_url": "https://api.github.com/users/orlitzky/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/orlitzky/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e2f8b0382aef54fd0827c61f05589b82ddfa8331",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/e2f8b0382aef54fd0827c61f05589b82ddfa8331",
+        "html_url": "https://github.com/gentoo/sandbox/commit/e2f8b0382aef54fd0827c61f05589b82ddfa8331"
+      }
+    ]
+  },
+  {
+    "sha": "e2f8b0382aef54fd0827c61f05589b82ddfa8331",
+    "node_id": "C_kwDOB0YD4toAKGUyZjhiMDM4MmFlZjU0ZmQwODI3YzYxZjA1NTg5YjgyZGRmYTgzMzE",
+    "commit": {
+      "author": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-06-23T15:35:43Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-06-23T15:47:37Z"
+      },
+      "message": "CI: clean up glibc job\n\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "7434278c2c5be55d921c5ff87b778c696c7192f7",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/7434278c2c5be55d921c5ff87b778c696c7192f7"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/e2f8b0382aef54fd0827c61f05589b82ddfa8331",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmSVvpkACgkQfliimPQv\nnM28iAf+KdSCR0GasCOSjkYR2FSEkQ21T+jfTfR0yXZAKwH2VyRTHqfdg4kHST4z\niC6e3Ke3Lnf9QFJWli4x5OTNEyyfX/fZbUtPTdL2b7MoWC1KegO8oatDccMgWJsb\n7a6br0/dLyxbD7ip+QhAQP9XEvIK4yvpOq+N+rMKzcM3IasVNVzw/wM63pOJ5LVw\ne1b0qocGazLRKJ9TwEblvIhrZRyEhRqv4P8NIbQc+aUsIcpgdGRnXHFV8kvJlVP6\no5UxQBARu5NakrEw82eaqK6QAiKQvsF7ReCSGFVHNMArwibcM4dfGpVa/WuhWB10\n62Of9YWhdEdUBU97l9U7SKw4d47Jmg==\n=UUbo\n-----END PGP SIGNATURE-----",
+        "payload": "tree 7434278c2c5be55d921c5ff87b778c696c7192f7\nparent 8fd0fb9f956c65dab850895102b21a7fef92b753\nauthor Mike Gilbert <floppym@gentoo.org> 1687534543 -0400\ncommitter Mike Gilbert <floppym@gentoo.org> 1687535257 -0400\n\nCI: clean up glibc job\n\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/e2f8b0382aef54fd0827c61f05589b82ddfa8331",
+    "html_url": "https://github.com/gentoo/sandbox/commit/e2f8b0382aef54fd0827c61f05589b82ddfa8331",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/e2f8b0382aef54fd0827c61f05589b82ddfa8331/comments",
+    "author": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8fd0fb9f956c65dab850895102b21a7fef92b753",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/8fd0fb9f956c65dab850895102b21a7fef92b753",
+        "html_url": "https://github.com/gentoo/sandbox/commit/8fd0fb9f956c65dab850895102b21a7fef92b753"
+      }
+    ]
+  },
+  {
+    "sha": "8fd0fb9f956c65dab850895102b21a7fef92b753",
+    "node_id": "C_kwDOB0YD4toAKDhmZDBmYjlmOTU2YzY1ZGFiODUwODk1MTAyYjIxYTdmZWY5MmI3NTM",
+    "commit": {
+      "author": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-06-23T03:14:58Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-06-23T15:47:37Z"
+      },
+      "message": "CI: add musl config\n\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "d19d2056118690aa7a97644ad1b16ff22fb3b0ce",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/d19d2056118690aa7a97644ad1b16ff22fb3b0ce"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/8fd0fb9f956c65dab850895102b21a7fef92b753",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmSVvpkACgkQfliimPQv\nnM30eAf/aqlpdBYpGMTLoyrFoKBkfR/uf2/Ud6mP9UEJ6ir+8p/uSUojxiwUslN/\nvbQPp3OpuZTrTRjl/rp6JY/mAl6NoN6KIWMcXvmGpHAWc4t8RI1MU4Y0wF3B49aa\nJldZrKHjjJo+ZBuMYa0BXeaboxDrq41k2hLBKpCyZM6hWraZnSfrcMSAfAmPUDzW\nkEDxJ6OgCBaw4GH0JstAee41BizTwRFL1VilvUr0yR5dfxaFKm9iVfZoCXIdVcMS\nOzD7HMlRsn5bXCzxb3ATMlmT9ELXuGBcWpVXD3c3z37tqCDsa/2m3MD6sEjaEma8\nVLKCpddeKqe/3nZMqDrjdYDxuFOCfg==\n=JQcZ\n-----END PGP SIGNATURE-----",
+        "payload": "tree d19d2056118690aa7a97644ad1b16ff22fb3b0ce\nparent 3ccc775d6f98c1917408bc3a370cfd6d3d789d50\nauthor Mike Gilbert <floppym@gentoo.org> 1687490098 -0400\ncommitter Mike Gilbert <floppym@gentoo.org> 1687535257 -0400\n\nCI: add musl config\n\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/8fd0fb9f956c65dab850895102b21a7fef92b753",
+    "html_url": "https://github.com/gentoo/sandbox/commit/8fd0fb9f956c65dab850895102b21a7fef92b753",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/8fd0fb9f956c65dab850895102b21a7fef92b753/comments",
+    "author": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3ccc775d6f98c1917408bc3a370cfd6d3d789d50",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/3ccc775d6f98c1917408bc3a370cfd6d3d789d50",
+        "html_url": "https://github.com/gentoo/sandbox/commit/3ccc775d6f98c1917408bc3a370cfd6d3d789d50"
+      }
+    ]
+  },
+  {
+    "sha": "3ccc775d6f98c1917408bc3a370cfd6d3d789d50",
+    "node_id": "C_kwDOB0YD4toAKDNjY2M3NzVkNmY5OGMxOTE3NDA4YmMzYTM3MGNmZDZkM2Q3ODlkNTA",
+    "commit": {
+      "author": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-06-23T03:14:58Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-06-23T15:47:36Z"
+      },
+      "message": "configure: update libc grep expression\n\nOn Alpine, libc's SONAME is 'libc.musl-x86_64.so.1'.\n\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "bc7f49bfe6ba819beb50591e85b89df3ec6f85af",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/bc7f49bfe6ba819beb50591e85b89df3ec6f85af"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/3ccc775d6f98c1917408bc3a370cfd6d3d789d50",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmSVvpgACgkQfliimPQv\nnM1v/gf+N1DvVbxBSjA/ERBIYTUmkqy4r9YmjtCtfYi0qWZLu1QUdil/mNtI7S2G\neTmqes4p9CfMX5VvRI68kUTyOTOTX9+17WEg8rxJigioY/B5QsXJrSHtcC6Y408Q\nd8grwwbsm3dBQndHuk8uv0THCGpzTJSgjf+0+Ay9ZIURQRxC+Cm1DixIkfjZsjJH\n91nhh5g9+ZizUfed+cORn45mhXYNX4KRESpy5eNbdp44QgWmFry8SdGNiC5dXIrM\nbwIhVJHlfWJeqITJa3MJp9yKIGfJym0HXFKKIEqpxt+ZdxC0EI/Y0ZcDfv9Ik52v\nvOtJIVxqQv1vsaFsUFWB9yp38hvxcw==\n=OaRQ\n-----END PGP SIGNATURE-----",
+        "payload": "tree bc7f49bfe6ba819beb50591e85b89df3ec6f85af\nparent 2911fdc0d72e37e99cac6609b4799ee06b29cd31\nauthor Mike Gilbert <floppym@gentoo.org> 1687490098 -0400\ncommitter Mike Gilbert <floppym@gentoo.org> 1687535256 -0400\n\nconfigure: update libc grep expression\n\nOn Alpine, libc's SONAME is 'libc.musl-x86_64.so.1'.\n\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/3ccc775d6f98c1917408bc3a370cfd6d3d789d50",
+    "html_url": "https://github.com/gentoo/sandbox/commit/3ccc775d6f98c1917408bc3a370cfd6d3d789d50",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/3ccc775d6f98c1917408bc3a370cfd6d3d789d50/comments",
+    "author": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2911fdc0d72e37e99cac6609b4799ee06b29cd31",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/2911fdc0d72e37e99cac6609b4799ee06b29cd31",
+        "html_url": "https://github.com/gentoo/sandbox/commit/2911fdc0d72e37e99cac6609b4799ee06b29cd31"
+      }
+    ]
+  },
+  {
+    "sha": "2911fdc0d72e37e99cac6609b4799ee06b29cd31",
+    "node_id": "C_kwDOB0YD4toAKDI5MTFmZGMwZDcyZTM3ZTk5Y2FjNjYwOWI0Nzk5ZWUwNmIyOWNkMzE",
+    "commit": {
+      "author": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-06-22T17:41:09Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-06-22T17:43:54Z"
+      },
+      "message": "libsandbox: wrap musl time64 functions\n\nmusl uses different names from glibc for the time64 symbols.\nAdd them to symbols.h, and use symlinks for the wrapper-func files.\n\nBug: https://bugs.gentoo.org/908970\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "856d65f0a930dd1b4b21ed109be19ad6a43844e3",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/856d65f0a930dd1b4b21ed109be19ad6a43844e3"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/2911fdc0d72e37e99cac6609b4799ee06b29cd31",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmSUiH8ACgkQfliimPQv\nnM0mJQf/eYcRbHZh8A+XTKucqDbm9b0FxDdhu8TiXkJdQLHY7oc7ymPXcufJUfbz\nvr6B9Qfamqv5OshIucE9oHjEsrEFWwbT4u/ZFnV7D/i8UOS2jqQtc5gGjvIb4HJ1\nYlfxXpFhEtORSbhXZMvHe+3bLA0x9um0X5U7R0tJhkY0LwRK1Do22d2B77n6xpv0\ng8tf6IkrwAIW4uazTbfeBDeqeRgomQ52ibJaBWgi+EpG9WB0OXXR1ATGzOugzwtw\neDMBA0s0gkwfYAx3adTDIq09XSocRZBeVb3QrPRDGXD2z1MVhOC9j8Xk0Ihg5ljl\nPMEFnmszuC9v6mh8E/EtiLJGUHvyxA==\n=FRqq\n-----END PGP SIGNATURE-----",
+        "payload": "tree 856d65f0a930dd1b4b21ed109be19ad6a43844e3\nparent 652097eb4228ac9ba9973811b2832fc77f2048a2\nauthor Mike Gilbert <floppym@gentoo.org> 1687455669 -0400\ncommitter Mike Gilbert <floppym@gentoo.org> 1687455834 -0400\n\nlibsandbox: wrap musl time64 functions\n\nmusl uses different names from glibc for the time64 symbols.\nAdd them to symbols.h, and use symlinks for the wrapper-func files.\n\nBug: https://bugs.gentoo.org/908970\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/2911fdc0d72e37e99cac6609b4799ee06b29cd31",
+    "html_url": "https://github.com/gentoo/sandbox/commit/2911fdc0d72e37e99cac6609b4799ee06b29cd31",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/2911fdc0d72e37e99cac6609b4799ee06b29cd31/comments",
+    "author": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "652097eb4228ac9ba9973811b2832fc77f2048a2",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/652097eb4228ac9ba9973811b2832fc77f2048a2",
+        "html_url": "https://github.com/gentoo/sandbox/commit/652097eb4228ac9ba9973811b2832fc77f2048a2"
+      }
+    ]
+  },
+  {
+    "sha": "652097eb4228ac9ba9973811b2832fc77f2048a2",
+    "node_id": "C_kwDOB0YD4toAKDY1MjA5N2ViNDIyOGFjOWJhOTk3MzgxMWIyODMyZmM3N2YyMDQ4YTI",
+    "commit": {
+      "author": {
+        "name": "Michael Orlitzky",
+        "email": "mjo@gentoo.org",
+        "date": "2018-01-28T03:38:26Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-06-22T13:54:38Z"
+      },
+      "message": "tests: add more tests to make sure fchown/fchmod are handled correctly.\n\nCloses: https://bugs.gentoo.org/599706\nSigned-off-by: Michael Orlitzky <mjo@gentoo.org>\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "5312ad6de540382f9d02f740cc22572974372ee4",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/5312ad6de540382f9d02f740cc22572974372ee4"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/652097eb4228ac9ba9973811b2832fc77f2048a2",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmSUUp4ACgkQfliimPQv\nnM0aVwf/bObMlMVu6peV3uciysnmfsRzPNxvRHsvb9SIV8wLGUKBtnrQzBYv2lNA\nLzhycKKcbQBdlnpbIJPg0tkXFS+iXf1nzdbEe3PNjUO5p1GXNSKTOuNa5mv1D0Zr\nG9GPTT6JaVvvtMX6pyD1vSJ+vtKxaclUG/+o5GhrG+vhCyIZuw41IFV1X0Grkspl\nbiqbjPJIAPyeLOdagWht/YPXqZdJ5P4F4YPFBBo+ltWixkTcpxP4wVujwpZi8D9a\nXw+Y1/BLU7A8cnxQ6uV+HFbr7hCDk3LnLVKPHftfxpqqZz3vJ8DDjVLzVSrfFj+z\nszur4nKaKNqGwzV14bNQxWW43Z+TRA==\n=J6/y\n-----END PGP SIGNATURE-----",
+        "payload": "tree 5312ad6de540382f9d02f740cc22572974372ee4\nparent 05e32f542c145253eb01ae4005ca13c63a1c79d8\nauthor Michael Orlitzky <mjo@gentoo.org> 1517110706 -0500\ncommitter Mike Gilbert <floppym@gentoo.org> 1687442078 -0400\n\ntests: add more tests to make sure fchown/fchmod are handled correctly.\n\nCloses: https://bugs.gentoo.org/599706\nSigned-off-by: Michael Orlitzky <mjo@gentoo.org>\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/652097eb4228ac9ba9973811b2832fc77f2048a2",
+    "html_url": "https://github.com/gentoo/sandbox/commit/652097eb4228ac9ba9973811b2832fc77f2048a2",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/652097eb4228ac9ba9973811b2832fc77f2048a2/comments",
+    "author": {
+      "login": "orlitzky",
+      "id": 1432135,
+      "node_id": "MDQ6VXNlcjE0MzIxMzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1432135?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/orlitzky",
+      "html_url": "https://github.com/orlitzky",
+      "followers_url": "https://api.github.com/users/orlitzky/followers",
+      "following_url": "https://api.github.com/users/orlitzky/following{/other_user}",
+      "gists_url": "https://api.github.com/users/orlitzky/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/orlitzky/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/orlitzky/subscriptions",
+      "organizations_url": "https://api.github.com/users/orlitzky/orgs",
+      "repos_url": "https://api.github.com/users/orlitzky/repos",
+      "events_url": "https://api.github.com/users/orlitzky/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/orlitzky/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "05e32f542c145253eb01ae4005ca13c63a1c79d8",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/05e32f542c145253eb01ae4005ca13c63a1c79d8",
+        "html_url": "https://github.com/gentoo/sandbox/commit/05e32f542c145253eb01ae4005ca13c63a1c79d8"
+      }
+    ]
+  },
+  {
+    "sha": "05e32f542c145253eb01ae4005ca13c63a1c79d8",
+    "node_id": "C_kwDOB0YD4toAKDA1ZTMyZjU0MmMxNDUyNTNlYjAxYWU0MDA1Y2ExM2M2M2ExYzc5ZDg",
+    "commit": {
+      "author": {
+        "name": "Michael Orlitzky",
+        "email": "mjo@gentoo.org",
+        "date": "2018-01-28T01:05:02Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-06-22T13:54:38Z"
+      },
+      "message": "tests: add test case for fchown/fchmod with O_RDONLY.\n\nBug: https://bugs.gentoo.org/599706\nSigned-off-by: Michael Orlitzky <mjo@gentoo.org>\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "5fa501fd2fc41e5c324eebd7c0bef2b6d3157259",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/5fa501fd2fc41e5c324eebd7c0bef2b6d3157259"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/05e32f542c145253eb01ae4005ca13c63a1c79d8",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmSUUp4ACgkQfliimPQv\nnM1eSAf+LGKTxOgXFTluVXeZaJmvDc58ZJOHGfBXkm6jmnC1+spEqMW8p/xj4cV3\nfHPMAgwEd8Vwtnj29ltk0ZflI3Siu67x1moI7BL971SUuOzD6AT4ggTZ3Ny09yoq\n6SHM91eBtGMGBzNSRUewhaYGJTK/wzVid5p1DVSMawroiq07sRL+SGk2n0kOtNY1\njYColrCuUurGi775u+QGBUhk5AR0uEzaJkic9k72smdLHynhELzH0whKw4CFrgW1\nwzeaSVwa1Q2rJL+Q5xVb3EcS19pW/n7ccu1EU/4uQ+91RDKQMI72EizrLorcS6+9\nKNzdc1xKbPt6nEZbj1bVfq55ApjHEA==\n=ddWK\n-----END PGP SIGNATURE-----",
+        "payload": "tree 5fa501fd2fc41e5c324eebd7c0bef2b6d3157259\nparent 6c1adf9bb858f64bb00ffddc861dc8a248217242\nauthor Michael Orlitzky <mjo@gentoo.org> 1517101502 -0500\ncommitter Mike Gilbert <floppym@gentoo.org> 1687442078 -0400\n\ntests: add test case for fchown/fchmod with O_RDONLY.\n\nBug: https://bugs.gentoo.org/599706\nSigned-off-by: Michael Orlitzky <mjo@gentoo.org>\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/05e32f542c145253eb01ae4005ca13c63a1c79d8",
+    "html_url": "https://github.com/gentoo/sandbox/commit/05e32f542c145253eb01ae4005ca13c63a1c79d8",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/05e32f542c145253eb01ae4005ca13c63a1c79d8/comments",
+    "author": {
+      "login": "orlitzky",
+      "id": 1432135,
+      "node_id": "MDQ6VXNlcjE0MzIxMzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1432135?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/orlitzky",
+      "html_url": "https://github.com/orlitzky",
+      "followers_url": "https://api.github.com/users/orlitzky/followers",
+      "following_url": "https://api.github.com/users/orlitzky/following{/other_user}",
+      "gists_url": "https://api.github.com/users/orlitzky/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/orlitzky/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/orlitzky/subscriptions",
+      "organizations_url": "https://api.github.com/users/orlitzky/orgs",
+      "repos_url": "https://api.github.com/users/orlitzky/repos",
+      "events_url": "https://api.github.com/users/orlitzky/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/orlitzky/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6c1adf9bb858f64bb00ffddc861dc8a248217242",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/6c1adf9bb858f64bb00ffddc861dc8a248217242",
+        "html_url": "https://github.com/gentoo/sandbox/commit/6c1adf9bb858f64bb00ffddc861dc8a248217242"
+      }
+    ]
+  },
+  {
+    "sha": "6c1adf9bb858f64bb00ffddc861dc8a248217242",
+    "node_id": "C_kwDOB0YD4toAKDZjMWFkZjliYjg1OGY2NGJiMDBmZmRkYzg2MWRjOGEyNDgyMTcyNDI",
+    "commit": {
+      "author": {
+        "name": "Michael Orlitzky",
+        "email": "michael@orlitzky.com",
+        "date": "2023-06-20T21:58:57Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-06-22T13:54:38Z"
+      },
+      "message": "libsandbox: add support for fchown/fchmod on linux\n\nThe fchown/fchmod functions use a file descriptor obtained from\nopen(), and the sandbox relies on its open() wrapper for safety. But\nit turns out that fchown/fchmod can operate on a descriptor opened\nO_RDONLY, which the open() wrapper is happy to give you. Oops. This is\nbug 599706.\n\nThere's no POSIX way to map the descriptor to a path once you've got\nit, but on linux you can use the magic path \"/proc/self/fd/%i\" which\nshould be a symlink pointing to the path passed to open(). Once we\nhave that path, we can use the existing \"is this path safe\" machinery\nin the sandbox. There is precedent for this approach in sandbox, and\nthe SANDBOX_PROC_SELF_FD macro already exists to indicate that the\nfeature is available.\n\nBug: https://bugs.gentoo.org/599706\nSigned-off-by: Michael Orlitzky <mjo@gentoo.org>\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "fc50ff3a9240265d252041cdca7620f54b0b4093",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/fc50ff3a9240265d252041cdca7620f54b0b4093"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/6c1adf9bb858f64bb00ffddc861dc8a248217242",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmSUUp4ACgkQfliimPQv\nnM3HrQf/Z4XM+Fn0hIBP12H8lE8EOfmnFm0Mn63HP7jBfVt44TUG/pgnlf4+5g9B\nNxIbhfOCO5+/VEAWz+VP5nemSnHzblFsWZxPF1NCE23wVCsG4JOd6bkIATu/Eh1E\nCTMEzZYQ5IT5qSQm6QoD7rI7RN0hzm+fCKMSny1KFP61KC0IJnQkc/WzgCADISdm\n1TLKyi7tVX7B/QWAKaY6SKUGcRyIRko7MCj9V70f0p8kopQhNIQyk4V/3eaKEmx0\nJaSZAyYWVMMViGHEFyzi6MQex2+zs/eVw8j/Tf+7KznX7zufAzzIs8a8vp/7p3mh\nWyMbBLMLyxum1IZAQ94cHIX0lRrFaw==\n=E6Xb\n-----END PGP SIGNATURE-----",
+        "payload": "tree fc50ff3a9240265d252041cdca7620f54b0b4093\nparent b55840ebe3278032777a3b52cecc6dac325dcf85\nauthor Michael Orlitzky <michael@orlitzky.com> 1687298337 -0400\ncommitter Mike Gilbert <floppym@gentoo.org> 1687442078 -0400\n\nlibsandbox: add support for fchown/fchmod on linux\n\nThe fchown/fchmod functions use a file descriptor obtained from\nopen(), and the sandbox relies on its open() wrapper for safety. But\nit turns out that fchown/fchmod can operate on a descriptor opened\nO_RDONLY, which the open() wrapper is happy to give you. Oops. This is\nbug 599706.\n\nThere's no POSIX way to map the descriptor to a path once you've got\nit, but on linux you can use the magic path \"/proc/self/fd/%i\" which\nshould be a symlink pointing to the path passed to open(). Once we\nhave that path, we can use the existing \"is this path safe\" machinery\nin the sandbox. There is precedent for this approach in sandbox, and\nthe SANDBOX_PROC_SELF_FD macro already exists to indicate that the\nfeature is available.\n\nBug: https://bugs.gentoo.org/599706\nSigned-off-by: Michael Orlitzky <mjo@gentoo.org>\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/6c1adf9bb858f64bb00ffddc861dc8a248217242",
+    "html_url": "https://github.com/gentoo/sandbox/commit/6c1adf9bb858f64bb00ffddc861dc8a248217242",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/6c1adf9bb858f64bb00ffddc861dc8a248217242/comments",
+    "author": {
+      "login": "orlitzky",
+      "id": 1432135,
+      "node_id": "MDQ6VXNlcjE0MzIxMzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1432135?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/orlitzky",
+      "html_url": "https://github.com/orlitzky",
+      "followers_url": "https://api.github.com/users/orlitzky/followers",
+      "following_url": "https://api.github.com/users/orlitzky/following{/other_user}",
+      "gists_url": "https://api.github.com/users/orlitzky/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/orlitzky/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/orlitzky/subscriptions",
+      "organizations_url": "https://api.github.com/users/orlitzky/orgs",
+      "repos_url": "https://api.github.com/users/orlitzky/repos",
+      "events_url": "https://api.github.com/users/orlitzky/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/orlitzky/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b55840ebe3278032777a3b52cecc6dac325dcf85",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/b55840ebe3278032777a3b52cecc6dac325dcf85",
+        "html_url": "https://github.com/gentoo/sandbox/commit/b55840ebe3278032777a3b52cecc6dac325dcf85"
+      }
+    ]
+  },
+  {
+    "sha": "b55840ebe3278032777a3b52cecc6dac325dcf85",
+    "node_id": "C_kwDOB0YD4toAKGI1NTg0MGViZTMyNzgwMzI3NzdhM2I1MmNlY2M2ZGFjMzI1ZGNmODU",
+    "commit": {
+      "author": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-06-19T15:50:46Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-06-21T14:40:08Z"
+      },
+      "message": "libsbutil: add sb_exists function\n\nThis provides a central place to work around a bug on musl where\nfaccessat sets errno to EINVAL when the kernel does not support\nfaccessat2.\n\nBug: https://bugs.gentoo.org/908765\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "afc5eb7142d49b7cc915b90ae3ada5d8bf439566",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/afc5eb7142d49b7cc915b90ae3ada5d8bf439566"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/b55840ebe3278032777a3b52cecc6dac325dcf85",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmSTC8oACgkQfliimPQv\nnM1/7Af/THBpaW26LFD2BM8hZU3Bn6/ltFABfYn/UnMpAOMHlcS5wNbxC2LrbDDD\nNwgfYKwc65ZKsaT+TZPvkOMerdnBsLnt7Qp8xPIC7Fp6p0ncrfd8pXoQsIqP2z51\nDFIJE5Foyb9U0wXfeHG809TpyO7l8VRw/vEc/+4Dfg+phj7leAk03H5V1us/FHXK\n2tG3u74NxbO7FI+x3tLHubjvOitn2I1to04lSVMXkD0isioWqyf7L3qLBsjMlM2v\n4ypm9p0XUb/daky6/wTSdGrTW7VC0PMA7RjO+BGgw4Bew9EUt9FQh4DGZ0q4Iaa9\nZyG10Q387qGMLDl3NT367ll21lCLUA==\n=Q5UN\n-----END PGP SIGNATURE-----",
+        "payload": "tree afc5eb7142d49b7cc915b90ae3ada5d8bf439566\nparent cdc89a00ac0bc3170d4ca7bfc77bc2572ce076b0\nauthor Mike Gilbert <floppym@gentoo.org> 1687189846 -0400\ncommitter Mike Gilbert <floppym@gentoo.org> 1687358408 -0400\n\nlibsbutil: add sb_exists function\n\nThis provides a central place to work around a bug on musl where\nfaccessat sets errno to EINVAL when the kernel does not support\nfaccessat2.\n\nBug: https://bugs.gentoo.org/908765\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/b55840ebe3278032777a3b52cecc6dac325dcf85",
+    "html_url": "https://github.com/gentoo/sandbox/commit/b55840ebe3278032777a3b52cecc6dac325dcf85",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/b55840ebe3278032777a3b52cecc6dac325dcf85/comments",
+    "author": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "cdc89a00ac0bc3170d4ca7bfc77bc2572ce076b0",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/cdc89a00ac0bc3170d4ca7bfc77bc2572ce076b0",
+        "html_url": "https://github.com/gentoo/sandbox/commit/cdc89a00ac0bc3170d4ca7bfc77bc2572ce076b0"
+      }
+    ]
+  },
+  {
+    "sha": "cdc89a00ac0bc3170d4ca7bfc77bc2572ce076b0",
+    "node_id": "C_kwDOB0YD4toAKGNkYzg5YTAwYWMwYmMzMTcwZDRjYTdiZmM3N2JjMjU3MmNlMDc2YjA",
+    "commit": {
+      "author": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-06-12T14:58:39Z"
+      },
+      "committer": {
+        "name": "Mike Gilbert",
+        "email": "floppym@gentoo.org",
+        "date": "2023-06-12T16:00:04Z"
+      },
+      "message": "libsandbox: add lutimes to symlink_func\n\nlutimes operates on symlinks, so we should not check for access against\nthe symlink target.\n\nBug: https://bugs.gentoo.org/908105\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>",
+      "tree": {
+        "sha": "a54daaf153a5ff7356735a4160112f425deb5c12",
+        "url": "https://api.github.com/repos/gentoo/sandbox/git/trees/a54daaf153a5ff7356735a4160112f425deb5c12"
+      },
+      "url": "https://api.github.com/repos/gentoo/sandbox/git/commits/cdc89a00ac0bc3170d4ca7bfc77bc2572ce076b0",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQEzBAABCAAdFiEEEcy8hJz1vFF5g9/mfliimPQvnM0FAmSHQQQACgkQfliimPQv\nnM0YoggAkEL9d0UFs8YxA33Ew98qEV/JEDKIwr0QBWRU0kLy9/yYme5WpYUN2gtt\n7yTcF0iP819jkXWsSqRve6fQOTgFF6pXZPHVjIHzVzDHVwiExGrUpQY2pccOZyPi\nIM4eO0j7ypa72o5NRUYi12Eno2vFcEqsyu4eM0seSv5sn/dSZ9+W6QjZ4iF2wUaN\nG1m3OBmm+C4bKBel/a4nTL4EFKHvTHbASdw4rRl7bJKTO9KgZhgtN6cBXukB5NRX\n0WCMW6m0OeM3JuaSNprpvFNNpMI9g60NR65IOAk/3vm24JQqOhHpVorpGBJQWoC3\nuDbfNMyiwHcYDbmJajFB3hBMAqsPHw==\n=Ae7L\n-----END PGP SIGNATURE-----",
+        "payload": "tree a54daaf153a5ff7356735a4160112f425deb5c12\nparent 190300def3160ca39bd8590d1bbc7305ae07cc5b\nauthor Mike Gilbert <floppym@gentoo.org> 1686581919 -0400\ncommitter Mike Gilbert <floppym@gentoo.org> 1686585604 -0400\n\nlibsandbox: add lutimes to symlink_func\n\nlutimes operates on symlinks, so we should not check for access against\nthe symlink target.\n\nBug: https://bugs.gentoo.org/908105\nSigned-off-by: Mike Gilbert <floppym@gentoo.org>\n"
+      }
+    },
+    "url": "https://api.github.com/repos/gentoo/sandbox/commits/cdc89a00ac0bc3170d4ca7bfc77bc2572ce076b0",
+    "html_url": "https://github.com/gentoo/sandbox/commit/cdc89a00ac0bc3170d4ca7bfc77bc2572ce076b0",
+    "comments_url": "https://api.github.com/repos/gentoo/sandbox/commits/cdc89a00ac0bc3170d4ca7bfc77bc2572ce076b0/comments",
+    "author": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "floppym",
+      "id": 504287,
+      "node_id": "MDQ6VXNlcjUwNDI4Nw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/504287?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/floppym",
+      "html_url": "https://github.com/floppym",
+      "followers_url": "https://api.github.com/users/floppym/followers",
+      "following_url": "https://api.github.com/users/floppym/following{/other_user}",
+      "gists_url": "https://api.github.com/users/floppym/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/floppym/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/floppym/subscriptions",
+      "organizations_url": "https://api.github.com/users/floppym/orgs",
+      "repos_url": "https://api.github.com/users/floppym/repos",
+      "events_url": "https://api.github.com/users/floppym/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/floppym/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "190300def3160ca39bd8590d1bbc7305ae07cc5b",
+        "url": "https://api.github.com/repos/gentoo/sandbox/commits/190300def3160ca39bd8590d1bbc7305ae07cc5b",
+        "html_url": "https://github.com/gentoo/sandbox/commit/190300def3160ca39bd8590d1bbc7305ae07cc5b"
+      }
+    ]
+  }
+]

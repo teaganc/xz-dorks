@@ -1,0 +1,2334 @@
+[
+  {
+    "sha": "44086b097537a8157ee1dd98d6635b3503f2f534",
+    "node_id": "C_kwDOAA4m0toAKDQ0MDg2YjA5NzUzN2E4MTU3ZWUxZGQ5OGQ2NjM1YjM1MDNmMmY1MzQ",
+    "commit": {
+      "author": {
+        "name": "David Rowley",
+        "email": "drowley@postgresql.org",
+        "date": "2024-04-04T03:41:13Z"
+      },
+      "committer": {
+        "name": "David Rowley",
+        "email": "drowley@postgresql.org",
+        "date": "2024-04-04T03:41:13Z"
+      },
+      "message": "Preliminary refactor of heap scanning functions\n\nTo allow the use of the read stream API added in b5a9b18cd for\nsequential scans on heap tables, here we make some adjustments to make\nthat change less invasive and perhaps make the code easier to follow in\nthe process.\n\nHere heapgetpage() gets broken into two functions:\n\n1) The part which reads the block has now been moved into a function\n   named heapfetchbuf().\n2) The part which performed pruning and populated the scan's\n   rs_vistuples[] array is now moved into a new function named\n   heap_prepare_pagescan().\n\nThe functionality provided by heap_prepare_pagescan() was only ever\nrequired by SO_ALLOW_PAGEMODE scans, so the branching that was\npreviously done in heapgetpage() is no longer needed as we simply just\ndon't call heap_prepare_pagescan() from heapgettup() in the refactored\ncode.\n\nAuthor: Melanie Plageman\nDiscussion: https://postgr.es/m/CAAKRu_YtXJiYKQvb5JsA2SkwrsizYLugs4sSOZh3EAjKUg=gEQ@mail.gmail.com",
+      "tree": {
+        "sha": "4f0ce528bb5a901bb8295730f2848bfe44651cf6",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/4f0ce528bb5a901bb8295730f2848bfe44651cf6"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/44086b097537a8157ee1dd98d6635b3503f2f534",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/44086b097537a8157ee1dd98d6635b3503f2f534",
+    "html_url": "https://github.com/postgres/postgres/commit/44086b097537a8157ee1dd98d6635b3503f2f534",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/44086b097537a8157ee1dd98d6635b3503f2f534/comments",
+    "author": {
+      "login": "david-rowley",
+      "id": 4554452,
+      "node_id": "MDQ6VXNlcjQ1NTQ0NTI=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4554452?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/david-rowley",
+      "html_url": "https://github.com/david-rowley",
+      "followers_url": "https://api.github.com/users/david-rowley/followers",
+      "following_url": "https://api.github.com/users/david-rowley/following{/other_user}",
+      "gists_url": "https://api.github.com/users/david-rowley/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/david-rowley/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/david-rowley/subscriptions",
+      "organizations_url": "https://api.github.com/users/david-rowley/orgs",
+      "repos_url": "https://api.github.com/users/david-rowley/repos",
+      "events_url": "https://api.github.com/users/david-rowley/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/david-rowley/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "david-rowley",
+      "id": 4554452,
+      "node_id": "MDQ6VXNlcjQ1NTQ0NTI=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4554452?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/david-rowley",
+      "html_url": "https://github.com/david-rowley",
+      "followers_url": "https://api.github.com/users/david-rowley/followers",
+      "following_url": "https://api.github.com/users/david-rowley/following{/other_user}",
+      "gists_url": "https://api.github.com/users/david-rowley/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/david-rowley/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/david-rowley/subscriptions",
+      "organizations_url": "https://api.github.com/users/david-rowley/orgs",
+      "repos_url": "https://api.github.com/users/david-rowley/repos",
+      "events_url": "https://api.github.com/users/david-rowley/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/david-rowley/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "85230a247c74b92d9676abdf6693ac9d56c373cf",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/85230a247c74b92d9676abdf6693ac9d56c373cf",
+        "html_url": "https://github.com/postgres/postgres/commit/85230a247c74b92d9676abdf6693ac9d56c373cf"
+      }
+    ]
+  },
+  {
+    "sha": "85230a247c74b92d9676abdf6693ac9d56c373cf",
+    "node_id": "C_kwDOAA4m0toAKDg1MjMwYTI0N2M3NGI5MmQ5Njc2YWJkZjY2OTNhYzlkNTZjMzczY2Y",
+    "commit": {
+      "author": {
+        "name": "Michael Paquier",
+        "email": "michael@paquier.xyz",
+        "date": "2024-04-04T02:33:07Z"
+      },
+      "committer": {
+        "name": "Michael Paquier",
+        "email": "michael@paquier.xyz",
+        "date": "2024-04-04T02:33:07Z"
+      },
+      "message": "pg_regress: Save errno in emit_tap_output_v() and switch to %m\n\nemit_tap_output_v() includes some fprintf() calls for some output\nrelated to the TAP protocol, that may clobber errno and break %m.  This\ncommit makes the logging of pg_regress smarter by saving errno before\nrestoring it in vfprintf() where the input strings are used, removing\nthe need for strerror().  All logs are switched to %m rather than\nstrerror(), shaving some code.\n\nThis was not a problem until now as pg_regress.c did not use %m, but the\nchange is simple enough that we have no reason to not support this\nplaceholder, and that will avoid future mistakes if new logs that\ninclude %m are added.\n\nAuthor: Dagfinn Ilmari Mannsåker\nReviewed-by: Peter Eisentraunt, Michael Paquier\nDiscussion: https://postgr.es/m/87sf13jhuw.fsf@wibble.ilmari.org",
+      "tree": {
+        "sha": "e6ebb9e3bf8959b6f8247c54c5b06988beadf649",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/e6ebb9e3bf8959b6f8247c54c5b06988beadf649"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/85230a247c74b92d9676abdf6693ac9d56c373cf",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/85230a247c74b92d9676abdf6693ac9d56c373cf",
+    "html_url": "https://github.com/postgres/postgres/commit/85230a247c74b92d9676abdf6693ac9d56c373cf",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/85230a247c74b92d9676abdf6693ac9d56c373cf/comments",
+    "author": {
+      "login": "michaelpq",
+      "id": 985332,
+      "node_id": "MDQ6VXNlcjk4NTMzMg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/985332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelpq",
+      "html_url": "https://github.com/michaelpq",
+      "followers_url": "https://api.github.com/users/michaelpq/followers",
+      "following_url": "https://api.github.com/users/michaelpq/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelpq/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelpq/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelpq/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelpq/orgs",
+      "repos_url": "https://api.github.com/users/michaelpq/repos",
+      "events_url": "https://api.github.com/users/michaelpq/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelpq/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "michaelpq",
+      "id": 985332,
+      "node_id": "MDQ6VXNlcjk4NTMzMg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/985332?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/michaelpq",
+      "html_url": "https://github.com/michaelpq",
+      "followers_url": "https://api.github.com/users/michaelpq/followers",
+      "following_url": "https://api.github.com/users/michaelpq/following{/other_user}",
+      "gists_url": "https://api.github.com/users/michaelpq/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/michaelpq/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/michaelpq/subscriptions",
+      "organizations_url": "https://api.github.com/users/michaelpq/orgs",
+      "repos_url": "https://api.github.com/users/michaelpq/repos",
+      "events_url": "https://api.github.com/users/michaelpq/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/michaelpq/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "71b66171d045878cb9267a268a3bf8ce4f11f333",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/71b66171d045878cb9267a268a3bf8ce4f11f333",
+        "html_url": "https://github.com/postgres/postgres/commit/71b66171d045878cb9267a268a3bf8ce4f11f333"
+      }
+    ]
+  },
+  {
+    "sha": "71b66171d045878cb9267a268a3bf8ce4f11f333",
+    "node_id": "C_kwDOAA4m0toAKDcxYjY2MTcxZDA0NTg3OGNiOTI2N2EyNjhhM2JmOGNlNGYxMWYzMzM",
+    "commit": {
+      "author": {
+        "name": "Jeff Davis",
+        "email": "jdavis@postgresql.org",
+        "date": "2024-04-03T23:12:45Z"
+      },
+      "committer": {
+        "name": "Jeff Davis",
+        "email": "jdavis@postgresql.org",
+        "date": "2024-04-03T23:12:45Z"
+      },
+      "message": "CREATE INDEX: do not update stats during binary upgrade.\n\nDuring binary upgrade, indexes are created before the data is moved\ninto place, so it will always be zero.\n\nThis is not currently a major problem, but will be when we try to\npreserve statistics during upgrade.\n\nAuthor: Corey Huinker\nDiscussion: https://postgr.es/m/CADkLM=daPdFB8V0tgFxK-dLowFsAEzWRWJHyxij7BG3kBjcouA@mail.gmail.com",
+      "tree": {
+        "sha": "860b38d2f561c2a617ee8f7791b0db0d656fc01c",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/860b38d2f561c2a617ee8f7791b0db0d656fc01c"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/71b66171d045878cb9267a268a3bf8ce4f11f333",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/71b66171d045878cb9267a268a3bf8ce4f11f333",
+    "html_url": "https://github.com/postgres/postgres/commit/71b66171d045878cb9267a268a3bf8ce4f11f333",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/71b66171d045878cb9267a268a3bf8ce4f11f333/comments",
+    "author": {
+      "login": "jeff-davis",
+      "id": 214386,
+      "node_id": "MDQ6VXNlcjIxNDM4Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/214386?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jeff-davis",
+      "html_url": "https://github.com/jeff-davis",
+      "followers_url": "https://api.github.com/users/jeff-davis/followers",
+      "following_url": "https://api.github.com/users/jeff-davis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jeff-davis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jeff-davis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jeff-davis/subscriptions",
+      "organizations_url": "https://api.github.com/users/jeff-davis/orgs",
+      "repos_url": "https://api.github.com/users/jeff-davis/repos",
+      "events_url": "https://api.github.com/users/jeff-davis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jeff-davis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jeff-davis",
+      "id": 214386,
+      "node_id": "MDQ6VXNlcjIxNDM4Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/214386?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jeff-davis",
+      "html_url": "https://github.com/jeff-davis",
+      "followers_url": "https://api.github.com/users/jeff-davis/followers",
+      "following_url": "https://api.github.com/users/jeff-davis/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jeff-davis/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jeff-davis/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jeff-davis/subscriptions",
+      "organizations_url": "https://api.github.com/users/jeff-davis/orgs",
+      "repos_url": "https://api.github.com/users/jeff-davis/repos",
+      "events_url": "https://api.github.com/users/jeff-davis/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jeff-davis/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "06286709ee0637ec7376329a5aa026b7682dcfe2",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/06286709ee0637ec7376329a5aa026b7682dcfe2",
+        "html_url": "https://github.com/postgres/postgres/commit/06286709ee0637ec7376329a5aa026b7682dcfe2"
+      }
+    ]
+  },
+  {
+    "sha": "06286709ee0637ec7376329a5aa026b7682dcfe2",
+    "node_id": "C_kwDOAA4m0toAKDA2Mjg2NzA5ZWUwNjM3ZWM3Mzc2MzI5YTVhYTAyNmI3NjgyZGNmZTI",
+    "commit": {
+      "author": {
+        "name": "Tom Lane",
+        "email": "tgl@sss.pgh.pa.us",
+        "date": "2024-04-03T21:41:54Z"
+      },
+      "committer": {
+        "name": "Tom Lane",
+        "email": "tgl@sss.pgh.pa.us",
+        "date": "2024-04-03T21:41:57Z"
+      },
+      "message": "Invent SERIALIZE option for EXPLAIN.\n\nEXPLAIN (ANALYZE, SERIALIZE) allows collection of statistics about\nthe volume of data emitted by a query, as well as the time taken\nto convert the data to the on-the-wire format.  Previously there\nwas no way to investigate this without actually sending the data\nto the client, in which case network transmission costs might\nswamp what you wanted to see.  In particular this feature allows\ninvestigating the costs of de-TOASTing compressed or out-of-line\ndata during formatting.\n\nStepan Rutz and Matthias van de Meent,\nreviewed by Tomas Vondra and myself\n\nDiscussion: https://postgr.es/m/ca0adb0e-fa4e-c37e-1cd7-91170b18cae1@gmx.de",
+      "tree": {
+        "sha": "f1c4f4b606b28227c401be2722b1d08c924586e9",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/f1c4f4b606b28227c401be2722b1d08c924586e9"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/06286709ee0637ec7376329a5aa026b7682dcfe2",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/06286709ee0637ec7376329a5aa026b7682dcfe2",
+    "html_url": "https://github.com/postgres/postgres/commit/06286709ee0637ec7376329a5aa026b7682dcfe2",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/06286709ee0637ec7376329a5aa026b7682dcfe2/comments",
+    "author": {
+      "login": "tglsfdc",
+      "id": 8755309,
+      "node_id": "MDQ6VXNlcjg3NTUzMDk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8755309?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tglsfdc",
+      "html_url": "https://github.com/tglsfdc",
+      "followers_url": "https://api.github.com/users/tglsfdc/followers",
+      "following_url": "https://api.github.com/users/tglsfdc/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tglsfdc/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tglsfdc/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tglsfdc/subscriptions",
+      "organizations_url": "https://api.github.com/users/tglsfdc/orgs",
+      "repos_url": "https://api.github.com/users/tglsfdc/repos",
+      "events_url": "https://api.github.com/users/tglsfdc/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tglsfdc/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tglsfdc",
+      "id": 8755309,
+      "node_id": "MDQ6VXNlcjg3NTUzMDk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8755309?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tglsfdc",
+      "html_url": "https://github.com/tglsfdc",
+      "followers_url": "https://api.github.com/users/tglsfdc/followers",
+      "following_url": "https://api.github.com/users/tglsfdc/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tglsfdc/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tglsfdc/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tglsfdc/subscriptions",
+      "organizations_url": "https://api.github.com/users/tglsfdc/orgs",
+      "repos_url": "https://api.github.com/users/tglsfdc/repos",
+      "events_url": "https://api.github.com/users/tglsfdc/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tglsfdc/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "97ce821e3e171ce99fa7c398889ac08432cd0264",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/97ce821e3e171ce99fa7c398889ac08432cd0264",
+        "html_url": "https://github.com/postgres/postgres/commit/97ce821e3e171ce99fa7c398889ac08432cd0264"
+      }
+    ]
+  },
+  {
+    "sha": "97ce821e3e171ce99fa7c398889ac08432cd0264",
+    "node_id": "C_kwDOAA4m0toAKDk3Y2U4MjFlM2UxNzFjZTk5ZmE3YzM5ODg4OWFjMDg0MzJjZDAyNjQ",
+    "commit": {
+      "author": {
+        "name": "Alexander Korotkov",
+        "email": "akorotkov@postgresql.org",
+        "date": "2024-04-03T18:29:18Z"
+      },
+      "committer": {
+        "name": "Alexander Korotkov",
+        "email": "akorotkov@postgresql.org",
+        "date": "2024-04-03T21:34:28Z"
+      },
+      "message": "Fix the parameters order for TableAmRoutine.relation_copy_for_cluster()\n\nSpecify OldTable first, NewTable second as used by\ntable_relation_copy_for_cluster() and as implemented in\nheapam_relation_copy_for_cluster().\n\nBackpatch to PostgreSQL 12, where TableAmRoutine was introduced.\n\nDiscussion: https://postgr.es/m/ME3P282MB3166860D4911AE82F92DF7C5B63F2%40ME3P282MB3166.AUSP282.PROD.OUTLOOK.COM\nAuthor: Japin Li\nReviewed-by: Pavel Borisov\nBackpatch-through: 12",
+      "tree": {
+        "sha": "a146c277979c25af7d3c67c9fcc7cd6c9b2f9f77",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/a146c277979c25af7d3c67c9fcc7cd6c9b2f9f77"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/97ce821e3e171ce99fa7c398889ac08432cd0264",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/97ce821e3e171ce99fa7c398889ac08432cd0264",
+    "html_url": "https://github.com/postgres/postgres/commit/97ce821e3e171ce99fa7c398889ac08432cd0264",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/97ce821e3e171ce99fa7c398889ac08432cd0264/comments",
+    "author": {
+      "login": "akorotkov",
+      "id": 5437829,
+      "node_id": "MDQ6VXNlcjU0Mzc4Mjk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5437829?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/akorotkov",
+      "html_url": "https://github.com/akorotkov",
+      "followers_url": "https://api.github.com/users/akorotkov/followers",
+      "following_url": "https://api.github.com/users/akorotkov/following{/other_user}",
+      "gists_url": "https://api.github.com/users/akorotkov/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/akorotkov/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/akorotkov/subscriptions",
+      "organizations_url": "https://api.github.com/users/akorotkov/orgs",
+      "repos_url": "https://api.github.com/users/akorotkov/repos",
+      "events_url": "https://api.github.com/users/akorotkov/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/akorotkov/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "akorotkov",
+      "id": 5437829,
+      "node_id": "MDQ6VXNlcjU0Mzc4Mjk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5437829?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/akorotkov",
+      "html_url": "https://github.com/akorotkov",
+      "followers_url": "https://api.github.com/users/akorotkov/followers",
+      "following_url": "https://api.github.com/users/akorotkov/following{/other_user}",
+      "gists_url": "https://api.github.com/users/akorotkov/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/akorotkov/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/akorotkov/subscriptions",
+      "organizations_url": "https://api.github.com/users/akorotkov/orgs",
+      "repos_url": "https://api.github.com/users/akorotkov/repos",
+      "events_url": "https://api.github.com/users/akorotkov/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/akorotkov/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f470b5c67924f791228e464b9c02cc1e53ef2906",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/f470b5c67924f791228e464b9c02cc1e53ef2906",
+        "html_url": "https://github.com/postgres/postgres/commit/f470b5c67924f791228e464b9c02cc1e53ef2906"
+      }
+    ]
+  },
+  {
+    "sha": "f470b5c67924f791228e464b9c02cc1e53ef2906",
+    "node_id": "C_kwDOAA4m0toAKGY0NzBiNWM2NzkyNGY3OTEyMjhlNDY0YjljMDJjYzFlNTNlZjI5MDY",
+    "commit": {
+      "author": {
+        "name": "Robert Haas",
+        "email": "rhaas@postgresql.org",
+        "date": "2024-04-03T20:09:41Z"
+      },
+      "committer": {
+        "name": "Robert Haas",
+        "email": "rhaas@postgresql.org",
+        "date": "2024-04-03T20:09:41Z"
+      },
+      "message": "docs: Demote \"Monitoring Disk Usage\" from chapter to section.\n\nThis chapter is very short, and the immediately preceding chapter is\ncalled \"Monitoring Database Activity\". So, instead of having a\nseparate chapter for this, make it the last section of the preceding\nchapter instead.\n\nDiscussion: http://postgr.es/m/CA+Tgmob7_uoYuS2=rVwpVXaRwP-UXz+++saYTC-BCZ42QzSNKQ@mail.gmail.com",
+      "tree": {
+        "sha": "64201dd24fac40cbc26da4f964bc5e51a8824818",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/64201dd24fac40cbc26da4f964bc5e51a8824818"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/f470b5c67924f791228e464b9c02cc1e53ef2906",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/f470b5c67924f791228e464b9c02cc1e53ef2906",
+    "html_url": "https://github.com/postgres/postgres/commit/f470b5c67924f791228e464b9c02cc1e53ef2906",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/f470b5c67924f791228e464b9c02cc1e53ef2906/comments",
+    "author": {
+      "login": "robertmhaas",
+      "id": 886678,
+      "node_id": "MDQ6VXNlcjg4NjY3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/886678?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/robertmhaas",
+      "html_url": "https://github.com/robertmhaas",
+      "followers_url": "https://api.github.com/users/robertmhaas/followers",
+      "following_url": "https://api.github.com/users/robertmhaas/following{/other_user}",
+      "gists_url": "https://api.github.com/users/robertmhaas/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/robertmhaas/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/robertmhaas/subscriptions",
+      "organizations_url": "https://api.github.com/users/robertmhaas/orgs",
+      "repos_url": "https://api.github.com/users/robertmhaas/repos",
+      "events_url": "https://api.github.com/users/robertmhaas/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/robertmhaas/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "robertmhaas",
+      "id": 886678,
+      "node_id": "MDQ6VXNlcjg4NjY3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/886678?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/robertmhaas",
+      "html_url": "https://github.com/robertmhaas",
+      "followers_url": "https://api.github.com/users/robertmhaas/followers",
+      "following_url": "https://api.github.com/users/robertmhaas/following{/other_user}",
+      "gists_url": "https://api.github.com/users/robertmhaas/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/robertmhaas/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/robertmhaas/subscriptions",
+      "organizations_url": "https://api.github.com/users/robertmhaas/orgs",
+      "repos_url": "https://api.github.com/users/robertmhaas/repos",
+      "events_url": "https://api.github.com/users/robertmhaas/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/robertmhaas/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c9920a9068eac2e6c8fb34988d18c0b42b9bf811",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/c9920a9068eac2e6c8fb34988d18c0b42b9bf811",
+        "html_url": "https://github.com/postgres/postgres/commit/c9920a9068eac2e6c8fb34988d18c0b42b9bf811"
+      }
+    ]
+  },
+  {
+    "sha": "c9920a9068eac2e6c8fb34988d18c0b42b9bf811",
+    "node_id": "C_kwDOAA4m0toAKGM5OTIwYTkwNjhlYWMyZTZjOGZiMzQ5ODhkMThjMGI0MmI5YmY4MTE",
+    "commit": {
+      "author": {
+        "name": "Alvaro Herrera",
+        "email": "alvherre@alvh.no-ip.org",
+        "date": "2024-04-03T17:55:11Z"
+      },
+      "committer": {
+        "name": "Alvaro Herrera",
+        "email": "alvherre@alvh.no-ip.org",
+        "date": "2024-04-03T17:55:11Z"
+      },
+      "message": "Split XLogCtl->LogwrtResult into separate struct members\n\nAfter this change we have XLogCtl->logWriteResult and ->logFlushResult.\nThere's no functional change, other than the fact that the assignment\nfrom shared memory to local is no longer done via struct assignment, but\ninstead using a macro that copies each member separately.\n\nThe current representation is inconvenient going forward; notably, we\nwould like to add a new member \"Copy\" (to keep track of the last\nposition copied into WAL buffers), so the symmetry between the values in\nshared memory vs. those in local would be lost.\n\nThis also gives us freedom to later change the concurrency model for the\nvalues in shared memory: we can make them use atomics instead of relying\non the info_lck spinlock.\n\nReviewed-by: Bharath Rupireddy <bharath.rupireddyforpostgres@gmail.com>\nDiscussion: https://postgr.es/m/202404031119.cd2kugjk2vho@alvherre.pgsql",
+      "tree": {
+        "sha": "f8dc3c0cbe86587d69d932f07ae882b0723ef8da",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/f8dc3c0cbe86587d69d932f07ae882b0723ef8da"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/c9920a9068eac2e6c8fb34988d18c0b42b9bf811",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQIzBAABCgAdFiEE4sluSpvKfpKo49pVHCCsudXFZK4FAmYNl/8ACgkQHCCsudXF\nZK6gXhAAl5OmZfUuGKtOIFCPH8RGAJQ1EsSc7ew6RknoxvEYrDpegNcFS7VSgkr6\nveGkKUs/k7XvgPsHGPPQkO5c/0rd2xZR0NvBWLfxPQsV8ifeRyr72EG5PJL78VHq\nZFADy4FQvbiS0F+cZAN8bGvahZ+AmzMwh0JFROjPKcpoXmIr+3c7Ag14DkIbzHgr\nzhXMPOuFdz0uzjrKB5o616LtRvNjJ3aecL26BL9nA7/lvKmv4ZuteFuCGqTeOnHt\n/YR1SISgBEL8z9zhq4OwFOu8qZR3xTl8LF+bCexQzBUuFXlIDTmgOnLAxTsb/ykp\neqIMTR1fp8FBAA//6HJYj2bk72FPZPuv42fY9q0Kh++aElLzBRS7JU8NTIF6OHPJ\n1IzbsJI4wy+aEjZsvWcBjA0jqMj1CQq0IC8+F94c1aDMv02B+3Wor0l/dJ4sdZYk\ntL69xLbw6ttKG3yX6L+SVR2OvTfDz+2eWbf5fot2A9+KAU0/LqV73vn3KGmvOkVD\n196gUTyzHByehgp7n02kHyWauN9iJ+JU3fj5Hg1CNCdWpQL5qiU2TzQQpckGa+Zv\nCvBdHzkZ3SN/zWrWL3EktiI8gcAqS0RLg5AVWdRcanwXFoepRmULLarDnphTJmiu\nFd354HBtAlu8ex5p9KDqZEWES+g3Oopm26neszYw2hKXAfAtiiU=\n=/Y/h\n-----END PGP SIGNATURE-----",
+        "payload": "tree f8dc3c0cbe86587d69d932f07ae882b0723ef8da\nparent deb1486c7d36e5430b50b63e8c0f2d8405e24a2a\nauthor Alvaro Herrera <alvherre@alvh.no-ip.org> 1712166911 +0200\ncommitter Alvaro Herrera <alvherre@alvh.no-ip.org> 1712166911 +0200\n\nSplit XLogCtl->LogwrtResult into separate struct members\n\nAfter this change we have XLogCtl->logWriteResult and ->logFlushResult.\nThere's no functional change, other than the fact that the assignment\nfrom shared memory to local is no longer done via struct assignment, but\ninstead using a macro that copies each member separately.\n\nThe current representation is inconvenient going forward; notably, we\nwould like to add a new member \"Copy\" (to keep track of the last\nposition copied into WAL buffers), so the symmetry between the values in\nshared memory vs. those in local would be lost.\n\nThis also gives us freedom to later change the concurrency model for the\nvalues in shared memory: we can make them use atomics instead of relying\non the info_lck spinlock.\n\nReviewed-by: Bharath Rupireddy <bharath.rupireddyforpostgres@gmail.com>\nDiscussion: https://postgr.es/m/202404031119.cd2kugjk2vho@alvherre.pgsql\n"
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/c9920a9068eac2e6c8fb34988d18c0b42b9bf811",
+    "html_url": "https://github.com/postgres/postgres/commit/c9920a9068eac2e6c8fb34988d18c0b42b9bf811",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/c9920a9068eac2e6c8fb34988d18c0b42b9bf811/comments",
+    "author": {
+      "login": "alvherre",
+      "id": 340005,
+      "node_id": "MDQ6VXNlcjM0MDAwNQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/340005?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/alvherre",
+      "html_url": "https://github.com/alvherre",
+      "followers_url": "https://api.github.com/users/alvherre/followers",
+      "following_url": "https://api.github.com/users/alvherre/following{/other_user}",
+      "gists_url": "https://api.github.com/users/alvherre/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/alvherre/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/alvherre/subscriptions",
+      "organizations_url": "https://api.github.com/users/alvherre/orgs",
+      "repos_url": "https://api.github.com/users/alvherre/repos",
+      "events_url": "https://api.github.com/users/alvherre/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/alvherre/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "alvherre",
+      "id": 340005,
+      "node_id": "MDQ6VXNlcjM0MDAwNQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/340005?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/alvherre",
+      "html_url": "https://github.com/alvherre",
+      "followers_url": "https://api.github.com/users/alvherre/followers",
+      "following_url": "https://api.github.com/users/alvherre/following{/other_user}",
+      "gists_url": "https://api.github.com/users/alvherre/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/alvherre/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/alvherre/subscriptions",
+      "organizations_url": "https://api.github.com/users/alvherre/orgs",
+      "repos_url": "https://api.github.com/users/alvherre/repos",
+      "events_url": "https://api.github.com/users/alvherre/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/alvherre/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "deb1486c7d36e5430b50b63e8c0f2d8405e24a2a",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/deb1486c7d36e5430b50b63e8c0f2d8405e24a2a",
+        "html_url": "https://github.com/postgres/postgres/commit/deb1486c7d36e5430b50b63e8c0f2d8405e24a2a"
+      }
+    ]
+  },
+  {
+    "sha": "deb1486c7d36e5430b50b63e8c0f2d8405e24a2a",
+    "node_id": "C_kwDOAA4m0toAKGRlYjE0ODZjN2QzNmU1NDMwYjUwYjYzZThjMGYyZDg0MDVlMjRhMmE",
+    "commit": {
+      "author": {
+        "name": "Nathan Bossart",
+        "email": "nathan@postgresql.org",
+        "date": "2024-04-03T17:22:02Z"
+      },
+      "committer": {
+        "name": "Nathan Bossart",
+        "email": "nathan@postgresql.org",
+        "date": "2024-04-03T17:22:02Z"
+      },
+      "message": "Inline pg_popcount() for small buffers.\n\nIf there aren't many bytes to process, the function call overhead\nof the optimized implementation isn't worth taking, so instead we\ninline a loop that consults pg_number_of_ones in that case.  If\nthere are many bytes to process, we accept the function call\noverhead because the optimized versions are likely to be faster.\nThe threshold at which we use the optimized implementation is set\nto the smallest amount of data required to use special popcount\ninstructions.\n\nReviewed-by: Alvaro Herrera, Tom Lane\nDiscussion: https://postgr.es/m/20240402155301.GA2750455%40nathanxps13",
+      "tree": {
+        "sha": "2c573b3c3d08c7a01e7ed0c5c8bca2757a3bd456",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/2c573b3c3d08c7a01e7ed0c5c8bca2757a3bd456"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/deb1486c7d36e5430b50b63e8c0f2d8405e24a2a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/deb1486c7d36e5430b50b63e8c0f2d8405e24a2a",
+    "html_url": "https://github.com/postgres/postgres/commit/deb1486c7d36e5430b50b63e8c0f2d8405e24a2a",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/deb1486c7d36e5430b50b63e8c0f2d8405e24a2a/comments",
+    "author": {
+      "login": "nathan-bossart",
+      "id": 25780657,
+      "node_id": "MDQ6VXNlcjI1NzgwNjU3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25780657?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/nathan-bossart",
+      "html_url": "https://github.com/nathan-bossart",
+      "followers_url": "https://api.github.com/users/nathan-bossart/followers",
+      "following_url": "https://api.github.com/users/nathan-bossart/following{/other_user}",
+      "gists_url": "https://api.github.com/users/nathan-bossart/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/nathan-bossart/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/nathan-bossart/subscriptions",
+      "organizations_url": "https://api.github.com/users/nathan-bossart/orgs",
+      "repos_url": "https://api.github.com/users/nathan-bossart/repos",
+      "events_url": "https://api.github.com/users/nathan-bossart/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/nathan-bossart/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "nathan-bossart",
+      "id": 25780657,
+      "node_id": "MDQ6VXNlcjI1NzgwNjU3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25780657?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/nathan-bossart",
+      "html_url": "https://github.com/nathan-bossart",
+      "followers_url": "https://api.github.com/users/nathan-bossart/followers",
+      "following_url": "https://api.github.com/users/nathan-bossart/following{/other_user}",
+      "gists_url": "https://api.github.com/users/nathan-bossart/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/nathan-bossart/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/nathan-bossart/subscriptions",
+      "organizations_url": "https://api.github.com/users/nathan-bossart/orgs",
+      "repos_url": "https://api.github.com/users/nathan-bossart/repos",
+      "events_url": "https://api.github.com/users/nathan-bossart/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/nathan-bossart/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6dbb490261a6170a3fc3e326c6983ad63e795047",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/6dbb490261a6170a3fc3e326c6983ad63e795047",
+        "html_url": "https://github.com/postgres/postgres/commit/6dbb490261a6170a3fc3e326c6983ad63e795047"
+      }
+    ]
+  },
+  {
+    "sha": "6dbb490261a6170a3fc3e326c6983ad63e795047",
+    "node_id": "C_kwDOAA4m0toAKDZkYmI0OTAyNjFhNjE3MGEzZmMzZTMyNmM2OTgzYWQ2M2U3OTUwNDc",
+    "commit": {
+      "author": {
+        "name": "Heikki Linnakangas",
+        "email": "heikki.linnakangas@iki.fi",
+        "date": "2024-04-03T16:32:28Z"
+      },
+      "committer": {
+        "name": "Heikki Linnakangas",
+        "email": "heikki.linnakangas@iki.fi",
+        "date": "2024-04-03T16:32:28Z"
+      },
+      "message": "Combine freezing and pruning steps in VACUUM\n\nExecute both freezing and pruning of tuples in the same\nheap_page_prune() function, now called heap_page_prune_and_freeze(),\nand emit a single WAL record containing all changes. That reduces the\noverall amount of WAL generated.\n\nThis moves the freezing logic from vacuumlazy.c to the\nheap_page_prune_and_freeze() function. The main difference in the\ncoding is that in vacuumlazy.c, we looked at the tuples after the\npruning had already happened, but in heap_page_prune_and_freeze() we\noperate on the tuples before pruning. The heap_prepare_freeze_tuple()\nfunction is now invoked after we have determined that a tuple is not\ngoing to be pruned away.\n\nVACUUM no longer needs to loop through the items on the page after\npruning. heap_page_prune_and_freeze() does all the work. It now\nreturns the list of dead offsets, including existing LP_DEAD items, to\nthe caller. Similarly it's now responsible for tracking 'all_visible',\n'all_frozen', and 'hastup' on the caller's behalf.\n\nAuthor: Melanie Plageman <melanieplageman@gmail.com>\nDiscussion: https://www.postgresql.org/message-id/20240330055710.kqg6ii2cdojsxgje@liskov",
+      "tree": {
+        "sha": "a3c0a26893a20ed6d191d0aebcc5722c3c6984c4",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/a3c0a26893a20ed6d191d0aebcc5722c3c6984c4"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/6dbb490261a6170a3fc3e326c6983ad63e795047",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/6dbb490261a6170a3fc3e326c6983ad63e795047",
+    "html_url": "https://github.com/postgres/postgres/commit/6dbb490261a6170a3fc3e326c6983ad63e795047",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/6dbb490261a6170a3fc3e326c6983ad63e795047/comments",
+    "author": {
+      "login": "hlinnaka",
+      "id": 191602,
+      "node_id": "MDQ6VXNlcjE5MTYwMg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/191602?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/hlinnaka",
+      "html_url": "https://github.com/hlinnaka",
+      "followers_url": "https://api.github.com/users/hlinnaka/followers",
+      "following_url": "https://api.github.com/users/hlinnaka/following{/other_user}",
+      "gists_url": "https://api.github.com/users/hlinnaka/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/hlinnaka/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/hlinnaka/subscriptions",
+      "organizations_url": "https://api.github.com/users/hlinnaka/orgs",
+      "repos_url": "https://api.github.com/users/hlinnaka/repos",
+      "events_url": "https://api.github.com/users/hlinnaka/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/hlinnaka/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "hlinnaka",
+      "id": 191602,
+      "node_id": "MDQ6VXNlcjE5MTYwMg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/191602?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/hlinnaka",
+      "html_url": "https://github.com/hlinnaka",
+      "followers_url": "https://api.github.com/users/hlinnaka/followers",
+      "following_url": "https://api.github.com/users/hlinnaka/following{/other_user}",
+      "gists_url": "https://api.github.com/users/hlinnaka/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/hlinnaka/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/hlinnaka/subscriptions",
+      "organizations_url": "https://api.github.com/users/hlinnaka/orgs",
+      "repos_url": "https://api.github.com/users/hlinnaka/repos",
+      "events_url": "https://api.github.com/users/hlinnaka/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/hlinnaka/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "26d138f64474394cf1e573384e8f38efa637b674",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/26d138f64474394cf1e573384e8f38efa637b674",
+        "html_url": "https://github.com/postgres/postgres/commit/26d138f64474394cf1e573384e8f38efa637b674"
+      }
+    ]
+  },
+  {
+    "sha": "26d138f64474394cf1e573384e8f38efa637b674",
+    "node_id": "C_kwDOAA4m0toAKDI2ZDEzOGY2NDQ3NDM5NGNmMWU1NzMzODRlOGYzOGVmYTYzN2I2NzQ",
+    "commit": {
+      "author": {
+        "name": "Heikki Linnakangas",
+        "email": "heikki.linnakangas@iki.fi",
+        "date": "2024-04-03T16:32:21Z"
+      },
+      "committer": {
+        "name": "Heikki Linnakangas",
+        "email": "heikki.linnakangas@iki.fi",
+        "date": "2024-04-03T16:32:21Z"
+      },
+      "message": "Refactor how heap_prune_chain() updates prunable_xid\n\nIn preparation of freezing and counting tuples which are not\ncandidates for pruning, split heap_prune_record_unchanged() into\nmultiple functions, depending the kind of line pointer. That's not too\ninteresting right now, but makes the next commit smaller.\n\nRecording the lowest soon-to-be prunable xid is one of the actions we\ntake for unchanged LP_NORMAL item pointers but not for others, so move\nthat to the new heap_prune_record_unchanged_lp_normal() function. The\nnext commit will add more actions to these functions.\n\nAuthor: Melanie Plageman <melanieplageman@gmail.com>\nDiscussion: https://www.postgresql.org/message-id/20240330055710.kqg6ii2cdojsxgje@liskov",
+      "tree": {
+        "sha": "d00fc7b7f0e260765a6d61a4054a2a1d5d5532cc",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/d00fc7b7f0e260765a6d61a4054a2a1d5d5532cc"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/26d138f64474394cf1e573384e8f38efa637b674",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/26d138f64474394cf1e573384e8f38efa637b674",
+    "html_url": "https://github.com/postgres/postgres/commit/26d138f64474394cf1e573384e8f38efa637b674",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/26d138f64474394cf1e573384e8f38efa637b674/comments",
+    "author": {
+      "login": "hlinnaka",
+      "id": 191602,
+      "node_id": "MDQ6VXNlcjE5MTYwMg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/191602?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/hlinnaka",
+      "html_url": "https://github.com/hlinnaka",
+      "followers_url": "https://api.github.com/users/hlinnaka/followers",
+      "following_url": "https://api.github.com/users/hlinnaka/following{/other_user}",
+      "gists_url": "https://api.github.com/users/hlinnaka/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/hlinnaka/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/hlinnaka/subscriptions",
+      "organizations_url": "https://api.github.com/users/hlinnaka/orgs",
+      "repos_url": "https://api.github.com/users/hlinnaka/repos",
+      "events_url": "https://api.github.com/users/hlinnaka/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/hlinnaka/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "hlinnaka",
+      "id": 191602,
+      "node_id": "MDQ6VXNlcjE5MTYwMg==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/191602?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/hlinnaka",
+      "html_url": "https://github.com/hlinnaka",
+      "followers_url": "https://api.github.com/users/hlinnaka/followers",
+      "following_url": "https://api.github.com/users/hlinnaka/following{/other_user}",
+      "gists_url": "https://api.github.com/users/hlinnaka/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/hlinnaka/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/hlinnaka/subscriptions",
+      "organizations_url": "https://api.github.com/users/hlinnaka/orgs",
+      "repos_url": "https://api.github.com/users/hlinnaka/repos",
+      "events_url": "https://api.github.com/users/hlinnaka/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/hlinnaka/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "be2f0731006300876b008fd78a265471984cbcd9",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/be2f0731006300876b008fd78a265471984cbcd9",
+        "html_url": "https://github.com/postgres/postgres/commit/be2f0731006300876b008fd78a265471984cbcd9"
+      }
+    ]
+  },
+  {
+    "sha": "be2f0731006300876b008fd78a265471984cbcd9",
+    "node_id": "C_kwDOAA4m0toAKGJlMmYwNzMxMDA2MzAwODc2YjAwOGZkNzhhMjY1NDcxOTg0Y2JjZDk",
+    "commit": {
+      "author": {
+        "name": "Alvaro Herrera",
+        "email": "alvherre@alvh.no-ip.org",
+        "date": "2024-04-03T15:49:44Z"
+      },
+      "committer": {
+        "name": "Alvaro Herrera",
+        "email": "alvherre@alvh.no-ip.org",
+        "date": "2024-04-03T15:49:44Z"
+      },
+      "message": "Fix zeroing of pg_serial page without SLRU bank lock\n\nBug in commit 53c2a97a9266: we failed to acquire the correct SLRU bank\nlock when iterating to zero-out intermediate pages in predicate.c.\nRewrite the code block so that we follow the locking protocol correctly.\n\nAlso update an outdated comment in the same file -- SerialSLRULock\nexists no more.\n\nReported-by: Alexander Lakhin <exclusion@gmail.com>\nReviewed-by: Dilip Kumar <dilipbalaut@gmail.com>\nDiscussion: https://postgr.es/m/2a25eaf4-a3a4-5fd1-6241-9d7c73142085@gmail.com",
+      "tree": {
+        "sha": "3c8162ab58208f61cd6cd199ceacd3b9fefcdea6",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/3c8162ab58208f61cd6cd199ceacd3b9fefcdea6"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/be2f0731006300876b008fd78a265471984cbcd9",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQIzBAABCgAdFiEE4sluSpvKfpKo49pVHCCsudXFZK4FAmYNepkACgkQHCCsudXF\nZK6o/w/9E68lDnz+QcT/mZ1LVvJN+hOACA3cg2+WX/EeoJBsq4N64b3i+GSB5mTz\nBYoCdtY1gLYwBC6cSlYCVhxuttX+bW038f2dfJaA8bLCcwwAIXTV2mTXHYUBfMBy\npqwO9N0e50DrHmoev13iT/B0BSukd9rf/wsNah+OfFAJwENn9yI9UH4fIUb636q+\nXQtH9/knZcA0q0zG1+NUelj27KJinH8uta6gWuq4uYJqKMzqygySDqTNR/QizH0F\na3sbyyUMKhBuoTdu2WTt1IdYar6TgqQY9Zb8Z91nZFnJGHiPKcQNXirY/PPVoayR\nAwp4XCF3ozWGIzHGqzKogculMuyEuM3fwWWA97fFWHbDIq0al8YkpO9dnbWd1CO/\ns/o4Iqs2KOroablMk6z38nmwcz/kZoVv3iQIrJp9greLDyI4BAGD9IcmiRnoOeos\nStSZe96PORlTNfXjmVAiAFVfSsdOqcViKr/9WZdthKmpXEhcnYeXtHhwklFaeY9V\nZ3oK3/vBGZs34BtUOCL8KJz1R7mSU1N7++pmq9WEY4QB3QTLGVRt0GHdAsxYqngC\nDjLJHqxA724hr9nFNGe1MR7YBG3MaeXn4CYtvyJZ8K+Of1AOdKRwTkKSZIOFwFDy\n/larpaVafkn1E25CbwlbmaTDabquDKyoaJQod2NWka7hRUwzJjA=\n=JD8M\n-----END PGP SIGNATURE-----",
+        "payload": "tree 3c8162ab58208f61cd6cd199ceacd3b9fefcdea6\nparent bf1e65080629e2b0ac47ffe245576da96eff8420\nauthor Alvaro Herrera <alvherre@alvh.no-ip.org> 1712159384 +0200\ncommitter Alvaro Herrera <alvherre@alvh.no-ip.org> 1712159384 +0200\n\nFix zeroing of pg_serial page without SLRU bank lock\n\nBug in commit 53c2a97a9266: we failed to acquire the correct SLRU bank\nlock when iterating to zero-out intermediate pages in predicate.c.\nRewrite the code block so that we follow the locking protocol correctly.\n\nAlso update an outdated comment in the same file -- SerialSLRULock\nexists no more.\n\nReported-by: Alexander Lakhin <exclusion@gmail.com>\nReviewed-by: Dilip Kumar <dilipbalaut@gmail.com>\nDiscussion: https://postgr.es/m/2a25eaf4-a3a4-5fd1-6241-9d7c73142085@gmail.com\n"
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/be2f0731006300876b008fd78a265471984cbcd9",
+    "html_url": "https://github.com/postgres/postgres/commit/be2f0731006300876b008fd78a265471984cbcd9",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/be2f0731006300876b008fd78a265471984cbcd9/comments",
+    "author": {
+      "login": "alvherre",
+      "id": 340005,
+      "node_id": "MDQ6VXNlcjM0MDAwNQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/340005?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/alvherre",
+      "html_url": "https://github.com/alvherre",
+      "followers_url": "https://api.github.com/users/alvherre/followers",
+      "following_url": "https://api.github.com/users/alvherre/following{/other_user}",
+      "gists_url": "https://api.github.com/users/alvherre/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/alvherre/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/alvherre/subscriptions",
+      "organizations_url": "https://api.github.com/users/alvherre/orgs",
+      "repos_url": "https://api.github.com/users/alvherre/repos",
+      "events_url": "https://api.github.com/users/alvherre/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/alvherre/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "alvherre",
+      "id": 340005,
+      "node_id": "MDQ6VXNlcjM0MDAwNQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/340005?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/alvherre",
+      "html_url": "https://github.com/alvherre",
+      "followers_url": "https://api.github.com/users/alvherre/followers",
+      "following_url": "https://api.github.com/users/alvherre/following{/other_user}",
+      "gists_url": "https://api.github.com/users/alvherre/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/alvherre/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/alvherre/subscriptions",
+      "organizations_url": "https://api.github.com/users/alvherre/orgs",
+      "repos_url": "https://api.github.com/users/alvherre/repos",
+      "events_url": "https://api.github.com/users/alvherre/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/alvherre/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "bf1e65080629e2b0ac47ffe245576da96eff8420",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/bf1e65080629e2b0ac47ffe245576da96eff8420",
+        "html_url": "https://github.com/postgres/postgres/commit/bf1e65080629e2b0ac47ffe245576da96eff8420"
+      }
+    ]
+  },
+  {
+    "sha": "bf1e65080629e2b0ac47ffe245576da96eff8420",
+    "node_id": "C_kwDOAA4m0toAKGJmMWU2NTA4MDYyOWUyYjBhYzQ3ZmZlMjQ1NTc2ZGE5NmVmZjg0MjA",
+    "commit": {
+      "author": {
+        "name": "Alexander Korotkov",
+        "email": "akorotkov@postgresql.org",
+        "date": "2024-04-03T15:15:17Z"
+      },
+      "committer": {
+        "name": "Alexander Korotkov",
+        "email": "akorotkov@postgresql.org",
+        "date": "2024-04-03T15:15:41Z"
+      },
+      "message": "Use the pairing heap instead of a flat array for LSN replay waiters\n\n06c418e163 introduced pg_wal_replay_wait() procedure allowing to wait for\nthe particular LSN to be replayed on standby.  The waiters were stored in\nthe flat array.  Even though scanning small arrays is fast, that might be a\nproblem at scale (a lot of waiting processes).\n\nThis commit replaces the flat shared memory array with the pairing heap,\nwhich holds the waiter with the least LSN at the top.  This gives us O(log N)\ncomplexity for both inserting and removing waiters.\n\nReported-by: Alvaro Herrera\nDiscussion: https://postgr.es/m/202404030658.hhj3vfxeyhft%40alvherre.pgsql",
+      "tree": {
+        "sha": "d6eae6fbb978d03d72388d54a2ec86848a8979dd",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/d6eae6fbb978d03d72388d54a2ec86848a8979dd"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/bf1e65080629e2b0ac47ffe245576da96eff8420",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/bf1e65080629e2b0ac47ffe245576da96eff8420",
+    "html_url": "https://github.com/postgres/postgres/commit/bf1e65080629e2b0ac47ffe245576da96eff8420",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/bf1e65080629e2b0ac47ffe245576da96eff8420/comments",
+    "author": {
+      "login": "akorotkov",
+      "id": 5437829,
+      "node_id": "MDQ6VXNlcjU0Mzc4Mjk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5437829?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/akorotkov",
+      "html_url": "https://github.com/akorotkov",
+      "followers_url": "https://api.github.com/users/akorotkov/followers",
+      "following_url": "https://api.github.com/users/akorotkov/following{/other_user}",
+      "gists_url": "https://api.github.com/users/akorotkov/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/akorotkov/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/akorotkov/subscriptions",
+      "organizations_url": "https://api.github.com/users/akorotkov/orgs",
+      "repos_url": "https://api.github.com/users/akorotkov/repos",
+      "events_url": "https://api.github.com/users/akorotkov/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/akorotkov/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "akorotkov",
+      "id": 5437829,
+      "node_id": "MDQ6VXNlcjU0Mzc4Mjk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5437829?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/akorotkov",
+      "html_url": "https://github.com/akorotkov",
+      "followers_url": "https://api.github.com/users/akorotkov/followers",
+      "following_url": "https://api.github.com/users/akorotkov/following{/other_user}",
+      "gists_url": "https://api.github.com/users/akorotkov/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/akorotkov/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/akorotkov/subscriptions",
+      "organizations_url": "https://api.github.com/users/akorotkov/orgs",
+      "repos_url": "https://api.github.com/users/akorotkov/repos",
+      "events_url": "https://api.github.com/users/akorotkov/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/akorotkov/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "936e3fa3787a51397280c1081587586e83c20399",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/936e3fa3787a51397280c1081587586e83c20399",
+        "html_url": "https://github.com/postgres/postgres/commit/936e3fa3787a51397280c1081587586e83c20399"
+      }
+    ]
+  },
+  {
+    "sha": "936e3fa3787a51397280c1081587586e83c20399",
+    "node_id": "C_kwDOAA4m0toAKDkzNmUzZmEzNzg3YTUxMzk3MjgwYzEwODE1ODc1ODZlODNjMjAzOTk",
+    "commit": {
+      "author": {
+        "name": "Daniel Gustafsson",
+        "email": "dgustafsson@postgresql.org",
+        "date": "2024-04-03T11:33:25Z"
+      },
+      "committer": {
+        "name": "Daniel Gustafsson",
+        "email": "dgustafsson@postgresql.org",
+        "date": "2024-04-03T11:33:25Z"
+      },
+      "message": "Drop global objects after completed test\n\nProject policy is to not leave global objects behind after a regress\ntest run.  This was found as a result of the development of a patch\nto make pg_regress detect such leftovers automatically, which in the\nend was withdrawn due to issues with parallel runs.\n\nDiscussion: https://postgr.es/m/E1phvk7-000VAH-7k@gemulon.postgresql.org",
+      "tree": {
+        "sha": "1e5093bb88dc22275fe0800cb44fa1db8c049da3",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/1e5093bb88dc22275fe0800cb44fa1db8c049da3"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/936e3fa3787a51397280c1081587586e83c20399",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/936e3fa3787a51397280c1081587586e83c20399",
+    "html_url": "https://github.com/postgres/postgres/commit/936e3fa3787a51397280c1081587586e83c20399",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/936e3fa3787a51397280c1081587586e83c20399/comments",
+    "author": {
+      "login": "danielgustafsson",
+      "id": 321790,
+      "node_id": "MDQ6VXNlcjMyMTc5MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/321790?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/danielgustafsson",
+      "html_url": "https://github.com/danielgustafsson",
+      "followers_url": "https://api.github.com/users/danielgustafsson/followers",
+      "following_url": "https://api.github.com/users/danielgustafsson/following{/other_user}",
+      "gists_url": "https://api.github.com/users/danielgustafsson/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/danielgustafsson/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/danielgustafsson/subscriptions",
+      "organizations_url": "https://api.github.com/users/danielgustafsson/orgs",
+      "repos_url": "https://api.github.com/users/danielgustafsson/repos",
+      "events_url": "https://api.github.com/users/danielgustafsson/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/danielgustafsson/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "danielgustafsson",
+      "id": 321790,
+      "node_id": "MDQ6VXNlcjMyMTc5MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/321790?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/danielgustafsson",
+      "html_url": "https://github.com/danielgustafsson",
+      "followers_url": "https://api.github.com/users/danielgustafsson/followers",
+      "following_url": "https://api.github.com/users/danielgustafsson/following{/other_user}",
+      "gists_url": "https://api.github.com/users/danielgustafsson/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/danielgustafsson/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/danielgustafsson/subscriptions",
+      "organizations_url": "https://api.github.com/users/danielgustafsson/orgs",
+      "repos_url": "https://api.github.com/users/danielgustafsson/repos",
+      "events_url": "https://api.github.com/users/danielgustafsson/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/danielgustafsson/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2ec005b4e29740f0d36e6646d149af192328b2ff",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/2ec005b4e29740f0d36e6646d149af192328b2ff",
+        "html_url": "https://github.com/postgres/postgres/commit/2ec005b4e29740f0d36e6646d149af192328b2ff"
+      }
+    ]
+  },
+  {
+    "sha": "2ec005b4e29740f0d36e6646d149af192328b2ff",
+    "node_id": "C_kwDOAA4m0toAKDJlYzAwNWI0ZTI5NzQwZjBkMzZlNjY0NmQxNDlhZjE5MjMyOGIyZmY",
+    "commit": {
+      "author": {
+        "name": "Amit Kapila",
+        "email": "akapila@postgresql.org",
+        "date": "2024-04-03T08:34:59Z"
+      },
+      "committer": {
+        "name": "Amit Kapila",
+        "email": "akapila@postgresql.org",
+        "date": "2024-04-03T08:34:59Z"
+      },
+      "message": "Ensure that the sync slots reach a consistent state after promotion without losing data.\n\nWe were directly copying the LSN locations while syncing the slots on the\nstandby. Now, it is possible that at some particular restart_lsn there are\nsome running xacts, which means if we start reading the WAL from that\nlocation after promotion, we won't reach a consistent snapshot state at\nthat point. However, on the primary, we would have already been in a\nconsistent snapshot state at that restart_lsn so we would have just\nserialized the existing snapshot.\n\nTo avoid this problem we will use the advance_slot functionality unless\nthe snapshot already exists at the synced restart_lsn location. This will\nhelp us to ensure that snapbuilder/slot statuses are updated properly\nwithout generating any changes. Note that the synced slot will remain as\nRS_TEMPORARY till the decoding from corresponding restart_lsn can reach a\nconsistent snapshot state after which they will be marked as\nRS_PERSISTENT.\n\nPer buildfarm\n\nAuthor: Hou Zhijie\nReviewed-by: Bertrand Drouvot, Shveta Malik, Bharath Rupireddy, Amit Kapila\nDiscussion: https://postgr.es/m/OS0PR01MB5716B3942AE49F3F725ACA92943B2@OS0PR01MB5716.jpnprd01.prod.outlook.com",
+      "tree": {
+        "sha": "666945f7acefb7bf88adb1a84ef22ce368581ae6",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/666945f7acefb7bf88adb1a84ef22ce368581ae6"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/2ec005b4e29740f0d36e6646d149af192328b2ff",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/2ec005b4e29740f0d36e6646d149af192328b2ff",
+    "html_url": "https://github.com/postgres/postgres/commit/2ec005b4e29740f0d36e6646d149af192328b2ff",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/2ec005b4e29740f0d36e6646d149af192328b2ff/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "e37662f22158c29bc55eda4eda1757f444cf701a",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/e37662f22158c29bc55eda4eda1757f444cf701a",
+        "html_url": "https://github.com/postgres/postgres/commit/e37662f22158c29bc55eda4eda1757f444cf701a"
+      }
+    ]
+  },
+  {
+    "sha": "e37662f22158c29bc55eda4eda1757f444cf701a",
+    "node_id": "C_kwDOAA4m0toAKGUzNzY2MmYyMjE1OGMyOWJjNTVlZGE0ZWRhMTc1N2Y0NDRjZjcwMWE",
+    "commit": {
+      "author": {
+        "name": "Alexander Korotkov",
+        "email": "akorotkov@postgresql.org",
+        "date": "2024-04-03T08:23:21Z"
+      },
+      "committer": {
+        "name": "Alexander Korotkov",
+        "email": "akorotkov@postgresql.org",
+        "date": "2024-04-03T08:32:39Z"
+      },
+      "message": "Minor improvements for waitlsn.c\n\n * Remove extra includes\n * Fill 'cur' in addLSNWaiter() before taking the spinlock\n * Initialize 'endtime' with zero in WaitForLSN() to avoid compiler warning\n\nReported-by: Alvaro Herrera, Masahiko Sawada, Daniel Gustafsson\nDiscussion: https://postgr.es/m/202404030658.hhj3vfxeyhft%40alvherre.pgsql\nDiscussion: https://postgr.es/m/CAD21AoAx7irptnPH1OkkkNh9E0M6X-phfX7sYZfwoMsc1qV1sQ%40mail.gmail.com",
+      "tree": {
+        "sha": "8d419de299db529306c3fbf204e2532da1605dc1",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/8d419de299db529306c3fbf204e2532da1605dc1"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/e37662f22158c29bc55eda4eda1757f444cf701a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/e37662f22158c29bc55eda4eda1757f444cf701a",
+    "html_url": "https://github.com/postgres/postgres/commit/e37662f22158c29bc55eda4eda1757f444cf701a",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/e37662f22158c29bc55eda4eda1757f444cf701a/comments",
+    "author": {
+      "login": "akorotkov",
+      "id": 5437829,
+      "node_id": "MDQ6VXNlcjU0Mzc4Mjk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5437829?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/akorotkov",
+      "html_url": "https://github.com/akorotkov",
+      "followers_url": "https://api.github.com/users/akorotkov/followers",
+      "following_url": "https://api.github.com/users/akorotkov/following{/other_user}",
+      "gists_url": "https://api.github.com/users/akorotkov/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/akorotkov/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/akorotkov/subscriptions",
+      "organizations_url": "https://api.github.com/users/akorotkov/orgs",
+      "repos_url": "https://api.github.com/users/akorotkov/repos",
+      "events_url": "https://api.github.com/users/akorotkov/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/akorotkov/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "akorotkov",
+      "id": 5437829,
+      "node_id": "MDQ6VXNlcjU0Mzc4Mjk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5437829?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/akorotkov",
+      "html_url": "https://github.com/akorotkov",
+      "followers_url": "https://api.github.com/users/akorotkov/followers",
+      "following_url": "https://api.github.com/users/akorotkov/following{/other_user}",
+      "gists_url": "https://api.github.com/users/akorotkov/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/akorotkov/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/akorotkov/subscriptions",
+      "organizations_url": "https://api.github.com/users/akorotkov/orgs",
+      "repos_url": "https://api.github.com/users/akorotkov/repos",
+      "events_url": "https://api.github.com/users/akorotkov/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/akorotkov/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9301308bd196f614696e0e9492cf0c52f7857f83",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/9301308bd196f614696e0e9492cf0c52f7857f83",
+        "html_url": "https://github.com/postgres/postgres/commit/9301308bd196f614696e0e9492cf0c52f7857f83"
+      }
+    ]
+  },
+  {
+    "sha": "9301308bd196f614696e0e9492cf0c52f7857f83",
+    "node_id": "C_kwDOAA4m0toAKDkzMDEzMDhiZDE5NmY2MTQ2OTZlMGU5NDkyY2YwYzUyZjc4NTdmODM",
+    "commit": {
+      "author": {
+        "name": "Daniel Gustafsson",
+        "email": "dgustafsson@postgresql.org",
+        "date": "2024-04-03T07:44:47Z"
+      },
+      "committer": {
+        "name": "Daniel Gustafsson",
+        "email": "dgustafsson@postgresql.org",
+        "date": "2024-04-03T07:44:47Z"
+      },
+      "message": "Fix indentation from cafe1056558f\n\nPer buildfarm animal koel",
+      "tree": {
+        "sha": "20bcb2103f2d23f3e5781fcfbdb30e279f673708",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/20bcb2103f2d23f3e5781fcfbdb30e279f673708"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/9301308bd196f614696e0e9492cf0c52f7857f83",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/9301308bd196f614696e0e9492cf0c52f7857f83",
+    "html_url": "https://github.com/postgres/postgres/commit/9301308bd196f614696e0e9492cf0c52f7857f83",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/9301308bd196f614696e0e9492cf0c52f7857f83/comments",
+    "author": {
+      "login": "danielgustafsson",
+      "id": 321790,
+      "node_id": "MDQ6VXNlcjMyMTc5MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/321790?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/danielgustafsson",
+      "html_url": "https://github.com/danielgustafsson",
+      "followers_url": "https://api.github.com/users/danielgustafsson/followers",
+      "following_url": "https://api.github.com/users/danielgustafsson/following{/other_user}",
+      "gists_url": "https://api.github.com/users/danielgustafsson/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/danielgustafsson/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/danielgustafsson/subscriptions",
+      "organizations_url": "https://api.github.com/users/danielgustafsson/orgs",
+      "repos_url": "https://api.github.com/users/danielgustafsson/repos",
+      "events_url": "https://api.github.com/users/danielgustafsson/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/danielgustafsson/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "danielgustafsson",
+      "id": 321790,
+      "node_id": "MDQ6VXNlcjMyMTc5MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/321790?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/danielgustafsson",
+      "html_url": "https://github.com/danielgustafsson",
+      "followers_url": "https://api.github.com/users/danielgustafsson/followers",
+      "following_url": "https://api.github.com/users/danielgustafsson/following{/other_user}",
+      "gists_url": "https://api.github.com/users/danielgustafsson/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/danielgustafsson/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/danielgustafsson/subscriptions",
+      "organizations_url": "https://api.github.com/users/danielgustafsson/orgs",
+      "repos_url": "https://api.github.com/users/danielgustafsson/repos",
+      "events_url": "https://api.github.com/users/danielgustafsson/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/danielgustafsson/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "226261f387fd8b44420ad03298ef09d83571f9b1",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/226261f387fd8b44420ad03298ef09d83571f9b1",
+        "html_url": "https://github.com/postgres/postgres/commit/226261f387fd8b44420ad03298ef09d83571f9b1"
+      }
+    ]
+  },
+  {
+    "sha": "226261f387fd8b44420ad03298ef09d83571f9b1",
+    "node_id": "C_kwDOAA4m0toAKDIyNjI2MWYzODdmZDhiNDQ0MjBhZDAzMjk4ZWYwOWQ4MzU3MWY5YjE",
+    "commit": {
+      "author": {
+        "name": "Daniel Gustafsson",
+        "email": "dgustafsson@postgresql.org",
+        "date": "2024-04-03T07:19:25Z"
+      },
+      "committer": {
+        "name": "Daniel Gustafsson",
+        "email": "dgustafsson@postgresql.org",
+        "date": "2024-04-03T07:19:25Z"
+      },
+      "message": "Add error codes to some PANIC/FATAL errors reports\n\nThis adds errcodes to a set of PANIC and FATAL errors in xlog.c\nand relcache.c,  which previously had no errcode at all set, in\norder to make fleetwide analysis of errorlogs easier. There are\nmany more ereport/elogs left which could benefit from having an\nerrcode but this at least makes a dent in the issue.\n\nAuthor: Nazir Bilal Yavuz <byavuz81@gmail.com>\nDiscussion: https://postgr.es/m/CAN55FZ1k8LgLEqncPGmz_fWnrobV6bjABOTH4tOWta6xNcPQig@mail.gmail.com",
+      "tree": {
+        "sha": "df760321ed16c192ca930863e37164f689e7383f",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/df760321ed16c192ca930863e37164f689e7383f"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/226261f387fd8b44420ad03298ef09d83571f9b1",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/226261f387fd8b44420ad03298ef09d83571f9b1",
+    "html_url": "https://github.com/postgres/postgres/commit/226261f387fd8b44420ad03298ef09d83571f9b1",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/226261f387fd8b44420ad03298ef09d83571f9b1/comments",
+    "author": {
+      "login": "danielgustafsson",
+      "id": 321790,
+      "node_id": "MDQ6VXNlcjMyMTc5MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/321790?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/danielgustafsson",
+      "html_url": "https://github.com/danielgustafsson",
+      "followers_url": "https://api.github.com/users/danielgustafsson/followers",
+      "following_url": "https://api.github.com/users/danielgustafsson/following{/other_user}",
+      "gists_url": "https://api.github.com/users/danielgustafsson/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/danielgustafsson/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/danielgustafsson/subscriptions",
+      "organizations_url": "https://api.github.com/users/danielgustafsson/orgs",
+      "repos_url": "https://api.github.com/users/danielgustafsson/repos",
+      "events_url": "https://api.github.com/users/danielgustafsson/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/danielgustafsson/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "danielgustafsson",
+      "id": 321790,
+      "node_id": "MDQ6VXNlcjMyMTc5MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/321790?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/danielgustafsson",
+      "html_url": "https://github.com/danielgustafsson",
+      "followers_url": "https://api.github.com/users/danielgustafsson/followers",
+      "following_url": "https://api.github.com/users/danielgustafsson/following{/other_user}",
+      "gists_url": "https://api.github.com/users/danielgustafsson/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/danielgustafsson/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/danielgustafsson/subscriptions",
+      "organizations_url": "https://api.github.com/users/danielgustafsson/orgs",
+      "repos_url": "https://api.github.com/users/danielgustafsson/repos",
+      "events_url": "https://api.github.com/users/danielgustafsson/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/danielgustafsson/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c627d944e6c2620fb3b28f2e4b27e19212f84045",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/c627d944e6c2620fb3b28f2e4b27e19212f84045",
+        "html_url": "https://github.com/postgres/postgres/commit/c627d944e6c2620fb3b28f2e4b27e19212f84045"
+      }
+    ]
+  },
+  {
+    "sha": "c627d944e6c2620fb3b28f2e4b27e19212f84045",
+    "node_id": "C_kwDOAA4m0toAKGM2MjdkOTQ0ZTZjMjYyMGZiM2IyOGYyZTRiMjdlMTkyMTJmODQwNDU",
+    "commit": {
+      "author": {
+        "name": "Nathan Bossart",
+        "email": "nathan@postgresql.org",
+        "date": "2024-04-03T03:28:11Z"
+      },
+      "committer": {
+        "name": "Nathan Bossart",
+        "email": "nathan@postgresql.org",
+        "date": "2024-04-03T03:28:11Z"
+      },
+      "message": "Add built-in ERROR handling for archive callbacks.\n\nPresently, the archiver process restarts when an archive callback\nERRORs.  To avoid this, archive module authors can use sigsetjmp(),\nmanage a memory context, etc., but that requires a lot of extra\ncode that will likely look roughly the same between modules.  This\ncommit adds basic archive callback ERROR handling to pgarch.c so\nthat module authors won't ordinarily need to worry about this.\nWhile this built-in handler attempts to clean up anything that an\narchive module could conceivably have left behind, it is possible\nthat some modules are doing unexpected things that require\nadditional cleanup.  Module authors should be sure to do any extra\nrequired cleanup in a PG_CATCH block within the archiving callback.\n\nThe archiving callback is now called in a short-lived memory\ncontext that the archiver process resets between invocations.  If a\nmodule requires longer-lived storage, it must maintain its own\nmemory context.\n\nThanks to these changes, the basic_archive module can be greatly\nsimplified.\n\nSuggested-by: Andres Freund\nReviewed-by: Andres Freund, Yong Li\nDiscussion: https://postgr.es/m/20230217215624.GA3131134%40nathanxps13",
+      "tree": {
+        "sha": "6f7c99617576ec8332ad0287bc9a37f83f8fe8af",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/6f7c99617576ec8332ad0287bc9a37f83f8fe8af"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/c627d944e6c2620fb3b28f2e4b27e19212f84045",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/c627d944e6c2620fb3b28f2e4b27e19212f84045",
+    "html_url": "https://github.com/postgres/postgres/commit/c627d944e6c2620fb3b28f2e4b27e19212f84045",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/c627d944e6c2620fb3b28f2e4b27e19212f84045/comments",
+    "author": {
+      "login": "nathan-bossart",
+      "id": 25780657,
+      "node_id": "MDQ6VXNlcjI1NzgwNjU3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25780657?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/nathan-bossart",
+      "html_url": "https://github.com/nathan-bossart",
+      "followers_url": "https://api.github.com/users/nathan-bossart/followers",
+      "following_url": "https://api.github.com/users/nathan-bossart/following{/other_user}",
+      "gists_url": "https://api.github.com/users/nathan-bossart/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/nathan-bossart/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/nathan-bossart/subscriptions",
+      "organizations_url": "https://api.github.com/users/nathan-bossart/orgs",
+      "repos_url": "https://api.github.com/users/nathan-bossart/repos",
+      "events_url": "https://api.github.com/users/nathan-bossart/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/nathan-bossart/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "nathan-bossart",
+      "id": 25780657,
+      "node_id": "MDQ6VXNlcjI1NzgwNjU3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25780657?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/nathan-bossart",
+      "html_url": "https://github.com/nathan-bossart",
+      "followers_url": "https://api.github.com/users/nathan-bossart/followers",
+      "following_url": "https://api.github.com/users/nathan-bossart/following{/other_user}",
+      "gists_url": "https://api.github.com/users/nathan-bossart/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/nathan-bossart/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/nathan-bossart/subscriptions",
+      "organizations_url": "https://api.github.com/users/nathan-bossart/orgs",
+      "repos_url": "https://api.github.com/users/nathan-bossart/repos",
+      "events_url": "https://api.github.com/users/nathan-bossart/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/nathan-bossart/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5bec1d6bc5e3ee44a229228a2749567eb2ab7beb",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/5bec1d6bc5e3ee44a229228a2749567eb2ab7beb",
+        "html_url": "https://github.com/postgres/postgres/commit/5bec1d6bc5e3ee44a229228a2749567eb2ab7beb"
+      }
+    ]
+  },
+  {
+    "sha": "5bec1d6bc5e3ee44a229228a2749567eb2ab7beb",
+    "node_id": "C_kwDOAA4m0toAKDViZWMxZDZiYzVlM2VlNDRhMjI5MjI4YTI3NDk1NjdlYjJhYjdiZWI",
+    "commit": {
+      "author": {
+        "name": "Masahiko Sawada",
+        "email": "msawada@postgresql.org",
+        "date": "2024-04-03T02:40:42Z"
+      },
+      "committer": {
+        "name": "Masahiko Sawada",
+        "email": "msawada@postgresql.org",
+        "date": "2024-04-03T02:40:42Z"
+      },
+      "message": "Improve eviction algorithm in ReorderBuffer using max-heap for many subtransactions.\n\nPreviously, when selecting the transaction to evict during logical\ndecoding, we check all transactions to find the largest\ntransaction. This could lead to a significant replication lag\nespecially in the case where there are many subtransactions.\n\nThis commit improves the eviction algorithm in ReorderBuffer using the\nmax-heap with transaction size as the key to efficiently find the\nlargest transaction.\n\nThe max-heap starts with empty. While the max-heap is empty, we don't\ndo anything for the max-heap when updating the memory\ncounter. Therefore, we get the largest transaction in O(N) time, where\nN is the number of transactions including top-level transactions and\nsubtransactions.\n\nWe build the max-heap just before selecting the largest transactions\nif the number of transactions being decoded is higher than the\nthreshold, MAX_HEAP_TXN_COUNT_THRESHOLD. After building the max-heap,\nwe also update the max-heap when updating the memory counter. The\nintention is to efficiently find the largest transaction in O(1) time\ninstead of incurring the cost of memory counter updates (O(log\nN)). Once the number of transactions got lower than the threshold, we\nreset the max-heap.\n\nThe performance benchmark results showed significant speed up (more\nthan x30 speed up on my machine) in decoding a transaction with 100k\nsubtransactions, whereas there is no visible overhead in other cases.\n\nReviewed-by: Amit Kapila, Hayato Kuroda, Vignesh C, Ajin Cherian,\nTomas Vondra, Shubham Khanna, Peter Smith, Álvaro Herrera,\nEuler Taveira\nDiscussion: https://postgr.es/m/CAD21AoAfKTgrBrLq96GcTv9d6k97zaQcDM-rxfKEt4GSe0qnaQ%40mail.gmail.com",
+      "tree": {
+        "sha": "e36bb2470667ad861e59f97470aba8e85a946f43",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/e36bb2470667ad861e59f97470aba8e85a946f43"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/5bec1d6bc5e3ee44a229228a2749567eb2ab7beb",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/5bec1d6bc5e3ee44a229228a2749567eb2ab7beb",
+    "html_url": "https://github.com/postgres/postgres/commit/5bec1d6bc5e3ee44a229228a2749567eb2ab7beb",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/5bec1d6bc5e3ee44a229228a2749567eb2ab7beb/comments",
+    "author": {
+      "login": "MasahikoSawada",
+      "id": 4269963,
+      "node_id": "MDQ6VXNlcjQyNjk5NjM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4269963?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/MasahikoSawada",
+      "html_url": "https://github.com/MasahikoSawada",
+      "followers_url": "https://api.github.com/users/MasahikoSawada/followers",
+      "following_url": "https://api.github.com/users/MasahikoSawada/following{/other_user}",
+      "gists_url": "https://api.github.com/users/MasahikoSawada/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/MasahikoSawada/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/MasahikoSawada/subscriptions",
+      "organizations_url": "https://api.github.com/users/MasahikoSawada/orgs",
+      "repos_url": "https://api.github.com/users/MasahikoSawada/repos",
+      "events_url": "https://api.github.com/users/MasahikoSawada/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/MasahikoSawada/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "MasahikoSawada",
+      "id": 4269963,
+      "node_id": "MDQ6VXNlcjQyNjk5NjM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4269963?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/MasahikoSawada",
+      "html_url": "https://github.com/MasahikoSawada",
+      "followers_url": "https://api.github.com/users/MasahikoSawada/followers",
+      "following_url": "https://api.github.com/users/MasahikoSawada/following{/other_user}",
+      "gists_url": "https://api.github.com/users/MasahikoSawada/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/MasahikoSawada/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/MasahikoSawada/subscriptions",
+      "organizations_url": "https://api.github.com/users/MasahikoSawada/orgs",
+      "repos_url": "https://api.github.com/users/MasahikoSawada/repos",
+      "events_url": "https://api.github.com/users/MasahikoSawada/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/MasahikoSawada/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7487044d6ccf183e53d2633024595779922dbee2",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/7487044d6ccf183e53d2633024595779922dbee2",
+        "html_url": "https://github.com/postgres/postgres/commit/7487044d6ccf183e53d2633024595779922dbee2"
+      }
+    ]
+  },
+  {
+    "sha": "7487044d6ccf183e53d2633024595779922dbee2",
+    "node_id": "C_kwDOAA4m0toAKDc0ODcwNDRkNmNjZjE4M2U1M2QyNjMzMDI0NTk1Nzc5OTIyZGJlZTI",
+    "commit": {
+      "author": {
+        "name": "David Rowley",
+        "email": "drowley@postgresql.org",
+        "date": "2024-04-03T02:39:29Z"
+      },
+      "committer": {
+        "name": "David Rowley",
+        "email": "drowley@postgresql.org",
+        "date": "2024-04-03T02:39:29Z"
+      },
+      "message": "Don't adjust ressortgroupref in generate_setop_child_grouplist()\n\nThis is already done inside assignSortGroupRef(), therefore is\nredundant.\n\nOversight from 66c0185a3.\n\nReported-by: Tom Lane\nDiscussion: https://postgr.es/m/3703023.1711654574@sss.pgh.pa.us",
+      "tree": {
+        "sha": "e26b2f6b670d2bd7c42677d0966c30aa28181ee9",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/e26b2f6b670d2bd7c42677d0966c30aa28181ee9"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/7487044d6ccf183e53d2633024595779922dbee2",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/7487044d6ccf183e53d2633024595779922dbee2",
+    "html_url": "https://github.com/postgres/postgres/commit/7487044d6ccf183e53d2633024595779922dbee2",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/7487044d6ccf183e53d2633024595779922dbee2/comments",
+    "author": {
+      "login": "david-rowley",
+      "id": 4554452,
+      "node_id": "MDQ6VXNlcjQ1NTQ0NTI=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4554452?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/david-rowley",
+      "html_url": "https://github.com/david-rowley",
+      "followers_url": "https://api.github.com/users/david-rowley/followers",
+      "following_url": "https://api.github.com/users/david-rowley/following{/other_user}",
+      "gists_url": "https://api.github.com/users/david-rowley/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/david-rowley/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/david-rowley/subscriptions",
+      "organizations_url": "https://api.github.com/users/david-rowley/orgs",
+      "repos_url": "https://api.github.com/users/david-rowley/repos",
+      "events_url": "https://api.github.com/users/david-rowley/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/david-rowley/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "david-rowley",
+      "id": 4554452,
+      "node_id": "MDQ6VXNlcjQ1NTQ0NTI=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4554452?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/david-rowley",
+      "html_url": "https://github.com/david-rowley",
+      "followers_url": "https://api.github.com/users/david-rowley/followers",
+      "following_url": "https://api.github.com/users/david-rowley/following{/other_user}",
+      "gists_url": "https://api.github.com/users/david-rowley/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/david-rowley/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/david-rowley/subscriptions",
+      "organizations_url": "https://api.github.com/users/david-rowley/orgs",
+      "repos_url": "https://api.github.com/users/david-rowley/repos",
+      "events_url": "https://api.github.com/users/david-rowley/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/david-rowley/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b840508644151232b6ca1287dde617ed00ba2bdf",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/b840508644151232b6ca1287dde617ed00ba2bdf",
+        "html_url": "https://github.com/postgres/postgres/commit/b840508644151232b6ca1287dde617ed00ba2bdf"
+      }
+    ]
+  },
+  {
+    "sha": "b840508644151232b6ca1287dde617ed00ba2bdf",
+    "node_id": "C_kwDOAA4m0toAKGI4NDA1MDg2NDQxNTEyMzJiNmNhMTI4N2RkZTYxN2VkMDBiYTJiZGY",
+    "commit": {
+      "author": {
+        "name": "Masahiko Sawada",
+        "email": "msawada@postgresql.org",
+        "date": "2024-04-03T01:44:21Z"
+      },
+      "committer": {
+        "name": "Masahiko Sawada",
+        "email": "msawada@postgresql.org",
+        "date": "2024-04-03T01:44:21Z"
+      },
+      "message": "Add functions to binaryheap for efficient key removal and update.\n\nPreviously, binaryheap didn't support updating a key and removing a\nnode in an efficient way. For example, in order to remove a node from\nthe binaryheap, the caller had to pass the node's position within the\narray that the binaryheap internally has. Removing a node from the\nbinaryheap is done in O(log n) but searching for the key's position is\ndone in O(n).\n\nThis commit adds a hash table to binaryheap in order to track the\nposition of each nodes in the binaryheap. That way, by using newly\nadded functions such as binaryheap_update_up() etc., both updating a\nkey and removing a node can be done in O(1) on an average and O(log n)\nin worst case. This is known as the indexed binary heap. The caller\ncan specify to use the indexed binaryheap by passing indexed = true.\n\nThe current code does not use the new indexing logic, but it will be\nused by an upcoming patch.\n\nReviewed-by: Vignesh C, Peter Smith, Hayato Kuroda, Ajin Cherian,\nTomas Vondra, Shubham Khanna\nDiscussion: https://postgr.es/m/CAD21AoDffo37RC-eUuyHJKVEr017V2YYDLyn1xF_00ofptWbkg%40mail.gmail.com",
+      "tree": {
+        "sha": "586848cf7a5b1657185ae5f9fe10ae4dc8505bb9",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/586848cf7a5b1657185ae5f9fe10ae4dc8505bb9"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/b840508644151232b6ca1287dde617ed00ba2bdf",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/b840508644151232b6ca1287dde617ed00ba2bdf",
+    "html_url": "https://github.com/postgres/postgres/commit/b840508644151232b6ca1287dde617ed00ba2bdf",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/b840508644151232b6ca1287dde617ed00ba2bdf/comments",
+    "author": {
+      "login": "MasahikoSawada",
+      "id": 4269963,
+      "node_id": "MDQ6VXNlcjQyNjk5NjM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4269963?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/MasahikoSawada",
+      "html_url": "https://github.com/MasahikoSawada",
+      "followers_url": "https://api.github.com/users/MasahikoSawada/followers",
+      "following_url": "https://api.github.com/users/MasahikoSawada/following{/other_user}",
+      "gists_url": "https://api.github.com/users/MasahikoSawada/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/MasahikoSawada/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/MasahikoSawada/subscriptions",
+      "organizations_url": "https://api.github.com/users/MasahikoSawada/orgs",
+      "repos_url": "https://api.github.com/users/MasahikoSawada/repos",
+      "events_url": "https://api.github.com/users/MasahikoSawada/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/MasahikoSawada/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "MasahikoSawada",
+      "id": 4269963,
+      "node_id": "MDQ6VXNlcjQyNjk5NjM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4269963?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/MasahikoSawada",
+      "html_url": "https://github.com/MasahikoSawada",
+      "followers_url": "https://api.github.com/users/MasahikoSawada/followers",
+      "following_url": "https://api.github.com/users/MasahikoSawada/following{/other_user}",
+      "gists_url": "https://api.github.com/users/MasahikoSawada/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/MasahikoSawada/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/MasahikoSawada/subscriptions",
+      "organizations_url": "https://api.github.com/users/MasahikoSawada/orgs",
+      "repos_url": "https://api.github.com/users/MasahikoSawada/repos",
+      "events_url": "https://api.github.com/users/MasahikoSawada/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/MasahikoSawada/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "bcb14f4abca0c309f908b3f0cd64378785c99795",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/bcb14f4abca0c309f908b3f0cd64378785c99795",
+        "html_url": "https://github.com/postgres/postgres/commit/bcb14f4abca0c309f908b3f0cd64378785c99795"
+      }
+    ]
+  },
+  {
+    "sha": "bcb14f4abca0c309f908b3f0cd64378785c99795",
+    "node_id": "C_kwDOAA4m0toAKGJjYjE0ZjRhYmNhMGMzMDlmOTA4YjNmMGNkNjQzNzg3ODVjOTk3OTU",
+    "commit": {
+      "author": {
+        "name": "Masahiko Sawada",
+        "email": "msawada@postgresql.org",
+        "date": "2024-04-03T01:27:43Z"
+      },
+      "committer": {
+        "name": "Masahiko Sawada",
+        "email": "msawada@postgresql.org",
+        "date": "2024-04-03T01:27:43Z"
+      },
+      "message": "Make binaryheap enlargeable.\n\nThe node array space of the binaryheap is doubled when there is no\navailable space.\n\nReviewed-by: Vignesh C, Peter Smith, Hayato Kuroda, Ajin Cherian,\nTomas Vondra, Shubham Khanna\nDiscussion: https://postgr.es/m/CAD21AoDffo37RC-eUuyHJKVEr017V2YYDLyn1xF_00ofptWbkg%40mail.gmail.com",
+      "tree": {
+        "sha": "2b756a9431bf00d9cb819c825609935e99fafbe1",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/2b756a9431bf00d9cb819c825609935e99fafbe1"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/bcb14f4abca0c309f908b3f0cd64378785c99795",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/bcb14f4abca0c309f908b3f0cd64378785c99795",
+    "html_url": "https://github.com/postgres/postgres/commit/bcb14f4abca0c309f908b3f0cd64378785c99795",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/bcb14f4abca0c309f908b3f0cd64378785c99795/comments",
+    "author": {
+      "login": "MasahikoSawada",
+      "id": 4269963,
+      "node_id": "MDQ6VXNlcjQyNjk5NjM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4269963?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/MasahikoSawada",
+      "html_url": "https://github.com/MasahikoSawada",
+      "followers_url": "https://api.github.com/users/MasahikoSawada/followers",
+      "following_url": "https://api.github.com/users/MasahikoSawada/following{/other_user}",
+      "gists_url": "https://api.github.com/users/MasahikoSawada/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/MasahikoSawada/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/MasahikoSawada/subscriptions",
+      "organizations_url": "https://api.github.com/users/MasahikoSawada/orgs",
+      "repos_url": "https://api.github.com/users/MasahikoSawada/repos",
+      "events_url": "https://api.github.com/users/MasahikoSawada/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/MasahikoSawada/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "MasahikoSawada",
+      "id": 4269963,
+      "node_id": "MDQ6VXNlcjQyNjk5NjM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4269963?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/MasahikoSawada",
+      "html_url": "https://github.com/MasahikoSawada",
+      "followers_url": "https://api.github.com/users/MasahikoSawada/followers",
+      "following_url": "https://api.github.com/users/MasahikoSawada/following{/other_user}",
+      "gists_url": "https://api.github.com/users/MasahikoSawada/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/MasahikoSawada/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/MasahikoSawada/subscriptions",
+      "organizations_url": "https://api.github.com/users/MasahikoSawada/orgs",
+      "repos_url": "https://api.github.com/users/MasahikoSawada/repos",
+      "events_url": "https://api.github.com/users/MasahikoSawada/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/MasahikoSawada/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2c91e13013414cf77bb8026a19a926e08f4e9e7a",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/2c91e13013414cf77bb8026a19a926e08f4e9e7a",
+        "html_url": "https://github.com/postgres/postgres/commit/2c91e13013414cf77bb8026a19a926e08f4e9e7a"
+      }
+    ]
+  },
+  {
+    "sha": "2c91e13013414cf77bb8026a19a926e08f4e9e7a",
+    "node_id": "C_kwDOAA4m0toAKDJjOTFlMTMwMTM0MTRjZjc3YmI4MDI2YTE5YTkyNmUwOGY0ZTllN2E",
+    "commit": {
+      "author": {
+        "name": "Alexander Korotkov",
+        "email": "akorotkov@postgresql.org",
+        "date": "2024-04-02T23:55:03Z"
+      },
+      "committer": {
+        "name": "Alexander Korotkov",
+        "email": "akorotkov@postgresql.org",
+        "date": "2024-04-02T23:55:03Z"
+      },
+      "message": "Move WaitLSNShmemInit() to CreateOrAttachShmemStructs()\n\nThanks to Andres Freund, Thomas Munrom and David Rowley for investigating\nthis issue.\n\nDiscussion: https://postgr.es/m/CAPpHfdvap5mMLikt8CUjA0osAvCJHT0qnYeR3f84EJ_Kvse0mg%40mail.gmail.com",
+      "tree": {
+        "sha": "556245a3bd017ff15d96e367655e03e47d8fe7c1",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/556245a3bd017ff15d96e367655e03e47d8fe7c1"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/2c91e13013414cf77bb8026a19a926e08f4e9e7a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/2c91e13013414cf77bb8026a19a926e08f4e9e7a",
+    "html_url": "https://github.com/postgres/postgres/commit/2c91e13013414cf77bb8026a19a926e08f4e9e7a",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/2c91e13013414cf77bb8026a19a926e08f4e9e7a/comments",
+    "author": {
+      "login": "akorotkov",
+      "id": 5437829,
+      "node_id": "MDQ6VXNlcjU0Mzc4Mjk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5437829?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/akorotkov",
+      "html_url": "https://github.com/akorotkov",
+      "followers_url": "https://api.github.com/users/akorotkov/followers",
+      "following_url": "https://api.github.com/users/akorotkov/following{/other_user}",
+      "gists_url": "https://api.github.com/users/akorotkov/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/akorotkov/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/akorotkov/subscriptions",
+      "organizations_url": "https://api.github.com/users/akorotkov/orgs",
+      "repos_url": "https://api.github.com/users/akorotkov/repos",
+      "events_url": "https://api.github.com/users/akorotkov/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/akorotkov/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "akorotkov",
+      "id": 5437829,
+      "node_id": "MDQ6VXNlcjU0Mzc4Mjk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5437829?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/akorotkov",
+      "html_url": "https://github.com/akorotkov",
+      "followers_url": "https://api.github.com/users/akorotkov/followers",
+      "following_url": "https://api.github.com/users/akorotkov/following{/other_user}",
+      "gists_url": "https://api.github.com/users/akorotkov/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/akorotkov/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/akorotkov/subscriptions",
+      "organizations_url": "https://api.github.com/users/akorotkov/orgs",
+      "repos_url": "https://api.github.com/users/akorotkov/repos",
+      "events_url": "https://api.github.com/users/akorotkov/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/akorotkov/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3b1a7eb28930e9835cda5e42256b7ccc2d044d41",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/3b1a7eb28930e9835cda5e42256b7ccc2d044d41",
+        "html_url": "https://github.com/postgres/postgres/commit/3b1a7eb28930e9835cda5e42256b7ccc2d044d41"
+      }
+    ]
+  },
+  {
+    "sha": "3b1a7eb28930e9835cda5e42256b7ccc2d044d41",
+    "node_id": "C_kwDOAA4m0toAKDNiMWE3ZWIyODkzMGU5ODM1Y2RhNWU0MjI1NmI3Y2NjMmQwNDRkNDE",
+    "commit": {
+      "author": {
+        "name": "David Rowley",
+        "email": "drowley@postgresql.org",
+        "date": "2024-04-02T22:40:33Z"
+      },
+      "committer": {
+        "name": "David Rowley",
+        "email": "drowley@postgresql.org",
+        "date": "2024-04-02T22:40:33Z"
+      },
+      "message": "Don't zero tuple_fraction when planning UNIONs with ORDER BYs\n\nSince 66c0185a3, the planner is able to use Merge Append -> Unique to\nimplement UNION queries and each subquery is prompted to produce Paths\ncorrectly sorted by the UNION's targetlist.\n\nHere we remove some now redundant code which was zeroing the\ntuple_fraction at the parent level.  This will allow the planner to\nconsider cheap startup paths when planning the UNION's subqueries.\n\nEXCEPT and INTERSECT set operations still have the tuple_fraction zeroed\nin generate_nonunion_paths().  These operations currently always read\nall of their subqueries' tuples.\n\nReported-by: Tom Lane\nDiscussion: https://postgr.es/m/3703023.1711654574@sss.pgh.pa.us",
+      "tree": {
+        "sha": "e4944e73b9b5018b48c74f0db69d864026dffc4a",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/e4944e73b9b5018b48c74f0db69d864026dffc4a"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/3b1a7eb28930e9835cda5e42256b7ccc2d044d41",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/3b1a7eb28930e9835cda5e42256b7ccc2d044d41",
+    "html_url": "https://github.com/postgres/postgres/commit/3b1a7eb28930e9835cda5e42256b7ccc2d044d41",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/3b1a7eb28930e9835cda5e42256b7ccc2d044d41/comments",
+    "author": {
+      "login": "david-rowley",
+      "id": 4554452,
+      "node_id": "MDQ6VXNlcjQ1NTQ0NTI=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4554452?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/david-rowley",
+      "html_url": "https://github.com/david-rowley",
+      "followers_url": "https://api.github.com/users/david-rowley/followers",
+      "following_url": "https://api.github.com/users/david-rowley/following{/other_user}",
+      "gists_url": "https://api.github.com/users/david-rowley/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/david-rowley/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/david-rowley/subscriptions",
+      "organizations_url": "https://api.github.com/users/david-rowley/orgs",
+      "repos_url": "https://api.github.com/users/david-rowley/repos",
+      "events_url": "https://api.github.com/users/david-rowley/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/david-rowley/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "david-rowley",
+      "id": 4554452,
+      "node_id": "MDQ6VXNlcjQ1NTQ0NTI=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4554452?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/david-rowley",
+      "html_url": "https://github.com/david-rowley",
+      "followers_url": "https://api.github.com/users/david-rowley/followers",
+      "following_url": "https://api.github.com/users/david-rowley/following{/other_user}",
+      "gists_url": "https://api.github.com/users/david-rowley/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/david-rowley/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/david-rowley/subscriptions",
+      "organizations_url": "https://api.github.com/users/david-rowley/orgs",
+      "repos_url": "https://api.github.com/users/david-rowley/repos",
+      "events_url": "https://api.github.com/users/david-rowley/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/david-rowley/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "06c418e163e913966e17cb2d3fb1c5f8a8d58308",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/06c418e163e913966e17cb2d3fb1c5f8a8d58308",
+        "html_url": "https://github.com/postgres/postgres/commit/06c418e163e913966e17cb2d3fb1c5f8a8d58308"
+      }
+    ]
+  },
+  {
+    "sha": "06c418e163e913966e17cb2d3fb1c5f8a8d58308",
+    "node_id": "C_kwDOAA4m0toAKDA2YzQxOGUxNjNlOTEzOTY2ZTE3Y2IyZDNmYjFjNWY4YThkNTgzMDg",
+    "commit": {
+      "author": {
+        "name": "Alexander Korotkov",
+        "email": "akorotkov@postgresql.org",
+        "date": "2024-04-02T19:48:03Z"
+      },
+      "committer": {
+        "name": "Alexander Korotkov",
+        "email": "akorotkov@postgresql.org",
+        "date": "2024-04-02T19:48:03Z"
+      },
+      "message": "Implement pg_wal_replay_wait() stored procedure\n\npg_wal_replay_wait() is to be used on standby and specifies waiting for\nthe specific WAL location to be replayed before starting the transaction.\nThis option is useful when the user makes some data changes on primary and\nneeds a guarantee to see these changes on standby.\n\nThe queue of waiters is stored in the shared memory array sorted by LSN.\nDuring replay of WAL waiters whose LSNs are already replayed are deleted from\nthe shared memory array and woken up by setting of their latches.\n\npg_wal_replay_wait() needs to wait without any snapshot held.  Otherwise,\nthe snapshot could prevent the replay of WAL records implying a kind of\nself-deadlock.  This is why it is only possible to implement\npg_wal_replay_wait() as a procedure working in a non-atomic context,\nnot a function.\n\nCatversion is bumped.\n\nDiscussion: https://postgr.es/m/eb12f9b03851bb2583adab5df9579b4b%40postgrespro.ru\nAuthor: Kartyshov Ivan, Alexander Korotkov\nReviewed-by: Michael Paquier, Peter Eisentraut, Dilip Kumar, Amit Kapila\nReviewed-by: Alexander Lakhin, Bharath Rupireddy, Euler Taveira",
+      "tree": {
+        "sha": "10945dd3132f4b262d416ce55c88b7955dc67537",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/10945dd3132f4b262d416ce55c88b7955dc67537"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/06c418e163e913966e17cb2d3fb1c5f8a8d58308",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/06c418e163e913966e17cb2d3fb1c5f8a8d58308",
+    "html_url": "https://github.com/postgres/postgres/commit/06c418e163e913966e17cb2d3fb1c5f8a8d58308",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/06c418e163e913966e17cb2d3fb1c5f8a8d58308/comments",
+    "author": {
+      "login": "akorotkov",
+      "id": 5437829,
+      "node_id": "MDQ6VXNlcjU0Mzc4Mjk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5437829?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/akorotkov",
+      "html_url": "https://github.com/akorotkov",
+      "followers_url": "https://api.github.com/users/akorotkov/followers",
+      "following_url": "https://api.github.com/users/akorotkov/following{/other_user}",
+      "gists_url": "https://api.github.com/users/akorotkov/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/akorotkov/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/akorotkov/subscriptions",
+      "organizations_url": "https://api.github.com/users/akorotkov/orgs",
+      "repos_url": "https://api.github.com/users/akorotkov/repos",
+      "events_url": "https://api.github.com/users/akorotkov/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/akorotkov/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "akorotkov",
+      "id": 5437829,
+      "node_id": "MDQ6VXNlcjU0Mzc4Mjk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5437829?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/akorotkov",
+      "html_url": "https://github.com/akorotkov",
+      "followers_url": "https://api.github.com/users/akorotkov/followers",
+      "following_url": "https://api.github.com/users/akorotkov/following{/other_user}",
+      "gists_url": "https://api.github.com/users/akorotkov/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/akorotkov/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/akorotkov/subscriptions",
+      "organizations_url": "https://api.github.com/users/akorotkov/orgs",
+      "repos_url": "https://api.github.com/users/akorotkov/repos",
+      "events_url": "https://api.github.com/users/akorotkov/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/akorotkov/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6faca9ae2878c8f642a2e5748d2dbb2b91341bec",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/6faca9ae2878c8f642a2e5748d2dbb2b91341bec",
+        "html_url": "https://github.com/postgres/postgres/commit/6faca9ae2878c8f642a2e5748d2dbb2b91341bec"
+      }
+    ]
+  },
+  {
+    "sha": "6faca9ae2878c8f642a2e5748d2dbb2b91341bec",
+    "node_id": "C_kwDOAA4m0toAKDZmYWNhOWFlMjg3OGM4ZjY0MmEyZTU3NDhkMmRiYjJiOTEzNDFiZWM",
+    "commit": {
+      "author": {
+        "name": "Tom Lane",
+        "email": "tgl@sss.pgh.pa.us",
+        "date": "2024-04-02T18:59:04Z"
+      },
+      "committer": {
+        "name": "Tom Lane",
+        "email": "tgl@sss.pgh.pa.us",
+        "date": "2024-04-02T18:59:32Z"
+      },
+      "message": "Avoid deadlock during orphan temp table removal.\n\nIf temp tables have dependencies (such as sequences) then it's\npossible for autovacuum's cleanup of orphan temp tables to deadlock\nagainst an incoming backend that's trying to clean out the temp\nnamespace for its own use.  That can happen because RemoveTempRelations'\nperformDeletion call can visit objects within the namespace in\nan order different from the order in which a per-table deletion\nwill visit them.\n\nTo fix, observe that performDeletion will begin by taking an exclusive\nlock on the temp namespace (even though it won't actually delete it).\nSo, if we can get a shared lock on the namespace, we can be sure we're\nnot running concurrently with RemoveTempRelations, while also not\nconflicting with ordinary use of the namespace.  This requires\nintroducing a conditional version of LockDatabaseObject, but that's no\nbig deal.  (It's surprising we've got along without that this long.)\n\nReport and patch by Mikhail Zhilin.  Back-patch to all supported\nbranches.\n\nDiscussion: https://postgr.es/m/c43ce028-2bc2-4865-9b89-3f706246eed5@postgrespro.ru",
+      "tree": {
+        "sha": "52b5c98b4232cc3bb94aafec74fc76341793dc41",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/52b5c98b4232cc3bb94aafec74fc76341793dc41"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/6faca9ae2878c8f642a2e5748d2dbb2b91341bec",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/6faca9ae2878c8f642a2e5748d2dbb2b91341bec",
+    "html_url": "https://github.com/postgres/postgres/commit/6faca9ae2878c8f642a2e5748d2dbb2b91341bec",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/6faca9ae2878c8f642a2e5748d2dbb2b91341bec/comments",
+    "author": {
+      "login": "tglsfdc",
+      "id": 8755309,
+      "node_id": "MDQ6VXNlcjg3NTUzMDk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8755309?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tglsfdc",
+      "html_url": "https://github.com/tglsfdc",
+      "followers_url": "https://api.github.com/users/tglsfdc/followers",
+      "following_url": "https://api.github.com/users/tglsfdc/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tglsfdc/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tglsfdc/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tglsfdc/subscriptions",
+      "organizations_url": "https://api.github.com/users/tglsfdc/orgs",
+      "repos_url": "https://api.github.com/users/tglsfdc/repos",
+      "events_url": "https://api.github.com/users/tglsfdc/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tglsfdc/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tglsfdc",
+      "id": 8755309,
+      "node_id": "MDQ6VXNlcjg3NTUzMDk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8755309?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tglsfdc",
+      "html_url": "https://github.com/tglsfdc",
+      "followers_url": "https://api.github.com/users/tglsfdc/followers",
+      "following_url": "https://api.github.com/users/tglsfdc/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tglsfdc/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tglsfdc/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tglsfdc/subscriptions",
+      "organizations_url": "https://api.github.com/users/tglsfdc/orgs",
+      "repos_url": "https://api.github.com/users/tglsfdc/repos",
+      "events_url": "https://api.github.com/users/tglsfdc/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tglsfdc/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4133c1f45c54f0e52b4bb758f67af78951930e43",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/4133c1f45c54f0e52b4bb758f67af78951930e43",
+        "html_url": "https://github.com/postgres/postgres/commit/4133c1f45c54f0e52b4bb758f67af78951930e43"
+      }
+    ]
+  },
+  {
+    "sha": "4133c1f45c54f0e52b4bb758f67af78951930e43",
+    "node_id": "C_kwDOAA4m0toAKDQxMzNjMWY0NWM1NGYwZTUyYjRiYjc1OGY2N2FmNzg5NTE5MzBlNDM",
+    "commit": {
+      "author": {
+        "name": "Nathan Bossart",
+        "email": "nathan@postgresql.org",
+        "date": "2024-04-02T15:32:49Z"
+      },
+      "committer": {
+        "name": "Nathan Bossart",
+        "email": "nathan@postgresql.org",
+        "date": "2024-04-02T15:32:49Z"
+      },
+      "message": "Avoid function call overhead of pg_popcount() in syslogger.c.\n\nInstead of calling the pg_popcount() function for a single byte, we\ncan look up the value in the pg_number_of_ones array.\n\nDiscussion: https://postgr.es/m/20240401221117.GB2362108%40nathanxps13",
+      "tree": {
+        "sha": "72baeaf19d88c6423727d57899acfd3f9ae5ee8b",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/72baeaf19d88c6423727d57899acfd3f9ae5ee8b"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/4133c1f45c54f0e52b4bb758f67af78951930e43",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/4133c1f45c54f0e52b4bb758f67af78951930e43",
+    "html_url": "https://github.com/postgres/postgres/commit/4133c1f45c54f0e52b4bb758f67af78951930e43",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/4133c1f45c54f0e52b4bb758f67af78951930e43/comments",
+    "author": {
+      "login": "nathan-bossart",
+      "id": 25780657,
+      "node_id": "MDQ6VXNlcjI1NzgwNjU3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25780657?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/nathan-bossart",
+      "html_url": "https://github.com/nathan-bossart",
+      "followers_url": "https://api.github.com/users/nathan-bossart/followers",
+      "following_url": "https://api.github.com/users/nathan-bossart/following{/other_user}",
+      "gists_url": "https://api.github.com/users/nathan-bossart/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/nathan-bossart/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/nathan-bossart/subscriptions",
+      "organizations_url": "https://api.github.com/users/nathan-bossart/orgs",
+      "repos_url": "https://api.github.com/users/nathan-bossart/repos",
+      "events_url": "https://api.github.com/users/nathan-bossart/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/nathan-bossart/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "nathan-bossart",
+      "id": 25780657,
+      "node_id": "MDQ6VXNlcjI1NzgwNjU3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25780657?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/nathan-bossart",
+      "html_url": "https://github.com/nathan-bossart",
+      "followers_url": "https://api.github.com/users/nathan-bossart/followers",
+      "following_url": "https://api.github.com/users/nathan-bossart/following{/other_user}",
+      "gists_url": "https://api.github.com/users/nathan-bossart/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/nathan-bossart/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/nathan-bossart/subscriptions",
+      "organizations_url": "https://api.github.com/users/nathan-bossart/orgs",
+      "repos_url": "https://api.github.com/users/nathan-bossart/repos",
+      "events_url": "https://api.github.com/users/nathan-bossart/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/nathan-bossart/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6687430c98f3bed1d4c5f85f05a230b0d4581a66",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/6687430c98f3bed1d4c5f85f05a230b0d4581a66",
+        "html_url": "https://github.com/postgres/postgres/commit/6687430c98f3bed1d4c5f85f05a230b0d4581a66"
+      }
+    ]
+  },
+  {
+    "sha": "6687430c98f3bed1d4c5f85f05a230b0d4581a66",
+    "node_id": "C_kwDOAA4m0toAKDY2ODc0MzBjOThmM2JlZDFkNGM1Zjg1ZjA1YTIzMGIwZDQ1ODFhNjY",
+    "commit": {
+      "author": {
+        "name": "Nathan Bossart",
+        "email": "nathan@postgresql.org",
+        "date": "2024-04-02T15:16:00Z"
+      },
+      "committer": {
+        "name": "Nathan Bossart",
+        "email": "nathan@postgresql.org",
+        "date": "2024-04-02T15:16:00Z"
+      },
+      "message": "Refactor code for setting pg_popcount* function pointers.\n\nPresently, there are three copies of this code, and a proposed\nfollow-up patch would add more code to each copy.  This commit\nintroduces a new inline function for this code and makes use of it\nin the pg_popcount*_choose functions, thereby reducing code\nduplication.\n\nAuthor: Paul Amonson\nDiscussion: https://postgr.es/m/BL1PR11MB5304097DF7EA81D04C33F3D1DCA6A%40BL1PR11MB5304.namprd11.prod.outlook.com",
+      "tree": {
+        "sha": "1f9284e431f597c0dd1170baad885488d2eae60e",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/1f9284e431f597c0dd1170baad885488d2eae60e"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/6687430c98f3bed1d4c5f85f05a230b0d4581a66",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/6687430c98f3bed1d4c5f85f05a230b0d4581a66",
+    "html_url": "https://github.com/postgres/postgres/commit/6687430c98f3bed1d4c5f85f05a230b0d4581a66",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/6687430c98f3bed1d4c5f85f05a230b0d4581a66/comments",
+    "author": {
+      "login": "nathan-bossart",
+      "id": 25780657,
+      "node_id": "MDQ6VXNlcjI1NzgwNjU3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25780657?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/nathan-bossart",
+      "html_url": "https://github.com/nathan-bossart",
+      "followers_url": "https://api.github.com/users/nathan-bossart/followers",
+      "following_url": "https://api.github.com/users/nathan-bossart/following{/other_user}",
+      "gists_url": "https://api.github.com/users/nathan-bossart/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/nathan-bossart/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/nathan-bossart/subscriptions",
+      "organizations_url": "https://api.github.com/users/nathan-bossart/orgs",
+      "repos_url": "https://api.github.com/users/nathan-bossart/repos",
+      "events_url": "https://api.github.com/users/nathan-bossart/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/nathan-bossart/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "nathan-bossart",
+      "id": 25780657,
+      "node_id": "MDQ6VXNlcjI1NzgwNjU3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25780657?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/nathan-bossart",
+      "html_url": "https://github.com/nathan-bossart",
+      "followers_url": "https://api.github.com/users/nathan-bossart/followers",
+      "following_url": "https://api.github.com/users/nathan-bossart/following{/other_user}",
+      "gists_url": "https://api.github.com/users/nathan-bossart/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/nathan-bossart/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/nathan-bossart/subscriptions",
+      "organizations_url": "https://api.github.com/users/nathan-bossart/orgs",
+      "repos_url": "https://api.github.com/users/nathan-bossart/repos",
+      "events_url": "https://api.github.com/users/nathan-bossart/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/nathan-bossart/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "38698dd38e56b6de31545ac284e36feb00d413cb",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/38698dd38e56b6de31545ac284e36feb00d413cb",
+        "html_url": "https://github.com/postgres/postgres/commit/38698dd38e56b6de31545ac284e36feb00d413cb"
+      }
+    ]
+  },
+  {
+    "sha": "38698dd38e56b6de31545ac284e36feb00d413cb",
+    "node_id": "C_kwDOAA4m0toAKDM4Njk4ZGQzOGU1NmI2ZGUzMTU0NWFjMjg0ZTM2ZmViMDBkNDEzY2I",
+    "commit": {
+      "author": {
+        "name": "Tom Lane",
+        "email": "tgl@sss.pgh.pa.us",
+        "date": "2024-04-02T14:41:37Z"
+      },
+      "committer": {
+        "name": "Tom Lane",
+        "email": "tgl@sss.pgh.pa.us",
+        "date": "2024-04-02T14:41:44Z"
+      },
+      "message": "Unwind #if spaghetti in hmac_openssl.c a bit.\n\nMake this code a little less confusing by defining a separate macro\nthat controls whether we'll use ResourceOwner facilities to track\nthe existence of a pg_hmac_ctx context.\n\nThe proximate reason to touch this is that since b8bff07da, we got\n\"unused function\" warnings if building with older OpenSSL, because\nthe #if guards around the ResourceOwner wrapper function definitions\nwere different from those around the calls of those functions.\nPulling the ResourceOwner machinations outside of the #ifdef HAVE_xxx\nguards fixes that and makes the code clearer too.\n\nDiscussion: https://postgr.es/m/1394271.1712016101@sss.pgh.pa.us",
+      "tree": {
+        "sha": "8ac48219001252f8187731798bdc9303a8e9aae1",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/8ac48219001252f8187731798bdc9303a8e9aae1"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/38698dd38e56b6de31545ac284e36feb00d413cb",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/38698dd38e56b6de31545ac284e36feb00d413cb",
+    "html_url": "https://github.com/postgres/postgres/commit/38698dd38e56b6de31545ac284e36feb00d413cb",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/38698dd38e56b6de31545ac284e36feb00d413cb/comments",
+    "author": {
+      "login": "tglsfdc",
+      "id": 8755309,
+      "node_id": "MDQ6VXNlcjg3NTUzMDk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8755309?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tglsfdc",
+      "html_url": "https://github.com/tglsfdc",
+      "followers_url": "https://api.github.com/users/tglsfdc/followers",
+      "following_url": "https://api.github.com/users/tglsfdc/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tglsfdc/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tglsfdc/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tglsfdc/subscriptions",
+      "organizations_url": "https://api.github.com/users/tglsfdc/orgs",
+      "repos_url": "https://api.github.com/users/tglsfdc/repos",
+      "events_url": "https://api.github.com/users/tglsfdc/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tglsfdc/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tglsfdc",
+      "id": 8755309,
+      "node_id": "MDQ6VXNlcjg3NTUzMDk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8755309?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tglsfdc",
+      "html_url": "https://github.com/tglsfdc",
+      "followers_url": "https://api.github.com/users/tglsfdc/followers",
+      "following_url": "https://api.github.com/users/tglsfdc/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tglsfdc/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tglsfdc/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tglsfdc/subscriptions",
+      "organizations_url": "https://api.github.com/users/tglsfdc/orgs",
+      "repos_url": "https://api.github.com/users/tglsfdc/repos",
+      "events_url": "https://api.github.com/users/tglsfdc/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tglsfdc/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "cafe1056558fe07cdc52b95205588fcd80870362",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/cafe1056558fe07cdc52b95205588fcd80870362",
+        "html_url": "https://github.com/postgres/postgres/commit/cafe1056558fe07cdc52b95205588fcd80870362"
+      }
+    ]
+  },
+  {
+    "sha": "cafe1056558fe07cdc52b95205588fcd80870362",
+    "node_id": "C_kwDOAA4m0toAKGNhZmUxMDU2NTU4ZmUwN2NkYzUyYjk1MjA1NTg4ZmNkODA4NzAzNjI",
+    "commit": {
+      "author": {
+        "name": "Robert Haas",
+        "email": "rhaas@postgresql.org",
+        "date": "2024-04-02T14:26:10Z"
+      },
+      "committer": {
+        "name": "Robert Haas",
+        "email": "rhaas@postgresql.org",
+        "date": "2024-04-02T14:26:10Z"
+      },
+      "message": "Allow SIGINT to cancel psql database reconnections.\n\nAfter installing the SIGINT handler in psql, SIGINT can no longer cancel\ndatabase reconnections. For instance, if the user starts a reconnection\nand then needs to do some form of interaction (ie psql is polling),\nthere is no way to cancel the reconnection process currently.\n\nUse PQconnectStartParams() in order to insert a cancel_pressed check\ninto the polling loop.\n\nTristan Partin, reviewed by Gurjeet Singh, Heikki Linnakangas, Jelte\nFennema-Nio, and me.\n\nDiscussion: http://postgr.es/m/D08WWCPVHKHN.3QELIKZJ2D9RZ@neon.tech",
+      "tree": {
+        "sha": "6d2f8bab4646befac3a69a0c5ed36ac8d04abcce",
+        "url": "https://api.github.com/repos/postgres/postgres/git/trees/6d2f8bab4646befac3a69a0c5ed36ac8d04abcce"
+      },
+      "url": "https://api.github.com/repos/postgres/postgres/git/commits/cafe1056558fe07cdc52b95205588fcd80870362",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/postgres/postgres/commits/cafe1056558fe07cdc52b95205588fcd80870362",
+    "html_url": "https://github.com/postgres/postgres/commit/cafe1056558fe07cdc52b95205588fcd80870362",
+    "comments_url": "https://api.github.com/repos/postgres/postgres/commits/cafe1056558fe07cdc52b95205588fcd80870362/comments",
+    "author": {
+      "login": "robertmhaas",
+      "id": 886678,
+      "node_id": "MDQ6VXNlcjg4NjY3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/886678?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/robertmhaas",
+      "html_url": "https://github.com/robertmhaas",
+      "followers_url": "https://api.github.com/users/robertmhaas/followers",
+      "following_url": "https://api.github.com/users/robertmhaas/following{/other_user}",
+      "gists_url": "https://api.github.com/users/robertmhaas/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/robertmhaas/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/robertmhaas/subscriptions",
+      "organizations_url": "https://api.github.com/users/robertmhaas/orgs",
+      "repos_url": "https://api.github.com/users/robertmhaas/repos",
+      "events_url": "https://api.github.com/users/robertmhaas/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/robertmhaas/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "robertmhaas",
+      "id": 886678,
+      "node_id": "MDQ6VXNlcjg4NjY3OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/886678?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/robertmhaas",
+      "html_url": "https://github.com/robertmhaas",
+      "followers_url": "https://api.github.com/users/robertmhaas/followers",
+      "following_url": "https://api.github.com/users/robertmhaas/following{/other_user}",
+      "gists_url": "https://api.github.com/users/robertmhaas/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/robertmhaas/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/robertmhaas/subscriptions",
+      "organizations_url": "https://api.github.com/users/robertmhaas/orgs",
+      "repos_url": "https://api.github.com/users/robertmhaas/repos",
+      "events_url": "https://api.github.com/users/robertmhaas/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/robertmhaas/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f5e4dedfa81f00de93b1b90d06c44cc50e052eaf",
+        "url": "https://api.github.com/repos/postgres/postgres/commits/f5e4dedfa81f00de93b1b90d06c44cc50e052eaf",
+        "html_url": "https://github.com/postgres/postgres/commit/f5e4dedfa81f00de93b1b90d06c44cc50e052eaf"
+      }
+    ]
+  }
+]

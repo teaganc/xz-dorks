@@ -1,0 +1,2353 @@
+[
+  {
+    "sha": "e21859c4afe6a60c494248c880d481434dbf8b78",
+    "node_id": "C_kwDOAWDtctoAKGUyMTg1OWM0YWZlNmE2MGM0OTQyNDhjODgwZDQ4MTQzNGRiZjhiNzg",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-26T16:31:22Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-26T16:31:22Z"
+      },
+      "message": "Migrate clip module from aseprite to laf",
+      "tree": {
+        "sha": "7e3438f89a77c04c31567a734b0dab92fd33c3af",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/7e3438f89a77c04c31567a734b0dab92fd33c3af"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/e21859c4afe6a60c494248c880d481434dbf8b78",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/e21859c4afe6a60c494248c880d481434dbf8b78",
+    "html_url": "https://github.com/aseprite/aseprite/commit/e21859c4afe6a60c494248c880d481434dbf8b78",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/e21859c4afe6a60c494248c880d481434dbf8b78/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ec4e82bdc01e8bcfb56fcf64cbd0ec1ad7e6394a",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/ec4e82bdc01e8bcfb56fcf64cbd0ec1ad7e6394a",
+        "html_url": "https://github.com/aseprite/aseprite/commit/ec4e82bdc01e8bcfb56fcf64cbd0ec1ad7e6394a"
+      }
+    ]
+  },
+  {
+    "sha": "ec4e82bdc01e8bcfb56fcf64cbd0ec1ad7e6394a",
+    "node_id": "C_kwDOAWDtctoAKGVjNGU4MmJkYzAxZThiY2ZiNTZmY2Y2NGNiZDBlYzFhZDdlNjM5NGE",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-25T18:37:11Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-25T21:53:12Z"
+      },
+      "message": "Fix crashes with SpriteJob(s) that weren't locking the doc correctly (fix #4315)\n\nThis was mainly found in SpriteSizeJob crash reports. In these reports\ndeleted image buffers were still used to paint the Editor canvas\nbecause the doc was write-locked in the main thread (same thread where\nthe canvas is painted). This produced a re-entrant lock in the\nEditor::onPaint() as we can still read-lock from the same thread where\nwe write-locked the doc.\n\nWith this change we write-lock the doc from the SpriteJob background\nthread (not the main thread) only if it's necessary (i.e. when the doc\nis not already locked in the main thread, e.g. when running a script).\nThis makes that the main thread (Editor::onPaint) cannot read the doc\nuntil we finish the whole SpriteJob transaction/Tx.",
+      "tree": {
+        "sha": "7cc2bd5db799ec289aa1fd2eccaee5b4cf163f2b",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/7cc2bd5db799ec289aa1fd2eccaee5b4cf163f2b"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/ec4e82bdc01e8bcfb56fcf64cbd0ec1ad7e6394a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/ec4e82bdc01e8bcfb56fcf64cbd0ec1ad7e6394a",
+    "html_url": "https://github.com/aseprite/aseprite/commit/ec4e82bdc01e8bcfb56fcf64cbd0ec1ad7e6394a",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/ec4e82bdc01e8bcfb56fcf64cbd0ec1ad7e6394a/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "427ee6f5b5d83daa61d0ab2c46969cea549b2413",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/427ee6f5b5d83daa61d0ab2c46969cea549b2413",
+        "html_url": "https://github.com/aseprite/aseprite/commit/427ee6f5b5d83daa61d0ab2c46969cea549b2413"
+      }
+    ]
+  },
+  {
+    "sha": "427ee6f5b5d83daa61d0ab2c46969cea549b2413",
+    "node_id": "C_kwDOAWDtctoAKDQyN2VlNmY1YjVkODNkYWE2MWQwYWIyYzQ2OTY5Y2VhNTQ5YjI0MTM",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-19T19:03:46Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-19T19:04:50Z"
+      },
+      "message": "Use target_sources() instead of variables to list app-lib sources\n\ntarget_sources() was added on cmake 3.1, long time ago, although we\nstarted with the 2.6 versions, so now we can modernize the cmake file\na little.",
+      "tree": {
+        "sha": "5e6d993be324249886514a662eaf29a0c05d9019",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/5e6d993be324249886514a662eaf29a0c05d9019"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/427ee6f5b5d83daa61d0ab2c46969cea549b2413",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/427ee6f5b5d83daa61d0ab2c46969cea549b2413",
+    "html_url": "https://github.com/aseprite/aseprite/commit/427ee6f5b5d83daa61d0ab2c46969cea549b2413",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/427ee6f5b5d83daa61d0ab2c46969cea549b2413/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "571a3965e960a58e7a6a906b0f13fded3eef4e50",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/571a3965e960a58e7a6a906b0f13fded3eef4e50",
+        "html_url": "https://github.com/aseprite/aseprite/commit/571a3965e960a58e7a6a906b0f13fded3eef4e50"
+      }
+    ]
+  },
+  {
+    "sha": "571a3965e960a58e7a6a906b0f13fded3eef4e50",
+    "node_id": "C_kwDOAWDtctoAKDU3MWEzOTY1ZTk2MGE1OGU3YTZhOTA2YjBmMTNmZGVkM2VlZjRlNTA",
+    "commit": {
+      "author": {
+        "name": "Charles Bradley",
+        "email": "bradl406@umn.edu",
+        "date": "2024-03-14T21:23:50Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-15T14:47:04Z"
+      },
+      "message": "Fix copy+move cursor icon bug (fix #3887)\n\n  Add logic to show the correct curson icon when holding the\n  copy key (alt) while hovering over a selected layer.",
+      "tree": {
+        "sha": "4c7e78b75a386acb0c1dd4aaca2d3623c525a78e",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/4c7e78b75a386acb0c1dd4aaca2d3623c525a78e"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/571a3965e960a58e7a6a906b0f13fded3eef4e50",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/571a3965e960a58e7a6a906b0f13fded3eef4e50",
+    "html_url": "https://github.com/aseprite/aseprite/commit/571a3965e960a58e7a6a906b0f13fded3eef4e50",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/571a3965e960a58e7a6a906b0f13fded3eef4e50/comments",
+    "author": null,
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8709219d68ec1b97cb8b950909de71bd18b7de40",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/8709219d68ec1b97cb8b950909de71bd18b7de40",
+        "html_url": "https://github.com/aseprite/aseprite/commit/8709219d68ec1b97cb8b950909de71bd18b7de40"
+      }
+    ]
+  },
+  {
+    "sha": "8709219d68ec1b97cb8b950909de71bd18b7de40",
+    "node_id": "C_kwDOAWDtctoAKDg3MDkyMTlkNjhlYzFiOTdjYjhiOTUwOTA5ZGU3MWJkMThiN2RlNDA",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-15T14:25:59Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-15T14:26:27Z"
+      },
+      "message": "Update laf (fix #4368)",
+      "tree": {
+        "sha": "2594649afb876ccb9c40c7009c728c0fd00bf446",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/2594649afb876ccb9c40c7009c728c0fd00bf446"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/8709219d68ec1b97cb8b950909de71bd18b7de40",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/8709219d68ec1b97cb8b950909de71bd18b7de40",
+    "html_url": "https://github.com/aseprite/aseprite/commit/8709219d68ec1b97cb8b950909de71bd18b7de40",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/8709219d68ec1b97cb8b950909de71bd18b7de40/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e129fefb2e50e3abe8b9f4b0be177476966ce2be",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/e129fefb2e50e3abe8b9f4b0be177476966ce2be",
+        "html_url": "https://github.com/aseprite/aseprite/commit/e129fefb2e50e3abe8b9f4b0be177476966ce2be"
+      }
+    ]
+  },
+  {
+    "sha": "e129fefb2e50e3abe8b9f4b0be177476966ce2be",
+    "node_id": "C_kwDOAWDtctoAKGUxMjlmZWZiMmU1MGUzYWJlOGI5ZjRiMGJlMTc3NDc2OTY2Y2UyYmU",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-12T18:54:05Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-12T18:54:05Z"
+      },
+      "message": "Hide \"Play subtags\" option in File > Export if there are no tags (fix #4308)",
+      "tree": {
+        "sha": "b78969fae97d637bbb311242e60232fe64384a2a",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/b78969fae97d637bbb311242e60232fe64384a2a"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/e129fefb2e50e3abe8b9f4b0be177476966ce2be",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/e129fefb2e50e3abe8b9f4b0be177476966ce2be",
+    "html_url": "https://github.com/aseprite/aseprite/commit/e129fefb2e50e3abe8b9f4b0be177476966ce2be",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/e129fefb2e50e3abe8b9f4b0be177476966ce2be/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "30f55d196b08f4d8553b55fa702bfe824be1aa39",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/30f55d196b08f4d8553b55fa702bfe824be1aa39",
+        "html_url": "https://github.com/aseprite/aseprite/commit/30f55d196b08f4d8553b55fa702bfe824be1aa39"
+      }
+    ]
+  },
+  {
+    "sha": "30f55d196b08f4d8553b55fa702bfe824be1aa39",
+    "node_id": "C_kwDOAWDtctoAKDMwZjU1ZDE5NmIwOGY0ZDg1NTNiNTVmYTcwMmJmZTgyNGJlMWFhMzk",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-12T18:13:35Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-12T18:14:45Z"
+      },
+      "message": "Show \"Apply pixel ratio\" option in File > Export only when needed (#4308)\n\nIf the sprite doesn't have a custom pixel aspect ratio configured\nthere is no need to show this option.",
+      "tree": {
+        "sha": "16004dc73251634d4e6a73366f29554109f0641c",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/16004dc73251634d4e6a73366f29554109f0641c"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/30f55d196b08f4d8553b55fa702bfe824be1aa39",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/30f55d196b08f4d8553b55fa702bfe824be1aa39",
+    "html_url": "https://github.com/aseprite/aseprite/commit/30f55d196b08f4d8553b55fa702bfe824be1aa39",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/30f55d196b08f4d8553b55fa702bfe824be1aa39/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a0e469624a2b47d23c8a118ab92538fe9df2b727",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/a0e469624a2b47d23c8a118ab92538fe9df2b727",
+        "html_url": "https://github.com/aseprite/aseprite/commit/a0e469624a2b47d23c8a118ab92538fe9df2b727"
+      }
+    ]
+  },
+  {
+    "sha": "a0e469624a2b47d23c8a118ab92538fe9df2b727",
+    "node_id": "C_kwDOAWDtctoAKGEwZTQ2OTYyNGEyYjQ3ZDIzYzhhMTE4YWI5MjUzOGZlOWRmMmI3Mjc",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-11T20:48:11Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-11T20:48:11Z"
+      },
+      "message": "Use make_shader() helper function to create ColorSelector shaders",
+      "tree": {
+        "sha": "68bc6a0a5c2deb8f899441f91283cc7562db86d3",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/68bc6a0a5c2deb8f899441f91283cc7562db86d3"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/a0e469624a2b47d23c8a118ab92538fe9df2b727",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/a0e469624a2b47d23c8a118ab92538fe9df2b727",
+    "html_url": "https://github.com/aseprite/aseprite/commit/a0e469624a2b47d23c8a118ab92538fe9df2b727",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/a0e469624a2b47d23c8a118ab92538fe9df2b727/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7905acf38a8114c13270bed61305851642454e31",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/7905acf38a8114c13270bed61305851642454e31",
+        "html_url": "https://github.com/aseprite/aseprite/commit/7905acf38a8114c13270bed61305851642454e31"
+      }
+    ]
+  },
+  {
+    "sha": "7905acf38a8114c13270bed61305851642454e31",
+    "node_id": "C_kwDOAWDtctoAKDc5MDVhY2YzOGE4MTE0YzEzMjcwYmVkNjEzMDU4NTE2NDI0NTRlMzE",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-11T20:15:13Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-11T20:15:13Z"
+      },
+      "message": "Handle some extra CannotWriteDocException cases when ContextWriter is used (#4367)\n\nOne fix that this patch includes for #4367 (crash by unhandled\nCannotWriteDocException exception) is when we drag-and-drop a tag\nborder to resize its limits. This is a fix for that case but we don't\nknow if this include all cases of #4367 crashes (so we cannot close\nthe issue).\n\nAnyway we have added some try { } catch in cases where it's better to\navoid propagating the exception, e.g. in\nMovingSelectionState::onLeaveState() to avoid throwing exceptions in\nEditor::backToPreviousState() which might be problematic in several\ncases. (Maybe related to #2829?)",
+      "tree": {
+        "sha": "ce3baa79d117078a018a38c2f14693e8e641bdee",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/ce3baa79d117078a018a38c2f14693e8e641bdee"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/7905acf38a8114c13270bed61305851642454e31",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/7905acf38a8114c13270bed61305851642454e31",
+    "html_url": "https://github.com/aseprite/aseprite/commit/7905acf38a8114c13270bed61305851642454e31",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/7905acf38a8114c13270bed61305851642454e31/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7f659d2f86fc7d36b1506049a3c414511e57dc50",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/7f659d2f86fc7d36b1506049a3c414511e57dc50",
+        "html_url": "https://github.com/aseprite/aseprite/commit/7f659d2f86fc7d36b1506049a3c414511e57dc50"
+      }
+    ]
+  },
+  {
+    "sha": "7f659d2f86fc7d36b1506049a3c414511e57dc50",
+    "node_id": "C_kwDOAWDtctoAKDdmNjU5ZDJmODZmYzdkMzZiMTUwNjA0OWEzYzQxNDUxMWU1N2RjNTA",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-11T14:06:57Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-11T14:06:57Z"
+      },
+      "message": "Handle exceptions that DocDestroyer can throw (probably #4367)",
+      "tree": {
+        "sha": "b291b6c3fd1e25fe17f2dc657407dfd5e01a204c",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/b291b6c3fd1e25fe17f2dc657407dfd5e01a204c"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/7f659d2f86fc7d36b1506049a3c414511e57dc50",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/7f659d2f86fc7d36b1506049a3c414511e57dc50",
+    "html_url": "https://github.com/aseprite/aseprite/commit/7f659d2f86fc7d36b1506049a3c414511e57dc50",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/7f659d2f86fc7d36b1506049a3c414511e57dc50/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b8514ad1c656ec429cd5b1c42224170c6dab392d",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/b8514ad1c656ec429cd5b1c42224170c6dab392d",
+        "html_url": "https://github.com/aseprite/aseprite/commit/b8514ad1c656ec429cd5b1c42224170c6dab392d"
+      }
+    ]
+  },
+  {
+    "sha": "b8514ad1c656ec429cd5b1c42224170c6dab392d",
+    "node_id": "C_kwDOAWDtctoAKGI4NTE0YWQxYzY1NmVjNDI5Y2Q1YjFjNDIyMjQxNzBjNmRhYjM5MmQ",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-11T13:34:05Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-11T13:34:05Z"
+      },
+      "message": "Add helper functions make_shader(), make_skimage/skcanvas_for_docimage()\n\nThese functions can be used to create a new Skia shader from SkSL\ncode, and a new SkImage/SkCanvas to modify a doc::Image*",
+      "tree": {
+        "sha": "3ec8f86972c982608ece8ed04b83275877b5015f",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/3ec8f86972c982608ece8ed04b83275877b5015f"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/b8514ad1c656ec429cd5b1c42224170c6dab392d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/b8514ad1c656ec429cd5b1c42224170c6dab392d",
+    "html_url": "https://github.com/aseprite/aseprite/commit/b8514ad1c656ec429cd5b1c42224170c6dab392d",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/b8514ad1c656ec429cd5b1c42224170c6dab392d/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "50d4f9d8028dc56686b7f0720ef4775db7b2f782",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/50d4f9d8028dc56686b7f0720ef4775db7b2f782",
+        "html_url": "https://github.com/aseprite/aseprite/commit/50d4f9d8028dc56686b7f0720ef4775db7b2f782"
+      }
+    ]
+  },
+  {
+    "sha": "50d4f9d8028dc56686b7f0720ef4775db7b2f782",
+    "node_id": "C_kwDOAWDtctoAKDUwZDRmOWQ4MDI4ZGM1NjY4NmI3ZjA3MjBlZjQ3NzVkYjdiMmY3ODI",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-06T12:59:20Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-06T12:59:20Z"
+      },
+      "message": "Don't try to clone strings repo if Git isn't available (fix #4357)\n\nThis can happen when the source code is downloaded as a .zip and the\nGit command is not available to clone the strings repo.",
+      "tree": {
+        "sha": "8f03024dcefbac4a6e0b7e24ef755d35f2088cf6",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/8f03024dcefbac4a6e0b7e24ef755d35f2088cf6"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/50d4f9d8028dc56686b7f0720ef4775db7b2f782",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/50d4f9d8028dc56686b7f0720ef4775db7b2f782",
+    "html_url": "https://github.com/aseprite/aseprite/commit/50d4f9d8028dc56686b7f0720ef4775db7b2f782",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/50d4f9d8028dc56686b7f0720ef4775db7b2f782/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4584d67b69029f4d362d33f02a325e0ec6c155ad",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/4584d67b69029f4d362d33f02a325e0ec6c155ad",
+        "html_url": "https://github.com/aseprite/aseprite/commit/4584d67b69029f4d362d33f02a325e0ec6c155ad"
+      }
+    ]
+  },
+  {
+    "sha": "4584d67b69029f4d362d33f02a325e0ec6c155ad",
+    "node_id": "C_kwDOAWDtctoAKDQ1ODRkNjdiNjkwMjlmNGQzNjJkMzNmMDJhMzI1ZTBlYzZjMTU1YWQ",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-05T22:39:50Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-05T22:39:50Z"
+      },
+      "message": "Update modules",
+      "tree": {
+        "sha": "2217091f00ae027d312b3e0aa77a1971a6d99fdf",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/2217091f00ae027d312b3e0aa77a1971a6d99fdf"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/4584d67b69029f4d362d33f02a325e0ec6c155ad",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/4584d67b69029f4d362d33f02a325e0ec6c155ad",
+    "html_url": "https://github.com/aseprite/aseprite/commit/4584d67b69029f4d362d33f02a325e0ec6c155ad",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/4584d67b69029f4d362d33f02a325e0ec6c155ad/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9c611cfaf9d51d71913ee38fd00386b01d81d8f3",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/9c611cfaf9d51d71913ee38fd00386b01d81d8f3",
+        "html_url": "https://github.com/aseprite/aseprite/commit/9c611cfaf9d51d71913ee38fd00386b01d81d8f3"
+      }
+    ]
+  },
+  {
+    "sha": "9c611cfaf9d51d71913ee38fd00386b01d81d8f3",
+    "node_id": "C_kwDOAWDtctoAKDljNjExY2ZhZjlkNTFkNzE5MTNlZTM4ZmQwMDM4NmIwMWQ4MWQ4ZjM",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-04T17:57:19Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-04T17:57:19Z"
+      },
+      "message": "Update laf",
+      "tree": {
+        "sha": "4057d48b7413dba0c4164582182c2d2db729c9ea",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/4057d48b7413dba0c4164582182c2d2db729c9ea"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/9c611cfaf9d51d71913ee38fd00386b01d81d8f3",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/9c611cfaf9d51d71913ee38fd00386b01d81d8f3",
+    "html_url": "https://github.com/aseprite/aseprite/commit/9c611cfaf9d51d71913ee38fd00386b01d81d8f3",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/9c611cfaf9d51d71913ee38fd00386b01d81d8f3/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "73fe8099d96479364f92ff6317a5687498d43d36",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/73fe8099d96479364f92ff6317a5687498d43d36",
+        "html_url": "https://github.com/aseprite/aseprite/commit/73fe8099d96479364f92ff6317a5687498d43d36"
+      }
+    ]
+  },
+  {
+    "sha": "73fe8099d96479364f92ff6317a5687498d43d36",
+    "node_id": "C_kwDOAWDtctoAKDczZmU4MDk5ZDk2NDc5MzY0ZjkyZmY2MzE3YTU2ODc0OThkNDNkMzY",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-01T02:20:44Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-03-01T02:20:44Z"
+      },
+      "message": "[win] Add 20x20 and 28x28 versions of Aseprite icon (fix #3034)\n\nThis is to fix the appearance of the icon when Windows is configured\nwith 125% DPI or 175% DPI. In the past we've done something similar\nfor 150% DPI (713a2eac80c76f0e53cfcbc3efdb6de41a9a0fc8) with a 24x24\nicon.",
+      "tree": {
+        "sha": "eeadc7a1d52f57c54da48e2faa47bc9c4200ddd1",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/eeadc7a1d52f57c54da48e2faa47bc9c4200ddd1"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/73fe8099d96479364f92ff6317a5687498d43d36",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/73fe8099d96479364f92ff6317a5687498d43d36",
+    "html_url": "https://github.com/aseprite/aseprite/commit/73fe8099d96479364f92ff6317a5687498d43d36",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/73fe8099d96479364f92ff6317a5687498d43d36/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "cfb663f820cfe48fb0c0247559d1c31481d8d2bf",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/cfb663f820cfe48fb0c0247559d1c31481d8d2bf",
+        "html_url": "https://github.com/aseprite/aseprite/commit/cfb663f820cfe48fb0c0247559d1c31481d8d2bf"
+      }
+    ]
+  },
+  {
+    "sha": "cfb663f820cfe48fb0c0247559d1c31481d8d2bf",
+    "node_id": "C_kwDOAWDtctoAKGNmYjY2M2Y4MjBjZmU0OGZiMGMwMjQ3NTU5ZDFjMzE0ODFkOGQyYmY",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-29T13:26:47Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-29T13:26:47Z"
+      },
+      "message": "Some fixes to readability-else-after-return",
+      "tree": {
+        "sha": "1068546353585ae5531a4b6906ddf77fec3d017d",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/1068546353585ae5531a4b6906ddf77fec3d017d"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/cfb663f820cfe48fb0c0247559d1c31481d8d2bf",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/cfb663f820cfe48fb0c0247559d1c31481d8d2bf",
+    "html_url": "https://github.com/aseprite/aseprite/commit/cfb663f820cfe48fb0c0247559d1c31481d8d2bf",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/cfb663f820cfe48fb0c0247559d1c31481d8d2bf/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "667335be628e9c71ebbda3a9868f6db54b8dbd35",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/667335be628e9c71ebbda3a9868f6db54b8dbd35",
+        "html_url": "https://github.com/aseprite/aseprite/commit/667335be628e9c71ebbda3a9868f6db54b8dbd35"
+      }
+    ]
+  },
+  {
+    "sha": "667335be628e9c71ebbda3a9868f6db54b8dbd35",
+    "node_id": "C_kwDOAWDtctoAKDY2NzMzNWJlNjI4ZTljNzFlYmJkYTNhOTg2OGY2ZGI1NGI4ZGJkMzU",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-29T00:10:57Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-29T00:10:57Z"
+      },
+      "message": "Update laf",
+      "tree": {
+        "sha": "5d20a1f2c9ed80af515e87512382b40929602e8d",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/5d20a1f2c9ed80af515e87512382b40929602e8d"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/667335be628e9c71ebbda3a9868f6db54b8dbd35",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/667335be628e9c71ebbda3a9868f6db54b8dbd35",
+    "html_url": "https://github.com/aseprite/aseprite/commit/667335be628e9c71ebbda3a9868f6db54b8dbd35",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/667335be628e9c71ebbda3a9868f6db54b8dbd35/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "32bdb3a695c33aaa74a360b3c83d61fa1313075e",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/32bdb3a695c33aaa74a360b3c83d61fa1313075e",
+        "html_url": "https://github.com/aseprite/aseprite/commit/32bdb3a695c33aaa74a360b3c83d61fa1313075e"
+      }
+    ]
+  },
+  {
+    "sha": "32bdb3a695c33aaa74a360b3c83d61fa1313075e",
+    "node_id": "C_kwDOAWDtctoAKDMyYmRiM2E2OTVjMzNhYWE3NGEzNjBiM2M4M2Q2MWZhMTMxMzA3NWU",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-29T00:10:07Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-29T00:10:07Z"
+      },
+      "message": "Minor rename of header guard\n\nIn this way we avoid problems with clang-tidy and defined identifiers\nthat starts with __",
+      "tree": {
+        "sha": "6165ee3344000c48fdbb3d1a967a5c444999cb00",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/6165ee3344000c48fdbb3d1a967a5c444999cb00"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/32bdb3a695c33aaa74a360b3c83d61fa1313075e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/32bdb3a695c33aaa74a360b3c83d61fa1313075e",
+    "html_url": "https://github.com/aseprite/aseprite/commit/32bdb3a695c33aaa74a360b3c83d61fa1313075e",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/32bdb3a695c33aaa74a360b3c83d61fa1313075e/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4ea0390623b337a1c30bd704fa73f6f32f5edb2c",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/4ea0390623b337a1c30bd704fa73f6f32f5edb2c",
+        "html_url": "https://github.com/aseprite/aseprite/commit/4ea0390623b337a1c30bd704fa73f6f32f5edb2c"
+      }
+    ]
+  },
+  {
+    "sha": "4ea0390623b337a1c30bd704fa73f6f32f5edb2c",
+    "node_id": "C_kwDOAWDtctoAKDRlYTAzOTA2MjNiMzM3YTFjMzBiZDcwNGZhNzNmNmYzMmY1ZWRiMmM",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-29T00:09:23Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-29T00:09:23Z"
+      },
+      "message": "Add [[nodiscard]] to Tx as we have to create an instance of Tx when we use it",
+      "tree": {
+        "sha": "ccc1a7d357b26fc5408ecc5ab508867523f99a83",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/ccc1a7d357b26fc5408ecc5ab508867523f99a83"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/4ea0390623b337a1c30bd704fa73f6f32f5edb2c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/4ea0390623b337a1c30bd704fa73f6f32f5edb2c",
+    "html_url": "https://github.com/aseprite/aseprite/commit/4ea0390623b337a1c30bd704fa73f6f32f5edb2c",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/4ea0390623b337a1c30bd704fa73f6f32f5edb2c/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "83d83cd8c6b8e4e62d00d3ef9a87775ac8cc295b",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/83d83cd8c6b8e4e62d00d3ef9a87775ac8cc295b",
+        "html_url": "https://github.com/aseprite/aseprite/commit/83d83cd8c6b8e4e62d00d3ef9a87775ac8cc295b"
+      }
+    ]
+  },
+  {
+    "sha": "83d83cd8c6b8e4e62d00d3ef9a87775ac8cc295b",
+    "node_id": "C_kwDOAWDtctoAKDgzZDgzY2Q4YzZiOGU0ZTYyZDAwZDNlZjlhODc3NzVhYzhjYzI5NWI",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-28T15:31:38Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-28T15:32:08Z"
+      },
+      "message": "Add const to lock_guards",
+      "tree": {
+        "sha": "7d24351d0b2f1ab9deeaf699e9bbd61dffc19cca",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/7d24351d0b2f1ab9deeaf699e9bbd61dffc19cca"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/83d83cd8c6b8e4e62d00d3ef9a87775ac8cc295b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/83d83cd8c6b8e4e62d00d3ef9a87775ac8cc295b",
+    "html_url": "https://github.com/aseprite/aseprite/commit/83d83cd8c6b8e4e62d00d3ef9a87775ac8cc295b",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/83d83cd8c6b8e4e62d00d3ef9a87775ac8cc295b/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d37bfa6c43e119b1b565adfee454492f8b703561",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/d37bfa6c43e119b1b565adfee454492f8b703561",
+        "html_url": "https://github.com/aseprite/aseprite/commit/d37bfa6c43e119b1b565adfee454492f8b703561"
+      }
+    ]
+  },
+  {
+    "sha": "d37bfa6c43e119b1b565adfee454492f8b703561",
+    "node_id": "C_kwDOAWDtctoAKGQzN2JmYTZjNDNlMTE5YjFiNTY1YWRmZWU0NTQ0OTJmOGI3MDM1NjE",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-28T13:45:52Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-28T13:45:52Z"
+      },
+      "message": "Fix compilation of tests when LAF_BACKEND=none",
+      "tree": {
+        "sha": "fc2fc5a6ed18a27dad5d27eb482334761bb52017",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/fc2fc5a6ed18a27dad5d27eb482334761bb52017"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/d37bfa6c43e119b1b565adfee454492f8b703561",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/d37bfa6c43e119b1b565adfee454492f8b703561",
+    "html_url": "https://github.com/aseprite/aseprite/commit/d37bfa6c43e119b1b565adfee454492f8b703561",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/d37bfa6c43e119b1b565adfee454492f8b703561/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "166124526f6dcbcada228d44d7dea89e154bd15d",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/166124526f6dcbcada228d44d7dea89e154bd15d",
+        "html_url": "https://github.com/aseprite/aseprite/commit/166124526f6dcbcada228d44d7dea89e154bd15d"
+      }
+    ]
+  },
+  {
+    "sha": "166124526f6dcbcada228d44d7dea89e154bd15d",
+    "node_id": "C_kwDOAWDtctoAKDE2NjEyNDUyNmY2ZGNiY2FkYTIyOGQ0NGQ3ZGVhODllMTU0YmQxNWQ",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-28T13:16:53Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-28T13:16:53Z"
+      },
+      "message": "Update laf",
+      "tree": {
+        "sha": "184d42a41de84b69ffc47aa84621c2e825e42953",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/184d42a41de84b69ffc47aa84621c2e825e42953"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/166124526f6dcbcada228d44d7dea89e154bd15d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/166124526f6dcbcada228d44d7dea89e154bd15d",
+    "html_url": "https://github.com/aseprite/aseprite/commit/166124526f6dcbcada228d44d7dea89e154bd15d",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/166124526f6dcbcada228d44d7dea89e154bd15d/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "32a1b327a6c52fcaefde92c554dee4387d5d7d09",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/32a1b327a6c52fcaefde92c554dee4387d5d7d09",
+        "html_url": "https://github.com/aseprite/aseprite/commit/32a1b327a6c52fcaefde92c554dee4387d5d7d09"
+      }
+    ]
+  },
+  {
+    "sha": "32a1b327a6c52fcaefde92c554dee4387d5d7d09",
+    "node_id": "C_kwDOAWDtctoAKDMyYTFiMzI3YTZjNTJmY2FlZmRlOTJjNTU0ZGVlNDM4N2Q1ZDdkMDk",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-28T13:16:36Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-28T13:16:36Z"
+      },
+      "message": "Fix typo",
+      "tree": {
+        "sha": "bff774d6180bc61dacd3df86feb84fbb693f4d63",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/bff774d6180bc61dacd3df86feb84fbb693f4d63"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/32a1b327a6c52fcaefde92c554dee4387d5d7d09",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/32a1b327a6c52fcaefde92c554dee4387d5d7d09",
+    "html_url": "https://github.com/aseprite/aseprite/commit/32a1b327a6c52fcaefde92c554dee4387d5d7d09",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/32a1b327a6c52fcaefde92c554dee4387d5d7d09/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "edc248d4183b26876c4ee1f2b86e66e6e0f24efe",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/edc248d4183b26876c4ee1f2b86e66e6e0f24efe",
+        "html_url": "https://github.com/aseprite/aseprite/commit/edc248d4183b26876c4ee1f2b86e66e6e0f24efe"
+      }
+    ]
+  },
+  {
+    "sha": "edc248d4183b26876c4ee1f2b86e66e6e0f24efe",
+    "node_id": "C_kwDOAWDtctoAKGVkYzI0OGQ0MTgzYjI2ODc2YzRlZTFmMmI4NmU2NmU2ZTBmMjRlZmU",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-28T13:16:11Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-28T13:16:11Z"
+      },
+      "message": "Removing some unnecessary #includes",
+      "tree": {
+        "sha": "9f8d1bdf65ef946fab533c0d7ed07f9f4b1ada54",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/9f8d1bdf65ef946fab533c0d7ed07f9f4b1ada54"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/edc248d4183b26876c4ee1f2b86e66e6e0f24efe",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/edc248d4183b26876c4ee1f2b86e66e6e0f24efe",
+    "html_url": "https://github.com/aseprite/aseprite/commit/edc248d4183b26876c4ee1f2b86e66e6e0f24efe",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/edc248d4183b26876c4ee1f2b86e66e6e0f24efe/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1a067bb223ff787161a66c21667aafc5cd7395cd",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/1a067bb223ff787161a66c21667aafc5cd7395cd",
+        "html_url": "https://github.com/aseprite/aseprite/commit/1a067bb223ff787161a66c21667aafc5cd7395cd"
+      }
+    ]
+  },
+  {
+    "sha": "1a067bb223ff787161a66c21667aafc5cd7395cd",
+    "node_id": "C_kwDOAWDtctoAKDFhMDY3YmIyMjNmZjc4NzE2MWE2NmMyMTY2N2FhZmM1Y2Q3Mzk1Y2Q",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-28T11:30:23Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-28T11:30:23Z"
+      },
+      "message": "Update json11 module",
+      "tree": {
+        "sha": "1ac689ae00a1eab60fd25d3c25ee63163c137d0d",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/1ac689ae00a1eab60fd25d3c25ee63163c137d0d"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/1a067bb223ff787161a66c21667aafc5cd7395cd",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/1a067bb223ff787161a66c21667aafc5cd7395cd",
+    "html_url": "https://github.com/aseprite/aseprite/commit/1a067bb223ff787161a66c21667aafc5cd7395cd",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/1a067bb223ff787161a66c21667aafc5cd7395cd/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b5288d85e77cf3b2a03f51fc86ffe2fb37c4eb64",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/b5288d85e77cf3b2a03f51fc86ffe2fb37c4eb64",
+        "html_url": "https://github.com/aseprite/aseprite/commit/b5288d85e77cf3b2a03f51fc86ffe2fb37c4eb64"
+      }
+    ]
+  },
+  {
+    "sha": "b5288d85e77cf3b2a03f51fc86ffe2fb37c4eb64",
+    "node_id": "C_kwDOAWDtctoAKGI1Mjg4ZDg1ZTc3Y2YzYjJhMDNmNTFmYzg2ZmZlMmZiMzdjNGViNjQ",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-28T02:17:32Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-28T02:20:12Z"
+      },
+      "message": "Update some clang tidy checks",
+      "tree": {
+        "sha": "2ce7ffa8449d766fbd0fb7945fb8ce03992c6604",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/2ce7ffa8449d766fbd0fb7945fb8ce03992c6604"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/b5288d85e77cf3b2a03f51fc86ffe2fb37c4eb64",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/b5288d85e77cf3b2a03f51fc86ffe2fb37c4eb64",
+    "html_url": "https://github.com/aseprite/aseprite/commit/b5288d85e77cf3b2a03f51fc86ffe2fb37c4eb64",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/b5288d85e77cf3b2a03f51fc86ffe2fb37c4eb64/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8fc759206671f5ba12c937009b53b26af1816aec",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/8fc759206671f5ba12c937009b53b26af1816aec",
+        "html_url": "https://github.com/aseprite/aseprite/commit/8fc759206671f5ba12c937009b53b26af1816aec"
+      }
+    ]
+  },
+  {
+    "sha": "8fc759206671f5ba12c937009b53b26af1816aec",
+    "node_id": "C_kwDOAWDtctoAKDhmYzc1OTIwNjY3MWY1YmExMmM5MzcwMDliNTNiMjZhZjE4MTZhZWM",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-27T22:07:53Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-27T22:07:53Z"
+      },
+      "message": "Make clang tidy action work in PRs from forks using split_workflow",
+      "tree": {
+        "sha": "d5e312ab29067a1ed3bfec3e95d7a4a3863dd081",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/d5e312ab29067a1ed3bfec3e95d7a4a3863dd081"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/8fc759206671f5ba12c937009b53b26af1816aec",
+      "comment_count": 1,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/8fc759206671f5ba12c937009b53b26af1816aec",
+    "html_url": "https://github.com/aseprite/aseprite/commit/8fc759206671f5ba12c937009b53b26af1816aec",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/8fc759206671f5ba12c937009b53b26af1816aec/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "619b5cbada309ea765f8d5a2230fcda12a2d303a",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/619b5cbada309ea765f8d5a2230fcda12a2d303a",
+        "html_url": "https://github.com/aseprite/aseprite/commit/619b5cbada309ea765f8d5a2230fcda12a2d303a"
+      }
+    ]
+  },
+  {
+    "sha": "619b5cbada309ea765f8d5a2230fcda12a2d303a",
+    "node_id": "C_kwDOAWDtctoAKDYxOWI1Y2JhZGEzMDllYTc2NWY4ZDVhMjIzMGZjZGExMmEyZDMwM2E",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-27T18:41:07Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-27T18:41:07Z"
+      },
+      "message": "Run clang tidy in the context of the merge commit",
+      "tree": {
+        "sha": "eca9958624b87e86ca94f990a72ba686804a9fa5",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/eca9958624b87e86ca94f990a72ba686804a9fa5"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/619b5cbada309ea765f8d5a2230fcda12a2d303a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/619b5cbada309ea765f8d5a2230fcda12a2d303a",
+    "html_url": "https://github.com/aseprite/aseprite/commit/619b5cbada309ea765f8d5a2230fcda12a2d303a",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/619b5cbada309ea765f8d5a2230fcda12a2d303a/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "03403953f36853f0fb03b193b8021f307b35399a",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/03403953f36853f0fb03b193b8021f307b35399a",
+        "html_url": "https://github.com/aseprite/aseprite/commit/03403953f36853f0fb03b193b8021f307b35399a"
+      }
+    ]
+  },
+  {
+    "sha": "03403953f36853f0fb03b193b8021f307b35399a",
+    "node_id": "C_kwDOAWDtctoAKDAzNDAzOTUzZjM2ODUzZjBmYjAzYjE5M2I4MDIxZjMwN2IzNTM5OWE",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-27T17:11:02Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-27T17:11:02Z"
+      },
+      "message": "Fix cmake -B param in clang tidy action",
+      "tree": {
+        "sha": "0425e7744b7c42daa18bc0acbac241576c75dea6",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/0425e7744b7c42daa18bc0acbac241576c75dea6"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/03403953f36853f0fb03b193b8021f307b35399a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/03403953f36853f0fb03b193b8021f307b35399a",
+    "html_url": "https://github.com/aseprite/aseprite/commit/03403953f36853f0fb03b193b8021f307b35399a",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/03403953f36853f0fb03b193b8021f307b35399a/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "351d9c863f1a454acc2b7cd1d2d438d08f97e17f",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/351d9c863f1a454acc2b7cd1d2d438d08f97e17f",
+        "html_url": "https://github.com/aseprite/aseprite/commit/351d9c863f1a454acc2b7cd1d2d438d08f97e17f"
+      }
+    ]
+  },
+  {
+    "sha": "351d9c863f1a454acc2b7cd1d2d438d08f97e17f",
+    "node_id": "C_kwDOAWDtctoAKDM1MWQ5Yzg2M2YxYTQ1NGFjYzJiN2NkMWQyZDQzOGQwOGY5N2UxN2Y",
+    "commit": {
+      "author": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-27T16:55:43Z"
+      },
+      "committer": {
+        "name": "David Capello",
+        "email": "david@igara.com",
+        "date": "2024-02-27T16:55:43Z"
+      },
+      "message": "Add config_file parameter to clang tidy action",
+      "tree": {
+        "sha": "1318a3aa2279c873f1f67962a06c43dc21b9c7b0",
+        "url": "https://api.github.com/repos/aseprite/aseprite/git/trees/1318a3aa2279c873f1f67962a06c43dc21b9c7b0"
+      },
+      "url": "https://api.github.com/repos/aseprite/aseprite/git/commits/351d9c863f1a454acc2b7cd1d2d438d08f97e17f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/aseprite/aseprite/commits/351d9c863f1a454acc2b7cd1d2d438d08f97e17f",
+    "html_url": "https://github.com/aseprite/aseprite/commit/351d9c863f1a454acc2b7cd1d2d438d08f97e17f",
+    "comments_url": "https://api.github.com/repos/aseprite/aseprite/commits/351d9c863f1a454acc2b7cd1d2d438d08f97e17f/comments",
+    "author": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dacap",
+      "id": 39654,
+      "node_id": "MDQ6VXNlcjM5NjU0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39654?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dacap",
+      "html_url": "https://github.com/dacap",
+      "followers_url": "https://api.github.com/users/dacap/followers",
+      "following_url": "https://api.github.com/users/dacap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dacap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dacap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dacap/subscriptions",
+      "organizations_url": "https://api.github.com/users/dacap/orgs",
+      "repos_url": "https://api.github.com/users/dacap/repos",
+      "events_url": "https://api.github.com/users/dacap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dacap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "be891230dad34d12fc21cf88fc26d765384da00e",
+        "url": "https://api.github.com/repos/aseprite/aseprite/commits/be891230dad34d12fc21cf88fc26d765384da00e",
+        "html_url": "https://github.com/aseprite/aseprite/commit/be891230dad34d12fc21cf88fc26d765384da00e"
+      }
+    ]
+  }
+]

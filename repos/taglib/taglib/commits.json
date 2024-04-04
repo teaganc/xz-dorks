@@ -1,0 +1,2372 @@
+[
+  {
+    "sha": "20cec27ac0d9367d98cca0c7b07009f4587e1c6d",
+    "node_id": "C_kwDOABZaydoAKDIwY2VjMjdhYzBkOTM2N2Q5OGNjYTBjN2IwNzAwOWY0NTg3ZTFjNmQ",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-03-29T10:30:52Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-04-01T06:45:52Z"
+      },
+      "message": "C bindings: Support UTF-8 for property values",
+      "tree": {
+        "sha": "e838af60629aad4af16a15f74d2244a7719fdd62",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/e838af60629aad4af16a15f74d2244a7719fdd62"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/20cec27ac0d9367d98cca0c7b07009f4587e1c6d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/20cec27ac0d9367d98cca0c7b07009f4587e1c6d",
+    "html_url": "https://github.com/taglib/taglib/commit/20cec27ac0d9367d98cca0c7b07009f4587e1c6d",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/20cec27ac0d9367d98cca0c7b07009f4587e1c6d/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "99bc87ccff30a23e999d3505a13b43b902c52d18",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/99bc87ccff30a23e999d3505a13b43b902c52d18",
+        "html_url": "https://github.com/taglib/taglib/commit/99bc87ccff30a23e999d3505a13b43b902c52d18"
+      }
+    ]
+  },
+  {
+    "sha": "99bc87ccff30a23e999d3505a13b43b902c52d18",
+    "node_id": "C_kwDOABZaydoAKDk5YmM4N2NjZmYzMGEyM2U5OTlkMzUwNWExM2I0M2I5MDJjNTJkMTg",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-03-24T18:27:03Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-03-25T19:14:19Z"
+      },
+      "message": "Fix WASM build by inverting wchar_t size check\n\nWhen building WASM with emscripten\n\ncmake -DCMAKE_TOOLCHAIN_FILE=/path/to/Emscripten.cmake ...\n\nall SIZEOF_ variables which should be defined in ConfigureChecks.cmake\nare empty and the wchar_t check fails with \"LESS\" \"2\", the other\nchecks seem to pass since they start with NOT. Instead of explicitly\nskipping the check for \"if(NOT EMSCRIPTEN)\" as is done in vcpkg's\ndisable-wchar-t-check-emscripten.patch, the check is inverted to\nstart with NOT, so the build still has a chance to run for compilers\nwhich behave like emscripten.",
+      "tree": {
+        "sha": "225dcc225b82b1777d379fc81abf806d920d5cd6",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/225dcc225b82b1777d379fc81abf806d920d5cd6"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/99bc87ccff30a23e999d3505a13b43b902c52d18",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/99bc87ccff30a23e999d3505a13b43b902c52d18",
+    "html_url": "https://github.com/taglib/taglib/commit/99bc87ccff30a23e999d3505a13b43b902c52d18",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/99bc87ccff30a23e999d3505a13b43b902c52d18/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7951f572b58567e3f220f067fdff71ea0ad9de0c",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/7951f572b58567e3f220f067fdff71ea0ad9de0c",
+        "html_url": "https://github.com/taglib/taglib/commit/7951f572b58567e3f220f067fdff71ea0ad9de0c"
+      }
+    ]
+  },
+  {
+    "sha": "7951f572b58567e3f220f067fdff71ea0ad9de0c",
+    "node_id": "C_kwDOABZaydoAKDc5NTFmNTcyYjU4NTY3ZTNmMjIwZjA2N2ZkZmY3MWVhMGFkOWRlMGM",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-03-24T16:25:39Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-03-25T19:14:19Z"
+      },
+      "message": "Avoid offset_t conflict on Illumos\n\nTaken from NetBSD patch-taglib_toolkit_taglib.h.",
+      "tree": {
+        "sha": "0f36b41f72692fdb709a05093199c422c96930b5",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/0f36b41f72692fdb709a05093199c422c96930b5"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/7951f572b58567e3f220f067fdff71ea0ad9de0c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/7951f572b58567e3f220f067fdff71ea0ad9de0c",
+    "html_url": "https://github.com/taglib/taglib/commit/7951f572b58567e3f220f067fdff71ea0ad9de0c",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/7951f572b58567e3f220f067fdff71ea0ad9de0c/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "59ff35772e884fd286836ceae2442e585a5a8425",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/59ff35772e884fd286836ceae2442e585a5a8425",
+        "html_url": "https://github.com/taglib/taglib/commit/59ff35772e884fd286836ceae2442e585a5a8425"
+      }
+    ]
+  },
+  {
+    "sha": "59ff35772e884fd286836ceae2442e585a5a8425",
+    "node_id": "C_kwDOABZaydoAKDU5ZmYzNTc3MmU4ODRmZDI4NjgzNmNlYWUyNDQyZTU4NWE1YTg0MjU",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-03-24T13:10:33Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-03-25T19:14:19Z"
+      },
+      "message": "Fix building with -DBUILD_TESTING=ON -DBUILD_BINDINGS=OFF",
+      "tree": {
+        "sha": "e53ebfc1ed56a5cab150b611d427f6e84c6a86ec",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/e53ebfc1ed56a5cab150b611d427f6e84c6a86ec"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/59ff35772e884fd286836ceae2442e585a5a8425",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/59ff35772e884fd286836ceae2442e585a5a8425",
+    "html_url": "https://github.com/taglib/taglib/commit/59ff35772e884fd286836ceae2442e585a5a8425",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/59ff35772e884fd286836ceae2442e585a5a8425/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "37846281554f75fa6473753cdd961b62c89bb9e3",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/37846281554f75fa6473753cdd961b62c89bb9e3",
+        "html_url": "https://github.com/taglib/taglib/commit/37846281554f75fa6473753cdd961b62c89bb9e3"
+      }
+    ]
+  },
+  {
+    "sha": "37846281554f75fa6473753cdd961b62c89bb9e3",
+    "node_id": "C_kwDOABZaydoAKDM3ODQ2MjgxNTU0Zjc1ZmE2NDczNzUzY2RkOTYxYjYyYzg5YmI5ZTM",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-03-23T15:35:43Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-03-25T19:13:55Z"
+      },
+      "message": "Provide equal operator for MP4::Item\n\nThis is needed to generate MP4::ItemMap bindings with SWIG.",
+      "tree": {
+        "sha": "c45e04707da4201aa5fc46416fccb46871b6aaaa",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/c45e04707da4201aa5fc46416fccb46871b6aaaa"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/37846281554f75fa6473753cdd961b62c89bb9e3",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/37846281554f75fa6473753cdd961b62c89bb9e3",
+    "html_url": "https://github.com/taglib/taglib/commit/37846281554f75fa6473753cdd961b62c89bb9e3",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/37846281554f75fa6473753cdd961b62c89bb9e3/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e60df53152b709e3703604f0a928a467556f7908",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/e60df53152b709e3703604f0a928a467556f7908",
+        "html_url": "https://github.com/taglib/taglib/commit/e60df53152b709e3703604f0a928a467556f7908"
+      }
+    ]
+  },
+  {
+    "sha": "e60df53152b709e3703604f0a928a467556f7908",
+    "node_id": "C_kwDOABZaydoAKGU2MGRmNTMxNTJiNzA5ZTM3MDM2MDRmMGE5MjhhNDY3NTU2Zjc5MDg",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-03-23T11:54:54Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-03-25T19:13:55Z"
+      },
+      "message": "Add virtual to abstract overridden destructor\n\nThis is redundant, but required by SWIG.",
+      "tree": {
+        "sha": "70e3233a62b15b0bcf3c12a75dfc4f8c9fa449ac",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/70e3233a62b15b0bcf3c12a75dfc4f8c9fa449ac"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/e60df53152b709e3703604f0a928a467556f7908",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/e60df53152b709e3703604f0a928a467556f7908",
+    "html_url": "https://github.com/taglib/taglib/commit/e60df53152b709e3703604f0a928a467556f7908",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/e60df53152b709e3703604f0a928a467556f7908/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1ae8e18db5529b4b9adbe7a14a07973fe4e66513",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/1ae8e18db5529b4b9adbe7a14a07973fe4e66513",
+        "html_url": "https://github.com/taglib/taglib/commit/1ae8e18db5529b4b9adbe7a14a07973fe4e66513"
+      }
+    ]
+  },
+  {
+    "sha": "1ae8e18db5529b4b9adbe7a14a07973fe4e66513",
+    "node_id": "C_kwDOABZaydoAKDFhZThlMThkYjU1MjliNGI5YWRiZTdhMTRhMDc5NzNmZTRlNjY1MTM",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-03-24T05:34:03Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-03-25T19:13:55Z"
+      },
+      "message": "Windows: Suppress yet another MSVC C4251 warning",
+      "tree": {
+        "sha": "3c2fda3e2f1115de039349fa395ed2120dbabac2",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/3c2fda3e2f1115de039349fa395ed2120dbabac2"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/1ae8e18db5529b4b9adbe7a14a07973fe4e66513",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/1ae8e18db5529b4b9adbe7a14a07973fe4e66513",
+    "html_url": "https://github.com/taglib/taglib/commit/1ae8e18db5529b4b9adbe7a14a07973fe4e66513",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/1ae8e18db5529b4b9adbe7a14a07973fe4e66513/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0896fb90920c125e55248360d271d1a1674e2a4d",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/0896fb90920c125e55248360d271d1a1674e2a4d",
+        "html_url": "https://github.com/taglib/taglib/commit/0896fb90920c125e55248360d271d1a1674e2a4d"
+      }
+    ]
+  },
+  {
+    "sha": "0896fb90920c125e55248360d271d1a1674e2a4d",
+    "node_id": "C_kwDOABZaydoAKDA4OTZmYjkwOTIwYzEyNWU1NTI0ODM2MGQyNzFkMWExNjc0ZTJhNGQ",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-28T18:06:40Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-02-03T05:28:40Z"
+      },
+      "message": "Detect utf8cpp by header if cmake config is not found (#1217)",
+      "tree": {
+        "sha": "22a4374426b467be045219a130d15908c5d07fc2",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/22a4374426b467be045219a130d15908c5d07fc2"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/0896fb90920c125e55248360d271d1a1674e2a4d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/0896fb90920c125e55248360d271d1a1674e2a4d",
+    "html_url": "https://github.com/taglib/taglib/commit/0896fb90920c125e55248360d271d1a1674e2a4d",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/0896fb90920c125e55248360d271d1a1674e2a4d/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "920d97606b258aba18c336f3b85b544a05383a1c",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/920d97606b258aba18c336f3b85b544a05383a1c",
+        "html_url": "https://github.com/taglib/taglib/commit/920d97606b258aba18c336f3b85b544a05383a1c"
+      }
+    ]
+  },
+  {
+    "sha": "920d97606b258aba18c336f3b85b544a05383a1c",
+    "node_id": "C_kwDOABZaydoAKDkyMGQ5NzYwNmIyNThhYmExOGMzMzZmM2I4NWI1NDRhMDUzODNhMWM",
+    "commit": {
+      "author": {
+        "name": "Jonas Kvinge",
+        "email": "jonas@jkvinge.net",
+        "date": "2024-01-28T15:22:14Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-01-28T15:22:14Z"
+      },
+      "message": "FileStream: Fix opening long paths on Windows (#1216)\n\nTo make sure paths longer than MAX_PATH (260) can be opened, prefix local\r\npaths with `\\\\?\\`, and UNC paths with `\\\\?\\UNC\\`.\r\n\r\nI've tested on Windows 10 22H2 (Build 19045.3930), even when setting\r\nLongPathsEnabled to 1 in the registry, it still won't open files with long\r\npaths without prefixing them.\r\n\r\nFor more information see:\r\nhttps://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry",
+      "tree": {
+        "sha": "202a9d432d371b6268106a62a23c6584232fd619",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/202a9d432d371b6268106a62a23c6584232fd619"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/920d97606b258aba18c336f3b85b544a05383a1c",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJltnEmCRC1aQ7uu5UhlAAAk+sQAIPU6oh/Wig7QGnqZggX8gef\nlr4fDcZfPk43AlD0w3gH9Ie9EddQQ/nJjfIGcqW278PTxC+D121kMA1zMxDi5cY1\nEEAPq0Pv43djVvHDnA3M9iIhA1+cj6+2dekCXNN0JIbOqe9lOOy91RKSSy6DPWL8\n/1lL2s/Hhd5CQrd2JAnVyd3Vnz4I1ExTK5hPzgeVSS3zdsQB5hY2UKCa4fPwBrOL\nLbhcbrnFL/IeYDFNb8YQvxrdE7a6kGbicEUqO9ZIYFQ7BIPlqFcN8YmoBX9u4L7s\nmmXmk4p/2SsDvT19n1JzoMb1MhfbIT8qvIpeVCq0fr6UDN+TkxubvQDpnW6ifbau\nC95FYtllXUN4Gmy6aQUteEgrof5i2r+9Iakqb1YhMna1FsB22QrVY2wopXzZBZsY\n8Ehsp1kjzbe23+M4eq76AaXm1Hp4CyMyhQW41oSuij3UdE6iDuaTqZQKP9Lz82n6\n2U+XQgwVEnd5Vy1p67pSS5tQDiq7NMcQgnyBKF9//QCFjZdecqKDsXsq0peKQVcW\n7rHhRKrmAnvyYNjVl13FtHnCdUX6NxuXn/DVeUp29MNUMXwc/T9UMA99f4azr1GS\n2sFpNNJlLlXvP6nBS/LArAN6Fj+c27zf/pOrpR1mHauJcLhf0oYSD4xKRMip7ilH\nxTfYwrllwu7CmVoTv17r\n=CEKG\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 202a9d432d371b6268106a62a23c6584232fd619\nparent 0d2c31b10210cbf94a7bd3b86f4e89e111e1add0\nauthor Jonas Kvinge <jonas@jkvinge.net> 1706455334 +0100\ncommitter GitHub <noreply@github.com> 1706455334 +0100\n\nFileStream: Fix opening long paths on Windows (#1216)\n\nTo make sure paths longer than MAX_PATH (260) can be opened, prefix local\r\npaths with `\\\\?\\`, and UNC paths with `\\\\?\\UNC\\`.\r\n\r\nI've tested on Windows 10 22H2 (Build 19045.3930), even when setting\r\nLongPathsEnabled to 1 in the registry, it still won't open files with long\r\npaths without prefixing them.\r\n\r\nFor more information see:\r\nhttps://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry\r\n"
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/920d97606b258aba18c336f3b85b544a05383a1c",
+    "html_url": "https://github.com/taglib/taglib/commit/920d97606b258aba18c336f3b85b544a05383a1c",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/920d97606b258aba18c336f3b85b544a05383a1c/comments",
+    "author": {
+      "login": "jonaski",
+      "id": 10343810,
+      "node_id": "MDQ6VXNlcjEwMzQzODEw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10343810?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jonaski",
+      "html_url": "https://github.com/jonaski",
+      "followers_url": "https://api.github.com/users/jonaski/followers",
+      "following_url": "https://api.github.com/users/jonaski/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jonaski/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jonaski/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jonaski/subscriptions",
+      "organizations_url": "https://api.github.com/users/jonaski/orgs",
+      "repos_url": "https://api.github.com/users/jonaski/repos",
+      "events_url": "https://api.github.com/users/jonaski/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jonaski/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0d2c31b10210cbf94a7bd3b86f4e89e111e1add0",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/0d2c31b10210cbf94a7bd3b86f4e89e111e1add0",
+        "html_url": "https://github.com/taglib/taglib/commit/0d2c31b10210cbf94a7bd3b86f4e89e111e1add0"
+      }
+    ]
+  },
+  {
+    "sha": "0d2c31b10210cbf94a7bd3b86f4e89e111e1add0",
+    "node_id": "C_kwDOABZaydoAKDBkMmMzMWIxMDIxMGNiZjk0YTdiZDNiODZmNGU4OWUxMTFlMWFkZDA",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-28T06:17:05Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-28T06:17:05Z"
+      },
+      "message": "Clarify 2.0 source compatibility, remove obsolete URL (#1214)",
+      "tree": {
+        "sha": "a6d6c1bbceb7d767bea1fa6f20a68bf5c5096211",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/a6d6c1bbceb7d767bea1fa6f20a68bf5c5096211"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/0d2c31b10210cbf94a7bd3b86f4e89e111e1add0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/0d2c31b10210cbf94a7bd3b86f4e89e111e1add0",
+    "html_url": "https://github.com/taglib/taglib/commit/0d2c31b10210cbf94a7bd3b86f4e89e111e1add0",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/0d2c31b10210cbf94a7bd3b86f4e89e111e1add0/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c8c4e5faecedaba7ce74412a51799e5d6c9bb4e3",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/c8c4e5faecedaba7ce74412a51799e5d6c9bb4e3",
+        "html_url": "https://github.com/taglib/taglib/commit/c8c4e5faecedaba7ce74412a51799e5d6c9bb4e3"
+      }
+    ]
+  },
+  {
+    "sha": "c8c4e5faecedaba7ce74412a51799e5d6c9bb4e3",
+    "node_id": "C_kwDOABZaydoAKGM4YzRlNWZhZWNlZGFiYTdjZTc0NDEyYTUxNzk5ZTVkNmM5YmI0ZTM",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-27T09:56:31Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-27T09:56:31Z"
+      },
+      "message": "Fix 'get() != pointer()' assertion copying ByteVectorList/StringList (#1211)\n\nThis reverts dfef09f13 but keeps the assignments as a comment so these\nfunctions do not look like they can be defaulted even though they cannot.",
+      "tree": {
+        "sha": "4792801014d58f973aab6229e3e62ae6d01d7e88",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/4792801014d58f973aab6229e3e62ae6d01d7e88"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/c8c4e5faecedaba7ce74412a51799e5d6c9bb4e3",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/c8c4e5faecedaba7ce74412a51799e5d6c9bb4e3",
+    "html_url": "https://github.com/taglib/taglib/commit/c8c4e5faecedaba7ce74412a51799e5d6c9bb4e3",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/c8c4e5faecedaba7ce74412a51799e5d6c9bb4e3/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0ebb14b855b788c1dd19ca322fc8f7b7e5f1e4e7",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/0ebb14b855b788c1dd19ca322fc8f7b7e5f1e4e7",
+        "html_url": "https://github.com/taglib/taglib/commit/0ebb14b855b788c1dd19ca322fc8f7b7e5f1e4e7"
+      }
+    ]
+  },
+  {
+    "sha": "0ebb14b855b788c1dd19ca322fc8f7b7e5f1e4e7",
+    "node_id": "C_kwDOABZaydoAKDBlYmIxNGI4NTViNzg4YzFkZDE5Y2EzMjJmYzhmN2I3ZTVmMWU0ZTc",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-24T04:10:43Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-24T04:10:43Z"
+      },
+      "message": "Version 2.0",
+      "tree": {
+        "sha": "9d95e187a74208c0c050347d511626d2873b19e9",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/9d95e187a74208c0c050347d511626d2873b19e9"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/0ebb14b855b788c1dd19ca322fc8f7b7e5f1e4e7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/0ebb14b855b788c1dd19ca322fc8f7b7e5f1e4e7",
+    "html_url": "https://github.com/taglib/taglib/commit/0ebb14b855b788c1dd19ca322fc8f7b7e5f1e4e7",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/0ebb14b855b788c1dd19ca322fc8f7b7e5f1e4e7/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "89af92333c86bc5911598e80ce756dd894d9f844",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/89af92333c86bc5911598e80ce756dd894d9f844",
+        "html_url": "https://github.com/taglib/taglib/commit/89af92333c86bc5911598e80ce756dd894d9f844"
+      }
+    ]
+  },
+  {
+    "sha": "89af92333c86bc5911598e80ce756dd894d9f844",
+    "node_id": "C_kwDOABZaydoAKDg5YWY5MjMzM2M4NmJjNTkxMTU5OGU4MGNlNzU2ZGQ4OTRkOWY4NDQ",
+    "commit": {
+      "author": {
+        "name": "Rosen Penev",
+        "email": "rosenp@gmail.com",
+        "date": "2024-01-22T02:07:46Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-22T17:35:30Z"
+      },
+      "message": "clang-tidy: use dynamic_cast\n\nFound with cppcoreguidelines-pro-type-static-cast-downcast\n\nSigned-off-by: Rosen Penev <rosenp@gmail.com>",
+      "tree": {
+        "sha": "1460c87535f9faea6fae2c240edf09b683e6242e",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/1460c87535f9faea6fae2c240edf09b683e6242e"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/89af92333c86bc5911598e80ce756dd894d9f844",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/89af92333c86bc5911598e80ce756dd894d9f844",
+    "html_url": "https://github.com/taglib/taglib/commit/89af92333c86bc5911598e80ce756dd894d9f844",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/89af92333c86bc5911598e80ce756dd894d9f844/comments",
+    "author": {
+      "login": "neheb",
+      "id": 2918873,
+      "node_id": "MDQ6VXNlcjI5MTg4NzM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2918873?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/neheb",
+      "html_url": "https://github.com/neheb",
+      "followers_url": "https://api.github.com/users/neheb/followers",
+      "following_url": "https://api.github.com/users/neheb/following{/other_user}",
+      "gists_url": "https://api.github.com/users/neheb/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/neheb/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/neheb/subscriptions",
+      "organizations_url": "https://api.github.com/users/neheb/orgs",
+      "repos_url": "https://api.github.com/users/neheb/repos",
+      "events_url": "https://api.github.com/users/neheb/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/neheb/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b356fabe120da4c45636d42c86111cf31ae470e4",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/b356fabe120da4c45636d42c86111cf31ae470e4",
+        "html_url": "https://github.com/taglib/taglib/commit/b356fabe120da4c45636d42c86111cf31ae470e4"
+      }
+    ]
+  },
+  {
+    "sha": "b356fabe120da4c45636d42c86111cf31ae470e4",
+    "node_id": "C_kwDOABZaydoAKGIzNTZmYWJlMTIwZGE0YzQ1NjM2ZDQyYzg2MTExY2YzMWFlNDcwZTQ",
+    "commit": {
+      "author": {
+        "name": "Rosen Penev",
+        "email": "rosenp@gmail.com",
+        "date": "2024-01-20T23:44:27Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-22T17:35:30Z"
+      },
+      "message": "clang-tidy: avoid else after return\n\nFound with: readability-else-after-return\n\nSigned-off-by: Rosen Penev <rosenp@gmail.com>",
+      "tree": {
+        "sha": "5f0092a26789134fd4d3c5a2073b86345cebb794",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/5f0092a26789134fd4d3c5a2073b86345cebb794"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/b356fabe120da4c45636d42c86111cf31ae470e4",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/b356fabe120da4c45636d42c86111cf31ae470e4",
+    "html_url": "https://github.com/taglib/taglib/commit/b356fabe120da4c45636d42c86111cf31ae470e4",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/b356fabe120da4c45636d42c86111cf31ae470e4/comments",
+    "author": {
+      "login": "neheb",
+      "id": 2918873,
+      "node_id": "MDQ6VXNlcjI5MTg4NzM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2918873?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/neheb",
+      "html_url": "https://github.com/neheb",
+      "followers_url": "https://api.github.com/users/neheb/followers",
+      "following_url": "https://api.github.com/users/neheb/following{/other_user}",
+      "gists_url": "https://api.github.com/users/neheb/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/neheb/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/neheb/subscriptions",
+      "organizations_url": "https://api.github.com/users/neheb/orgs",
+      "repos_url": "https://api.github.com/users/neheb/repos",
+      "events_url": "https://api.github.com/users/neheb/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/neheb/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8a65068f3bbc503ea67c8ec07c9a44a21a92f459",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/8a65068f3bbc503ea67c8ec07c9a44a21a92f459",
+        "html_url": "https://github.com/taglib/taglib/commit/8a65068f3bbc503ea67c8ec07c9a44a21a92f459"
+      }
+    ]
+  },
+  {
+    "sha": "8a65068f3bbc503ea67c8ec07c9a44a21a92f459",
+    "node_id": "C_kwDOABZaydoAKDhhNjUwNjhmM2JiYzUwM2VhNjdjOGVjMDdjOWE0NGEyMWE5MmY0NTk",
+    "commit": {
+      "author": {
+        "name": "Rosen Penev",
+        "email": "rosenp@gmail.com",
+        "date": "2024-01-19T22:16:52Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-22T17:35:30Z"
+      },
+      "message": "clang-tidy: fix wrong cast\n\nFound with bugprone-misplaced-widening-cast\n\nSigned-off-by: Rosen Penev <rosenp@gmail.com>",
+      "tree": {
+        "sha": "847cc5ae6dbd033911afb39fea1062da77232568",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/847cc5ae6dbd033911afb39fea1062da77232568"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/8a65068f3bbc503ea67c8ec07c9a44a21a92f459",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/8a65068f3bbc503ea67c8ec07c9a44a21a92f459",
+    "html_url": "https://github.com/taglib/taglib/commit/8a65068f3bbc503ea67c8ec07c9a44a21a92f459",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/8a65068f3bbc503ea67c8ec07c9a44a21a92f459/comments",
+    "author": {
+      "login": "neheb",
+      "id": 2918873,
+      "node_id": "MDQ6VXNlcjI5MTg4NzM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2918873?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/neheb",
+      "html_url": "https://github.com/neheb",
+      "followers_url": "https://api.github.com/users/neheb/followers",
+      "following_url": "https://api.github.com/users/neheb/following{/other_user}",
+      "gists_url": "https://api.github.com/users/neheb/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/neheb/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/neheb/subscriptions",
+      "organizations_url": "https://api.github.com/users/neheb/orgs",
+      "repos_url": "https://api.github.com/users/neheb/repos",
+      "events_url": "https://api.github.com/users/neheb/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/neheb/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e1ac724cfec5de33803b6acf68384d972240dd22",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/e1ac724cfec5de33803b6acf68384d972240dd22",
+        "html_url": "https://github.com/taglib/taglib/commit/e1ac724cfec5de33803b6acf68384d972240dd22"
+      }
+    ]
+  },
+  {
+    "sha": "e1ac724cfec5de33803b6acf68384d972240dd22",
+    "node_id": "C_kwDOABZaydoAKGUxYWM3MjRjZmVjNWRlMzM4MDNiNmFjZjY4Mzg0ZDk3MjI0MGRkMjI",
+    "commit": {
+      "author": {
+        "name": "Rosen Penev",
+        "email": "rosenp@gmail.com",
+        "date": "2024-01-19T21:28:26Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-22T17:35:30Z"
+      },
+      "message": "convert const double to const auto\n\nFixes some Wconversion warnings.\n\nSigned-off-by: Rosen Penev <rosenp@gmail.com>",
+      "tree": {
+        "sha": "230d524be1973ca54d6342bb80cf20d30b20e605",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/230d524be1973ca54d6342bb80cf20d30b20e605"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/e1ac724cfec5de33803b6acf68384d972240dd22",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/e1ac724cfec5de33803b6acf68384d972240dd22",
+    "html_url": "https://github.com/taglib/taglib/commit/e1ac724cfec5de33803b6acf68384d972240dd22",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/e1ac724cfec5de33803b6acf68384d972240dd22/comments",
+    "author": {
+      "login": "neheb",
+      "id": 2918873,
+      "node_id": "MDQ6VXNlcjI5MTg4NzM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2918873?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/neheb",
+      "html_url": "https://github.com/neheb",
+      "followers_url": "https://api.github.com/users/neheb/followers",
+      "following_url": "https://api.github.com/users/neheb/following{/other_user}",
+      "gists_url": "https://api.github.com/users/neheb/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/neheb/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/neheb/subscriptions",
+      "organizations_url": "https://api.github.com/users/neheb/orgs",
+      "repos_url": "https://api.github.com/users/neheb/repos",
+      "events_url": "https://api.github.com/users/neheb/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/neheb/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a08acdcf23c5d4ac4cb795f5edfdc539055138b7",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/a08acdcf23c5d4ac4cb795f5edfdc539055138b7",
+        "html_url": "https://github.com/taglib/taglib/commit/a08acdcf23c5d4ac4cb795f5edfdc539055138b7"
+      }
+    ]
+  },
+  {
+    "sha": "a08acdcf23c5d4ac4cb795f5edfdc539055138b7",
+    "node_id": "C_kwDOABZaydoAKGEwOGFjZGNmMjNjNWQ0YWM0Y2I3OTVmNWVkZmRjNTM5MDU1MTM4Yjc",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-21T18:48:21Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-21T19:46:27Z"
+      },
+      "message": "Remove unused types from taglib.h",
+      "tree": {
+        "sha": "23a4ccc2bd0571af59d16545f95f8ee9b345bc57",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/23a4ccc2bd0571af59d16545f95f8ee9b345bc57"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/a08acdcf23c5d4ac4cb795f5edfdc539055138b7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/a08acdcf23c5d4ac4cb795f5edfdc539055138b7",
+    "html_url": "https://github.com/taglib/taglib/commit/a08acdcf23c5d4ac4cb795f5edfdc539055138b7",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/a08acdcf23c5d4ac4cb795f5edfdc539055138b7/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1799b98c170d04c7edcd207d632de02d4f6d8134",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/1799b98c170d04c7edcd207d632de02d4f6d8134",
+        "html_url": "https://github.com/taglib/taglib/commit/1799b98c170d04c7edcd207d632de02d4f6d8134"
+      }
+    ]
+  },
+  {
+    "sha": "1799b98c170d04c7edcd207d632de02d4f6d8134",
+    "node_id": "C_kwDOABZaydoAKDE3OTliOThjMTcwZDA0YzdlZGNkMjA3ZDYzMmRlMDJkNGY2ZDgxMzQ",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-20T22:42:21Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-21T19:46:27Z"
+      },
+      "message": "Inspection: Table is not correctly formatted",
+      "tree": {
+        "sha": "d5a085b00e6f58b75b1d4800b8f6ad6e7657e526",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/d5a085b00e6f58b75b1d4800b8f6ad6e7657e526"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/1799b98c170d04c7edcd207d632de02d4f6d8134",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/1799b98c170d04c7edcd207d632de02d4f6d8134",
+    "html_url": "https://github.com/taglib/taglib/commit/1799b98c170d04c7edcd207d632de02d4f6d8134",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/1799b98c170d04c7edcd207d632de02d4f6d8134/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e49390c7c58970c52ddab4f5c322fe52b4e9d93a",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/e49390c7c58970c52ddab4f5c322fe52b4e9d93a",
+        "html_url": "https://github.com/taglib/taglib/commit/e49390c7c58970c52ddab4f5c322fe52b4e9d93a"
+      }
+    ]
+  },
+  {
+    "sha": "e49390c7c58970c52ddab4f5c322fe52b4e9d93a",
+    "node_id": "C_kwDOABZaydoAKGU0OTM5MGM3YzU4OTcwYzUyZGRhYjRmNWMzMjJmZTUyYjRlOWQ5M2E",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-20T22:39:01Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-21T19:46:27Z"
+      },
+      "message": "Inspection: Type can be replaced with auto",
+      "tree": {
+        "sha": "5d67cec965fbd26d637671ab23f9ee5518ad97a3",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/5d67cec965fbd26d637671ab23f9ee5518ad97a3"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/e49390c7c58970c52ddab4f5c322fe52b4e9d93a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/e49390c7c58970c52ddab4f5c322fe52b4e9d93a",
+    "html_url": "https://github.com/taglib/taglib/commit/e49390c7c58970c52ddab4f5c322fe52b4e9d93a",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/e49390c7c58970c52ddab4f5c322fe52b4e9d93a/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7bcfb960989eea46e7e8636fa4cd7b67118f7674",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/7bcfb960989eea46e7e8636fa4cd7b67118f7674",
+        "html_url": "https://github.com/taglib/taglib/commit/7bcfb960989eea46e7e8636fa4cd7b67118f7674"
+      }
+    ]
+  },
+  {
+    "sha": "7bcfb960989eea46e7e8636fa4cd7b67118f7674",
+    "node_id": "C_kwDOABZaydoAKDdiY2ZiOTYwOTg5ZWVhNDZlN2U4NjM2ZmE0Y2Q3YjY3MTE4Zjc2NzQ",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-20T22:30:40Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-21T19:46:27Z"
+      },
+      "message": "Inspection: Code redundancies",
+      "tree": {
+        "sha": "87a9a2c65d231c5f0615ada2f48ba6163db9aeba",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/87a9a2c65d231c5f0615ada2f48ba6163db9aeba"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/7bcfb960989eea46e7e8636fa4cd7b67118f7674",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/7bcfb960989eea46e7e8636fa4cd7b67118f7674",
+    "html_url": "https://github.com/taglib/taglib/commit/7bcfb960989eea46e7e8636fa4cd7b67118f7674",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/7bcfb960989eea46e7e8636fa4cd7b67118f7674/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "580b0b0c8245a1fa9df47452f60505e0b4c18f1f",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/580b0b0c8245a1fa9df47452f60505e0b4c18f1f",
+        "html_url": "https://github.com/taglib/taglib/commit/580b0b0c8245a1fa9df47452f60505e0b4c18f1f"
+      }
+    ]
+  },
+  {
+    "sha": "580b0b0c8245a1fa9df47452f60505e0b4c18f1f",
+    "node_id": "C_kwDOABZaydoAKDU4MGIwYjBjODI0NWExZmE5ZGY0NzQ1MmY2MDUwNWUwYjRjMThmMWY",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-20T21:41:59Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-21T19:46:27Z"
+      },
+      "message": "Inspection: Possibly unused #include directive",
+      "tree": {
+        "sha": "f3d46493f11819bbf8445a1e43ba8a6c82453532",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/f3d46493f11819bbf8445a1e43ba8a6c82453532"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/580b0b0c8245a1fa9df47452f60505e0b4c18f1f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/580b0b0c8245a1fa9df47452f60505e0b4c18f1f",
+    "html_url": "https://github.com/taglib/taglib/commit/580b0b0c8245a1fa9df47452f60505e0b4c18f1f",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/580b0b0c8245a1fa9df47452f60505e0b4c18f1f/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5fc3e5c1927edef2b0bbb0389a406bea56b8c47a",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/5fc3e5c1927edef2b0bbb0389a406bea56b8c47a",
+        "html_url": "https://github.com/taglib/taglib/commit/5fc3e5c1927edef2b0bbb0389a406bea56b8c47a"
+      }
+    ]
+  },
+  {
+    "sha": "5fc3e5c1927edef2b0bbb0389a406bea56b8c47a",
+    "node_id": "C_kwDOABZaydoAKDVmYzNlNWMxOTI3ZWRlZjJiMGJiYjAzODlhNDA2YmVhNTZiOGM0N2E",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-20T21:21:03Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-21T19:46:27Z"
+      },
+      "message": "Inspection: Possibly uninitialized class member",
+      "tree": {
+        "sha": "3eec0b2da15846a4a801f73756ac9b6c71937ad3",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/3eec0b2da15846a4a801f73756ac9b6c71937ad3"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/5fc3e5c1927edef2b0bbb0389a406bea56b8c47a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/5fc3e5c1927edef2b0bbb0389a406bea56b8c47a",
+    "html_url": "https://github.com/taglib/taglib/commit/5fc3e5c1927edef2b0bbb0389a406bea56b8c47a",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/5fc3e5c1927edef2b0bbb0389a406bea56b8c47a/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "570b40bdcd6fcd9bcb2145d82f3f552a6cbe2d6b",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/570b40bdcd6fcd9bcb2145d82f3f552a6cbe2d6b",
+        "html_url": "https://github.com/taglib/taglib/commit/570b40bdcd6fcd9bcb2145d82f3f552a6cbe2d6b"
+      }
+    ]
+  },
+  {
+    "sha": "570b40bdcd6fcd9bcb2145d82f3f552a6cbe2d6b",
+    "node_id": "C_kwDOABZaydoAKDU3MGI0MGJkY2Q2ZmNkOWJjYjIxNDVkODJmM2Y1NTJhNmNiZTJkNmI",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-20T21:18:35Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-21T19:46:27Z"
+      },
+      "message": "Inspection: Polymorphic class with non-virtual public destructor",
+      "tree": {
+        "sha": "9cd7926a69493380459c80071fd4ce0b06973d84",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/9cd7926a69493380459c80071fd4ce0b06973d84"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/570b40bdcd6fcd9bcb2145d82f3f552a6cbe2d6b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/570b40bdcd6fcd9bcb2145d82f3f552a6cbe2d6b",
+    "html_url": "https://github.com/taglib/taglib/commit/570b40bdcd6fcd9bcb2145d82f3f552a6cbe2d6b",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/570b40bdcd6fcd9bcb2145d82f3f552a6cbe2d6b/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c3d73a26ff7b19c57375f9939197f2eaeee6025e",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/c3d73a26ff7b19c57375f9939197f2eaeee6025e",
+        "html_url": "https://github.com/taglib/taglib/commit/c3d73a26ff7b19c57375f9939197f2eaeee6025e"
+      }
+    ]
+  },
+  {
+    "sha": "c3d73a26ff7b19c57375f9939197f2eaeee6025e",
+    "node_id": "C_kwDOABZaydoAKGMzZDczYTI2ZmY3YjE5YzU3Mzc1Zjk5MzkxOTdmMmVhZWVlNjAyNWU",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-20T20:57:09Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-21T19:46:27Z"
+      },
+      "message": "Inspection: Parameter names do not match",
+      "tree": {
+        "sha": "00338365476cefdbc84c9abd91fec0eaf954e8f5",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/00338365476cefdbc84c9abd91fec0eaf954e8f5"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/c3d73a26ff7b19c57375f9939197f2eaeee6025e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/c3d73a26ff7b19c57375f9939197f2eaeee6025e",
+    "html_url": "https://github.com/taglib/taglib/commit/c3d73a26ff7b19c57375f9939197f2eaeee6025e",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/c3d73a26ff7b19c57375f9939197f2eaeee6025e/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "790815bcf45d42456cd4cd619a724981599cbe33",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/790815bcf45d42456cd4cd619a724981599cbe33",
+        "html_url": "https://github.com/taglib/taglib/commit/790815bcf45d42456cd4cd619a724981599cbe33"
+      }
+    ]
+  },
+  {
+    "sha": "790815bcf45d42456cd4cd619a724981599cbe33",
+    "node_id": "C_kwDOABZaydoAKDc5MDgxNWJjZjQ1ZDQyNDU2Y2Q0Y2Q2MTlhNzI0OTgxNTk5Y2JlMzM",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-20T20:45:55Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-21T19:46:27Z"
+      },
+      "message": "Inspection: Missing include guard",
+      "tree": {
+        "sha": "f5101a0a9d054b4cb940082300cd9fb0be615e2a",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/f5101a0a9d054b4cb940082300cd9fb0be615e2a"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/790815bcf45d42456cd4cd619a724981599cbe33",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/790815bcf45d42456cd4cd619a724981599cbe33",
+    "html_url": "https://github.com/taglib/taglib/commit/790815bcf45d42456cd4cd619a724981599cbe33",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/790815bcf45d42456cd4cd619a724981599cbe33/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1a5c41755840f20ab2b05fb00c3177dce55ea392",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/1a5c41755840f20ab2b05fb00c3177dce55ea392",
+        "html_url": "https://github.com/taglib/taglib/commit/1a5c41755840f20ab2b05fb00c3177dce55ea392"
+      }
+    ]
+  },
+  {
+    "sha": "1a5c41755840f20ab2b05fb00c3177dce55ea392",
+    "node_id": "C_kwDOABZaydoAKDFhNWM0MTc1NTg0MGYyMGFiMmIwNWZiMDBjMzE3N2RjZTU1ZWEzOTI",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-20T20:43:25Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-21T19:46:27Z"
+      },
+      "message": "Inspection: Function is not implemented",
+      "tree": {
+        "sha": "558b89fe3a54e5b71b930d4b345c67276208afaf",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/558b89fe3a54e5b71b930d4b345c67276208afaf"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/1a5c41755840f20ab2b05fb00c3177dce55ea392",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/1a5c41755840f20ab2b05fb00c3177dce55ea392",
+    "html_url": "https://github.com/taglib/taglib/commit/1a5c41755840f20ab2b05fb00c3177dce55ea392",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/1a5c41755840f20ab2b05fb00c3177dce55ea392/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d87b2dad4899ad72e71d9cd7448162cd969b2eb7",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/d87b2dad4899ad72e71d9cd7448162cd969b2eb7",
+        "html_url": "https://github.com/taglib/taglib/commit/d87b2dad4899ad72e71d9cd7448162cd969b2eb7"
+      }
+    ]
+  },
+  {
+    "sha": "d87b2dad4899ad72e71d9cd7448162cd969b2eb7",
+    "node_id": "C_kwDOABZaydoAKGQ4N2IyZGFkNDg5OWFkNzJlNzFkOWNkNzQ0ODE2MmNkOTY5YjJlYjc",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-20T20:37:02Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-21T19:46:27Z"
+      },
+      "message": "Inspection: Expression can be simplified",
+      "tree": {
+        "sha": "34d130c1a45ee9aa15a0696a2d3451da5be55410",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/34d130c1a45ee9aa15a0696a2d3451da5be55410"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/d87b2dad4899ad72e71d9cd7448162cd969b2eb7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/d87b2dad4899ad72e71d9cd7448162cd969b2eb7",
+    "html_url": "https://github.com/taglib/taglib/commit/d87b2dad4899ad72e71d9cd7448162cd969b2eb7",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/d87b2dad4899ad72e71d9cd7448162cd969b2eb7/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "613355665cc568c9662290c3b69da11e772c8be4",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/613355665cc568c9662290c3b69da11e772c8be4",
+        "html_url": "https://github.com/taglib/taglib/commit/613355665cc568c9662290c3b69da11e772c8be4"
+      }
+    ]
+  },
+  {
+    "sha": "613355665cc568c9662290c3b69da11e772c8be4",
+    "node_id": "C_kwDOABZaydoAKDYxMzM1NTY2NWNjNTY4Yzk2NjIyOTBjM2I2OWRhMTFlNzcyYzhiZTQ",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-20T20:25:54Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-21T19:46:27Z"
+      },
+      "message": "Inspection: Variable can be moved to inner scope",
+      "tree": {
+        "sha": "26bc96a99c594fd00c965348a44bcc219dcfede5",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/26bc96a99c594fd00c965348a44bcc219dcfede5"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/613355665cc568c9662290c3b69da11e772c8be4",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/613355665cc568c9662290c3b69da11e772c8be4",
+    "html_url": "https://github.com/taglib/taglib/commit/613355665cc568c9662290c3b69da11e772c8be4",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/613355665cc568c9662290c3b69da11e772c8be4/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "dfe2aa52532fc9f73a67499dd17fb527a856a22f",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/dfe2aa52532fc9f73a67499dd17fb527a856a22f",
+        "html_url": "https://github.com/taglib/taglib/commit/dfe2aa52532fc9f73a67499dd17fb527a856a22f"
+      }
+    ]
+  },
+  {
+    "sha": "dfe2aa52532fc9f73a67499dd17fb527a856a22f",
+    "node_id": "C_kwDOABZaydoAKGRmZTJhYTUyNTMyZmM5ZjczYTY3NDk5ZGQxN2ZiNTI3YTg1NmEyMmY",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-20T17:06:51Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-21T19:46:27Z"
+      },
+      "message": "Inspection: Variable can be moved to init statement",
+      "tree": {
+        "sha": "88d2062aa382ca83b310d150de412b7387c99057",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/88d2062aa382ca83b310d150de412b7387c99057"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/dfe2aa52532fc9f73a67499dd17fb527a856a22f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/dfe2aa52532fc9f73a67499dd17fb527a856a22f",
+    "html_url": "https://github.com/taglib/taglib/commit/dfe2aa52532fc9f73a67499dd17fb527a856a22f",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/dfe2aa52532fc9f73a67499dd17fb527a856a22f/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5d921c6325569d24e1ecd646757b17e4405d2795",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/5d921c6325569d24e1ecd646757b17e4405d2795",
+        "html_url": "https://github.com/taglib/taglib/commit/5d921c6325569d24e1ecd646757b17e4405d2795"
+      }
+    ]
+  },
+  {
+    "sha": "5d921c6325569d24e1ecd646757b17e4405d2795",
+    "node_id": "C_kwDOABZaydoAKDVkOTIxYzYzMjU1NjlkMjRlMWVjZDY0Njc1N2IxN2U0NDA1ZDI3OTU",
+    "commit": {
+      "author": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-20T16:22:53Z"
+      },
+      "committer": {
+        "name": "Urs Fleisch",
+        "email": "ufleisch@users.sourceforge.net",
+        "date": "2024-01-21T19:46:27Z"
+      },
+      "message": "Inspection: Variable can be made constexpr",
+      "tree": {
+        "sha": "73211a3d567feaa5a20ba0aa4c3ab597e081dbe4",
+        "url": "https://api.github.com/repos/taglib/taglib/git/trees/73211a3d567feaa5a20ba0aa4c3ab597e081dbe4"
+      },
+      "url": "https://api.github.com/repos/taglib/taglib/git/commits/5d921c6325569d24e1ecd646757b17e4405d2795",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/taglib/taglib/commits/5d921c6325569d24e1ecd646757b17e4405d2795",
+    "html_url": "https://github.com/taglib/taglib/commit/5d921c6325569d24e1ecd646757b17e4405d2795",
+    "comments_url": "https://api.github.com/repos/taglib/taglib/commits/5d921c6325569d24e1ecd646757b17e4405d2795/comments",
+    "author": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ufleisch",
+      "id": 2125194,
+      "node_id": "MDQ6VXNlcjIxMjUxOTQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2125194?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ufleisch",
+      "html_url": "https://github.com/ufleisch",
+      "followers_url": "https://api.github.com/users/ufleisch/followers",
+      "following_url": "https://api.github.com/users/ufleisch/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ufleisch/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ufleisch/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ufleisch/subscriptions",
+      "organizations_url": "https://api.github.com/users/ufleisch/orgs",
+      "repos_url": "https://api.github.com/users/ufleisch/repos",
+      "events_url": "https://api.github.com/users/ufleisch/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ufleisch/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "710522e6e16d76c7ea4dbe939a4a5fa007b90d48",
+        "url": "https://api.github.com/repos/taglib/taglib/commits/710522e6e16d76c7ea4dbe939a4a5fa007b90d48",
+        "html_url": "https://github.com/taglib/taglib/commit/710522e6e16d76c7ea4dbe939a4a5fa007b90d48"
+      }
+    ]
+  }
+]

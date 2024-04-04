@@ -1,0 +1,2372 @@
+[
+  {
+    "sha": "907de1cb779f8361ec77e02425d70b907d094e6b",
+    "node_id": "C_kwDOAcrXdtoAKDkwN2RlMWNiNzc5ZjgzNjFlYzc3ZTAyNDI1ZDcwYjkwN2QwOTRlNmI",
+    "commit": {
+      "author": {
+        "name": "Sergei Trofimovich",
+        "email": "slyich@gmail.com",
+        "date": "2024-02-22T09:26:34Z"
+      },
+      "committer": {
+        "name": "lawrinn",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2024-02-22T22:49:28Z"
+      },
+      "message": "test/types.c: fix build on `gcc-14`\n\n`gcc-14` turned some type punning warning into errors. This caused build\nto fails as:\n\n    In file included from /build/mariadb-connector-odbc/test/types.c:26:\n    /build/mariadb-connector-odbc/test/types.c: In function 't_nobigint':\n    /build/mariadb-connector-odbc/test/types.c:313:49: error: passing argument 3 of 'SQLDescribeCol' from incompatible pointer type [-Wincompatible-pointer-types]\n      313 |   CHECK_STMT_RC(hstmt, SQLDescribeCol(hstmt, 1, name, sizeof(name), NULL, &type, &size, NULL, NULL));\n          |                                                 ^~~~\n          |                                                 |\n          |                                                 SQLCHAR ** {aka unsigned char **}\n    /build/mariadb-connector-odbc/test/tap.h:652:24: note: in definition of macro 'CHECK_HANDLE_RC'\n      652 |   SQLRETURN local_rc= (rc); \\\n          |                        ^~\n    /build/mariadb-connector-odbc/test/types.c:313:3: note: in expansion of macro 'CHECK_STMT_RC'\n      313 |   CHECK_STMT_RC(hstmt, SQLDescribeCol(hstmt, 1, name, sizeof(name), NULL, &type, &size, NULL, NULL));\n          |   ^~~~~~~~~~~~~\n    In file included from /build/mariadb-connector-odbc/test/tap.h:115:\n    ...-unixODBC-2.3.12/include/sql.h:649:75: note: expected 'SQLCHAR *' {aka 'unsigned char *'} but argument is of type 'SQLCHAR **' {aka 'unsigned char **'}\n      649 |                                       SQLUSMALLINT ColumnNumber, SQLCHAR *ColumnName,\n          |                                                                  ~~~~~~~~~^~~~~~~~~~\n\nThe change fixes column name parameter to be a char array instead of\npointer array.",
+      "tree": {
+        "sha": "6fea91ed983f487ee2125ca435c5f4fa77262404",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/6fea91ed983f487ee2125ca435c5f4fa77262404"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/907de1cb779f8361ec77e02425d70b907d094e6b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/907de1cb779f8361ec77e02425d70b907d094e6b",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/907de1cb779f8361ec77e02425d70b907d094e6b",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/907de1cb779f8361ec77e02425d70b907d094e6b/comments",
+    "author": {
+      "login": "trofi",
+      "id": 226650,
+      "node_id": "MDQ6VXNlcjIyNjY1MA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/226650?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/trofi",
+      "html_url": "https://github.com/trofi",
+      "followers_url": "https://api.github.com/users/trofi/followers",
+      "following_url": "https://api.github.com/users/trofi/following{/other_user}",
+      "gists_url": "https://api.github.com/users/trofi/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/trofi/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/trofi/subscriptions",
+      "organizations_url": "https://api.github.com/users/trofi/orgs",
+      "repos_url": "https://api.github.com/users/trofi/repos",
+      "events_url": "https://api.github.com/users/trofi/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/trofi/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8f3bee56b9e4245b05054013660585bfeb58052d",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/8f3bee56b9e4245b05054013660585bfeb58052d",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/8f3bee56b9e4245b05054013660585bfeb58052d"
+      }
+    ]
+  },
+  {
+    "sha": "8f3bee56b9e4245b05054013660585bfeb58052d",
+    "node_id": "C_kwDOAcrXdtoAKDhmM2JlZTU2YjllNDI0NWIwNTA1NDAxMzY2MDU4NWJmZWI1ODA1MmQ",
+    "commit": {
+      "author": {
+        "name": "Daniel Bartholomew",
+        "email": "db@dbart.us",
+        "date": "2023-12-04T14:48:03Z"
+      },
+      "committer": {
+        "name": "Daniel Bartholomew",
+        "email": "db@dbart.us",
+        "date": "2023-12-04T14:48:03Z"
+      },
+      "message": "bump the VERSION",
+      "tree": {
+        "sha": "9d19438f44628e80966d535254cafa91e15576d4",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/9d19438f44628e80966d535254cafa91e15576d4"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/8f3bee56b9e4245b05054013660585bfeb58052d",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQIzBAABCgAdFiEEOzyQYxEZGr9RUFXUkXEYmZXkWp4FAmVt5qMACgkQkXEYmZXk\nWp6QXQ/6AtoSNmRgarl987yEcX6qzqfex+5c2oWL9bj4ulIDG2PUNE1Q3biTJd0Z\n8nUgrHQUWAMWgOhAw7WPPlvhhPsLpVykbvUtN1PZZpKjOXvGS+O04CFSut4J4HBU\n1e9ksrt5qF0wzkjn5a3Qvw6aUY3olhTowWuXNd0N2Qtzu8pnyd3kIlpKt+w/4riO\nhD0CM2qoa8tzMmV0z2zj9mqrFH5/SCY1Do67LKc7FQQMDeFf9Ge/vFvxdhpduQc2\n9ZxD3GNAHfV25UlaE1PcsMnBSwMc9502xsWrr+dAsHiDk3FOO+SzBb60hN4/Npwn\nKUKUxCuaegFeIIoqYw3llPMg58r1A0pYxTWUV2h07ZXpsncHugIrnIQPky6dGpN8\ns3+srxFPPLUnh9Zgo7xYDX8A6Dpqbx9niZkdfZDrbIrapl1y1eqcRUHaA2ovp81w\n8NmjlqLGOfK+tXuvEksAvdGdQAyohyCwCAV4J//UWXy6Ic5JCSO7X/BGV9Z/zSIp\n7TYNfBUOu15QSBx/alZCXiM/F6CXohPH8LrSKfdFIiNwLuUAhTLQlRGuwQUgyT2g\n+Hxf/PwEQL2NoBi42KI/gRAO223zzZ5+G9+H7vPMO1AcMQ3o3qXN+D4T99lI0ZYj\n6pYxXmE7n0Yr6vQjj6ND8Cpr+6+y/stHiAAoIe1jDMNpZgyyVv8=\n=GfAf\n-----END PGP SIGNATURE-----",
+        "payload": "tree 9d19438f44628e80966d535254cafa91e15576d4\nparent 9241fb8f73583502d1d2eff6dd383e0dc82dc85b\nauthor Daniel Bartholomew <db@dbart.us> 1701701283 -0500\ncommitter Daniel Bartholomew <db@dbart.us> 1701701283 -0500\n\nbump the VERSION\n"
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/8f3bee56b9e4245b05054013660585bfeb58052d",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/8f3bee56b9e4245b05054013660585bfeb58052d",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/8f3bee56b9e4245b05054013660585bfeb58052d/comments",
+    "author": {
+      "login": "dbart",
+      "id": 1301571,
+      "node_id": "MDQ6VXNlcjEzMDE1NzE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1301571?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dbart",
+      "html_url": "https://github.com/dbart",
+      "followers_url": "https://api.github.com/users/dbart/followers",
+      "following_url": "https://api.github.com/users/dbart/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dbart/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dbart/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dbart/subscriptions",
+      "organizations_url": "https://api.github.com/users/dbart/orgs",
+      "repos_url": "https://api.github.com/users/dbart/repos",
+      "events_url": "https://api.github.com/users/dbart/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dbart/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dbart",
+      "id": 1301571,
+      "node_id": "MDQ6VXNlcjEzMDE1NzE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1301571?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dbart",
+      "html_url": "https://github.com/dbart",
+      "followers_url": "https://api.github.com/users/dbart/followers",
+      "following_url": "https://api.github.com/users/dbart/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dbart/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dbart/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dbart/subscriptions",
+      "organizations_url": "https://api.github.com/users/dbart/orgs",
+      "repos_url": "https://api.github.com/users/dbart/repos",
+      "events_url": "https://api.github.com/users/dbart/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dbart/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9241fb8f73583502d1d2eff6dd383e0dc82dc85b",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/9241fb8f73583502d1d2eff6dd383e0dc82dc85b",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/9241fb8f73583502d1d2eff6dd383e0dc82dc85b"
+      }
+    ]
+  },
+  {
+    "sha": "9241fb8f73583502d1d2eff6dd383e0dc82dc85b",
+    "node_id": "C_kwDOAcrXdtoAKDkyNDFmYjhmNzM1ODM1MDJkMWQyZWZmNmRkMzgzZTBkYzgyZGM4NWI",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-12-01T10:15:36Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-12-01T10:15:36Z"
+      },
+      "message": "Fix of SQLCanclel testcase, that would fail in case of RS streaming\n\non linux.",
+      "tree": {
+        "sha": "f44148f82f9485ecb9ab56652382cccd837fc8ef",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/f44148f82f9485ecb9ab56652382cccd837fc8ef"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/9241fb8f73583502d1d2eff6dd383e0dc82dc85b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/9241fb8f73583502d1d2eff6dd383e0dc82dc85b",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/9241fb8f73583502d1d2eff6dd383e0dc82dc85b",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/9241fb8f73583502d1d2eff6dd383e0dc82dc85b/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "cdb29904fcfe58369c62d40016685a7fd279ec7b",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/cdb29904fcfe58369c62d40016685a7fd279ec7b",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/cdb29904fcfe58369c62d40016685a7fd279ec7b"
+      }
+    ]
+  },
+  {
+    "sha": "cdb29904fcfe58369c62d40016685a7fd279ec7b",
+    "node_id": "C_kwDOAcrXdtoAKGNkYjI5OTA0ZmNmZTU4MzY5YzYyZDQwMDE2Njg1YTdmZDI3OWVjN2I",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-11-30T20:04:58Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-11-30T20:04:58Z"
+      },
+      "message": "ODBC-399 Error on the query consisting from the comment only\n\nThe fix and updated testcase. Driver can add SET STATEMENT in front of\nquery to enforce query timeout. In case of comment only it leads to\nsyntax error, obvilusly. The fix ensures, that query has some \"useful\nweight\".\nAlso, the patch contains small fix for SQLFetch in case of result\nstreaming. There was possible, that mysql_stmt_fetch would return the\nerror, but then C/C returned sql state 00000, and driver treated this\nsql state as \"no error\". That's changed to return still the error.",
+      "tree": {
+        "sha": "6f2c78a761d5605e6d8c2350a1d21e8761222c2d",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/6f2c78a761d5605e6d8c2350a1d21e8761222c2d"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/cdb29904fcfe58369c62d40016685a7fd279ec7b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/cdb29904fcfe58369c62d40016685a7fd279ec7b",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/cdb29904fcfe58369c62d40016685a7fd279ec7b",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/cdb29904fcfe58369c62d40016685a7fd279ec7b/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9b117a113b752f8d8492d16fd37b8195073cfff5",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/9b117a113b752f8d8492d16fd37b8195073cfff5",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/9b117a113b752f8d8492d16fd37b8195073cfff5"
+      }
+    ]
+  },
+  {
+    "sha": "9b117a113b752f8d8492d16fd37b8195073cfff5",
+    "node_id": "C_kwDOAcrXdtoAKDliMTE3YTExM2I3NTJmOGQ4NDkyZDE2ZmQzN2I4MTk1MDczY2ZmZjU",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-11-30T13:39:27Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-11-30T13:39:27Z"
+      },
+      "message": "ODBC-404 Use SET STATEMENT only with servers, that support it\n\nTechnically, all currently supported server version supports it. But\npeople in real world still use some old servers, and it's not hard to\nfix.",
+      "tree": {
+        "sha": "463f2b04831e24e6b1c67c17f965675b122d213e",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/463f2b04831e24e6b1c67c17f965675b122d213e"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/9b117a113b752f8d8492d16fd37b8195073cfff5",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/9b117a113b752f8d8492d16fd37b8195073cfff5",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/9b117a113b752f8d8492d16fd37b8195073cfff5",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/9b117a113b752f8d8492d16fd37b8195073cfff5/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5ef91f2a7185c1b598d8e5d8f20fd96c5a8c2845",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/5ef91f2a7185c1b598d8e5d8f20fd96c5a8c2845",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/5ef91f2a7185c1b598d8e5d8f20fd96c5a8c2845"
+      }
+    ]
+  },
+  {
+    "sha": "5ef91f2a7185c1b598d8e5d8f20fd96c5a8c2845",
+    "node_id": "C_kwDOAcrXdtoAKDVlZjkxZjJhNzE4NWMxYjU5OGQ4ZTVkOGYyMGZkOTZjNWE4YzI4NDU",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-11-29T11:28:46Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-11-29T12:04:05Z"
+      },
+      "message": "libmariadb submodule has been updated to v3.3.8",
+      "tree": {
+        "sha": "2b10fa518937663db0f138e1fa4689464453748a",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/2b10fa518937663db0f138e1fa4689464453748a"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/5ef91f2a7185c1b598d8e5d8f20fd96c5a8c2845",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/5ef91f2a7185c1b598d8e5d8f20fd96c5a8c2845",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/5ef91f2a7185c1b598d8e5d8f20fd96c5a8c2845",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/5ef91f2a7185c1b598d8e5d8f20fd96c5a8c2845/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d99a26159a9fd13819276a976457170ade35fbe0",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/d99a26159a9fd13819276a976457170ade35fbe0",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/d99a26159a9fd13819276a976457170ade35fbe0"
+      }
+    ]
+  },
+  {
+    "sha": "d99a26159a9fd13819276a976457170ade35fbe0",
+    "node_id": "C_kwDOAcrXdtoAKGQ5OWEyNjE1OWE5ZmQxMzgxOTI3NmE5NzY0NTcxNzBhZGUzNWZiZTA",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-11-27T21:14:22Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-11-29T12:04:05Z"
+      },
+      "message": "Fixes for MacOS/iOdbc\n\nTestcases and warnings fixes",
+      "tree": {
+        "sha": "3b5db4aed47e0033573c2e71c8c33dc2416e4d9c",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/3b5db4aed47e0033573c2e71c8c33dc2416e4d9c"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/d99a26159a9fd13819276a976457170ade35fbe0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/d99a26159a9fd13819276a976457170ade35fbe0",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/d99a26159a9fd13819276a976457170ade35fbe0",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/d99a26159a9fd13819276a976457170ade35fbe0/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5f1fbdf7f58e81058e1c4a28bc6b2e71e46e4e3e",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/5f1fbdf7f58e81058e1c4a28bc6b2e71e46e4e3e",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/5f1fbdf7f58e81058e1c4a28bc6b2e71e46e4e3e"
+      }
+    ]
+  },
+  {
+    "sha": "5f1fbdf7f58e81058e1c4a28bc6b2e71e46e4e3e",
+    "node_id": "C_kwDOAcrXdtoAKDVmMWZiZGY3ZjU4ZTgxMDU4ZTFjNGEyOGJjNmIyZTcxZTQ2ZTRlM2U",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-11-29T00:02:31Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-11-29T00:02:31Z"
+      },
+      "message": "ODBC-402 Support of NO_BIGINT option with testcase\n\nIn addition to OPTION bit MADB_OPT_FLAG_NO_BIGINT, NOBIGINT connection\nstring parameter introduced.\nIf option selected, it makes normally SQL_BIGINT column to look like\nSQL_INTEGER column.\nThe corresponding field has been added to the setup dialog.",
+      "tree": {
+        "sha": "40b737c7b626ec4c86e432966fb45960267edb8b",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/40b737c7b626ec4c86e432966fb45960267edb8b"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/5f1fbdf7f58e81058e1c4a28bc6b2e71e46e4e3e",
+      "comment_count": 3,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/5f1fbdf7f58e81058e1c4a28bc6b2e71e46e4e3e",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/5f1fbdf7f58e81058e1c4a28bc6b2e71e46e4e3e",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/5f1fbdf7f58e81058e1c4a28bc6b2e71e46e4e3e/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "014e86b910e91dbce64ebb5ed7200316c3012949",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/014e86b910e91dbce64ebb5ed7200316c3012949",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/014e86b910e91dbce64ebb5ed7200316c3012949"
+      }
+    ]
+  },
+  {
+    "sha": "014e86b910e91dbce64ebb5ed7200316c3012949",
+    "node_id": "C_kwDOAcrXdtoAKDAxNGU4NmI5MTBlOTFkYmNlNjRlYmI1ZWQ3MjAwMzE2YzMwMTI5NDk",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-11-22T16:30:10Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-11-22T16:30:10Z"
+      },
+      "message": "ODBC-399 The testcase, as it appears now",
+      "tree": {
+        "sha": "b740495c48302144f876a3ec2f25776cac31985a",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/b740495c48302144f876a3ec2f25776cac31985a"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/014e86b910e91dbce64ebb5ed7200316c3012949",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/014e86b910e91dbce64ebb5ed7200316c3012949",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/014e86b910e91dbce64ebb5ed7200316c3012949",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/014e86b910e91dbce64ebb5ed7200316c3012949/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "314a1c2fa134055e185551d7327e30469607fca7",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/314a1c2fa134055e185551d7327e30469607fca7",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/314a1c2fa134055e185551d7327e30469607fca7"
+      }
+    ]
+  },
+  {
+    "sha": "314a1c2fa134055e185551d7327e30469607fca7",
+    "node_id": "C_kwDOAcrXdtoAKDMxNGExYzJmYTEzNDA1NWUxODU1NTFkNzMyN2UzMDQ2OTYwN2ZjYTc",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-11-22T09:43:04Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-11-22T09:43:04Z"
+      },
+      "message": "ODBC-401 SQLCancel fix\n\nExisting tests fail on some platforms, the commit fixes that.",
+      "tree": {
+        "sha": "7743334bc4c06b6c34181789c28e82093679c78b",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/7743334bc4c06b6c34181789c28e82093679c78b"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/314a1c2fa134055e185551d7327e30469607fca7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/314a1c2fa134055e185551d7327e30469607fca7",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/314a1c2fa134055e185551d7327e30469607fca7",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/314a1c2fa134055e185551d7327e30469607fca7/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "41b9d83c35db174434565d346641ca24fa4d85d0",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/41b9d83c35db174434565d346641ca24fa4d85d0",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/41b9d83c35db174434565d346641ca24fa4d85d0"
+      }
+    ]
+  },
+  {
+    "sha": "41b9d83c35db174434565d346641ca24fa4d85d0",
+    "node_id": "C_kwDOAcrXdtoAKDQxYjlkODNjMzVkYjE3NDQzNDU2NWQzNDY2NDFjYTI0ZmE0ZDg1ZDA",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-10-30T11:35:35Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-10-30T11:35:35Z"
+      },
+      "message": "Small improvement in the connection process\n\nIf multistatement option was off, the driver would send session tracking\nconfiguration statements in 2 queries, while it's possible to make in\nsingle query.",
+      "tree": {
+        "sha": "6e40a9e35a8e44184e58024573185d443cf6556c",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/6e40a9e35a8e44184e58024573185d443cf6556c"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/41b9d83c35db174434565d346641ca24fa4d85d0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/41b9d83c35db174434565d346641ca24fa4d85d0",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/41b9d83c35db174434565d346641ca24fa4d85d0",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/41b9d83c35db174434565d346641ca24fa4d85d0/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "349fe3bd653eab72fa5bef4527a093cf84710145",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/349fe3bd653eab72fa5bef4527a093cf84710145",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/349fe3bd653eab72fa5bef4527a093cf84710145"
+      }
+    ]
+  },
+  {
+    "sha": "349fe3bd653eab72fa5bef4527a093cf84710145",
+    "node_id": "C_kwDOAcrXdtoAKDM0OWZlM2JkNjUzZWFiNzJmYTViZWY0NTI3YTA5M2NmODQ3MTAxNDU",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-09-21T22:23:38Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-10-26T15:08:13Z"
+      },
+      "message": "Changes in tests for xpand\n\nNot sure what's gonna be next, but they've been done. Not complete,\nthough",
+      "tree": {
+        "sha": "88b05d15312f3d158a643be06260e3f95683b48d",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/88b05d15312f3d158a643be06260e3f95683b48d"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/349fe3bd653eab72fa5bef4527a093cf84710145",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/349fe3bd653eab72fa5bef4527a093cf84710145",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/349fe3bd653eab72fa5bef4527a093cf84710145",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/349fe3bd653eab72fa5bef4527a093cf84710145/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "790b58b0c2fcea9a8f5ab39ca7a821778a5dc231",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/790b58b0c2fcea9a8f5ab39ca7a821778a5dc231",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/790b58b0c2fcea9a8f5ab39ca7a821778a5dc231"
+      }
+    ]
+  },
+  {
+    "sha": "790b58b0c2fcea9a8f5ab39ca7a821778a5dc231",
+    "node_id": "C_kwDOAcrXdtoAKDc5MGI1OGIwYzJmY2VhOWE4ZjVhYjM5Y2E3YTgyMTc3OGE1ZGMyMzE",
+    "commit": {
+      "author": {
+        "name": "Prashant-Jagtap",
+        "email": "Prashant.Jagtap@ibm.com",
+        "date": "2023-08-07T05:41:03Z"
+      },
+      "committer": {
+        "name": "lawrinn",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-10-26T08:19:36Z"
+      },
+      "message": "Fix Travis build for s390x",
+      "tree": {
+        "sha": "5358d300045cfca34ad2babced2a2a57ad3447ba",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/5358d300045cfca34ad2babced2a2a57ad3447ba"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/790b58b0c2fcea9a8f5ab39ca7a821778a5dc231",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/790b58b0c2fcea9a8f5ab39ca7a821778a5dc231",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/790b58b0c2fcea9a8f5ab39ca7a821778a5dc231",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/790b58b0c2fcea9a8f5ab39ca7a821778a5dc231/comments",
+    "author": {
+      "login": "Prashant-Jagtap",
+      "id": 66462910,
+      "node_id": "MDQ6VXNlcjY2NDYyOTEw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/66462910?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Prashant-Jagtap",
+      "html_url": "https://github.com/Prashant-Jagtap",
+      "followers_url": "https://api.github.com/users/Prashant-Jagtap/followers",
+      "following_url": "https://api.github.com/users/Prashant-Jagtap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Prashant-Jagtap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Prashant-Jagtap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Prashant-Jagtap/subscriptions",
+      "organizations_url": "https://api.github.com/users/Prashant-Jagtap/orgs",
+      "repos_url": "https://api.github.com/users/Prashant-Jagtap/repos",
+      "events_url": "https://api.github.com/users/Prashant-Jagtap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Prashant-Jagtap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "15980571842a74fc2057f41d88aaf28da9513df8",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/15980571842a74fc2057f41d88aaf28da9513df8",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/15980571842a74fc2057f41d88aaf28da9513df8"
+      }
+    ]
+  },
+  {
+    "sha": "15980571842a74fc2057f41d88aaf28da9513df8",
+    "node_id": "C_kwDOAcrXdtoAKDE1OTgwNTcxODQyYTc0ZmMyMDU3ZjQxZDg4YWFmMjhkYTk1MTNkZjg",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-09-20T13:12:36Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-09-20T15:34:14Z"
+      },
+      "message": "Removing dependency on pkg-config from binary rpm\n\nSet policy CMP0054 to NEW",
+      "tree": {
+        "sha": "4f18e2c74a98db530a089ac19a1285e3e8286c14",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/4f18e2c74a98db530a089ac19a1285e3e8286c14"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/15980571842a74fc2057f41d88aaf28da9513df8",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/15980571842a74fc2057f41d88aaf28da9513df8",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/15980571842a74fc2057f41d88aaf28da9513df8",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/15980571842a74fc2057f41d88aaf28da9513df8/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "77102f75c0d685b4845c163138dc1137128116d9",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/77102f75c0d685b4845c163138dc1137128116d9",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/77102f75c0d685b4845c163138dc1137128116d9"
+      }
+    ]
+  },
+  {
+    "sha": "77102f75c0d685b4845c163138dc1137128116d9",
+    "node_id": "C_kwDOAcrXdtoAKDc3MTAyZjc1YzBkNjg1YjQ4NDVjMTYzMTM4ZGMxMTM3MTI4MTE2ZDk",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-09-18T10:36:56Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-09-19T21:26:50Z"
+      },
+      "message": "C/C submodule has been updated to v3.3.7 release tag\n\nPlus small fix in the main cmake file",
+      "tree": {
+        "sha": "d8d2d044decf7f59c40347191b40bec51b1f72ac",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/d8d2d044decf7f59c40347191b40bec51b1f72ac"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/77102f75c0d685b4845c163138dc1137128116d9",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/77102f75c0d685b4845c163138dc1137128116d9",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/77102f75c0d685b4845c163138dc1137128116d9",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/77102f75c0d685b4845c163138dc1137128116d9/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0be3743722e0de46ba78a5af9f7d885ea7d7e0eb",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/0be3743722e0de46ba78a5af9f7d885ea7d7e0eb",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/0be3743722e0de46ba78a5af9f7d885ea7d7e0eb"
+      }
+    ]
+  },
+  {
+    "sha": "0be3743722e0de46ba78a5af9f7d885ea7d7e0eb",
+    "node_id": "C_kwDOAcrXdtoAKDBiZTM3NDM3MjJlMGRlNDZiYTc4YTVhZjlmN2Q4ODVlYTdkN2UwZWI",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-09-05T20:23:38Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-09-13T18:17:09Z"
+      },
+      "message": "Added dependencies to source rpm\n\nAdded some search of C/C lib&header in order to automatically add\ndependency on the package containing them to the source RPM. And to\nactually improve build using system installed lib - heared could not be\nfound during compilation in some cases.\nAlso added search for sql.h for the same reason of dependency on\nunixODBC-devel",
+      "tree": {
+        "sha": "1b9c6ae432033103adecd12891c023194a30be7a",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/1b9c6ae432033103adecd12891c023194a30be7a"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/0be3743722e0de46ba78a5af9f7d885ea7d7e0eb",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/0be3743722e0de46ba78a5af9f7d885ea7d7e0eb",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/0be3743722e0de46ba78a5af9f7d885ea7d7e0eb",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/0be3743722e0de46ba78a5af9f7d885ea7d7e0eb/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "86ad76eb71ede2323d23102dc94805b0a0e753f8",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/86ad76eb71ede2323d23102dc94805b0a0e753f8",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/86ad76eb71ede2323d23102dc94805b0a0e753f8"
+      }
+    ]
+  },
+  {
+    "sha": "86ad76eb71ede2323d23102dc94805b0a0e753f8",
+    "node_id": "C_kwDOAcrXdtoAKDg2YWQ3NmViNzFlZGUyMzIzZDIzMTAyZGM5NDgwNWIwYTBlNzUzZjg",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-08-30T14:00:21Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-08-30T14:00:56Z"
+      },
+      "message": "Added 23.08 to travis matrix",
+      "tree": {
+        "sha": "47089000994737367ad54f9a09aef05ed41e4f45",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/47089000994737367ad54f9a09aef05ed41e4f45"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/86ad76eb71ede2323d23102dc94805b0a0e753f8",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/86ad76eb71ede2323d23102dc94805b0a0e753f8",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/86ad76eb71ede2323d23102dc94805b0a0e753f8",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/86ad76eb71ede2323d23102dc94805b0a0e753f8/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c78d08f59ca9d52b7d7c1dae156a957131e745ea",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/c78d08f59ca9d52b7d7c1dae156a957131e745ea",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/c78d08f59ca9d52b7d7c1dae156a957131e745ea"
+      }
+    ]
+  },
+  {
+    "sha": "c78d08f59ca9d52b7d7c1dae156a957131e745ea",
+    "node_id": "C_kwDOAcrXdtoAKGM3OGQwOGY1OWNhOWQ1MmI3ZDdjMWRhZTE1NmE5NTcxMzFlNzQ1ZWE",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-08-23T11:49:39Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-08-23T15:56:22Z"
+      },
+      "message": "Adding dirver UnixODBC template ini file to installation(RPM/DEB/TGZ)\n\nAdding (post)installation script to RPM and DEB to register the driver\nwith DM\nAdding source rpm build\nMoved all packaging, i.e. osxinstall and wininstall under packaging\nsubdirectory as macos and windows, respectively",
+      "tree": {
+        "sha": "1bbf6457e5ace6a3573efc50dfc2f17df96ebd83",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/1bbf6457e5ace6a3573efc50dfc2f17df96ebd83"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/c78d08f59ca9d52b7d7c1dae156a957131e745ea",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/c78d08f59ca9d52b7d7c1dae156a957131e745ea",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/c78d08f59ca9d52b7d7c1dae156a957131e745ea",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/c78d08f59ca9d52b7d7c1dae156a957131e745ea/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9209023eb9b52ac2de6958dc537cf59babbec6bd",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/9209023eb9b52ac2de6958dc537cf59babbec6bd",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/9209023eb9b52ac2de6958dc537cf59babbec6bd"
+      }
+    ]
+  },
+  {
+    "sha": "9209023eb9b52ac2de6958dc537cf59babbec6bd",
+    "node_id": "C_kwDOAcrXdtoAKDkyMDkwMjNlYjliNTJhYzJkZTY5NThkYzUzN2NmNTliYWJiZWM2YmQ",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-08-13T21:10:32Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-08-18T16:51:08Z"
+      },
+      "message": "Fix of travis script\n\nThe driver dilbrary is installed to INSTALL_LIBDIR, rather than to\nits mariadb subdir for DEB and RPM.\nIgnoring PCDIR for RPM(otherwise we have conflict with other package)\nAlso changet tests to use driver installation location in case of RPM or\nDEB package build, as driver is tested after package installation\nMinor changes in pc file",
+      "tree": {
+        "sha": "b5adc0d89b0570a559c5a35e4b73e7bcfae58b56",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/b5adc0d89b0570a559c5a35e4b73e7bcfae58b56"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/9209023eb9b52ac2de6958dc537cf59babbec6bd",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/9209023eb9b52ac2de6958dc537cf59babbec6bd",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/9209023eb9b52ac2de6958dc537cf59babbec6bd",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/9209023eb9b52ac2de6958dc537cf59babbec6bd/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "bbe48ab9950b69d32ed61f3512b46c2890c3292a",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/bbe48ab9950b69d32ed61f3512b46c2890c3292a",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/bbe48ab9950b69d32ed61f3512b46c2890c3292a"
+      }
+    ]
+  },
+  {
+    "sha": "bbe48ab9950b69d32ed61f3512b46c2890c3292a",
+    "node_id": "C_kwDOAcrXdtoAKGJiZTQ4YWI5OTUwYjY5ZDMyZWQ2MWYzNTEyYjQ2YzI4OTBjMzI5MmE",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-07-20T22:24:43Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-08-04T06:01:22Z"
+      },
+      "message": "Fix of couple of tests for the case of resultset streaming\n\nAlso some fixes for testing in travis with MaxScale, SkySQL and XPand",
+      "tree": {
+        "sha": "fae8980cbbad69d071d56fae96ac6d5f09353326",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/fae8980cbbad69d071d56fae96ac6d5f09353326"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/bbe48ab9950b69d32ed61f3512b46c2890c3292a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/bbe48ab9950b69d32ed61f3512b46c2890c3292a",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/bbe48ab9950b69d32ed61f3512b46c2890c3292a",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/bbe48ab9950b69d32ed61f3512b46c2890c3292a/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "abb23df7ede554356f8b58a4e543c5259e44a241",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/abb23df7ede554356f8b58a4e543c5259e44a241",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/abb23df7ede554356f8b58a4e543c5259e44a241"
+      }
+    ]
+  },
+  {
+    "sha": "abb23df7ede554356f8b58a4e543c5259e44a241",
+    "node_id": "C_kwDOAcrXdtoAKGFiYjIzZGY3ZWRlNTU0MzU2ZjhiNThhNGU1NDNjNTI1OWU0NGEyNDE",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-07-20T15:18:43Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-07-20T15:23:52Z"
+      },
+      "message": "ODBC-395 The fix and the testcase\n\nThere was some old mess with connection object properties for isolation\nlevel, and for setting initial level on connection was used the worng\none, that did not get the value of the attribute. The patch removed that\nbogus field and left only one of them.",
+      "tree": {
+        "sha": "b1e3761f3c31a95a0ba0acd8fa5f68514a8c0841",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/b1e3761f3c31a95a0ba0acd8fa5f68514a8c0841"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/abb23df7ede554356f8b58a4e543c5259e44a241",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/abb23df7ede554356f8b58a4e543c5259e44a241",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/abb23df7ede554356f8b58a4e543c5259e44a241",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/abb23df7ede554356f8b58a4e543c5259e44a241/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a7ba72d08b7f19cdc1a4b4213ea1d18dfa082758",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/a7ba72d08b7f19cdc1a4b4213ea1d18dfa082758",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/a7ba72d08b7f19cdc1a4b4213ea1d18dfa082758"
+      }
+    ]
+  },
+  {
+    "sha": "a7ba72d08b7f19cdc1a4b4213ea1d18dfa082758",
+    "node_id": "C_kwDOAcrXdtoAKGE3YmE3MmQwOGI3ZjE5Y2RjMWE0YjQyMTNlYTFkMThkZmEwODI3NTg",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-07-20T13:24:12Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-07-20T15:23:52Z"
+      },
+      "message": "ODBC-394 Changed use of tx_isolation to transaction_isolation\n\nfor server versions starting from 11.1.1\nAlso fixed one test that would fail if server had only one storage\nengine available(and the tests is not about SE's at all).",
+      "tree": {
+        "sha": "6260acd680102959e4ccb0516098175fe8e41491",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/6260acd680102959e4ccb0516098175fe8e41491"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/a7ba72d08b7f19cdc1a4b4213ea1d18dfa082758",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/a7ba72d08b7f19cdc1a4b4213ea1d18dfa082758",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/a7ba72d08b7f19cdc1a4b4213ea1d18dfa082758",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/a7ba72d08b7f19cdc1a4b4213ea1d18dfa082758/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "97b6d5ee84dcf974b188f138e946f2f2e1d57edd",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/97b6d5ee84dcf974b188f138e946f2f2e1d57edd",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/97b6d5ee84dcf974b188f138e946f2f2e1d57edd"
+      }
+    ]
+  },
+  {
+    "sha": "97b6d5ee84dcf974b188f138e946f2f2e1d57edd",
+    "node_id": "C_kwDOAcrXdtoAKDk3YjZkNWVlODRkY2Y5NzRiMTg4ZjEzOGU5NDZmMmYyZTFkNTdlZGQ",
+    "commit": {
+      "author": {
+        "name": "Daniel Bartholomew",
+        "email": "db@dbart.us",
+        "date": "2023-07-07T18:35:59Z"
+      },
+      "committer": {
+        "name": "Daniel Bartholomew",
+        "email": "db@dbart.us",
+        "date": "2023-07-07T18:35:59Z"
+      },
+      "message": "bump the VERSION",
+      "tree": {
+        "sha": "adbf7afca4990b83d35043632184a66b726b45c7",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/adbf7afca4990b83d35043632184a66b726b45c7"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/97b6d5ee84dcf974b188f138e946f2f2e1d57edd",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQIzBAABCgAdFiEEOzyQYxEZGr9RUFXUkXEYmZXkWp4FAmSoWw8ACgkQkXEYmZXk\nWp5cdQ/8CTUKWSDhf0ZZXFYBVT6p1G9PhRrfUuCJc1ZT7Yqtmuz6VPXON/t5ptFl\nbtaLFgle7Nyznxqg6rYFHBozgIJIRlpNCO5JdYOnUZICyXLmy9D62hhglg6eH0cI\n87+Iri8OlK1/BL+ZbeOm4HUQ7TUoh08qH0FCFnE/S1b4B5vwNrZ3v4pf6HJnGeKN\nS8FRA7BH+0QbxnPVSF7kl0oM1edTsQCvoip0q0GQu1dAYBDD025C8bjIHPv51dn8\neJPnkGkDslHqDFTeaxt5nia/eCStl+PDv0sPeX29Lu2shoR/uoNhSQuG5SIPMF1D\nI5ozZQPoVXo4vrkq7tTNbbhvmRUdeqemeZurjducbQNdj7G7RBiRYKdXwcfHCTBG\noDo7and/2luxUZRK4AEylnZokwqvn8geMHLE1ikKnq79h0lMSChOy2E3z0Zaeahu\nFomJrvq4TWqGEPAQ1/3bFv4LTw2BUQpYkcXX6y1tEKHEHm4CBAXmvJWBfdhzuTMp\n2RLAEeW+SenTvZCw1iGTEjr+N5H3A6EaRDurhgPz1wjE+kE2QFreHVVdkq9dPO0F\nBNrHhNn2/gP0frGM7aSLMkjnzTsRmxplVkhJTOQ7/A9y0izHqq0nymwKm5iL2Pxe\ne4oamS+itf015sCwqOwoC5xcfHQcJvP3LHkOKTW1+HBFn6dpq3Y=\n=l+Pa\n-----END PGP SIGNATURE-----",
+        "payload": "tree adbf7afca4990b83d35043632184a66b726b45c7\nparent 08da03f47bc738a74ddd33f9ce620a9922c73d42\nauthor Daniel Bartholomew <db@dbart.us> 1688754959 -0400\ncommitter Daniel Bartholomew <db@dbart.us> 1688754959 -0400\n\nbump the VERSION\n"
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/97b6d5ee84dcf974b188f138e946f2f2e1d57edd",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/97b6d5ee84dcf974b188f138e946f2f2e1d57edd",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/97b6d5ee84dcf974b188f138e946f2f2e1d57edd/comments",
+    "author": {
+      "login": "dbart",
+      "id": 1301571,
+      "node_id": "MDQ6VXNlcjEzMDE1NzE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1301571?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dbart",
+      "html_url": "https://github.com/dbart",
+      "followers_url": "https://api.github.com/users/dbart/followers",
+      "following_url": "https://api.github.com/users/dbart/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dbart/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dbart/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dbart/subscriptions",
+      "organizations_url": "https://api.github.com/users/dbart/orgs",
+      "repos_url": "https://api.github.com/users/dbart/repos",
+      "events_url": "https://api.github.com/users/dbart/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dbart/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "dbart",
+      "id": 1301571,
+      "node_id": "MDQ6VXNlcjEzMDE1NzE=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1301571?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/dbart",
+      "html_url": "https://github.com/dbart",
+      "followers_url": "https://api.github.com/users/dbart/followers",
+      "following_url": "https://api.github.com/users/dbart/following{/other_user}",
+      "gists_url": "https://api.github.com/users/dbart/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/dbart/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/dbart/subscriptions",
+      "organizations_url": "https://api.github.com/users/dbart/orgs",
+      "repos_url": "https://api.github.com/users/dbart/repos",
+      "events_url": "https://api.github.com/users/dbart/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/dbart/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "08da03f47bc738a74ddd33f9ce620a9922c73d42",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/08da03f47bc738a74ddd33f9ce620a9922c73d42",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/08da03f47bc738a74ddd33f9ce620a9922c73d42"
+      }
+    ]
+  },
+  {
+    "sha": "08da03f47bc738a74ddd33f9ce620a9922c73d42",
+    "node_id": "C_kwDOAcrXdtoAKDA4ZGEwM2Y0N2JjNzM4YTc0ZGRkMzNmOWNlNjIwYTk5MjJjNzNkNDI",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-06-10T19:58:33Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-06-11T08:55:21Z"
+      },
+      "message": "Overriding the problem with c/c requires C99 with older GCC\n\nFixing issue of lately added tests with old UnixODBC versions",
+      "tree": {
+        "sha": "28c3a7ee9be3aa6ea9a2bd14d949d4b0df708b15",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/28c3a7ee9be3aa6ea9a2bd14d949d4b0df708b15"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/08da03f47bc738a74ddd33f9ce620a9922c73d42",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/08da03f47bc738a74ddd33f9ce620a9922c73d42",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/08da03f47bc738a74ddd33f9ce620a9922c73d42",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/08da03f47bc738a74ddd33f9ce620a9922c73d42/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "fc52d66105183e0c76cfb8a64c4d2ffe7341c0b1",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/fc52d66105183e0c76cfb8a64c4d2ffe7341c0b1",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/fc52d66105183e0c76cfb8a64c4d2ffe7341c0b1"
+      }
+    ]
+  },
+  {
+    "sha": "fc52d66105183e0c76cfb8a64c4d2ffe7341c0b1",
+    "node_id": "C_kwDOAcrXdtoAKGZjNTJkNjYxMDUxODNlMGM3NmNmYjhhNjRjNGQyZmZlNzM0MWMwYjE",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-06-10T10:42:29Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-06-10T14:27:01Z"
+      },
+      "message": "ODBC-392 The fix and the testcase\n\nSQLSetConnectAttr(SQL_ATTR_CURRENT_CATALOG) could work incorrectly if\nattribute value length parameter was not SQL_NTS, because the string\ncould end up not (properly) null terminated after 2 trans-coddings(by DM\nto unicode, and by driver to used charset). Using ANSI API is another\npre-condition.",
+      "tree": {
+        "sha": "4d594bdfe475773a4771008c566f3574ee9f31da",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/4d594bdfe475773a4771008c566f3574ee9f31da"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/fc52d66105183e0c76cfb8a64c4d2ffe7341c0b1",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/fc52d66105183e0c76cfb8a64c4d2ffe7341c0b1",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/fc52d66105183e0c76cfb8a64c4d2ffe7341c0b1",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/fc52d66105183e0c76cfb8a64c4d2ffe7341c0b1/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a210bfa478e2c62ddf6fc75151b48549ede80b9f",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/a210bfa478e2c62ddf6fc75151b48549ede80b9f",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/a210bfa478e2c62ddf6fc75151b48549ede80b9f"
+      }
+    ]
+  },
+  {
+    "sha": "a210bfa478e2c62ddf6fc75151b48549ede80b9f",
+    "node_id": "C_kwDOAcrXdtoAKGEyMTBiZmE0NzhlMmM2MmRkZjZmYzc1MTUxYjQ4NTQ5ZWRlODBiOWY",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-06-05T10:44:14Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-06-10T10:36:29Z"
+      },
+      "message": "ODBC-391 Only the fix as lower_case_table_names can't be changed for\nsession.\ni.e. the test has been added, but to server has to be in\nlower_case_table_names=2 mode to test the fix, otherwise it ensures that\nthe fix doesn't break catalog functions against server in \"normaler\"\nmode.\nThe fix adds reading of the lower_case_table_names, and if it's 2, then\nit compares table name case insensitively where case sensitive\ncomparison would be used otherwise.\nThe problem actually affects not ony SQLStatistics, but almost all\ncatalog functions, that take catalog and/or table parameter as ordinary\nargument.",
+      "tree": {
+        "sha": "d09d607a0d14362d2b11c47d66e18e5065c90af6",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/d09d607a0d14362d2b11c47d66e18e5065c90af6"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/a210bfa478e2c62ddf6fc75151b48549ede80b9f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/a210bfa478e2c62ddf6fc75151b48549ede80b9f",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/a210bfa478e2c62ddf6fc75151b48549ede80b9f",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/a210bfa478e2c62ddf6fc75151b48549ede80b9f/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "60a5bd6dfce2a6e97d0a649f9092e1b6701bcf4f",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/60a5bd6dfce2a6e97d0a649f9092e1b6701bcf4f",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/60a5bd6dfce2a6e97d0a649f9092e1b6701bcf4f"
+      }
+    ]
+  },
+  {
+    "sha": "60a5bd6dfce2a6e97d0a649f9092e1b6701bcf4f",
+    "node_id": "C_kwDOAcrXdtoAKDYwYTViZDZkZmNlMmE2ZTk3ZDBhNjQ5ZjkwOTJlMWI2NzAxYmNmNGY",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-06-02T12:03:09Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-06-02T18:29:17Z"
+      },
+      "message": "ODBC-350 The fix and the testcase\n\nIt's rather the workaround of the bug in the server - for bit(1) value in\nsubquery it returns string representation of the value, i.e. '0' or '1'\ninstead of '\\0' or '\\1', while reporting the type to be MYSQL_BIT\n\nUpdate of C/C to v3.3.5\n\nRemoved eol'ed server versions from travis",
+      "tree": {
+        "sha": "ce0dbfe4c8245c9e0680202f49152c4c12170b8a",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/ce0dbfe4c8245c9e0680202f49152c4c12170b8a"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/60a5bd6dfce2a6e97d0a649f9092e1b6701bcf4f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/60a5bd6dfce2a6e97d0a649f9092e1b6701bcf4f",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/60a5bd6dfce2a6e97d0a649f9092e1b6701bcf4f",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/60a5bd6dfce2a6e97d0a649f9092e1b6701bcf4f/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9b96270aa509b3b08c260c473a2400a1cb2eff3b",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/9b96270aa509b3b08c260c473a2400a1cb2eff3b",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/9b96270aa509b3b08c260c473a2400a1cb2eff3b"
+      }
+    ]
+  },
+  {
+    "sha": "9b96270aa509b3b08c260c473a2400a1cb2eff3b",
+    "node_id": "C_kwDOAcrXdtoAKDliOTYyNzBhYTUwOWIzYjA4YzI2MGM0NzNhMjQwMGExY2IyZWZmM2I",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-05-17T08:28:42Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-05-17T08:28:42Z"
+      },
+      "message": "Fix of potential issue found with ASAN\n\nTheoretically connection string parser could read past the allocated\narea, if connection string was not null terminated.",
+      "tree": {
+        "sha": "c574d27aa48254ae8edcc897b08bfe1bdb54ac74",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/c574d27aa48254ae8edcc897b08bfe1bdb54ac74"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/9b96270aa509b3b08c260c473a2400a1cb2eff3b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/9b96270aa509b3b08c260c473a2400a1cb2eff3b",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/9b96270aa509b3b08c260c473a2400a1cb2eff3b",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/9b96270aa509b3b08c260c473a2400a1cb2eff3b/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2eb9877a68ae90888c48ec2bd6b1ac32ae4451e5",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/2eb9877a68ae90888c48ec2bd6b1ac32ae4451e5",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/2eb9877a68ae90888c48ec2bd6b1ac32ae4451e5"
+      }
+    ]
+  },
+  {
+    "sha": "2eb9877a68ae90888c48ec2bd6b1ac32ae4451e5",
+    "node_id": "C_kwDOAcrXdtoAKDJlYjk4NzdhNjhhZTkwODg4YzQ4ZWMyYmQ2YjFhYzMyYWU0NDUxZTU",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-05-15T08:16:55Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-05-16T12:01:57Z"
+      },
+      "message": "Added WITH_ASAN, WITH_UBSAN and WITH_MSAN cmake option to enable\n\nrespective compiler options.\nFix of issued found with ASAN on Windows - mostly in tests and one read\npast allocated area in the driver(rather harmless), and on Linux - trim\ncould read before the beginning of allocated area.",
+      "tree": {
+        "sha": "f3dd62577a9d3f6c7f9ca7a4469657237fb02d2a",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/f3dd62577a9d3f6c7f9ca7a4469657237fb02d2a"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/2eb9877a68ae90888c48ec2bd6b1ac32ae4451e5",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/2eb9877a68ae90888c48ec2bd6b1ac32ae4451e5",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/2eb9877a68ae90888c48ec2bd6b1ac32ae4451e5",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/2eb9877a68ae90888c48ec2bd6b1ac32ae4451e5/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c0d989bb490e7106a9dfe31bfe2a1ac9f03ceab4",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/c0d989bb490e7106a9dfe31bfe2a1ac9f03ceab4",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/c0d989bb490e7106a9dfe31bfe2a1ac9f03ceab4"
+      }
+    ]
+  },
+  {
+    "sha": "c0d989bb490e7106a9dfe31bfe2a1ac9f03ceab4",
+    "node_id": "C_kwDOAcrXdtoAKGMwZDk4OWJiNDkwZTcxMDZhOWRmZTMxYmZlMmExYWM5ZjAzY2VhYjQ",
+    "commit": {
+      "author": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-04-28T10:34:59Z"
+      },
+      "committer": {
+        "name": "Lawrin Novitsky",
+        "email": "lawrin.novitsky@mariadb.com",
+        "date": "2023-04-28T10:34:59Z"
+      },
+      "message": "ODBC-390 Using SQL_ATTR_QUERY_TIMEOUT leaks memory\n\nThe string with new query text in MADB_AddQueryTime was allocated and\nthen duplicated, when copied to the Stmt structures, but not freed.",
+      "tree": {
+        "sha": "04577e75c85fc47a0133fb2adb26c475f52baca8",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/trees/04577e75c85fc47a0133fb2adb26c475f52baca8"
+      },
+      "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/git/commits/c0d989bb490e7106a9dfe31bfe2a1ac9f03ceab4",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/c0d989bb490e7106a9dfe31bfe2a1ac9f03ceab4",
+    "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/c0d989bb490e7106a9dfe31bfe2a1ac9f03ceab4",
+    "comments_url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/c0d989bb490e7106a9dfe31bfe2a1ac9f03ceab4/comments",
+    "author": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "lawrinn",
+      "id": 8709448,
+      "node_id": "MDQ6VXNlcjg3MDk0NDg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8709448?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lawrinn",
+      "html_url": "https://github.com/lawrinn",
+      "followers_url": "https://api.github.com/users/lawrinn/followers",
+      "following_url": "https://api.github.com/users/lawrinn/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lawrinn/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lawrinn/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lawrinn/subscriptions",
+      "organizations_url": "https://api.github.com/users/lawrinn/orgs",
+      "repos_url": "https://api.github.com/users/lawrinn/repos",
+      "events_url": "https://api.github.com/users/lawrinn/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lawrinn/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "313102f84a93b0943ed07ba90a6840dc1d2fe294",
+        "url": "https://api.github.com/repos/mariadb-corporation/mariadb-connector-odbc/commits/313102f84a93b0943ed07ba90a6840dc1d2fe294",
+        "html_url": "https://github.com/mariadb-corporation/mariadb-connector-odbc/commit/313102f84a93b0943ed07ba90a6840dc1d2fe294"
+      }
+    ]
+  }
+]

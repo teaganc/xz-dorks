@@ -1,0 +1,1385 @@
+[
+  {
+    "sha": "0b82c20ac7375b522215b567174f370be89a4b12",
+    "node_id": "C_kwDOC2xJ69oAKDBiODJjMjBhYzczNzViNTIyMjE1YjU2NzE3NGYzNzBiZTg5YTRiMTI",
+    "commit": {
+      "author": {
+        "name": "Mark Adler",
+        "email": "fork@madler.net",
+        "date": "2022-10-10T21:19:07Z"
+      },
+      "committer": {
+        "name": "Mark Adler",
+        "email": "fork@madler.net",
+        "date": "2022-10-10T21:32:02Z"
+      },
+      "message": "Remove length integrity check in funzip.\n\nfunzip hasn't been touched in 20 years, and does not support the\nZip64 zip format extensions. This commit bypasses the uncompressed\nlength check, where the length can be stored in a Zip64 extended\ninformation extra field as eight bytes, instead of the four-byte\nfield in the local header. Such entries can now be successfully\ndecompressed. The CRC integrity check is still performed.\n\nThis is a temporary application of duct tape for this issue. The\ncode will be updated to handle the modern formats for large files,\nas well as handle streaming data descriptors.",
+      "tree": {
+        "sha": "0081c647f215d6a5e27e81ced91f5680b386435f",
+        "url": "https://api.github.com/repos/madler/unzip/git/trees/0081c647f215d6a5e27e81ced91f5680b386435f"
+      },
+      "url": "https://api.github.com/repos/madler/unzip/git/commits/0b82c20ac7375b522215b567174f370be89a4b12",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/madler/unzip/commits/0b82c20ac7375b522215b567174f370be89a4b12",
+    "html_url": "https://github.com/madler/unzip/commit/0b82c20ac7375b522215b567174f370be89a4b12",
+    "comments_url": "https://api.github.com/repos/madler/unzip/commits/0b82c20ac7375b522215b567174f370be89a4b12/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "3bee0689f7dc6afb88bda09ffb71b6b15623ff92",
+        "url": "https://api.github.com/repos/madler/unzip/commits/3bee0689f7dc6afb88bda09ffb71b6b15623ff92",
+        "html_url": "https://github.com/madler/unzip/commit/3bee0689f7dc6afb88bda09ffb71b6b15623ff92"
+      }
+    ]
+  },
+  {
+    "sha": "3bee0689f7dc6afb88bda09ffb71b6b15623ff92",
+    "node_id": "C_kwDOC2xJ69oAKDNiZWUwNjg5ZjdkYzZhZmI4OGJkYTA5ZmZiNzFiNmIxNTYyM2ZmOTI",
+    "commit": {
+      "author": {
+        "name": "Mark Adler",
+        "email": "fork@madler.net",
+        "date": "2022-07-09T19:00:30Z"
+      },
+      "committer": {
+        "name": "Mark Adler",
+        "email": "fork@madler.net",
+        "date": "2022-07-09T19:00:30Z"
+      },
+      "message": "Update beta level and date for zip bomb detection.\n\nThis version accepts a wider range of zip files, avoiding false\npositive detections of zip bombs for unusually-formatted cases.",
+      "tree": {
+        "sha": "f05b661ac329bc4627016207b099a140e87f839e",
+        "url": "https://api.github.com/repos/madler/unzip/git/trees/f05b661ac329bc4627016207b099a140e87f839e"
+      },
+      "url": "https://api.github.com/repos/madler/unzip/git/commits/3bee0689f7dc6afb88bda09ffb71b6b15623ff92",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/madler/unzip/commits/3bee0689f7dc6afb88bda09ffb71b6b15623ff92",
+    "html_url": "https://github.com/madler/unzip/commit/3bee0689f7dc6afb88bda09ffb71b6b15623ff92",
+    "comments_url": "https://api.github.com/repos/madler/unzip/commits/3bee0689f7dc6afb88bda09ffb71b6b15623ff92/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "af0d07f95809653b669d88aa0f424c6d5aa48ba0",
+        "url": "https://api.github.com/repos/madler/unzip/commits/af0d07f95809653b669d88aa0f424c6d5aa48ba0",
+        "html_url": "https://github.com/madler/unzip/commit/af0d07f95809653b669d88aa0f424c6d5aa48ba0"
+      }
+    ]
+  },
+  {
+    "sha": "af0d07f95809653b669d88aa0f424c6d5aa48ba0",
+    "node_id": "C_kwDOC2xJ69oAKGFmMGQwN2Y5NTgwOTY1M2I2NjlkODhhYTBmNDI0YzZkNWFhNDhiYTA",
+    "commit": {
+      "author": {
+        "name": "Mark Adler",
+        "email": "fork@madler.net",
+        "date": "2022-07-02T21:35:04Z"
+      },
+      "committer": {
+        "name": "Mark Adler",
+        "email": "fork@madler.net",
+        "date": "2022-07-06T13:08:57Z"
+      },
+      "message": "Be more liberal in the acceptance of data descriptors.\n\nPreviously the zip64 flag determined the size of the lengths in the\ndata descriptor. This is compliant with the zip format. However, a\nbug in the Java zip library results in an incorrect setting of that\nflag. This commit permits either 32-bit or 64-bit lengths, auto-\ndetecting which it is, which works around the Java bug.",
+      "tree": {
+        "sha": "ac39b4751b8b46ff0d2e50b88270334556ea7c41",
+        "url": "https://api.github.com/repos/madler/unzip/git/trees/ac39b4751b8b46ff0d2e50b88270334556ea7c41"
+      },
+      "url": "https://api.github.com/repos/madler/unzip/git/commits/af0d07f95809653b669d88aa0f424c6d5aa48ba0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/madler/unzip/commits/af0d07f95809653b669d88aa0f424c6d5aa48ba0",
+    "html_url": "https://github.com/madler/unzip/commit/af0d07f95809653b669d88aa0f424c6d5aa48ba0",
+    "comments_url": "https://api.github.com/repos/madler/unzip/commits/af0d07f95809653b669d88aa0f424c6d5aa48ba0/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "122050bac16fae82a460ff739fb1ca0f106e9d85",
+        "url": "https://api.github.com/repos/madler/unzip/commits/122050bac16fae82a460ff739fb1ca0f106e9d85",
+        "html_url": "https://github.com/madler/unzip/commit/122050bac16fae82a460ff739fb1ca0f106e9d85"
+      }
+    ]
+  },
+  {
+    "sha": "122050bac16fae82a460ff739fb1ca0f106e9d85",
+    "node_id": "MDY6Q29tbWl0MTkxNjQ2MTg3OjEyMjA1MGJhYzE2ZmFlODJhNDYwZmY3MzlmYjFjYTBmMTA2ZTlkODU=",
+    "commit": {
+      "author": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2021-01-02T21:09:34Z"
+      },
+      "committer": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2021-01-02T21:09:34Z"
+      },
+      "message": "Determine Zip64 status entry-by-entry instead of for entire file.\n\nFixes a bug for zip files with mixed Zip64 and not Zip64 entries,\nwhich resulted in an incorrect data descriptor length. The bug is\nseen when a Zip64 entry precedes a non-Zip64 entry, in which case\nthe data descriptor would have been assumed to be larger than it\nis, resulting in an incorrect bomb warning due to a perceived\noverlap with the next entry. This commit determines and saves the\nZip64 status for each entry based on the central directory, and\nthen computes the length of each data descriptor accordingly.",
+      "tree": {
+        "sha": "ed735b78c2ee343d90ac58ea3fbedefd315cb72e",
+        "url": "https://api.github.com/repos/madler/unzip/git/trees/ed735b78c2ee343d90ac58ea3fbedefd315cb72e"
+      },
+      "url": "https://api.github.com/repos/madler/unzip/git/commits/122050bac16fae82a460ff739fb1ca0f106e9d85",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/madler/unzip/commits/122050bac16fae82a460ff739fb1ca0f106e9d85",
+    "html_url": "https://github.com/madler/unzip/commit/122050bac16fae82a460ff739fb1ca0f106e9d85",
+    "comments_url": "https://api.github.com/repos/madler/unzip/commits/122050bac16fae82a460ff739fb1ca0f106e9d85/comments",
+    "author": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b0993a39a9d45b078dd5bc8d6126df629d476c73",
+        "url": "https://api.github.com/repos/madler/unzip/commits/b0993a39a9d45b078dd5bc8d6126df629d476c73",
+        "html_url": "https://github.com/madler/unzip/commit/b0993a39a9d45b078dd5bc8d6126df629d476c73"
+      }
+    ]
+  },
+  {
+    "sha": "b0993a39a9d45b078dd5bc8d6126df629d476c73",
+    "node_id": "MDY6Q29tbWl0MTkxNjQ2MTg3OmIwOTkzYTM5YTlkNDViMDc4ZGQ1YmM4ZDYxMjZkZjYyOWQ0NzZjNzM=",
+    "commit": {
+      "author": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2021-01-02T15:59:56Z"
+      },
+      "committer": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2021-01-02T15:59:56Z"
+      },
+      "message": "Add annoying local file to .gitignore.",
+      "tree": {
+        "sha": "2d8c0c03696a201afda4f9658753bbc7e587fa2c",
+        "url": "https://api.github.com/repos/madler/unzip/git/trees/2d8c0c03696a201afda4f9658753bbc7e587fa2c"
+      },
+      "url": "https://api.github.com/repos/madler/unzip/git/commits/b0993a39a9d45b078dd5bc8d6126df629d476c73",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/madler/unzip/commits/b0993a39a9d45b078dd5bc8d6126df629d476c73",
+    "html_url": "https://github.com/madler/unzip/commit/b0993a39a9d45b078dd5bc8d6126df629d476c73",
+    "comments_url": "https://api.github.com/repos/madler/unzip/commits/b0993a39a9d45b078dd5bc8d6126df629d476c73/comments",
+    "author": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7a9b7ec1ef194a01cf812119d9cb7dac9b32879b",
+        "url": "https://api.github.com/repos/madler/unzip/commits/7a9b7ec1ef194a01cf812119d9cb7dac9b32879b",
+        "html_url": "https://github.com/madler/unzip/commit/7a9b7ec1ef194a01cf812119d9cb7dac9b32879b"
+      }
+    ]
+  },
+  {
+    "sha": "7a9b7ec1ef194a01cf812119d9cb7dac9b32879b",
+    "node_id": "MDY6Q29tbWl0MTkxNjQ2MTg3OjdhOWI3ZWMxZWYxOTRhMDFjZjgxMjExOWQ5Y2I3ZGFjOWIzMjg3OWI=",
+    "commit": {
+      "author": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2020-02-10T06:07:34Z"
+      },
+      "committer": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2020-02-10T06:09:26Z"
+      },
+      "message": "Update beta level and date for zip bomb detection updates.\n\nSo that the fact that this is not an official Info-ZIP release can\nbe more easily detected.",
+      "tree": {
+        "sha": "b4b3357997986f5905ff6b53ce9c03380fa1ea10",
+        "url": "https://api.github.com/repos/madler/unzip/git/trees/b4b3357997986f5905ff6b53ce9c03380fa1ea10"
+      },
+      "url": "https://api.github.com/repos/madler/unzip/git/commits/7a9b7ec1ef194a01cf812119d9cb7dac9b32879b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/madler/unzip/commits/7a9b7ec1ef194a01cf812119d9cb7dac9b32879b",
+    "html_url": "https://github.com/madler/unzip/commit/7a9b7ec1ef194a01cf812119d9cb7dac9b32879b",
+    "comments_url": "https://api.github.com/repos/madler/unzip/commits/7a9b7ec1ef194a01cf812119d9cb7dac9b32879b/comments",
+    "author": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1860ba704db791db940475b1fb6ef73bdb81bcab",
+        "url": "https://api.github.com/repos/madler/unzip/commits/1860ba704db791db940475b1fb6ef73bdb81bcab",
+        "html_url": "https://github.com/madler/unzip/commit/1860ba704db791db940475b1fb6ef73bdb81bcab"
+      }
+    ]
+  },
+  {
+    "sha": "1860ba704db791db940475b1fb6ef73bdb81bcab",
+    "node_id": "MDY6Q29tbWl0MTkxNjQ2MTg3OjE4NjBiYTcwNGRiNzkxZGI5NDA0NzViMWZiNmVmNzNiZGI4MWJjYWI=",
+    "commit": {
+      "author": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2020-02-10T05:50:03Z"
+      },
+      "committer": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2020-02-10T05:50:03Z"
+      },
+      "message": "If ZIP64_SUPPORT is requested, then request LARGE_FILE_SUPPORT.",
+      "tree": {
+        "sha": "f7cc69f49916d85cb3c71d593fb309234c42151a",
+        "url": "https://api.github.com/repos/madler/unzip/git/trees/f7cc69f49916d85cb3c71d593fb309234c42151a"
+      },
+      "url": "https://api.github.com/repos/madler/unzip/git/commits/1860ba704db791db940475b1fb6ef73bdb81bcab",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/madler/unzip/commits/1860ba704db791db940475b1fb6ef73bdb81bcab",
+    "html_url": "https://github.com/madler/unzip/commit/1860ba704db791db940475b1fb6ef73bdb81bcab",
+    "comments_url": "https://api.github.com/repos/madler/unzip/commits/1860ba704db791db940475b1fb6ef73bdb81bcab/comments",
+    "author": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5c572555cf5d80309a07c30cf7a54b2501493720",
+        "url": "https://api.github.com/repos/madler/unzip/commits/5c572555cf5d80309a07c30cf7a54b2501493720",
+        "html_url": "https://github.com/madler/unzip/commit/5c572555cf5d80309a07c30cf7a54b2501493720"
+      }
+    ]
+  },
+  {
+    "sha": "5c572555cf5d80309a07c30cf7a54b2501493720",
+    "node_id": "MDY6Q29tbWl0MTkxNjQ2MTg3OjVjNTcyNTU1Y2Y1ZDgwMzA5YTA3YzMwY2Y3YTU0YjI1MDE0OTM3MjA=",
+    "commit": {
+      "author": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2020-02-10T05:39:09Z"
+      },
+      "committer": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2020-02-10T05:39:09Z"
+      },
+      "message": "Fix bug in UZinflate() that incorrectly updated G.incnt.\n\nThe update assumed a full buffer, which is not always full. This\ncould result in a false overlapped element detection when a small\ndeflate-compressed file was unzipped using an old zlib. This\ncommit remedies that.",
+      "tree": {
+        "sha": "907fbd3705463905db033856faa14ad72e9e6b5b",
+        "url": "https://api.github.com/repos/madler/unzip/git/trees/907fbd3705463905db033856faa14ad72e9e6b5b"
+      },
+      "url": "https://api.github.com/repos/madler/unzip/git/commits/5c572555cf5d80309a07c30cf7a54b2501493720",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/madler/unzip/commits/5c572555cf5d80309a07c30cf7a54b2501493720",
+    "html_url": "https://github.com/madler/unzip/commit/5c572555cf5d80309a07c30cf7a54b2501493720",
+    "comments_url": "https://api.github.com/repos/madler/unzip/commits/5c572555cf5d80309a07c30cf7a54b2501493720/comments",
+    "author": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d3934d015d0ce99d3588a3c97316e99fd9620ced",
+        "url": "https://api.github.com/repos/madler/unzip/commits/d3934d015d0ce99d3588a3c97316e99fd9620ced",
+        "html_url": "https://github.com/madler/unzip/commit/d3934d015d0ce99d3588a3c97316e99fd9620ced"
+      }
+    ]
+  },
+  {
+    "sha": "d3934d015d0ce99d3588a3c97316e99fd9620ced",
+    "node_id": "MDY6Q29tbWl0MTkxNjQ2MTg3OmQzOTM0ZDAxNWQwY2U5OWQzNTg4YTNjOTczMTZlOTlmZDk2MjBjZWQ=",
+    "commit": {
+      "author": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2020-02-10T05:36:39Z"
+      },
+      "committer": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2020-02-10T05:36:39Z"
+      },
+      "message": "Fix code to compile for USE_ZLIB and old zlib version.",
+      "tree": {
+        "sha": "bd13dd351163f7e616faaa831068897855d87b1b",
+        "url": "https://api.github.com/repos/madler/unzip/git/trees/bd13dd351163f7e616faaa831068897855d87b1b"
+      },
+      "url": "https://api.github.com/repos/madler/unzip/git/commits/d3934d015d0ce99d3588a3c97316e99fd9620ced",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/madler/unzip/commits/d3934d015d0ce99d3588a3c97316e99fd9620ced",
+    "html_url": "https://github.com/madler/unzip/commit/d3934d015d0ce99d3588a3c97316e99fd9620ced",
+    "comments_url": "https://api.github.com/repos/madler/unzip/commits/d3934d015d0ce99d3588a3c97316e99fd9620ced/comments",
+    "author": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9e1f83500aa502fdc3a42ad0bd560bf7c1909298",
+        "url": "https://api.github.com/repos/madler/unzip/commits/9e1f83500aa502fdc3a42ad0bd560bf7c1909298",
+        "html_url": "https://github.com/madler/unzip/commit/9e1f83500aa502fdc3a42ad0bd560bf7c1909298"
+      }
+    ]
+  },
+  {
+    "sha": "9e1f83500aa502fdc3a42ad0bd560bf7c1909298",
+    "node_id": "MDY6Q29tbWl0MTkxNjQ2MTg3OjllMWY4MzUwMGFhNTAyZmRjM2E0MmFkMGJkNTYwYmY3YzE5MDkyOTg=",
+    "commit": {
+      "author": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2020-02-10T04:51:43Z"
+      },
+      "committer": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2020-02-10T04:51:43Z"
+      },
+      "message": "Add prototypes for the cover functions.",
+      "tree": {
+        "sha": "6b025ebd27a3b4f1cec549e16a109d1293ae3211",
+        "url": "https://api.github.com/repos/madler/unzip/git/trees/6b025ebd27a3b4f1cec549e16a109d1293ae3211"
+      },
+      "url": "https://api.github.com/repos/madler/unzip/git/commits/9e1f83500aa502fdc3a42ad0bd560bf7c1909298",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/madler/unzip/commits/9e1f83500aa502fdc3a42ad0bd560bf7c1909298",
+    "html_url": "https://github.com/madler/unzip/commit/9e1f83500aa502fdc3a42ad0bd560bf7c1909298",
+    "comments_url": "https://api.github.com/repos/madler/unzip/commits/9e1f83500aa502fdc3a42ad0bd560bf7c1909298/comments",
+    "author": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5e2efcd633a4a1fb95a129a75508e7d769e767be",
+        "url": "https://api.github.com/repos/madler/unzip/commits/5e2efcd633a4a1fb95a129a75508e7d769e767be",
+        "html_url": "https://github.com/madler/unzip/commit/5e2efcd633a4a1fb95a129a75508e7d769e767be"
+      }
+    ]
+  },
+  {
+    "sha": "5e2efcd633a4a1fb95a129a75508e7d769e767be",
+    "node_id": "MDY6Q29tbWl0MTkxNjQ2MTg3OjVlMmVmY2Q2MzNhNGExZmI5NWExMjlhNzU1MDhlN2Q3NjllNzY3YmU=",
+    "commit": {
+      "author": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2020-02-10T04:36:28Z"
+      },
+      "committer": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2020-02-10T04:39:19Z"
+      },
+      "message": "Fix bug in UZbunzip2() that incorrectly updated G.incnt.\n\nThe update assumed a full buffer, which is not always full. This\ncould result in a false overlapped element detection when a small\nbzip2-compressed file was unzipped. This commit remedies that.",
+      "tree": {
+        "sha": "329a0ebbcc4a0c6780a2a30b2846073666251262",
+        "url": "https://api.github.com/repos/madler/unzip/git/trees/329a0ebbcc4a0c6780a2a30b2846073666251262"
+      },
+      "url": "https://api.github.com/repos/madler/unzip/git/commits/5e2efcd633a4a1fb95a129a75508e7d769e767be",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/madler/unzip/commits/5e2efcd633a4a1fb95a129a75508e7d769e767be",
+    "html_url": "https://github.com/madler/unzip/commit/5e2efcd633a4a1fb95a129a75508e7d769e767be",
+    "comments_url": "https://api.github.com/repos/madler/unzip/commits/5e2efcd633a4a1fb95a129a75508e7d769e767be/comments",
+    "author": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "13f0260beae851f7d5dd96e9ef757d8d6d7daac1",
+        "url": "https://api.github.com/repos/madler/unzip/commits/13f0260beae851f7d5dd96e9ef757d8d6d7daac1",
+        "html_url": "https://github.com/madler/unzip/commit/13f0260beae851f7d5dd96e9ef757d8d6d7daac1"
+      }
+    ]
+  },
+  {
+    "sha": "13f0260beae851f7d5dd96e9ef757d8d6d7daac1",
+    "node_id": "MDY6Q29tbWl0MTkxNjQ2MTg3OjEzZjAyNjBiZWFlODUxZjdkNWRkOTZlOWVmNzU3ZDhkNmQ3ZGFhYzE=",
+    "commit": {
+      "author": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2020-02-09T15:20:13Z"
+      },
+      "committer": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2020-02-09T16:02:18Z"
+      },
+      "message": "Fix false overlapped components detection on 32-bit systems.\n\n32-bit systems with ZIP64_SUPPORT enabled could have different\nsize types for zoff_t and zusz_t. That resulted in bad parameter\npassing to the bound tracking functions, itself due to the lack of\nuse of C function prototypes in unzip. This commit assures that\nparameters are cast properly for those calls.\n\nThis problem occurred only for ill-chosen make options, which give\na 32-bit zoff_t. A proper build will result in a zoff_t of 64 bits,\neven on 32-bit systems.",
+      "tree": {
+        "sha": "9fa618600ba63da5cf967f743b01e45e4688e295",
+        "url": "https://api.github.com/repos/madler/unzip/git/trees/9fa618600ba63da5cf967f743b01e45e4688e295"
+      },
+      "url": "https://api.github.com/repos/madler/unzip/git/commits/13f0260beae851f7d5dd96e9ef757d8d6d7daac1",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/madler/unzip/commits/13f0260beae851f7d5dd96e9ef757d8d6d7daac1",
+    "html_url": "https://github.com/madler/unzip/commit/13f0260beae851f7d5dd96e9ef757d8d6d7daac1",
+    "comments_url": "https://api.github.com/repos/madler/unzip/commits/13f0260beae851f7d5dd96e9ef757d8d6d7daac1/comments",
+    "author": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6d351831be705cc26d897db44f878a978f4138fc",
+        "url": "https://api.github.com/repos/madler/unzip/commits/6d351831be705cc26d897db44f878a978f4138fc",
+        "html_url": "https://github.com/madler/unzip/commit/6d351831be705cc26d897db44f878a978f4138fc"
+      }
+    ]
+  },
+  {
+    "sha": "6d351831be705cc26d897db44f878a978f4138fc",
+    "node_id": "MDY6Q29tbWl0MTkxNjQ2MTg3OjZkMzUxODMxYmU3MDVjYzI2ZDg5N2RiNDRmODc4YTk3OGY0MTM4ZmM=",
+    "commit": {
+      "author": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2019-07-26T03:43:17Z"
+      },
+      "committer": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2019-07-26T03:54:28Z"
+      },
+      "message": "Do not raise a zip bomb alert for a misplaced central directory.\n\nThere is a zip-like file in the Firefox distribution, omni.ja,\nwhich is a zip container with the central directory placed at the\nstart of the file instead of after the local entries as required\nby the zip standard. This commit marks the actual location of the\ncentral directory, as well as the end of central directory records,\nas disallowed locations. This now permits such containers to not\nraise a zip bomb alert, where in fact there are no overlaps.",
+      "tree": {
+        "sha": "792722fe421aebd0a602bbe69de6603b9a4cc442",
+        "url": "https://api.github.com/repos/madler/unzip/git/trees/792722fe421aebd0a602bbe69de6603b9a4cc442"
+      },
+      "url": "https://api.github.com/repos/madler/unzip/git/commits/6d351831be705cc26d897db44f878a978f4138fc",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/madler/unzip/commits/6d351831be705cc26d897db44f878a978f4138fc",
+    "html_url": "https://github.com/madler/unzip/commit/6d351831be705cc26d897db44f878a978f4138fc",
+    "comments_url": "https://api.github.com/repos/madler/unzip/commits/6d351831be705cc26d897db44f878a978f4138fc/comments",
+    "author": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6519bf0f8a896851d9708da11e1b63c818238c8f",
+        "url": "https://api.github.com/repos/madler/unzip/commits/6519bf0f8a896851d9708da11e1b63c818238c8f",
+        "html_url": "https://github.com/madler/unzip/commit/6519bf0f8a896851d9708da11e1b63c818238c8f"
+      }
+    ]
+  },
+  {
+    "sha": "6519bf0f8a896851d9708da11e1b63c818238c8f",
+    "node_id": "MDY6Q29tbWl0MTkxNjQ2MTg3OjY1MTliZjBmOGE4OTY4NTFkOTcwOGRhMTFlMWI2M2M4MTgyMzhjOGY=",
+    "commit": {
+      "author": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2019-06-13T01:44:47Z"
+      },
+      "committer": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2019-06-13T01:44:47Z"
+      },
+      "message": "Compile with same options as shipped macosx unzip.",
+      "tree": {
+        "sha": "70bdba2809305db4cf0c640c552bf2931a4b8be3",
+        "url": "https://api.github.com/repos/madler/unzip/git/trees/70bdba2809305db4cf0c640c552bf2931a4b8be3"
+      },
+      "url": "https://api.github.com/repos/madler/unzip/git/commits/6519bf0f8a896851d9708da11e1b63c818238c8f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/madler/unzip/commits/6519bf0f8a896851d9708da11e1b63c818238c8f",
+    "html_url": "https://github.com/madler/unzip/commit/6519bf0f8a896851d9708da11e1b63c818238c8f",
+    "comments_url": "https://api.github.com/repos/madler/unzip/commits/6519bf0f8a896851d9708da11e1b63c818238c8f/comments",
+    "author": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "47b3ceae397d21bf822bc2ac73052a4b1daf8e1c",
+        "url": "https://api.github.com/repos/madler/unzip/commits/47b3ceae397d21bf822bc2ac73052a4b1daf8e1c",
+        "html_url": "https://github.com/madler/unzip/commit/47b3ceae397d21bf822bc2ac73052a4b1daf8e1c"
+      }
+    ]
+  },
+  {
+    "sha": "47b3ceae397d21bf822bc2ac73052a4b1daf8e1c",
+    "node_id": "MDY6Q29tbWl0MTkxNjQ2MTg3OjQ3YjNjZWFlMzk3ZDIxYmY4MjJiYzJhYzczMDUyYTRiMWRhZjhlMWM=",
+    "commit": {
+      "author": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2019-06-12T05:01:18Z"
+      },
+      "committer": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2019-06-12T21:13:18Z"
+      },
+      "message": "Detect and reject a zip bomb using overlapped entries.\n\nThis detects an invalid zip file that has at least one entry that\noverlaps with another entry or with the central directory to the\nend of the file. A Fifield zip bomb uses overlapped local entries\nto vastly increase the potential inflation ratio. Such an invalid\nzip file is rejected.\n\nSee https://www.bamsoftware.com/hacks/zipbomb/ for David Fifield's\nanalysis, construction, and examples of such zip bombs.\n\nThe detection maintains a list of covered spans of the zip files\nso far, where the central directory to the end of the file and any\nbytes preceding the first entry at zip file offset zero are\nconsidered covered initially. Then as each entry is decompressed\nor tested, it is considered covered. When a new entry is about to\nbe processed, its initial offset is checked to see if it is\ncontained by a covered span. If so, the zip file is rejected as\ninvalid.\n\nThis commit depends on a preceding commit: \"Fix bug in\nundefer_input() that misplaced the input state.\"",
+      "tree": {
+        "sha": "57f00298d91afb546ea6b5832c30991cec9d397a",
+        "url": "https://api.github.com/repos/madler/unzip/git/trees/57f00298d91afb546ea6b5832c30991cec9d397a"
+      },
+      "url": "https://api.github.com/repos/madler/unzip/git/commits/47b3ceae397d21bf822bc2ac73052a4b1daf8e1c",
+      "comment_count": 19,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/madler/unzip/commits/47b3ceae397d21bf822bc2ac73052a4b1daf8e1c",
+    "html_url": "https://github.com/madler/unzip/commit/47b3ceae397d21bf822bc2ac73052a4b1daf8e1c",
+    "comments_url": "https://api.github.com/repos/madler/unzip/commits/47b3ceae397d21bf822bc2ac73052a4b1daf8e1c/comments",
+    "author": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "41beb477c5744bc396fa1162ee0c14218ec12213",
+        "url": "https://api.github.com/repos/madler/unzip/commits/41beb477c5744bc396fa1162ee0c14218ec12213",
+        "html_url": "https://github.com/madler/unzip/commit/41beb477c5744bc396fa1162ee0c14218ec12213"
+      }
+    ]
+  },
+  {
+    "sha": "41beb477c5744bc396fa1162ee0c14218ec12213",
+    "node_id": "MDY6Q29tbWl0MTkxNjQ2MTg3OjQxYmViNDc3YzU3NDRiYzM5NmZhMTE2MmVlMGMxNDIxOGVjMTIyMTM=",
+    "commit": {
+      "author": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2019-05-27T15:20:32Z"
+      },
+      "committer": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2019-06-12T05:11:58Z"
+      },
+      "message": "Fix bug in undefer_input() that misplaced the input state.",
+      "tree": {
+        "sha": "419450f4eb69229887a0ef5dc149b1cc6b8d4a5f",
+        "url": "https://api.github.com/repos/madler/unzip/git/trees/419450f4eb69229887a0ef5dc149b1cc6b8d4a5f"
+      },
+      "url": "https://api.github.com/repos/madler/unzip/git/commits/41beb477c5744bc396fa1162ee0c14218ec12213",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/madler/unzip/commits/41beb477c5744bc396fa1162ee0c14218ec12213",
+    "html_url": "https://github.com/madler/unzip/commit/41beb477c5744bc396fa1162ee0c14218ec12213",
+    "comments_url": "https://api.github.com/repos/madler/unzip/commits/41beb477c5744bc396fa1162ee0c14218ec12213/comments",
+    "author": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "075867bab8939c681ce11b2faff1d422c73cb0f3",
+        "url": "https://api.github.com/repos/madler/unzip/commits/075867bab8939c681ce11b2faff1d422c73cb0f3",
+        "html_url": "https://github.com/madler/unzip/commit/075867bab8939c681ce11b2faff1d422c73cb0f3"
+      }
+    ]
+  },
+  {
+    "sha": "075867bab8939c681ce11b2faff1d422c73cb0f3",
+    "node_id": "MDY6Q29tbWl0MTkxNjQ2MTg3OjA3NTg2N2JhYjg5MzljNjgxY2UxMWIyZmFmZjFkNDIyYzczY2IwZjM=",
+    "commit": {
+      "author": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2019-05-26T18:45:43Z"
+      },
+      "committer": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2019-06-12T05:11:51Z"
+      },
+      "message": "Add .gitignore.",
+      "tree": {
+        "sha": "a5462944b8bb1ea38a1c16eab64b8d6c6027c965",
+        "url": "https://api.github.com/repos/madler/unzip/git/trees/a5462944b8bb1ea38a1c16eab64b8d6c6027c965"
+      },
+      "url": "https://api.github.com/repos/madler/unzip/git/commits/075867bab8939c681ce11b2faff1d422c73cb0f3",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/madler/unzip/commits/075867bab8939c681ce11b2faff1d422c73cb0f3",
+    "html_url": "https://github.com/madler/unzip/commit/075867bab8939c681ce11b2faff1d422c73cb0f3",
+    "comments_url": "https://api.github.com/repos/madler/unzip/commits/075867bab8939c681ce11b2faff1d422c73cb0f3/comments",
+    "author": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d685e65d71339cbdc0926b4cce072b6c15bb9b74",
+        "url": "https://api.github.com/repos/madler/unzip/commits/d685e65d71339cbdc0926b4cce072b6c15bb9b74",
+        "html_url": "https://github.com/madler/unzip/commit/d685e65d71339cbdc0926b4cce072b6c15bb9b74"
+      }
+    ]
+  },
+  {
+    "sha": "d685e65d71339cbdc0926b4cce072b6c15bb9b74",
+    "node_id": "MDY6Q29tbWl0MTkxNjQ2MTg3OmQ2ODVlNjVkNzEzMzljYmRjMDkyNmI0Y2NlMDcyYjZjMTViYjliNzQ=",
+    "commit": {
+      "author": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2019-05-24T04:29:49Z"
+      },
+      "committer": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2019-06-12T05:11:37Z"
+      },
+      "message": "Clean up warnings.\n\nUse (void)var to mark var as used, instead of var = var. The\nintent of the self assignment was to avoid a warning, but it ends\nup invoking a different warning.\n\nTurn off security warnings for a potentially mutable string being\ngiven as the format string to sprintf(). Though only on macosx\nunix targets. All of the strings provided are in fact not mutable,\nbut this fact is hidden from the compiler due to the strings being\nextern in a different object file.",
+      "tree": {
+        "sha": "9fd9592b9c03edc311cfdbb9bffbbf97efd39dde",
+        "url": "https://api.github.com/repos/madler/unzip/git/trees/9fd9592b9c03edc311cfdbb9bffbbf97efd39dde"
+      },
+      "url": "https://api.github.com/repos/madler/unzip/git/commits/d685e65d71339cbdc0926b4cce072b6c15bb9b74",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/madler/unzip/commits/d685e65d71339cbdc0926b4cce072b6c15bb9b74",
+    "html_url": "https://github.com/madler/unzip/commit/d685e65d71339cbdc0926b4cce072b6c15bb9b74",
+    "comments_url": "https://api.github.com/repos/madler/unzip/commits/d685e65d71339cbdc0926b4cce072b6c15bb9b74/comments",
+    "author": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3d61d782edc651a6a2d9c99b33cbfb247138369f",
+        "url": "https://api.github.com/repos/madler/unzip/commits/3d61d782edc651a6a2d9c99b33cbfb247138369f",
+        "html_url": "https://github.com/madler/unzip/commit/3d61d782edc651a6a2d9c99b33cbfb247138369f"
+      }
+    ]
+  },
+  {
+    "sha": "3d61d782edc651a6a2d9c99b33cbfb247138369f",
+    "node_id": "MDY6Q29tbWl0MTkxNjQ2MTg3OjNkNjFkNzgyZWRjNjUxYTZhMmQ5Yzk5YjMzY2JmYjI0NzEzODM2OWY=",
+    "commit": {
+      "author": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2019-05-24T00:50:51Z"
+      },
+      "committer": {
+        "name": "Mark Adler",
+        "email": "madler@alumni.caltech.edu",
+        "date": "2019-05-24T00:50:51Z"
+      },
+      "message": "UnZip 6.0",
+      "tree": {
+        "sha": "b5a05f998ab5086b4f129d7bc01eef7c81819016",
+        "url": "https://api.github.com/repos/madler/unzip/git/trees/b5a05f998ab5086b4f129d7bc01eef7c81819016"
+      },
+      "url": "https://api.github.com/repos/madler/unzip/git/commits/3d61d782edc651a6a2d9c99b33cbfb247138369f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/madler/unzip/commits/3d61d782edc651a6a2d9c99b33cbfb247138369f",
+    "html_url": "https://github.com/madler/unzip/commit/3d61d782edc651a6a2d9c99b33cbfb247138369f",
+    "comments_url": "https://api.github.com/repos/madler/unzip/commits/3d61d782edc651a6a2d9c99b33cbfb247138369f/comments",
+    "author": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "madler",
+      "id": 240717,
+      "node_id": "MDQ6VXNlcjI0MDcxNw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/240717?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madler",
+      "html_url": "https://github.com/madler",
+      "followers_url": "https://api.github.com/users/madler/followers",
+      "following_url": "https://api.github.com/users/madler/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madler/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madler/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madler/subscriptions",
+      "organizations_url": "https://api.github.com/users/madler/orgs",
+      "repos_url": "https://api.github.com/users/madler/repos",
+      "events_url": "https://api.github.com/users/madler/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madler/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+
+    ]
+  }
+]

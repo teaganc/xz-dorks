@@ -1,0 +1,2146 @@
+[
+  {
+    "sha": "f75e1056f1763b567d7044ec63279afe110aa75e",
+    "node_id": "C_kwDOAExkqtoAKGY3NWUxMDU2ZjE3NjNiNTY3ZDcwNDRlYzYzMjc5YWZlMTEwYWE3NWU",
+    "commit": {
+      "author": {
+        "name": "Ghanshyam Mann",
+        "email": "gmann@ghanshyammann.com",
+        "date": "2024-02-29T21:46:01Z"
+      },
+      "committer": {
+        "name": "Clark Boylan",
+        "email": "clark.boylan@gmail.com",
+        "date": "2024-03-04T17:23:36Z"
+      },
+      "message": "Omnibus PBR CI fixups\n\nThese fixes have to go in together as they are not mergeable\nindividually.\n\nFirst up remove the TripleO jobs\n\nTripleO is retired so removing its jobs\n\n- https://review.opendev.org/q/topic:%22retire-tripleo%22\n\nNext the train EOL has largely completed and leaves us in an awkward\nposition for running tempest-full against python2. While branchless\ntempest continues to define a tempest-full job this job is no longer\nworking after devstack's stable/train branch deletion. There are two\nreasons for this. The first is checking out correct branches of\nopenstack software which we can address in a straightforward manner\nthrough zuul branch checkout overrides from stable/train to train-eol.\nThe other issue is that we previously relied on zuul running the\nstable/train version of devstack's base jobs under tempest-full. Now\nthat the branch is gone we're getting master devstack base jobs which\ndon't do things like setup virtualenv (needed for python2) or override\nthe nodeset to ubuntu-bionic.\n\nInstead of trying to continue to make this job work we accept the\ndecrease in python2 coverage and will rely on python2 unittesting\ninstead. An alternative would be to set up functional testing with swift\nsince swift continues to maintain python2 compatibility in its newer\nbranches.\n\nFinally we update a test case to check for modern pip's normalized\npackage names (previously installing pkg_b resulted in a normalized name\nof pkg-b, but now pkg_b remains pkg_b and we need to check for that\ninstead). Check for both variations as we want the tests to pass\nregardless of pip and setuptools versions used.\n\nCo-Authored-By: Clark Boylan <clark.boylan@gmail.com>\nChange-Id: I9d3417d5803b9ba3e4731fdebbd26778031effcd",
+      "tree": {
+        "sha": "bbc1bdc752f4d57502e0c7b513083a48deebbb91",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/bbc1bdc752f4d57502e0c7b513083a48deebbb91"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/f75e1056f1763b567d7044ec63279afe110aa75e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/f75e1056f1763b567d7044ec63279afe110aa75e",
+    "html_url": "https://github.com/openstack/pbr/commit/f75e1056f1763b567d7044ec63279afe110aa75e",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/f75e1056f1763b567d7044ec63279afe110aa75e/comments",
+    "author": {
+      "login": "gmannos",
+      "id": 4508149,
+      "node_id": "MDQ6VXNlcjQ1MDgxNDk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4508149?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gmannos",
+      "html_url": "https://github.com/gmannos",
+      "followers_url": "https://api.github.com/users/gmannos/followers",
+      "following_url": "https://api.github.com/users/gmannos/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gmannos/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gmannos/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gmannos/subscriptions",
+      "organizations_url": "https://api.github.com/users/gmannos/orgs",
+      "repos_url": "https://api.github.com/users/gmannos/repos",
+      "events_url": "https://api.github.com/users/gmannos/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gmannos/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cboylan",
+      "id": 231403,
+      "node_id": "MDQ6VXNlcjIzMTQwMw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/231403?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cboylan",
+      "html_url": "https://github.com/cboylan",
+      "followers_url": "https://api.github.com/users/cboylan/followers",
+      "following_url": "https://api.github.com/users/cboylan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cboylan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cboylan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cboylan/subscriptions",
+      "organizations_url": "https://api.github.com/users/cboylan/orgs",
+      "repos_url": "https://api.github.com/users/cboylan/repos",
+      "events_url": "https://api.github.com/users/cboylan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cboylan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f55524c08e87eabc6877016e7e75a2d55f0bb098",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/f55524c08e87eabc6877016e7e75a2d55f0bb098",
+        "html_url": "https://github.com/openstack/pbr/commit/f55524c08e87eabc6877016e7e75a2d55f0bb098"
+      }
+    ]
+  },
+  {
+    "sha": "f55524c08e87eabc6877016e7e75a2d55f0bb098",
+    "node_id": "C_kwDOAExkqtoAKGY1NTUyNGMwOGU4N2VhYmM2ODc3MDE2ZTdlNzVhMmQ1NWYwYmIwOTg",
+    "commit": {
+      "author": {
+        "name": "Zuul",
+        "email": "zuul@review.opendev.org",
+        "date": "2024-01-30T12:50:25Z"
+      },
+      "committer": {
+        "name": "Gerrit Code Review",
+        "email": "review@openstack.org",
+        "date": "2024-01-30T12:50:25Z"
+      },
+      "message": "Merge \"Use summary for the package summary\"",
+      "tree": {
+        "sha": "e219391c9acaf333689e42dc7b0ca60a322dc5c7",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/e219391c9acaf333689e42dc7b0ca60a322dc5c7"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/f55524c08e87eabc6877016e7e75a2d55f0bb098",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/f55524c08e87eabc6877016e7e75a2d55f0bb098",
+    "html_url": "https://github.com/openstack/pbr/commit/f55524c08e87eabc6877016e7e75a2d55f0bb098",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/f55524c08e87eabc6877016e7e75a2d55f0bb098/comments",
+    "author": null,
+    "committer": {
+      "login": "openstack-gerrit",
+      "id": 903479,
+      "node_id": "MDQ6VXNlcjkwMzQ3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/903479?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/openstack-gerrit",
+      "html_url": "https://github.com/openstack-gerrit",
+      "followers_url": "https://api.github.com/users/openstack-gerrit/followers",
+      "following_url": "https://api.github.com/users/openstack-gerrit/following{/other_user}",
+      "gists_url": "https://api.github.com/users/openstack-gerrit/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/openstack-gerrit/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/openstack-gerrit/subscriptions",
+      "organizations_url": "https://api.github.com/users/openstack-gerrit/orgs",
+      "repos_url": "https://api.github.com/users/openstack-gerrit/repos",
+      "events_url": "https://api.github.com/users/openstack-gerrit/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/openstack-gerrit/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e502ba1e941815d1625970da4edabad4aad29a3a",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/e502ba1e941815d1625970da4edabad4aad29a3a",
+        "html_url": "https://github.com/openstack/pbr/commit/e502ba1e941815d1625970da4edabad4aad29a3a"
+      },
+      {
+        "sha": "f42ef66d1b0ee33a15d99cb067181ef66a2c7954",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/f42ef66d1b0ee33a15d99cb067181ef66a2c7954",
+        "html_url": "https://github.com/openstack/pbr/commit/f42ef66d1b0ee33a15d99cb067181ef66a2c7954"
+      }
+    ]
+  },
+  {
+    "sha": "e502ba1e941815d1625970da4edabad4aad29a3a",
+    "node_id": "C_kwDOAExkqtoAKGU1MDJiYTFlOTQxODE1ZDE2MjU5NzBkYTRlZGFiYWQ0YWFkMjlhM2E",
+    "commit": {
+      "author": {
+        "name": "Zuul",
+        "email": "zuul@review.opendev.org",
+        "date": "2024-01-26T12:05:35Z"
+      },
+      "committer": {
+        "name": "Gerrit Code Review",
+        "email": "review@openstack.org",
+        "date": "2024-01-26T12:05:35Z"
+      },
+      "message": "Merge \"Test on py310 and py311\"",
+      "tree": {
+        "sha": "e62c33bbf8b507e23687611d7988bd37faf0b2ea",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/e62c33bbf8b507e23687611d7988bd37faf0b2ea"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/e502ba1e941815d1625970da4edabad4aad29a3a",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/e502ba1e941815d1625970da4edabad4aad29a3a",
+    "html_url": "https://github.com/openstack/pbr/commit/e502ba1e941815d1625970da4edabad4aad29a3a",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/e502ba1e941815d1625970da4edabad4aad29a3a/comments",
+    "author": null,
+    "committer": {
+      "login": "openstack-gerrit",
+      "id": 903479,
+      "node_id": "MDQ6VXNlcjkwMzQ3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/903479?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/openstack-gerrit",
+      "html_url": "https://github.com/openstack-gerrit",
+      "followers_url": "https://api.github.com/users/openstack-gerrit/followers",
+      "following_url": "https://api.github.com/users/openstack-gerrit/following{/other_user}",
+      "gists_url": "https://api.github.com/users/openstack-gerrit/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/openstack-gerrit/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/openstack-gerrit/subscriptions",
+      "organizations_url": "https://api.github.com/users/openstack-gerrit/orgs",
+      "repos_url": "https://api.github.com/users/openstack-gerrit/repos",
+      "events_url": "https://api.github.com/users/openstack-gerrit/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/openstack-gerrit/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f401a59db1017cc1e8a765cb028bca9dea9d804f",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/f401a59db1017cc1e8a765cb028bca9dea9d804f",
+        "html_url": "https://github.com/openstack/pbr/commit/f401a59db1017cc1e8a765cb028bca9dea9d804f"
+      },
+      {
+        "sha": "049282adbbd702ae436e6473be9a94e639a63c0e",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/049282adbbd702ae436e6473be9a94e639a63c0e",
+        "html_url": "https://github.com/openstack/pbr/commit/049282adbbd702ae436e6473be9a94e639a63c0e"
+      }
+    ]
+  },
+  {
+    "sha": "f401a59db1017cc1e8a765cb028bca9dea9d804f",
+    "node_id": "C_kwDOAExkqtoAKGY0MDFhNTlkYjEwMTdjYzFlOGE3NjVjYjAyOGJjYTlkZWE5ZDgwNGY",
+    "commit": {
+      "author": {
+        "name": "Tim Burke",
+        "email": "tim.burke@gmail.com",
+        "date": "2024-01-22T17:35:39Z"
+      },
+      "committer": {
+        "name": "Tim Burke",
+        "email": "tim.burke@gmail.com",
+        "date": "2024-01-22T17:35:43Z"
+      },
+      "message": "Serialize tests\n\nsetuptools is pretty opinionated about using a build/ directory in the\nsource tree, and concurrent invocations have a habit of stomping on\neach other.\n\nChange-Id: I9f7108ea1a77b9333c0fdf51d94b105fcd5a9e06",
+      "tree": {
+        "sha": "9abeada71343b930f08a8858e9221aa4ec363b4b",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/9abeada71343b930f08a8858e9221aa4ec363b4b"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/f401a59db1017cc1e8a765cb028bca9dea9d804f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/f401a59db1017cc1e8a765cb028bca9dea9d804f",
+    "html_url": "https://github.com/openstack/pbr/commit/f401a59db1017cc1e8a765cb028bca9dea9d804f",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/f401a59db1017cc1e8a765cb028bca9dea9d804f/comments",
+    "author": {
+      "login": "tipabu",
+      "id": 4432952,
+      "node_id": "MDQ6VXNlcjQ0MzI5NTI=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4432952?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tipabu",
+      "html_url": "https://github.com/tipabu",
+      "followers_url": "https://api.github.com/users/tipabu/followers",
+      "following_url": "https://api.github.com/users/tipabu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tipabu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tipabu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tipabu/subscriptions",
+      "organizations_url": "https://api.github.com/users/tipabu/orgs",
+      "repos_url": "https://api.github.com/users/tipabu/repos",
+      "events_url": "https://api.github.com/users/tipabu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tipabu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tipabu",
+      "id": 4432952,
+      "node_id": "MDQ6VXNlcjQ0MzI5NTI=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4432952?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tipabu",
+      "html_url": "https://github.com/tipabu",
+      "followers_url": "https://api.github.com/users/tipabu/followers",
+      "following_url": "https://api.github.com/users/tipabu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tipabu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tipabu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tipabu/subscriptions",
+      "organizations_url": "https://api.github.com/users/tipabu/orgs",
+      "repos_url": "https://api.github.com/users/tipabu/repos",
+      "events_url": "https://api.github.com/users/tipabu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tipabu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8252a7d54e48f72d2e6e91a5aa23a3219f42c38c",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/8252a7d54e48f72d2e6e91a5aa23a3219f42c38c",
+        "html_url": "https://github.com/openstack/pbr/commit/8252a7d54e48f72d2e6e91a5aa23a3219f42c38c"
+      }
+    ]
+  },
+  {
+    "sha": "8252a7d54e48f72d2e6e91a5aa23a3219f42c38c",
+    "node_id": "C_kwDOAExkqtoAKDgyNTJhN2Q1NGU0OGY3MmQyZTZlOTFhNWFhMjNhMzIxOWY0MmMzOGM",
+    "commit": {
+      "author": {
+        "name": "Tim Burke",
+        "email": "tim.burke@gmail.com",
+        "date": "2024-01-19T00:01:40Z"
+      },
+      "committer": {
+        "name": "Tim Burke",
+        "email": "tim.burke@gmail.com",
+        "date": "2024-01-19T05:19:27Z"
+      },
+      "message": "Fix tempest-full job\n\nAlso, Use an alias to reduce some duplication.\n\nChange-Id: I11c19ab657ef0dfea5d6929ce937791b82e86941",
+      "tree": {
+        "sha": "752e038b56e9f98396cbf06db0ab9403b06858a8",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/752e038b56e9f98396cbf06db0ab9403b06858a8"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/8252a7d54e48f72d2e6e91a5aa23a3219f42c38c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/8252a7d54e48f72d2e6e91a5aa23a3219f42c38c",
+    "html_url": "https://github.com/openstack/pbr/commit/8252a7d54e48f72d2e6e91a5aa23a3219f42c38c",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/8252a7d54e48f72d2e6e91a5aa23a3219f42c38c/comments",
+    "author": {
+      "login": "tipabu",
+      "id": 4432952,
+      "node_id": "MDQ6VXNlcjQ0MzI5NTI=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4432952?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tipabu",
+      "html_url": "https://github.com/tipabu",
+      "followers_url": "https://api.github.com/users/tipabu/followers",
+      "following_url": "https://api.github.com/users/tipabu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tipabu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tipabu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tipabu/subscriptions",
+      "organizations_url": "https://api.github.com/users/tipabu/orgs",
+      "repos_url": "https://api.github.com/users/tipabu/repos",
+      "events_url": "https://api.github.com/users/tipabu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tipabu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tipabu",
+      "id": 4432952,
+      "node_id": "MDQ6VXNlcjQ0MzI5NTI=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4432952?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tipabu",
+      "html_url": "https://github.com/tipabu",
+      "followers_url": "https://api.github.com/users/tipabu/followers",
+      "following_url": "https://api.github.com/users/tipabu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tipabu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tipabu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tipabu/subscriptions",
+      "organizations_url": "https://api.github.com/users/tipabu/orgs",
+      "repos_url": "https://api.github.com/users/tipabu/repos",
+      "events_url": "https://api.github.com/users/tipabu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tipabu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "11151154b94f5e116c0ec8cd312df8d341553d50",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/11151154b94f5e116c0ec8cd312df8d341553d50",
+        "html_url": "https://github.com/openstack/pbr/commit/11151154b94f5e116c0ec8cd312df8d341553d50"
+      }
+    ]
+  },
+  {
+    "sha": "f42ef66d1b0ee33a15d99cb067181ef66a2c7954",
+    "node_id": "C_kwDOAExkqtoAKGY0MmVmNjZkMWIwZWUzM2ExNWQ5OWNiMDY3MTgxZWY2NmEyYzc5NTQ",
+    "commit": {
+      "author": {
+        "name": "Tim Burke",
+        "email": "tim.burke@gmail.com",
+        "date": "2024-01-18T22:53:58Z"
+      },
+      "committer": {
+        "name": "Tim Burke",
+        "email": "tim.burke@gmail.com",
+        "date": "2024-01-18T22:53:58Z"
+      },
+      "message": "Use summary for the package summary\n\nOtherwise, the long_description file isn't used.\n\nChange-Id: Ib494a0bac947cc6b5fb8d3d4315a3d386cbffdc2",
+      "tree": {
+        "sha": "7e910c21a4d5e941cca6f161e57c2ab227490ed4",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/7e910c21a4d5e941cca6f161e57c2ab227490ed4"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/f42ef66d1b0ee33a15d99cb067181ef66a2c7954",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/f42ef66d1b0ee33a15d99cb067181ef66a2c7954",
+    "html_url": "https://github.com/openstack/pbr/commit/f42ef66d1b0ee33a15d99cb067181ef66a2c7954",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/f42ef66d1b0ee33a15d99cb067181ef66a2c7954/comments",
+    "author": {
+      "login": "tipabu",
+      "id": 4432952,
+      "node_id": "MDQ6VXNlcjQ0MzI5NTI=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4432952?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tipabu",
+      "html_url": "https://github.com/tipabu",
+      "followers_url": "https://api.github.com/users/tipabu/followers",
+      "following_url": "https://api.github.com/users/tipabu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tipabu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tipabu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tipabu/subscriptions",
+      "organizations_url": "https://api.github.com/users/tipabu/orgs",
+      "repos_url": "https://api.github.com/users/tipabu/repos",
+      "events_url": "https://api.github.com/users/tipabu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tipabu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tipabu",
+      "id": 4432952,
+      "node_id": "MDQ6VXNlcjQ0MzI5NTI=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4432952?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tipabu",
+      "html_url": "https://github.com/tipabu",
+      "followers_url": "https://api.github.com/users/tipabu/followers",
+      "following_url": "https://api.github.com/users/tipabu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tipabu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tipabu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tipabu/subscriptions",
+      "organizations_url": "https://api.github.com/users/tipabu/orgs",
+      "repos_url": "https://api.github.com/users/tipabu/repos",
+      "events_url": "https://api.github.com/users/tipabu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tipabu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "11151154b94f5e116c0ec8cd312df8d341553d50",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/11151154b94f5e116c0ec8cd312df8d341553d50",
+        "html_url": "https://github.com/openstack/pbr/commit/11151154b94f5e116c0ec8cd312df8d341553d50"
+      }
+    ]
+  },
+  {
+    "sha": "049282adbbd702ae436e6473be9a94e639a63c0e",
+    "node_id": "C_kwDOAExkqtoAKDA0OTI4MmFkYmJkNzAyYWU0MzZlNjQ3M2JlOWE5NGU2MzlhNjNjMGU",
+    "commit": {
+      "author": {
+        "name": "Tim Burke",
+        "email": "tim.burke@gmail.com",
+        "date": "2024-01-18T21:51:41Z"
+      },
+      "committer": {
+        "name": "Tim Burke",
+        "email": "tim.burke@gmail.com",
+        "date": "2024-01-18T22:19:42Z"
+      },
+      "message": "Test on py310 and py311\n\nNote that there are already many openstack projects using pbr on these\nplatforms, seemingly successfully.\n\nChange-Id: If49434ff0b60b5382f374635ccaf2ac2e6489db9",
+      "tree": {
+        "sha": "5d879e5e372fc8439cdef9f28b71453cfe68f098",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/5d879e5e372fc8439cdef9f28b71453cfe68f098"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/049282adbbd702ae436e6473be9a94e639a63c0e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/049282adbbd702ae436e6473be9a94e639a63c0e",
+    "html_url": "https://github.com/openstack/pbr/commit/049282adbbd702ae436e6473be9a94e639a63c0e",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/049282adbbd702ae436e6473be9a94e639a63c0e/comments",
+    "author": {
+      "login": "tipabu",
+      "id": 4432952,
+      "node_id": "MDQ6VXNlcjQ0MzI5NTI=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4432952?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tipabu",
+      "html_url": "https://github.com/tipabu",
+      "followers_url": "https://api.github.com/users/tipabu/followers",
+      "following_url": "https://api.github.com/users/tipabu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tipabu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tipabu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tipabu/subscriptions",
+      "organizations_url": "https://api.github.com/users/tipabu/orgs",
+      "repos_url": "https://api.github.com/users/tipabu/repos",
+      "events_url": "https://api.github.com/users/tipabu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tipabu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "tipabu",
+      "id": 4432952,
+      "node_id": "MDQ6VXNlcjQ0MzI5NTI=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4432952?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/tipabu",
+      "html_url": "https://github.com/tipabu",
+      "followers_url": "https://api.github.com/users/tipabu/followers",
+      "following_url": "https://api.github.com/users/tipabu/following{/other_user}",
+      "gists_url": "https://api.github.com/users/tipabu/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/tipabu/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/tipabu/subscriptions",
+      "organizations_url": "https://api.github.com/users/tipabu/orgs",
+      "repos_url": "https://api.github.com/users/tipabu/repos",
+      "events_url": "https://api.github.com/users/tipabu/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/tipabu/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "11151154b94f5e116c0ec8cd312df8d341553d50",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/11151154b94f5e116c0ec8cd312df8d341553d50",
+        "html_url": "https://github.com/openstack/pbr/commit/11151154b94f5e116c0ec8cd312df8d341553d50"
+      }
+    ]
+  },
+  {
+    "sha": "11151154b94f5e116c0ec8cd312df8d341553d50",
+    "node_id": "C_kwDOAExkqtoAKDExMTUxMTU0Yjk0ZjVlMTE2YzBlYzhjZDMxMmRmOGQzNDE1NTNkNTA",
+    "commit": {
+      "author": {
+        "name": "Stephen Finucane",
+        "email": "sfinucan@redhat.com",
+        "date": "2023-11-01T11:13:30Z"
+      },
+      "committer": {
+        "name": "Clark Boylan",
+        "email": "clark.boylan@gmail.com",
+        "date": "2023-11-01T19:53:18Z"
+      },
+      "message": "build: Use kwargs\n\nIn case the method signatures ever change. It also keeps us consistent.\n\nChange-Id: I62c171e9e759b963e80236bcf605df58049dea9a\nSigned-off-by: Stephen Finucane <sfinucan@redhat.com>",
+      "tree": {
+        "sha": "362942766b37440cdf1948e61cc5c6bf7528b5ac",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/362942766b37440cdf1948e61cc5c6bf7528b5ac"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/11151154b94f5e116c0ec8cd312df8d341553d50",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/11151154b94f5e116c0ec8cd312df8d341553d50",
+    "html_url": "https://github.com/openstack/pbr/commit/11151154b94f5e116c0ec8cd312df8d341553d50",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/11151154b94f5e116c0ec8cd312df8d341553d50/comments",
+    "author": {
+      "login": "stephenfin",
+      "id": 1690835,
+      "node_id": "MDQ6VXNlcjE2OTA4MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1690835?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/stephenfin",
+      "html_url": "https://github.com/stephenfin",
+      "followers_url": "https://api.github.com/users/stephenfin/followers",
+      "following_url": "https://api.github.com/users/stephenfin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/stephenfin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/stephenfin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/stephenfin/subscriptions",
+      "organizations_url": "https://api.github.com/users/stephenfin/orgs",
+      "repos_url": "https://api.github.com/users/stephenfin/repos",
+      "events_url": "https://api.github.com/users/stephenfin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/stephenfin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cboylan",
+      "id": 231403,
+      "node_id": "MDQ6VXNlcjIzMTQwMw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/231403?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cboylan",
+      "html_url": "https://github.com/cboylan",
+      "followers_url": "https://api.github.com/users/cboylan/followers",
+      "following_url": "https://api.github.com/users/cboylan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cboylan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cboylan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cboylan/subscriptions",
+      "organizations_url": "https://api.github.com/users/cboylan/orgs",
+      "repos_url": "https://api.github.com/users/cboylan/repos",
+      "events_url": "https://api.github.com/users/cboylan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cboylan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "457a89ffda32cb7a49fa680a71d8c043bd23b352",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/457a89ffda32cb7a49fa680a71d8c043bd23b352",
+        "html_url": "https://github.com/openstack/pbr/commit/457a89ffda32cb7a49fa680a71d8c043bd23b352"
+      }
+    ]
+  },
+  {
+    "sha": "457a89ffda32cb7a49fa680a71d8c043bd23b352",
+    "node_id": "C_kwDOAExkqtoAKDQ1N2E4OWZmZGEzMmNiN2E0OWZhNjgwYTcxZDhjMDQzYmQyM2IzNTI",
+    "commit": {
+      "author": {
+        "name": "Stephen Finucane",
+        "email": "sfinucan@redhat.com",
+        "date": "2023-11-01T11:12:50Z"
+      },
+      "committer": {
+        "name": "Clark Boylan",
+        "email": "clark.boylan@gmail.com",
+        "date": "2023-11-01T19:53:18Z"
+      },
+      "message": "Add support for PEP-660\n\nAs with PEP-517 support, this is simply a shim over the setuptools\nimplementation added in setuptools v64.0.0 [1].\n\n[1] https://github.com/pypa/setuptools/pull/3488\n\nChange-Id: I32f974db37e364cf634b050b40bf0820dce0a3a3\nSigned-off-by: Stephen Finucane <sfinucan@redhat.com>",
+      "tree": {
+        "sha": "c3688fdf2f1f5dc620e9e65daf6540f90460fbca",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/c3688fdf2f1f5dc620e9e65daf6540f90460fbca"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/457a89ffda32cb7a49fa680a71d8c043bd23b352",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/457a89ffda32cb7a49fa680a71d8c043bd23b352",
+    "html_url": "https://github.com/openstack/pbr/commit/457a89ffda32cb7a49fa680a71d8c043bd23b352",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/457a89ffda32cb7a49fa680a71d8c043bd23b352/comments",
+    "author": {
+      "login": "stephenfin",
+      "id": 1690835,
+      "node_id": "MDQ6VXNlcjE2OTA4MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1690835?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/stephenfin",
+      "html_url": "https://github.com/stephenfin",
+      "followers_url": "https://api.github.com/users/stephenfin/followers",
+      "following_url": "https://api.github.com/users/stephenfin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/stephenfin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/stephenfin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/stephenfin/subscriptions",
+      "organizations_url": "https://api.github.com/users/stephenfin/orgs",
+      "repos_url": "https://api.github.com/users/stephenfin/repos",
+      "events_url": "https://api.github.com/users/stephenfin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/stephenfin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cboylan",
+      "id": 231403,
+      "node_id": "MDQ6VXNlcjIzMTQwMw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/231403?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cboylan",
+      "html_url": "https://github.com/cboylan",
+      "followers_url": "https://api.github.com/users/cboylan/followers",
+      "following_url": "https://api.github.com/users/cboylan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cboylan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cboylan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cboylan/subscriptions",
+      "organizations_url": "https://api.github.com/users/cboylan/orgs",
+      "repos_url": "https://api.github.com/users/cboylan/repos",
+      "events_url": "https://api.github.com/users/cboylan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cboylan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6df16432aad01f0bd8b219a5e8a0a12062f10985",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/6df16432aad01f0bd8b219a5e8a0a12062f10985",
+        "html_url": "https://github.com/openstack/pbr/commit/6df16432aad01f0bd8b219a5e8a0a12062f10985"
+      }
+    ]
+  },
+  {
+    "sha": "6df16432aad01f0bd8b219a5e8a0a12062f10985",
+    "node_id": "C_kwDOAExkqtoAKDZkZjE2NDMyYWFkMDFmMGJkOGIyMTlhNWU4YTBhMTIwNjJmMTA5ODU",
+    "commit": {
+      "author": {
+        "name": "Stephen Finucane",
+        "email": "sfinucan@redhat.com",
+        "date": "2023-11-01T13:55:27Z"
+      },
+      "committer": {
+        "name": "Clark Boylan",
+        "email": "clark.boylan@gmail.com",
+        "date": "2023-11-01T18:29:38Z"
+      },
+      "message": "Fix PBR integration testing\n\nThe openstack installation test is failing because it checks for a file\nthat doesn't exist. This occurs because Nova no longer uses\nsqlalchemy-migrate [1] which means it won't have a 'migrate.cfg' file.\nUpdate references to use 'alembic.ini' instead.\n\nThe tempest-full job fails because stable/train is not a valid branch on\nsome projects like neutron, nova, and placement. We fix this by having\nthe job checkout train-eol for those projects. We also reduce the\ntempest test set to the smoke tests to reduce the possibility for test\nfailures. We don't actually need to run all tempest tests to have a good\nindiciation of whether or not package installation was successful. Smoke\ntests should be sufficient for that.\n\n[1] https://github.com/openstack/nova/commit/fd39e4b4b\n\nChange-Id: Idfd234cf4f968d646346a0e2fc0dd1be2332bb52\nSigned-off-by: Stephen Finucane <sfinucan@redhat.com>\nCo-authored-by: Clark Boylan <clark.boylan@gmail.com>",
+      "tree": {
+        "sha": "6b7d1525c328241f1049f17152f6b26863a4f50e",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/6b7d1525c328241f1049f17152f6b26863a4f50e"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/6df16432aad01f0bd8b219a5e8a0a12062f10985",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/6df16432aad01f0bd8b219a5e8a0a12062f10985",
+    "html_url": "https://github.com/openstack/pbr/commit/6df16432aad01f0bd8b219a5e8a0a12062f10985",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/6df16432aad01f0bd8b219a5e8a0a12062f10985/comments",
+    "author": {
+      "login": "stephenfin",
+      "id": 1690835,
+      "node_id": "MDQ6VXNlcjE2OTA4MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1690835?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/stephenfin",
+      "html_url": "https://github.com/stephenfin",
+      "followers_url": "https://api.github.com/users/stephenfin/followers",
+      "following_url": "https://api.github.com/users/stephenfin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/stephenfin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/stephenfin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/stephenfin/subscriptions",
+      "organizations_url": "https://api.github.com/users/stephenfin/orgs",
+      "repos_url": "https://api.github.com/users/stephenfin/repos",
+      "events_url": "https://api.github.com/users/stephenfin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/stephenfin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cboylan",
+      "id": 231403,
+      "node_id": "MDQ6VXNlcjIzMTQwMw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/231403?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cboylan",
+      "html_url": "https://github.com/cboylan",
+      "followers_url": "https://api.github.com/users/cboylan/followers",
+      "following_url": "https://api.github.com/users/cboylan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cboylan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cboylan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cboylan/subscriptions",
+      "organizations_url": "https://api.github.com/users/cboylan/orgs",
+      "repos_url": "https://api.github.com/users/cboylan/repos",
+      "events_url": "https://api.github.com/users/cboylan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cboylan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d03d617c09e7ba8ddf62d1e53d71685cd708e2da",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/d03d617c09e7ba8ddf62d1e53d71685cd708e2da",
+        "html_url": "https://github.com/openstack/pbr/commit/d03d617c09e7ba8ddf62d1e53d71685cd708e2da"
+      }
+    ]
+  },
+  {
+    "sha": "d03d617c09e7ba8ddf62d1e53d71685cd708e2da",
+    "node_id": "C_kwDOAExkqtoAKGQwM2Q2MTdjMDllN2JhOGRkZjYyZDFlNTNkNzE2ODVjZDcwOGUyZGE",
+    "commit": {
+      "author": {
+        "name": "Jay Faulkner",
+        "email": "jay@jvf.cc",
+        "date": "2023-05-30T22:25:09Z"
+      },
+      "committer": {
+        "name": "Jay Faulkner",
+        "email": "jay@jvf.cc",
+        "date": "2023-06-02T18:46:31Z"
+      },
+      "message": "Replace imp with importlib.machinery\n\nThe imp was removed in Python 3.12 [1]. This commit replaces\nget_suffixes() method call with _SUFFIXES array from\nimportlib.machinery.\n\nThis was imported from https://github.com/openstack/pbr/pull/22\non behalf of the Gentoo maintainer who proposed it.\n\nCo-Authored-By: Petr Vaněk <arkamar@atlas.cz>\nChange-Id: Icf00beee255aba3da2b81d9dc5b1f8130bbcd869",
+      "tree": {
+        "sha": "0b3a12fd9c267267caad4e93012f1070ec582913",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/0b3a12fd9c267267caad4e93012f1070ec582913"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/d03d617c09e7ba8ddf62d1e53d71685cd708e2da",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/d03d617c09e7ba8ddf62d1e53d71685cd708e2da",
+    "html_url": "https://github.com/openstack/pbr/commit/d03d617c09e7ba8ddf62d1e53d71685cd708e2da",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/d03d617c09e7ba8ddf62d1e53d71685cd708e2da/comments",
+    "author": {
+      "login": "jayofdoom",
+      "id": 1738052,
+      "node_id": "MDQ6VXNlcjE3MzgwNTI=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1738052?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jayofdoom",
+      "html_url": "https://github.com/jayofdoom",
+      "followers_url": "https://api.github.com/users/jayofdoom/followers",
+      "following_url": "https://api.github.com/users/jayofdoom/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jayofdoom/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jayofdoom/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jayofdoom/subscriptions",
+      "organizations_url": "https://api.github.com/users/jayofdoom/orgs",
+      "repos_url": "https://api.github.com/users/jayofdoom/repos",
+      "events_url": "https://api.github.com/users/jayofdoom/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jayofdoom/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jayofdoom",
+      "id": 1738052,
+      "node_id": "MDQ6VXNlcjE3MzgwNTI=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1738052?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jayofdoom",
+      "html_url": "https://github.com/jayofdoom",
+      "followers_url": "https://api.github.com/users/jayofdoom/followers",
+      "following_url": "https://api.github.com/users/jayofdoom/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jayofdoom/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jayofdoom/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jayofdoom/subscriptions",
+      "organizations_url": "https://api.github.com/users/jayofdoom/orgs",
+      "repos_url": "https://api.github.com/users/jayofdoom/repos",
+      "events_url": "https://api.github.com/users/jayofdoom/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jayofdoom/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4d6c377028fa6b25c41826fe02bc0403d8541087",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/4d6c377028fa6b25c41826fe02bc0403d8541087",
+        "html_url": "https://github.com/openstack/pbr/commit/4d6c377028fa6b25c41826fe02bc0403d8541087"
+      }
+    ]
+  },
+  {
+    "sha": "4d6c377028fa6b25c41826fe02bc0403d8541087",
+    "node_id": "C_kwDOAExkqtoAKDRkNmMzNzcwMjhmYTZiMjVjNDE4MjZmZTAyYmMwNDAzZDg1NDEwODc",
+    "commit": {
+      "author": {
+        "name": "Zuul",
+        "email": "zuul@review.opendev.org",
+        "date": "2023-06-01T17:38:31Z"
+      },
+      "committer": {
+        "name": "Gerrit Code Review",
+        "email": "review@openstack.org",
+        "date": "2023-06-01T17:38:31Z"
+      },
+      "message": "Merge \"Add release note for build_sphinx removal\"",
+      "tree": {
+        "sha": "f665bf446a800dfae4a66289c7a15498a6d78c7f",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/f665bf446a800dfae4a66289c7a15498a6d78c7f"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/4d6c377028fa6b25c41826fe02bc0403d8541087",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/4d6c377028fa6b25c41826fe02bc0403d8541087",
+    "html_url": "https://github.com/openstack/pbr/commit/4d6c377028fa6b25c41826fe02bc0403d8541087",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/4d6c377028fa6b25c41826fe02bc0403d8541087/comments",
+    "author": null,
+    "committer": {
+      "login": "openstack-gerrit",
+      "id": 903479,
+      "node_id": "MDQ6VXNlcjkwMzQ3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/903479?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/openstack-gerrit",
+      "html_url": "https://github.com/openstack-gerrit",
+      "followers_url": "https://api.github.com/users/openstack-gerrit/followers",
+      "following_url": "https://api.github.com/users/openstack-gerrit/following{/other_user}",
+      "gists_url": "https://api.github.com/users/openstack-gerrit/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/openstack-gerrit/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/openstack-gerrit/subscriptions",
+      "organizations_url": "https://api.github.com/users/openstack-gerrit/orgs",
+      "repos_url": "https://api.github.com/users/openstack-gerrit/repos",
+      "events_url": "https://api.github.com/users/openstack-gerrit/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/openstack-gerrit/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ee04b62de28061018496d6324639446afe2059c7",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/ee04b62de28061018496d6324639446afe2059c7",
+        "html_url": "https://github.com/openstack/pbr/commit/ee04b62de28061018496d6324639446afe2059c7"
+      },
+      {
+        "sha": "0e335e6ddba001537776412b362ff0629d4a56ff",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/0e335e6ddba001537776412b362ff0629d4a56ff",
+        "html_url": "https://github.com/openstack/pbr/commit/0e335e6ddba001537776412b362ff0629d4a56ff"
+      }
+    ]
+  },
+  {
+    "sha": "0e335e6ddba001537776412b362ff0629d4a56ff",
+    "node_id": "C_kwDOAExkqtoAKDBlMzM1ZTZkZGJhMDAxNTM3Nzc2NDEyYjM2MmZmMDYyOWQ0YTU2ZmY",
+    "commit": {
+      "author": {
+        "name": "Clark Boylan",
+        "email": "clark.boylan@gmail.com",
+        "date": "2023-06-01T15:24:37Z"
+      },
+      "committer": {
+        "name": "Clark Boylan",
+        "email": "clark.boylan@gmail.com",
+        "date": "2023-06-01T15:24:37Z"
+      },
+      "message": "Add release note for build_sphinx removal\n\nThis wasn't done in the change that removed the feature but seems like a\ngood idea.\n\nChange-Id: I97bdda4ce89b26c6e99de6f1d6ad7d734cac9041",
+      "tree": {
+        "sha": "c569e182894c0f7e1731340a004b9dd8620cdea5",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/c569e182894c0f7e1731340a004b9dd8620cdea5"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/0e335e6ddba001537776412b362ff0629d4a56ff",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/0e335e6ddba001537776412b362ff0629d4a56ff",
+    "html_url": "https://github.com/openstack/pbr/commit/0e335e6ddba001537776412b362ff0629d4a56ff",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/0e335e6ddba001537776412b362ff0629d4a56ff/comments",
+    "author": {
+      "login": "cboylan",
+      "id": 231403,
+      "node_id": "MDQ6VXNlcjIzMTQwMw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/231403?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cboylan",
+      "html_url": "https://github.com/cboylan",
+      "followers_url": "https://api.github.com/users/cboylan/followers",
+      "following_url": "https://api.github.com/users/cboylan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cboylan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cboylan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cboylan/subscriptions",
+      "organizations_url": "https://api.github.com/users/cboylan/orgs",
+      "repos_url": "https://api.github.com/users/cboylan/repos",
+      "events_url": "https://api.github.com/users/cboylan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cboylan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cboylan",
+      "id": 231403,
+      "node_id": "MDQ6VXNlcjIzMTQwMw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/231403?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cboylan",
+      "html_url": "https://github.com/cboylan",
+      "followers_url": "https://api.github.com/users/cboylan/followers",
+      "following_url": "https://api.github.com/users/cboylan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cboylan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cboylan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cboylan/subscriptions",
+      "organizations_url": "https://api.github.com/users/cboylan/orgs",
+      "repos_url": "https://api.github.com/users/cboylan/repos",
+      "events_url": "https://api.github.com/users/cboylan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cboylan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "47c5afe79aa334b300b9f15f3f23ff76d812d742",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/47c5afe79aa334b300b9f15f3f23ff76d812d742",
+        "html_url": "https://github.com/openstack/pbr/commit/47c5afe79aa334b300b9f15f3f23ff76d812d742"
+      }
+    ]
+  },
+  {
+    "sha": "ee04b62de28061018496d6324639446afe2059c7",
+    "node_id": "C_kwDOAExkqtoAKGVlMDRiNjJkZTI4MDYxMDE4NDk2ZDYzMjQ2Mzk0NDZhZmUyMDU5Yzc",
+    "commit": {
+      "author": {
+        "name": "Clark Boylan",
+        "email": "clark.boylan@gmail.com",
+        "date": "2023-05-31T20:25:23Z"
+      },
+      "committer": {
+        "name": "Clark Boylan",
+        "email": "clark.boylan@gmail.com",
+        "date": "2023-05-31T20:25:23Z"
+      },
+      "message": "Use _ instead of - in setup.cfg directives\n\nSetuptools deprecated -'s at some point and they result in a bunch of\nwarnings in failed tests. This is distracting and eventually is likely\nto create real errors. Go ahead and fix them now.\n\nChange-Id: If3594269495ae1f3cefffd4c4f38d87af5c7fdfe",
+      "tree": {
+        "sha": "00e6ac31531fb69d1949b69c76ab3326eb72b92c",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/00e6ac31531fb69d1949b69c76ab3326eb72b92c"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/ee04b62de28061018496d6324639446afe2059c7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/ee04b62de28061018496d6324639446afe2059c7",
+    "html_url": "https://github.com/openstack/pbr/commit/ee04b62de28061018496d6324639446afe2059c7",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/ee04b62de28061018496d6324639446afe2059c7/comments",
+    "author": {
+      "login": "cboylan",
+      "id": 231403,
+      "node_id": "MDQ6VXNlcjIzMTQwMw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/231403?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cboylan",
+      "html_url": "https://github.com/cboylan",
+      "followers_url": "https://api.github.com/users/cboylan/followers",
+      "following_url": "https://api.github.com/users/cboylan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cboylan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cboylan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cboylan/subscriptions",
+      "organizations_url": "https://api.github.com/users/cboylan/orgs",
+      "repos_url": "https://api.github.com/users/cboylan/repos",
+      "events_url": "https://api.github.com/users/cboylan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cboylan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cboylan",
+      "id": 231403,
+      "node_id": "MDQ6VXNlcjIzMTQwMw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/231403?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cboylan",
+      "html_url": "https://github.com/cboylan",
+      "followers_url": "https://api.github.com/users/cboylan/followers",
+      "following_url": "https://api.github.com/users/cboylan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cboylan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cboylan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cboylan/subscriptions",
+      "organizations_url": "https://api.github.com/users/cboylan/orgs",
+      "repos_url": "https://api.github.com/users/cboylan/repos",
+      "events_url": "https://api.github.com/users/cboylan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cboylan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "47c5afe79aa334b300b9f15f3f23ff76d812d742",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/47c5afe79aa334b300b9f15f3f23ff76d812d742",
+        "html_url": "https://github.com/openstack/pbr/commit/47c5afe79aa334b300b9f15f3f23ff76d812d742"
+      }
+    ]
+  },
+  {
+    "sha": "47c5afe79aa334b300b9f15f3f23ff76d812d742",
+    "node_id": "C_kwDOAExkqtoAKDQ3YzVhZmU3OWFhMzM0YjMwMGI5ZjE1ZjNmMjNmZjc2ZDgxMmQ3NDI",
+    "commit": {
+      "author": {
+        "name": "Clark Boylan",
+        "email": "clark.boylan@gmail.com",
+        "date": "2023-05-30T23:01:33Z"
+      },
+      "committer": {
+        "name": "Clark Boylan",
+        "email": "clark.boylan@gmail.com",
+        "date": "2023-05-31T20:25:13Z"
+      },
+      "message": "Remove sphinx doc building integration\n\nSetuptools and sphinx [0] have removed support for building docs through\nsetup.py. This has broken imports which break our own local doc builds.\nLets just remove it all (including the tests) so that we are compatible\nwith modern setuptools and sphinx.\n\nAn alternative approach would be to do conditional imports and continue\nto support this for old setuptools and sphinx. But that feels like a\ndead end that will be difficult to test. Probably better to rip this\nbandaid off.\n\n[0] https://www.sphinx-doc.org/en/master/changes.html#id7\n\nChange-Id: I65038caceb192f495288414079ca0f07ce6318bb",
+      "tree": {
+        "sha": "dcdd0acc23b9dc5064714748eb9645b725d248ab",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/dcdd0acc23b9dc5064714748eb9645b725d248ab"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/47c5afe79aa334b300b9f15f3f23ff76d812d742",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/47c5afe79aa334b300b9f15f3f23ff76d812d742",
+    "html_url": "https://github.com/openstack/pbr/commit/47c5afe79aa334b300b9f15f3f23ff76d812d742",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/47c5afe79aa334b300b9f15f3f23ff76d812d742/comments",
+    "author": {
+      "login": "cboylan",
+      "id": 231403,
+      "node_id": "MDQ6VXNlcjIzMTQwMw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/231403?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cboylan",
+      "html_url": "https://github.com/cboylan",
+      "followers_url": "https://api.github.com/users/cboylan/followers",
+      "following_url": "https://api.github.com/users/cboylan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cboylan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cboylan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cboylan/subscriptions",
+      "organizations_url": "https://api.github.com/users/cboylan/orgs",
+      "repos_url": "https://api.github.com/users/cboylan/repos",
+      "events_url": "https://api.github.com/users/cboylan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cboylan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cboylan",
+      "id": 231403,
+      "node_id": "MDQ6VXNlcjIzMTQwMw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/231403?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cboylan",
+      "html_url": "https://github.com/cboylan",
+      "followers_url": "https://api.github.com/users/cboylan/followers",
+      "following_url": "https://api.github.com/users/cboylan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cboylan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cboylan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cboylan/subscriptions",
+      "organizations_url": "https://api.github.com/users/cboylan/orgs",
+      "repos_url": "https://api.github.com/users/cboylan/repos",
+      "events_url": "https://api.github.com/users/cboylan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cboylan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "98c84b5f87b89573ea6930bc783f07f2dd5ae8fd",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/98c84b5f87b89573ea6930bc783f07f2dd5ae8fd",
+        "html_url": "https://github.com/openstack/pbr/commit/98c84b5f87b89573ea6930bc783f07f2dd5ae8fd"
+      }
+    ]
+  },
+  {
+    "sha": "98c84b5f87b89573ea6930bc783f07f2dd5ae8fd",
+    "node_id": "C_kwDOAExkqtoAKDk4Yzg0YjVmODdiODk1NzNlYTY5MzBiYzc4M2YwN2YyZGQ1YWU4ZmQ",
+    "commit": {
+      "author": {
+        "name": "Zuul",
+        "email": "zuul@review.opendev.org",
+        "date": "2023-01-07T00:32:47Z"
+      },
+      "committer": {
+        "name": "Gerrit Code Review",
+        "email": "review@openstack.org",
+        "date": "2023-01-07T00:32:47Z"
+      },
+      "message": "Merge \"Run PBR integration on Ubuntu Focal too\"",
+      "tree": {
+        "sha": "550de6664af11d94a48a49f3801215f8dfa98ade",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/550de6664af11d94a48a49f3801215f8dfa98ade"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/98c84b5f87b89573ea6930bc783f07f2dd5ae8fd",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/98c84b5f87b89573ea6930bc783f07f2dd5ae8fd",
+    "html_url": "https://github.com/openstack/pbr/commit/98c84b5f87b89573ea6930bc783f07f2dd5ae8fd",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/98c84b5f87b89573ea6930bc783f07f2dd5ae8fd/comments",
+    "author": null,
+    "committer": {
+      "login": "openstack-gerrit",
+      "id": 903479,
+      "node_id": "MDQ6VXNlcjkwMzQ3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/903479?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/openstack-gerrit",
+      "html_url": "https://github.com/openstack-gerrit",
+      "followers_url": "https://api.github.com/users/openstack-gerrit/followers",
+      "following_url": "https://api.github.com/users/openstack-gerrit/following{/other_user}",
+      "gists_url": "https://api.github.com/users/openstack-gerrit/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/openstack-gerrit/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/openstack-gerrit/subscriptions",
+      "organizations_url": "https://api.github.com/users/openstack-gerrit/orgs",
+      "repos_url": "https://api.github.com/users/openstack-gerrit/repos",
+      "events_url": "https://api.github.com/users/openstack-gerrit/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/openstack-gerrit/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1ca77814931463993b15fbbb13a26e027a485cd3",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/1ca77814931463993b15fbbb13a26e027a485cd3",
+        "html_url": "https://github.com/openstack/pbr/commit/1ca77814931463993b15fbbb13a26e027a485cd3"
+      },
+      {
+        "sha": "571e14581d3502b37932b8e7f8c51766cdd001e6",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/571e14581d3502b37932b8e7f8c51766cdd001e6",
+        "html_url": "https://github.com/openstack/pbr/commit/571e14581d3502b37932b8e7f8c51766cdd001e6"
+      }
+    ]
+  },
+  {
+    "sha": "1ca77814931463993b15fbbb13a26e027a485cd3",
+    "node_id": "C_kwDOAExkqtoAKDFjYTc3ODE0OTMxNDYzOTkzYjE1ZmJiYjEzYTI2ZTAyN2E0ODVjZDM",
+    "commit": {
+      "author": {
+        "name": "Zuul",
+        "email": "zuul@review.opendev.org",
+        "date": "2023-01-07T00:17:13Z"
+      },
+      "committer": {
+        "name": "Gerrit Code Review",
+        "email": "review@openstack.org",
+        "date": "2023-01-07T00:17:13Z"
+      },
+      "message": "Merge \"Tie recursion calls to Dist object, not module\"",
+      "tree": {
+        "sha": "5104346f91b5d0d9a36368ca31d24bf9c1f20792",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/5104346f91b5d0d9a36368ca31d24bf9c1f20792"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/1ca77814931463993b15fbbb13a26e027a485cd3",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/1ca77814931463993b15fbbb13a26e027a485cd3",
+    "html_url": "https://github.com/openstack/pbr/commit/1ca77814931463993b15fbbb13a26e027a485cd3",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/1ca77814931463993b15fbbb13a26e027a485cd3/comments",
+    "author": null,
+    "committer": {
+      "login": "openstack-gerrit",
+      "id": 903479,
+      "node_id": "MDQ6VXNlcjkwMzQ3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/903479?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/openstack-gerrit",
+      "html_url": "https://github.com/openstack-gerrit",
+      "followers_url": "https://api.github.com/users/openstack-gerrit/followers",
+      "following_url": "https://api.github.com/users/openstack-gerrit/following{/other_user}",
+      "gists_url": "https://api.github.com/users/openstack-gerrit/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/openstack-gerrit/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/openstack-gerrit/subscriptions",
+      "organizations_url": "https://api.github.com/users/openstack-gerrit/orgs",
+      "repos_url": "https://api.github.com/users/openstack-gerrit/repos",
+      "events_url": "https://api.github.com/users/openstack-gerrit/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/openstack-gerrit/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "535254d5c8b9c0159017febafc882b58c873abe2",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/535254d5c8b9c0159017febafc882b58c873abe2",
+        "html_url": "https://github.com/openstack/pbr/commit/535254d5c8b9c0159017febafc882b58c873abe2"
+      },
+      {
+        "sha": "61c6a4bcb305cd14cd913fc88ade4b1c0d21eb8c",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/61c6a4bcb305cd14cd913fc88ade4b1c0d21eb8c",
+        "html_url": "https://github.com/openstack/pbr/commit/61c6a4bcb305cd14cd913fc88ade4b1c0d21eb8c"
+      }
+    ]
+  },
+  {
+    "sha": "571e14581d3502b37932b8e7f8c51766cdd001e6",
+    "node_id": "C_kwDOAExkqtoAKDU3MWUxNDU4MWQzNTAyYjM3OTMyYjhlN2Y4YzUxNzY2Y2RkMDAxZTY",
+    "commit": {
+      "author": {
+        "name": "Clark Boylan",
+        "email": "clark.boylan@gmail.com",
+        "date": "2023-01-06T17:34:59Z"
+      },
+      "committer": {
+        "name": "Clark Boylan",
+        "email": "clark.boylan@gmail.com",
+        "date": "2023-01-06T17:34:59Z"
+      },
+      "message": "Run PBR integration on Ubuntu Focal too\n\nPython 3.10 on Jammy is not compatible with old pip and setuptools due\nto collections.abc moves. It is still desireable to test modern PBR\nfunctions against these old library versions because old distro installs\nwill often use latest PBR. Update our testing to also run PBR\nintegration testing on Focal selecting appropriate pip and setuptools\nversions based on the running python version.\n\nThis should help ensure PBR continues to run on old platforms even as we\nmodernize pip.\n\nChange-Id: Ib53f637d5826bb51a348e3e629fbdbabec2a95e0",
+      "tree": {
+        "sha": "7152df2a10c80db34c74382be9bd635658e311f0",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/7152df2a10c80db34c74382be9bd635658e311f0"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/571e14581d3502b37932b8e7f8c51766cdd001e6",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/571e14581d3502b37932b8e7f8c51766cdd001e6",
+    "html_url": "https://github.com/openstack/pbr/commit/571e14581d3502b37932b8e7f8c51766cdd001e6",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/571e14581d3502b37932b8e7f8c51766cdd001e6/comments",
+    "author": {
+      "login": "cboylan",
+      "id": 231403,
+      "node_id": "MDQ6VXNlcjIzMTQwMw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/231403?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cboylan",
+      "html_url": "https://github.com/cboylan",
+      "followers_url": "https://api.github.com/users/cboylan/followers",
+      "following_url": "https://api.github.com/users/cboylan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cboylan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cboylan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cboylan/subscriptions",
+      "organizations_url": "https://api.github.com/users/cboylan/orgs",
+      "repos_url": "https://api.github.com/users/cboylan/repos",
+      "events_url": "https://api.github.com/users/cboylan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cboylan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "cboylan",
+      "id": 231403,
+      "node_id": "MDQ6VXNlcjIzMTQwMw==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/231403?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/cboylan",
+      "html_url": "https://github.com/cboylan",
+      "followers_url": "https://api.github.com/users/cboylan/followers",
+      "following_url": "https://api.github.com/users/cboylan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/cboylan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/cboylan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/cboylan/subscriptions",
+      "organizations_url": "https://api.github.com/users/cboylan/orgs",
+      "repos_url": "https://api.github.com/users/cboylan/repos",
+      "events_url": "https://api.github.com/users/cboylan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/cboylan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "61c6a4bcb305cd14cd913fc88ade4b1c0d21eb8c",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/61c6a4bcb305cd14cd913fc88ade4b1c0d21eb8c",
+        "html_url": "https://github.com/openstack/pbr/commit/61c6a4bcb305cd14cd913fc88ade4b1c0d21eb8c"
+      }
+    ]
+  },
+  {
+    "sha": "535254d5c8b9c0159017febafc882b58c873abe2",
+    "node_id": "C_kwDOAExkqtoAKDUzNTI1NGQ1YzhiOWMwMTU5MDE3ZmViYWZjODgyYjU4Yzg3M2FiZTI",
+    "commit": {
+      "author": {
+        "name": "Stephen Finucane",
+        "email": "sfinucan@redhat.com",
+        "date": "2023-01-05T20:30:15Z"
+      },
+      "committer": {
+        "name": "Stephen Finucane",
+        "email": "stephenfin@redhat.com",
+        "date": "2023-01-06T14:36:51Z"
+      },
+      "message": "Remove numpy dependencies\n\nThere do not appear to be any openstack projects relying on this package\nthese days. Remove the unnecessary dependencies.\n\nChange-Id: Iddd95afad9e6cf10d2cf0a3d6cae4b6ba75a7a05\nSigned-off-by: Stephen Finucane <sfinucan@redhat.com>",
+      "tree": {
+        "sha": "cb83cbcdededbb4cc604abbc0d9a42a442a9907a",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/cb83cbcdededbb4cc604abbc0d9a42a442a9907a"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/535254d5c8b9c0159017febafc882b58c873abe2",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/535254d5c8b9c0159017febafc882b58c873abe2",
+    "html_url": "https://github.com/openstack/pbr/commit/535254d5c8b9c0159017febafc882b58c873abe2",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/535254d5c8b9c0159017febafc882b58c873abe2/comments",
+    "author": {
+      "login": "stephenfin",
+      "id": 1690835,
+      "node_id": "MDQ6VXNlcjE2OTA4MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1690835?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/stephenfin",
+      "html_url": "https://github.com/stephenfin",
+      "followers_url": "https://api.github.com/users/stephenfin/followers",
+      "following_url": "https://api.github.com/users/stephenfin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/stephenfin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/stephenfin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/stephenfin/subscriptions",
+      "organizations_url": "https://api.github.com/users/stephenfin/orgs",
+      "repos_url": "https://api.github.com/users/stephenfin/repos",
+      "events_url": "https://api.github.com/users/stephenfin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/stephenfin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "stephenfin",
+      "id": 1690835,
+      "node_id": "MDQ6VXNlcjE2OTA4MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1690835?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/stephenfin",
+      "html_url": "https://github.com/stephenfin",
+      "followers_url": "https://api.github.com/users/stephenfin/followers",
+      "following_url": "https://api.github.com/users/stephenfin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/stephenfin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/stephenfin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/stephenfin/subscriptions",
+      "organizations_url": "https://api.github.com/users/stephenfin/orgs",
+      "repos_url": "https://api.github.com/users/stephenfin/repos",
+      "events_url": "https://api.github.com/users/stephenfin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/stephenfin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "491ce1ab095b122b442de1ce662ebc2e29d27de3",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/491ce1ab095b122b442de1ce662ebc2e29d27de3",
+        "html_url": "https://github.com/openstack/pbr/commit/491ce1ab095b122b442de1ce662ebc2e29d27de3"
+      }
+    ]
+  },
+  {
+    "sha": "61c6a4bcb305cd14cd913fc88ade4b1c0d21eb8c",
+    "node_id": "C_kwDOAExkqtoAKDYxYzZhNGJjYjMwNWNkMTRjZDkxM2ZjODhhZGU0YjFjMGQyMWViOGM",
+    "commit": {
+      "author": {
+        "name": "Stephen Finucane",
+        "email": "sfinucan@redhat.com",
+        "date": "2023-01-03T13:12:46Z"
+      },
+      "committer": {
+        "name": "Stephen Finucane",
+        "email": "sfinucan@redhat.com",
+        "date": "2023-01-06T13:22:51Z"
+      },
+      "message": "Tie recursion calls to Dist object, not module\n\nIn change I1f2b4d34e587389f7e11b99d000e14477cf5091b, we attempted to\nresolve an issue whereby using PBR as a PEP-517 backend could result in\nrecursion. We did this by setting 'dist.pbr' to 'None' but later\ndiscovered this introduced a regression that prevented us from writing\nthe 'pbr.json' file into generated sdists. The fix for the regression,\nchange I407ae88ab8de4b61f94034b3d79a2ca7f7d79d16, stopped setting\n'dist.pbr' to 'None' and instead set a global flag to indicate whether\nwe had already been called or not. Unfortunately it seems this fix is\nalso insufficent. As discussed in tox#2712 [1], tox v4 has implemented\nits own implementation of PEP-517 - 'pyproject-api' [2] - and unlike\n'build' this implementation optionally allows re-use of the backend\nprocess for multiple PEP-517 commands. tox's 'Pep517VirtualEnvFrontend'\ndoes just this. This means if we run multiple commands that require\ngeneration of a 'Distribution' object - say,\n'prepare_metadata_for_build_wheel' followed by 'build_sdist' - anything\nbut the first step will not result in proper population of said\n'Distribution' objects.\n\nThe solution to this issue is simple: per $subject, instead of setting\nour recursion-detection canary at the module level, set it at the\nDistribution level.\n\n[1] https://github.com/tox-dev/tox/issues/2712\n[2] github.com/tox-dev/pyproject-api/\n\nChange-Id: I67909d732a74550fbcd7c06a9e2f4ac88c063444\nSigned-off-by: Stephen Finucane <sfinucan@redhat.com>",
+      "tree": {
+        "sha": "facadabc3adc2f5426a9eddf578e9d0af11cdf85",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/facadabc3adc2f5426a9eddf578e9d0af11cdf85"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/61c6a4bcb305cd14cd913fc88ade4b1c0d21eb8c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/61c6a4bcb305cd14cd913fc88ade4b1c0d21eb8c",
+    "html_url": "https://github.com/openstack/pbr/commit/61c6a4bcb305cd14cd913fc88ade4b1c0d21eb8c",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/61c6a4bcb305cd14cd913fc88ade4b1c0d21eb8c/comments",
+    "author": {
+      "login": "stephenfin",
+      "id": 1690835,
+      "node_id": "MDQ6VXNlcjE2OTA4MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1690835?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/stephenfin",
+      "html_url": "https://github.com/stephenfin",
+      "followers_url": "https://api.github.com/users/stephenfin/followers",
+      "following_url": "https://api.github.com/users/stephenfin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/stephenfin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/stephenfin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/stephenfin/subscriptions",
+      "organizations_url": "https://api.github.com/users/stephenfin/orgs",
+      "repos_url": "https://api.github.com/users/stephenfin/repos",
+      "events_url": "https://api.github.com/users/stephenfin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/stephenfin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "stephenfin",
+      "id": 1690835,
+      "node_id": "MDQ6VXNlcjE2OTA4MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1690835?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/stephenfin",
+      "html_url": "https://github.com/stephenfin",
+      "followers_url": "https://api.github.com/users/stephenfin/followers",
+      "following_url": "https://api.github.com/users/stephenfin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/stephenfin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/stephenfin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/stephenfin/subscriptions",
+      "organizations_url": "https://api.github.com/users/stephenfin/orgs",
+      "repos_url": "https://api.github.com/users/stephenfin/repos",
+      "events_url": "https://api.github.com/users/stephenfin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/stephenfin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "491ce1ab095b122b442de1ce662ebc2e29d27de3",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/491ce1ab095b122b442de1ce662ebc2e29d27de3",
+        "html_url": "https://github.com/openstack/pbr/commit/491ce1ab095b122b442de1ce662ebc2e29d27de3"
+      }
+    ]
+  },
+  {
+    "sha": "491ce1ab095b122b442de1ce662ebc2e29d27de3",
+    "node_id": "C_kwDOAExkqtoAKDQ5MWNlMWFiMDk1YjEyMmI0NDJkZTFjZTY2MmViYzJlMjlkMjdkZTM",
+    "commit": {
+      "author": {
+        "name": "Stephen Finucane",
+        "email": "sfinucan@redhat.com",
+        "date": "2023-01-03T18:42:44Z"
+      },
+      "committer": {
+        "name": "Stephen Finucane",
+        "email": "sfinucan@redhat.com",
+        "date": "2023-01-06T13:22:38Z"
+      },
+      "message": "Update tox.ini to work with tox 4\n\nResolve the following warnings:\n\n  tox.tox_env.errors.Fail: pass_env values cannot contain whitespace,\n  use comma to have multiple values in a single line, invalid values\n  found 'PBR_INTEGRATION PIPFLAGS PIPVERSION PBRVERSION REPODIR\n  WHEELHOUSE PROJECTS'\n\nAlso, reduce down the envlist as tox 4 when run in OpenStack CI is\nalso attempting to validate interpreters utilizing the\n--skip-missing-interpreters=false setting [1].\n\nFinally, fix up the integration job so that it passes on Ubuntu 22.04.\nThis necessitates removing any Python 2-based dependencies used in the\nthese jobs (since these are no longer available on Ubuntu 22.04) and\nremoving tests for pip versions that are not compatible with Python 3.10\n(the Python version found on Ubuntu 22.04).\n\n[1] https://github.com/tox-dev/tox/issues/2811\n\nChange-Id: Ib4dbe4e09e269219c08a87f6fb64ad9628b5864a\nSigned-off-by: Stephen Finucane <sfinucan@redhat.com>",
+      "tree": {
+        "sha": "aed568fa31217771d715f66fbe5463bac0c9b128",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/aed568fa31217771d715f66fbe5463bac0c9b128"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/491ce1ab095b122b442de1ce662ebc2e29d27de3",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/491ce1ab095b122b442de1ce662ebc2e29d27de3",
+    "html_url": "https://github.com/openstack/pbr/commit/491ce1ab095b122b442de1ce662ebc2e29d27de3",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/491ce1ab095b122b442de1ce662ebc2e29d27de3/comments",
+    "author": {
+      "login": "stephenfin",
+      "id": 1690835,
+      "node_id": "MDQ6VXNlcjE2OTA4MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1690835?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/stephenfin",
+      "html_url": "https://github.com/stephenfin",
+      "followers_url": "https://api.github.com/users/stephenfin/followers",
+      "following_url": "https://api.github.com/users/stephenfin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/stephenfin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/stephenfin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/stephenfin/subscriptions",
+      "organizations_url": "https://api.github.com/users/stephenfin/orgs",
+      "repos_url": "https://api.github.com/users/stephenfin/repos",
+      "events_url": "https://api.github.com/users/stephenfin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/stephenfin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "stephenfin",
+      "id": 1690835,
+      "node_id": "MDQ6VXNlcjE2OTA4MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1690835?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/stephenfin",
+      "html_url": "https://github.com/stephenfin",
+      "followers_url": "https://api.github.com/users/stephenfin/followers",
+      "following_url": "https://api.github.com/users/stephenfin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/stephenfin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/stephenfin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/stephenfin/subscriptions",
+      "organizations_url": "https://api.github.com/users/stephenfin/orgs",
+      "repos_url": "https://api.github.com/users/stephenfin/repos",
+      "events_url": "https://api.github.com/users/stephenfin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/stephenfin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "45d4c9f02fafb425e61a18bbd7a20ef456293a56",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/45d4c9f02fafb425e61a18bbd7a20ef456293a56",
+        "html_url": "https://github.com/openstack/pbr/commit/45d4c9f02fafb425e61a18bbd7a20ef456293a56"
+      }
+    ]
+  },
+  {
+    "sha": "45d4c9f02fafb425e61a18bbd7a20ef456293a56",
+    "node_id": "C_kwDOAExkqtoAKDQ1ZDRjOWYwMmZhZmI0MjVlNjFhMThiYmQ3YTIwZWY0NTYyOTNhNTY",
+    "commit": {
+      "author": {
+        "name": "Zuul",
+        "email": "zuul@review.opendev.org",
+        "date": "2022-08-05T17:56:35Z"
+      },
+      "committer": {
+        "name": "Gerrit Code Review",
+        "email": "review@openstack.org",
+        "date": "2022-08-05T17:56:35Z"
+      },
+      "message": "Merge \"Fix symbol identification in multiline message\"",
+      "tree": {
+        "sha": "aef1e4de0f29b147d9aad6b0df62e4f143d78ec8",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/aef1e4de0f29b147d9aad6b0df62e4f143d78ec8"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/45d4c9f02fafb425e61a18bbd7a20ef456293a56",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/45d4c9f02fafb425e61a18bbd7a20ef456293a56",
+    "html_url": "https://github.com/openstack/pbr/commit/45d4c9f02fafb425e61a18bbd7a20ef456293a56",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/45d4c9f02fafb425e61a18bbd7a20ef456293a56/comments",
+    "author": null,
+    "committer": {
+      "login": "openstack-gerrit",
+      "id": 903479,
+      "node_id": "MDQ6VXNlcjkwMzQ3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/903479?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/openstack-gerrit",
+      "html_url": "https://github.com/openstack-gerrit",
+      "followers_url": "https://api.github.com/users/openstack-gerrit/followers",
+      "following_url": "https://api.github.com/users/openstack-gerrit/following{/other_user}",
+      "gists_url": "https://api.github.com/users/openstack-gerrit/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/openstack-gerrit/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/openstack-gerrit/subscriptions",
+      "organizations_url": "https://api.github.com/users/openstack-gerrit/orgs",
+      "repos_url": "https://api.github.com/users/openstack-gerrit/repos",
+      "events_url": "https://api.github.com/users/openstack-gerrit/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/openstack-gerrit/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "cb2c15ea2b7fffa1adcd28e623572599e2856a2e",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/cb2c15ea2b7fffa1adcd28e623572599e2856a2e",
+        "html_url": "https://github.com/openstack/pbr/commit/cb2c15ea2b7fffa1adcd28e623572599e2856a2e"
+      },
+      {
+        "sha": "0aecbea81bcf8134bc76c17d4bc481a6f56e7bb2",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/0aecbea81bcf8134bc76c17d4bc481a6f56e7bb2",
+        "html_url": "https://github.com/openstack/pbr/commit/0aecbea81bcf8134bc76c17d4bc481a6f56e7bb2"
+      }
+    ]
+  },
+  {
+    "sha": "0aecbea81bcf8134bc76c17d4bc481a6f56e7bb2",
+    "node_id": "C_kwDOAExkqtoAKDBhZWNiZWE4MWJjZjgxMzRiYzc2YzE3ZDRiYzQ4MWE2ZjU2ZTdiYjI",
+    "commit": {
+      "author": {
+        "name": "Chris Dohmen",
+        "email": "chris.dohmen@sciencelogic.com",
+        "date": "2022-06-27T17:35:05Z"
+      },
+      "committer": {
+        "name": "Chris Dohmen",
+        "email": "chris.dohmen@sciencelogic.com",
+        "date": "2022-08-05T14:08:09Z"
+      },
+      "message": "Fix symbol identification in multiline message\n\n* Fix an issue where a multiline message with leading spaces would cause\n  invalid symbol identification.\n* Add unit-tests around multiple symbols in a single line\n\nSem-Ver: bugfix\nChange-Id: Id799c2fd368d9df38a5c01fc2071283aecef67c6",
+      "tree": {
+        "sha": "10b44fca5e946dddd4cda6a1ae11061fb0f3da5d",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/10b44fca5e946dddd4cda6a1ae11061fb0f3da5d"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/0aecbea81bcf8134bc76c17d4bc481a6f56e7bb2",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/0aecbea81bcf8134bc76c17d4bc481a6f56e7bb2",
+    "html_url": "https://github.com/openstack/pbr/commit/0aecbea81bcf8134bc76c17d4bc481a6f56e7bb2",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/0aecbea81bcf8134bc76c17d4bc481a6f56e7bb2/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "1eadf23b94846a0ebc8402e09190ed1de6dbffd0",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/1eadf23b94846a0ebc8402e09190ed1de6dbffd0",
+        "html_url": "https://github.com/openstack/pbr/commit/1eadf23b94846a0ebc8402e09190ed1de6dbffd0"
+      }
+    ]
+  },
+  {
+    "sha": "cb2c15ea2b7fffa1adcd28e623572599e2856a2e",
+    "node_id": "C_kwDOAExkqtoAKGNiMmMxNWVhMmI3ZmZmYTFhZGNkMjhlNjIzNTcyNTk5ZTI4NTZhMmU",
+    "commit": {
+      "author": {
+        "name": "Zuul",
+        "email": "zuul@review.opendev.org",
+        "date": "2022-08-03T14:37:16Z"
+      },
+      "committer": {
+        "name": "Gerrit Code Review",
+        "email": "review@openstack.org",
+        "date": "2022-08-03T14:37:16Z"
+      },
+      "message": "Merge \"Replace deprecated readfp method with read_file\"",
+      "tree": {
+        "sha": "ddd53827400fcfa7cdf47fedf48654398111dbe0",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/ddd53827400fcfa7cdf47fedf48654398111dbe0"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/cb2c15ea2b7fffa1adcd28e623572599e2856a2e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/cb2c15ea2b7fffa1adcd28e623572599e2856a2e",
+    "html_url": "https://github.com/openstack/pbr/commit/cb2c15ea2b7fffa1adcd28e623572599e2856a2e",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/cb2c15ea2b7fffa1adcd28e623572599e2856a2e/comments",
+    "author": null,
+    "committer": {
+      "login": "openstack-gerrit",
+      "id": 903479,
+      "node_id": "MDQ6VXNlcjkwMzQ3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/903479?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/openstack-gerrit",
+      "html_url": "https://github.com/openstack-gerrit",
+      "followers_url": "https://api.github.com/users/openstack-gerrit/followers",
+      "following_url": "https://api.github.com/users/openstack-gerrit/following{/other_user}",
+      "gists_url": "https://api.github.com/users/openstack-gerrit/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/openstack-gerrit/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/openstack-gerrit/subscriptions",
+      "organizations_url": "https://api.github.com/users/openstack-gerrit/orgs",
+      "repos_url": "https://api.github.com/users/openstack-gerrit/repos",
+      "events_url": "https://api.github.com/users/openstack-gerrit/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/openstack-gerrit/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "553218d8f57f9baf91d109e020f0f78661fc801d",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/553218d8f57f9baf91d109e020f0f78661fc801d",
+        "html_url": "https://github.com/openstack/pbr/commit/553218d8f57f9baf91d109e020f0f78661fc801d"
+      },
+      {
+        "sha": "2290f58eb93c1c0775bf6a49eb91bfa9792ca79b",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/2290f58eb93c1c0775bf6a49eb91bfa9792ca79b",
+        "html_url": "https://github.com/openstack/pbr/commit/2290f58eb93c1c0775bf6a49eb91bfa9792ca79b"
+      }
+    ]
+  },
+  {
+    "sha": "553218d8f57f9baf91d109e020f0f78661fc801d",
+    "node_id": "C_kwDOAExkqtoAKDU1MzIxOGQ4ZjU3ZjliYWY5MWQxMDllMDIwZjBmNzg2NjFmYzgwMWQ",
+    "commit": {
+      "author": {
+        "name": "Zuul",
+        "email": "zuul@review.opendev.org",
+        "date": "2022-08-03T12:45:16Z"
+      },
+      "committer": {
+        "name": "Gerrit Code Review",
+        "email": "review@openstack.org",
+        "date": "2022-08-03T12:45:16Z"
+      },
+      "message": "Merge \"Use stdlib importlib.metadata where possible\"",
+      "tree": {
+        "sha": "b178d7cd647ff2d28547681daa412ee0f57eb82e",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/b178d7cd647ff2d28547681daa412ee0f57eb82e"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/553218d8f57f9baf91d109e020f0f78661fc801d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/553218d8f57f9baf91d109e020f0f78661fc801d",
+    "html_url": "https://github.com/openstack/pbr/commit/553218d8f57f9baf91d109e020f0f78661fc801d",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/553218d8f57f9baf91d109e020f0f78661fc801d/comments",
+    "author": null,
+    "committer": {
+      "login": "openstack-gerrit",
+      "id": 903479,
+      "node_id": "MDQ6VXNlcjkwMzQ3OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/903479?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/openstack-gerrit",
+      "html_url": "https://github.com/openstack-gerrit",
+      "followers_url": "https://api.github.com/users/openstack-gerrit/followers",
+      "following_url": "https://api.github.com/users/openstack-gerrit/following{/other_user}",
+      "gists_url": "https://api.github.com/users/openstack-gerrit/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/openstack-gerrit/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/openstack-gerrit/subscriptions",
+      "organizations_url": "https://api.github.com/users/openstack-gerrit/orgs",
+      "repos_url": "https://api.github.com/users/openstack-gerrit/repos",
+      "events_url": "https://api.github.com/users/openstack-gerrit/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/openstack-gerrit/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1eadf23b94846a0ebc8402e09190ed1de6dbffd0",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/1eadf23b94846a0ebc8402e09190ed1de6dbffd0",
+        "html_url": "https://github.com/openstack/pbr/commit/1eadf23b94846a0ebc8402e09190ed1de6dbffd0"
+      },
+      {
+        "sha": "6a6546a362e4a28839e642e9a8ee937191fe1d5e",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/6a6546a362e4a28839e642e9a8ee937191fe1d5e",
+        "html_url": "https://github.com/openstack/pbr/commit/6a6546a362e4a28839e642e9a8ee937191fe1d5e"
+      }
+    ]
+  },
+  {
+    "sha": "2290f58eb93c1c0775bf6a49eb91bfa9792ca79b",
+    "node_id": "C_kwDOAExkqtoAKDIyOTBmNThlYjkzYzFjMDc3NWJmNmE0OWViOTFiZmE5NzkyY2E3OWI",
+    "commit": {
+      "author": {
+        "name": "ljhuang",
+        "email": "huang.liujie@99cloud.net",
+        "date": "2022-07-22T08:22:14Z"
+      },
+      "committer": {
+        "name": "ljhuang",
+        "email": "huang.liujie@99cloud.net",
+        "date": "2022-07-22T09:41:30Z"
+      },
+      "message": "Replace deprecated readfp method with read_file\n\nThe readfp method has been deprecated since version 3.2 [1].\n\n[1] https://docs.python.org/3/library/configparser.html?highlight=deprecated#configparser.ConfigParser.readfp\n\nChange-Id: Ib9549509bfcc749740953e3769030d787b2bf251",
+      "tree": {
+        "sha": "7d5c6566c192b9b84cc36ffc60b2d32ada0fec28",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/7d5c6566c192b9b84cc36ffc60b2d32ada0fec28"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/2290f58eb93c1c0775bf6a49eb91bfa9792ca79b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/2290f58eb93c1c0775bf6a49eb91bfa9792ca79b",
+    "html_url": "https://github.com/openstack/pbr/commit/2290f58eb93c1c0775bf6a49eb91bfa9792ca79b",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/2290f58eb93c1c0775bf6a49eb91bfa9792ca79b/comments",
+    "author": {
+      "login": "huangliujie",
+      "id": 41626589,
+      "node_id": "MDQ6VXNlcjQxNjI2NTg5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/41626589?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/huangliujie",
+      "html_url": "https://github.com/huangliujie",
+      "followers_url": "https://api.github.com/users/huangliujie/followers",
+      "following_url": "https://api.github.com/users/huangliujie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/huangliujie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/huangliujie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/huangliujie/subscriptions",
+      "organizations_url": "https://api.github.com/users/huangliujie/orgs",
+      "repos_url": "https://api.github.com/users/huangliujie/repos",
+      "events_url": "https://api.github.com/users/huangliujie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/huangliujie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "huangliujie",
+      "id": 41626589,
+      "node_id": "MDQ6VXNlcjQxNjI2NTg5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/41626589?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/huangliujie",
+      "html_url": "https://github.com/huangliujie",
+      "followers_url": "https://api.github.com/users/huangliujie/followers",
+      "following_url": "https://api.github.com/users/huangliujie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/huangliujie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/huangliujie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/huangliujie/subscriptions",
+      "organizations_url": "https://api.github.com/users/huangliujie/orgs",
+      "repos_url": "https://api.github.com/users/huangliujie/repos",
+      "events_url": "https://api.github.com/users/huangliujie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/huangliujie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1eadf23b94846a0ebc8402e09190ed1de6dbffd0",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/1eadf23b94846a0ebc8402e09190ed1de6dbffd0",
+        "html_url": "https://github.com/openstack/pbr/commit/1eadf23b94846a0ebc8402e09190ed1de6dbffd0"
+      }
+    ]
+  },
+  {
+    "sha": "1eadf23b94846a0ebc8402e09190ed1de6dbffd0",
+    "node_id": "C_kwDOAExkqtoAKDFlYWRmMjNiOTQ4NDZhMGViYzg0MDJlMDkxOTBlZDFkZTZkYmZmZDA",
+    "commit": {
+      "author": {
+        "name": "Chris Dohmen",
+        "email": "chris.dohmen@sciencelogic.com",
+        "date": "2022-06-13T19:39:31Z"
+      },
+      "committer": {
+        "name": "Chris Dohmen",
+        "email": "chris.dohmen@sciencelogic.com",
+        "date": "2022-06-13T21:06:43Z"
+      },
+      "message": "Specify Changelog procedure\n\nUpdate the CONTRIBUTING file to specify how release notes are managed.\nThis allows contributors to follow best-practices to ensure the\nauto-generated Changelog stays up-to-date.\n\nChange-Id: I7902c33a76c4cce8f50307843476e5d9435c9e2c",
+      "tree": {
+        "sha": "2c0c834d0884799ca443b047e254a09dffafec77",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/2c0c834d0884799ca443b047e254a09dffafec77"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/1eadf23b94846a0ebc8402e09190ed1de6dbffd0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/1eadf23b94846a0ebc8402e09190ed1de6dbffd0",
+    "html_url": "https://github.com/openstack/pbr/commit/1eadf23b94846a0ebc8402e09190ed1de6dbffd0",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/1eadf23b94846a0ebc8402e09190ed1de6dbffd0/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "3793d87deb762f773eda1622ed87941c24bc253d",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/3793d87deb762f773eda1622ed87941c24bc253d",
+        "html_url": "https://github.com/openstack/pbr/commit/3793d87deb762f773eda1622ed87941c24bc253d"
+      }
+    ]
+  },
+  {
+    "sha": "3793d87deb762f773eda1622ed87941c24bc253d",
+    "node_id": "C_kwDOAExkqtoAKDM3OTNkODdkZWI3NjJmNzczZWRhMTYyMmVkODc5NDFjMjRiYzI1M2Q",
+    "commit": {
+      "author": {
+        "name": "Chris Dohmen",
+        "email": "chris.dohmen@sciencelogic.com",
+        "date": "2022-06-03T13:11:41Z"
+      },
+      "committer": {
+        "name": "Chris Dohmen",
+        "email": "chris.dohmen@sciencelogic.com",
+        "date": "2022-06-03T13:21:25Z"
+      },
+      "message": "Allow leading spaces when determining symbols\n\nUpdate the logic that checks for sem-ver to strip out leading spaces.\nThis helps solve an issue during automated squashes appending a tab\ncharacter to the start of each line in a commit message.\n\nCloses-Bug: #1977479\nChange-Id: I6f56500c366fd9610d98507f01e8af21862e4421",
+      "tree": {
+        "sha": "2f896cdc1e91adaab09034e158c349652720325b",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/2f896cdc1e91adaab09034e158c349652720325b"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/3793d87deb762f773eda1622ed87941c24bc253d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/3793d87deb762f773eda1622ed87941c24bc253d",
+    "html_url": "https://github.com/openstack/pbr/commit/3793d87deb762f773eda1622ed87941c24bc253d",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/3793d87deb762f773eda1622ed87941c24bc253d/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "5ded0ee1ff7236aa6bdc94cf5f4426b3816c98ef",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/5ded0ee1ff7236aa6bdc94cf5f4426b3816c98ef",
+        "html_url": "https://github.com/openstack/pbr/commit/5ded0ee1ff7236aa6bdc94cf5f4426b3816c98ef"
+      }
+    ]
+  },
+  {
+    "sha": "6a6546a362e4a28839e642e9a8ee937191fe1d5e",
+    "node_id": "C_kwDOAExkqtoAKDZhNjU0NmEzNjJlNGEyODgzOWU2NDJlOWE4ZWU5MzcxOTFmZTFkNWU",
+    "commit": {
+      "author": {
+        "name": "Stephen Finucane",
+        "email": "sfinucan@redhat.com",
+        "date": "2022-05-18T16:41:28Z"
+      },
+      "committer": {
+        "name": "Stephen Finucane",
+        "email": "sfinucan@redhat.com",
+        "date": "2022-05-18T16:41:28Z"
+      },
+      "message": "Use stdlib importlib.metadata where possible\n\nThe importlib_metadata package isn't guaranteed to be available, but the\nstlib version will always be there (at least on Python 3.8 or later).\n\nChange-Id: I532a365aa0f1a3206edf6b01e821bd83ea04ab3c\nSigned-off-by: Stephen Finucane <sfinucan@redhat.com>",
+      "tree": {
+        "sha": "11f463aa093f213efd5e0fa62214ae9506d3876e",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/11f463aa093f213efd5e0fa62214ae9506d3876e"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/6a6546a362e4a28839e642e9a8ee937191fe1d5e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/6a6546a362e4a28839e642e9a8ee937191fe1d5e",
+    "html_url": "https://github.com/openstack/pbr/commit/6a6546a362e4a28839e642e9a8ee937191fe1d5e",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/6a6546a362e4a28839e642e9a8ee937191fe1d5e/comments",
+    "author": {
+      "login": "stephenfin",
+      "id": 1690835,
+      "node_id": "MDQ6VXNlcjE2OTA4MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1690835?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/stephenfin",
+      "html_url": "https://github.com/stephenfin",
+      "followers_url": "https://api.github.com/users/stephenfin/followers",
+      "following_url": "https://api.github.com/users/stephenfin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/stephenfin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/stephenfin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/stephenfin/subscriptions",
+      "organizations_url": "https://api.github.com/users/stephenfin/orgs",
+      "repos_url": "https://api.github.com/users/stephenfin/repos",
+      "events_url": "https://api.github.com/users/stephenfin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/stephenfin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "stephenfin",
+      "id": 1690835,
+      "node_id": "MDQ6VXNlcjE2OTA4MzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1690835?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/stephenfin",
+      "html_url": "https://github.com/stephenfin",
+      "followers_url": "https://api.github.com/users/stephenfin/followers",
+      "following_url": "https://api.github.com/users/stephenfin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/stephenfin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/stephenfin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/stephenfin/subscriptions",
+      "organizations_url": "https://api.github.com/users/stephenfin/orgs",
+      "repos_url": "https://api.github.com/users/stephenfin/repos",
+      "events_url": "https://api.github.com/users/stephenfin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/stephenfin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5ded0ee1ff7236aa6bdc94cf5f4426b3816c98ef",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/5ded0ee1ff7236aa6bdc94cf5f4426b3816c98ef",
+        "html_url": "https://github.com/openstack/pbr/commit/5ded0ee1ff7236aa6bdc94cf5f4426b3816c98ef"
+      }
+    ]
+  },
+  {
+    "sha": "5ded0ee1ff7236aa6bdc94cf5f4426b3816c98ef",
+    "node_id": "C_kwDOAExkqtoAKDVkZWQwZWUxZmY3MjM2YWE2YmRjOTRjZjVmNDQyNmIzODE2Yzk4ZWY",
+    "commit": {
+      "author": {
+        "name": "Hervé Beraud",
+        "email": "hberaud@redhat.com",
+        "date": "2022-05-05T10:05:41Z"
+      },
+      "committer": {
+        "name": "Hervé Beraud",
+        "email": "hberaud@redhat.com",
+        "date": "2022-05-05T10:06:18Z"
+      },
+      "message": "Adding python classifiers py38 & py39\n\nChange-Id: Ib8e251ae9dd93a5eb356478d633f1fef271911d9",
+      "tree": {
+        "sha": "290ed4934edc7c711855cbb3670960ab1f97b732",
+        "url": "https://api.github.com/repos/openstack/pbr/git/trees/290ed4934edc7c711855cbb3670960ab1f97b732"
+      },
+      "url": "https://api.github.com/repos/openstack/pbr/git/commits/5ded0ee1ff7236aa6bdc94cf5f4426b3816c98ef",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/openstack/pbr/commits/5ded0ee1ff7236aa6bdc94cf5f4426b3816c98ef",
+    "html_url": "https://github.com/openstack/pbr/commit/5ded0ee1ff7236aa6bdc94cf5f4426b3816c98ef",
+    "comments_url": "https://api.github.com/repos/openstack/pbr/commits/5ded0ee1ff7236aa6bdc94cf5f4426b3816c98ef/comments",
+    "author": {
+      "login": "4383",
+      "id": 1541489,
+      "node_id": "MDQ6VXNlcjE1NDE0ODk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1541489?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/4383",
+      "html_url": "https://github.com/4383",
+      "followers_url": "https://api.github.com/users/4383/followers",
+      "following_url": "https://api.github.com/users/4383/following{/other_user}",
+      "gists_url": "https://api.github.com/users/4383/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/4383/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/4383/subscriptions",
+      "organizations_url": "https://api.github.com/users/4383/orgs",
+      "repos_url": "https://api.github.com/users/4383/repos",
+      "events_url": "https://api.github.com/users/4383/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/4383/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "4383",
+      "id": 1541489,
+      "node_id": "MDQ6VXNlcjE1NDE0ODk=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1541489?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/4383",
+      "html_url": "https://github.com/4383",
+      "followers_url": "https://api.github.com/users/4383/followers",
+      "following_url": "https://api.github.com/users/4383/following{/other_user}",
+      "gists_url": "https://api.github.com/users/4383/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/4383/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/4383/subscriptions",
+      "organizations_url": "https://api.github.com/users/4383/orgs",
+      "repos_url": "https://api.github.com/users/4383/repos",
+      "events_url": "https://api.github.com/users/4383/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/4383/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b0a1b7209d62c1e67c1e11dc96f98fd457d69352",
+        "url": "https://api.github.com/repos/openstack/pbr/commits/b0a1b7209d62c1e67c1e11dc96f98fd457d69352",
+        "html_url": "https://github.com/openstack/pbr/commit/b0a1b7209d62c1e67c1e11dc96f98fd457d69352"
+      }
+    ]
+  }
+]

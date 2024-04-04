@@ -1,0 +1,2387 @@
+[
+  {
+    "sha": "e525f27d29e122bb8baefa1837816f9001fa5085",
+    "node_id": "C_kwDOAAddrNoAKGU1MjVmMjdkMjllMTIyYmI4YmFlZmExODM3ODE2ZjkwMDFmYTUwODU",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-02-24T14:07:29Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-02-29T12:09:23Z"
+      },
+      "message": "Use defvar-local\n\nUse defvar-local instead of defvar + make-variable-buffer-local\nfor readability, and remove unused variables.\n\n* elmo/acap.el (acap-state, acap-capability, acap-reached-tag)\n(acap-tag, acap-auth, acap-server, acap-port, acap-response)\n(acap-logging-out): As above.\n(acap-failed-tag): Removed.\n\n* elmo/elmo-imap4.el (elmo-imap4-seqno)\n(elmo-imap4-current-response, elmo-imap4-status)\n(elmo-imap4-reached-tag, elmo-imap4-parsing)\n(elmo-imap4-fetch-callback, elmo-imap4-fetch-callback-data)\n(elmo-imap4-status-callback, elmo-imap4-status-callback-data)\n(elmo-imap4-count-progress, elmo-imap4-count-progress-message)\n(elmo-imap4-progress-count, elmo-imap4-current-msgdb)\n(elmo-imap4-seen-messages): As above.\n(lmo-imap4-local-variables): Removed.\n(elmo-network-initialize-session-buffer): Don't call\nmake-variable-buffer-local.\n\n* elmo/elmo-pop3.el (elmo-pop3-read-point)\n(elmo-pop3-number-uidl-hash, elmo-pop3-uidl-number-hash)\n(elmo-pop3-size-hash, elmo-pop3-uidl-done, elmo-pop3-list-done)\n(elmo-pop3-lock): As above.\n(elmo-pop3-local-variables)\n(elmo-network-initialize-session-buffer): Removed.\n\n* elmo/elmo-split.el (elmo-split-message-entity): As above.\n\n* elmo/modb-entity.el (elmo-msgdb-decoded-cache-hashtb): As above.\n\n* utils/im-wl.el (im-wl-buffer-editing-buffer)\n(im-wl-buffer-sending-buffer, im-wl-buffer-kill-when-done): As above.\n\n* wl/wl-addrmgr.el (wl-addrmgr-draft-buffer)\n(wl-addrmgr-unknown-list, wl-addrmgr-sort-key)\n(wl-addrmgr-sort-order, wl-addrmgr-method, wl-addrmgr-list)\n(wl-addrmgr-method-name): As above.\n\n* wl/wl-draft.el (wl-draft-buffer-message-number)\n(wl-draft-config-variables, wl-draft-config-exec-flag)\n(wl-draft-buffer-cur-summary-buffer, wl-sent-message-via)\n(wl-sent-message-queued, wl-draft-fcc-list)\n(wl-draft-forward-buffer, wl-draft-reply-buffer)\n(wl-draft-parent-folder, wl-draft-parent-number)\n(wl-draft-parent-flag): As above.\n\n* wl/wl-folder.el (wl-folder-buffer-disp-summary)\n(wl-folder-buffer-cur-entity-id)\n(wl-folder-buffer-last-visited-entity-id)\n(wl-folder-buffer-cur-path, wl-folder-buffer-cur-point): As above.\n\n* wl/wl-message.el (wl-message-buffer-cur-folder)\n(wl-message-buffer-cur-number)\n(wl-message-buffer-cur-display-type)\n(wl-message-buffer-cur-summary-buffer)\n(wl-message-buffer-require-all-header)\n(wl-message-buffer-original-buffer)\n(wl-message-buffer-mode-line-formatter)\n(wl-message-buffer-flag-indicator)\n(wl-message-buffer-mime-entity): As above.\n\n* wl/wl-mime.el (wl-draft-preview-pgp-processing): As above.\n\n* wl/wl-score.el (wl-score-alist, wl-current-score-file): As\nabove.\n\n* wl/wl-summary.el (wl-summary-buffer-elmo-folder)\n(wl-summary-buffer-disp-msg, wl-summary-buffer-disp-folder)\n(wl-summary-buffer-temp-mark-list)\n(wl-summary-buffer-message-ring, wl-summary-buffer-unread-count)\n(wl-summary-buffer-new-count, wl-summary-buffer-answered-count)\n(wl-summary-buffer-mime-charset)\n(wl-summary-buffer-weekday-name-lang)\n(wl-summary-buffer-thread-indent-set, wl-summary-buffer-view)\n(wl-summary-buffer-message-modified)\n(wl-summary-buffer-thread-modified)\n(wl-summary-buffer-number-column)\n(wl-summary-buffer-temp-mark-column)\n(wl-summary-buffer-persistent-mark-column)\n(wl-summary-buffer-persistent-mark-version)\n(wl-summary-buffer-persistent, wl-summary-buffer-thread-nodes)\n(wl-summary-buffer-target-mark-list)\n(wl-summary-buffer-prev-refile-destination)\n(wl-summary-buffer-saved-message)\n(wl-summary-buffer-prev-folder-function)\n(wl-summary-buffer-next-folder-function)\n(wl-summary-buffer-exit-function)\n(wl-summary-buffer-next-message-function)\n(wl-summary-buffer-window-scroll-functions)\n(wl-summary-buffer-number-list, wl-summary-buffer-folder-name)\n(wl-summary-buffer-line-formatter)\n(wl-summary-buffer-line-format)\n(wl-summary-buffer-mode-line-formatter)\n(wl-summary-buffer-mode-line)\n(wl-summary-buffer-display-mime-mode)\n(wl-summary-buffer-display-header-mode)\n(wl-thread-indent-level-internal)\n(wl-thread-have-younger-brother-str-internal)\n(wl-thread-youngest-child-str-internal)\n(wl-thread-vertical-str-internal)\n(wl-thread-horizontal-str-internal)\n(wl-thread-space-str-internal, wl-summary-scored): As above.\n\n* wl/wl-thread.el (wl-thread-tops): removed.\n(wl-thread-entities, wl-thread-entity-list)\n(wl-thread-entity-hashtb): As above.\n\n* wl/wl-util.el (wl-disable-auto-save): As above.\n\n* wl/wl-vars.el (wl-summary-move-direction-downward): As above.",
+      "tree": {
+        "sha": "4a584b412217536f9d5b8c85b0f87385d83d4ee2",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/4a584b412217536f9d5b8c85b0f87385d83d4ee2"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/e525f27d29e122bb8baefa1837816f9001fa5085",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/e525f27d29e122bb8baefa1837816f9001fa5085",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/e525f27d29e122bb8baefa1837816f9001fa5085",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/e525f27d29e122bb8baefa1837816f9001fa5085/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8de43f2170bc0f3db2c1647d242094b9901bc53e",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/8de43f2170bc0f3db2c1647d242094b9901bc53e",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/8de43f2170bc0f3db2c1647d242094b9901bc53e"
+      }
+    ]
+  },
+  {
+    "sha": "8de43f2170bc0f3db2c1647d242094b9901bc53e",
+    "node_id": "C_kwDOAAddrNoAKDhkZTQzZjIxNzBiYzBmM2RiMmMxNjQ3ZDI0MjA5NGI5OTAxYmM1M2U",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-02-24T08:42:41Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-02-29T12:09:08Z"
+      },
+      "message": "wl-draft-config-alist support 'forward' key\n\nLike as 'reply' key, when you invoke wl-summary-forward, you can\nperform matching in original message buffer.\n\n* doc/wl-ja.texi (Dynamical Message Re-arrangement): Describe it.\n\n* doc/wl.texi (Dynamical Message Re-arrangement): Likewise.\n\n* wl/wl-draft.el (wl-draft-forward-buffer): New buffer local\nvariable.\n(wl-draft-forward): Set wl-draft-forward-buffer to original\nbuffer.\n(wl-draft-config-exec): Support 'forward' key.\n\n* wl/wl-vars.el (wl-draft-config-alist): Update docstring.",
+      "tree": {
+        "sha": "1abdb735a3354baf9e1da70a37c4ed45eeb55e0b",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/1abdb735a3354baf9e1da70a37c4ed45eeb55e0b"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/8de43f2170bc0f3db2c1647d242094b9901bc53e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/8de43f2170bc0f3db2c1647d242094b9901bc53e",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/8de43f2170bc0f3db2c1647d242094b9901bc53e",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/8de43f2170bc0f3db2c1647d242094b9901bc53e/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ff19a561e0817847a4dd404ffe082e012d30da09",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/ff19a561e0817847a4dd404ffe082e012d30da09",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/ff19a561e0817847a4dd404ffe082e012d30da09"
+      }
+    ]
+  },
+  {
+    "sha": "ff19a561e0817847a4dd404ffe082e012d30da09",
+    "node_id": "C_kwDOAAddrNoAKGZmMTlhNTYxZTA4MTc4NDdhNGRkNDA0ZmZlMDgyZTAxMmQzMGRhMDk",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-02-21T12:52:10Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-02-24T14:17:23Z"
+      },
+      "message": "Update docstring syntax\n\nEscape non-special single quote in docstring.  This is follow up\nfor commit 101f7fe8553de0f37c894f1081d80c1fb629ad39 .\n\n* wl/wl-vars.el (wl-summary-line-format)\n(wl-summary-mode-line-format): Escape non-special \"'\".",
+      "tree": {
+        "sha": "a93be9cce567fcc7f969cf0789735d0f621ac372",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/a93be9cce567fcc7f969cf0789735d0f621ac372"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/ff19a561e0817847a4dd404ffe082e012d30da09",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/ff19a561e0817847a4dd404ffe082e012d30da09",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/ff19a561e0817847a4dd404ffe082e012d30da09",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/ff19a561e0817847a4dd404ffe082e012d30da09/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "76c07d3b0fd1d37c89e544442c2d91dac58d0d5d",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/76c07d3b0fd1d37c89e544442c2d91dac58d0d5d",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/76c07d3b0fd1d37c89e544442c2d91dac58d0d5d"
+      }
+    ]
+  },
+  {
+    "sha": "76c07d3b0fd1d37c89e544442c2d91dac58d0d5d",
+    "node_id": "C_kwDOAAddrNoAKDc2YzA3ZDNiMGZkMWQzN2M4OWU1NDQ0NDJjMmQ5MWRhYzU4ZDBkNWQ",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-02-21T12:48:26Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-02-21T15:09:49Z"
+      },
+      "message": "Suppress byte-compiler's warning\n\n* elmo/elmo-passwd.el (elmo-passwd-save): Don't use condition-case\nwithout handler.",
+      "tree": {
+        "sha": "7dfaa73b372c27709d6f67a8ddd7f87dbd979b64",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/7dfaa73b372c27709d6f67a8ddd7f87dbd979b64"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/76c07d3b0fd1d37c89e544442c2d91dac58d0d5d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/76c07d3b0fd1d37c89e544442c2d91dac58d0d5d",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/76c07d3b0fd1d37c89e544442c2d91dac58d0d5d",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/76c07d3b0fd1d37c89e544442c2d91dac58d0d5d/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ddd8af3493aa05edd75784e6590db47e662485ae",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/ddd8af3493aa05edd75784e6590db47e662485ae",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/ddd8af3493aa05edd75784e6590db47e662485ae"
+      }
+    ]
+  },
+  {
+    "sha": "ddd8af3493aa05edd75784e6590db47e662485ae",
+    "node_id": "C_kwDOAAddrNoAKGRkZDhhZjM0OTNhYTA1ZWRkNzU3ODRlNjU5MGRiNDdlNjYyNDg1YWU",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-02-20T11:34:07Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-02-21T15:09:49Z"
+      },
+      "message": "Fix documents about wl-draft-always-delete-myself\n\nwl-draft-always-delete-myself does not affect To: field but\ndocuments say \"does\", so fix them.\n\n* doc/wl.texi (Variables of Draft Mode): As above.\n\n* doc/wl-ja.texi (Variables of Draft Mode): As above.\n\n* wl/wl-vars.el (wl-draft-always-delete-myself): Clarify\ndocstring.",
+      "tree": {
+        "sha": "1d240e038a1958bf897df726752b1b67bb04c8fe",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/1d240e038a1958bf897df726752b1b67bb04c8fe"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/ddd8af3493aa05edd75784e6590db47e662485ae",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/ddd8af3493aa05edd75784e6590db47e662485ae",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/ddd8af3493aa05edd75784e6590db47e662485ae",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/ddd8af3493aa05edd75784e6590db47e662485ae/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c842faeb19152bb6c02bbf7aa955242b129109e6",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/c842faeb19152bb6c02bbf7aa955242b129109e6",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/c842faeb19152bb6c02bbf7aa955242b129109e6"
+      }
+    ]
+  },
+  {
+    "sha": "c842faeb19152bb6c02bbf7aa955242b129109e6",
+    "node_id": "C_kwDOAAddrNoAKGM4NDJmYWViMTkxNTJiYjZjMDJiYmY3YWE5NTUyNDJiMTI5MTA5ZTY",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-02-20T11:24:41Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-02-21T15:09:49Z"
+      },
+      "message": "Remove useless unwind-protect\n\n* elmo/acap.el (acap-open, acap-send-command): As above.",
+      "tree": {
+        "sha": "d72a9a1cdf3dedf9044be84dca6d6c0bf5d8659d",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/d72a9a1cdf3dedf9044be84dca6d6c0bf5d8659d"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/c842faeb19152bb6c02bbf7aa955242b129109e6",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/c842faeb19152bb6c02bbf7aa955242b129109e6",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/c842faeb19152bb6c02bbf7aa955242b129109e6",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/c842faeb19152bb6c02bbf7aa955242b129109e6/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "94a8fa3491cf2156458a5baad1fc6d3ebf2ef5c5",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/94a8fa3491cf2156458a5baad1fc6d3ebf2ef5c5",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/94a8fa3491cf2156458a5baad1fc6d3ebf2ef5c5"
+      }
+    ]
+  },
+  {
+    "sha": "94a8fa3491cf2156458a5baad1fc6d3ebf2ef5c5",
+    "node_id": "C_kwDOAAddrNoAKDk0YThmYTM0OTFjZjIxNTY0NThhNWJhYWQxZmM2ZDNlYmYyZWY1YzU",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-02-20T11:17:47Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-02-21T15:07:45Z"
+      },
+      "message": "Use prepared process handling functions instead of own codes\n\n* elmo/acap.el (acap-network-stream-open, acap-open)\n(acap-close, acap-wait-for-response): Use process-live-p.\n\n* elmo/elmo-imap4.el (elmo-imap4-read-response)\n(elmo-network-initialize-session): Use process-live-p.\n\n* elmo/elmo-net.el (elmo-network-get-session)\n(elmo-open-network-stream): Use process-live-p.\n(elmo-network-session-starttls-negotiate): Use process-type.\n\n* elmo/elmo-nntp.el (elmo-network-initialize-session): Use\nprocess-live-p.\n\n* elmo/elmo-pop3.el (elmo-network-close-session)\n(elmo-network-initialize-session): Use process-live-p.\n\n* elmo/elsp-bsfilter.el (elmo-spam-list-spam-messages): Use\nprocess-live-p.",
+      "tree": {
+        "sha": "05d7d644b511f856937de8692b9afcab808b79f3",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/05d7d644b511f856937de8692b9afcab808b79f3"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/94a8fa3491cf2156458a5baad1fc6d3ebf2ef5c5",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/94a8fa3491cf2156458a5baad1fc6d3ebf2ef5c5",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/94a8fa3491cf2156458a5baad1fc6d3ebf2ef5c5",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/94a8fa3491cf2156458a5baad1fc6d3ebf2ef5c5/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c15e8ece4f34f10479e17cda19d10b98f6be3ec1",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/c15e8ece4f34f10479e17cda19d10b98f6be3ec1",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/c15e8ece4f34f10479e17cda19d10b98f6be3ec1"
+      }
+    ]
+  },
+  {
+    "sha": "c15e8ece4f34f10479e17cda19d10b98f6be3ec1",
+    "node_id": "C_kwDOAAddrNoAKGMxNWU4ZWNlNGYzNGYxMDQ3OWUxN2NkYTE5ZDEwYjk4ZjZiZTNlYzE",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-02-07T09:49:36Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-02-07T09:49:36Z"
+      },
+      "message": "Fix quoted name encode/decode issue in draft mode.\n\nIf there is quoted name which contains white space and non-ascii\ncharacter in address list field, such as To: Cc:, it is\nmis-decoded while saving and re-editing.  This commit partially\nfix the issue.  When field value is not valid, the problem would\nstill occurs.\n\n* wl/wl-draft.el (wl-draft-save): Use\neword-encode-unstructured-field-body for address list only when\nfield value is invalid.",
+      "tree": {
+        "sha": "9267e4ba339267ab07b082791d7bb5999586506e",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/9267e4ba339267ab07b082791d7bb5999586506e"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/c15e8ece4f34f10479e17cda19d10b98f6be3ec1",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/c15e8ece4f34f10479e17cda19d10b98f6be3ec1",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/c15e8ece4f34f10479e17cda19d10b98f6be3ec1",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/c15e8ece4f34f10479e17cda19d10b98f6be3ec1/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "39132562c5481443a07d20b4de3abd46cfff8241",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/39132562c5481443a07d20b4de3abd46cfff8241",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/39132562c5481443a07d20b4de3abd46cfff8241"
+      }
+    ]
+  },
+  {
+    "sha": "39132562c5481443a07d20b4de3abd46cfff8241",
+    "node_id": "C_kwDOAAddrNoAKDM5MTMyNTYyYzU0ODE0NDNhMDdkMjBiNGRlM2FiZDQ2Y2ZmZjgyNDE",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-02-05T12:33:03Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-02-07T03:26:18Z"
+      },
+      "message": "Raise an error if IMAP4 connection is closed.\n\nCf. https://github.com/wanderlust/wanderlust/pull/226\n\n* elmo/elmo-imap4.el (elmo-imap4-read-response): Handle the case\nthat connection is broken.",
+      "tree": {
+        "sha": "b2e77e8889e77f678ced627fa0dc4f8911689cea",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/b2e77e8889e77f678ced627fa0dc4f8911689cea"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/39132562c5481443a07d20b4de3abd46cfff8241",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/39132562c5481443a07d20b4de3abd46cfff8241",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/39132562c5481443a07d20b4de3abd46cfff8241",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/39132562c5481443a07d20b4de3abd46cfff8241/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9fd2c65e8d690625f35035a71e73f51f740dbe04",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/9fd2c65e8d690625f35035a71e73f51f740dbe04",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/9fd2c65e8d690625f35035a71e73f51f740dbe04"
+      }
+    ]
+  },
+  {
+    "sha": "9fd2c65e8d690625f35035a71e73f51f740dbe04",
+    "node_id": "C_kwDOAAddrNoAKDlmZDJjNjVlOGQ2OTA2MjVmMzUwMzVhNzFlNzNmNTFmNzQwZGJlMDQ",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-31T13:57:27Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-31T13:57:27Z"
+      },
+      "message": "Merge branch 'catap-lastquarter'",
+      "tree": {
+        "sha": "857e7a12a3318bce6c4fcd8fb17b48b9e34954a5",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/857e7a12a3318bce6c4fcd8fb17b48b9e34954a5"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/9fd2c65e8d690625f35035a71e73f51f740dbe04",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/9fd2c65e8d690625f35035a71e73f51f740dbe04",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/9fd2c65e8d690625f35035a71e73f51f740dbe04",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/9fd2c65e8d690625f35035a71e73f51f740dbe04/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e886b81c934c79acc4359ccc06fb439856580fdd",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/e886b81c934c79acc4359ccc06fb439856580fdd",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/e886b81c934c79acc4359ccc06fb439856580fdd"
+      },
+      {
+        "sha": "28a6e0768b3aa3f7ace07938167a1955e2bfff13",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/28a6e0768b3aa3f7ace07938167a1955e2bfff13",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/28a6e0768b3aa3f7ace07938167a1955e2bfff13"
+      }
+    ]
+  },
+  {
+    "sha": "28a6e0768b3aa3f7ace07938167a1955e2bfff13",
+    "node_id": "C_kwDOAAddrNoAKDI4YTZlMDc2OGIzYWEzZjdhY2UwNzkzODE2N2ExOTU1ZTJiZmZmMTM",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-31T13:47:30Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-31T13:47:30Z"
+      },
+      "message": "Merge branch 'lastquarter' of https://github.com/catap/wanderlust into catap-lastquarter",
+      "tree": {
+        "sha": "857e7a12a3318bce6c4fcd8fb17b48b9e34954a5",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/857e7a12a3318bce6c4fcd8fb17b48b9e34954a5"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/28a6e0768b3aa3f7ace07938167a1955e2bfff13",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/28a6e0768b3aa3f7ace07938167a1955e2bfff13",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/28a6e0768b3aa3f7ace07938167a1955e2bfff13",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/28a6e0768b3aa3f7ace07938167a1955e2bfff13/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e886b81c934c79acc4359ccc06fb439856580fdd",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/e886b81c934c79acc4359ccc06fb439856580fdd",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/e886b81c934c79acc4359ccc06fb439856580fdd"
+      },
+      {
+        "sha": "19240e308517fc5443b350b726c7bf516308a9e6",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/19240e308517fc5443b350b726c7bf516308a9e6",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/19240e308517fc5443b350b726c7bf516308a9e6"
+      }
+    ]
+  },
+  {
+    "sha": "e886b81c934c79acc4359ccc06fb439856580fdd",
+    "node_id": "C_kwDOAAddrNoAKGU4ODZiODFjOTM0Yzc5YWNjNDM1OWNjYzA2ZmI0Mzk4NTY1ODBmZGQ",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-27T11:43:57Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-31T13:43:40Z"
+      },
+      "message": "Refine async folder biff checking\n\n* wl/wl-util.el (wl-biff-check-folders): Check\nwl-biff-check-folder-async's return value and fallback to\nsynchronous folder check.\n(wl-biff-check-folder-async): Return non-nil when really start\nasync check or return nil.  Don't do synchronous check.",
+      "tree": {
+        "sha": "dbb4bd64c0764152cfe6bd68ba0e23f7e3cd62d3",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/dbb4bd64c0764152cfe6bd68ba0e23f7e3cd62d3"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/e886b81c934c79acc4359ccc06fb439856580fdd",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/e886b81c934c79acc4359ccc06fb439856580fdd",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/e886b81c934c79acc4359ccc06fb439856580fdd",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/e886b81c934c79acc4359ccc06fb439856580fdd/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0e67c1efd414c906e951bd402edfff8ea7d441bc",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/0e67c1efd414c906e951bd402edfff8ea7d441bc",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/0e67c1efd414c906e951bd402edfff8ea7d441bc"
+      }
+    ]
+  },
+  {
+    "sha": "19240e308517fc5443b350b726c7bf516308a9e6",
+    "node_id": "C_kwDOAAddrNoAKDE5MjQwZTMwODUxN2ZjNTQ0M2IzNTBiNzI2YzdiZjUxNjMwOGE5ZTY",
+    "commit": {
+      "author": {
+        "name": "Kirill A. Korinsky",
+        "email": "kirill@korins.ky",
+        "date": "2024-01-20T18:09:00Z"
+      },
+      "committer": {
+        "name": "Kirill A. Korinsky",
+        "email": "kirill@korins.ky",
+        "date": "2024-01-30T22:06:41Z"
+      },
+      "message": "Add filter for lastquarter\n\n* doc/wl-ja.texi Date filter: add lastquarter\n\n* doc/wl.texi Date filter: add lastquarter\n\n* elmo/elmo-date.el (elmo-date-descriptions): add lastquarter\n\n* elmo/elmo-util.el (elmo-condition-parse-search-value): add lastquarter",
+      "tree": {
+        "sha": "169fce787b4332a3c4dd53a9c31078269df2ea87",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/169fce787b4332a3c4dd53a9c31078269df2ea87"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/19240e308517fc5443b350b726c7bf516308a9e6",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQIzBAABCgAdFiEE3/KLNtcfWfLw7JxqmNjZhndZIm4FAmW5cvEACgkQmNjZhndZ\nIm6rHhAAjjNI0/v/IC2TtYu6pqXO4fWRyJ8tLQn34A+R1q/+/r5TAYKsY56m4zuQ\n6IALOASO/cTA86ScBhXz4mnAwHbbKnMgVprBjl3ANdxZNRiYrUL6PnRHfHLIPQZE\ny24W7MajtQJ4E5smmJfBWsLBkbUIcN6PU05dVJ40La3RTWLQf0/YqGt4dulqvA5w\nL4xfJXOjD0oSsW2cSfBsQ4tR/DyZA2LaiZ9DsfvZKsBZXv+lPwGHpYgx6Esp3KYu\n9cgO7EeuKz3zD1HEoHMvAHATbYCCgiOWchoIgWHJG5JAUOujg8Fu/FwJcL+1rz5C\nODKitgFiZOQFi06Bt39zTIyJkwvqLE2sUXRXzoIFQqa0diCPrw4h7Lt5OQhQm20N\n7SJtP1KxVXSttwUTPpsTFrIxpzcWjh9A0h+VDnhWD04OR5CH+WzNdEwwH/XRJJxz\nyL7HTKwMA7pokudIXTCU1M0q0m1zT//nP9qebGc0kbth8pT49nw7D3fDdfTrosIP\n8l4EKTq7OrP5Gcu1dNEcYtVi1QsoIV32BP6OkxUcDp87BZPwDYWv7BYCnJmJ+MFq\n8hPFreY/vMrSMR3JNBtcWYegECuaZ0mj/kKpnO3AFrTPyJLl3+CtWldqyZDCrmgR\ntm7TygJrW5402UGeltCsYUFuN0pjmRJrxpOQM6ay2kET9CisOXM=\n=K3Y4\n-----END PGP SIGNATURE-----",
+        "payload": "tree 169fce787b4332a3c4dd53a9c31078269df2ea87\nparent 8ea81cd44fe68bf921d831bf0829912bd6b86db5\nauthor Kirill A. Korinsky <kirill@korins.ky> 1705774140 +0100\ncommitter Kirill A. Korinsky <kirill@korins.ky> 1706652401 +0100\n\nAdd filter for lastquarter\n\n* doc/wl-ja.texi Date filter: add lastquarter\n\n* doc/wl.texi Date filter: add lastquarter\n\n* elmo/elmo-date.el (elmo-date-descriptions): add lastquarter\n\n* elmo/elmo-util.el (elmo-condition-parse-search-value): add lastquarter\n"
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/19240e308517fc5443b350b726c7bf516308a9e6",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/19240e308517fc5443b350b726c7bf516308a9e6",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/19240e308517fc5443b350b726c7bf516308a9e6/comments",
+    "author": {
+      "login": "catap",
+      "id": 37775,
+      "node_id": "MDQ6VXNlcjM3Nzc1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/37775?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/catap",
+      "html_url": "https://github.com/catap",
+      "followers_url": "https://api.github.com/users/catap/followers",
+      "following_url": "https://api.github.com/users/catap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/catap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/catap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/catap/subscriptions",
+      "organizations_url": "https://api.github.com/users/catap/orgs",
+      "repos_url": "https://api.github.com/users/catap/repos",
+      "events_url": "https://api.github.com/users/catap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/catap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "catap",
+      "id": 37775,
+      "node_id": "MDQ6VXNlcjM3Nzc1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/37775?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/catap",
+      "html_url": "https://github.com/catap",
+      "followers_url": "https://api.github.com/users/catap/followers",
+      "following_url": "https://api.github.com/users/catap/following{/other_user}",
+      "gists_url": "https://api.github.com/users/catap/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/catap/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/catap/subscriptions",
+      "organizations_url": "https://api.github.com/users/catap/orgs",
+      "repos_url": "https://api.github.com/users/catap/repos",
+      "events_url": "https://api.github.com/users/catap/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/catap/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8ea81cd44fe68bf921d831bf0829912bd6b86db5",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/8ea81cd44fe68bf921d831bf0829912bd6b86db5",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/8ea81cd44fe68bf921d831bf0829912bd6b86db5"
+      }
+    ]
+  },
+  {
+    "sha": "0e67c1efd414c906e951bd402edfff8ea7d441bc",
+    "node_id": "C_kwDOAAddrNoAKDBlNjdjMWVmZDQxNGM5MDZlOTUxYmQ0MDJlZGZmZjhlYTdkNDQxYmM",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-24T16:28:26Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-24T16:28:26Z"
+      },
+      "message": "Use folder petname for message\n\n* wl/wl-summary.el (wl-summary-sync-update): As above.",
+      "tree": {
+        "sha": "eba780d70bccef16ceb18e29501436137544a720",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/eba780d70bccef16ceb18e29501436137544a720"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/0e67c1efd414c906e951bd402edfff8ea7d441bc",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/0e67c1efd414c906e951bd402edfff8ea7d441bc",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/0e67c1efd414c906e951bd402edfff8ea7d441bc",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/0e67c1efd414c906e951bd402edfff8ea7d441bc/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b303ae5e90e2d55ae706b9983b117a0de04e4f9e",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/b303ae5e90e2d55ae706b9983b117a0de04e4f9e",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/b303ae5e90e2d55ae706b9983b117a0de04e4f9e"
+      }
+    ]
+  },
+  {
+    "sha": "b303ae5e90e2d55ae706b9983b117a0de04e4f9e",
+    "node_id": "C_kwDOAAddrNoAKGIzMDNhZTVlOTBlMmQ1NWFlNzA2Yjk5ODNiMTE3YTBkZTA0ZTRmOWU",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-24T14:07:49Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-24T14:07:49Z"
+      },
+      "message": "Suppress unneeded function call\n\n* wl/wl-summary.el (wl-summary-goto-folder-subr): Call\nwl-thread-resume-entity only when thread view.",
+      "tree": {
+        "sha": "7f83057ec540940deefbc27e602bd3de5636eda1",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/7f83057ec540940deefbc27e602bd3de5636eda1"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/b303ae5e90e2d55ae706b9983b117a0de04e4f9e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/b303ae5e90e2d55ae706b9983b117a0de04e4f9e",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/b303ae5e90e2d55ae706b9983b117a0de04e4f9e",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/b303ae5e90e2d55ae706b9983b117a0de04e4f9e/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8ea81cd44fe68bf921d831bf0829912bd6b86db5",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/8ea81cd44fe68bf921d831bf0829912bd6b86db5",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/8ea81cd44fe68bf921d831bf0829912bd6b86db5"
+      }
+    ]
+  },
+  {
+    "sha": "8ea81cd44fe68bf921d831bf0829912bd6b86db5",
+    "node_id": "C_kwDOAAddrNoAKDhlYTgxY2Q0NGZlNjhiZjkyMWQ4MzFiZjA4Mjk5MTJiZDZiODZkYjU",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-23T12:18:42Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-23T16:31:32Z"
+      },
+      "message": "Use petname for sticky summary's buffer name.\n\nCf. https://github.com/wanderlust/wanderlust/issues/228\n\n* wl/wl-summary.el (wl-summary-sticky-buffer-name): Use petname\nfor buffer name.",
+      "tree": {
+        "sha": "e0b0ebbdedbe52bde7d816be07847643295521fe",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/e0b0ebbdedbe52bde7d816be07847643295521fe"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/8ea81cd44fe68bf921d831bf0829912bd6b86db5",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/8ea81cd44fe68bf921d831bf0829912bd6b86db5",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/8ea81cd44fe68bf921d831bf0829912bd6b86db5",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/8ea81cd44fe68bf921d831bf0829912bd6b86db5/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "dd44e5ef2696cfe6ae2d6b71043380c460336301",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/dd44e5ef2696cfe6ae2d6b71043380c460336301",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/dd44e5ef2696cfe6ae2d6b71043380c460336301"
+      }
+    ]
+  },
+  {
+    "sha": "dd44e5ef2696cfe6ae2d6b71043380c460336301",
+    "node_id": "C_kwDOAAddrNoAKGRkNDRlNWVmMjY5NmNmZTZhZTJkNmI3MTA0MzM4MGM0NjAzMzYzMDE",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-23T11:59:26Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-23T16:31:07Z"
+      },
+      "message": "Initialize wl-thread-entity-hashtb only when thread view\n\n* wl/wl-summary.el (wl-summary-rescan, wl-summary-sync-all-init):\nMake hash table only when summary is in thread view.",
+      "tree": {
+        "sha": "a28acf54955003ab6eca6f54f9f827a6cc02b0d5",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/a28acf54955003ab6eca6f54f9f827a6cc02b0d5"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/dd44e5ef2696cfe6ae2d6b71043380c460336301",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/dd44e5ef2696cfe6ae2d6b71043380c460336301",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/dd44e5ef2696cfe6ae2d6b71043380c460336301",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/dd44e5ef2696cfe6ae2d6b71043380c460336301/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "65cc15607943db1f74bbcd5bebfe6ba8b33f8889",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/65cc15607943db1f74bbcd5bebfe6ba8b33f8889",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/65cc15607943db1f74bbcd5bebfe6ba8b33f8889"
+      }
+    ]
+  },
+  {
+    "sha": "65cc15607943db1f74bbcd5bebfe6ba8b33f8889",
+    "node_id": "C_kwDOAAddrNoAKDY1Y2MxNTYwNzk0M2RiMWY3NGJiY2Q1YmViZmU2YmE4YjMzZjg4ODk",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-23T11:55:15Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-23T16:30:26Z"
+      },
+      "message": "Don't call wl-thread-get-entity in sequential view\n\n* wl/wl-highlight.el (wl-highlight-summary-current-line): Set\nindent only when summary is in thread view.",
+      "tree": {
+        "sha": "a1389bcb194895ee5ffe3202b72ecb39141db43b",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/a1389bcb194895ee5ffe3202b72ecb39141db43b"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/65cc15607943db1f74bbcd5bebfe6ba8b33f8889",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/65cc15607943db1f74bbcd5bebfe6ba8b33f8889",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/65cc15607943db1f74bbcd5bebfe6ba8b33f8889",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/65cc15607943db1f74bbcd5bebfe6ba8b33f8889/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3d636e5ba29512b079d58d2f50ea42f6affe7bfd",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/3d636e5ba29512b079d58d2f50ea42f6affe7bfd",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/3d636e5ba29512b079d58d2f50ea42f6affe7bfd"
+      }
+    ]
+  },
+  {
+    "sha": "3d636e5ba29512b079d58d2f50ea42f6affe7bfd",
+    "node_id": "C_kwDOAAddrNoAKDNkNjM2ZTViYTI5NTEyYjA3OWQ1OGQyZjUwZWE0MmY2YWZmZTdiZmQ",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-23T11:42:15Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-23T16:29:28Z"
+      },
+      "message": "Make wl-thread-jump-to-msg safe with sequential view\n\n* wl/wl-summary.el (wl-summary-switch-to-clone-buffer): Call\nwl-thread-jump-to-msg in any summary view mode.\n\n* wl/wl-thread.el (wl-thread-jump-to-msg): Call\nwl-thread-entity-force-open only when thread view.",
+      "tree": {
+        "sha": "a32f98377b49c020ea006c85e97fd1653deaa186",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/a32f98377b49c020ea006c85e97fd1653deaa186"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/3d636e5ba29512b079d58d2f50ea42f6affe7bfd",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/3d636e5ba29512b079d58d2f50ea42f6affe7bfd",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/3d636e5ba29512b079d58d2f50ea42f6affe7bfd",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/3d636e5ba29512b079d58d2f50ea42f6affe7bfd/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "75b33c30bd639315e2c99fbef923b1cc69996165",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/75b33c30bd639315e2c99fbef923b1cc69996165",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/75b33c30bd639315e2c99fbef923b1cc69996165"
+      }
+    ]
+  },
+  {
+    "sha": "75b33c30bd639315e2c99fbef923b1cc69996165",
+    "node_id": "C_kwDOAAddrNoAKDc1YjMzYzMwYmQ2MzkzMTVlMmM5OWZiZWY5MjNiMWNjNjk5OTYxNjU",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-22T00:22:13Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-23T16:28:05Z"
+      },
+      "message": "* wl/wl-draft.el (wl-draft-deduce-address-list): Uniquify result.",
+      "tree": {
+        "sha": "9d11c5925cf3bf9b26b7e79ba7b52b75b4e4b15b",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/9d11c5925cf3bf9b26b7e79ba7b52b75b4e4b15b"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/75b33c30bd639315e2c99fbef923b1cc69996165",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/75b33c30bd639315e2c99fbef923b1cc69996165",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/75b33c30bd639315e2c99fbef923b1cc69996165",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/75b33c30bd639315e2c99fbef923b1cc69996165/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "726affeef77022391c3484dc1a01fcdf3866748c",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/726affeef77022391c3484dc1a01fcdf3866748c",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/726affeef77022391c3484dc1a01fcdf3866748c"
+      }
+    ]
+  },
+  {
+    "sha": "726affeef77022391c3484dc1a01fcdf3866748c",
+    "node_id": "C_kwDOAAddrNoAKDcyNmFmZmVlZjc3MDIyMzkxYzM0ODRkYzFhMDFmY2RmMzg2Njc0OGM",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-13T12:42:18Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-13T12:42:18Z"
+      },
+      "message": "Add information of format restriction about nickname\n\n* doc/wl-ja.texi (Folder Definition): As above.\n\n* doc/wl.texi (Folder Definition): As above.",
+      "tree": {
+        "sha": "3cdd8be0b50a268ad3da408ff975e5c5b73bb8f7",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/3cdd8be0b50a268ad3da408ff975e5c5b73bb8f7"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/726affeef77022391c3484dc1a01fcdf3866748c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/726affeef77022391c3484dc1a01fcdf3866748c",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/726affeef77022391c3484dc1a01fcdf3866748c",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/726affeef77022391c3484dc1a01fcdf3866748c/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "394a46ceb2ccd8204baddedfef27a056afc8aca3",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/394a46ceb2ccd8204baddedfef27a056afc8aca3",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/394a46ceb2ccd8204baddedfef27a056afc8aca3"
+      }
+    ]
+  },
+  {
+    "sha": "394a46ceb2ccd8204baddedfef27a056afc8aca3",
+    "node_id": "C_kwDOAAddrNoAKDM5NGE0NmNlYjJjY2Q4MjA0YmFkZGVkZmVmMjdhMDU2YWZjOGFjYTM",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-11T16:29:53Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2024-01-11T16:29:53Z"
+      },
+      "message": "Fix misuse of auth-source package\n\n* elmo/elmo-passwd.el (elmo-passwd-get, elmo-passwd-remove): Don't\npass integer as SPEC's value to auth-source.  It needs to be\nconverted to string.",
+      "tree": {
+        "sha": "a7cc41d56ada0eb2c17e3b31b123e4566fa890ed",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/a7cc41d56ada0eb2c17e3b31b123e4566fa890ed"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/394a46ceb2ccd8204baddedfef27a056afc8aca3",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/394a46ceb2ccd8204baddedfef27a056afc8aca3",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/394a46ceb2ccd8204baddedfef27a056afc8aca3",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/394a46ceb2ccd8204baddedfef27a056afc8aca3/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8c74d52d1ae00a0ca1a087fb4983292e2c068cba",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/8c74d52d1ae00a0ca1a087fb4983292e2c068cba",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/8c74d52d1ae00a0ca1a087fb4983292e2c068cba"
+      }
+    ]
+  },
+  {
+    "sha": "8c74d52d1ae00a0ca1a087fb4983292e2c068cba",
+    "node_id": "C_kwDOAAddrNoAKDhjNzRkNTJkMWFlMDBhMGNhMWEwODdmYjQ5ODMyOTJlMmMwNjhjYmE",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2023-11-05T08:56:40Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2023-11-05T08:56:40Z"
+      },
+      "message": "Merge pull request #214 from LdBeth/patch-1\n\nFix for RAR archive format",
+      "tree": {
+        "sha": "088de3744c08eb78a515bdf2c6be2d345ec3b843",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/088de3744c08eb78a515bdf2c6be2d345ec3b843"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/8c74d52d1ae00a0ca1a087fb4983292e2c068cba",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJlR1jICRBK7hj4Ov3rIwAAKQIIAGveX4BlBOOAsRhr3ITW2C1/\ncY6FA6WQ3HjnBaItl85iuA+5E2rXKpTgag+XiTwqwzwtHcr7sND+5cKutBTQL8UZ\nRsHoLaPgw9nm8zSWozWpdeFoAuan59m4IajET3gw9+y1GpDCCsJKgxlrlO3b5jBm\nKtzDE1HQBzjYzeYwO8Ad9wDGLD71CIJrBvtBpbkq5meqPOONqovoRinbpSl/UaVk\nidPRC1o8fplF3Olx2Es61MsAJ3mNV1nNwOsijhLU8Ge+QH8uce6RV72eStCeFyZ9\nmu2k+xyNDnh2xvJbT88B19Klw1q7U5auGHDyO6m66zXQUBRNCFEuQWA3aLZkM4U=\n=mhwi\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 088de3744c08eb78a515bdf2c6be2d345ec3b843\nparent 3e8cf26abd9c5c8e4fc611032e259ca930665641\nparent 66922998ba753adb72f78b076873f0c9fb5a5b62\nauthor Kazuhiro Ito <kzhr@d1.dion.ne.jp> 1699174600 +0900\ncommitter GitHub <noreply@github.com> 1699174600 +0900\n\nMerge pull request #214 from LdBeth/patch-1\n\nFix for RAR archive format"
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/8c74d52d1ae00a0ca1a087fb4983292e2c068cba",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/8c74d52d1ae00a0ca1a087fb4983292e2c068cba",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/8c74d52d1ae00a0ca1a087fb4983292e2c068cba/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3e8cf26abd9c5c8e4fc611032e259ca930665641",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/3e8cf26abd9c5c8e4fc611032e259ca930665641",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/3e8cf26abd9c5c8e4fc611032e259ca930665641"
+      },
+      {
+        "sha": "66922998ba753adb72f78b076873f0c9fb5a5b62",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/66922998ba753adb72f78b076873f0c9fb5a5b62",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/66922998ba753adb72f78b076873f0c9fb5a5b62"
+      }
+    ]
+  },
+  {
+    "sha": "66922998ba753adb72f78b076873f0c9fb5a5b62",
+    "node_id": "C_kwDOAAddrNoAKDY2OTIyOTk4YmE3NTNhZGI3MmY3OGIwNzY4NzNmMGM5ZmI1YTViNjI",
+    "commit": {
+      "author": {
+        "name": "LdBeth",
+        "email": "andpuke@foxmail.com",
+        "date": "2023-11-02T18:32:51Z"
+      },
+      "committer": {
+        "name": "LdBeth",
+        "email": "andpuke@foxmail.com",
+        "date": "2023-11-02T18:47:31Z"
+      },
+      "message": "Fix for RAR archive format\n\nThe `rar v` output format has been changed long ago that no longer\nmatches the regexp. Change to use `rar lb` which produces content list\nin format identical to tar.\n\n* elmo/elmo-archive.el (elmo-archive-file-regexp-alist)\n(elmo-archive-rar-method-alist): Reflect to the recent version of rar\ncommand.",
+      "tree": {
+        "sha": "088de3744c08eb78a515bdf2c6be2d345ec3b843",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/088de3744c08eb78a515bdf2c6be2d345ec3b843"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/66922998ba753adb72f78b076873f0c9fb5a5b62",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\niQGzBAABCAAdFiEEz1G+Iyu/GID2/VSCDXdgIxxFFv0FAmVD74EACgkQDXdgIxxF\nFv0HyQwAzNBLpuTI4MKefDF01lwbprS+A+uYHbAZywsEHc0WtbWDqgXPoCFqgtBY\npYYMjjJcu2SEVjQzsoAcl3XY8eX7z2Gkt5T9mygUugNHw3rut7pnndVzMa14SiCW\nWlwZsKxbtgsl38XsTYx5DIye/JVVxmPEofHHFHJb7qNgeZzmyvA+mg+Vcv9jnfw6\nFPofuGFHXRsK6HdN1X1lmwwQBZvh5Es7pXtJobIqJbGzs7VN53iJdgAtM8eR9QFN\neDEF+kkn1VPHMo13wrdCfP7QQPh9UhUdSnp0Ixk7jHkq/apFAuL1RJZXB2pz6syq\nnxygsDWecyfXTmN0pYXn5FyKdpzVbUsE/Iz8wHI2A5SNqUZY5TUEQW5V0Ksfnelt\nCwzAYC1MHFPhNdH7/E3lRCMItKJha6KKRsWmYlgKa1bkQFjDUj4PoMRUJdAlNiJw\nWEQB3SOI0KMGUePIUopcFa2YJo32NAhvyyElPIoWHbgVe2djm5dZv47h9RtfDCSR\nIY8PcyX9\n=DrhM\n-----END PGP SIGNATURE-----",
+        "payload": "tree 088de3744c08eb78a515bdf2c6be2d345ec3b843\nparent 3e8cf26abd9c5c8e4fc611032e259ca930665641\nauthor LdBeth <andpuke@foxmail.com> 1698949971 -0500\ncommitter LdBeth <andpuke@foxmail.com> 1698950851 -0500\n\nFix for RAR archive format\n\nThe `rar v` output format has been changed long ago that no longer\nmatches the regexp. Change to use `rar lb` which produces content list\nin format identical to tar.\n\n* elmo/elmo-archive.el (elmo-archive-file-regexp-alist)\n(elmo-archive-rar-method-alist): Reflect to the recent version of rar\ncommand.\n"
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/66922998ba753adb72f78b076873f0c9fb5a5b62",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/66922998ba753adb72f78b076873f0c9fb5a5b62",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/66922998ba753adb72f78b076873f0c9fb5a5b62/comments",
+    "author": {
+      "login": "LdBeth",
+      "id": 22933696,
+      "node_id": "MDQ6VXNlcjIyOTMzNjk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22933696?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/LdBeth",
+      "html_url": "https://github.com/LdBeth",
+      "followers_url": "https://api.github.com/users/LdBeth/followers",
+      "following_url": "https://api.github.com/users/LdBeth/following{/other_user}",
+      "gists_url": "https://api.github.com/users/LdBeth/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/LdBeth/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/LdBeth/subscriptions",
+      "organizations_url": "https://api.github.com/users/LdBeth/orgs",
+      "repos_url": "https://api.github.com/users/LdBeth/repos",
+      "events_url": "https://api.github.com/users/LdBeth/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/LdBeth/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "LdBeth",
+      "id": 22933696,
+      "node_id": "MDQ6VXNlcjIyOTMzNjk2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22933696?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/LdBeth",
+      "html_url": "https://github.com/LdBeth",
+      "followers_url": "https://api.github.com/users/LdBeth/followers",
+      "following_url": "https://api.github.com/users/LdBeth/following{/other_user}",
+      "gists_url": "https://api.github.com/users/LdBeth/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/LdBeth/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/LdBeth/subscriptions",
+      "organizations_url": "https://api.github.com/users/LdBeth/orgs",
+      "repos_url": "https://api.github.com/users/LdBeth/repos",
+      "events_url": "https://api.github.com/users/LdBeth/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/LdBeth/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3e8cf26abd9c5c8e4fc611032e259ca930665641",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/3e8cf26abd9c5c8e4fc611032e259ca930665641",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/3e8cf26abd9c5c8e4fc611032e259ca930665641"
+      }
+    ]
+  },
+  {
+    "sha": "3e8cf26abd9c5c8e4fc611032e259ca930665641",
+    "node_id": "C_kwDOAAddrNoAKDNlOGNmMjZhYmQ5YzVjOGU0ZmM2MTEwMzJlMjU5Y2E5MzA2NjU2NDE",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2023-10-16T14:04:33Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2023-10-16T14:05:23Z"
+      },
+      "message": "Fix defcustom warnings\n\n* elmo/elmo-localdir.el (elmo-localdir-warnings): Fix variable\ntype.\n\n* elmo/elmo-vars.el (elmo-passwd-storage-type): Fix misplaced\n:tags.\n\n* wl/wl-addrmgr.el (wl-addrmgr-default-sort-key)\n(wl-addrmgr-default-sort-order): Remove unneeded quotes.\n\n* wl/wl-vars.el (wl-dispose-folder-alist): Remove duplicated\nvalue.",
+      "tree": {
+        "sha": "ff6e79e218e0701e03b935d0898b6c88196d8b05",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/ff6e79e218e0701e03b935d0898b6c88196d8b05"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/3e8cf26abd9c5c8e4fc611032e259ca930665641",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/3e8cf26abd9c5c8e4fc611032e259ca930665641",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/3e8cf26abd9c5c8e4fc611032e259ca930665641",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/3e8cf26abd9c5c8e4fc611032e259ca930665641/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1389dcec6e3242948682eb3e3ce8ead8be2772d8",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/1389dcec6e3242948682eb3e3ce8ead8be2772d8",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/1389dcec6e3242948682eb3e3ce8ead8be2772d8"
+      }
+    ]
+  },
+  {
+    "sha": "1389dcec6e3242948682eb3e3ce8ead8be2772d8",
+    "node_id": "C_kwDOAAddrNoAKDEzODlkY2VjNmUzMjQyOTQ4NjgyZWIzZTNjZThlYWQ4YmUyNzcyZDg",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2023-08-18T10:18:10Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2023-08-18T14:24:42Z"
+      },
+      "message": "Suppress byte-compiler's warnig.\n\n* wl/wl-demo.el (wl-demo-setup-properties): Don't use nconc for\nconstant.",
+      "tree": {
+        "sha": "50dab0307108b20b66bf33ee531fd4458da1fc71",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/50dab0307108b20b66bf33ee531fd4458da1fc71"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/1389dcec6e3242948682eb3e3ce8ead8be2772d8",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/1389dcec6e3242948682eb3e3ce8ead8be2772d8",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/1389dcec6e3242948682eb3e3ce8ead8be2772d8",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/1389dcec6e3242948682eb3e3ce8ead8be2772d8/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "110ac5fc8ee9d7649a27e2e94a308c496ed9326d",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/110ac5fc8ee9d7649a27e2e94a308c496ed9326d",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/110ac5fc8ee9d7649a27e2e94a308c496ed9326d"
+      }
+    ]
+  },
+  {
+    "sha": "110ac5fc8ee9d7649a27e2e94a308c496ed9326d",
+    "node_id": "C_kwDOAAddrNoAKDExMGFjNWZjOGVlOWQ3NjQ5YTI3ZTJlOTRhMzA4YzQ5NmVkOTMyNmQ",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2023-08-18T11:01:34Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2023-08-18T14:24:42Z"
+      },
+      "message": "Minor refactorings.\n\n* wl/wl-mime.el (wl-mime-enabled-major-mode-p): New function.\n(wl-mime-display-text/plain, wl-mime-display-text/diff): Use it.\n\n* wl/wl-addrmgr.el (wl-addrmgr-mark-exec-sub): Use it.\n\n* wl/wl-draft.el (wl-draft-yank-from-mail-reply-buffer)\n(wl-draft-highlight): Use it.\n\n* wl/wl-highlight.el (wl-highlight-message): Use it.\n\n* wl/wl-template.el (wl-template-apply): Use it.",
+      "tree": {
+        "sha": "ef25c34838b8dc0815c94929b97443a4dfe33cf0",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/ef25c34838b8dc0815c94929b97443a4dfe33cf0"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/110ac5fc8ee9d7649a27e2e94a308c496ed9326d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/110ac5fc8ee9d7649a27e2e94a308c496ed9326d",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/110ac5fc8ee9d7649a27e2e94a308c496ed9326d",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/110ac5fc8ee9d7649a27e2e94a308c496ed9326d/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "05cc0ea05961108a776bbe22aa9750a546036e81",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/05cc0ea05961108a776bbe22aa9750a546036e81",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/05cc0ea05961108a776bbe22aa9750a546036e81"
+      }
+    ]
+  },
+  {
+    "sha": "05cc0ea05961108a776bbe22aa9750a546036e81",
+    "node_id": "C_kwDOAAddrNoAKDA1Y2MwZWEwNTk2MTEwOGE3NzZiYmUyMmFhOTc1MGE1NDYwMzZlODE",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2023-08-17T13:44:26Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2023-08-18T14:24:42Z"
+      },
+      "message": "wl-highlight-text/diff takes effect on draft preview buffer\n\n* wl/wl-mime.el (wl-mime-setup-preview-conditions): New function.\n(wl-draft-preview-message, wl-mime-setup): Use it.\n\n* doc/wl.texi (wl-highlight-text/diff): Remove limitation.\n\n* doc/wl-ja.texi (wl-highlight-text/diff): Remove limitaion.",
+      "tree": {
+        "sha": "cdffda417f5816636c120a85c23cf7a642dab79b",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/cdffda417f5816636c120a85c23cf7a642dab79b"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/05cc0ea05961108a776bbe22aa9750a546036e81",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/05cc0ea05961108a776bbe22aa9750a546036e81",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/05cc0ea05961108a776bbe22aa9750a546036e81",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/05cc0ea05961108a776bbe22aa9750a546036e81/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "2dd1efd1f0fc0cd2d570bfdb11e87f4bae4ae8bd",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/2dd1efd1f0fc0cd2d570bfdb11e87f4bae4ae8bd",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/2dd1efd1f0fc0cd2d570bfdb11e87f4bae4ae8bd"
+      }
+    ]
+  },
+  {
+    "sha": "2dd1efd1f0fc0cd2d570bfdb11e87f4bae4ae8bd",
+    "node_id": "C_kwDOAAddrNoAKDJkZDFlZmQxZjBmYzBjZDJkNTcwYmZkYjExZTg3ZjRiYWU0YWU4YmQ",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2023-08-15T12:22:58Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2023-08-18T14:24:42Z"
+      },
+      "message": "Support conditional highlighting of message text\n\nWhen wl-highlight-body-too is a list of major mode name's symbols,\nhighlight is enabled in specified major mode or MIME entity\nsituation's major mode.\n\nSetting wl-highlight-body-too to nil means that highlight is also\ndisabled on message mode.  If you want previous behavior, change value\nlike below.\n\n(setq wl-highlight-body-too '(wl-original-message-mode))\n\nSimilar change is applied on wl-highlight-text/diff.\n\n* wl/wl-addrmgr.el (wl-addrmgr-mark-exec-sub): Adjust checker.\n\n* wl/wl-draft.el (wl-draft-yank-from-mail-reply-buffer)\n(wl-draft-highlight): Likewise.\n\n* wl/wl-highlight.el (wl-highlight-message): Likewise.\n\n* wl/wl-mime.el (wl-mime-display-text/plain)\n(wl-mime-display-text/diff): LIkewise.\n\n* wl/wl-template.el (wl-template-apply): Likiwise.\n\n* wl/wl-vars.el (wl-highlight-body-too, wl-highlight-text/diff):\nUpdate definition as above.\n\n* doc/wl.texi (wl-highlight-body-too): Update.\n(wl-highlight-text/diff): New variable.\n\n* doc/wl-ja.texi (wl-highlight-body-too): Update.\n(wl-highlight-text/diff): New variable.",
+      "tree": {
+        "sha": "87e1e42e985d18384fd502f32424043bdec0146a",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/87e1e42e985d18384fd502f32424043bdec0146a"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/2dd1efd1f0fc0cd2d570bfdb11e87f4bae4ae8bd",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/2dd1efd1f0fc0cd2d570bfdb11e87f4bae4ae8bd",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/2dd1efd1f0fc0cd2d570bfdb11e87f4bae4ae8bd",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/2dd1efd1f0fc0cd2d570bfdb11e87f4bae4ae8bd/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "bc2991daff498b95e931621fdeabd2137df9633f",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/bc2991daff498b95e931621fdeabd2137df9633f",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/bc2991daff498b95e931621fdeabd2137df9633f"
+      }
+    ]
+  },
+  {
+    "sha": "bc2991daff498b95e931621fdeabd2137df9633f",
+    "node_id": "C_kwDOAAddrNoAKGJjMjk5MWRhZmY0OThiOTVlOTMxNjIxZmRlYWJkMjEzN2RmOTYzM2Y",
+    "commit": {
+      "author": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2023-08-14T13:22:01Z"
+      },
+      "committer": {
+        "name": "Kazuhiro Ito",
+        "email": "kzhr@d1.dion.ne.jp",
+        "date": "2023-08-18T14:24:42Z"
+      },
+      "message": "Don't highlight whole message on draft previewing\n\n* wl/wl-mime.el (wl-draft-preview-message): Don't highlight whole\nmessage.",
+      "tree": {
+        "sha": "9ea8832876f297a3befa6ec22a5980652e0b0433",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/git/trees/9ea8832876f297a3befa6ec22a5980652e0b0433"
+      },
+      "url": "https://api.github.com/repos/wanderlust/wanderlust/git/commits/bc2991daff498b95e931621fdeabd2137df9633f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/bc2991daff498b95e931621fdeabd2137df9633f",
+    "html_url": "https://github.com/wanderlust/wanderlust/commit/bc2991daff498b95e931621fdeabd2137df9633f",
+    "comments_url": "https://api.github.com/repos/wanderlust/wanderlust/commits/bc2991daff498b95e931621fdeabd2137df9633f/comments",
+    "author": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "ikazuhiro",
+      "id": 842511,
+      "node_id": "MDQ6VXNlcjg0MjUxMQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/842511?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ikazuhiro",
+      "html_url": "https://github.com/ikazuhiro",
+      "followers_url": "https://api.github.com/users/ikazuhiro/followers",
+      "following_url": "https://api.github.com/users/ikazuhiro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ikazuhiro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ikazuhiro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ikazuhiro/subscriptions",
+      "organizations_url": "https://api.github.com/users/ikazuhiro/orgs",
+      "repos_url": "https://api.github.com/users/ikazuhiro/repos",
+      "events_url": "https://api.github.com/users/ikazuhiro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ikazuhiro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "bbcde1c5672500bbd92be2ce10a39f4002efe564",
+        "url": "https://api.github.com/repos/wanderlust/wanderlust/commits/bbcde1c5672500bbd92be2ce10a39f4002efe564",
+        "html_url": "https://github.com/wanderlust/wanderlust/commit/bbcde1c5672500bbd92be2ce10a39f4002efe564"
+      }
+    ]
+  }
+]

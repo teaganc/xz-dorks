@@ -1,0 +1,2372 @@
+[
+  {
+    "sha": "4df037962dd446a4a686e2b6d56d5367b6c9f0db",
+    "node_id": "C_kwDOAAJhctoAKDRkZjAzNzk2MmRkNDQ2YTRhNjg2ZTJiNmQ1NmQ1MzY3YjZjOWYwZGI",
+    "commit": {
+      "author": {
+        "name": "Moti Cohen",
+        "email": "moticless@gmail.com",
+        "date": "2024-04-02T12:09:52Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-02T12:09:52Z"
+      },
+      "message": "Change FLUSHALL/FLUSHDB SYNC to run as blocking ASYNC (#13167)\n\n# Overview\r\nUsers utilize the `FLUSHDB SYNC` and `FLUSHALL SYNC` commands for a variety of \r\nreasons. The main issue with this command is that if the database becomes \r\nsubstantial in size, the server will be unresponsive for an extended period. \r\nOther than freezing application traffic, this may also lead some clients making \r\nincorrect judgments about the server's availability. For instance, a watchdog may \r\nerroneously decide to terminate the process, resulting in potential adverse \r\noutcomes. While a `FLUSH* ASYNC` can address these issues, it might not be used \r\nfor two reasons: firstly, it's not the default, and secondly, in some cases, the \r\nclient issuing the flush wants to wait for its completion before repopulating the \r\ndatabase.\r\n\r\nBetween the option of triggering FLUSH* asynchronously in the background without \r\nindication for completion versus running it synchronously in the foreground by \r\nthe main thread, there is another more appealing option. We can block the\r\nclient that requested the flush, execute the flush command in the background, and \r\nonce done, unblock the client and return notification for completion. This approach \r\nensures the server remains responsive to other clients, and the blocked client \r\nreceives the expected response only after the flush operation has been successfully \r\ncarried out.\r\n\r\n# Implementation details\r\nInstead of defining yet another flavor to the flush command, we can modify\r\n`FLUSHALL SYNC` and `FLUSHDB SYNC` always run in this new mode.\r\n\r\n## Extending BIO Threads capabilities\r\nToday jobs that are carried out by BIO threads don't have the capability to \r\nindicate completion to the main thread. We can add this infrastructure by having\r\nan additional dummy job, coined as completion-job, that eventually will be written \r\nby BIO threads to a response-queue. The main thread will take care to consume items\r\nfrom the response-queue and call the provided callback function of each \r\ncompletion-job.\r\n\r\n## FLUSH* SYNC to run as blocking ASYNC\r\nCommand `FLUSH* SYNC` will be modified to create one or more async jobs to flush\r\nDB(s) and afterward will push additional completion-job request. By sending the\r\ncompletion job request only at the end, the main thread will be called back only\r\nafter all the preceding jobs completed their task in the background. During that\r\ntime, the client of the command is suspended and marked as `BLOCKED_LAZYFREE`\r\nwhereas any other client will be able to communicate with the server without any\r\nissue.",
+      "tree": {
+        "sha": "58b35a37de3204e1266e1b9c5951ff34a7cd1857",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/58b35a37de3204e1266e1b9c5951ff34a7cd1857"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/4df037962dd446a4a686e2b6d56d5367b6c9f0db",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmC/WQCRC1aQ7uu5UhlAAA2KsQAH5cVi5dVO+y/hXt1jodC/b9\nygLdeDhBgfTeptlegN4FP8+CUCC5cFSuhSBCTwFFSxf0htpo5SW+x3JKQzxWLZP4\nXaXUeJ3jd9m79EI6Q96IbMfYS0BflgTovjcVGCINm+tn7s6xLtJyqdf1iwSl2t5X\nGBJfp5d9M9zY+SxD7uxpO0KC6VdbWxV5DqyGjhZ3c3heiQCqeSx7m0tnOrl/Kspd\nuOPYGftB59XXYOx0sbfn3gOsfnkEq5+agCJC4r188KzaEBEAG1bep2pEnsIGU46C\nftmb4APt2COyeo0++d+SIm0gwRepnV1lKvZFK30aTNBcglRDmdCh/A3v0d+HvOOC\neWnhkFaLZuNgm7QNakz7ItUofQqvgkTYasS7I/09d7jY07MhilGa/1z6YBDXp4dh\nfxhuCAYiXl8r3iLcJy1T98KN3Bn7tiu2Xe6ZG7Y28mA6/7YldgVrgEJkK40T09+A\nIhEYEkzGDwguqQDuHbi5IIDB50orYgJ4NQZRCHR8B2uvMgOl80G6nCS6H47C0DfA\n3osdvn2sGRYJGt1b9ZfsDYrdxrsW706j2OrgxlZEunY5m1McDC4egUYnqFYi9x7e\nlWnGN+o3mJDr7+Iz7M3IBK3dP5v5Annc4zCXnS4zU+Zspw7J0TqH7qKZFQJpRkbb\n5W+BxDLCrtnY764e6z0W\n=jxmt\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 58b35a37de3204e1266e1b9c5951ff34a7cd1857\nparent ce47834309ec8fd74cbeaf676313005ee440faa5\nauthor Moti Cohen <moticless@gmail.com> 1712059792 +0300\ncommitter GitHub <noreply@github.com> 1712059792 +0300\n\nChange FLUSHALL/FLUSHDB SYNC to run as blocking ASYNC (#13167)\n\n# Overview\r\nUsers utilize the `FLUSHDB SYNC` and `FLUSHALL SYNC` commands for a variety of \r\nreasons. The main issue with this command is that if the database becomes \r\nsubstantial in size, the server will be unresponsive for an extended period. \r\nOther than freezing application traffic, this may also lead some clients making \r\nincorrect judgments about the server's availability. For instance, a watchdog may \r\nerroneously decide to terminate the process, resulting in potential adverse \r\noutcomes. While a `FLUSH* ASYNC` can address these issues, it might not be used \r\nfor two reasons: firstly, it's not the default, and secondly, in some cases, the \r\nclient issuing the flush wants to wait for its completion before repopulating the \r\ndatabase.\r\n\r\nBetween the option of triggering FLUSH* asynchronously in the background without \r\nindication for completion versus running it synchronously in the foreground by \r\nthe main thread, there is another more appealing option. We can block the\r\nclient that requested the flush, execute the flush command in the background, and \r\nonce done, unblock the client and return notification for completion. This approach \r\nensures the server remains responsive to other clients, and the blocked client \r\nreceives the expected response only after the flush operation has been successfully \r\ncarried out.\r\n\r\n# Implementation details\r\nInstead of defining yet another flavor to the flush command, we can modify\r\n`FLUSHALL SYNC` and `FLUSHDB SYNC` always run in this new mode.\r\n\r\n## Extending BIO Threads capabilities\r\nToday jobs that are carried out by BIO threads don't have the capability to \r\nindicate completion to the main thread. We can add this infrastructure by having\r\nan additional dummy job, coined as completion-job, that eventually will be written \r\nby BIO threads to a response-queue. The main thread will take care to consume items\r\nfrom the response-queue and call the provided callback function of each \r\ncompletion-job.\r\n\r\n## FLUSH* SYNC to run as blocking ASYNC\r\nCommand `FLUSH* SYNC` will be modified to create one or more async jobs to flush\r\nDB(s) and afterward will push additional completion-job request. By sending the\r\ncompletion job request only at the end, the main thread will be called back only\r\nafter all the preceding jobs completed their task in the background. During that\r\ntime, the client of the command is suspended and marked as `BLOCKED_LAZYFREE`\r\nwhereas any other client will be able to communicate with the server without any\r\nissue."
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/4df037962dd446a4a686e2b6d56d5367b6c9f0db",
+    "html_url": "https://github.com/redis/redis/commit/4df037962dd446a4a686e2b6d56d5367b6c9f0db",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/4df037962dd446a4a686e2b6d56d5367b6c9f0db/comments",
+    "author": {
+      "login": "moticless",
+      "id": 24944278,
+      "node_id": "MDQ6VXNlcjI0OTQ0Mjc4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/24944278?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/moticless",
+      "html_url": "https://github.com/moticless",
+      "followers_url": "https://api.github.com/users/moticless/followers",
+      "following_url": "https://api.github.com/users/moticless/following{/other_user}",
+      "gists_url": "https://api.github.com/users/moticless/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/moticless/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/moticless/subscriptions",
+      "organizations_url": "https://api.github.com/users/moticless/orgs",
+      "repos_url": "https://api.github.com/users/moticless/repos",
+      "events_url": "https://api.github.com/users/moticless/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/moticless/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ce47834309ec8fd74cbeaf676313005ee440faa5",
+        "url": "https://api.github.com/repos/redis/redis/commits/ce47834309ec8fd74cbeaf676313005ee440faa5",
+        "html_url": "https://github.com/redis/redis/commit/ce47834309ec8fd74cbeaf676313005ee440faa5"
+      }
+    ]
+  },
+  {
+    "sha": "ce47834309ec8fd74cbeaf676313005ee440faa5",
+    "node_id": "C_kwDOAAJhctoAKGNlNDc4MzQzMDllYzhmZDc0Y2JlYWY2NzYzMTMwMDVlZTQ0MGZhYTU",
+    "commit": {
+      "author": {
+        "name": "Moti Cohen",
+        "email": "moticless@gmail.com",
+        "date": "2024-04-01T15:08:55Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-04-01T15:08:55Z"
+      },
+      "message": "kvstoreIteratorNext() wrongly reset iterator twice (#13178)\n\nIt calls kvstoreIteratorNextDict() which eventually calls dictResumeRehashing()\r\nAnd then, on return, it calls dictResetIterator(iter) which calls dictResumeRehashing().\r\nWe end up with pauserehash value decremented twice instead of once.",
+      "tree": {
+        "sha": "39cbe40c19b10ad1eac4b912ba3901bba044dbe7",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/39cbe40c19b10ad1eac4b912ba3901bba044dbe7"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/ce47834309ec8fd74cbeaf676313005ee440faa5",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJmCs4HCRC1aQ7uu5UhlAAAJYsQAFC0aKNuqQ/5LgThdRzKlWih\ndCLvJ5dSK1FxqDM38At3zx6esurJUERng7YNZmv1iR8i6uM6cfY5SoJrIl7NMrPd\naMxhS0446fU/yTiLpp5vcF2P/7MvJl0gqHLQUDnggVPtloNYeQ/FPJmnSrKYFEZt\nOyFJIbAOEc07iRqiDxZ2omlDthNu4jqktBLQxfoG1CbaMk6IQuERXMB13Bm+rhki\nyzp1AM8qwW2Qg3dsQQ96E8QocgcM5wyk/ZYmVHl7sPz0MKlAF96dpMkZf5/lWolC\nI1eZSZFAHXG1uQNsjDTqDfKTXpmhXLDwSMt4gG+U2PN6qONeN26zlT2LF/3Ys9M0\nQiEeYJwsbaUcTkXe/4jSHMZDA+lrIob1/HexE1/k70slGMHF9h3eHXTO67MH/7DJ\nZeqBjv1u26YQUe/KwQP26xeKypYNPV3Zm74K7wALs6R2LQEftoOTqlu0sfIBsDSF\njxuvy4OiPX/Gboaosm3GqPl71ph4Nh/8zsCtKUatbqPZp6Zo+lbppBpieNuFiUkW\nLF1ZDOuXcdnEGwGIkt82qHHVUmND0TB73XkFr8p905AGObS5KYNOqN1vh2qMpMw2\nAF9s+Zi9tzp6zxfwUW2kXO5to3IBbfWiFjhnhQPQDZjBrDl5JVE4N5STW5dR4UhZ\no181NWmzPIQlSWs2EY1I\n=94m1\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 39cbe40c19b10ad1eac4b912ba3901bba044dbe7\nparent 0b34396924eca4edc524469886dc5be6c77ec4ed\nauthor Moti Cohen <moticless@gmail.com> 1711984135 +0300\ncommitter GitHub <noreply@github.com> 1711984135 +0300\n\nkvstoreIteratorNext() wrongly reset iterator twice (#13178)\n\nIt calls kvstoreIteratorNextDict() which eventually calls dictResumeRehashing()\r\nAnd then, on return, it calls dictResetIterator(iter) which calls dictResumeRehashing().\r\nWe end up with pauserehash value decremented twice instead of once."
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/ce47834309ec8fd74cbeaf676313005ee440faa5",
+    "html_url": "https://github.com/redis/redis/commit/ce47834309ec8fd74cbeaf676313005ee440faa5",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/ce47834309ec8fd74cbeaf676313005ee440faa5/comments",
+    "author": {
+      "login": "moticless",
+      "id": 24944278,
+      "node_id": "MDQ6VXNlcjI0OTQ0Mjc4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/24944278?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/moticless",
+      "html_url": "https://github.com/moticless",
+      "followers_url": "https://api.github.com/users/moticless/followers",
+      "following_url": "https://api.github.com/users/moticless/following{/other_user}",
+      "gists_url": "https://api.github.com/users/moticless/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/moticless/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/moticless/subscriptions",
+      "organizations_url": "https://api.github.com/users/moticless/orgs",
+      "repos_url": "https://api.github.com/users/moticless/repos",
+      "events_url": "https://api.github.com/users/moticless/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/moticless/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0b34396924eca4edc524469886dc5be6c77ec4ed",
+        "url": "https://api.github.com/repos/redis/redis/commits/0b34396924eca4edc524469886dc5be6c77ec4ed",
+        "html_url": "https://github.com/redis/redis/commit/0b34396924eca4edc524469886dc5be6c77ec4ed"
+      }
+    ]
+  },
+  {
+    "sha": "0b34396924eca4edc524469886dc5be6c77ec4ed",
+    "node_id": "C_kwDOAAJhctoAKDBiMzQzOTY5MjRlY2E0ZWRjNTI0NDY5ODg2ZGM1YmU2Yzc3ZWM0ZWQ",
+    "commit": {
+      "author": {
+        "name": "Pieter Cailliau",
+        "email": "pieter@redis.com",
+        "date": "2024-03-20T22:38:24Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-20T22:38:24Z"
+      },
+      "message": "Change license from BSD-3 to dual RSALv2+SSPLv1 (#13157)\n\n[Read more about the license change\r\nhere](https://redis.com/blog/redis-adopts-dual-source-available-licensing/)\r\nLive long and prosper 🖖",
+      "tree": {
+        "sha": "38aa941132219124125b6a81275b45c11c4b6fc3",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/38aa941132219124125b6a81275b45c11c4b6fc3"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/0b34396924eca4edc524469886dc5be6c77ec4ed",
+      "comment_count": 3,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl+2VgCRC1aQ7uu5UhlAAAK00QAGOQmZwE6g2sVBD0zvAQLy/P\ngGgOoxqgSoWM5RByebSYK1RZ0WwRwDlS8pEDDWoNqw+MIbyys14wZVvLHs8RMPvB\nioCKq1Y9cyzNX5yTCBEbMGV9z/9Cg3NwZ0w4LqgsFedfOAm9JfgHggc5wrZ0hcWk\nXekfl9uLbMuG7YVfm+vYicKH0vyxnID3k9ncB/WmCXBMvKItiADFOtZkjxEHF87Z\n0tBzQm8UZ2bpvVWnpsQEhtOJeYE7DoKWCh8NWZPUmstQzmUg3o1TGxX5/Tpjm58W\nO4tcoDjNpC7UR/62f0ygZFFGJL53vqA6ZXIG7toyUsC9DjlqZOA6AA31Rg+wP6/z\n5Ehjug2mh5Ubpo785o5yCqN4uaOjwRJHYGNAgL9Sf61cnxRBdWFkH4n3xpLH7wCD\nGDwhoxrizs/7N3N30dUkSdJfkZKaQcVMaziZ5Qt/sET1Y3mPqdxPG8uodUgQOg7z\n8svOnMgg2eFrbOOddxRrCTUVeBo3ItL7kFVEBOXPspA2d1WLW2UicrXEBoIYJ/pw\n2V81gRaRduQAA/nWbKJnexu0pdWy62BUnAmPwtseFOCfkM5oxFh5JAbO0q3vtnBB\nUvHIM00LBXa8EWVcYZSdvtz0LcTc5fsZfy+Gfmz3b4yL+0GbL5AoOBFOEcDGvexC\neyDbsJOrha1gKiMw799X\n=zWmT\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 38aa941132219124125b6a81275b45c11c4b6fc3\nparent e64d91c37105bc2e23816b6f81b9ffc5e5d99801\nauthor Pieter Cailliau <pieter@redis.com> 1710974304 +0000\ncommitter GitHub <noreply@github.com> 1710974304 +0000\n\nChange license from BSD-3 to dual RSALv2+SSPLv1 (#13157)\n\n[Read more about the license change\r\nhere](https://redis.com/blog/redis-adopts-dual-source-available-licensing/)\r\nLive long and prosper 🖖"
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/0b34396924eca4edc524469886dc5be6c77ec4ed",
+    "html_url": "https://github.com/redis/redis/commit/0b34396924eca4edc524469886dc5be6c77ec4ed",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/0b34396924eca4edc524469886dc5be6c77ec4ed/comments",
+    "author": {
+      "login": "K-Jo",
+      "id": 4069725,
+      "node_id": "MDQ6VXNlcjQwNjk3MjU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4069725?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/K-Jo",
+      "html_url": "https://github.com/K-Jo",
+      "followers_url": "https://api.github.com/users/K-Jo/followers",
+      "following_url": "https://api.github.com/users/K-Jo/following{/other_user}",
+      "gists_url": "https://api.github.com/users/K-Jo/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/K-Jo/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/K-Jo/subscriptions",
+      "organizations_url": "https://api.github.com/users/K-Jo/orgs",
+      "repos_url": "https://api.github.com/users/K-Jo/repos",
+      "events_url": "https://api.github.com/users/K-Jo/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/K-Jo/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e64d91c37105bc2e23816b6f81b9ffc5e5d99801",
+        "url": "https://api.github.com/repos/redis/redis/commits/e64d91c37105bc2e23816b6f81b9ffc5e5d99801",
+        "html_url": "https://github.com/redis/redis/commit/e64d91c37105bc2e23816b6f81b9ffc5e5d99801"
+      }
+    ]
+  },
+  {
+    "sha": "e64d91c37105bc2e23816b6f81b9ffc5e5d99801",
+    "node_id": "C_kwDOAAJhctoAKGU2NGQ5MWMzNzEwNWJjMmUyMzgxNmI2ZjgxYjlmZmM1ZTVkOTk4MDE",
+    "commit": {
+      "author": {
+        "name": "Yanqi Lv",
+        "email": "lvyanqi.lyq@alibaba-inc.com",
+        "date": "2024-03-20T20:44:28Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-20T20:44:28Z"
+      },
+      "message": "Fix dict use-after-free problem in kvs->rehashing (#13154)\n\nIn ASAN CI, we find server may crash because of NULL ptr in `kvstoreIncrementallyRehash`.\r\nthe reason is that we use two phase unlink in `dbGenericDelete`. After `kvstoreDictTwoPhaseUnlinkFind`,\r\nthe dict may be in rehashing and only have one element in ht[0] of `db->keys`.\r\n\r\nWhen we delete the last element in `db->keys` meanwhile `db->keys` is in rehashing, we may free the\r\ndict in `kvstoreDictTwoPhaseUnlinkFree` without deleting the node in `kvs->rehashing`. Then we may\r\nuse this freed ptr in `kvstoreIncrementallyRehash` in the `serverCron` and cause the crash.\r\nThis is indeed a use-after-free problem.\r\n\r\nThe fix is to call rehashingCompleted in dictRelease and dictEmpty, so that every call for\r\nrehashingStarted is always matched with a rehashingCompleted.\r\n\r\nAdding a test in the unit test to catch it consistently\r\n\r\n---------\r\n\r\nCo-authored-by: Oran Agra <oran@redislabs.com>\r\nCo-authored-by: debing.sun <debing.sun@redis.com>",
+      "tree": {
+        "sha": "5c3c45e9e2908f7d601534325a75b4d7f7190378",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/5c3c45e9e2908f7d601534325a75b4d7f7190378"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/e64d91c37105bc2e23816b6f81b9ffc5e5d99801",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl+0qsCRC1aQ7uu5UhlAAAPWoQAEdh4zDeICERW9CsVDkqnVhA\nkxZf3wUsUXDLjHqwNFP1By7ULrgA8gcUBPw8qmQFmCswpAkHK9ZJuig2gJv0bwGr\nVXRGCZ0VX+vwipzv7/O+/xGUrJK0zyBUh5VSQkXPX2QEklAwLi87ulw5eIdSBIdc\nr2TsJ+/u2EwlK7fvG+DnWdA2HwaPrkl6zStVVi9TtdPL7NwV+gbPUuyWEplANZB5\nTSFM1BoAme2L+ZS8OACiiRnSdq2wLLDH0ym6cKh+//ofgtS2tgjtdX+5q4dI+/oU\n2GUBLArZm5xBEk3Eyjf8I1OrSF14WczmLBzikcLy41rZAJGs6VSeE9teYKluokEk\nqiL+0RNwMpK84tjOmuW8RwRksXCQ6RqMKlBm0ta6BR7xMhmudh6CQC4tv7BHR36M\nPTYVd2NoMPKvEp+/szah9B7tPEUqn+OW6IljSV8mNTvOjljV/1YI2WDx3fkLzX7/\n/HEJj9jllujhbilENBDFFsllfcqIX4rbzDu6V0AP3VKboZrtRxY9aQBEZmbxy+Mg\nmL67NLbGRPu7DlCyoCziQqN6wneqKymf6/q8gXy+FrMhb8AJE30dXAfqTlvWICPJ\nrlfUblPuf8JD6MFo1Qt2lyT3rTHCa6BZcgQcqjFyJ531WTZMnMnbqc9nzQ7U/P6s\nK6/E4j19lyy/4UTcpj0V\n=dyJW\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 5c3c45e9e2908f7d601534325a75b4d7f7190378\nparent bad33f8738b4be5f58c4439a0c78312e4afbe432\nauthor Yanqi Lv <lvyanqi.lyq@alibaba-inc.com> 1710967468 +0800\ncommitter GitHub <noreply@github.com> 1710967468 +0200\n\nFix dict use-after-free problem in kvs->rehashing (#13154)\n\nIn ASAN CI, we find server may crash because of NULL ptr in `kvstoreIncrementallyRehash`.\r\nthe reason is that we use two phase unlink in `dbGenericDelete`. After `kvstoreDictTwoPhaseUnlinkFind`,\r\nthe dict may be in rehashing and only have one element in ht[0] of `db->keys`.\r\n\r\nWhen we delete the last element in `db->keys` meanwhile `db->keys` is in rehashing, we may free the\r\ndict in `kvstoreDictTwoPhaseUnlinkFree` without deleting the node in `kvs->rehashing`. Then we may\r\nuse this freed ptr in `kvstoreIncrementallyRehash` in the `serverCron` and cause the crash.\r\nThis is indeed a use-after-free problem.\r\n\r\nThe fix is to call rehashingCompleted in dictRelease and dictEmpty, so that every call for\r\nrehashingStarted is always matched with a rehashingCompleted.\r\n\r\nAdding a test in the unit test to catch it consistently\r\n\r\n---------\r\n\r\nCo-authored-by: Oran Agra <oran@redislabs.com>\r\nCo-authored-by: debing.sun <debing.sun@redis.com>\r\n"
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/e64d91c37105bc2e23816b6f81b9ffc5e5d99801",
+    "html_url": "https://github.com/redis/redis/commit/e64d91c37105bc2e23816b6f81b9ffc5e5d99801",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/e64d91c37105bc2e23816b6f81b9ffc5e5d99801/comments",
+    "author": {
+      "login": "lyq2333",
+      "id": 50293466,
+      "node_id": "MDQ6VXNlcjUwMjkzNDY2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/50293466?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lyq2333",
+      "html_url": "https://github.com/lyq2333",
+      "followers_url": "https://api.github.com/users/lyq2333/followers",
+      "following_url": "https://api.github.com/users/lyq2333/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lyq2333/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lyq2333/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lyq2333/subscriptions",
+      "organizations_url": "https://api.github.com/users/lyq2333/orgs",
+      "repos_url": "https://api.github.com/users/lyq2333/repos",
+      "events_url": "https://api.github.com/users/lyq2333/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lyq2333/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "bad33f8738b4be5f58c4439a0c78312e4afbe432",
+        "url": "https://api.github.com/repos/redis/redis/commits/bad33f8738b4be5f58c4439a0c78312e4afbe432",
+        "html_url": "https://github.com/redis/redis/commit/bad33f8738b4be5f58c4439a0c78312e4afbe432"
+      }
+    ]
+  },
+  {
+    "sha": "bad33f8738b4be5f58c4439a0c78312e4afbe432",
+    "node_id": "C_kwDOAAJhctoAKGJhZDMzZjg3MzhiNGJlNWY1OGM0NDM5YTBjNzgzMTJlNGFmYmU0MzI",
+    "commit": {
+      "author": {
+        "name": "Yanqi Lv",
+        "email": "lvyanqi.lyq@alibaba-inc.com",
+        "date": "2024-03-19T06:52:55Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-19T06:52:55Z"
+      },
+      "message": "fix wrong data type conversion in zrangeResultBeginStore (#13148)\n\nIn `beginResultEmission`, -1 means the result length is not known in\r\nadvance. But after #12185, if we pass -1 to `zrangeResultBeginStore`, it\r\nwill convert to SIZE_MAX in `zsetTypeCreate` and try to `dictExpand`.\r\nAlthough `dictExpand` won't succeed because the size overflows, I think\r\nwe'd better to avoid this wrong conversion.\r\n\r\nThis bug can be triggered when the source of `zrangestore` doesn't exist\r\nor we use `zrangestore` command with `byscore` or `bylex`.\r\nThe impact is that dst keys will be converted to use skiplist instead of\r\nlistpack.",
+      "tree": {
+        "sha": "a400270129559b3d9012a3d36785e79542c03df0",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/a400270129559b3d9012a3d36785e79542c03df0"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/bad33f8738b4be5f58c4439a0c78312e4afbe432",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl+TZHCRC1aQ7uu5UhlAAA+3UQAAfaVTaJ/wkOVn3LCkm3yUeM\n8y/ZUy9a/xu9KZb7po29pCh9zmBAf330Dtmfl/ZQmHKUB/M7nohfIVV47E+sP2bw\nIFCsdFR0RpymD8Xd4hQoTOvrfgMMX8YoLooGLv6cC/fz9/hO9/DrdRIy0Afv6O1K\nSSUBpbDBVmXau6XNxIO9CA7xJY+3983agZVvFtiVrOj56iN98eGsX76lEbs8fdit\nAE4gnyOv6BP4zvOXvSSuXvY0mSf93zyPI94g9/2b3+hQIDMAEpuC9gmf4xpYGSv2\n3wWCDzS/m2F0QVcYRNHu5YTH5ygzjhOcbE8+2/pMfLFF+HLkDGiO9pabz1jyQ7qx\nfPWoFlytm6Tk3b3kgHxKUrGJOy9wjQbVYwqDZmLrTGJI6nyAh+kvVXm6n1xgkBa6\nONsevMKB200WZmGD8C/yT/a2Ou9sdKPQkmKNiGDV2F7WGwe/fX6TAvv2NCPM11Ff\nuSLYQetdgf7XS5if/NkmIRQnF6fgsG5A5yr9/38lx8dd7o+8wz1vKQ2XmwZaLPBJ\n7LNLPzozdGc69LbjwyhwvAdf4G8U3aFt1sPnWEJPyFGne4Iidq3N1aVCBX10ipMv\nzx7zr6vIZrqHcMFmq3aOZ3DDhpWu3JbCVLL+1d2fmS/cct2gH3l4H9QRsQgLzgEb\nvd3j1o60zbxIySG2MqGq\n=Ri1z\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree a400270129559b3d9012a3d36785e79542c03df0\nparent e04d41d78dcdc4f2b332cdcf168521257ab0024e\nauthor Yanqi Lv <lvyanqi.lyq@alibaba-inc.com> 1710831175 +0800\ncommitter GitHub <noreply@github.com> 1710831175 +0200\n\nfix wrong data type conversion in zrangeResultBeginStore (#13148)\n\nIn `beginResultEmission`, -1 means the result length is not known in\r\nadvance. But after #12185, if we pass -1 to `zrangeResultBeginStore`, it\r\nwill convert to SIZE_MAX in `zsetTypeCreate` and try to `dictExpand`.\r\nAlthough `dictExpand` won't succeed because the size overflows, I think\r\nwe'd better to avoid this wrong conversion.\r\n\r\nThis bug can be triggered when the source of `zrangestore` doesn't exist\r\nor we use `zrangestore` command with `byscore` or `bylex`.\r\nThe impact is that dst keys will be converted to use skiplist instead of\r\nlistpack."
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/bad33f8738b4be5f58c4439a0c78312e4afbe432",
+    "html_url": "https://github.com/redis/redis/commit/bad33f8738b4be5f58c4439a0c78312e4afbe432",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/bad33f8738b4be5f58c4439a0c78312e4afbe432/comments",
+    "author": {
+      "login": "lyq2333",
+      "id": 50293466,
+      "node_id": "MDQ6VXNlcjUwMjkzNDY2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/50293466?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lyq2333",
+      "html_url": "https://github.com/lyq2333",
+      "followers_url": "https://api.github.com/users/lyq2333/followers",
+      "following_url": "https://api.github.com/users/lyq2333/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lyq2333/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lyq2333/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lyq2333/subscriptions",
+      "organizations_url": "https://api.github.com/users/lyq2333/orgs",
+      "repos_url": "https://api.github.com/users/lyq2333/repos",
+      "events_url": "https://api.github.com/users/lyq2333/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lyq2333/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e04d41d78dcdc4f2b332cdcf168521257ab0024e",
+        "url": "https://api.github.com/repos/redis/redis/commits/e04d41d78dcdc4f2b332cdcf168521257ab0024e",
+        "html_url": "https://github.com/redis/redis/commit/e04d41d78dcdc4f2b332cdcf168521257ab0024e"
+      }
+    ]
+  },
+  {
+    "sha": "e04d41d78dcdc4f2b332cdcf168521257ab0024e",
+    "node_id": "C_kwDOAAJhctoAKGUwNGQ0MWQ3OGRjZGM0ZjJiMzMyY2RjZjE2ODUyMTI1N2FiMDAyNGU",
+    "commit": {
+      "author": {
+        "name": "Binbin",
+        "email": "binloveplay1314@qq.com",
+        "date": "2024-03-19T06:18:22Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-19T06:18:22Z"
+      },
+      "message": "Prevent lua error_reply abuse from causing errorstats to become larger (#13141)\n\nUsers who abuse lua error_reply will generate a new error object on each\r\nerror call, which can make server.errors get bigger and bigger. This\r\nwill\r\ncause the server to block when calling INFO (we also return errorstats\r\nby\r\ndefault).\r\n\r\nTo prevent the damage it can cause, when a misuse is detected, we will\r\nprint a warning log and disable the errorstats to avoid adding more new\r\nerrors. It can be re-enabled via CONFIG RESETSTAT.\r\n\r\nBecause server.errors may be very large (it may be better now since we\r\nhave the limit), config resetstat may block for a while. So in\r\nresetErrorTableStats, we will try to lazyfree server.errors.\r\n\r\nSee the related discussion at the end of #8217.",
+      "tree": {
+        "sha": "8c126f5d264b3fd137e00f4329b35ead63171dc0",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/8c126f5d264b3fd137e00f4329b35ead63171dc0"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/e04d41d78dcdc4f2b332cdcf168521257ab0024e",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl+S4uCRC1aQ7uu5UhlAAA/dEQAJ6QJr2vKeIot5cd6tpXamNt\nFt7jHZnTfKIaYUNiCRrR4UA651GgkxJ4Yf+1nZDjsZwkSWomb0+wZiyUyBGXAOWb\n6NC0EzwKbnAkxoSc0SdEPtMp5ruwnCVG8j8JX2Ic/tXRIqDVH0aumSCmkEJLjMYL\na8AJvkcuy+wlvLBCPxtIfQ/arLnZ5ONWXt+5BN8yWgcnw3imm5AvmoRFk2A5BhgJ\nfbYnp0IBwjiNiovBw4XecDHNjOROavszKjWHB09IqL0rYl7WKO9GzP1kin7F6oFc\n7dgGpN3M77xE8xW52TOuBvT7dUbbNLMGawHCA7vTssIrJKvs10NePtBkwm9xxHQk\nj+vX1r6jkyfiCAyEBwT2QrKCp9T1XAAbdD5+mInYdq9w+n6Fa1RzBKP8wmdHA+n/\nw8b6DJSQg7+CLjjJ7zo1UODW8MJfbcPw1rcnmIwqC1P31QwoNGspQBvAC6mWoplg\npNqMLxm0AUKJthiAmpc0zxOpdWvd3BIDf60/SofaArJn2HQ7li3VI0I07HEowwek\neCT1w1ekgfdcfxRd9vo+zjiocVMMs1W+NItHfkENT/bToX086DbFK440IWjF+DWR\nch6n5D00DR72rbd2yOoLDi+Z4zZoyoq2ChjGPmHSoHWLYdBfFBjJ/oFIWU5vBpQU\nmlHvfszIQG1Ow8Aq6OxN\n=RYrr\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 8c126f5d264b3fd137e00f4329b35ead63171dc0\nparent aeada20140570643cda084d374056469a5c27bf2\nauthor Binbin <binloveplay1314@qq.com> 1710829102 +0800\ncommitter GitHub <noreply@github.com> 1710829102 +0200\n\nPrevent lua error_reply abuse from causing errorstats to become larger (#13141)\n\nUsers who abuse lua error_reply will generate a new error object on each\r\nerror call, which can make server.errors get bigger and bigger. This\r\nwill\r\ncause the server to block when calling INFO (we also return errorstats\r\nby\r\ndefault).\r\n\r\nTo prevent the damage it can cause, when a misuse is detected, we will\r\nprint a warning log and disable the errorstats to avoid adding more new\r\nerrors. It can be re-enabled via CONFIG RESETSTAT.\r\n\r\nBecause server.errors may be very large (it may be better now since we\r\nhave the limit), config resetstat may block for a while. So in\r\nresetErrorTableStats, we will try to lazyfree server.errors.\r\n\r\nSee the related discussion at the end of #8217."
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/e04d41d78dcdc4f2b332cdcf168521257ab0024e",
+    "html_url": "https://github.com/redis/redis/commit/e04d41d78dcdc4f2b332cdcf168521257ab0024e",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/e04d41d78dcdc4f2b332cdcf168521257ab0024e/comments",
+    "author": {
+      "login": "enjoy-binbin",
+      "id": 22811481,
+      "node_id": "MDQ6VXNlcjIyODExNDgx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22811481?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/enjoy-binbin",
+      "html_url": "https://github.com/enjoy-binbin",
+      "followers_url": "https://api.github.com/users/enjoy-binbin/followers",
+      "following_url": "https://api.github.com/users/enjoy-binbin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/enjoy-binbin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/enjoy-binbin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/enjoy-binbin/subscriptions",
+      "organizations_url": "https://api.github.com/users/enjoy-binbin/orgs",
+      "repos_url": "https://api.github.com/users/enjoy-binbin/repos",
+      "events_url": "https://api.github.com/users/enjoy-binbin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/enjoy-binbin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "aeada20140570643cda084d374056469a5c27bf2",
+        "url": "https://api.github.com/repos/redis/redis/commits/aeada20140570643cda084d374056469a5c27bf2",
+        "html_url": "https://github.com/redis/redis/commit/aeada20140570643cda084d374056469a5c27bf2"
+      }
+    ]
+  },
+  {
+    "sha": "aeada20140570643cda084d374056469a5c27bf2",
+    "node_id": "C_kwDOAAJhctoAKGFlYWRhMjAxNDA1NzA2NDNjZGEwODRkMzc0MDU2NDY5YTVjMjdiZjI",
+    "commit": {
+      "author": {
+        "name": "Chen Tianjie",
+        "email": "chentianjie.ctj@alibaba-inc.com",
+        "date": "2024-03-19T02:14:19Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-19T02:14:19Z"
+      },
+      "message": "Avoid unnecessary dict shrink in zremrangeGenericCommand (#13143)\n\nIf the skiplist is emptied, there is no need to shrink the dict in\r\nskiplist, it can be deleted directly.",
+      "tree": {
+        "sha": "292ef6795273de92911c316efc01ada887c5acea",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/292ef6795273de92911c316efc01ada887c5acea"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/aeada20140570643cda084d374056469a5c27bf2",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl+PT7CRC1aQ7uu5UhlAAAW2QQAJwctDmObc9xKxQxeZ7sHpZU\nHqgK9ZLZ7Mb1ZUYQ6LFmPlDD57Ijyb49J0mNEbdc608cDHV2actbKLY6vVYW2RQ/\nkmEX6q1PCKx2vKahUA3eLrmIh0eqqHfiWnKCidMDYt31u4rRe3MCjk9Mm5tM8+kq\n/SwA8YuY0cXhqGmcBU9ZjpCJb8TVhy17oz+fXKeIy7/UuwUyQHpJ2xfq90M2aqm2\n30ba4AJV0RhkesVXE/AXAcxExtKyyx9wbWkATvPdeXqKlpBq7RWTcWlQMSuW/08z\nKIaTAj/HNcD0vNABHT4Zsy9yi1X7Od7bJICisHKHRevrZEb40CYuc+EhYTMgJguy\nptehjj7DEaLQgHI/iETeDEXbNj3bQEyFlOrIpHIzDHrD8hhZY/pWnmLKTjZTeNrL\nkU1gqrJYzD91Py2r9k0wMN4HuV/knLyahP8CBj8dPtkuF6uCnt6mpbi/5Oy5ijQC\nrxfBiOO/WzmcKvDFsdbpjiIrLLfpI7IhQj+RHZOwoIm8E2jfyM07Jr3xrSKPuWRF\nKWrDbW+NnO4vw9pBIyax5K5VK2K/Bw5mUcpny0AWURBmFAl6sHFXYwwKhrZRn+an\nG2Zc9NWrPaoPSZbxFzApL1O/X+t1JI/RnCXq+Fpu1O72BTMlGRnhG+96RU2uK8hH\nicrWLA8dAjLv5FWK3qR1\n=mkRz\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 292ef6795273de92911c316efc01ada887c5acea\nparent 7b070423b8e20cf14a9ab80dfa7bea5ba88c54a3\nauthor Chen Tianjie <chentianjie.ctj@alibaba-inc.com> 1710814459 +0800\ncommitter GitHub <noreply@github.com> 1710814459 +0800\n\nAvoid unnecessary dict shrink in zremrangeGenericCommand (#13143)\n\nIf the skiplist is emptied, there is no need to shrink the dict in\r\nskiplist, it can be deleted directly."
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/aeada20140570643cda084d374056469a5c27bf2",
+    "html_url": "https://github.com/redis/redis/commit/aeada20140570643cda084d374056469a5c27bf2",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/aeada20140570643cda084d374056469a5c27bf2/comments",
+    "author": {
+      "login": "CharlesChen888",
+      "id": 112807411,
+      "node_id": "U_kgDOBrlN8w",
+      "avatar_url": "https://avatars.githubusercontent.com/u/112807411?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/CharlesChen888",
+      "html_url": "https://github.com/CharlesChen888",
+      "followers_url": "https://api.github.com/users/CharlesChen888/followers",
+      "following_url": "https://api.github.com/users/CharlesChen888/following{/other_user}",
+      "gists_url": "https://api.github.com/users/CharlesChen888/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/CharlesChen888/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/CharlesChen888/subscriptions",
+      "organizations_url": "https://api.github.com/users/CharlesChen888/orgs",
+      "repos_url": "https://api.github.com/users/CharlesChen888/repos",
+      "events_url": "https://api.github.com/users/CharlesChen888/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/CharlesChen888/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7b070423b8e20cf14a9ab80dfa7bea5ba88c54a3",
+        "url": "https://api.github.com/repos/redis/redis/commits/7b070423b8e20cf14a9ab80dfa7bea5ba88c54a3",
+        "html_url": "https://github.com/redis/redis/commit/7b070423b8e20cf14a9ab80dfa7bea5ba88c54a3"
+      }
+    ]
+  },
+  {
+    "sha": "7b070423b8e20cf14a9ab80dfa7bea5ba88c54a3",
+    "node_id": "C_kwDOAAJhctoAKDdiMDcwNDIzYjhlMjBjZjE0YTlhYjgwZGZhN2JlYTViYTg4YzU0YTM",
+    "commit": {
+      "author": {
+        "name": "Binbin",
+        "email": "binloveplay1314@qq.com",
+        "date": "2024-03-18T15:41:54Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-18T15:41:54Z"
+      },
+      "message": "Fix dictionary use-after-free in active expire and make kvstore iter to respect EMPTY flag (#13135)\n\nAfter #13072, there is an use-after-free error. In expireScanCallback, we\r\nwill delete the dict, and then in dictScan we will continue to use the dict,\r\nlike we will doing `dictResumeRehashing(d)` in the end, this casued an error.\r\n\r\nIn this PR, in freeDictIfNeeded, if the dict's pauserehash is set, don't\r\ndelete the dict yet, and then when scan returns try to delete it again.\r\n\r\nAt the same time, we noticed that there will be similar problems in iterator.\r\nWe may also delete elements during the iteration process, causing the dict\r\nto be deleted, so the part related to iter in the PR has also been modified.\r\ndictResetIterator was also missing from the previous kvstoreIteratorNextDict,\r\nwe currently have no scenario that elements will be deleted in kvstoreIterator\r\nprocess, deal with it together to avoid future problems. Added some simple\r\ntests to verify the changes.\r\n\r\nIn addition, the modification in #13072 omitted initTempDb and emptyDbAsync,\r\nand they were also added. This PR also remove the slow flag from the expire\r\ntest (consumes 1.3s) so that problems can be found in CI in the future.",
+      "tree": {
+        "sha": "ca6556fe0a8bfe5d60305e850aea9a311f49e511",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/ca6556fe0a8bfe5d60305e850aea9a311f49e511"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/7b070423b8e20cf14a9ab80dfa7bea5ba88c54a3",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl+GDCCRC1aQ7uu5UhlAAABDMQAKI+IpOWJGla2u2yVQWkcyIU\n7kakIj0OxVYXz2c9qV5q9u3TTCavBXXAzusY/cziNwaYDLtB+34/U7ltSOx/HBia\ngFWSqBIaj1ki54sre84FJ31fzTZw00hoVYZQBJZBgk5x+3CtTk66drzHMmWeXan1\npnMVPSXAI5y0JaKF+LzOFovXC5lwQJCaKljAi0H1dZWVOBVYYQLQ+v54Uaa+nnQR\no6b2enTkqUfl/1Ia990/yoaW0HmOO2MmR0tAtOiQPh9G/VZw11+lhdJRgMqjwx9r\nF4OWYRGjmR0Cz3h9Feh1zFMGJ1cVTvgpiveldRp1+zj8lUzJu1G8yXlFKWQidZt+\n0zNPofOPYznprMlBKemA2wxYJOWUXL53eFkaqbgk1AVNsJjmS+F5pacXsaicGGjA\nZiI1c+CgbY7FSLHg7x3rp546bcOehP8Rmr3HF7GQcaWDbvQUsUmMHAN9MEcFPvhY\nQqQxP5cybQYbVf1X5sqTRDnIhwiuAwMHO6UgTRYAamkNPLb5zsqOQen0fwfVjT22\nVAqLSGDW6ymE9ZN/dRuS7jmCwkFmK7D5Ev4Uz96oNzQODu2NoVGUVRBZn+/OxB8J\nlhBmA3WP8E/fFXVeRZEiLXMNHbmh5Qp196I/4m12p/LTioUm21fyh0nDpQvsxAvg\n1C5YRyCG9C0BDbEoA2kI\n=l3GK\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree ca6556fe0a8bfe5d60305e850aea9a311f49e511\nparent 98a6e55d4e7eed5bb68480672a3358ee21b9dce8\nauthor Binbin <binloveplay1314@qq.com> 1710776514 +0800\ncommitter GitHub <noreply@github.com> 1710776514 +0200\n\nFix dictionary use-after-free in active expire and make kvstore iter to respect EMPTY flag (#13135)\n\nAfter #13072, there is an use-after-free error. In expireScanCallback, we\r\nwill delete the dict, and then in dictScan we will continue to use the dict,\r\nlike we will doing `dictResumeRehashing(d)` in the end, this casued an error.\r\n\r\nIn this PR, in freeDictIfNeeded, if the dict's pauserehash is set, don't\r\ndelete the dict yet, and then when scan returns try to delete it again.\r\n\r\nAt the same time, we noticed that there will be similar problems in iterator.\r\nWe may also delete elements during the iteration process, causing the dict\r\nto be deleted, so the part related to iter in the PR has also been modified.\r\ndictResetIterator was also missing from the previous kvstoreIteratorNextDict,\r\nwe currently have no scenario that elements will be deleted in kvstoreIterator\r\nprocess, deal with it together to avoid future problems. Added some simple\r\ntests to verify the changes.\r\n\r\nIn addition, the modification in #13072 omitted initTempDb and emptyDbAsync,\r\nand they were also added. This PR also remove the slow flag from the expire\r\ntest (consumes 1.3s) so that problems can be found in CI in the future."
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/7b070423b8e20cf14a9ab80dfa7bea5ba88c54a3",
+    "html_url": "https://github.com/redis/redis/commit/7b070423b8e20cf14a9ab80dfa7bea5ba88c54a3",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/7b070423b8e20cf14a9ab80dfa7bea5ba88c54a3/comments",
+    "author": {
+      "login": "enjoy-binbin",
+      "id": 22811481,
+      "node_id": "MDQ6VXNlcjIyODExNDgx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22811481?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/enjoy-binbin",
+      "html_url": "https://github.com/enjoy-binbin",
+      "followers_url": "https://api.github.com/users/enjoy-binbin/followers",
+      "following_url": "https://api.github.com/users/enjoy-binbin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/enjoy-binbin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/enjoy-binbin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/enjoy-binbin/subscriptions",
+      "organizations_url": "https://api.github.com/users/enjoy-binbin/orgs",
+      "repos_url": "https://api.github.com/users/enjoy-binbin/repos",
+      "events_url": "https://api.github.com/users/enjoy-binbin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/enjoy-binbin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "98a6e55d4e7eed5bb68480672a3358ee21b9dce8",
+        "url": "https://api.github.com/repos/redis/redis/commits/98a6e55d4e7eed5bb68480672a3358ee21b9dce8",
+        "html_url": "https://github.com/redis/redis/commit/98a6e55d4e7eed5bb68480672a3358ee21b9dce8"
+      }
+    ]
+  },
+  {
+    "sha": "98a6e55d4e7eed5bb68480672a3358ee21b9dce8",
+    "node_id": "C_kwDOAAJhctoAKDk4YTZlNTVkNGU3ZWVkNWJiNjg0ODA2NzJhMzM1OGVlMjFiOWRjZTg",
+    "commit": {
+      "author": {
+        "name": "Alexander Mahone",
+        "email": "38128606+AlexanderMahone0@users.noreply.github.com",
+        "date": "2024-03-18T06:22:19Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-18T06:22:19Z"
+      },
+      "message": "Add missing REDIS_STATIC in quicklist (#13147)\n\nCompiler complained when I tried to compile only quicklist.c.\r\nSince static keyword is needed when a static function declaration is\r\nplaced before its implementation.\r\n\r\n```\r\n#ifndef REDIS_STATIC\r\n#define REDIS_STATIC static\r\n#endif\r\n```\r\n\r\n[How to solve static declaration follows non-static declaration in GCC C\r\ncode?](https://stackoverflow.com/questions/3148244/how-to-solve-static-declaration-follows-non-static-declaration-in-gcc-c-code)",
+      "tree": {
+        "sha": "9acfc25af6d4efb89df3aef24fedf8f71c26c607",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/9acfc25af6d4efb89df3aef24fedf8f71c26c607"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/98a6e55d4e7eed5bb68480672a3358ee21b9dce8",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl992bCRC1aQ7uu5UhlAAAAPMQAD7T+v6N0CKdjnPwgrKyuczY\nQBJDcEoTanaeP5cfEaJFQvarTtDJ0abFd7p4CgHlES51QdYpKBCx5buF2wfTs3yp\nnurcHkoIoGbd1wvF1O+Acv79ArL4XmsEI6+fh3t3HY3yBj2ptmGcBUrIN7zIY6ad\n5H7/BkDzjMIkMFTjTdqpHRp9JokX35newzSeI6+ZWogPcCElHKrYOHBsP5HXXaom\nDZgNvisA27srPUeKTSFWqoeHzIgfoZxXORI/LfAyFJ2T7n2mbY2h0YIq9T9MyClI\nTI/KOm7c0bc77CeuRmE0pvJRHxd7kEqIxP+FXARjy/nsUVoJN7Wefpd54xIacgJE\nHYn0RQlK9vmE7ce16NRMdOJKLiB3ezM+3kqCt202x1iNKi6pu3kMj2AD8lqbUMyS\nEktMBesZ4tkqnSWSQIuor/6bV80744wGxnsRBf8kzddYf5iNQ+nye+YntHpEEUZQ\nhZq1sbdyHGjLxf1Pph60nxiCW7CPf6jIlfMJSoCtyw3CtQIgidYveeywxQqzMCBo\nmHMclgoMBl812tDmydcehLIQLOh5cdR4tv1OYISTxbQ31nSXu9Iye+xofc7+8YAw\nnT0JVMzdhiXanigUgVNfSbTbq3wHothD3Od20ygWf2V4J2Lt7c2I2f/s5swxP6pJ\nSZ64r94B3x63NJS9as1c\n=orgI\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 9acfc25af6d4efb89df3aef24fedf8f71c26c607\nparent 3f725b8619ad9ae9eb129e760a47e635972be3ee\nauthor Alexander Mahone <38128606+AlexanderMahone0@users.noreply.github.com> 1710742939 +0800\ncommitter GitHub <noreply@github.com> 1710742939 +0200\n\nAdd missing REDIS_STATIC in quicklist (#13147)\n\nCompiler complained when I tried to compile only quicklist.c.\r\nSince static keyword is needed when a static function declaration is\r\nplaced before its implementation.\r\n\r\n```\r\n#ifndef REDIS_STATIC\r\n#define REDIS_STATIC static\r\n#endif\r\n```\r\n\r\n[How to solve static declaration follows non-static declaration in GCC C\r\ncode?](https://stackoverflow.com/questions/3148244/how-to-solve-static-declaration-follows-non-static-declaration-in-gcc-c-code)"
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/98a6e55d4e7eed5bb68480672a3358ee21b9dce8",
+    "html_url": "https://github.com/redis/redis/commit/98a6e55d4e7eed5bb68480672a3358ee21b9dce8",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/98a6e55d4e7eed5bb68480672a3358ee21b9dce8/comments",
+    "author": {
+      "login": "AlexanderMahone0",
+      "id": 38128606,
+      "node_id": "MDQ6VXNlcjM4MTI4NjA2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/38128606?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/AlexanderMahone0",
+      "html_url": "https://github.com/AlexanderMahone0",
+      "followers_url": "https://api.github.com/users/AlexanderMahone0/followers",
+      "following_url": "https://api.github.com/users/AlexanderMahone0/following{/other_user}",
+      "gists_url": "https://api.github.com/users/AlexanderMahone0/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/AlexanderMahone0/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/AlexanderMahone0/subscriptions",
+      "organizations_url": "https://api.github.com/users/AlexanderMahone0/orgs",
+      "repos_url": "https://api.github.com/users/AlexanderMahone0/repos",
+      "events_url": "https://api.github.com/users/AlexanderMahone0/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/AlexanderMahone0/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3f725b8619ad9ae9eb129e760a47e635972be3ee",
+        "url": "https://api.github.com/repos/redis/redis/commits/3f725b8619ad9ae9eb129e760a47e635972be3ee",
+        "html_url": "https://github.com/redis/redis/commit/3f725b8619ad9ae9eb129e760a47e635972be3ee"
+      }
+    ]
+  },
+  {
+    "sha": "3f725b8619ad9ae9eb129e760a47e635972be3ee",
+    "node_id": "C_kwDOAAJhctoAKDNmNzI1Yjg2MTlhZDlhZTllYjEyOWU3NjBhNDdlNjM1OTcyYmUzZWU",
+    "commit": {
+      "author": {
+        "name": "Madelyn Olson",
+        "email": "34459052+madolson@users.noreply.github.com",
+        "date": "2024-03-17T07:06:51Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-17T07:06:51Z"
+      },
+      "message": "Change mmap rand bits as a temporary mitigation to resolve asan bug (#13150)\n\nThere is a new change in linux kernel 6.6.6 that uses randomization of\r\naddress space to harden security, but it interferes with the way ASAN\r\nworks. Folks are working on a fix, but this is a temporary mitigation\r\nfor us to get our CI to be green again.\r\n\r\nSee https://github.com/google/sanitizers/issues/1716 for more\r\ninformation\r\n\r\nSee\r\nhttps://github.com/redis/redis/actions/runs/8305126288/job/22731614306?pr=13149\r\nfor a recent failure",
+      "tree": {
+        "sha": "b15b4dff80fd3bdba7336539fbcbdf851d040c87",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/b15b4dff80fd3bdba7336539fbcbdf851d040c87"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/3f725b8619ad9ae9eb129e760a47e635972be3ee",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl9paLCRC1aQ7uu5UhlAAARxoQAJOLpike6Tlt32KuSvhOqr+j\nEBdsQvpLI512yQSnmY3eAOVQNrDv6in8Lx0MkGegzLIFdwLE9RIP+m5Bn4uTypTb\ne4vnMlB7/LOY/vpjtM3FJryAVzKasMUjr9fSCuWdoYPmk97nx7/giITXHOwlOlKj\nVVKuDCq3jksBae5yWs/5AJewUWqWyVxTR1mcgMNFL+8VYvKF8Q4wNfbwvAukB+BW\nFo1g94TMUT7ya2aAgu0jJZfgxIZ9Sjaxl4CoWHyJrS+MZ2+c5LYOAWCxQuMbKlg9\nH37zNAP5LyoFRWO6HhxKDaAKgC5Rjg3J3V6HAXA1ZeWYf26ZFS69H6xdK82WP0vl\nGOlKqKbT2MVZWya/Ebyjuwv3oH+AoZvKMP+YGlb3VrwnwR7GeuAc+ganaT8HHtx6\nZGxieBU28aSUh0b0BmFV5XdVoT8gxtVFh4d2BnptGHmh7PLTwVO7PyVTTV95h+Ak\nFeC4TToPqdThQInx8Txt6pIBhZwdF90xSkPpU4jS9IN/ghfgEDtvA80k6s9DqaFd\ntJY1hLEkkMI1D3s5KfMiE7F8uQg0Ha/YqZWl4EKiW1dd61tcvZV1mXBuYkoeDI+U\njfbNLzQhGukOueXJeuNwcjvDwK8ck5k/4TmaPK80N7Gzk3kYjCWl8f7nyzGO5FYD\nJUJJXJ3C/1UDWQcyxvku\n=dipG\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree b15b4dff80fd3bdba7336539fbcbdf851d040c87\nparent 1d77a8e2c5e2322cc119af34a6685876af90effd\nauthor Madelyn Olson <34459052+madolson@users.noreply.github.com> 1710659211 -0700\ncommitter GitHub <noreply@github.com> 1710659211 +0200\n\nChange mmap rand bits as a temporary mitigation to resolve asan bug (#13150)\n\nThere is a new change in linux kernel 6.6.6 that uses randomization of\r\naddress space to harden security, but it interferes with the way ASAN\r\nworks. Folks are working on a fix, but this is a temporary mitigation\r\nfor us to get our CI to be green again.\r\n\r\nSee https://github.com/google/sanitizers/issues/1716 for more\r\ninformation\r\n\r\nSee\r\nhttps://github.com/redis/redis/actions/runs/8305126288/job/22731614306?pr=13149\r\nfor a recent failure"
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/3f725b8619ad9ae9eb129e760a47e635972be3ee",
+    "html_url": "https://github.com/redis/redis/commit/3f725b8619ad9ae9eb129e760a47e635972be3ee",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/3f725b8619ad9ae9eb129e760a47e635972be3ee/comments",
+    "author": {
+      "login": "madolson",
+      "id": 34459052,
+      "node_id": "MDQ6VXNlcjM0NDU5MDUy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/34459052?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madolson",
+      "html_url": "https://github.com/madolson",
+      "followers_url": "https://api.github.com/users/madolson/followers",
+      "following_url": "https://api.github.com/users/madolson/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madolson/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madolson/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madolson/subscriptions",
+      "organizations_url": "https://api.github.com/users/madolson/orgs",
+      "repos_url": "https://api.github.com/users/madolson/repos",
+      "events_url": "https://api.github.com/users/madolson/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madolson/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1d77a8e2c5e2322cc119af34a6685876af90effd",
+        "url": "https://api.github.com/repos/redis/redis/commits/1d77a8e2c5e2322cc119af34a6685876af90effd",
+        "html_url": "https://github.com/redis/redis/commit/1d77a8e2c5e2322cc119af34a6685876af90effd"
+      }
+    ]
+  },
+  {
+    "sha": "1d77a8e2c5e2322cc119af34a6685876af90effd",
+    "node_id": "C_kwDOAAJhctoAKDFkNzdhOGUyYzVlMjMyMmNjMTE5YWYzNGE2Njg1ODc2YWY5MGVmZmQ",
+    "commit": {
+      "author": {
+        "name": "Viktor Söderqvist",
+        "email": "viktor.soderqvist@est.tech",
+        "date": "2024-03-13T15:02:00Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-13T15:02:00Z"
+      },
+      "message": "Makefile respect user's REDIS_CFLAGS and OPT (#13073)\n\nThis change to the Makefile makes it possible to opt out of\r\n`-fno-omit-frame-pointer` added in #12973 and `-flto` (#11350). Those\r\nfeatures were implemented by conditionally modifying the `REDIS_CFLAGS`\r\nand `REDIS_LDFLAGS` variables. Historically, those variables provided a\r\nway for users to pass options to the compiler and linker unchanged.\r\n\r\nInstead of conditionally appending optimization flags to REDIS_CFLAGS\r\nand REDIS_LDFLAGS, I want to append them to the OPTIMIZATION variable.\r\n\r\nLater in the Makefile, we have `OPT=$(OPTIMIZATION)` (meaning\r\nOPTIMIZATION is only a default for OPT, but OPT can be overridden by the\r\nuser), and later the flags are combined like this:\r\n\r\nFINAL_CFLAGS=$(STD) $(WARN) $(OPT) $(DEBUG) $(CFLAGS) $(REDIS_CFLAGS)\r\n    FINAL_LDFLAGS=$(LDFLAGS) $(OPT) $(REDIS_LDFLAGS) $(DEBUG)\r\n\r\nThis makes it possible for the the user to override all optimization\r\nflags with e.g. `make OPT=-O1` or just `make OPT=`.\r\n\r\nFor some reason `-O3` was also already added to REDIS_LDFLAGS by default\r\nin #12339, so I added OPT to FINAL_LDFLAGS to avoid more complex logic\r\n(such as introducing a separate LD_OPT variable).",
+      "tree": {
+        "sha": "98ca2da731f8b5d790239df7bb5febdad6126343",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/98ca2da731f8b5d790239df7bb5febdad6126343"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/1d77a8e2c5e2322cc119af34a6685876af90effd",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl8b/oCRC1aQ7uu5UhlAAAmPEQAIsIxTxb0pbOmKSxH31pVjqc\nKLJrLVU/7SSRhojuOn5FzDdBCJj1xGYVkWGvHQc/UwjYadjGOOCzJpTrrjzHva4s\nrJIgedRC6E+5YoLg1Ibuz5BIruooUsXZTbir7ZBd+sJbXDHZnm9tpXhN2qadENdA\n8PNWH21gyyxn71znOb3VgOZgWhU38Jq91Crye8GhXPNm4w9UCsz7cF1a9KL7XeI6\nxXOEWRKTIqUCCTlPX03EhHJ9YI529/d+cOUexjQPYACTkXsQvSvEG4H+WQh6dPSZ\nSFv4krXs+VRIYxdEcpT29Po+xTMvQ7Cna32u86fxG273X2jTvW18/LXwbhojj/aK\nQt39bvEEHsK147THGm0WDIhkArW678aazKdvVBO1O8Hf5CVc3UxAJa7eeiprZ7d6\n0pzigYjBwB3PTeCMzYzZwRQZF36UCSTkHfVL753xgFfWcdVWY0AzaRZALtlfqeGb\nQTUMRgucWj4De/Z/852pgp4gTTO1kDsNjqf1zf/b/ZrvsCWgUjx5xhcxcdoUvbpm\nFS1s+nWxk5kj71fD+CfctkbZnNs/1bbhRBb6xBLPWDLMqH07M629M8udxfMOvAac\nxOyAKQ/RhabT0d9kG6fS1OGcavZgL03slRnZ9nxNosrh+RMcmulyaKLDhxpMcNW/\nFzpMY3/FPgifaFvC02Ps\n=mK+n\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 98ca2da731f8b5d790239df7bb5febdad6126343\nparent 3b3d16f7488063f0d2ee7d5cfaeba736169046de\nauthor Viktor Söderqvist <viktor.soderqvist@est.tech> 1710342120 +0100\ncommitter GitHub <noreply@github.com> 1710342120 +0200\n\nMakefile respect user's REDIS_CFLAGS and OPT (#13073)\n\nThis change to the Makefile makes it possible to opt out of\r\n`-fno-omit-frame-pointer` added in #12973 and `-flto` (#11350). Those\r\nfeatures were implemented by conditionally modifying the `REDIS_CFLAGS`\r\nand `REDIS_LDFLAGS` variables. Historically, those variables provided a\r\nway for users to pass options to the compiler and linker unchanged.\r\n\r\nInstead of conditionally appending optimization flags to REDIS_CFLAGS\r\nand REDIS_LDFLAGS, I want to append them to the OPTIMIZATION variable.\r\n\r\nLater in the Makefile, we have `OPT=$(OPTIMIZATION)` (meaning\r\nOPTIMIZATION is only a default for OPT, but OPT can be overridden by the\r\nuser), and later the flags are combined like this:\r\n\r\nFINAL_CFLAGS=$(STD) $(WARN) $(OPT) $(DEBUG) $(CFLAGS) $(REDIS_CFLAGS)\r\n    FINAL_LDFLAGS=$(LDFLAGS) $(OPT) $(REDIS_LDFLAGS) $(DEBUG)\r\n\r\nThis makes it possible for the the user to override all optimization\r\nflags with e.g. `make OPT=-O1` or just `make OPT=`.\r\n\r\nFor some reason `-O3` was also already added to REDIS_LDFLAGS by default\r\nin #12339, so I added OPT to FINAL_LDFLAGS to avoid more complex logic\r\n(such as introducing a separate LD_OPT variable)."
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/1d77a8e2c5e2322cc119af34a6685876af90effd",
+    "html_url": "https://github.com/redis/redis/commit/1d77a8e2c5e2322cc119af34a6685876af90effd",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/1d77a8e2c5e2322cc119af34a6685876af90effd/comments",
+    "author": {
+      "login": "zuiderkwast",
+      "id": 273886,
+      "node_id": "MDQ6VXNlcjI3Mzg4Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/273886?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/zuiderkwast",
+      "html_url": "https://github.com/zuiderkwast",
+      "followers_url": "https://api.github.com/users/zuiderkwast/followers",
+      "following_url": "https://api.github.com/users/zuiderkwast/following{/other_user}",
+      "gists_url": "https://api.github.com/users/zuiderkwast/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/zuiderkwast/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/zuiderkwast/subscriptions",
+      "organizations_url": "https://api.github.com/users/zuiderkwast/orgs",
+      "repos_url": "https://api.github.com/users/zuiderkwast/repos",
+      "events_url": "https://api.github.com/users/zuiderkwast/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/zuiderkwast/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3b3d16f7488063f0d2ee7d5cfaeba736169046de",
+        "url": "https://api.github.com/repos/redis/redis/commits/3b3d16f7488063f0d2ee7d5cfaeba736169046de",
+        "html_url": "https://github.com/redis/redis/commit/3b3d16f7488063f0d2ee7d5cfaeba736169046de"
+      }
+    ]
+  },
+  {
+    "sha": "3b3d16f7488063f0d2ee7d5cfaeba736169046de",
+    "node_id": "C_kwDOAAJhctoAKDNiM2QxNmY3NDg4MDYzZjBkMmVlN2Q1Y2ZhZWJhNzM2MTY5MDQ2ZGU",
+    "commit": {
+      "author": {
+        "name": "Binbin",
+        "email": "binloveplay1314@qq.com",
+        "date": "2024-03-13T06:30:20Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-13T06:30:20Z"
+      },
+      "message": "Add KVSTORE_FREE_EMPTY_DICTS to cluster mode keys / expires kvstore (#13072)\n\nCurrently (following #11695, and #12822), keys kvstore and expires\r\nkvstore both flag with ON_DEMAND, it means that a cluster node will\r\nonly allocate a dict when the slot is assigned to it and populated,\r\nbut on the other hand, when the slot is unassigned, the dict will\r\nremain allocated.\r\n\r\nWe considered releasing the dict when the slot is unassigned, but it\r\ncauses complications on replicas. On the other hand, from benchmarks\r\nwe conducted, it looks like the performance impact of releasing the\r\ndict when it becomes empty and re-allocate it when a key is added\r\nagain, isn't huge.\r\n\r\nThis PR add KVSTORE_FREE_EMPTY_DICTS to cluster mode keys / expires\r\nkvstore.\r\n\r\nThe impact is about about 2% performance drop, for this hopefully\r\nuncommon scenario.\r\n\r\n---------\r\n\r\nCo-authored-by: Oran Agra <oran@redislabs.com>",
+      "tree": {
+        "sha": "1961bdf34ff5e6e7d9836fab0d6ca5791f80bc81",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/1961bdf34ff5e6e7d9836fab0d6ca5791f80bc81"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/3b3d16f7488063f0d2ee7d5cfaeba736169046de",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl8Uf8CRC1aQ7uu5UhlAAAImwQADK/J0gPNPQc2XzqWw2lJd4w\nRU9FNf4XKG6JB8Z4LYdw345D6vKZI0Lm+hyXqj4gt2Fm1BcGTooY1xT0gg+Pyb09\nKB7yguz+L7jCUxnOIqHXRp6GxUGPze7Pe4+ngAbrvhxH8CMKP/ppfuYdfpoU9CUu\naKjG4sq0fL/WZaqO8NkAXXe92jpUTGoiu9TSF2xboiI41mS1sb3bj3WK/dRJvv6v\nj3QaTeE0+1sAmWzTh50XkK4Dzqeb9ATzs1xrmCY9ztegQq2s8Dq21YiFDvpe7Qd9\nf48HDrb8qG12GpOCU+foaGnqZKklw/OX7spUlpQIQruaZKIByn/EcldRtXdJedcK\nZ5F7iJO40Zp2BcxCZmFwLSUh5RepljEtMgdsr8NGfNU3OgvhLoNe4/aiWZw7Ss8M\ncEFi6pe7j6BW9e5cRW2iGfm7RlxQfKOXXdUR+/dD4yji4A7RymybffnvVNjcFWYy\nRmZQvS2Iq15r3uxkizPDmeUzcjxCI9BYX/Tp6iMPtN+rleD9lSkuHTrPci8sGjmn\nmTu6PkfN8XddbXkwDKUj/g5lB/Uryckp5uUFSJs1SYjh7Od8wnwSqKH4hi4pJ8Ll\nE1wa71X7GATgZjVNqBn0rebh8abLLfhvygbVdP/9NgPhsWvlY63NqT+J2Pl+RYPU\n2IUZRABnhZpeyDpnFTDX\n=ktDX\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 1961bdf34ff5e6e7d9836fab0d6ca5791f80bc81\nparent ad28d222edcef9d4496fd7a94656013f07dd08e5\nauthor Binbin <binloveplay1314@qq.com> 1710311420 +0800\ncommitter GitHub <noreply@github.com> 1710311420 +0200\n\nAdd KVSTORE_FREE_EMPTY_DICTS to cluster mode keys / expires kvstore (#13072)\n\nCurrently (following #11695, and #12822), keys kvstore and expires\r\nkvstore both flag with ON_DEMAND, it means that a cluster node will\r\nonly allocate a dict when the slot is assigned to it and populated,\r\nbut on the other hand, when the slot is unassigned, the dict will\r\nremain allocated.\r\n\r\nWe considered releasing the dict when the slot is unassigned, but it\r\ncauses complications on replicas. On the other hand, from benchmarks\r\nwe conducted, it looks like the performance impact of releasing the\r\ndict when it becomes empty and re-allocate it when a key is added\r\nagain, isn't huge.\r\n\r\nThis PR add KVSTORE_FREE_EMPTY_DICTS to cluster mode keys / expires\r\nkvstore.\r\n\r\nThe impact is about about 2% performance drop, for this hopefully\r\nuncommon scenario.\r\n\r\n---------\r\n\r\nCo-authored-by: Oran Agra <oran@redislabs.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/3b3d16f7488063f0d2ee7d5cfaeba736169046de",
+    "html_url": "https://github.com/redis/redis/commit/3b3d16f7488063f0d2ee7d5cfaeba736169046de",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/3b3d16f7488063f0d2ee7d5cfaeba736169046de/comments",
+    "author": {
+      "login": "enjoy-binbin",
+      "id": 22811481,
+      "node_id": "MDQ6VXNlcjIyODExNDgx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22811481?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/enjoy-binbin",
+      "html_url": "https://github.com/enjoy-binbin",
+      "followers_url": "https://api.github.com/users/enjoy-binbin/followers",
+      "following_url": "https://api.github.com/users/enjoy-binbin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/enjoy-binbin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/enjoy-binbin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/enjoy-binbin/subscriptions",
+      "organizations_url": "https://api.github.com/users/enjoy-binbin/orgs",
+      "repos_url": "https://api.github.com/users/enjoy-binbin/repos",
+      "events_url": "https://api.github.com/users/enjoy-binbin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/enjoy-binbin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ad28d222edcef9d4496fd7a94656013f07dd08e5",
+        "url": "https://api.github.com/repos/redis/redis/commits/ad28d222edcef9d4496fd7a94656013f07dd08e5",
+        "html_url": "https://github.com/redis/redis/commit/ad28d222edcef9d4496fd7a94656013f07dd08e5"
+      }
+    ]
+  },
+  {
+    "sha": "ad28d222edcef9d4496fd7a94656013f07dd08e5",
+    "node_id": "C_kwDOAAJhctoAKGFkMjhkMjIyZWRjZWY5ZDQ0OTZmZDdhOTQ2NTYwMTNmMDdkZDA4ZTU",
+    "commit": {
+      "author": {
+        "name": "Binbin",
+        "email": "binloveplay1314@qq.com",
+        "date": "2024-03-13T06:27:41Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-13T06:27:41Z"
+      },
+      "message": "Lua eval scripts first in first out LRU eviction (#13108)\n\nIn some cases, users will abuse lua eval. Each EVAL call generates\r\na new lua script, which is added to the lua interpreter and cached\r\nto redis-server, consuming a large amount of memory over time.\r\n\r\nSince EVAL is mostly the one that abuses the lua cache, and these\r\nwon't have pipeline issues (i.e. the script won't disappear\r\nunexpectedly,\r\nand cause errors like it would with SCRIPT LOAD and EVALSHA),\r\nwe implement a plain FIFO LRU eviction only for these (not for\r\nscripts loaded with SCRIPT LOAD).\r\n\r\n### Implementation notes:\r\nWhen not abused we'll probably have less than 100 scripts, and when\r\nabused we'll have many thousands. So we use a hard coded value of 500\r\nscripts. And considering that we don't have many scripts, then unlike\r\nkeys, we don't need to worry about the memory usage of keeping a true\r\nsorted LRU linked list. We compute the SHA of each script anyway,\r\nand put the script in a dict, we can store a listNode there, and use\r\nit for quick removal and re-insertion into an LRU list each time the\r\nscript is used.\r\n\r\n### New interfaces:\r\nAt the same time, a new `evicted_scripts` field is added to\r\nINFO, which represents the number of evicted eval scripts. Users\r\ncan check it to see if they are abusing EVAL.\r\n\r\n### benchmark:\r\n`./src/redis-benchmark -P 10 -n 1000000 -r 10000000000 eval \"return\r\n__rand_int__\" 0`\r\n\r\nThe simple abuse of eval benchmark test that will create 1 million EVAL\r\nscripts. The performance has been improved by 50%, and the max latency\r\nhas dropped from 500ms to 13ms (this may be caused by table expansion\r\ninside Lua when the number of scripts is large). And in the INFO memory,\r\nit used to consume 120MB (server cache) + 310MB (lua engine), but now\r\nit only consumes 70KB (server cache) + 210KB (lua_engine) because of\r\nthe scripts eviction.\r\n\r\nFor non-abusive case of about 100 EVAL scripts, there's no noticeable\r\nchange in performance or memory usage.\r\n\r\n### unlikely potentially breaking change:\r\nin theory, a user can maybe load a\r\nscript with EVAL and then use EVALSHA to call it (by calculating the\r\nSHA1 value on the client side), it could be that if we read the docs\r\ncarefully we'll realized it's a valid scenario, but we suppose it's\r\nextremely rare. So it may happen that EVALSHA acts on a script created\r\nby EVAL, and the script is evicted and EVALSHA returns a NOSCRIPT error.\r\nthat is if you have more than 500 scripts being used in the same\r\ntransaction / pipeline.\r\n\r\nThis solves the second point in #13102.",
+      "tree": {
+        "sha": "4ba1ccdfe07ba22db837aabc29a67c7313450366",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/4ba1ccdfe07ba22db837aabc29a67c7313450366"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/ad28d222edcef9d4496fd7a94656013f07dd08e5",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl8UddCRC1aQ7uu5UhlAAAD40QAI5oyzPQpIwwTf30EZmw5S3f\nfNVZ6JtzHQ++nltgsBbhNYxWeAkjdHUBpdcRtc/upwwDT176k+CB3gvTrfcsrNur\n/O2j8IEmiDrJGwC6SKvAwi9rzyEJeEdOTyZnLnyzTvNzA7kWcU6FQgkwGQUeM97D\neTaAJ7XWTE4yu6JMmTV94LZJ2JrNsqRj+HP2LvEc3aveB5q01SlY4b86tNbFZh5+\nxOqcr7BYLpnQgeAorQQGu3RjipOCIlkdmwL2NhBjqRccYGzYIkmGn8IAgpWYGIMQ\nzOQ85m0mSSGDul99VSH05KaD8K8TBqdfnx387wOAcQimttOrqV9STupM03mKwpqZ\nowtn11soMQCDUjyLBtcLfRooeXkjKE2+WSohQGTcs6b0waMedDu6rAWDz6xmp6a1\ngdUOh3nycJwC9Aqbg8WewR86PrYikWepe/0N6jGFr38ymb8OkqBff83Y0DCvKUhG\nwTgD8SQi+YhDx5VxMWyQmV2FQsMWZCgNS+NesgVdmW57k5a695/Y9Ytbfa8MugCC\nxOLLJ/f+1yMNJ/MrwUQiCzoQ2f3Q3Zfs+POfRHNGCHVv8SoNXh+UYAcsYHZLm9x0\nJfI6mdJdd5N47+CX+SXh+FOHu8EJbh5B4vP21/LHL4t/d2lTg9MyFMitzWKV5934\nhHVBeRfleR63TWho+0xV\n=FzxH\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 4ba1ccdfe07ba22db837aabc29a67c7313450366\nparent a8e745117f3648cc813d18f5a8cf1218ec83cb5d\nauthor Binbin <binloveplay1314@qq.com> 1710311261 +0800\ncommitter GitHub <noreply@github.com> 1710311261 +0200\n\nLua eval scripts first in first out LRU eviction (#13108)\n\nIn some cases, users will abuse lua eval. Each EVAL call generates\r\na new lua script, which is added to the lua interpreter and cached\r\nto redis-server, consuming a large amount of memory over time.\r\n\r\nSince EVAL is mostly the one that abuses the lua cache, and these\r\nwon't have pipeline issues (i.e. the script won't disappear\r\nunexpectedly,\r\nand cause errors like it would with SCRIPT LOAD and EVALSHA),\r\nwe implement a plain FIFO LRU eviction only for these (not for\r\nscripts loaded with SCRIPT LOAD).\r\n\r\n### Implementation notes:\r\nWhen not abused we'll probably have less than 100 scripts, and when\r\nabused we'll have many thousands. So we use a hard coded value of 500\r\nscripts. And considering that we don't have many scripts, then unlike\r\nkeys, we don't need to worry about the memory usage of keeping a true\r\nsorted LRU linked list. We compute the SHA of each script anyway,\r\nand put the script in a dict, we can store a listNode there, and use\r\nit for quick removal and re-insertion into an LRU list each time the\r\nscript is used.\r\n\r\n### New interfaces:\r\nAt the same time, a new `evicted_scripts` field is added to\r\nINFO, which represents the number of evicted eval scripts. Users\r\ncan check it to see if they are abusing EVAL.\r\n\r\n### benchmark:\r\n`./src/redis-benchmark -P 10 -n 1000000 -r 10000000000 eval \"return\r\n__rand_int__\" 0`\r\n\r\nThe simple abuse of eval benchmark test that will create 1 million EVAL\r\nscripts. The performance has been improved by 50%, and the max latency\r\nhas dropped from 500ms to 13ms (this may be caused by table expansion\r\ninside Lua when the number of scripts is large). And in the INFO memory,\r\nit used to consume 120MB (server cache) + 310MB (lua engine), but now\r\nit only consumes 70KB (server cache) + 210KB (lua_engine) because of\r\nthe scripts eviction.\r\n\r\nFor non-abusive case of about 100 EVAL scripts, there's no noticeable\r\nchange in performance or memory usage.\r\n\r\n### unlikely potentially breaking change:\r\nin theory, a user can maybe load a\r\nscript with EVAL and then use EVALSHA to call it (by calculating the\r\nSHA1 value on the client side), it could be that if we read the docs\r\ncarefully we'll realized it's a valid scenario, but we suppose it's\r\nextremely rare. So it may happen that EVALSHA acts on a script created\r\nby EVAL, and the script is evicted and EVALSHA returns a NOSCRIPT error.\r\nthat is if you have more than 500 scripts being used in the same\r\ntransaction / pipeline.\r\n\r\nThis solves the second point in #13102."
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/ad28d222edcef9d4496fd7a94656013f07dd08e5",
+    "html_url": "https://github.com/redis/redis/commit/ad28d222edcef9d4496fd7a94656013f07dd08e5",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/ad28d222edcef9d4496fd7a94656013f07dd08e5/comments",
+    "author": {
+      "login": "enjoy-binbin",
+      "id": 22811481,
+      "node_id": "MDQ6VXNlcjIyODExNDgx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22811481?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/enjoy-binbin",
+      "html_url": "https://github.com/enjoy-binbin",
+      "followers_url": "https://api.github.com/users/enjoy-binbin/followers",
+      "following_url": "https://api.github.com/users/enjoy-binbin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/enjoy-binbin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/enjoy-binbin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/enjoy-binbin/subscriptions",
+      "organizations_url": "https://api.github.com/users/enjoy-binbin/orgs",
+      "repos_url": "https://api.github.com/users/enjoy-binbin/repos",
+      "events_url": "https://api.github.com/users/enjoy-binbin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/enjoy-binbin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a8e745117f3648cc813d18f5a8cf1218ec83cb5d",
+        "url": "https://api.github.com/repos/redis/redis/commits/a8e745117f3648cc813d18f5a8cf1218ec83cb5d",
+        "html_url": "https://github.com/redis/redis/commit/a8e745117f3648cc813d18f5a8cf1218ec83cb5d"
+      }
+    ]
+  },
+  {
+    "sha": "a8e745117f3648cc813d18f5a8cf1218ec83cb5d",
+    "node_id": "C_kwDOAAJhctoAKGE4ZTc0NTExN2YzNjQ4Y2M4MTNkMThmNWE4Y2YxMjE4ZWM4M2NiNWQ",
+    "commit": {
+      "author": {
+        "name": "Ronen Kalish",
+        "email": "ronen.kalish@redis.com",
+        "date": "2024-03-13T06:23:32Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-13T06:23:32Z"
+      },
+      "message": "Xread last entry in stream (#7388) (#13117)\n\nAllow using `+` as a special ID for last item in stream on XREAD\r\ncommand.\r\n\r\nThis would allow to iterate on a stream with XREAD starting with the\r\nlast available message instead of the next one which `$` is used for.\r\nI.e. the caller can use `BLOCK` and `+` on the first call, and change to\r\n`$` on the next call.\r\n\r\nCloses #7388\r\n\r\n---------\r\n\r\nCo-authored-by: Felipe Machado <462154+felipou@users.noreply.github.com>",
+      "tree": {
+        "sha": "076922a43ef732c2c83ff6f77e15f5f4b112a033",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/076922a43ef732c2c83ff6f77e15f5f4b112a033"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/a8e745117f3648cc813d18f5a8cf1218ec83cb5d",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl8UZkCRC1aQ7uu5UhlAAAAQcQAIzmfHafpRqc1+ypuBS4A82B\n4Xa1amHlDKRButvTVdfGpyb3gZBEM5VciViFuwMmw+CjN58/fY5UWCtFMgKsSAsu\nruBotOScJtdPUVy4FwWuosk0M/kLPNghvO86gIaz4qIer+NohoNrb3UfOrtwsoF7\n5aXgXGZQsjp8/F5v2ExcZ7GQqhCizyOJZv6CpFfwl23oWBy2V6Ws5isB7q3ssNR1\nOX3XweIzFhxWu976VIoPER4u9ze+rB/zKMj+X96Wu+zTuGkz0Q7q98IF4I/CxDT2\n6T/r4bI/l6aPwbqzTz7yKAnLv2q2Voi2tKTW+1chNZppOKE7Bw2FFj2GrXZ+aajV\nJc/slUitZm2LEeZwYKtNg0ePpxRnkzZ1oZdzjYEgPC/nszC2d3SBdYBJX00E11Kf\nVsA90ARpevib/+CT/6ap3udgceTI6Hlv9k9uwc1YV7fLDjkQkAB1Cf/x0kWNW/cf\nvzBKqqGsiWKncuoAwskNlmKQxK/B+S+RoWnXUdKy8BOtEzHRbY5gVYJEL1uNaWZt\nhnrQ601fEtthTg/pmsZMjbyumDcYbP0DijR8zu9ugNkJaP7dgIHW4ZJ6STieNO68\nf428eqD6PH9RpuErUDBlp21hkhYo1dHIsOpDlqOq45fkWXzcpbACK/V9uaN4TjK8\nVdv+lH5CL+U1YhK/oN/7\n=66XY\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 076922a43ef732c2c83ff6f77e15f5f4b112a033\nparent 9efc6ad6a63198e6f6af3c5e9fabc3a7ffc6fe4b\nauthor Ronen Kalish <ronen.kalish@redis.com> 1710311012 +0200\ncommitter GitHub <noreply@github.com> 1710311012 +0200\n\nXread last entry in stream (#7388) (#13117)\n\nAllow using `+` as a special ID for last item in stream on XREAD\r\ncommand.\r\n\r\nThis would allow to iterate on a stream with XREAD starting with the\r\nlast available message instead of the next one which `$` is used for.\r\nI.e. the caller can use `BLOCK` and `+` on the first call, and change to\r\n`$` on the next call.\r\n\r\nCloses #7388\r\n\r\n---------\r\n\r\nCo-authored-by: Felipe Machado <462154+felipou@users.noreply.github.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/a8e745117f3648cc813d18f5a8cf1218ec83cb5d",
+    "html_url": "https://github.com/redis/redis/commit/a8e745117f3648cc813d18f5a8cf1218ec83cb5d",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/a8e745117f3648cc813d18f5a8cf1218ec83cb5d/comments",
+    "author": {
+      "login": "ronen-kalish",
+      "id": 155541731,
+      "node_id": "U_kgDOCUVg4w",
+      "avatar_url": "https://avatars.githubusercontent.com/u/155541731?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/ronen-kalish",
+      "html_url": "https://github.com/ronen-kalish",
+      "followers_url": "https://api.github.com/users/ronen-kalish/followers",
+      "following_url": "https://api.github.com/users/ronen-kalish/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ronen-kalish/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/ronen-kalish/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ronen-kalish/subscriptions",
+      "organizations_url": "https://api.github.com/users/ronen-kalish/orgs",
+      "repos_url": "https://api.github.com/users/ronen-kalish/repos",
+      "events_url": "https://api.github.com/users/ronen-kalish/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/ronen-kalish/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9efc6ad6a63198e6f6af3c5e9fabc3a7ffc6fe4b",
+        "url": "https://api.github.com/repos/redis/redis/commits/9efc6ad6a63198e6f6af3c5e9fabc3a7ffc6fe4b",
+        "html_url": "https://github.com/redis/redis/commit/9efc6ad6a63198e6f6af3c5e9fabc3a7ffc6fe4b"
+      }
+    ]
+  },
+  {
+    "sha": "9efc6ad6a63198e6f6af3c5e9fabc3a7ffc6fe4b",
+    "node_id": "C_kwDOAAJhctoAKDllZmM2YWQ2YTYzMTk4ZTZmNmFmM2M1ZTlmYWJjM2E3ZmZjNmZlNGI",
+    "commit": {
+      "author": {
+        "name": "Viktor Söderqvist",
+        "email": "viktor.soderqvist@est.tech",
+        "date": "2024-03-12T16:26:12Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-12T16:26:12Z"
+      },
+      "message": "Add API RedisModule_ClusterKeySlot and RedisModule_ClusterCanonicalKeyNameInSlot (#13069)\n\nSometimes it's useful to compute a key's cluster slot in a module.\r\n\r\nThis API function is just like the command CLUSTER KEYSLOT (but faster).\r\n\r\nA \"reverse\" API is also added:\r\n`RedisModule_ClusterCanonicalKeyNameInSlot`. Given a slot, it returns a\r\nshort string that we can call a canonical key for the slot.",
+      "tree": {
+        "sha": "fe982aae2445f34af332b76f8616d06cf8facade",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/fe982aae2445f34af332b76f8616d06cf8facade"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/9efc6ad6a63198e6f6af3c5e9fabc3a7ffc6fe4b",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl8IIkCRC1aQ7uu5UhlAAANn4QAE+Aq05WPtUdDfL/6HQpco9G\nP8Q7z0x7ZYuMhaYshduMfN+Cqng1KLOzaL4mTDgYPe5qhj5vTZ9eSy8w21hsv++v\nBK6umBViFnxOm3+oruOAkFAI+tXPXgdF6mFE7ukjkB7PPpJCQLYUdl8LMxirTuM+\n02+2zEVHm9XZIjx0mT25WEn222fdGZN3xwOuwwRRRIT10+dVNbqk8Fms3RPtJBSF\n5AV/XdsR1ZqYIdTbNpHVAOE60Xi1rN1MVEpLkp0j2RBBBBAX/l9V3FyaPy0RnIh2\nqB0FhNOkE7hOarQeyyKysh1WH2ZxBppjwjNtMKY21POXQEC0xbfkcZuOCCv+zhKo\no5beWacnpe5aLRx2eFqZNhOamVEIpptGtEye3zlipzPdfrf8d+9o/GRg+vZYFRS/\nI/0rz8y8n7cAxWm78vKj5dy35+q5Xl80X6kkXFFpqL+l4baegPFPkHJIhVOUvz14\nnXYh0HLTdtEjSc3PH82AwfPgV0cA6WuhHHDWycT5LTvgPtnVaMh7TTLElflgNm7d\nq4/nTmsRH/YIkUcRfRt+CXLKPlp3mjJuKIcOAQ85NUBhOyW8BIEJlKn05FeHx/zl\nb8u3p6UASsNK1opKgWXq8VJJ6OQlOcF9yLsavGx6bcNubBq4dg34YAz7O7qszTPy\n8Zz3xYwa2nuejPd6DUcM\n=7v6Y\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree fe982aae2445f34af332b76f8616d06cf8facade\nparent 9c065c417d5cd7a1b35310d8c7760eeb119be1c0\nauthor Viktor Söderqvist <viktor.soderqvist@est.tech> 1710260772 +0100\ncommitter GitHub <noreply@github.com> 1710260772 -0700\n\nAdd API RedisModule_ClusterKeySlot and RedisModule_ClusterCanonicalKeyNameInSlot (#13069)\n\nSometimes it's useful to compute a key's cluster slot in a module.\r\n\r\nThis API function is just like the command CLUSTER KEYSLOT (but faster).\r\n\r\nA \"reverse\" API is also added:\r\n`RedisModule_ClusterCanonicalKeyNameInSlot`. Given a slot, it returns a\r\nshort string that we can call a canonical key for the slot."
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/9efc6ad6a63198e6f6af3c5e9fabc3a7ffc6fe4b",
+    "html_url": "https://github.com/redis/redis/commit/9efc6ad6a63198e6f6af3c5e9fabc3a7ffc6fe4b",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/9efc6ad6a63198e6f6af3c5e9fabc3a7ffc6fe4b/comments",
+    "author": {
+      "login": "zuiderkwast",
+      "id": 273886,
+      "node_id": "MDQ6VXNlcjI3Mzg4Ng==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/273886?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/zuiderkwast",
+      "html_url": "https://github.com/zuiderkwast",
+      "followers_url": "https://api.github.com/users/zuiderkwast/followers",
+      "following_url": "https://api.github.com/users/zuiderkwast/following{/other_user}",
+      "gists_url": "https://api.github.com/users/zuiderkwast/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/zuiderkwast/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/zuiderkwast/subscriptions",
+      "organizations_url": "https://api.github.com/users/zuiderkwast/orgs",
+      "repos_url": "https://api.github.com/users/zuiderkwast/repos",
+      "events_url": "https://api.github.com/users/zuiderkwast/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/zuiderkwast/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9c065c417d5cd7a1b35310d8c7760eeb119be1c0",
+        "url": "https://api.github.com/repos/redis/redis/commits/9c065c417d5cd7a1b35310d8c7760eeb119be1c0",
+        "html_url": "https://github.com/redis/redis/commit/9c065c417d5cd7a1b35310d8c7760eeb119be1c0"
+      }
+    ]
+  },
+  {
+    "sha": "9c065c417d5cd7a1b35310d8c7760eeb119be1c0",
+    "node_id": "C_kwDOAAJhctoAKDljMDY1YzQxN2Q1Y2Q3YTFiMzUzMTBkOGM3NzYwZWViMTE5YmUxYzA",
+    "commit": {
+      "author": {
+        "name": "Andy Pan",
+        "email": "panjf2000@gmail.com",
+        "date": "2024-03-12T14:35:52Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-12T14:35:52Z"
+      },
+      "message": "Enable accept4() on *BSD (#13104)\n\nRedis enabled `accept4` on Linux after #9177, reducing extra system\r\ncalls for sockets.\r\n\r\n`accept4` system call is also widely supported on *BSD and Solaris in\r\naddition to Linux. This PR enables `accept4` on all platforms that\r\nsupport it.\r\n\r\n### References\r\n- [accept4 on\r\nFreeBSD](https://man.freebsd.org/cgi/man.cgi?query=accept4&sektion=2&n=1)\r\n- [accept4 on\r\nDragonFly](https://man.dragonflybsd.org/?command=accept&section=2)\r\n- [accept4 on NetBSD](https://man.netbsd.org/accept.2)\r\n- [accept4 on OpenBSD](https://man.openbsd.org/accept4.2)\r\n- [accept4 on\r\nSolaris](https://docs.oracle.com/cd/E88353_01/html/E37843/accept4-3c.html)",
+      "tree": {
+        "sha": "01676273d9dcd83ad4add743560eb18bfa339363",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/01676273d9dcd83ad4add743560eb18bfa339363"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/9c065c417d5cd7a1b35310d8c7760eeb119be1c0",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl8GhICRC1aQ7uu5UhlAAA/iQQAFtzB4p4/cmxjmCybFOk8qeF\nhy+42nXZXKhvlfPXaQ701YYRsXoERY9snjEr28cg94fAwjliwY6gqN2199/1CaLg\nvPaikTEXo/4HcMnbE18pM0xjJd/wCC7VGM+99N5RH044FaOm6MS+FMFHFPM0hcKu\ngxfp+nJZk147VT+pAzoJhOIKAt2j+pD3LnFSRyaUjNVIXAUU7n/qa9tXcneZ8MDo\njTYvXYYd3MN5VP5/skiMUcbx9sW4JeM4UYgg1IKs1PNR2UPiYIzyrKWDDkLsT7Ij\nD7I4+v9lgZQRj3jKSckmQjQDkrynQgg9I0oM3hXnkZYc99Vcec58JcGlpDkvjPzS\nCdLJdZo2QdfUTD8ZMmH4UgNqi/6S7TWSj1oB715CCcfllwljsFZEycmas2wgyOpG\n2u9AdezCDg1ijQq5nx5IGozn0VYz7kyHhpYKXIp73P5rg/0m51tPtulHCDc/8gyZ\nzF4kcTevrwkoloR3s+pJnvy6FKcV9Vm7v0y34EKFLfxJOaX8A+hVuYMURoAZx74D\nDIc+Hss9L9a0GZa8kPj3Spgeu905eNID7TASK1JzfXrxYqF99yOWd0l7W2Tm8McW\nZ1nHhrKjWJrpH9GtSCQzDBGwyVu3V0I3y/nDEqJQrPsxd6FrHQmkE+7tGP/KOpc2\nPQk4xLnAbViS14bVTVaU\n=UtNB\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 01676273d9dcd83ad4add743560eb18bfa339363\nparent da727ad445a640950baa097124070468a0316cc9\nauthor Andy Pan <panjf2000@gmail.com> 1710254152 +0800\ncommitter GitHub <noreply@github.com> 1710254152 +0200\n\nEnable accept4() on *BSD (#13104)\n\nRedis enabled `accept4` on Linux after #9177, reducing extra system\r\ncalls for sockets.\r\n\r\n`accept4` system call is also widely supported on *BSD and Solaris in\r\naddition to Linux. This PR enables `accept4` on all platforms that\r\nsupport it.\r\n\r\n### References\r\n- [accept4 on\r\nFreeBSD](https://man.freebsd.org/cgi/man.cgi?query=accept4&sektion=2&n=1)\r\n- [accept4 on\r\nDragonFly](https://man.dragonflybsd.org/?command=accept&section=2)\r\n- [accept4 on NetBSD](https://man.netbsd.org/accept.2)\r\n- [accept4 on OpenBSD](https://man.openbsd.org/accept4.2)\r\n- [accept4 on\r\nSolaris](https://docs.oracle.com/cd/E88353_01/html/E37843/accept4-3c.html)"
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/9c065c417d5cd7a1b35310d8c7760eeb119be1c0",
+    "html_url": "https://github.com/redis/redis/commit/9c065c417d5cd7a1b35310d8c7760eeb119be1c0",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/9c065c417d5cd7a1b35310d8c7760eeb119be1c0/comments",
+    "author": {
+      "login": "panjf2000",
+      "id": 7496278,
+      "node_id": "MDQ6VXNlcjc0OTYyNzg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7496278?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/panjf2000",
+      "html_url": "https://github.com/panjf2000",
+      "followers_url": "https://api.github.com/users/panjf2000/followers",
+      "following_url": "https://api.github.com/users/panjf2000/following{/other_user}",
+      "gists_url": "https://api.github.com/users/panjf2000/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/panjf2000/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/panjf2000/subscriptions",
+      "organizations_url": "https://api.github.com/users/panjf2000/orgs",
+      "repos_url": "https://api.github.com/users/panjf2000/repos",
+      "events_url": "https://api.github.com/users/panjf2000/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/panjf2000/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "da727ad445a640950baa097124070468a0316cc9",
+        "url": "https://api.github.com/repos/redis/redis/commits/da727ad445a640950baa097124070468a0316cc9",
+        "html_url": "https://github.com/redis/redis/commit/da727ad445a640950baa097124070468a0316cc9"
+      }
+    ]
+  },
+  {
+    "sha": "da727ad445a640950baa097124070468a0316cc9",
+    "node_id": "C_kwDOAAJhctoAKGRhNzI3YWQ0NDVhNjQwOTUwYmFhMDk3MTI0MDcwNDY4YTAzMTZjYzk",
+    "commit": {
+      "author": {
+        "name": "Binbin",
+        "email": "binloveplay1314@qq.com",
+        "date": "2024-03-12T06:47:43Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-12T06:47:43Z"
+      },
+      "message": "Fix redis-check-aof incorrectly considering data in manifest format as MP-AOF (#12958)\n\nThe check in fileIsManifest misjudged the manifest file. For example,\r\nif resp aof contains \"file\", it will be considered a manifest file and\r\nthe check will fail:\r\n```\r\n*3\r\n$3\r\nset\r\n$4\r\nfile\r\n$4\r\nfile\r\n```\r\n\r\nIn #12951, if the preamble aof also contains it, it will also fail.\r\nFixes #12951.\r\n\r\nthe bug was happening if the the word \"file\" is mentioned\r\nin the first 1024 lines of the AOF. and now as soon as it finds\r\na non-comment line it'll break (if it contains \"file\" or doesn't)",
+      "tree": {
+        "sha": "59be56d7bddd921e26d4e5bcd3d7a24e450b0099",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/59be56d7bddd921e26d4e5bcd3d7a24e450b0099"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/da727ad445a640950baa097124070468a0316cc9",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl7/qPCRC1aQ7uu5UhlAAAIWcQAFpfnvcsrNLKdyMmg/oF4i6r\nDW6iMXF9PE+ILwo9sqVIqhwHKfSmjKzF7/S53F1GdYX2zdIOZ8EYskXox+NhMuah\nj31Up+Ceb92rp8SgZ3axFVwmhZHFrzzcMsbpEKMQLhJdE2EzvvkkXuKHWoGenic1\nwpIpH8LNnCh20b1H09YS1MrHQtpTXmsvXrimmKyMo2/z/ojRytl11PeuJ6uXnnHV\nMAGy2XmaPqS5zF1IwiBc8jeZyndg9HY6mgO3FFc7yHA35avxZKGoSSiLNNm8VCAw\nKGJBM1VqSbiMXnUMa1YkqSqm4jM0kqkxQwJOQLIgbrX4ZmLXhx0IXwFZKIVBvixc\nH7PnJq8N/GvgCicTCAYu0CCN8ciygLkj3riCULfTB9b7LmpGOWAZhNEbSuXn7NOk\np1zA/Lanh8B/5Dly+so0TXuhK5C14jEZkoVBmIDDO8Yts4gZyo766SPrkMJ2gVvm\nsGOq9QsvcEjB7slkUPsu+qwgmdfz3lciHkPrdJMPVqCikbi6+GIbwaIR/KiWbTqy\nU5zrPjd+iS0GbOupKPrunQNHYCAXc7WzPaYR999utexoYT03FUfGr8qF78qGNHGp\nqzQHRc9J7H3ZSYtzTrfEzku2jTqMm9zp/NkSVIWyYf7lILaxDhQPyjGYudsl2FtG\nJM2KbnwfSEoHcxwDIZgU\n=NnNW\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 59be56d7bddd921e26d4e5bcd3d7a24e450b0099\nparent 3c8d15f8c3e3aca887555e3509e9c6fe4205ae1e\nauthor Binbin <binloveplay1314@qq.com> 1710226063 +0800\ncommitter GitHub <noreply@github.com> 1710226063 +0200\n\nFix redis-check-aof incorrectly considering data in manifest format as MP-AOF (#12958)\n\nThe check in fileIsManifest misjudged the manifest file. For example,\r\nif resp aof contains \"file\", it will be considered a manifest file and\r\nthe check will fail:\r\n```\r\n*3\r\n$3\r\nset\r\n$4\r\nfile\r\n$4\r\nfile\r\n```\r\n\r\nIn #12951, if the preamble aof also contains it, it will also fail.\r\nFixes #12951.\r\n\r\nthe bug was happening if the the word \"file\" is mentioned\r\nin the first 1024 lines of the AOF. and now as soon as it finds\r\na non-comment line it'll break (if it contains \"file\" or doesn't)"
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/da727ad445a640950baa097124070468a0316cc9",
+    "html_url": "https://github.com/redis/redis/commit/da727ad445a640950baa097124070468a0316cc9",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/da727ad445a640950baa097124070468a0316cc9/comments",
+    "author": {
+      "login": "enjoy-binbin",
+      "id": 22811481,
+      "node_id": "MDQ6VXNlcjIyODExNDgx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22811481?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/enjoy-binbin",
+      "html_url": "https://github.com/enjoy-binbin",
+      "followers_url": "https://api.github.com/users/enjoy-binbin/followers",
+      "following_url": "https://api.github.com/users/enjoy-binbin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/enjoy-binbin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/enjoy-binbin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/enjoy-binbin/subscriptions",
+      "organizations_url": "https://api.github.com/users/enjoy-binbin/orgs",
+      "repos_url": "https://api.github.com/users/enjoy-binbin/repos",
+      "events_url": "https://api.github.com/users/enjoy-binbin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/enjoy-binbin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3c8d15f8c3e3aca887555e3509e9c6fe4205ae1e",
+        "url": "https://api.github.com/repos/redis/redis/commits/3c8d15f8c3e3aca887555e3509e9c6fe4205ae1e",
+        "html_url": "https://github.com/redis/redis/commit/3c8d15f8c3e3aca887555e3509e9c6fe4205ae1e"
+      }
+    ]
+  },
+  {
+    "sha": "3c8d15f8c3e3aca887555e3509e9c6fe4205ae1e",
+    "node_id": "C_kwDOAAJhctoAKDNjOGQxNWY4YzNlM2FjYTg4NzU1NWUzNTA5ZTljNmZlNDIwNWFlMWU",
+    "commit": {
+      "author": {
+        "name": "Harkrishn Patro",
+        "email": "harkrisp@amazon.com",
+        "date": "2024-03-11T18:19:30Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-11T18:19:30Z"
+      },
+      "message": "Pick random slot for a node to distribute operation across slots in redis-benchmark (#12986)\n\nDistribute operations via `redis-benchmark` on different slots owned by\r\nnode.\r\n\r\n`current_slot_index` is never updated hence the value is always `0` and\r\nthe tag used is always the first slot owned by the node. Hence any\r\nread/write operation via `redis-benchmark` in cluster mode always\r\nhappens on a particular slot.\r\n\r\nThis is inconvenient to load data uniformly via `redis-benchmark`.",
+      "tree": {
+        "sha": "5d954cddc7555bc67508ddb577559a9785761eee",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/5d954cddc7555bc67508ddb577559a9785761eee"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/3c8d15f8c3e3aca887555e3509e9c6fe4205ae1e",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl70syCRC1aQ7uu5UhlAAAjPYQAHM5kSnR4XG5DKlOYNS2sORf\novWcQDBadnfUZCQvb4qy2pcb9U2vhG7aUzshV9Jw5ES4P/A2UyV6M9rXFbUX/6u7\ntnYsoa7zAAXvj/FtrPSTRlpwy0/i+GGJa49WHt8ye8UJ6TK13HO/CyjjbDlhLt62\nf5Vbtj7gPdiDUmERLG7DEP7qkEL0WpphejSxScyIEoqVkV9XkmnATLTmYTmQqW15\nqRv/z5h7KoyTL0N0vN5cCkSYfIvZ+exfvPXW0uxPHUV7q+XPt85jL+7VkN5cMy7L\n8YfeYpjcYzirYqNInZwks7HL2LYWfZ6cNsVotzxZ2mwlhv3O40KfYVu0NAbWp76y\npV1xYE5um/dUwvKVB4i5HSXeUK6/hqGDGy025fu509aDTw3dE9f07N1WaQ/yPi3p\nKIalIZymNpkS3Cttn7HTid6fYEFDvgDMq+G3eNBC8IKpz7ylUyE9xgLV7N4x1y5A\ndVabUh2F6hHnz/hwGxu0eo16T8h/cQXdP2gN8KLvqnRZJiEi810FMfJEeX7FWSPN\ncoKftFrHHdSh01IS37nkhwkz9Law5lmx/mGUr2tHx14qgesblxRjvXk726ZTci2l\nkk601Fojy/G7VBXpNWUpy8MlpsyfnPats+AxNaz6J3/AwntTnQS4lTS1Sxc3YNuJ\nCMUBmXz3UiB+s8FTbk3d\n=2+te\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 5d954cddc7555bc67508ddb577559a9785761eee\nparent 5fdaa53d20c82c99042e79b737fb9bc157a73d60\nauthor Harkrishn Patro <harkrisp@amazon.com> 1710181170 -0700\ncommitter GitHub <noreply@github.com> 1710181170 -0700\n\nPick random slot for a node to distribute operation across slots in redis-benchmark (#12986)\n\nDistribute operations via `redis-benchmark` on different slots owned by\r\nnode.\r\n\r\n`current_slot_index` is never updated hence the value is always `0` and\r\nthe tag used is always the first slot owned by the node. Hence any\r\nread/write operation via `redis-benchmark` in cluster mode always\r\nhappens on a particular slot.\r\n\r\nThis is inconvenient to load data uniformly via `redis-benchmark`."
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/3c8d15f8c3e3aca887555e3509e9c6fe4205ae1e",
+    "html_url": "https://github.com/redis/redis/commit/3c8d15f8c3e3aca887555e3509e9c6fe4205ae1e",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/3c8d15f8c3e3aca887555e3509e9c6fe4205ae1e/comments",
+    "author": {
+      "login": "hpatro",
+      "id": 30795839,
+      "node_id": "MDQ6VXNlcjMwNzk1ODM5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/30795839?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/hpatro",
+      "html_url": "https://github.com/hpatro",
+      "followers_url": "https://api.github.com/users/hpatro/followers",
+      "following_url": "https://api.github.com/users/hpatro/following{/other_user}",
+      "gists_url": "https://api.github.com/users/hpatro/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/hpatro/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/hpatro/subscriptions",
+      "organizations_url": "https://api.github.com/users/hpatro/orgs",
+      "repos_url": "https://api.github.com/users/hpatro/repos",
+      "events_url": "https://api.github.com/users/hpatro/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/hpatro/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5fdaa53d20c82c99042e79b737fb9bc157a73d60",
+        "url": "https://api.github.com/repos/redis/redis/commits/5fdaa53d20c82c99042e79b737fb9bc157a73d60",
+        "html_url": "https://github.com/redis/redis/commit/5fdaa53d20c82c99042e79b737fb9bc157a73d60"
+      }
+    ]
+  },
+  {
+    "sha": "5fdaa53d20c82c99042e79b737fb9bc157a73d60",
+    "node_id": "C_kwDOAAJhctoAKDVmZGFhNTNkMjBjODJjOTkwNDJlNzliNzM3ZmI5YmMxNTdhNzNkNjA",
+    "commit": {
+      "author": {
+        "name": "Matthew Douglass",
+        "email": "5410142+mdouglass@users.noreply.github.com",
+        "date": "2024-03-10T06:46:49Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-10T06:46:49Z"
+      },
+      "message": "Fix conversion of numbers in lua args to redis args (#13115)\n\nSince lua_Number is not explicitly an integer or a double, we need to\r\nmake an effort\r\nto convert it as an integer when that's possible, since the string could\r\nlater be used\r\nin a context that doesn't support scientific notation (e.g. 1e9 instead\r\nof 100000000).\r\n\r\nSince fpconv_dtoa converts numbers with the equivalent of `%f` or `%e`,\r\nwhich ever is shorter,\r\nthis would break if we try to pass a long integer number to a command\r\nthat takes integer.\r\nwe'll get an implicit conversion to string in Lua, and then the parsing\r\nin getLongLongFromObjectOrReply will fail.\r\n\r\n```\r\n> eval \"redis.call('hincrby', 'key', 'field', '1000000000')\" 0\r\n(nil)\r\n> eval \"redis.call('hincrby', 'key', 'field', tonumber('1000000000'))\" 0\r\n(error) ERR value is not an integer or out of range script: ac99c32e4daf7e300d593085b611de261954a946, on @user_script:1.\r\n```\r\n\r\nSwitch to using ll2string if the number can be safely represented as a\r\nlong long.\r\n\r\nThe problem was introduced in #10587 (Redis 7.2).\r\ncloses #13113.\r\n\r\n---------\r\n\r\nCo-authored-by: Binbin <binloveplay1314@qq.com>\r\nCo-authored-by: debing.sun <debing.sun@redis.com>\r\nCo-authored-by: Oran Agra <oran@redislabs.com>",
+      "tree": {
+        "sha": "d57f09a6f7a6fc93001b4ea274e221bf7732dfa3",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/d57f09a6f7a6fc93001b4ea274e221bf7732dfa3"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/5fdaa53d20c82c99042e79b737fb9bc157a73d60",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl7VdZCRC1aQ7uu5UhlAAAXlAQAC7fJnlJZ9ySQcTSJim/uMuk\ntuGBkYjGtlfOjWtCQ2VsYu5DTNyFbxpabr4LBeQ5as6j6iVhER+8LYTQT5TVnoGw\nLN6A3O03yqWoZBsZbGcTlJVTGfawxwuZoCwiJHmhYdblhb3XHUHrIVENpU6pQwa/\nTKXO2K1axpJ4Q7wFH9ZJNJWxemGS+VE2OBtr2iPV5UirGZE2IV+wYJPmXGFhjsHv\n9mAWj0/L7yuhijlJHV1AIanWNISc2BfkzoZYYLVdNZto3vZzJcQqQy5HhnfX/iXM\neUI6F9+aI9220x81QCqXBGAuxWRgeQwoyssPCoJsYFncdlaS0TAkDtlSo6DUREAB\n9cFj5lt28x/XokGuuH49isQVLC42rE7fDstL6t+TB8pgaUIBrc0IJb777XXt0tV5\n+rvVCamhtxtJRyCL1GvVLMqz8zhcmmy5JvhbGejRiMpbUH0FhxMsdx+a8J7UvIhd\n0+fIQ/cA7QniluTBmqzL0y4SkjpPIz+hiDZ7QvXFilsXtr+CT/KuAcN7Mmybw761\npK/f7XDxjRO/GjMv6eNgq6Xf97dbJz6oyOaUPt2IhJKx3hTXne2TLugmptSgBIU7\nHPVAwj64QoDfIwMSKhHr3j3dR7AXxtLqBfQaAN7puBmbpUnR+X5VmzazNyYtwDDh\nJEteHFrERQXNAJ78oz+5\n=UdFP\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree d57f09a6f7a6fc93001b4ea274e221bf7732dfa3\nparent 4979cf02ff83e90ced80db5111452a4c3e082c3a\nauthor Matthew Douglass <5410142+mdouglass@users.noreply.github.com> 1710053209 -0800\ncommitter GitHub <noreply@github.com> 1710053209 +0200\n\nFix conversion of numbers in lua args to redis args (#13115)\n\nSince lua_Number is not explicitly an integer or a double, we need to\r\nmake an effort\r\nto convert it as an integer when that's possible, since the string could\r\nlater be used\r\nin a context that doesn't support scientific notation (e.g. 1e9 instead\r\nof 100000000).\r\n\r\nSince fpconv_dtoa converts numbers with the equivalent of `%f` or `%e`,\r\nwhich ever is shorter,\r\nthis would break if we try to pass a long integer number to a command\r\nthat takes integer.\r\nwe'll get an implicit conversion to string in Lua, and then the parsing\r\nin getLongLongFromObjectOrReply will fail.\r\n\r\n```\r\n> eval \"redis.call('hincrby', 'key', 'field', '1000000000')\" 0\r\n(nil)\r\n> eval \"redis.call('hincrby', 'key', 'field', tonumber('1000000000'))\" 0\r\n(error) ERR value is not an integer or out of range script: ac99c32e4daf7e300d593085b611de261954a946, on @user_script:1.\r\n```\r\n\r\nSwitch to using ll2string if the number can be safely represented as a\r\nlong long.\r\n\r\nThe problem was introduced in #10587 (Redis 7.2).\r\ncloses #13113.\r\n\r\n---------\r\n\r\nCo-authored-by: Binbin <binloveplay1314@qq.com>\r\nCo-authored-by: debing.sun <debing.sun@redis.com>\r\nCo-authored-by: Oran Agra <oran@redislabs.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/5fdaa53d20c82c99042e79b737fb9bc157a73d60",
+    "html_url": "https://github.com/redis/redis/commit/5fdaa53d20c82c99042e79b737fb9bc157a73d60",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/5fdaa53d20c82c99042e79b737fb9bc157a73d60/comments",
+    "author": {
+      "login": "mdouglass",
+      "id": 5410142,
+      "node_id": "MDQ6VXNlcjU0MTAxNDI=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5410142?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mdouglass",
+      "html_url": "https://github.com/mdouglass",
+      "followers_url": "https://api.github.com/users/mdouglass/followers",
+      "following_url": "https://api.github.com/users/mdouglass/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mdouglass/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mdouglass/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mdouglass/subscriptions",
+      "organizations_url": "https://api.github.com/users/mdouglass/orgs",
+      "repos_url": "https://api.github.com/users/mdouglass/repos",
+      "events_url": "https://api.github.com/users/mdouglass/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mdouglass/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4979cf02ff83e90ced80db5111452a4c3e082c3a",
+        "url": "https://api.github.com/repos/redis/redis/commits/4979cf02ff83e90ced80db5111452a4c3e082c3a",
+        "html_url": "https://github.com/redis/redis/commit/4979cf02ff83e90ced80db5111452a4c3e082c3a"
+      }
+    ]
+  },
+  {
+    "sha": "4979cf02ff83e90ced80db5111452a4c3e082c3a",
+    "node_id": "C_kwDOAAJhctoAKDQ5NzljZjAyZmY4M2U5MGNlZDgwZGI1MTExNDUyYTRjM2UwODJjM2E",
+    "commit": {
+      "author": {
+        "name": "Madelyn Olson",
+        "email": "34459052+madolson@users.noreply.github.com",
+        "date": "2024-03-08T23:50:36Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-08T23:50:36Z"
+      },
+      "message": "Change crc16 slot table to be fixed size character array instead of pointer to strings (#13112)\n\nUpdate the crc16 hash lookup table to use fixed size character arrays instead of pointers \r\nto static string addresses. Since the actual values are so short, we can just store them\r\nin a uniform array instead. This saves about 128kb of memory and should improve the \r\nperformance as well since we should have much better memory locality.",
+      "tree": {
+        "sha": "6da56f8194f6eff59d6c916447f18773dec10fff",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/6da56f8194f6eff59d6c916447f18773dec10fff"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/4979cf02ff83e90ced80db5111452a4c3e082c3a",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl66RMCRC1aQ7uu5UhlAAADSwQAKeIK7UbqjwgNLEc6L/Ly17p\nmSLrIRrGByycAZP3dfLblC/J+B2uQWvS0gdNMVlCo9V0fwJLorBT6wwwt3r8I0Br\nBqeF+V5sg0BQNDTw0QQWXAZVl9ax4Zyj+EGFEsAdN/nZLYkg6Lw4s2UUTfqxJM6o\nQPBC0nXbN5OfTkJkyadv/h69qaIER5kqHuu0S1Qc6FqiOHAliaTq1smHeuVGaZOR\nUKGINOofMoBd/QJcWmczLmafWGy8GtcUUCaNAoAHUXfhgf9tkE3PExspWF0mquOp\nkFnvsI4QKu6NG5qXmqfOlZy040uQ1EuCZ5w19eeuiJER1Pw5vMkN5oeP8tKJTwJW\naw1y1Z9gTYPueZ1ZNHNFa957JtU3z37SF8IVxG5EHC5grzOXLUWvuwSvnkLNIXMa\nqjeRmfvcEvJALimHo/QKV0dTk/cC4/cBY6SXbTl4yaliKsrgi2gE35fVBqREUN2N\nKadpNKEHf/dbijAav03EVgb+gBKXZhDNOF9B1y54r06i2AnAmNIwlhtlXHF0K8lC\n4imxENOxOvO+9nVex/CZEPLQTCHMe3pMxlbGoM/ld31/k6e9BCP7HyfpolYwbeJC\nbj/tGnOM8BFpn/8qCjIZJ8L67qoepWYiwLMX4NMsshpviU5X0PPIwA8U+cuY4AeO\ny7nqcJHapJ/7Y958z6Yo\n=gbPr\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 6da56f8194f6eff59d6c916447f18773dec10fff\nparent 9738ba9841e01ec3c7dde1618f295105b90f79c9\nauthor Madelyn Olson <34459052+madolson@users.noreply.github.com> 1709941836 -0800\ncommitter GitHub <noreply@github.com> 1709941836 -0800\n\nChange crc16 slot table to be fixed size character array instead of pointer to strings (#13112)\n\nUpdate the crc16 hash lookup table to use fixed size character arrays instead of pointers \r\nto static string addresses. Since the actual values are so short, we can just store them\r\nin a uniform array instead. This saves about 128kb of memory and should improve the \r\nperformance as well since we should have much better memory locality."
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/4979cf02ff83e90ced80db5111452a4c3e082c3a",
+    "html_url": "https://github.com/redis/redis/commit/4979cf02ff83e90ced80db5111452a4c3e082c3a",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/4979cf02ff83e90ced80db5111452a4c3e082c3a/comments",
+    "author": {
+      "login": "madolson",
+      "id": 34459052,
+      "node_id": "MDQ6VXNlcjM0NDU5MDUy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/34459052?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/madolson",
+      "html_url": "https://github.com/madolson",
+      "followers_url": "https://api.github.com/users/madolson/followers",
+      "following_url": "https://api.github.com/users/madolson/following{/other_user}",
+      "gists_url": "https://api.github.com/users/madolson/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/madolson/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/madolson/subscriptions",
+      "organizations_url": "https://api.github.com/users/madolson/orgs",
+      "repos_url": "https://api.github.com/users/madolson/repos",
+      "events_url": "https://api.github.com/users/madolson/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/madolson/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "9738ba9841e01ec3c7dde1618f295105b90f79c9",
+        "url": "https://api.github.com/repos/redis/redis/commits/9738ba9841e01ec3c7dde1618f295105b90f79c9",
+        "html_url": "https://github.com/redis/redis/commit/9738ba9841e01ec3c7dde1618f295105b90f79c9"
+      }
+    ]
+  },
+  {
+    "sha": "9738ba9841e01ec3c7dde1618f295105b90f79c9",
+    "node_id": "C_kwDOAAJhctoAKDk3MzhiYTk4NDFlMDFlYzNjN2RkZTE2MThmMjk1MTA1YjkwZjc5Yzk",
+    "commit": {
+      "author": {
+        "name": "debing.sun",
+        "email": "debing.sun@redis.com",
+        "date": "2024-03-05T12:42:28Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-05T12:42:28Z"
+      },
+      "message": "Check user's oom_score_adj write permission for oom-score-adj test (#13111)\n\n`CONFIG SET oom-score-adj handles configuration failures` test failed in\r\nsome CI jobs today.\r\nFailed CI: https://github.com/redis/redis/actions/runs/8152519326\r\n\r\nNot sure why the github action's docker image perssions have changed,\r\nbut the issue is similar to #12887,\r\nwhere we can't assume the range of oom_score_adj that a user can change.\r\n\r\n## Solution:\r\nModify the way of determining whether the current user has no privileges\r\nor not,\r\ninstead of relying on whether the user id is 0 or not.",
+      "tree": {
+        "sha": "8bf381a72fb99a9005937f9885a3eef41cf6a71e",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/8bf381a72fb99a9005937f9885a3eef41cf6a71e"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/9738ba9841e01ec3c7dde1618f295105b90f79c9",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl5xM0CRC1aQ7uu5UhlAAAJrYQAGZM3UTU8bQFbGFhmwXX3Ywr\nPIdDo5OgpMSLMuNsdLIYMdq5z1Q8cdsEUuRepmcx+hDu96DCpyCEFph0Z4tKykRk\nPUfenME5FBDLqjxs5oWWy4p5b9mrqD4sOzwP6B0kKe41ZyQfb06pv1lNEOCL1uok\nATC1NplF1zjjh56AfN+8x9rjOlouMLKsZfS70IqKx1icSZsx0pgOxsFvoPacQMWF\n/HKOthaW1Gwcj+QuU4kU5P1DfOllWwh3wkbFvRKbQW5hGmD+cqQFQb+iKt5nLssz\nAHXguDIwKAXuffc0176cMYU4Q3R+53DH/vFU3xXk+cBpqS00zngDEmP0TZZwtj6E\n+9In4EwGEcEMwxfVmm8IsqwJeLWYNk8asG8o/gVF9GWR9f5eoZN9CFtVPpGWT9LA\noI8t2O+1/O/asgWHCWyHOeWn8Dd1X9NRQ4fjPoppelA27fWAMWYuPN51qRAo1mH1\nMoDhai4UXsklG7Hw80sv5aKPUac0p11zEeu+cEMFswgazqAOXJUU3t7KfI9iwlX0\nT036N5NOu3NvAQmyIO4w0mPs/kJbRj+Oxpx0waO4bk/Vr+PK0DjPpcHf5x+aWO9i\npm0FqdAXJyLpzBeiDzBL8VCxzi3mM5fAPcinYBCI7cWoHt9H6oXNvzmd3P6t6OzO\n8/22MF+M+9y1MS4ZyE92\n=DHl8\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 8bf381a72fb99a9005937f9885a3eef41cf6a71e\nparent 28976a9003c6dd5cdd7225c5bc90743b4fcde13c\nauthor debing.sun <debing.sun@redis.com> 1709642548 +0800\ncommitter GitHub <noreply@github.com> 1709642548 +0200\n\nCheck user's oom_score_adj write permission for oom-score-adj test (#13111)\n\n`CONFIG SET oom-score-adj handles configuration failures` test failed in\r\nsome CI jobs today.\r\nFailed CI: https://github.com/redis/redis/actions/runs/8152519326\r\n\r\nNot sure why the github action's docker image perssions have changed,\r\nbut the issue is similar to #12887,\r\nwhere we can't assume the range of oom_score_adj that a user can change.\r\n\r\n## Solution:\r\nModify the way of determining whether the current user has no privileges\r\nor not,\r\ninstead of relying on whether the user id is 0 or not."
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/9738ba9841e01ec3c7dde1618f295105b90f79c9",
+    "html_url": "https://github.com/redis/redis/commit/9738ba9841e01ec3c7dde1618f295105b90f79c9",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/9738ba9841e01ec3c7dde1618f295105b90f79c9/comments",
+    "author": {
+      "login": "sundb",
+      "id": 965798,
+      "node_id": "MDQ6VXNlcjk2NTc5OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/965798?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/sundb",
+      "html_url": "https://github.com/sundb",
+      "followers_url": "https://api.github.com/users/sundb/followers",
+      "following_url": "https://api.github.com/users/sundb/following{/other_user}",
+      "gists_url": "https://api.github.com/users/sundb/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/sundb/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/sundb/subscriptions",
+      "organizations_url": "https://api.github.com/users/sundb/orgs",
+      "repos_url": "https://api.github.com/users/sundb/repos",
+      "events_url": "https://api.github.com/users/sundb/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/sundb/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "28976a9003c6dd5cdd7225c5bc90743b4fcde13c",
+        "url": "https://api.github.com/repos/redis/redis/commits/28976a9003c6dd5cdd7225c5bc90743b4fcde13c",
+        "html_url": "https://github.com/redis/redis/commit/28976a9003c6dd5cdd7225c5bc90743b4fcde13c"
+      }
+    ]
+  },
+  {
+    "sha": "28976a9003c6dd5cdd7225c5bc90743b4fcde13c",
+    "node_id": "C_kwDOAAJhctoAKDI4OTc2YTkwMDNjNmRkNWNkZDcyMjVjNWJjOTA3NDNiNGZjZGUxM2M",
+    "commit": {
+      "author": {
+        "name": "Ping Xie",
+        "email": "pingxie@google.com",
+        "date": "2024-03-05T01:32:25Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-05T01:32:25Z"
+      },
+      "message": "Fix PONG message processing for primary-ship tracking during failovers (#13055)\n\nThis commit updates the processing of PONG gossip messages in the\r\ncluster. When a node (B) becomes a replica due to a failover, its PONG\r\nmessages include its new primary node's (A) information and B's\r\nconfiguration epoch is aligned with A's. This allows observer nodes to\r\nidentify changes in primary-ship, addressing issues of intermediate\r\nstates and enhancing cluster state consistency during topology changes.\r\n\r\nFix #13018",
+      "tree": {
+        "sha": "439bdad695118f80d68946aa26c10b4cb98e048b",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/439bdad695118f80d68946aa26c10b4cb98e048b"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/28976a9003c6dd5cdd7225c5bc90743b4fcde13c",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl5nYpCRC1aQ7uu5UhlAAAn5gQABmJYvsCx+cAC7AryJ4YqMLJ\nvBDlXtD9tfFDLDpkmj5IRirIaB7z2XVWCKh29XWKeRSUVOt6iLSEA/SbbpUWnc2w\npwxlqoD+JTNz50LuvM1iZQGePUD/SU0SO+PiW3oR8N0WVSxFooLapmROx0drrN/p\nBj50x8NUoB/dSM4MkD8qeDw3HoAWE/vvsVQrUhHZmXRdQZbyP9kvhV+/0yeK7jPh\nZchKkIIiemic8NjGBuc2/EG7PjYJOkCitSg8+uSjvXth894E0SQDS2Qy3CBUlgdL\nWqBTVvocEnAR0z2KIjaCqcGfUtQF0uuSKab2F4M+B6bqQXlN7RQvXTTgk2S1SRnu\nj3rsH7IQ4BoUHdbyJ/QB2xEDH7PlIymqbjzLMYO/Pw7TdKSfYM6mKn6fLRObaDbO\nx5436A2wWJORcaDrWjT9MoUGIE9LAdoFDij4nOMSxkDu5dBgafmETbxGoYGzBBx4\nTdb6QIquyU3MRJ/9CqD2dcpThAFtEtB1a+tHqsVDdeBxE422/lKcD1hL+gi6+2Km\nTx4/md/PJC2ZGqfBgNYySfwziMcAStICdTchnBtXQQo9pWmRUlK63PYGeQI+vTHF\nmLNI8DfvRr3NmtZAnngiOuohUcI0BgtDIuaVRLmqjEAgw8NuoC5W9QByvuhighrJ\nD+OA5piBcsgjIiKYypOt\n=Qc6w\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 439bdad695118f80d68946aa26c10b4cb98e048b\nparent ad127303338f21a29ba7f11b51f076edc29655d3\nauthor Ping Xie <pingxie@google.com> 1709602345 -0800\ncommitter GitHub <noreply@github.com> 1709602345 -0800\n\nFix PONG message processing for primary-ship tracking during failovers (#13055)\n\nThis commit updates the processing of PONG gossip messages in the\r\ncluster. When a node (B) becomes a replica due to a failover, its PONG\r\nmessages include its new primary node's (A) information and B's\r\nconfiguration epoch is aligned with A's. This allows observer nodes to\r\nidentify changes in primary-ship, addressing issues of intermediate\r\nstates and enhancing cluster state consistency during topology changes.\r\n\r\nFix #13018"
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/28976a9003c6dd5cdd7225c5bc90743b4fcde13c",
+    "html_url": "https://github.com/redis/redis/commit/28976a9003c6dd5cdd7225c5bc90743b4fcde13c",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/28976a9003c6dd5cdd7225c5bc90743b4fcde13c/comments",
+    "author": {
+      "login": "PingXie",
+      "id": 11568491,
+      "node_id": "MDQ6VXNlcjExNTY4NDkx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11568491?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/PingXie",
+      "html_url": "https://github.com/PingXie",
+      "followers_url": "https://api.github.com/users/PingXie/followers",
+      "following_url": "https://api.github.com/users/PingXie/following{/other_user}",
+      "gists_url": "https://api.github.com/users/PingXie/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/PingXie/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/PingXie/subscriptions",
+      "organizations_url": "https://api.github.com/users/PingXie/orgs",
+      "repos_url": "https://api.github.com/users/PingXie/repos",
+      "events_url": "https://api.github.com/users/PingXie/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/PingXie/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ad127303338f21a29ba7f11b51f076edc29655d3",
+        "url": "https://api.github.com/repos/redis/redis/commits/ad127303338f21a29ba7f11b51f076edc29655d3",
+        "html_url": "https://github.com/redis/redis/commit/ad127303338f21a29ba7f11b51f076edc29655d3"
+      }
+    ]
+  },
+  {
+    "sha": "ad127303338f21a29ba7f11b51f076edc29655d3",
+    "node_id": "C_kwDOAAJhctoAKGFkMTI3MzAzMzM4ZjIxYTI5YmE3ZjExYjUxZjA3NmVkYzI5NjU1ZDM",
+    "commit": {
+      "author": {
+        "name": "debing.sun",
+        "email": "debing.sun@redis.com",
+        "date": "2024-03-04T14:56:50Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-04T14:56:50Z"
+      },
+      "message": "Implement defragmentation for pubsub kvstore (#13058)\n\nAfter #13013\r\n\r\n### This PR make effort to defrag the pubsub kvstore in the following\r\nways:\r\n\r\n1. Till now server.pubsub(shard)_channels only share channel name obj\r\nwith the first subscribed client, now change it so that the clients and\r\nthe pubsub kvstore share the channel name robj.\r\nThis would save a lot of memory when there are many subscribers to the\r\nsame channel.\r\nIt also means that we only need to defrag the channel name robj in the\r\npubsub kvstore, and then update\r\nall client references for the current channel, avoiding the need to\r\niterate through all the clients to do the same things.\r\n    \r\n2. Refactor the code to defragment pubsub(shard) in the same way as\r\ndefragment of keys and EXPIRES, with the exception that we only\r\ndefragment pubsub(without shard) when slot is zero.\r\n\r\n\r\n### Other\r\nFix an overlook in #11695, if defragment doesn't reach the end time, we\r\nshould wait for the current\r\ndb's keys and expires, pubsub and pubsubshard to finish before leaving,\r\nnow it's possible to exit\r\nearly when the keys are defragmented.\r\n\r\n---------\r\n\r\nCo-authored-by: oranagra <oran@redislabs.com>",
+      "tree": {
+        "sha": "27fc276e375003ece15a60eeb64f1a80872f37e3",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/27fc276e375003ece15a60eeb64f1a80872f37e3"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/ad127303338f21a29ba7f11b51f076edc29655d3",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl5eEyCRC1aQ7uu5UhlAAA4W8QAEGYnOqEb8yur2PGcWCOMDq6\n4B4Mkav29uvp3ypTVZk7sxqCOqHqW9lGkwPa/de2idoQxf+U+T+SKDS5BPViZCEN\nb+DvTlgmex0p+EUy/jLdvNWlkLvsPtY1l8HF/fS4KbsUiMwGL9VjzsNfG4+tymf5\nvkgRXLGYk1RCc6WPAk9MIUXVOS6SwW24MxFhH6qVT7H3wFWOWThP6WEjZbkkygUT\nS7vaa2ez34xGsDuLvX+fjIno/SM0mffErEMgkHr1pqoAEwM8hytQRxvrZGI5o2UG\nF8bwMfI9jGZibHA0jqUmpyNwwA/iGnV3M4knoMn1xeLGHhFvh59jXOSpoQd+vHKp\nay3z//o2rweH1JYfvpwqXuod7rurypH12ztnTjdETstSy7CJraRI8frbM0FZK4/Q\nmxSs6PCszAKX+0XtDCAFY/iz0H3KnTE66lp+h+NMQRFSKqCs+4RSsXMhzUK/mJNm\nWBL7qFeFmjLCxQXLiaiEUAaT8bjosJiQ+1UOHQAa9a+w6BVYPUkIv1KLgLj1dxPD\n16XfMJPTxt6MvFUoaaHBDFaNoO+gy3rObjO9/4+3OgdL8J01p0iaRBMSTrmRs81S\nUfnrinnJcLv7EA98GX8Czj5HiuMB2VWTpiOKS+UjUMdfjMQV0LIBjXEkXtaxScFK\n8M/yvJg4NCzqkNFsCztA\n=ON0E\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 27fc276e375003ece15a60eeb64f1a80872f37e3\nparent 33ea432585fa3d7ca3da1de98b64e7267110ad4b\nauthor debing.sun <debing.sun@redis.com> 1709564210 +0800\ncommitter GitHub <noreply@github.com> 1709564210 +0200\n\nImplement defragmentation for pubsub kvstore (#13058)\n\nAfter #13013\r\n\r\n### This PR make effort to defrag the pubsub kvstore in the following\r\nways:\r\n\r\n1. Till now server.pubsub(shard)_channels only share channel name obj\r\nwith the first subscribed client, now change it so that the clients and\r\nthe pubsub kvstore share the channel name robj.\r\nThis would save a lot of memory when there are many subscribers to the\r\nsame channel.\r\nIt also means that we only need to defrag the channel name robj in the\r\npubsub kvstore, and then update\r\nall client references for the current channel, avoiding the need to\r\niterate through all the clients to do the same things.\r\n    \r\n2. Refactor the code to defragment pubsub(shard) in the same way as\r\ndefragment of keys and EXPIRES, with the exception that we only\r\ndefragment pubsub(without shard) when slot is zero.\r\n\r\n\r\n### Other\r\nFix an overlook in #11695, if defragment doesn't reach the end time, we\r\nshould wait for the current\r\ndb's keys and expires, pubsub and pubsubshard to finish before leaving,\r\nnow it's possible to exit\r\nearly when the keys are defragmented.\r\n\r\n---------\r\n\r\nCo-authored-by: oranagra <oran@redislabs.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/ad127303338f21a29ba7f11b51f076edc29655d3",
+    "html_url": "https://github.com/redis/redis/commit/ad127303338f21a29ba7f11b51f076edc29655d3",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/ad127303338f21a29ba7f11b51f076edc29655d3/comments",
+    "author": {
+      "login": "sundb",
+      "id": 965798,
+      "node_id": "MDQ6VXNlcjk2NTc5OA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/965798?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/sundb",
+      "html_url": "https://github.com/sundb",
+      "followers_url": "https://api.github.com/users/sundb/followers",
+      "following_url": "https://api.github.com/users/sundb/following{/other_user}",
+      "gists_url": "https://api.github.com/users/sundb/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/sundb/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/sundb/subscriptions",
+      "organizations_url": "https://api.github.com/users/sundb/orgs",
+      "repos_url": "https://api.github.com/users/sundb/repos",
+      "events_url": "https://api.github.com/users/sundb/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/sundb/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "33ea432585fa3d7ca3da1de98b64e7267110ad4b",
+        "url": "https://api.github.com/repos/redis/redis/commits/33ea432585fa3d7ca3da1de98b64e7267110ad4b",
+        "html_url": "https://github.com/redis/redis/commit/33ea432585fa3d7ca3da1de98b64e7267110ad4b"
+      }
+    ]
+  },
+  {
+    "sha": "33ea432585fa3d7ca3da1de98b64e7267110ad4b",
+    "node_id": "C_kwDOAAJhctoAKDMzZWE0MzI1ODVmYTNkN2NhM2RhMWRlOThiNjRlNzI2NzExMGFkNGI",
+    "commit": {
+      "author": {
+        "name": "Binbin",
+        "email": "binloveplay1314@qq.com",
+        "date": "2024-03-03T07:20:18Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-03T07:20:18Z"
+      },
+      "message": "Call finalizerProc when free the aeTimeEvent in ae (#13101)\n\nSupplement to #6189, we also need to call finalizerProc.\r\nThis is a minor cleanup, no one currently uses this finalizerProc\r\nfeature.",
+      "tree": {
+        "sha": "3090ee98cdab09c38df41c47d18ac194dc0f2ed8",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/3090ee98cdab09c38df41c47d18ac194dc0f2ed8"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/33ea432585fa3d7ca3da1de98b64e7267110ad4b",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl5CSyCRC1aQ7uu5UhlAAAtbYQAIvuoCzE5TC5agERyBvlVnYQ\nKnNo359VVKO4pd17w6sIsal02Bd372zyh2T6SEum6AtRa5o8XYo+5/TC1olDc4s9\nvx0VqTdFlj2JmSChOyN3xrZzRAtt2LUlD2Fhw1guA9L9tY+OqFYhODKSIjNVeZfO\n+a0GSUZ6U89duHDFlM1MK6E6tLjXc9gZotWa/RX4D4MSh0Qus3iVjjl+KVP4uP1j\nLHBQJPKiO7v4FKdx4npJ+2PKX5kjY7FLyv0hpKgBMIG4CmdU63FISXDwRm0Z8B2D\nGuIHbt37OC0zcPy7y8xsLKzGJ0nUX4OodnbpCqb0LsXCt4V6oNE1gDUo3TXYpL8H\nYcusEI58RjzDIEIP7+E1x31s6SPnNo3jlSzMztEXvCmSJ9wNgsg66sFaGLpVTVEY\n5U2vC7hTaJQSWexJnJUdOEqlgF++60JBsCn3uvONdGgLHHa8C32ucF7D0u2Z6nYV\nIUnWxmKn5EIZzLjn5K5atXfooswEPLvEADDsqeDskIHddPQ85PXOc6Dzq9nkQIst\nizjK2WOPom8t5FaDQ9YPukQ3ow0Kbe0XcoBB8nMFQMRRYug1JJx2kXG+/9B+BKPh\nxogx6t8TSNEChOuIXr0W0lL3Tzat3qaIRZ4pzHGstb2y0TS53tSxZsCd9Zkg27Hc\nF/LQ0uadnfGo+fYBSLlX\n=8VzJ\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 3090ee98cdab09c38df41c47d18ac194dc0f2ed8\nparent df75153d79a83e53d71c9cd08e5863b73fe97914\nauthor Binbin <binloveplay1314@qq.com> 1709450418 +0800\ncommitter GitHub <noreply@github.com> 1709450418 +0200\n\nCall finalizerProc when free the aeTimeEvent in ae (#13101)\n\nSupplement to #6189, we also need to call finalizerProc.\r\nThis is a minor cleanup, no one currently uses this finalizerProc\r\nfeature."
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/33ea432585fa3d7ca3da1de98b64e7267110ad4b",
+    "html_url": "https://github.com/redis/redis/commit/33ea432585fa3d7ca3da1de98b64e7267110ad4b",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/33ea432585fa3d7ca3da1de98b64e7267110ad4b/comments",
+    "author": {
+      "login": "enjoy-binbin",
+      "id": 22811481,
+      "node_id": "MDQ6VXNlcjIyODExNDgx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22811481?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/enjoy-binbin",
+      "html_url": "https://github.com/enjoy-binbin",
+      "followers_url": "https://api.github.com/users/enjoy-binbin/followers",
+      "following_url": "https://api.github.com/users/enjoy-binbin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/enjoy-binbin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/enjoy-binbin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/enjoy-binbin/subscriptions",
+      "organizations_url": "https://api.github.com/users/enjoy-binbin/orgs",
+      "repos_url": "https://api.github.com/users/enjoy-binbin/repos",
+      "events_url": "https://api.github.com/users/enjoy-binbin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/enjoy-binbin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "df75153d79a83e53d71c9cd08e5863b73fe97914",
+        "url": "https://api.github.com/repos/redis/redis/commits/df75153d79a83e53d71c9cd08e5863b73fe97914",
+        "html_url": "https://github.com/redis/redis/commit/df75153d79a83e53d71c9cd08e5863b73fe97914"
+      }
+    ]
+  },
+  {
+    "sha": "df75153d79a83e53d71c9cd08e5863b73fe97914",
+    "node_id": "C_kwDOAAJhctoAKGRmNzUxNTNkNzlhODNlNTNkNzFjOWNkMDhlNTg2M2I3M2ZlOTc5MTQ",
+    "commit": {
+      "author": {
+        "name": "Binbin",
+        "email": "binloveplay1314@qq.com",
+        "date": "2024-03-02T19:26:05Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-02T19:26:05Z"
+      },
+      "message": "Fix reply schemas validator build issue due to new regular expression (#13103)\n\nThe new regular expression break the validator:\r\n```\r\nIn file included from commands.c:10:\r\ncommands_with_reply_schema.def:14528:72: error: stray ‘\\’ in program\r\n14528 | struct jsonObjectElement MEMORY_STATS_ReplySchema_patternProperties__db\\_\\d+__properties_overhead_hashtable_main_elements[] = {\r\n```\r\n\r\nThe reason is that special characters are not added to to_c_name,\r\ncauses special characters to appear in the structure name, causing\r\nc file compilation to fail.\r\n\r\nBroken by #12913",
+      "tree": {
+        "sha": "2f8e14c974d2251d7280b2edde3a95041fd45053",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/2f8e14c974d2251d7280b2edde3a95041fd45053"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/df75153d79a83e53d71c9cd08e5863b73fe97914",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl431NCRC1aQ7uu5UhlAAAW6kQAEvkvY7rtp+QRf70QQgYhv9S\njeeacaCqRo3hHYeh78zFYitaRlUNn5RKNqUcGUlV+0QYAyFrKFpeghP0vsVJ/Pyr\nd3GotEKoNbCq0BeYQQbGW9XkBPH9oiKicxAG6b791A7x+vLS3k8i+NX9iGF3hKPw\nS6c1GN47GAWwDGIcGi/DNum5I175b840fNtpYiYUy/CLjXIIf3mjM8P9DLVY5XsT\n0ecoJrzhZ9CBhVL9GSvTD/Wd2ahgQMJqVnBaUocFeVHq6JAaNk9jFnxQjiK1ppW/\nC/YuriSrOMuwiW+URzq5WntRTYXxMcDwOj2UUZchTOsG/v2L+OqNOvKERoLETMal\nzdU5ZjwXaB4bVueQZDqtv3jSd+XaDM6DbtU+7YXHBawW4S202GuX59YudbQzAQ+i\nsCwHNDH9CkmDpjJj2k2f5t6Ga5bbIXK2pfm76Jvlem2m/DZ9BKJh3dJJrZdrB3uO\nPnyB1DxCakoL+g1CxVOdD31NDwqUA8v8cY/g6A/PjvBmnX7I6fVCeRIOBikee06U\nLz6195IdRbEgITHBB20Sz1ETlJJiu32UuBFm1dcbCARDzceRYh62hwCGbft5sski\n43OjhTDOrmmSwhkzdYkv6jfQP6ZVC7Sqs0l1CwVfUHFQtr2jVtVKbpJcRvdHUOfK\nh2zf1bUXaBsSEur1ZrNm\n=s6LU\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 2f8e14c974d2251d7280b2edde3a95041fd45053\nparent a50bbcb6566f76da3da32c18afd66cb674bbbc83\nauthor Binbin <binloveplay1314@qq.com> 1709407565 +0800\ncommitter GitHub <noreply@github.com> 1709407565 +0200\n\nFix reply schemas validator build issue due to new regular expression (#13103)\n\nThe new regular expression break the validator:\r\n```\r\nIn file included from commands.c:10:\r\ncommands_with_reply_schema.def:14528:72: error: stray ‘\\’ in program\r\n14528 | struct jsonObjectElement MEMORY_STATS_ReplySchema_patternProperties__db\\_\\d+__properties_overhead_hashtable_main_elements[] = {\r\n```\r\n\r\nThe reason is that special characters are not added to to_c_name,\r\ncauses special characters to appear in the structure name, causing\r\nc file compilation to fail.\r\n\r\nBroken by #12913"
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/df75153d79a83e53d71c9cd08e5863b73fe97914",
+    "html_url": "https://github.com/redis/redis/commit/df75153d79a83e53d71c9cd08e5863b73fe97914",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/df75153d79a83e53d71c9cd08e5863b73fe97914/comments",
+    "author": {
+      "login": "enjoy-binbin",
+      "id": 22811481,
+      "node_id": "MDQ6VXNlcjIyODExNDgx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22811481?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/enjoy-binbin",
+      "html_url": "https://github.com/enjoy-binbin",
+      "followers_url": "https://api.github.com/users/enjoy-binbin/followers",
+      "following_url": "https://api.github.com/users/enjoy-binbin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/enjoy-binbin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/enjoy-binbin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/enjoy-binbin/subscriptions",
+      "organizations_url": "https://api.github.com/users/enjoy-binbin/orgs",
+      "repos_url": "https://api.github.com/users/enjoy-binbin/repos",
+      "events_url": "https://api.github.com/users/enjoy-binbin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/enjoy-binbin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a50bbcb6566f76da3da32c18afd66cb674bbbc83",
+        "url": "https://api.github.com/repos/redis/redis/commits/a50bbcb6566f76da3da32c18afd66cb674bbbc83",
+        "html_url": "https://github.com/redis/redis/commit/a50bbcb6566f76da3da32c18afd66cb674bbbc83"
+      }
+    ]
+  },
+  {
+    "sha": "a50bbcb6566f76da3da32c18afd66cb674bbbc83",
+    "node_id": "C_kwDOAAJhctoAKGE1MGJiY2I2NTY2Zjc2ZGEzZGEzMmMxOGFmZDY2Y2I2NzRiYmJjODM",
+    "commit": {
+      "author": {
+        "name": "YaacovHazan",
+        "email": "31382944+YaacovHazan@users.noreply.github.com",
+        "date": "2024-03-02T09:48:36Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-02T09:48:36Z"
+      },
+      "message": "redis-cli fixes around help hints version filtering (#13097)\n\n- In removeUnsupportedArgs, trying to access the next item after the\r\nlast one and causing an out of bounds read.\r\n- In versionIsSupported, when the 'version' is equal to 'since', the\r\nreturn value is 0 (not supported).\r\nAlso, change the function to return `not supported` in case they have\r\ndifferent numbers of digits\r\n\r\nBoth issues were found by `Non-interactive non-TTY CLI: Test\r\ncommand-line hinting - old server` under `test-sanitizer-address` (When\r\nchanging the `src/version.h` locally to `8.0.0`)\r\n\r\nThe new `MAXAGE` argument inside `client-kill` triggered the issue (new\r\nargument at the end of the list)\r\n\r\n---------\r\n\r\nCo-authored-by: YaacovHazan <yaacov.hazan@redislabs.com>",
+      "tree": {
+        "sha": "23adb36af786e18bbb0de84666edba1418836183",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/23adb36af786e18bbb0de84666edba1418836183"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/a50bbcb6566f76da3da32c18afd66cb674bbbc83",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl4vX0CRC1aQ7uu5UhlAAAQH0QAFJ5THxGEbfpdIFtFDh1X4P4\npIkH+8EuhRS9ju5z8nVDAF3yTzwiVXnhpWEMrM9VzmaYGhecL7k6+aPDez00uN0y\n14f9fKYzX+sgESKDWo2Ao9mg0d4n0dLK55CYf07xR0Jl10fsiY4hyP7OC667HkVn\n7stBJBLACWsbB2j0+RuA24jJotgzEaMZNyWLH8K+RZZMv3dGsdwagLxo9K2FIy0G\njUpD86Z0BFuGhFDvwFyJpbw7zv4Pfm+hGiazGl+QZjIFSWRFIBBnpcurTgLbzunb\nfUylbvnn4RUfbxo3UEFjgnsdAQT0LB6Fg0Smv4rsFPd7I/de9StkGxdyv2CBcCOP\nYCRNCMb6DCqbicJBISfjT1j0Inmwg9v+YepSsO7NgzUisG/1ayuRRgakH/TsQ6hO\nMpaauUGpq5RjLlwB9ua6dWZ6T8uvRvrF7pMBpbrYfMqPiXQDHjbrTPPEyG6qvV8T\nqd4nfbYsBsuprVKVOcMvrNTd37sX0NXCrjJ52BRu7TcUQWVXSntOO0tSHT7id15U\neyEMjtO/D7MU5PFcVUyopyBUubHYLfccLBHOxG1hmxpG2ltghx486zsPObtYPuM+\nCK5AIv+Wx20iYPM73Nk7BAGQQcGIGr2Dh0mmi/+x73I8D8j+BnvDmLJjJWTbmqAf\nMqj5i4CF0EcmIZLFzIrZ\n=2dFU\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 23adb36af786e18bbb0de84666edba1418836183\nparent 4cae99e785ee3302adc37144f07f737b9b7bfc7d\nauthor YaacovHazan <31382944+YaacovHazan@users.noreply.github.com> 1709372916 +0200\ncommitter GitHub <noreply@github.com> 1709372916 +0200\n\nredis-cli fixes around help hints version filtering (#13097)\n\n- In removeUnsupportedArgs, trying to access the next item after the\r\nlast one and causing an out of bounds read.\r\n- In versionIsSupported, when the 'version' is equal to 'since', the\r\nreturn value is 0 (not supported).\r\nAlso, change the function to return `not supported` in case they have\r\ndifferent numbers of digits\r\n\r\nBoth issues were found by `Non-interactive non-TTY CLI: Test\r\ncommand-line hinting - old server` under `test-sanitizer-address` (When\r\nchanging the `src/version.h` locally to `8.0.0`)\r\n\r\nThe new `MAXAGE` argument inside `client-kill` triggered the issue (new\r\nargument at the end of the list)\r\n\r\n---------\r\n\r\nCo-authored-by: YaacovHazan <yaacov.hazan@redislabs.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/a50bbcb6566f76da3da32c18afd66cb674bbbc83",
+    "html_url": "https://github.com/redis/redis/commit/a50bbcb6566f76da3da32c18afd66cb674bbbc83",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/a50bbcb6566f76da3da32c18afd66cb674bbbc83/comments",
+    "author": {
+      "login": "YaacovHazan",
+      "id": 31382944,
+      "node_id": "MDQ6VXNlcjMxMzgyOTQ0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31382944?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/YaacovHazan",
+      "html_url": "https://github.com/YaacovHazan",
+      "followers_url": "https://api.github.com/users/YaacovHazan/followers",
+      "following_url": "https://api.github.com/users/YaacovHazan/following{/other_user}",
+      "gists_url": "https://api.github.com/users/YaacovHazan/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/YaacovHazan/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/YaacovHazan/subscriptions",
+      "organizations_url": "https://api.github.com/users/YaacovHazan/orgs",
+      "repos_url": "https://api.github.com/users/YaacovHazan/repos",
+      "events_url": "https://api.github.com/users/YaacovHazan/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/YaacovHazan/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4cae99e785ee3302adc37144f07f737b9b7bfc7d",
+        "url": "https://api.github.com/repos/redis/redis/commits/4cae99e785ee3302adc37144f07f737b9b7bfc7d",
+        "html_url": "https://github.com/redis/redis/commit/4cae99e785ee3302adc37144f07f737b9b7bfc7d"
+      }
+    ]
+  },
+  {
+    "sha": "4cae99e785ee3302adc37144f07f737b9b7bfc7d",
+    "node_id": "C_kwDOAAJhctoAKDRjYWU5OWU3ODVlZTMzMDJhZGMzNzE0NGYwN2Y3MzdiOWI3YmZjN2Q",
+    "commit": {
+      "author": {
+        "name": "Chen Tianjie",
+        "email": "chentianjie.ctj@alibaba-inc.com",
+        "date": "2024-03-01T05:41:24Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-03-01T05:41:24Z"
+      },
+      "message": "Add overhead of all DBs and rehashing dict count to info. (#12913)\n\nSometimes we need to make fast judgement about why Redis is suddenly\r\ntaking more memory. One of the reasons is main DB's dicts doing\r\nrehashing.\r\n\r\nWe may use `MEMORY STATS` to monitor the overhead memory of each DB, but\r\nthere still lacks a total sum to show an overall trend. So this PR adds\r\nthe total overhead of all DBs to `INFO MEMORY` section, together with\r\nthe total count of rehashing DB dicts, providing some intuitive metrics\r\nabout main dicts rehashing.\r\n\r\nThis PR adds the following metrics to INFO MEMORY\r\n* `mem_overhead_db_hashtable_rehashing` - only size of ht[0] in\r\ndictionaries we're rehashing (i.e. the memory that's gonna get released\r\nsoon)\r\n\r\nand a similar ones to MEMORY STATS:\r\n* `overhead.db.hashtable.lut` (complements the existing\r\n`overhead.hashtable.main` and `overhead.hashtable.expires` which also\r\ncounts the `dictEntry` structs too)\r\n* `overhead.db.hashtable.rehashing` - temporary rehashing overhead.\r\n* `db.dict.rehashing.count` - number of top level dictionaries being\r\nrehashed.\r\n\r\n---------\r\n\r\nCo-authored-by: zhaozhao.zz <zhaozhao.zz@alibaba-inc.com>\r\nCo-authored-by: Oran Agra <oran@redislabs.com>",
+      "tree": {
+        "sha": "2a110ce6f91c2b2656bb89295ca4b8932b00a1e3",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/2a110ce6f91c2b2656bb89295ca4b8932b00a1e3"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/4cae99e785ee3302adc37144f07f737b9b7bfc7d",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl4WqECRC1aQ7uu5UhlAAAyS4QACzSBIJMv4wlV8grvdn0Btyt\net/ksMnObeDl+GNjOb3HdgdHg+72LiNUBsyCoxB8UwXRCUVVSQi1NZGvwvWfh9aV\n5+lWqQFAN9ROlxH8RAwJ1vi4dfHXU3q1Ax9ehIurTYqNDBRsYlNt52CCrc3GNp7y\noFCWZAW4nytgf18+7+0h8hnIxrcX9aUIKZA2osN8rBWapswjwrxHMKYW/LDa9/cH\nJrtgWGn8acE5ViWVXWJeG4ymsYnj/ORtcENRsZmV/wCRT2/Rzw/XRfmgt4HD80+v\nNK55LoniXuf+EUanpErxgJJ/SRDhdb2boy+DszqwDyDLWJEr2dLO7aE91+hIMzT7\nEHdZAFpehC+XvQdAmUZfy0KD7Y+3DzvNqM7OdK1YJvUePZcDq+9a+o9WlPGfF1U6\nm6RupoH4OMUldYAl/vJmsluuYh9RsSv6cABmdDY7JGxQTLXeSx4ZvAninPEW166j\nLfXVXM24Egxl+UuNNRv4nF6LYEbrYJw7ZkWaN9fDzBivRc339u/QpRjSnUUg02Jv\nPe/8vusDgnKFrysLGFI6U8Kiu6UsXR8RzoUntgoRJLN2wdwM/haHp36rML6vyS5A\ncdic50K5aDu3hDAOFza7jSCg2yB5aKYMJfJ8ZXwWJvQJLK8nxDtxbe6wcTV3Yrb3\nsROQDJ3td46+pw4ktZxE\n=5Fs6\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 2a110ce6f91c2b2656bb89295ca4b8932b00a1e3\nparent f17381a38d78f75e228d00972115b31d9a1d0b2e\nauthor Chen Tianjie <chentianjie.ctj@alibaba-inc.com> 1709271684 +0800\ncommitter GitHub <noreply@github.com> 1709271684 +0800\n\nAdd overhead of all DBs and rehashing dict count to info. (#12913)\n\nSometimes we need to make fast judgement about why Redis is suddenly\r\ntaking more memory. One of the reasons is main DB's dicts doing\r\nrehashing.\r\n\r\nWe may use `MEMORY STATS` to monitor the overhead memory of each DB, but\r\nthere still lacks a total sum to show an overall trend. So this PR adds\r\nthe total overhead of all DBs to `INFO MEMORY` section, together with\r\nthe total count of rehashing DB dicts, providing some intuitive metrics\r\nabout main dicts rehashing.\r\n\r\nThis PR adds the following metrics to INFO MEMORY\r\n* `mem_overhead_db_hashtable_rehashing` - only size of ht[0] in\r\ndictionaries we're rehashing (i.e. the memory that's gonna get released\r\nsoon)\r\n\r\nand a similar ones to MEMORY STATS:\r\n* `overhead.db.hashtable.lut` (complements the existing\r\n`overhead.hashtable.main` and `overhead.hashtable.expires` which also\r\ncounts the `dictEntry` structs too)\r\n* `overhead.db.hashtable.rehashing` - temporary rehashing overhead.\r\n* `db.dict.rehashing.count` - number of top level dictionaries being\r\nrehashed.\r\n\r\n---------\r\n\r\nCo-authored-by: zhaozhao.zz <zhaozhao.zz@alibaba-inc.com>\r\nCo-authored-by: Oran Agra <oran@redislabs.com>"
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/4cae99e785ee3302adc37144f07f737b9b7bfc7d",
+    "html_url": "https://github.com/redis/redis/commit/4cae99e785ee3302adc37144f07f737b9b7bfc7d",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/4cae99e785ee3302adc37144f07f737b9b7bfc7d/comments",
+    "author": {
+      "login": "CharlesChen888",
+      "id": 112807411,
+      "node_id": "U_kgDOBrlN8w",
+      "avatar_url": "https://avatars.githubusercontent.com/u/112807411?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/CharlesChen888",
+      "html_url": "https://github.com/CharlesChen888",
+      "followers_url": "https://api.github.com/users/CharlesChen888/followers",
+      "following_url": "https://api.github.com/users/CharlesChen888/following{/other_user}",
+      "gists_url": "https://api.github.com/users/CharlesChen888/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/CharlesChen888/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/CharlesChen888/subscriptions",
+      "organizations_url": "https://api.github.com/users/CharlesChen888/orgs",
+      "repos_url": "https://api.github.com/users/CharlesChen888/repos",
+      "events_url": "https://api.github.com/users/CharlesChen888/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/CharlesChen888/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "f17381a38d78f75e228d00972115b31d9a1d0b2e",
+        "url": "https://api.github.com/repos/redis/redis/commits/f17381a38d78f75e228d00972115b31d9a1d0b2e",
+        "html_url": "https://github.com/redis/redis/commit/f17381a38d78f75e228d00972115b31d9a1d0b2e"
+      }
+    ]
+  },
+  {
+    "sha": "f17381a38d78f75e228d00972115b31d9a1d0b2e",
+    "node_id": "C_kwDOAAJhctoAKGYxNzM4MWEzOGQ3OGY3NWUyMjhkMDA5NzIxMTViMzFkOWExZDBiMmU",
+    "commit": {
+      "author": {
+        "name": "Binbin",
+        "email": "binloveplay1314@qq.com",
+        "date": "2024-02-29T07:48:20Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-02-29T07:48:20Z"
+      },
+      "message": "Fix propagation of entries_read by calling streamPropagateGroupID unconditionally (#12898)\n\nIn XREADGROUP ACK, because streamPropagateXCLAIM does not propagate\r\nentries-read, entries-read will be inconsistent between master and\r\nreplicas.\r\nI.e. if no entries were claimed, it would have propagated correctly, but\r\nif some\r\nwere claimed, then the entries-read field would be inconsistent on the\r\nreplica.\r\n\r\nThe fix was suggested by guybe7, call streamPropagateGroupID\r\nunconditionally,\r\nso that we will normalize entries_read on the replicas. In the past, we\r\nwould\r\nonly set propagate_last_id when NOACK was specified. And in #9127,\r\nXCLAIM did\r\nnot propagate entries_read in ACK, which would cause entries_read to be\r\ninconsistent between master and replicas.\r\n\r\nAnother approach is add another arg to XCLAIM and let it propagate\r\nentries_read,\r\nbut we decided not to use it. Because we want minimal damage in case\r\nthere's an\r\nold target and new source (in the worst case scenario, the new source\r\ndoesn't\r\nrecognize XGROUP SETID ... ENTRIES READ and the lag is lost. If we\r\nchange XCLAIM,\r\nthe damage is much more severe).\r\n\r\nIn this patch, now if the user uses XREADGROUP .. COUNT 1 there will be\r\nan additional\r\noverhead of MULTI, EXEC and XGROUPSETID. We assume the extra command in\r\ncase of\r\nCOUNT 1 (4x factor, changing from one XCLAIM to\r\nMULTI+XCLAIM+XSETID+EXEC), is probably\r\nok since reading just one entry is in any case very inefficient (a\r\nclient round trip\r\nper record), so we're hoping it's not a common case.\r\n\r\nIssue was introduced in #9127.",
+      "tree": {
+        "sha": "0ec56d4bde0c8f2e5dd01b963a95ed8dd562da7e",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/0ec56d4bde0c8f2e5dd01b963a95ed8dd562da7e"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/f17381a38d78f75e228d00972115b31d9a1d0b2e",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl4DbECRC1aQ7uu5UhlAAA8jwQAFtel5cexJB44eMw36iKvkzI\nDf2+wPayqGugzoykNITSJj+ZAnrgZwQPRr5bAa1QuRw7lDZlbxR4tAOwWedeFbzK\nU4QtZyA5LXEw51zErVllThcPcsuTh3b6onFYMNDpc22MAGKTcPyBRctkYs2zrf/S\ntaSOQP4BY26HAs0C4t8USCP9Vmusvt5uogVhtn0oSBLi0MEa72Dp2jLdXgFtDTMy\nMqgcGeaG59F8wYqf48SsU/iKfrWByguOJSEkS6i32gkD3HN+MxuC8/uJ4GXmP1Qi\nF6iFG45SOqBL2/YsTqc2lO14QOHIRrLknsK2X5CbiCjwcK/Cgjh/RjD8+i8Jd6kK\nOxadIojel2LJ20Qgzjvzp+RgBMp/tR4C1kWlF0J0FeGMICJ8FqP61ic+3s5RCxHG\nnQYhVhOEU5jiFnUIPV0GUaB96/GRf/St3g6c5mfPzSL4sRE03Q5K/nE7g1TlRPlH\n+RWbVMh0JtAxXsyS5GyzEokOY9nAEG8oX4WuQBxwZGls1VkW1BTF5tXAV35pqjMj\nZ/BLUe2oESzCfUuHFG1KvfvQv93lWajNheebpFtd5RiCToTcSvuraIa3K0MNYlCx\nemBCjlq096G/eq28OFM5JqteJl3vOxXOC55llQ04gBi7dpWoZKwxMlhMl8K4DAdu\nGF2OfM4EiRGnjwDp+XKQ\n=Ourc\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 0ec56d4bde0c8f2e5dd01b963a95ed8dd562da7e\nparent cc9fbd270e6a845289aee475d84b2a2711e8d6aa\nauthor Binbin <binloveplay1314@qq.com> 1709192900 +0800\ncommitter GitHub <noreply@github.com> 1709192900 +0200\n\nFix propagation of entries_read by calling streamPropagateGroupID unconditionally (#12898)\n\nIn XREADGROUP ACK, because streamPropagateXCLAIM does not propagate\r\nentries-read, entries-read will be inconsistent between master and\r\nreplicas.\r\nI.e. if no entries were claimed, it would have propagated correctly, but\r\nif some\r\nwere claimed, then the entries-read field would be inconsistent on the\r\nreplica.\r\n\r\nThe fix was suggested by guybe7, call streamPropagateGroupID\r\nunconditionally,\r\nso that we will normalize entries_read on the replicas. In the past, we\r\nwould\r\nonly set propagate_last_id when NOACK was specified. And in #9127,\r\nXCLAIM did\r\nnot propagate entries_read in ACK, which would cause entries_read to be\r\ninconsistent between master and replicas.\r\n\r\nAnother approach is add another arg to XCLAIM and let it propagate\r\nentries_read,\r\nbut we decided not to use it. Because we want minimal damage in case\r\nthere's an\r\nold target and new source (in the worst case scenario, the new source\r\ndoesn't\r\nrecognize XGROUP SETID ... ENTRIES READ and the lag is lost. If we\r\nchange XCLAIM,\r\nthe damage is much more severe).\r\n\r\nIn this patch, now if the user uses XREADGROUP .. COUNT 1 there will be\r\nan additional\r\noverhead of MULTI, EXEC and XGROUPSETID. We assume the extra command in\r\ncase of\r\nCOUNT 1 (4x factor, changing from one XCLAIM to\r\nMULTI+XCLAIM+XSETID+EXEC), is probably\r\nok since reading just one entry is in any case very inefficient (a\r\nclient round trip\r\nper record), so we're hoping it's not a common case.\r\n\r\nIssue was introduced in #9127."
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/f17381a38d78f75e228d00972115b31d9a1d0b2e",
+    "html_url": "https://github.com/redis/redis/commit/f17381a38d78f75e228d00972115b31d9a1d0b2e",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/f17381a38d78f75e228d00972115b31d9a1d0b2e/comments",
+    "author": {
+      "login": "enjoy-binbin",
+      "id": 22811481,
+      "node_id": "MDQ6VXNlcjIyODExNDgx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22811481?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/enjoy-binbin",
+      "html_url": "https://github.com/enjoy-binbin",
+      "followers_url": "https://api.github.com/users/enjoy-binbin/followers",
+      "following_url": "https://api.github.com/users/enjoy-binbin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/enjoy-binbin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/enjoy-binbin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/enjoy-binbin/subscriptions",
+      "organizations_url": "https://api.github.com/users/enjoy-binbin/orgs",
+      "repos_url": "https://api.github.com/users/enjoy-binbin/repos",
+      "events_url": "https://api.github.com/users/enjoy-binbin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/enjoy-binbin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "cc9fbd270e6a845289aee475d84b2a2711e8d6aa",
+        "url": "https://api.github.com/repos/redis/redis/commits/cc9fbd270e6a845289aee475d84b2a2711e8d6aa",
+        "html_url": "https://github.com/redis/redis/commit/cc9fbd270e6a845289aee475d84b2a2711e8d6aa"
+      }
+    ]
+  },
+  {
+    "sha": "cc9fbd270e6a845289aee475d84b2a2711e8d6aa",
+    "node_id": "C_kwDOAAJhctoAKGNjOWZiZDI3MGU2YTg0NTI4OWFlZTQ3NWQ4NGIyYTI3MTFlOGQ2YWE",
+    "commit": {
+      "author": {
+        "name": "zhaozhao.zz",
+        "email": "zhaozhao.zz@alibaba-inc.com",
+        "date": "2024-02-29T06:16:41Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-02-29T06:16:41Z"
+      },
+      "message": "freeDictIfNeeded when kvstoreEmpty (#13098)\n\njust like `kvstoreDictDelete`, we need check `freeDictIfNeeded` when\r\n`kvstoreEmpty`.",
+      "tree": {
+        "sha": "aff42cdc13e4681bcf74ff0c53586a7c5417ef69",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/aff42cdc13e4681bcf74ff0c53586a7c5417ef69"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/cc9fbd270e6a845289aee475d84b2a2711e8d6aa",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl4CFJCRC1aQ7uu5UhlAAA7QcQAA2h4mHV96a31O+v0p8/PavB\nK4w+NmmY1If6C2+DZtz6e85Lq6sOZSSRNt2hBD+Lt/1TUoUf/mueNBYVhj1fqoEs\n7luzFI4WTPyz0W4Ui1qpqiTAN8NNewRUfSLVlW/6gfWXXDDUvg9qHvFCk//U51to\nuqimjf8nKzAZ4/B7rIHTq63NLdwN+MdWRKVPumpA7DY1Sxzym05TewhNh8b327k6\neW4XS1si+UMNydGTx4vWaZKZ9fVw1PKaBK5hNzuRe5FoWKgJaWMEfnSSxKre9z2X\nPZh3quQXRrOSJIhpPRlKperQ950xEF4oQbjroCVZIFicne0czHLswyEcUtDUBhXW\nnEiLQiMWiWcCeO+DzmNIS/z+PSzYgJ2Zb+F83AsSGPqTt6sGTPudcohu9T9zy0/u\nzviXsou+/u1UTBngQG1IJLe0iHfiEKfjDYqUHE4Sh4tikf1Xd21INTPLqIr7WyJS\ns2PTyTtCE/GGALFPwQP2IAs0c4CWV4p0hBvSyQMpLP+8qhyRQi8h1ximhiFVX8+2\ndizixlITiuW6Xza1ExOK+EfAISU5PBevcLb4TNzT6z8u069jOBqOzIhxJ5Ru1Wmj\niRMHSDJPkjI80w8a0jQgfsOX0K8ZNMHFWXiWt0jnOvSHHqqzB5sjBfPcxyo3iNcW\n/FOMWy5CJNGi9Fjys5Nr\n=+lPt\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree aff42cdc13e4681bcf74ff0c53586a7c5417ef69\nparent a7abc2f067f9ad124124b5a80cc106fc24c60a85\nauthor zhaozhao.zz <zhaozhao.zz@alibaba-inc.com> 1709187401 +0800\ncommitter GitHub <noreply@github.com> 1709187401 +0200\n\nfreeDictIfNeeded when kvstoreEmpty (#13098)\n\njust like `kvstoreDictDelete`, we need check `freeDictIfNeeded` when\r\n`kvstoreEmpty`."
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/cc9fbd270e6a845289aee475d84b2a2711e8d6aa",
+    "html_url": "https://github.com/redis/redis/commit/cc9fbd270e6a845289aee475d84b2a2711e8d6aa",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/cc9fbd270e6a845289aee475d84b2a2711e8d6aa/comments",
+    "author": {
+      "login": "soloestoy",
+      "id": 24804835,
+      "node_id": "MDQ6VXNlcjI0ODA0ODM1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/24804835?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/soloestoy",
+      "html_url": "https://github.com/soloestoy",
+      "followers_url": "https://api.github.com/users/soloestoy/followers",
+      "following_url": "https://api.github.com/users/soloestoy/following{/other_user}",
+      "gists_url": "https://api.github.com/users/soloestoy/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/soloestoy/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/soloestoy/subscriptions",
+      "organizations_url": "https://api.github.com/users/soloestoy/orgs",
+      "repos_url": "https://api.github.com/users/soloestoy/repos",
+      "events_url": "https://api.github.com/users/soloestoy/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/soloestoy/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "a7abc2f067f9ad124124b5a80cc106fc24c60a85",
+        "url": "https://api.github.com/repos/redis/redis/commits/a7abc2f067f9ad124124b5a80cc106fc24c60a85",
+        "html_url": "https://github.com/redis/redis/commit/a7abc2f067f9ad124124b5a80cc106fc24c60a85"
+      }
+    ]
+  },
+  {
+    "sha": "a7abc2f067f9ad124124b5a80cc106fc24c60a85",
+    "node_id": "C_kwDOAAJhctoAKGE3YWJjMmYwNjdmOWFkMTI0MTI0YjVhODBjYzEwNmZjMjRjNjBhODU",
+    "commit": {
+      "author": {
+        "name": "Binbin",
+        "email": "binloveplay1314@qq.com",
+        "date": "2024-02-28T15:57:29Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2024-02-28T15:57:29Z"
+      },
+      "message": "SCRIPT FLUSH run truly async, close lua interpreter in bio (#13087)\n\nEven if we have SCRIPT FLUSH ASYNC now, when there are a lot of\r\nlua scripts, SCRIPT FLUSH ASYNC will still block the main thread.\r\nThis is because lua_close is executed in the main thread, and lua\r\nheap needs to release a lot of memory.\r\n\r\nIn this PR, we take the current lua instance on lctx.lua and call\r\nlua_close on it in a background thread, to close it in async way.\r\nThis is MeirShpilraien's idea.",
+      "tree": {
+        "sha": "917b77d9e934f13134ef2fa75f743d8c1473cd80",
+        "url": "https://api.github.com/repos/redis/redis/git/trees/917b77d9e934f13134ef2fa75f743d8c1473cd80"
+      },
+      "url": "https://api.github.com/repos/redis/redis/git/commits/a7abc2f067f9ad124124b5a80cc106fc24c60a85",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJl31fpCRC1aQ7uu5UhlAAArpwQAJmEFD7CT03vUaVMer722oE0\nCQmpFO2OhxBUuPPZz5ZlA4sBD+lUfA9dbVF4nfdL5VahYPK49U1Pls8GPFyKxaFz\n9arSXHttrf0uIpw1u5h5WgtxhbXNR63kkMVu8F0YU8hEyii3HaLXydDl3V/AdGV6\nIsRGkGNalqqMazU33Ok2D6b9zT3gykgscqV0UeFormvjBN1vG+kqDsR9mEo8445C\nHKBkNvFeJRYNq+0MLwAa3Xjpec5YwVLqH9R5+mGhkwwOKWi99juVGyHoNwUUq/gn\nkQUfklDWdsMPRxuvnVLp913VIJ0FXpyWkI6fzvK1+Ns4Q70jrzsMwmcoP26VRgzZ\nP7BTU5S+haG/jyYfALPi6zPSyZaF70EHob/nrbZ1Dx7MtN5FaESbiuryLKlCHpj6\nXxoVgSPG4IvJLQMNz7uvfqhWnNhverbJIa4c3zIsjWPFF6TRGOpX66QpmPrBowwp\nmncZllss7ClTLr4+kwH/yIBIbOyuzkk0xGzkDiZ35xIx6bs8HrnhI/BJJWYVLlYZ\n4Nzc4GtvQSR2i6OljRmwjvtizXCs6RArxFg5Q5W2OspZ3MiyouaZwq3pdOQD2G6/\nLC1vQ/oJxbVpm6hNPgbqG+Q0ETco0052ojxlWjqLkjybpJGEt89EaxlpznkjQXtH\nyqsc7TdQ1HaihRSiJFUb\n=Gf34\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 917b77d9e934f13134ef2fa75f743d8c1473cd80\nparent 763827c98144fa83b4fc50eb4cae7ec4d63e7925\nauthor Binbin <binloveplay1314@qq.com> 1709135849 +0800\ncommitter GitHub <noreply@github.com> 1709135849 +0200\n\nSCRIPT FLUSH run truly async, close lua interpreter in bio (#13087)\n\nEven if we have SCRIPT FLUSH ASYNC now, when there are a lot of\r\nlua scripts, SCRIPT FLUSH ASYNC will still block the main thread.\r\nThis is because lua_close is executed in the main thread, and lua\r\nheap needs to release a lot of memory.\r\n\r\nIn this PR, we take the current lua instance on lctx.lua and call\r\nlua_close on it in a background thread, to close it in async way.\r\nThis is MeirShpilraien's idea."
+      }
+    },
+    "url": "https://api.github.com/repos/redis/redis/commits/a7abc2f067f9ad124124b5a80cc106fc24c60a85",
+    "html_url": "https://github.com/redis/redis/commit/a7abc2f067f9ad124124b5a80cc106fc24c60a85",
+    "comments_url": "https://api.github.com/repos/redis/redis/commits/a7abc2f067f9ad124124b5a80cc106fc24c60a85/comments",
+    "author": {
+      "login": "enjoy-binbin",
+      "id": 22811481,
+      "node_id": "MDQ6VXNlcjIyODExNDgx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22811481?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/enjoy-binbin",
+      "html_url": "https://github.com/enjoy-binbin",
+      "followers_url": "https://api.github.com/users/enjoy-binbin/followers",
+      "following_url": "https://api.github.com/users/enjoy-binbin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/enjoy-binbin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/enjoy-binbin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/enjoy-binbin/subscriptions",
+      "organizations_url": "https://api.github.com/users/enjoy-binbin/orgs",
+      "repos_url": "https://api.github.com/users/enjoy-binbin/repos",
+      "events_url": "https://api.github.com/users/enjoy-binbin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/enjoy-binbin/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "763827c98144fa83b4fc50eb4cae7ec4d63e7925",
+        "url": "https://api.github.com/repos/redis/redis/commits/763827c98144fa83b4fc50eb4cae7ec4d63e7925",
+        "html_url": "https://github.com/redis/redis/commit/763827c98144fa83b4fc50eb4cae7ec4d63e7925"
+      }
+    ]
+  }
+]

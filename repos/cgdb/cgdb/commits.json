@@ -1,0 +1,2372 @@
+[
+  {
+    "sha": "05f0c9e0e9a5f48cddd4a1cbef2870dc4f52d8af",
+    "node_id": "C_kwDOAECLWdoAKDA1ZjBjOWUwZTlhNWY0OGNkZGQ0YTFjYmVmMjg3MGRjNGY1MmQ4YWY",
+    "commit": {
+      "author": {
+        "name": "Pietro Cerutti",
+        "email": "pcerutti2@bloomberg.net",
+        "date": "2023-04-25T08:51:50Z"
+      },
+      "committer": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2023-08-14T02:05:11Z"
+      },
+      "message": "Make sure we call setlocale\n\nBefore #330, this was done for use by readline, through the chain of calls\nrl_initialize -> _rl_reset_locale -> _rl_init_locale -> setlocale\n\nFixes #342\n\nSigned-off-by: Pietro Cerutti <pcerutti2@bloomberg.net>",
+      "tree": {
+        "sha": "5b5c2d436f12fcc3f9f4575e2c09b2635e18e1a6",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/5b5c2d436f12fcc3f9f4575e2c09b2635e18e1a6"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/05f0c9e0e9a5f48cddd4a1cbef2870dc4f52d8af",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/05f0c9e0e9a5f48cddd4a1cbef2870dc4f52d8af",
+    "html_url": "https://github.com/cgdb/cgdb/commit/05f0c9e0e9a5f48cddd4a1cbef2870dc4f52d8af",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/05f0c9e0e9a5f48cddd4a1cbef2870dc4f52d8af/comments",
+    "author": {
+      "login": "gahr",
+      "id": 959474,
+      "node_id": "MDQ6VXNlcjk1OTQ3NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/959474?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahr",
+      "html_url": "https://github.com/gahr",
+      "followers_url": "https://api.github.com/users/gahr/followers",
+      "following_url": "https://api.github.com/users/gahr/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahr/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahr/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahr/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahr/orgs",
+      "repos_url": "https://api.github.com/users/gahr/repos",
+      "events_url": "https://api.github.com/users/gahr/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahr/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "7bbd9979cd05b642f03aa73d59ea3327682f1004",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/7bbd9979cd05b642f03aa73d59ea3327682f1004",
+        "html_url": "https://github.com/cgdb/cgdb/commit/7bbd9979cd05b642f03aa73d59ea3327682f1004"
+      }
+    ]
+  },
+  {
+    "sha": "7bbd9979cd05b642f03aa73d59ea3327682f1004",
+    "node_id": "C_kwDOAECLWdoAKDdiYmQ5OTc5Y2QwNWI2NDJmMDNhYTczZDU5ZWEzMzI3NjgyZjEwMDQ",
+    "commit": {
+      "author": {
+        "name": "Pietro Cerutti",
+        "email": "pcerutti2@bloomberg.net",
+        "date": "2022-09-01T16:07:34Z"
+      },
+      "committer": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2023-04-02T19:42:33Z"
+      },
+      "message": "Remove most of the rline wrapper\n\nThe rline wrapper is not used anymore as a proper wrapper for readline:\nthe gdb/mi interface handles readline events at gdb side.\nIn the future, we might want to reuse readline/linenoise for the status bar.\n\nThe only functionality left used is resolving key bindings by readline names.\n\nI don't know how you feel about seeing good code being removed;\nas of now, it's dead code and I think less code is often better code :)\nAnyway, this is up for discussion.\n\nSigned-off-by: Pietro Cerutti <pcerutti2@bloomberg.net>",
+      "tree": {
+        "sha": "70d4744739d422e9bb96fc726ea48e3a580f9c2a",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/70d4744739d422e9bb96fc726ea48e3a580f9c2a"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/7bbd9979cd05b642f03aa73d59ea3327682f1004",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/7bbd9979cd05b642f03aa73d59ea3327682f1004",
+    "html_url": "https://github.com/cgdb/cgdb/commit/7bbd9979cd05b642f03aa73d59ea3327682f1004",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/7bbd9979cd05b642f03aa73d59ea3327682f1004/comments",
+    "author": {
+      "login": "gahr",
+      "id": 959474,
+      "node_id": "MDQ6VXNlcjk1OTQ3NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/959474?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahr",
+      "html_url": "https://github.com/gahr",
+      "followers_url": "https://api.github.com/users/gahr/followers",
+      "following_url": "https://api.github.com/users/gahr/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahr/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahr/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahr/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahr/orgs",
+      "repos_url": "https://api.github.com/users/gahr/repos",
+      "events_url": "https://api.github.com/users/gahr/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahr/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8029142cf0486f02e63ea67daa5f95e696abdc1e",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/8029142cf0486f02e63ea67daa5f95e696abdc1e",
+        "html_url": "https://github.com/cgdb/cgdb/commit/8029142cf0486f02e63ea67daa5f95e696abdc1e"
+      }
+    ]
+  },
+  {
+    "sha": "8029142cf0486f02e63ea67daa5f95e696abdc1e",
+    "node_id": "C_kwDOAECLWdoAKDgwMjkxNDJjZjA0ODZmMDJlNjNlYTY3ZGFhNWY5NWU2OTZhYmRjMWU",
+    "commit": {
+      "author": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2023-04-01T21:15:53Z"
+      },
+      "committer": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2023-04-01T21:15:53Z"
+      },
+      "message": "Move file system code to std::string\n\nCGDB is no longer reliant on char array's of size FSUTIL_PATH_MAX.\nNow std::string objects are passed around to deal with the filesystem.\n\nSigned-off-by: Bob Rossi <bob@brasko.net>",
+      "tree": {
+        "sha": "71c2f86c2d2829197c86921f97bf15d37310f00e",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/71c2f86c2d2829197c86921f97bf15d37310f00e"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/8029142cf0486f02e63ea67daa5f95e696abdc1e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/8029142cf0486f02e63ea67daa5f95e696abdc1e",
+    "html_url": "https://github.com/cgdb/cgdb/commit/8029142cf0486f02e63ea67daa5f95e696abdc1e",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/8029142cf0486f02e63ea67daa5f95e696abdc1e/comments",
+    "author": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "aafd7206a5d61c72536948a138e9c1ecf30b7386",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/aafd7206a5d61c72536948a138e9c1ecf30b7386",
+        "html_url": "https://github.com/cgdb/cgdb/commit/aafd7206a5d61c72536948a138e9c1ecf30b7386"
+      }
+    ]
+  },
+  {
+    "sha": "aafd7206a5d61c72536948a138e9c1ecf30b7386",
+    "node_id": "C_kwDOAECLWdoAKGFhZmQ3MjA2YTVkNjFjNzI1MzY5NDhhMTM4ZTljMWVjZjMwYjczODY",
+    "commit": {
+      "author": {
+        "name": "Pietro Cerutti",
+        "email": "pcerutti2@bloomberg.net",
+        "date": "2022-08-25T09:19:45Z"
+      },
+      "committer": {
+        "name": "Pietro Cerutti",
+        "email": "pcerutti2@bloomberg.net",
+        "date": "2022-08-25T09:19:45Z"
+      },
+      "message": "Show the most recently set mark\n\nThis changes how we keep track of marks, so that we can associate a list\nof marks per line, and keep them ordered from most recently set to least\nrecently set to be able to display the most recent one.\n\nSigned-off-by: Pietro Cerutti <pcerutti2@bloomberg.net>",
+      "tree": {
+        "sha": "d49ef924432dbda941754b06d36399a4656cc2ed",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/d49ef924432dbda941754b06d36399a4656cc2ed"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/aafd7206a5d61c72536948a138e9c1ecf30b7386",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/aafd7206a5d61c72536948a138e9c1ecf30b7386",
+    "html_url": "https://github.com/cgdb/cgdb/commit/aafd7206a5d61c72536948a138e9c1ecf30b7386",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/aafd7206a5d61c72536948a138e9c1ecf30b7386/comments",
+    "author": {
+      "login": "gahr",
+      "id": 959474,
+      "node_id": "MDQ6VXNlcjk1OTQ3NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/959474?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahr",
+      "html_url": "https://github.com/gahr",
+      "followers_url": "https://api.github.com/users/gahr/followers",
+      "following_url": "https://api.github.com/users/gahr/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahr/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahr/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahr/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahr/orgs",
+      "repos_url": "https://api.github.com/users/gahr/repos",
+      "events_url": "https://api.github.com/users/gahr/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahr/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "gahr",
+      "id": 959474,
+      "node_id": "MDQ6VXNlcjk1OTQ3NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/959474?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahr",
+      "html_url": "https://github.com/gahr",
+      "followers_url": "https://api.github.com/users/gahr/followers",
+      "following_url": "https://api.github.com/users/gahr/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahr/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahr/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahr/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahr/orgs",
+      "repos_url": "https://api.github.com/users/gahr/repos",
+      "events_url": "https://api.github.com/users/gahr/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahr/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "878fd962ed2bf42ced297331d8a3db6f34cdbd40",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/878fd962ed2bf42ced297331d8a3db6f34cdbd40",
+        "html_url": "https://github.com/cgdb/cgdb/commit/878fd962ed2bf42ced297331d8a3db6f34cdbd40"
+      }
+    ]
+  },
+  {
+    "sha": "878fd962ed2bf42ced297331d8a3db6f34cdbd40",
+    "node_id": "C_kwDOAECLWdoAKDg3OGZkOTYyZWQyYmY0MmNlZDI5NzMzMWQ4YTNkYjZmMzRjZGJkNDA",
+    "commit": {
+      "author": {
+        "name": "Pietro Cerutti",
+        "email": "pcerutti2@bloomberg.net",
+        "date": "2022-08-25T07:17:44Z"
+      },
+      "committer": {
+        "name": "Pietro Cerutti",
+        "email": "pcerutti2@bloomberg.net",
+        "date": "2022-08-25T07:17:44Z"
+      },
+      "message": "Correctly detect global marks\n\nThis fixes a pre-existing bug. Setting a global mark X on line N of a\ncertain file then setting it on the same line N of a different file\nwould keep line N of the old file flagged as having mark X.\nFunctionally, jumping to mark X would correctly navigate to the new\nfile, but visually we would have two files flagged as having mark X.\n\nSigned-off-by: Pietro Cerutti <pcerutti2@bloomberg.net>",
+      "tree": {
+        "sha": "d04b886838bfa94a37a2d08d3e251135a843e8d9",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/d04b886838bfa94a37a2d08d3e251135a843e8d9"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/878fd962ed2bf42ced297331d8a3db6f34cdbd40",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/878fd962ed2bf42ced297331d8a3db6f34cdbd40",
+    "html_url": "https://github.com/cgdb/cgdb/commit/878fd962ed2bf42ced297331d8a3db6f34cdbd40",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/878fd962ed2bf42ced297331d8a3db6f34cdbd40/comments",
+    "author": {
+      "login": "gahr",
+      "id": 959474,
+      "node_id": "MDQ6VXNlcjk1OTQ3NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/959474?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahr",
+      "html_url": "https://github.com/gahr",
+      "followers_url": "https://api.github.com/users/gahr/followers",
+      "following_url": "https://api.github.com/users/gahr/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahr/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahr/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahr/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahr/orgs",
+      "repos_url": "https://api.github.com/users/gahr/repos",
+      "events_url": "https://api.github.com/users/gahr/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahr/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "gahr",
+      "id": 959474,
+      "node_id": "MDQ6VXNlcjk1OTQ3NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/959474?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahr",
+      "html_url": "https://github.com/gahr",
+      "followers_url": "https://api.github.com/users/gahr/followers",
+      "following_url": "https://api.github.com/users/gahr/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahr/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahr/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahr/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahr/orgs",
+      "repos_url": "https://api.github.com/users/gahr/repos",
+      "events_url": "https://api.github.com/users/gahr/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahr/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "e5b5f0254354d59d8a106c0f28a02e71fe4b5452",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/e5b5f0254354d59d8a106c0f28a02e71fe4b5452",
+        "html_url": "https://github.com/cgdb/cgdb/commit/e5b5f0254354d59d8a106c0f28a02e71fe4b5452"
+      }
+    ]
+  },
+  {
+    "sha": "e5b5f0254354d59d8a106c0f28a02e71fe4b5452",
+    "node_id": "C_kwDOAECLWdoAKGU1YjVmMDI1NDM1NGQ1OWQ4YTEwNmMwZjI4YTAyZTcxZmU0YjU0NTI",
+    "commit": {
+      "author": {
+        "name": "Pietro Cerutti",
+        "email": "pcerutti2@bloomberg.net",
+        "date": "2022-08-23T08:27:50Z"
+      },
+      "committer": {
+        "name": "Pietro Cerutti",
+        "email": "pcerutti2@bloomberg.net",
+        "date": "2022-08-25T07:13:04Z"
+      },
+      "message": "Allow toggling marks with the `m` cgdb command\n\nThis enhances the `m` command so that setting the same marker again at\nthe same location has the effect of removing the mark.\n\nAs a side note, a location can have many marks, and the mark displayed\nis the one with the lowest letter. We might want to change that so that\nthe most recent mark is displayed, but this requires more fundamental\nchanges to how marks are managed. I think I'd do that as a separate PR.\n\nIssue #319\n\nSigned-off-by: Pietro Cerutti <pcerutti2@bloomberg.net>",
+      "tree": {
+        "sha": "b775114bb05cad90223a5a38241e8e7956ee6b27",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/b775114bb05cad90223a5a38241e8e7956ee6b27"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/e5b5f0254354d59d8a106c0f28a02e71fe4b5452",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/e5b5f0254354d59d8a106c0f28a02e71fe4b5452",
+    "html_url": "https://github.com/cgdb/cgdb/commit/e5b5f0254354d59d8a106c0f28a02e71fe4b5452",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/e5b5f0254354d59d8a106c0f28a02e71fe4b5452/comments",
+    "author": {
+      "login": "gahr",
+      "id": 959474,
+      "node_id": "MDQ6VXNlcjk1OTQ3NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/959474?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahr",
+      "html_url": "https://github.com/gahr",
+      "followers_url": "https://api.github.com/users/gahr/followers",
+      "following_url": "https://api.github.com/users/gahr/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahr/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahr/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahr/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahr/orgs",
+      "repos_url": "https://api.github.com/users/gahr/repos",
+      "events_url": "https://api.github.com/users/gahr/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahr/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "gahr",
+      "id": 959474,
+      "node_id": "MDQ6VXNlcjk1OTQ3NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/959474?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahr",
+      "html_url": "https://github.com/gahr",
+      "followers_url": "https://api.github.com/users/gahr/followers",
+      "following_url": "https://api.github.com/users/gahr/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahr/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahr/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahr/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahr/orgs",
+      "repos_url": "https://api.github.com/users/gahr/repos",
+      "events_url": "https://api.github.com/users/gahr/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahr/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "d25d082e233822d540d88ef66fd585e1024d98db",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/d25d082e233822d540d88ef66fd585e1024d98db",
+        "html_url": "https://github.com/cgdb/cgdb/commit/d25d082e233822d540d88ef66fd585e1024d98db"
+      }
+    ]
+  },
+  {
+    "sha": "d25d082e233822d540d88ef66fd585e1024d98db",
+    "node_id": "C_kwDOAECLWdoAKGQyNWQwODJlMjMzODIyZDU0MGQ4OGVmNjZmZDU4NWUxMDI0ZDk4ZGI",
+    "commit": {
+      "author": {
+        "name": "Pietro Cerutti",
+        "email": "pcerutti2@bloomberg.net",
+        "date": "2022-04-20T07:54:32Z"
+      },
+      "committer": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-08-19T11:30:11Z"
+      },
+      "message": "Add ', to jump to the executing line across files\n\nThe '. jump command only resolves the currently executing line in the\ncurrently displayed buffer. When navigating source files, it's sometimes\nconvenient to be able to jump back to the currently executing line\nacross files. I've implemented ', as a variation of '. to do that.\n\nAlternatively, if preferred, I can also implement the feature in the\noriginal '. command.\n\nSigned-off-by: Pietro Cerutti <gahr@gahr.ch>\n\nRefactor\n\nSigned-off-by: Pietro Cerutti <gahr@gahr.ch>\n\nMerge ', into '.\n\nSigned-off-by: Pietro Cerutti <gahr@gahr.ch>\n\nFix doc\n\nSigned-off-by: Pietro Cerutti <gahr@gahr.ch>\n\nInitialize member\n\nSigned-off-by: Pietro Cerutti <gahr@gahr.ch>",
+      "tree": {
+        "sha": "9051e42888a9de207ffb1a6358b49c21b4f1c296",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/9051e42888a9de207ffb1a6358b49c21b4f1c296"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/d25d082e233822d540d88ef66fd585e1024d98db",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/d25d082e233822d540d88ef66fd585e1024d98db",
+    "html_url": "https://github.com/cgdb/cgdb/commit/d25d082e233822d540d88ef66fd585e1024d98db",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/d25d082e233822d540d88ef66fd585e1024d98db/comments",
+    "author": {
+      "login": "gahr",
+      "id": 959474,
+      "node_id": "MDQ6VXNlcjk1OTQ3NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/959474?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahr",
+      "html_url": "https://github.com/gahr",
+      "followers_url": "https://api.github.com/users/gahr/followers",
+      "following_url": "https://api.github.com/users/gahr/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahr/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahr/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahr/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahr/orgs",
+      "repos_url": "https://api.github.com/users/gahr/repos",
+      "events_url": "https://api.github.com/users/gahr/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahr/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "bddd2442b7236c31754e23370c258f3abdd760f7",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/bddd2442b7236c31754e23370c258f3abdd760f7",
+        "html_url": "https://github.com/cgdb/cgdb/commit/bddd2442b7236c31754e23370c258f3abdd760f7"
+      }
+    ]
+  },
+  {
+    "sha": "bddd2442b7236c31754e23370c258f3abdd760f7",
+    "node_id": "C_kwDOAECLWdoAKGJkZGQyNDQyYjcyMzZjMzE3NTRlMjMzNzBjMjU4ZjNhYmRkNzYwZjc",
+    "commit": {
+      "author": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-07-16T01:37:11Z"
+      },
+      "committer": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-07-16T01:37:11Z"
+      },
+      "message": "CGDB will now stop highlighting the last search on a new failed search\n\nSigned-off-by: Bob Rossi <bob@brasko.net>",
+      "tree": {
+        "sha": "72c4c922c2e452ccf194532012c9bf10416d24ba",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/72c4c922c2e452ccf194532012c9bf10416d24ba"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/bddd2442b7236c31754e23370c258f3abdd760f7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/bddd2442b7236c31754e23370c258f3abdd760f7",
+    "html_url": "https://github.com/cgdb/cgdb/commit/bddd2442b7236c31754e23370c258f3abdd760f7",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/bddd2442b7236c31754e23370c258f3abdd760f7/comments",
+    "author": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "208d03896d0295358ac9462df7e727a00ed83f7d",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/208d03896d0295358ac9462df7e727a00ed83f7d",
+        "html_url": "https://github.com/cgdb/cgdb/commit/208d03896d0295358ac9462df7e727a00ed83f7d"
+      }
+    ]
+  },
+  {
+    "sha": "208d03896d0295358ac9462df7e727a00ed83f7d",
+    "node_id": "C_kwDOAECLWdoAKDIwOGQwMzg5NmQwMjk1MzU4YWM5NDYyZGY3ZTcyN2EwMGVkODNmN2Q",
+    "commit": {
+      "author": {
+        "name": "Pietro Cerutti",
+        "email": "gahr@gahr.ch",
+        "date": "2022-06-09T14:49:25Z"
+      },
+      "committer": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-06-13T02:31:31Z"
+      },
+      "message": "Fix an empty string check\n\nThe variable terminal->textbuf is an array, not a pointer.\n\nSigned-off-by: Pietro Cerutti <gahr@gahr.ch>",
+      "tree": {
+        "sha": "c5d895d82767bba2443f1164b72696c303b31b16",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/c5d895d82767bba2443f1164b72696c303b31b16"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/208d03896d0295358ac9462df7e727a00ed83f7d",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/208d03896d0295358ac9462df7e727a00ed83f7d",
+    "html_url": "https://github.com/cgdb/cgdb/commit/208d03896d0295358ac9462df7e727a00ed83f7d",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/208d03896d0295358ac9462df7e727a00ed83f7d/comments",
+    "author": {
+      "login": "gahr",
+      "id": 959474,
+      "node_id": "MDQ6VXNlcjk1OTQ3NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/959474?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahr",
+      "html_url": "https://github.com/gahr",
+      "followers_url": "https://api.github.com/users/gahr/followers",
+      "following_url": "https://api.github.com/users/gahr/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahr/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahr/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahr/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahr/orgs",
+      "repos_url": "https://api.github.com/users/gahr/repos",
+      "events_url": "https://api.github.com/users/gahr/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahr/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1f11975d43116cb86507dea7a6fd36bbbf782487",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/1f11975d43116cb86507dea7a6fd36bbbf782487",
+        "html_url": "https://github.com/cgdb/cgdb/commit/1f11975d43116cb86507dea7a6fd36bbbf782487"
+      }
+    ]
+  },
+  {
+    "sha": "1f11975d43116cb86507dea7a6fd36bbbf782487",
+    "node_id": "C_kwDOAECLWdoAKDFmMTE5NzVkNDMxMTZjYjg2NTA3ZGVhN2E2ZmQzNmJiYmY3ODI0ODc",
+    "commit": {
+      "author": {
+        "name": "Pietro Cerutti",
+        "email": "gahr@gahr.ch",
+        "date": "2022-05-29T10:31:59Z"
+      },
+      "committer": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-06-13T02:13:17Z"
+      },
+      "message": "Keep kui_driver test code\n\nSigned-off-by: Pietro Cerutti <gahr@gahr.ch>",
+      "tree": {
+        "sha": "38c630b7a0c5f74a12aed56fe4bf3285a7125e93",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/38c630b7a0c5f74a12aed56fe4bf3285a7125e93"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/1f11975d43116cb86507dea7a6fd36bbbf782487",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/1f11975d43116cb86507dea7a6fd36bbbf782487",
+    "html_url": "https://github.com/cgdb/cgdb/commit/1f11975d43116cb86507dea7a6fd36bbbf782487",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/1f11975d43116cb86507dea7a6fd36bbbf782487/comments",
+    "author": {
+      "login": "gahr",
+      "id": 959474,
+      "node_id": "MDQ6VXNlcjk1OTQ3NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/959474?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahr",
+      "html_url": "https://github.com/gahr",
+      "followers_url": "https://api.github.com/users/gahr/followers",
+      "following_url": "https://api.github.com/users/gahr/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahr/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahr/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahr/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahr/orgs",
+      "repos_url": "https://api.github.com/users/gahr/repos",
+      "events_url": "https://api.github.com/users/gahr/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahr/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "79ddcb868597bba25e2a83a489cf9c5cb36b500b",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/79ddcb868597bba25e2a83a489cf9c5cb36b500b",
+        "html_url": "https://github.com/cgdb/cgdb/commit/79ddcb868597bba25e2a83a489cf9c5cb36b500b"
+      }
+    ]
+  },
+  {
+    "sha": "79ddcb868597bba25e2a83a489cf9c5cb36b500b",
+    "node_id": "C_kwDOAECLWdoAKDc5ZGRjYjg2ODU5N2JiYTI1ZTJhODNhNDg5Y2Y5YzVjYjM2YjUwMGI",
+    "commit": {
+      "author": {
+        "name": "Pietro Cerutti",
+        "email": "gahr@gahr.ch",
+        "date": "2022-05-29T10:21:23Z"
+      },
+      "committer": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-06-13T02:13:17Z"
+      },
+      "message": "Simplify kui_manager initialization\n\nSigned-off-by: Pietro Cerutti <gahr@gahr.ch>",
+      "tree": {
+        "sha": "8d6785ca3ab067f9d4e9b725c157036d54e19149",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/8d6785ca3ab067f9d4e9b725c157036d54e19149"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/79ddcb868597bba25e2a83a489cf9c5cb36b500b",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/79ddcb868597bba25e2a83a489cf9c5cb36b500b",
+    "html_url": "https://github.com/cgdb/cgdb/commit/79ddcb868597bba25e2a83a489cf9c5cb36b500b",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/79ddcb868597bba25e2a83a489cf9c5cb36b500b/comments",
+    "author": {
+      "login": "gahr",
+      "id": 959474,
+      "node_id": "MDQ6VXNlcjk1OTQ3NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/959474?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahr",
+      "html_url": "https://github.com/gahr",
+      "followers_url": "https://api.github.com/users/gahr/followers",
+      "following_url": "https://api.github.com/users/gahr/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahr/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahr/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahr/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahr/orgs",
+      "repos_url": "https://api.github.com/users/gahr/repos",
+      "events_url": "https://api.github.com/users/gahr/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahr/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "862a5dade3e66c3af393abe3baed5ac46d1e5155",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/862a5dade3e66c3af393abe3baed5ac46d1e5155",
+        "html_url": "https://github.com/cgdb/cgdb/commit/862a5dade3e66c3af393abe3baed5ac46d1e5155"
+      }
+    ]
+  },
+  {
+    "sha": "862a5dade3e66c3af393abe3baed5ac46d1e5155",
+    "node_id": "C_kwDOAECLWdoAKDg2MmE1ZGFkZTNlNjZjM2FmMzkzYWJlM2JhZWQ1YWM0NmQxZTUxNTU",
+    "commit": {
+      "author": {
+        "name": "Pietro Cerutti",
+        "email": "gahr@gahr.ch",
+        "date": "2022-05-29T10:14:47Z"
+      },
+      "committer": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-06-13T02:13:17Z"
+      },
+      "message": "Avoid memory leaks on the failure path\n\nSigned-off-by: Pietro Cerutti <gahr@gahr.ch>",
+      "tree": {
+        "sha": "4b40c7fef3a478fdeaf62911e3fe0524b82c12ab",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/4b40c7fef3a478fdeaf62911e3fe0524b82c12ab"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/862a5dade3e66c3af393abe3baed5ac46d1e5155",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/862a5dade3e66c3af393abe3baed5ac46d1e5155",
+    "html_url": "https://github.com/cgdb/cgdb/commit/862a5dade3e66c3af393abe3baed5ac46d1e5155",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/862a5dade3e66c3af393abe3baed5ac46d1e5155/comments",
+    "author": {
+      "login": "gahr",
+      "id": 959474,
+      "node_id": "MDQ6VXNlcjk1OTQ3NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/959474?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahr",
+      "html_url": "https://github.com/gahr",
+      "followers_url": "https://api.github.com/users/gahr/followers",
+      "following_url": "https://api.github.com/users/gahr/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahr/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahr/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahr/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahr/orgs",
+      "repos_url": "https://api.github.com/users/gahr/repos",
+      "events_url": "https://api.github.com/users/gahr/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahr/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "34bbed4fa1186a6f8936136f18dcc23378b90fda",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/34bbed4fa1186a6f8936136f18dcc23378b90fda",
+        "html_url": "https://github.com/cgdb/cgdb/commit/34bbed4fa1186a6f8936136f18dcc23378b90fda"
+      }
+    ]
+  },
+  {
+    "sha": "34bbed4fa1186a6f8936136f18dcc23378b90fda",
+    "node_id": "C_kwDOAECLWdoAKDM0YmJlZDRmYTExODZhNmY4OTM2MTM2ZjE4ZGNjMjMzNzhiOTBmZGE",
+    "commit": {
+      "author": {
+        "name": "Pietro Cerutti",
+        "email": "gahr@gahr.ch",
+        "date": "2022-04-30T15:19:48Z"
+      },
+      "committer": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-06-13T02:13:17Z"
+      },
+      "message": "Add kui README\n\nSigned-off-by: Pietro Cerutti <gahr@gahr.ch>",
+      "tree": {
+        "sha": "f629dca1fb2fefb3282850fff2576012a7dc5750",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/f629dca1fb2fefb3282850fff2576012a7dc5750"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/34bbed4fa1186a6f8936136f18dcc23378b90fda",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/34bbed4fa1186a6f8936136f18dcc23378b90fda",
+    "html_url": "https://github.com/cgdb/cgdb/commit/34bbed4fa1186a6f8936136f18dcc23378b90fda",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/34bbed4fa1186a6f8936136f18dcc23378b90fda/comments",
+    "author": {
+      "login": "gahr",
+      "id": 959474,
+      "node_id": "MDQ6VXNlcjk1OTQ3NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/959474?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahr",
+      "html_url": "https://github.com/gahr",
+      "followers_url": "https://api.github.com/users/gahr/followers",
+      "following_url": "https://api.github.com/users/gahr/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahr/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahr/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahr/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahr/orgs",
+      "repos_url": "https://api.github.com/users/gahr/repos",
+      "events_url": "https://api.github.com/users/gahr/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahr/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "0b3383c05674540c89b08cc628eaa4e1ac2d5f89",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/0b3383c05674540c89b08cc628eaa4e1ac2d5f89",
+        "html_url": "https://github.com/cgdb/cgdb/commit/0b3383c05674540c89b08cc628eaa4e1ac2d5f89"
+      }
+    ]
+  },
+  {
+    "sha": "0b3383c05674540c89b08cc628eaa4e1ac2d5f89",
+    "node_id": "C_kwDOAECLWdoAKDBiMzM4M2MwNTY3NDU0MGM4OWIwOGNjNjI4ZWFhNGUxYWMyZDVmODk",
+    "commit": {
+      "author": {
+        "name": "Pietro Cerutti",
+        "email": "gahr@gahr.ch",
+        "date": "2022-04-16T19:16:09Z"
+      },
+      "committer": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-06-13T02:13:17Z"
+      },
+      "message": "Split the KUI library into C++ components\n\nMore automatic memory management via unique_ptr and shared_ptr. More\nrange-for loops and fewer uses of sentinels (see CGDB_KEY_ERROR). Fewer\nuseless checks on object construction. Methods are split from the giant\ntui.cpp and split into modules. Now they can be looked at and further\nimproved in isolation.\n\nThe only real functional change is in the initialization of the term\ncapabilities triggered by kui_term_get_terminal_mappings: we now get the\nenvironment and the terminal entry (tgetent) once for all keys.\n\nSigned-off-by: Pietro Cerutti <gahr@gahr.ch>",
+      "tree": {
+        "sha": "1a6564e54bc49cad38391928d3451ee07f2062b0",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/1a6564e54bc49cad38391928d3451ee07f2062b0"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/0b3383c05674540c89b08cc628eaa4e1ac2d5f89",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/0b3383c05674540c89b08cc628eaa4e1ac2d5f89",
+    "html_url": "https://github.com/cgdb/cgdb/commit/0b3383c05674540c89b08cc628eaa4e1ac2d5f89",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/0b3383c05674540c89b08cc628eaa4e1ac2d5f89/comments",
+    "author": {
+      "login": "gahr",
+      "id": 959474,
+      "node_id": "MDQ6VXNlcjk1OTQ3NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/959474?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahr",
+      "html_url": "https://github.com/gahr",
+      "followers_url": "https://api.github.com/users/gahr/followers",
+      "following_url": "https://api.github.com/users/gahr/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahr/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahr/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahr/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahr/orgs",
+      "repos_url": "https://api.github.com/users/gahr/repos",
+      "events_url": "https://api.github.com/users/gahr/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahr/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "05784386276aaea52a5d1fc2def463ae49d56edc",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/05784386276aaea52a5d1fc2def463ae49d56edc",
+        "html_url": "https://github.com/cgdb/cgdb/commit/05784386276aaea52a5d1fc2def463ae49d56edc"
+      }
+    ]
+  },
+  {
+    "sha": "05784386276aaea52a5d1fc2def463ae49d56edc",
+    "node_id": "C_kwDOAECLWdoAKDA1Nzg0Mzg2Mjc2YWFlYTUyYTVkMWZjMmRlZjQ2M2FlNDlkNTZlZGM",
+    "commit": {
+      "author": {
+        "name": "Pietro Cerutti",
+        "email": "gahr@gahr.ch",
+        "date": "2022-04-25T06:51:37Z"
+      },
+      "committer": {
+        "name": "brasko",
+        "email": "bob@brasko.net",
+        "date": "2022-04-29T23:08:43Z"
+      },
+      "message": "Fix typos and small nitpicks in the docs\n\nSigned-off-by: Pietro Cerutti <gahr@gahr.ch>",
+      "tree": {
+        "sha": "d2ba44d24fb822af86d859ce89f92df7633a3136",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/d2ba44d24fb822af86d859ce89f92df7633a3136"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/05784386276aaea52a5d1fc2def463ae49d56edc",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/05784386276aaea52a5d1fc2def463ae49d56edc",
+    "html_url": "https://github.com/cgdb/cgdb/commit/05784386276aaea52a5d1fc2def463ae49d56edc",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/05784386276aaea52a5d1fc2def463ae49d56edc/comments",
+    "author": {
+      "login": "gahr",
+      "id": 959474,
+      "node_id": "MDQ6VXNlcjk1OTQ3NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/959474?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahr",
+      "html_url": "https://github.com/gahr",
+      "followers_url": "https://api.github.com/users/gahr/followers",
+      "following_url": "https://api.github.com/users/gahr/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahr/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahr/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahr/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahr/orgs",
+      "repos_url": "https://api.github.com/users/gahr/repos",
+      "events_url": "https://api.github.com/users/gahr/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahr/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "37fae5425d335711e6041712efb26ff284b4e97e",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/37fae5425d335711e6041712efb26ff284b4e97e",
+        "html_url": "https://github.com/cgdb/cgdb/commit/37fae5425d335711e6041712efb26ff284b4e97e"
+      }
+    ]
+  },
+  {
+    "sha": "37fae5425d335711e6041712efb26ff284b4e97e",
+    "node_id": "C_kwDOAECLWdoAKDM3ZmFlNTQyNWQzMzU3MTFlNjA0MTcxMmVmYjI2ZmYyODRiNGU5N2U",
+    "commit": {
+      "author": {
+        "name": "Pietro Cerutti",
+        "email": "gahr@gahr.ch",
+        "date": "2022-04-11T08:20:00Z"
+      },
+      "committer": {
+        "name": "brasko",
+        "email": "bob@brasko.net",
+        "date": "2022-04-13T02:01:37Z"
+      },
+      "message": "Remove unused include\n\nSigned-off-by: Pietro Cerutti <gahr@gahr.ch>",
+      "tree": {
+        "sha": "fc8583e9c46c941334833bf6c99c8a56388a160c",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/fc8583e9c46c941334833bf6c99c8a56388a160c"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/37fae5425d335711e6041712efb26ff284b4e97e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/37fae5425d335711e6041712efb26ff284b4e97e",
+    "html_url": "https://github.com/cgdb/cgdb/commit/37fae5425d335711e6041712efb26ff284b4e97e",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/37fae5425d335711e6041712efb26ff284b4e97e/comments",
+    "author": {
+      "login": "gahr",
+      "id": 959474,
+      "node_id": "MDQ6VXNlcjk1OTQ3NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/959474?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahr",
+      "html_url": "https://github.com/gahr",
+      "followers_url": "https://api.github.com/users/gahr/followers",
+      "following_url": "https://api.github.com/users/gahr/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahr/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahr/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahr/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahr/orgs",
+      "repos_url": "https://api.github.com/users/gahr/repos",
+      "events_url": "https://api.github.com/users/gahr/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahr/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5c6de125cdecfabe72a90db797863feb213e3bbf",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/5c6de125cdecfabe72a90db797863feb213e3bbf",
+        "html_url": "https://github.com/cgdb/cgdb/commit/5c6de125cdecfabe72a90db797863feb213e3bbf"
+      }
+    ]
+  },
+  {
+    "sha": "5c6de125cdecfabe72a90db797863feb213e3bbf",
+    "node_id": "C_kwDOAECLWdoAKDVjNmRlMTI1Y2RlY2ZhYmU3MmE5MGRiNzk3ODYzZmViMjEzZTNiYmY",
+    "commit": {
+      "author": {
+        "name": "Pietro Cerutti",
+        "email": "gahr@gahr.ch",
+        "date": "2022-04-11T08:07:35Z"
+      },
+      "committer": {
+        "name": "brasko",
+        "email": "bob@brasko.net",
+        "date": "2022-04-13T02:01:37Z"
+      },
+      "message": "Hide kui_tree's node into the cpp file\n\nSigned-off-by: Pietro Cerutti <gahr@gahr.ch>",
+      "tree": {
+        "sha": "d60c35ba3656b146efb81f99c63d6791342aafff",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/d60c35ba3656b146efb81f99c63d6791342aafff"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/5c6de125cdecfabe72a90db797863feb213e3bbf",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/5c6de125cdecfabe72a90db797863feb213e3bbf",
+    "html_url": "https://github.com/cgdb/cgdb/commit/5c6de125cdecfabe72a90db797863feb213e3bbf",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/5c6de125cdecfabe72a90db797863feb213e3bbf/comments",
+    "author": {
+      "login": "gahr",
+      "id": 959474,
+      "node_id": "MDQ6VXNlcjk1OTQ3NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/959474?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahr",
+      "html_url": "https://github.com/gahr",
+      "followers_url": "https://api.github.com/users/gahr/followers",
+      "following_url": "https://api.github.com/users/gahr/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahr/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahr/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahr/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahr/orgs",
+      "repos_url": "https://api.github.com/users/gahr/repos",
+      "events_url": "https://api.github.com/users/gahr/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahr/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ab6715f49ae4ebb9cb7dab138ac8d070e5135ce0",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/ab6715f49ae4ebb9cb7dab138ac8d070e5135ce0",
+        "html_url": "https://github.com/cgdb/cgdb/commit/ab6715f49ae4ebb9cb7dab138ac8d070e5135ce0"
+      }
+    ]
+  },
+  {
+    "sha": "ab6715f49ae4ebb9cb7dab138ac8d070e5135ce0",
+    "node_id": "C_kwDOAECLWdoAKGFiNjcxNWY0OWFlNGViYjljYjdkYWIxMzhhYzhkMDcwZTUxMzVjZTA",
+    "commit": {
+      "author": {
+        "name": "Pietro Cerutti",
+        "email": "gahr@gahr.ch",
+        "date": "2022-04-11T07:47:04Z"
+      },
+      "committer": {
+        "name": "brasko",
+        "email": "bob@brasko.net",
+        "date": "2022-04-13T02:01:37Z"
+      },
+      "message": "Reflow comments to 80 cols\n\nSigned-off-by: Pietro Cerutti <gahr@gahr.ch>",
+      "tree": {
+        "sha": "480547858604fb32cc4341d26ce814e854d27b1b",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/480547858604fb32cc4341d26ce814e854d27b1b"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/ab6715f49ae4ebb9cb7dab138ac8d070e5135ce0",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/ab6715f49ae4ebb9cb7dab138ac8d070e5135ce0",
+    "html_url": "https://github.com/cgdb/cgdb/commit/ab6715f49ae4ebb9cb7dab138ac8d070e5135ce0",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/ab6715f49ae4ebb9cb7dab138ac8d070e5135ce0/comments",
+    "author": {
+      "login": "gahr",
+      "id": 959474,
+      "node_id": "MDQ6VXNlcjk1OTQ3NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/959474?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahr",
+      "html_url": "https://github.com/gahr",
+      "followers_url": "https://api.github.com/users/gahr/followers",
+      "following_url": "https://api.github.com/users/gahr/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahr/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahr/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahr/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahr/orgs",
+      "repos_url": "https://api.github.com/users/gahr/repos",
+      "events_url": "https://api.github.com/users/gahr/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahr/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "51ec241323e30f59583832f046613365cb1f398f",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/51ec241323e30f59583832f046613365cb1f398f",
+        "html_url": "https://github.com/cgdb/cgdb/commit/51ec241323e30f59583832f046613365cb1f398f"
+      }
+    ]
+  },
+  {
+    "sha": "51ec241323e30f59583832f046613365cb1f398f",
+    "node_id": "C_kwDOAECLWdoAKDUxZWMyNDEzMjNlMzBmNTk1ODM4MzJmMDQ2NjEzMzY1Y2IxZjM5OGY",
+    "commit": {
+      "author": {
+        "name": "Pietro Cerutti",
+        "email": "gahr@gahr.ch",
+        "date": "2022-04-11T07:43:05Z"
+      },
+      "committer": {
+        "name": "brasko",
+        "email": "bob@brasko.net",
+        "date": "2022-04-13T02:01:37Z"
+      },
+      "message": "Fix left-over doxy params\n\nSigned-off-by: Pietro Cerutti <gahr@gahr.ch>",
+      "tree": {
+        "sha": "1ba6942addee237862e1ecee3a3b4dea986b6d97",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/1ba6942addee237862e1ecee3a3b4dea986b6d97"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/51ec241323e30f59583832f046613365cb1f398f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/51ec241323e30f59583832f046613365cb1f398f",
+    "html_url": "https://github.com/cgdb/cgdb/commit/51ec241323e30f59583832f046613365cb1f398f",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/51ec241323e30f59583832f046613365cb1f398f/comments",
+    "author": {
+      "login": "gahr",
+      "id": 959474,
+      "node_id": "MDQ6VXNlcjk1OTQ3NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/959474?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahr",
+      "html_url": "https://github.com/gahr",
+      "followers_url": "https://api.github.com/users/gahr/followers",
+      "following_url": "https://api.github.com/users/gahr/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahr/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahr/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahr/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahr/orgs",
+      "repos_url": "https://api.github.com/users/gahr/repos",
+      "events_url": "https://api.github.com/users/gahr/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahr/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "8f222fafde934ed21c33fd81f086e46f19d35b35",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/8f222fafde934ed21c33fd81f086e46f19d35b35",
+        "html_url": "https://github.com/cgdb/cgdb/commit/8f222fafde934ed21c33fd81f086e46f19d35b35"
+      }
+    ]
+  },
+  {
+    "sha": "8f222fafde934ed21c33fd81f086e46f19d35b35",
+    "node_id": "C_kwDOAECLWdoAKDhmMjIyZmFmZGU5MzRlZDIxYzMzZmQ4MWYwODZlNDZmMTlkMzViMzU",
+    "commit": {
+      "author": {
+        "name": "Pietro Cerutti",
+        "email": "gahr@gahr.ch",
+        "date": "2022-04-09T13:06:45Z"
+      },
+      "committer": {
+        "name": "brasko",
+        "email": "bob@brasko.net",
+        "date": "2022-04-13T02:01:37Z"
+      },
+      "message": "Make kui_tree real C++\n\nAs a side effect, we can get rid of a few checks for nullptr, reduce the\nnumber of allocations, we provide better encapsulation, and a clearer\nAPI.\n\nSigned-off-by: Pietro Cerutti <gahr@gahr.ch>",
+      "tree": {
+        "sha": "0e267cfa2034b31e009f1cffe85f1d247b85caa9",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/0e267cfa2034b31e009f1cffe85f1d247b85caa9"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/8f222fafde934ed21c33fd81f086e46f19d35b35",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/8f222fafde934ed21c33fd81f086e46f19d35b35",
+    "html_url": "https://github.com/cgdb/cgdb/commit/8f222fafde934ed21c33fd81f086e46f19d35b35",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/8f222fafde934ed21c33fd81f086e46f19d35b35/comments",
+    "author": {
+      "login": "gahr",
+      "id": 959474,
+      "node_id": "MDQ6VXNlcjk1OTQ3NA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/959474?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/gahr",
+      "html_url": "https://github.com/gahr",
+      "followers_url": "https://api.github.com/users/gahr/followers",
+      "following_url": "https://api.github.com/users/gahr/following{/other_user}",
+      "gists_url": "https://api.github.com/users/gahr/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/gahr/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/gahr/subscriptions",
+      "organizations_url": "https://api.github.com/users/gahr/orgs",
+      "repos_url": "https://api.github.com/users/gahr/repos",
+      "events_url": "https://api.github.com/users/gahr/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/gahr/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "ea5edddb6dc4ac3f04b6981cd303e3f6ecaefc53",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/ea5edddb6dc4ac3f04b6981cd303e3f6ecaefc53",
+        "html_url": "https://github.com/cgdb/cgdb/commit/ea5edddb6dc4ac3f04b6981cd303e3f6ecaefc53"
+      }
+    ]
+  },
+  {
+    "sha": "ea5edddb6dc4ac3f04b6981cd303e3f6ecaefc53",
+    "node_id": "C_kwDOAECLWdoAKGVhNWVkZGRiNmRjNGFjM2YwNGI2OTgxY2QzMDNlM2Y2ZWNhZWZjNTM",
+    "commit": {
+      "author": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-03-12T02:32:13Z"
+      },
+      "committer": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-03-12T02:32:13Z"
+      },
+      "message": "Update the NOTES files regarding the previous fix\n\nSigned-off-by: Bob Rossi <bob@brasko.net>",
+      "tree": {
+        "sha": "30a785d14276bee7926114af7da11e10fd85ff4b",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/30a785d14276bee7926114af7da11e10fd85ff4b"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/ea5edddb6dc4ac3f04b6981cd303e3f6ecaefc53",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/ea5edddb6dc4ac3f04b6981cd303e3f6ecaefc53",
+    "html_url": "https://github.com/cgdb/cgdb/commit/ea5edddb6dc4ac3f04b6981cd303e3f6ecaefc53",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/ea5edddb6dc4ac3f04b6981cd303e3f6ecaefc53/comments",
+    "author": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b522a9ee08647ca29d472d4d3872216caa49382e",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/b522a9ee08647ca29d472d4d3872216caa49382e",
+        "html_url": "https://github.com/cgdb/cgdb/commit/b522a9ee08647ca29d472d4d3872216caa49382e"
+      }
+    ]
+  },
+  {
+    "sha": "b522a9ee08647ca29d472d4d3872216caa49382e",
+    "node_id": "C_kwDOAECLWdoAKGI1MjJhOWVlMDg2NDdjYTI5ZDQ3MmQ0ZDM4NzIyMTZjYWE0OTM4MmU",
+    "commit": {
+      "author": {
+        "name": "Slawomir Stepien",
+        "email": "sst@poczta.fm",
+        "date": "2016-10-29T09:36:34Z"
+      },
+      "committer": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-03-12T02:27:05Z"
+      },
+      "message": "Set breakpoint using full file path\n\nSome projects can have more than one file with the same name (for example\nicmp.c in Linux).\n\nSigned-off-by: Slawomir Stepien <sst@poczta.fm>",
+      "tree": {
+        "sha": "90168638e4b95a67c4f49125f4750e3c8a84567a",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/90168638e4b95a67c4f49125f4750e3c8a84567a"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/b522a9ee08647ca29d472d4d3872216caa49382e",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/b522a9ee08647ca29d472d4d3872216caa49382e",
+    "html_url": "https://github.com/cgdb/cgdb/commit/b522a9ee08647ca29d472d4d3872216caa49382e",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/b522a9ee08647ca29d472d4d3872216caa49382e/comments",
+    "author": {
+      "login": "s-stepien",
+      "id": 1286643,
+      "node_id": "MDQ6VXNlcjEyODY2NDM=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1286643?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/s-stepien",
+      "html_url": "https://github.com/s-stepien",
+      "followers_url": "https://api.github.com/users/s-stepien/followers",
+      "following_url": "https://api.github.com/users/s-stepien/following{/other_user}",
+      "gists_url": "https://api.github.com/users/s-stepien/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/s-stepien/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/s-stepien/subscriptions",
+      "organizations_url": "https://api.github.com/users/s-stepien/orgs",
+      "repos_url": "https://api.github.com/users/s-stepien/repos",
+      "events_url": "https://api.github.com/users/s-stepien/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/s-stepien/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "6316db6236a69c91ec445054fa6ade24df014cd2",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/6316db6236a69c91ec445054fa6ade24df014cd2",
+        "html_url": "https://github.com/cgdb/cgdb/commit/6316db6236a69c91ec445054fa6ade24df014cd2"
+      }
+    ]
+  },
+  {
+    "sha": "6316db6236a69c91ec445054fa6ade24df014cd2",
+    "node_id": "C_kwDOAECLWdoAKDYzMTZkYjYyMzZhNjljOTFlYzQ0NTA1NGZhNmFkZTI0ZGYwMTRjZDI",
+    "commit": {
+      "author": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-03-04T01:16:57Z"
+      },
+      "committer": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-03-12T00:55:51Z"
+      },
+      "message": "Update documentation copyright",
+      "tree": {
+        "sha": "e81cab33b79da92e8e11fef57dc5aed097ef6cb6",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/e81cab33b79da92e8e11fef57dc5aed097ef6cb6"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/6316db6236a69c91ec445054fa6ade24df014cd2",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/6316db6236a69c91ec445054fa6ade24df014cd2",
+    "html_url": "https://github.com/cgdb/cgdb/commit/6316db6236a69c91ec445054fa6ade24df014cd2",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/6316db6236a69c91ec445054fa6ade24df014cd2/comments",
+    "author": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "901859416fbe7085644cc77f94748b2a2e737398",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/901859416fbe7085644cc77f94748b2a2e737398",
+        "html_url": "https://github.com/cgdb/cgdb/commit/901859416fbe7085644cc77f94748b2a2e737398"
+      }
+    ]
+  },
+  {
+    "sha": "901859416fbe7085644cc77f94748b2a2e737398",
+    "node_id": "C_kwDOAECLWdoAKDkwMTg1OTQxNmZiZTcwODU2NDRjYzc3Zjk0NzQ4YjJhMmU3MzczOTg",
+    "commit": {
+      "author": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-02-18T03:30:08Z"
+      },
+      "committer": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-02-18T03:30:08Z"
+      },
+      "message": "Fix issue #293 - Random breakpoints are no displayed on file reload\n\nPreviously, when running cgdb, if you change a file you are debugging,\nrecompile the exe, and 'run' again in the gdb window in cgdb, cgdb would\nreload the changed file and sometimes display garbage breakpoints.\nNow only the correct breakpoints are displayed on reload.\n\nSigned-off-by: Bob Rossi <bob@brasko.net>",
+      "tree": {
+        "sha": "31de0a46287817a1188cc18797fc06e13f90407e",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/31de0a46287817a1188cc18797fc06e13f90407e"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/901859416fbe7085644cc77f94748b2a2e737398",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/901859416fbe7085644cc77f94748b2a2e737398",
+    "html_url": "https://github.com/cgdb/cgdb/commit/901859416fbe7085644cc77f94748b2a2e737398",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/901859416fbe7085644cc77f94748b2a2e737398/comments",
+    "author": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "08abdf37f0163c6a42b8a7f5c900619a888358f5",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/08abdf37f0163c6a42b8a7f5c900619a888358f5",
+        "html_url": "https://github.com/cgdb/cgdb/commit/08abdf37f0163c6a42b8a7f5c900619a888358f5"
+      }
+    ]
+  },
+  {
+    "sha": "08abdf37f0163c6a42b8a7f5c900619a888358f5",
+    "node_id": "C_kwDOAECLWdoAKDA4YWJkZjM3ZjAxNjNjNmE0MmI4YTdmNWM5MDA2MTlhODg4MzU4ZjU",
+    "commit": {
+      "author": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-02-18T03:24:13Z"
+      },
+      "committer": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-02-18T03:24:13Z"
+      },
+      "message": "Remove unused prototype\n\nSigned-off-by: Bob Rossi <bob@brasko.net>",
+      "tree": {
+        "sha": "ad8bb76a8d77576e99fad9b86b760ad5cf4f72ba",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/ad8bb76a8d77576e99fad9b86b760ad5cf4f72ba"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/08abdf37f0163c6a42b8a7f5c900619a888358f5",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/08abdf37f0163c6a42b8a7f5c900619a888358f5",
+    "html_url": "https://github.com/cgdb/cgdb/commit/08abdf37f0163c6a42b8a7f5c900619a888358f5",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/08abdf37f0163c6a42b8a7f5c900619a888358f5/comments",
+    "author": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "3c0f474114ff13ecc9815918000ff44cb9d0d362",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/3c0f474114ff13ecc9815918000ff44cb9d0d362",
+        "html_url": "https://github.com/cgdb/cgdb/commit/3c0f474114ff13ecc9815918000ff44cb9d0d362"
+      }
+    ]
+  },
+  {
+    "sha": "3c0f474114ff13ecc9815918000ff44cb9d0d362",
+    "node_id": "C_kwDOAECLWdoAKDNjMGY0NzQxMTRmZjEzZWNjOTgxNTkxODAwMGZmNDRjYjlkMGQzNjI",
+    "commit": {
+      "author": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-01-30T13:59:42Z"
+      },
+      "committer": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-01-30T13:59:42Z"
+      },
+      "message": "Fix issue #303 - CGDB crashes while resizing window\n\nPreviously if a lot of text existed in the gdb window, then a resize\ncould trigger a crash. Now no crash will occur.\n\nCGDB now simply resizes the vterm, and vterm does not support reflow,\nso the text is not redrawn as expected when the columns grow or shrink.\nThis may be noticable when switching between horizontal and vertical mode.\nThere is a feature request for reflow support in vterm.\n\nThe decision was made to switch from deleting and recreating a vterm\ninstance with all previous text, to just resizing it, because recreating\nthe vterm with a large amount of text turned out to be very inefficient.\nResizing would take 1 second with only tens of thousands of lines of data.\n\nSigned-off-by: Bob Rossi <bob@brasko.net>",
+      "tree": {
+        "sha": "a463448d72bd14e8a9e158dd7dedc677388bf1ba",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/a463448d72bd14e8a9e158dd7dedc677388bf1ba"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/3c0f474114ff13ecc9815918000ff44cb9d0d362",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/3c0f474114ff13ecc9815918000ff44cb9d0d362",
+    "html_url": "https://github.com/cgdb/cgdb/commit/3c0f474114ff13ecc9815918000ff44cb9d0d362",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/3c0f474114ff13ecc9815918000ff44cb9d0d362/comments",
+    "author": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "725f91747e4e996e7bbb190410b0e9c4fc594cc9",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/725f91747e4e996e7bbb190410b0e9c4fc594cc9",
+        "html_url": "https://github.com/cgdb/cgdb/commit/725f91747e4e996e7bbb190410b0e9c4fc594cc9"
+      }
+    ]
+  },
+  {
+    "sha": "725f91747e4e996e7bbb190410b0e9c4fc594cc9",
+    "node_id": "C_kwDOAECLWdoAKDcyNWY5MTc0N2U0ZTk5NmU3YmJiMTkwNDEwYjBlOWM0ZmM1OTRjYzk",
+    "commit": {
+      "author": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-01-16T15:48:57Z"
+      },
+      "committer": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-01-16T15:48:57Z"
+      },
+      "message": "Update the NEWS file to reflect the major release\n\nSigned-off-by: Bob Rossi <bob@brasko.net>",
+      "tree": {
+        "sha": "04952f466307c561621ab89ebd39178d7f6f14e1",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/04952f466307c561621ab89ebd39178d7f6f14e1"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/725f91747e4e996e7bbb190410b0e9c4fc594cc9",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/725f91747e4e996e7bbb190410b0e9c4fc594cc9",
+    "html_url": "https://github.com/cgdb/cgdb/commit/725f91747e4e996e7bbb190410b0e9c4fc594cc9",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/725f91747e4e996e7bbb190410b0e9c4fc594cc9/comments",
+    "author": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c68c0284e2424120ed30bf3cdce14c0c840e9f17",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/c68c0284e2424120ed30bf3cdce14c0c840e9f17",
+        "html_url": "https://github.com/cgdb/cgdb/commit/c68c0284e2424120ed30bf3cdce14c0c840e9f17"
+      }
+    ]
+  },
+  {
+    "sha": "c68c0284e2424120ed30bf3cdce14c0c840e9f17",
+    "node_id": "C_kwDOAECLWdoAKGM2OGMwMjg0ZTI0MjQxMjBlZDMwYmYzY2RjZTE0YzBjODQwZTlmMTc",
+    "commit": {
+      "author": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-01-16T15:41:58Z"
+      },
+      "committer": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-01-16T15:41:58Z"
+      },
+      "message": "Remove outdated note about how to communicate with inferior\n\nThe user can naturally interact with the debugged program,\nthe same as they would using just GDB. This note is outdated and unneeded.\n\nSigned-off-by: Bob Rossi <bob@brasko.net>",
+      "tree": {
+        "sha": "e92eed06037569d370625fa2aa720970e5994d01",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/e92eed06037569d370625fa2aa720970e5994d01"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/c68c0284e2424120ed30bf3cdce14c0c840e9f17",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/c68c0284e2424120ed30bf3cdce14c0c840e9f17",
+    "html_url": "https://github.com/cgdb/cgdb/commit/c68c0284e2424120ed30bf3cdce14c0c840e9f17",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/c68c0284e2424120ed30bf3cdce14c0c840e9f17/comments",
+    "author": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "c8eab1d3ffe502724c27720e54de446cdb31be41",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/c8eab1d3ffe502724c27720e54de446cdb31be41",
+        "html_url": "https://github.com/cgdb/cgdb/commit/c8eab1d3ffe502724c27720e54de446cdb31be41"
+      }
+    ]
+  },
+  {
+    "sha": "c8eab1d3ffe502724c27720e54de446cdb31be41",
+    "node_id": "C_kwDOAECLWdoAKGM4ZWFiMWQzZmZlNTAyNzI0YzI3NzIwZTU0ZGU0NDZjZGIzMWJlNDE",
+    "commit": {
+      "author": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-01-16T15:22:25Z"
+      },
+      "committer": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-01-16T15:22:25Z"
+      },
+      "message": "Update copyright date and release script\n\nSigned-off-by: Bob Rossi <bob@brasko.net>",
+      "tree": {
+        "sha": "86cb341478ffb68924711d2bf5c8e6665c74d591",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/86cb341478ffb68924711d2bf5c8e6665c74d591"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/c8eab1d3ffe502724c27720e54de446cdb31be41",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/c8eab1d3ffe502724c27720e54de446cdb31be41",
+    "html_url": "https://github.com/cgdb/cgdb/commit/c8eab1d3ffe502724c27720e54de446cdb31be41",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/c8eab1d3ffe502724c27720e54de446cdb31be41/comments",
+    "author": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "b752200815f2951336a9893fd3923ba1f901b7d4",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/b752200815f2951336a9893fd3923ba1f901b7d4",
+        "html_url": "https://github.com/cgdb/cgdb/commit/b752200815f2951336a9893fd3923ba1f901b7d4"
+      }
+    ]
+  },
+  {
+    "sha": "b752200815f2951336a9893fd3923ba1f901b7d4",
+    "node_id": "C_kwDOAECLWdoAKGI3NTIyMDA4MTVmMjk1MTMzNmE5ODkzZmQzOTIzYmExZjkwMWI3ZDQ",
+    "commit": {
+      "author": {
+        "name": "Michael Sartain",
+        "email": "mikesart@fastmail.com",
+        "date": "2021-11-18T01:04:14Z"
+      },
+      "committer": {
+        "name": "Bob Rossi",
+        "email": "bob@brasko.net",
+        "date": "2022-01-16T14:59:29Z"
+      },
+      "message": "Remove couple of unused variables, other minor cleanup\n\nSigned-off-by: Michael Sartain <mikesart@fastmail.com>",
+      "tree": {
+        "sha": "366d587cbb2b3145256c5bd3e52eddccac5e23c1",
+        "url": "https://api.github.com/repos/cgdb/cgdb/git/trees/366d587cbb2b3145256c5bd3e52eddccac5e23c1"
+      },
+      "url": "https://api.github.com/repos/cgdb/cgdb/git/commits/b752200815f2951336a9893fd3923ba1f901b7d4",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null
+      }
+    },
+    "url": "https://api.github.com/repos/cgdb/cgdb/commits/b752200815f2951336a9893fd3923ba1f901b7d4",
+    "html_url": "https://github.com/cgdb/cgdb/commit/b752200815f2951336a9893fd3923ba1f901b7d4",
+    "comments_url": "https://api.github.com/repos/cgdb/cgdb/commits/b752200815f2951336a9893fd3923ba1f901b7d4/comments",
+    "author": {
+      "login": "mikesart",
+      "id": 1740476,
+      "node_id": "MDQ6VXNlcjE3NDA0NzY=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1740476?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mikesart",
+      "html_url": "https://github.com/mikesart",
+      "followers_url": "https://api.github.com/users/mikesart/followers",
+      "following_url": "https://api.github.com/users/mikesart/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mikesart/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mikesart/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mikesart/subscriptions",
+      "organizations_url": "https://api.github.com/users/mikesart/orgs",
+      "repos_url": "https://api.github.com/users/mikesart/repos",
+      "events_url": "https://api.github.com/users/mikesart/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mikesart/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "brasko",
+      "id": 1958204,
+      "node_id": "MDQ6VXNlcjE5NTgyMDQ=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1958204?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brasko",
+      "html_url": "https://github.com/brasko",
+      "followers_url": "https://api.github.com/users/brasko/followers",
+      "following_url": "https://api.github.com/users/brasko/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brasko/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brasko/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brasko/subscriptions",
+      "organizations_url": "https://api.github.com/users/brasko/orgs",
+      "repos_url": "https://api.github.com/users/brasko/repos",
+      "events_url": "https://api.github.com/users/brasko/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brasko/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "005ed6e7e20ad54a1d450a6819c9525555210aeb",
+        "url": "https://api.github.com/repos/cgdb/cgdb/commits/005ed6e7e20ad54a1d450a6819c9525555210aeb",
+        "html_url": "https://github.com/cgdb/cgdb/commit/005ed6e7e20ad54a1d450a6819c9525555210aeb"
+      }
+    ]
+  }
+]
