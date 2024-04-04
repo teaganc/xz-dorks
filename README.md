@@ -1,4 +1,4 @@
-# Why the xz exploit is EVEN worse than you think
+# Searching for repos that could be targeted like XZ
 
 The threat of supply chain attacks in open source software have been theorized widely however their real implications have become crystal clear in the last few days. As I am sure you are aware, a malicious actor recently succeeded in backdooring the xz project after a 2 year campaign. They gradually built trust through legitimate pull requests while at the same time posing as multiple online personas to harass the maintainer and accelerate their scheme. I encourage you to familiarize yourself with the story before continuing as the exploitation process and how they were eventually caught is unbelievable. The primary sources are readily available and many creators have done an excellent job covering it as well.
 
